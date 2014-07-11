@@ -1,0 +1,6 @@
+the "gitdiff" file is a patch for MemTest86+ so check that project's copyright information
+to see what conditions apply.
+
+Look in ../../../docs/RELEASE.html for information about where to get libreboot_src.tar.gz
+or libreboot_meta.tar.gz, both of which contain information about the version of MemTest86+
+used and where it came from.

@@ -1,0 +1,13 @@
+diff --git a/grub-core/normal/main.c b/grub-core/normal/main.c
+index 3a926fc..6d48c6a 100644
+--- a/grub-core/normal/main.c
++++ b/grub-core/normal/main.c
+@@ -208,7 +208,7 @@ grub_normal_init_page (struct grub_term_output *term,
+  
+   grub_term_cls (term);
+ 
+-  msg_formatted = grub_xasprintf (_("GNU GRUB  version %s"), PACKAGE_VERSION);
++  msg_formatted = grub_xasprintf("FREE AS IN FREEDOM");
+   if (!msg_formatted)
+     return;
+  

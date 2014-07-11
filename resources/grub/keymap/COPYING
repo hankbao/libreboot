@@ -1,0 +1,13 @@
+Look at ../../../docs/index.html under the "GRUB2 payload" section to see
+how the following files were generated:
+
+ * dvorak.gkb
+ * ukdvorak
+ * ukdvorak.gkb
+ * ukqwerty
+ * ukqwerty.gkb
+ * usdvorak
+ * usqwerty
+ * usqwerty.gkb
+
+The files listed above are made available in the public domain (the information in them is public knowledge. copyright is pointless). Use them as you wish.

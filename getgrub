@@ -1,0 +1,76 @@
+#!/bin/bash
+
+#  getgrub script: Downloads GRUB and patches it.
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Get GRUB, revert to commit last used and apply patches.
+
+# Remove the old version that may still exist
+# -------------------------------------------------------------------------------
+
+echo "DOWNLOADING GRUB"
+
+rm -rf grub
+
+# Get latest GRUB
+# -------------------------------------------------------------------------------
+
+# download it using git
+git clone git://git.savannah.gnu.org/grub.git
+
+# modifications are required
+cd grub
+
+# Reset to the last commit that was tested
+# --------------------------------------------------------------------------------
+
+# Commit ID used (see "git log"):
+#
+# commit 4b8b9135f1676924a8458da528d264bbc7bbb301
+# Author: Vladimir Serbinenko <phcoder@gmail.com>
+# Date:   Sun Apr 20 16:12:41 2014 +0200
+#
+#        * grub-core/kern/misc.c (__bzero): Don't compile in GRUB_UTIL.
+#    
+#        Reported by: Yves Blusseau <blusseau@zetam.org>.
+
+git reset --hard 4b8b9135f1676924a8458da528d264bbc7bbb301
+
+# Apply patches
+# --------------------------------------------------------------------------------
+
+# See resources/grub/patch/gitdiff 
+# Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
+
+# copy it from resources
+cp ../resources/grub/patch/gitdiff .
+
+# apply it
+git apply gitdiff
+
+# remove the copy (no longer needed)
+rm -rf gitdiff
+
+# we're done
+cd ../
+
+echo "FINISHED DOWNLOADING GRUB"
+
+# ------------------- DONE ----------------------
+
+

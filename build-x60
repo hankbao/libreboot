@@ -1,0 +1,240 @@
+#!/bin/bash
+
+#  build-x60 script: builds the Lenovo ThinkPad X60 ROM's
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# DO NOT RUN THIS DIRECTLY!
+# Use "build"
+
+# Build the ROM's (for X60):
+# ----------------------------------------------------------------------------------------------------------------------
+
+cd coreboot
+rm -rf .config
+
+# ThinkPad X60: prepare coreboot and build it:
+cp ../resources/libreboot/config/x60config .config
+make
+cp build/coreboot.rom .
+make clean
+# ThinkPad X60: prepare coreboot and build it (with debugging enabled):
+cp coreboot.rom coreboot_serial.rom
+# ThinkPad X60: prepare the ROM's that will have alternative (dvorak) configs inserted 
+cp coreboot.rom coreboot_dvorak.rom
+cp coreboot_serial.rom coreboot_serial_dvorak.rom
+# ThinkPad X60: prepare the ROM's that will have alternative (uk dvorak) configs inserted
+cp coreboot.rom coreboot_ukdvorak.rom
+cp coreboot_serial.rom coreboot_serial_ukdvorak.rom
+# ThinkPad X60: prepare the ROM's that will have alternative (uk qwerty) configs inserted
+cp coreboot.rom coreboot_ukqwerty.rom
+cp coreboot_serial.rom coreboot_serial_ukqwerty.rom
+rm -rf .config
+rm -rf x60
+mkdir x60
+# move the ROM's into the newly created x60 directory
+mv coreboot*rom x60
+
+# Insert additional configs and other files into the ROM's:
+# ---------------------------------------------------------------------------------------------------------------------
+
+# ThinkPad X60: prepare finished coreboot.rom
+# Configuration: US Qwerty keyboard layout in GRUB payload. No MemTest86+. No serial output. (for those without dock).
+mv x60/coreboot.rom util/cbfstool
+cp ../resources/grub/config/x60/grub.cfg util/cbfstool
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60
+rm -rf grub.cfg
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare finished coreboot_dvorak.rom
+# Configuration: US Dvorak keyboard layout in GRUB payload. No MemTest86+. No serial output. (for those without dock)
+mv x60/coreboot_dvorak.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_dvorak.cfg util/cbfstool/grub.cfg
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_dvorak.rom
+rm -rf grub.cfg
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare finished coreboot_ukdvorak.rom
+# Configuration: UK Dvorak keyboard layout in GRUB payload. No MemTest86+. No serial output. (for those without dock)
+mv x60/coreboot_ukdvorak.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_ukdvorak.cfg util/cbfstool/grub.cfg
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_ukdvorak.rom
+rm -rf grub.cfg
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare finished coreboot_ukqwerty.rom
+# Configuration: UK Qwerty keyboard layout in GRUB payload. No MemTest86+. No serial output. (for those without dock)
+mv x60/coreboot_ukqwerty.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_ukqwerty.cfg util/cbfstool/grub.cfg
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_ukqwerty.rom
+rm -rf grub.cfg
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare a finished coreboot_serial.rom
+# Configuration: US Qwerty keyboard layout in GRUB payload. MemTest86+ included. Serial output enabled. (for those with dock).
+mv x60/coreboot_serial.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_serial.cfg util/cbfstool/grub.cfg
+cp ../memtest86+-5.01/memtest util/cbfstool
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f memtest -n memtest -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_serial.rom
+rm -rf grub.cfg
+rm -rf memtest
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare a finished coreboot_serial_dvorak.rom
+# Configuration: US Dvorak keyboard layout in GRUB payload. MemTest86+ included. Serial output enabled. (for those with dock)
+mv x60/coreboot_serial_dvorak.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_serial_dvorak.cfg util/cbfstool/grub.cfg
+cp ../memtest86+-5.01/memtest util/cbfstool
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f memtest -n memtest -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_serial_dvorak.rom
+rm -rf grub.cfg
+rm -rf memtest
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare a finished coreboot_serial_ukdvorak.rom
+# Configuration: UK Dvorak keyboard layout in GRUB payload. MemTest86+ included. Serial output enabled. (for those with dock)
+mv x60/coreboot_serial_ukdvorak.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_serial_ukdvorak.cfg util/cbfstool/grub.cfg
+cp ../memtest86+-5.01/memtest util/cbfstool
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f memtest -n memtest -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_serial_ukdvorak.rom
+rm -rf grub.cfg
+rm -rf memtest
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# ThinkPad X60: prepare a finished coreboot_serial_ukqwerty.rom
+# Configuration: UK Qwerty keyboard layout in GRUB payload. MemTest86+ included. Serial output enabled. (for those with dock)
+mv x60/coreboot_serial_ukqwerty.rom util/cbfstool/coreboot.rom
+cp ../resources/grub/config/x60/grub_serial_ukqwerty.cfg util/cbfstool/grub.cfg
+cp ../memtest86+-5.01/memtest util/cbfstool
+cp ../resources/grub/background/background1024x768.png util/cbfstool/background.png
+cp ../resources/grub/font/dejavusansmono.pf2 util/cbfstool
+cd util/cbfstool
+./cbfstool coreboot.rom add -f grub.cfg -n grub.cfg -t raw
+./cbfstool coreboot.rom add -f memtest -n memtest -t raw
+./cbfstool coreboot.rom add -f background.png -n background.png -t raw
+./cbfstool coreboot.rom add -f dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./cbfstool coreboot.rom print
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k
+dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc
+mv coreboot.rom ../../x60/coreboot_serial_ukqwerty.rom
+rm -rf grub.cfg
+rm -rf memtest
+rm -rf background.png
+rm -rf dejavusansmono.pf2
+cd ../../
+
+# Now we clean up and prepare the binary archive ready for release.
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# now we are back in the main coreboot directory
+
+# ThinkPad X60 ROM's:
+# delete the old ROM's
+rm -rf ../bin/x60
+# now put the new ROM's in ./bin
+mv x60 ../bin
+
+# go back to main source directory
+cd ../
+

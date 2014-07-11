@@ -1,0 +1,214 @@
+#!/bin/bash
+
+#
+#  build script: generates libreboot_bin and libreboot_meta
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Build the ROM's
+
+# MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
+# BEFORE RUNNING THIS!
+
+echo "running 'make clean' in coreboot"
+
+# run "make clean" in coreboot
+cd coreboot
+make clean
+rm -rf grub.elf 
+cd ..
+
+echo "finished running 'make clean' in coreboot"
+
+# Build the GRUB payload (ELF executable):
+# ----------------------------------------------------------------------------------------------------------------------
+
+echo "generating grub.elf payload"
+
+cd grub
+# Build the GRUB2 payload (grub.elf)
+./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o grub.elf --modules='crypto cryptodisk ahci pata ehci uhci ohci usb_keyboard usbms part_msdos xfs ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs minix_be minix minix3_be minix3 minix2_be minix2 zfs ufs2 ufs1_be ufs1 udf squash4 romfs jfs reiserfs procfs odc ntfs nilfs2 newc iso9660 hfsplus cpio exfat cpio_be afs btrfs bfs hfs video_bochs password png keystatus sleep loopback gfxterm_background' --install-modules='syslinuxcfg bsd ls cat echo linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=../resources/grub/config/grub_memdisk.cfg /boot/grub/layouts/dvorak.gkb=../resources/grub/keymap/dvorak.gkb /boot/grub/layouts/ukdvorak.gkb=../resources/grub/keymap/ukdvorak.gkb /boot/grub/layouts/usqwerty.gkb=../resources/grub/keymap/usqwerty.gkb /boot/grub/layouts/ukqwerty.gkb=../resources/grub/keymap/ukqwerty.gkb
+
+# move those into coreboot directory:
+mv grub.elf ../coreboot
+
+# come back into the main directory
+cd ../
+
+echo "finished generating grub.elf payload"
+
+# Build the ROM's (for flashing)
+# ----------------------------------------------------------------------------------------------------------------------
+
+echo "building X60 ROM's"
+# Build the ROM's for ThinkPad X60
+./build-x60
+echo "finished building X60 ROM's"
+
+echo "building X60 Tablet ROM's"
+# Build the ROM's for ThinkPad X60 Tablet
+./build-x60t
+echo "finished building X60 Tablet ROM's"
+
+echo "building T60 ROM's"
+# Build the ROM's for ThinkPad T60 (Intel GPU)
+./build-t60
+echo "finished building T60 ROM's"
+
+echo "building MacBook2,1 ROM's"
+# Build the ROM's for MacBook2,1
+./build-macbook21
+echo "finished building MacBook2,1 ROM's"
+
+# Now we prepare libreboot_bin archive ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+echo "generating ../libreboot_bin"
+
+# delete the old one
+rm -rf ../libreboot_bin
+
+# create new directory
+mkdir ../libreboot_bin
+
+# Include the ROM's in the binary archive
+cp -r bin ../libreboot_bin
+
+# Include flashrom utility in binary archive
+cp -r flashrom ../libreboot_bin
+
+# For installing build dependencies
+cp builddeb ../libreboot_bin
+# For installing flashrom build dependencies
+cp builddeb-flashrom ../libreboot_bin
+# For installing bucts build dependencies
+cp builddeb-bucts ../libreboot_bin
+
+# Build scripts for flashrom and bucts
+cp builddeps-flashrom ../libreboot_bin
+cp builddeps-bucts ../libreboot_bin
+
+# Useful information
+cp README ../libreboot_bin
+cp COPYING ../libreboot_bin
+
+# Include the same documentation in binary archive
+cp -r docs ../libreboot_bin
+
+# X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
+cp -r bucts ../libreboot_bin
+
+# X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
+cp powertop.trisquel6 ../libreboot_bin
+cp powertop.trisquel6.init ../libreboot_bin
+
+# (lazy hack) to make builddep-flashrom work in libreboot_bin:
+cp -r resources ../libreboot_bin
+
+# X60/T60: so that the user can use libreboot_bin to overwrite lenovo bios with libreboot
+cp lenovobios_firstflash ../libreboot_bin
+cp lenovobios_secondflash ../libreboot_bin
+
+# Flashrom script (makes flashing easier: ./flash path/to/coreboot.rom)
+cp flash ../libreboot_bin
+
+# patch the version of cbfstool included in libreboot_bin,
+# so that it can be built/executed standalone
+# this modification is only suitable for the version included in libreboot_bin
+# do not patch the one in libreboot_src with this
+cp -r coreboot/util/cbfstool ../libreboot_bin/cbfstool_standalone
+cp builddeps-cbfstool ../libreboot_bin
+echo "Patching libreboot_bin/cbfstool_standalone to be buildable (and executable) without residing in coreboot source tree"
+rm -rf ../libreboot_bin/cbfstool_standalone/rmodule.c
+cp resources/cbfstool/patch/rmodule.c ../libreboot_bin/cbfstool_standalone
+cp coreboot/src/include/rmodule-defs.h ../libreboot_bin/cbfstool_standalone
+cd ../libreboot_bin
+./builddeps-cbfstool
+cd ../libreboot_src
+echo "Done (cbfstool_standalone package created in libreboot_bin)"
+
+echo "finished generating ../libreboot_bin"
+
+# Create "libreboot_meta"
+# -------------------------------------------------------------------------------------------------------------------------------
+
+# and fast
+echo "generating ../libreboot_meta"
+
+# delete old one
+rm -rf ../libreboot_meta
+
+# make new one
+mkdir ../libreboot_meta
+
+# MOVE unwanted parts to libreboot_meta (we'll move them back later)
+mv bucts ../libreboot_meta
+mv coreboot ../libreboot_meta
+mv flashrom ../libreboot_meta
+mv grub ../libreboot_meta
+mv "memtest86+-5.01" ../libreboot_meta
+
+# COPY wanted parts to libreboot_meta
+cp -r * ../libreboot_meta
+# DELETE unwanted ROM's from libreboot_meta
+rm -rf ../libreboot_meta/bin/*
+
+# MOVE BACK the unwanted (in meta) files back to src
+mv ../libreboot_meta/bucts .
+mv ../libreboot_meta/coreboot .
+mv ../libreboot_meta/flashrom .
+mv ../libreboot_meta/grub .
+mv ../libreboot_meta/"memtest86+-5.01" .
+
+echo "finished generating ../libreboot_meta"
+
+# Create sha512sum manifest for bin, meta and src
+# ------------------------------------------------------------------------------------------------------------------------------------
+
+echo "creating sha512sum manifest in libreboot_bin"
+cd ../libreboot_bin
+rm -rf sha512sum.txt ../sha512sum.txt
+touch ../sha512sum.txt
+for i in $(find -type f); do sha512sum "$i" >> ../sha512sum.txt; done
+mv ../sha512sum.txt .
+echo "done"
+cd ../libreboot_src
+
+echo "creating sha512sum manifest in libreboot_meta"
+cd ../libreboot_meta
+rm -rf sha512sum.txt ../sha512sum.txt
+touch ../sha512sum.txt
+for i in $(find -type f); do sha512sum "$i" >> ../sha512sum.txt; done
+mv ../sha512sum.txt .
+echo "done"
+cd ../libreboot_src
+
+# # Doing this part is pointless
+# # This should be done manually (after running 'cleandeps') before releasing the archive
+# echo "creating sha512sum manifest in libreboot_src"
+# # cd ../libreboot_bin
+# rm -rf sha512sum.txt ../sha512sum.txt
+# touch ../sha512sum.txt
+# for i in $(find -type f); do sha512sum "$i" >> ../sha512sum.txt; done
+# mv ../sha512sum.txt .
+# echo "done"
+# # cd ../libreboot_src
+
+echo "BUILD COMPLETE. Check ../libreboot_bin and ../libreboot_meta"
+
+# ------------------- DONE ----------------------
+

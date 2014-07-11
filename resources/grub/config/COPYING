@@ -1,0 +1,33 @@
+The following files inside this directory:
+
+ * grub_memdisk.cfg
+ * macbook21/grub.cfg
+ * macbook21/grub_dvorak.cfg
+ * macbook21/grub_ukdvorak.cfg
+ * macbook21/grub_ukqwerty.cfg
+ * t60/grub.cfg
+ * t60/grub_dvorak.cfg
+ * t60/grub_ukdvorak.cfg
+ * t60/grub_ukqwerty.cfg
+ * t60/grub_serial.cfg
+ * t60/grub_serial_dvorak.cfg
+ * t60/grub_serial_ukdvorak.cfg
+ * t60/grub_serial_ukqwerty.cfg
+ * x60/grub.cfg
+ * x60/grub_dvorak.cfg
+ * x60/grub_ukdvorak.cfg
+ * x60/grub_ukqwerty.cfg
+ * x60/grub_serial.cfg
+ * x60/grub_serial_dvorak.cfg
+ * x60/grub_serial_ukdvorak.cfg
+ * x60/grub_serial_ukqwerty.cfg
+ * x60t/grub.cfg
+ * x60t/grub_dvorak.cfg
+ * x60t/grub_ukdvorak.cfg
+ * x60t/grub_ukqwerty.cfg
+ * x60t/grub_serial.cfg
+ * x60t/grub_serial_dvorak.cfg
+ * x60t/grub_serial_ukdvorak.cfg
+ * x60t/grub_serial_ukqwerty.cfg
+
+Look inside each file for copyright information

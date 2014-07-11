@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+	</style>
+
+	<title>Libreboot documentation: installing GNU/Linux</title>
+</head>
+
+<body>
+	<header>
+		<h1>Boot a GNU/Linux installer on USB</h1>
+		<aside>Or <a href="../index.html">back to main index</a></aside>
+	</header>
+	<h2>How to boot from USB</h2>
+	<p>
+		Connect the USB drive. Check dmesg:<br/>
+		<b>$ dmesg</b>
+		</p>
+		<p>
+		Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
+		<b>$ sudo umount /dev/sdb1</b><br/>
+		<b># umount /dev/sdb1</b>
+		</p>
+		<p>
+		dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:<br/>
+		<b>$ sudo dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b><br/>
+		<b># dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b>
+		</p>
+		<p>
+		Boot it in GRUB using the "Parse ISOLINUX config (USB)" option (it's in default libreboot grub.cfg, at least).
+		</p>
+		<p>
+		If the ISOLINUX parser won't work, then press C to get to GRUB command line.<br/>
+		<b>ls</b><br/>
+		Get the device from above output, eg (usb0). Example:<br/>
+		<b>cat (usb0)/isolinux/isolinux.cfg</b><br/>
+		Either this will show the ISOLINUX menuentries for that ISO, or link to other .cfg files, for example /isolinux/foo.cfg.<br/>
+		If it did that, then you do:<br/>
+		<b>cat (usb0)/isolinux/foo.cfg</b><br/>
+		And so on, until you find the correct menuentries for ISOLINUX.
+		</p>
+		<p>
+		Now look at the ISOLINUX menuentry. It'll look like:<br/>
+		<pre>
+	  kernel /path/to/kernel
+	  append PARAMETERS initrd=/path/to/initrd MAYBE_MORE_PARAMETERS
+		</pre>
+		GRUB works the same way, but in it's own way. Example GRUB commands:<br/>
+		<b>linux (usb0)/path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS</b><br/>
+		<b>initrd (usb0)/path/to/initrd</b><br/>
+		<b>boot</b><br/>
+		Of course this will vary from distro to distro. If you did all that correctly, it should now be booting the ISO
+		the way you specified.
+	</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+</body>
+</html>

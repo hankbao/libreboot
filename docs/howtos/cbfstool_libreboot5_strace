@@ -1,0 +1,48 @@
+# strace ./cbfstool coreboot.rom add -n grub.cfg -f grub.cfg -t raw
+execve("./cbfstool", ["./cbfstool", "coreboot.rom", "add", "-n", "grub.cfg", "-f", "grub.cfg", "-t", "raw"], [/* 25 vars */]) = 0
+brk(0)                                  = 0x9577000
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+mmap2(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76f6000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+open("/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=94605, ...}) = 0
+mmap2(NULL, 94605, PROT_READ, MAP_PRIVATE, 3, 0) = 0xb76de000
+close(3)                                = 0
+access("/etc/ld.so.nohwcap", F_OK)      = -1 ENOENT (No such file or directory)
+open("/lib/i386-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\1\1\1\0\0\0\0\0\0\0\0\0\3\0\3\0\1\0\0\0\220\232\1\0004\0\0\0"..., 512) = 512
+fstat64(3, {st_mode=S_IFREG|0755, st_size=1775080, ...}) = 0
+mmap2(NULL, 1784604, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0xb752a000
+mmap2(0xb76d8000, 12288, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1ae) = 0xb76d8000
+mmap2(0xb76db000, 11036, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0xb76db000
+close(3)                                = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7529000
+set_thread_area({entry_number:-1 -> 6, base_addr:0xb7529900, limit:1048575, seg_32bit:1, contents:0, read_exec_only:0, limit_in_pages:1, seg_not_present:0, useable:1}) = 0
+mprotect(0xb76d8000, 8192, PROT_READ)   = 0
+mprotect(0x8067000, 4096, PROT_READ)    = 0
+mprotect(0xb7719000, 4096, PROT_READ)   = 0
+munmap(0xb76de000, 94605)               = 0
+brk(0)                                  = 0x9577000
+brk(0x9598000)                          = 0x9598000
+open("grub.cfg", O_RDONLY)              = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=810, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76f5000
+fstat64(3, {st_mode=S_IFREG|0644, st_size=810, ...}) = 0
+_llseek(3, 0, [0], SEEK_SET)            = 0
+read(3, "set default=\"0\"\nset timeout=1\nse"..., 810) = 810
+_llseek(3, 810, [810], SEEK_SET)        = 0
+close(3)                                = 0
+munmap(0xb76f5000, 4096)                = 0
+open("coreboot.rom", O_RDONLY)          = 3
+fstat64(3, {st_mode=S_IFREG|0644, st_size=2097152, ...}) = 0
+mmap2(NULL, 4096, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb76f5000
+fstat64(3, {st_mode=S_IFREG|0644, st_size=2097152, ...}) = 0
+_llseek(3, 2097152, [2097152], SEEK_SET) = 0
+_llseek(3, 0, [0], SEEK_SET)            = 0
+mmap2(NULL, 2101248, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0xb7328000
+read(3, "LARCHIVE\0\0\6\30\0\0\1\252\0\0\0\0\0\0\0(cmos_lay"..., 2097152) = 2097152
+close(3)                                = 0
+munmap(0xb76f5000, 4096)                = 0
+--- SIGSEGV (Segmentation fault) @ 0 (0) ---
++++ killed by SIGSEGV +++
+Segmentation fault

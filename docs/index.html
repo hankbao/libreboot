@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+		p.lenovobios {
+			font-weight:bold; color:#f00; font-style:italic; font-size:1.2em;
+		}
+		p.lenovobios:hover {
+			color: #000;
+		}
+		div.important {
+			background-color:#ccc;
+		}
+	</style>
+
+	<title>Libreboot documentation: Main</title>
+</head>
+
+<body>
+	<header>
+		<h1 id="pagetop">Libreboot Documentation</h1>
+		<aside>This is for the release, as per <a href="RELEASE.html">RELEASE.html</a>.</aside>
+		<aside>The latest release (along with documentation) can be found at <a href="http://libreboot.org/">libreboot.org</a></aside>
+	</header>
+
+	<h2>GNU/Linux distributions</h2>
+		<ul>
+			<li><a href="howtos/grub_boot_installer.html">How to install a GNU/Linux distribution</a></li>
+			<li><a href="howtos/grub_cbfs.html">How to change your default GRUB menu</a></li>
+		</ul>
+
+	<h2>Working with source code</h2>
+		<ul>
+			<li><a href="#build_meta">Building libreboot_src from libreboot_meta</a></li>
+			<li><a href="#build_bucts">How to build &quot;bucts&quot; (for LenovoBIOS X60/T60)</a></li>
+			<li><a href="#build_flashrom">How to build &quot;flashrom&quot;</a></li>
+			<li>
+				<a href="#config">Configuring libreboot</a>
+				<ul>
+					<li><a href="#config_dmidecode">dmidecode</a></li>
+					<li><a href="#config_x60">ThinkPad X60</a></li>
+					<li><a href="#config_x60t">ThinkPad X60 Tablet</a></li>
+					<li><a href="#config_t60">ThinkPad T60</a></li>
+					<li><a href="#config_macbook21">MacBook2,1</a></li>
+				</ul>
+			</li>
+			<li><a href="#build">How to build your ROM's</a></li>
+		</ul>
+
+	<h2>Hardware maintenance</h2>
+		<ul>
+			<li><a href="#supported_t60_list">List of supported ThinkPad T60's</a></li>
+			<li><a href="#t60_inverter">Inverter boards for ThinkPad T60 when upgrading the LCD panel.</a></li>
+			<li><a href="#t60_ati_intel">ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.</a></li>
+		</ul>
+
+	<h2>Macbook2,1</h2>
+		<ul>
+			<li><a href="#macbook21">Information about the Macbook2,1</a></li></li>
+		</ul>
+
+	<h2>Installing libreboot (software: using internal programmer)</h2>
+		<ul>
+			<li><a href="#rom">Recommended ROM's to flash</a></li>
+			<li><a href="#flashrom_lenovobios">X60/T60: How to flash your ROM (if running Lenovo BIOS)</a></li>
+			<li><a href="#flashrom">X60/T60: How to flash your ROM (if running libreboot or coreboot already)</a></li>
+		</ul>
+
+	<h2>Installing libreboot (hardware: using external programmer)</h2>
+		<ul>
+			<li><a href="howtos/x60_unbrick.html">ThinkPad X60: How to unbrick</a></li>
+		</ul>
+	
+	<h2>GRUB2 payload</h2>
+		<ul>
+			<li><a href="#grub_font">Setting font in GRUB</a></li>
+			<li><a href="#grub_keyboard">GRUB keyboard layouts</a>
+				<ul>
+					<li>
+						<a href="#keyboards">Pictures of keyboard layouts</a>
+						<ul>
+							<li><a href="#keyboards_ukqwerty">QWERTY (United Kingdom)</a></li>
+							<li><a href="#keyboards_usqwerty">QWERTY (United States)</a></li>
+							<li><a href="#keyboards_ukdvorak">Dvorak (United Kingdom)</a></li>
+							<li><a href="#keyboards_usdvorak">Dvorak (United States)</a></li>
+						</ul>
+					</li>
+					<li><a href="#grub_custom_keyboard">Custom keyboard layout in GRUB</a></li>
+					<li><a href="#grub_qwerty_keyboard">US Qwerty keyboard layout in GRUB</a></li>
+					<li><a href="#grub_ukqwerty_keyboard">UK Qwerty keyboard layout in GRUB</a></li>
+					<li><a href="#grub_dvorak_keyboard">US Dvorak keyboard layout in GRUB</a></li>
+					<li><a href="#grub_ukdvorak_keyboard">UK Dvorak layout in GRUB</a></li>
+				</ul>
+			</li>
+		</ul>
+
+	<h2>Miscallaneous</h2>
+		<ul>
+			<li><a href="#tft_brightness">Brightness controls (ThinkPad X60) - how to prevent 'scrolling'</a></li>
+			<li><a href="#x60_wifi">ThinkPad X60: Enable or disable wifi</a></li>
+			<li><a href="#x60_trackpoint">ThinkPad X60: Enable or disable trackpoint</a></li>
+			<li><a href="#high_pitch_trisquel">High Pitched Whining Noise on Idle (how to remove in Trisquel)</a>
+				<ul>
+					<li><a href="#howtouse_powertop">Powertop - how to use</a></li>
+					<li><a href="#powertop_autostart">Powertop - Start automatically at boot time</a></li>
+				</ul>
+			</li>
+			<li><a href="#high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</a></li>
+			<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
+			<li><a href="i945_backlight.html">i945 backlight controls on X60/T60</a></li>
+			<li><a href="patch.html">Using diff and patch</a></li>
+			<li><a href="#get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</a></li>
+		</ul>
+
+<hr/>
+
+	<h1 id="build_meta">How to build libreboot_src from libreboot_meta</h1>
+
+		<p>
+			If you downloaded libreboot_meta.tar.gz, then you can use the scripts included
+			which download all of the extra dependencies and (basically) generates libreboot_src.
+		</p>
+
+		<p>
+			You need to install the build dependencies first.
+		</p>
+
+		<p>
+			The following scripts installs them for apt-get distros.<br/>
+			Adapt what's in this script if you don't use an apt-get distro:<br/>
+			<b>$ sudo ./builddeb</b>
+		</p>
+
+		<p>
+			After that, run the get script:<br/>
+			<b>$ ./getall</b>
+		</p>
+
+		<p>
+			What this did was download everything (grub, coreboot, memtest86+, bucts, flashrom)
+			at the versions last tested for this release, and patch them. Read the script
+			in a text editor to learn more.
+		</p>
+
+		<p>
+			After that, you will have the full source. Rename libreboot_meta to libreboot_src. 
+			To build the ROM's, see <a href="#build">#build</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="build_bucts">How to build &quot;bucts&quot; (for LenovoBIOS X60/T60)</h1>
+
+		<p>
+			<b>This is for Lenovo BIOS users on the ThinkPad X60 and T60. If you have coreboot or libreboot running already, ignore this.</b>
+		</p>
+
+		<p>
+			Bucts is needed when flashing the X60/T60 ROM while Lenovo BIOS is running.
+			Each ROM contains identical data inside the two final 64K region in the file.
+			This corresponds to the final two 64K regions in the flash chip. Lenovo BIOS will prevent you from writing the
+			final one, so running &quot;<b>bucts 1</b>&quot; will set the machine to boot from the other block instead (which
+			is writeable along with everything beneath it when using a patched flashrom. see <a href="#build_flashrom">#build_flashrom</a>). 
+			After shutting down and booting up after the first flash,
+			the final 64K block is writeable so you flash the ROM again with an unpatched flashrom and run "<b>bucts 0</b>" to
+			make the machine boot from the normal (highest) block again.
+		</p>
+
+		<p>
+			BUC.TS utility is included in libreboot_src.tar.gz and libreboot_bin.tar.gz.<br/>
+			<b>If you downloaded libreboot_meta.tar.gz, follow <a href="#build_meta">#build_meta</a> before you proceed.</b>
+		</p>
+
+		<p>
+			&quot;BUC&quot; means &quot;<b>B</b>ack<b>u</b>p <b>C</b>ontrol&quot; (it's a register) and &quot;TS&quot; means &quot;<b>T</b>op <b>S</b>wap&quot;
+			(it's a status bit). Hence &quot;bucts&quot; (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
+		</p>
+
+		<p>
+			You need to install GCC. The following will work on apt-get distros (adapt that script if your distro doesn't use apt-get):<br/>
+			<b>$ sudo ./builddeb-bucts</b>
+		</p>
+
+		<p>
+			To build bucts, do that in the main directory:<br/>
+			<b>$ ./builddeps-bucts</b>
+		</p>
+
+		<p>
+			The &quot;builddeps&quot; script in libreboot_src and libreboot_meta also makes use of builddeps-bucts.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="build_flashrom">How to build &quot;flashrom&quot;</h1>
+
+		<p>
+			Flashrom is the utility for flashing/dumping ROM's. This is what you will use to install libreboot.
+		</p>
+
+		<p>
+			Flashrom source code is included in libreboot_src.tar.gz and libreboot_bin.tar.gz.<br/>
+			<b>If you downloaded libreboot_meta.tar.gz, follow <a href="#build_meta">#build_meta</a> before you proceed.</b>
+		</p>
+
+		<p>
+			You need the build dependencies for flashrom.
+			The following script works in apt-get distros (tested in Trisquel 6):<br/>
+			<b>$ sudo ./builddeb-flashrom</b>
+		</p>
+
+		<p>
+			To build it, do that in the main directory:<br/>
+			<b>$ ./builddeps-flashrom</b>
+		</p>
+
+		<p>
+			After you've done that, under ./flashrom/ you will find the following executables:
+		</p>
+		<ul>
+			<li>
+				<b>flashrom</b>
+				<ul>
+					<li>For flashing while coreboot or libreboot is running.</li>
+				</ul>
+			</li>
+			<li>
+				<b>flashrom_lenovobios_sst</b>
+				<ul>
+					<li>This is patched for flashing while Lenovo BIOS is running on an X60 or T60 with the SST25VF016B (SST) flash chip.</li>
+				</ul>
+			</li>
+			<li>
+				<b>flashrom_lenovobios_macronix</b>
+				<ul>
+					<li>This is patched for flashing while Lenovo BIOS is running on an X60 or T60 with the MX25L1605D (Macronix) flash chip.</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>
+			The &quot;builddeps&quot; script in libreboot_src and libreboot_meta also makes use of builddeps-flashrom.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="config">Configuring libreboot</h1>
+
+		<p>
+			Before building a ROM in libreboot (or coreboot, for that matter), you need to configure it.
+			This is done using the following inside the source tree:<br/>
+			<b>$ make menuconfig</b>
+		</p>
+
+		<p>
+			If you've already built a kernel before, you know how to use this interface.
+		</p>
+
+		<p>
+			Configurations are saved then as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
+			for each machine type by the libreboot build scripts are stored in resources/libreboot/config/
+		</p>
+
+		<h2 id="config_dmidecode">
+			dmidecode
+		</h2>
+			<p>
+				There is certain information that can be useful to enter in particular:
+			</p>
+			<ul>
+				<li>Local version string</li>
+				<li>SMBIOS Serial Number</li>
+				<li>SMBIOS Manufacturer</li>
+				<li>SMBIOS Version</li>
+				<li>SMBIOS Product name</li>
+			</ul>
+			<p>
+				This information can be obtained using:<br/>
+				<b>$ sudo dmidecode</b><br/>
+				<b># dmidecode</b>
+			</p>
+			<p>
+				Specifically, it's good practise to enter the same information for libreboot that you found when running this
+				with the original BIOS or firmware. <b>libreboot has already done this for you. This information is for reference,
+				in the hope that it will be useful.</b>
+			</p>
+
+		<h2 id="config_x60">
+			ThinkPad X60 configuration (file: resources/libreboot/config/x60config)
+		</h2>
+			<ul>
+				<li>General setup / Expert mode = <i>enable</i></li>
+				<li>General setup / Local version string = <i>7BETC7WW (2.08 )</i></li>
+				<li>Mainboard / Mainboard vendor = <i>Lenovo</i></li>
+				<li>Mainboard / Mainboard model = <i>ThinkPad X60 / X60s / X60t</i></li>
+				<li>Mainboard / ROM chip size = <i>2048 KB (2 MB)</i></li>
+				<li>Mainboard / SMBIOS Serial Number = <i>L3BH242</i></li>
+				<li>Mainboard / SMBIOS Version Number = <i>ThinkPad X60s</i></li>
+				<li>Mainboard / SMBIOS Manufacturer = <i>LENOVO</i></li>
+				<li>Mainboard / SMBIOS Product name = <i>1702L8G</i></li>
+				<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
+				<li>Devices / Use native graphics initialization = <i>enable</i></li>
+				<li>Generic Drivers / Digitizer = <i>Autodetect</i></li>
+				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
+				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+			</ul>
+			<p>
+				Now go back into Devices:
+			</p>
+			<ul>
+				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+			</ul>
+			<p>
+				The resulting .config file was saved as resources/libreboot/config/<b>x60config</b> and is used by the build
+				scripts for this machine.
+			</p>
+			<p>
+				This is based on an X60S with the Core 2 Duo L7400 processor.
+			</p>
+			<p>
+				SMBIOS Version Number is ThinkPad X60 on the X60, but it is believed that X60 and X60s both have identical
+				motherboards where the only difference is the CPU. This same configuration is used on the X60 and X60s.
+			</p>
+
+		<h2 id="config_x60t">
+			ThinkPad X60 Tablet configuration (file: resources/libreboot/config/x60tconfig)
+		</h2>
+			<ul>
+				<li>General setup / Expert mode = <i>enable</i></li>
+				<li>General setup / Local version string = <i>7JET23WW (1.08 )</i></li>
+				<li>Mainboard / Mainboard vendor = <i>Lenovo</i></li>
+				<li>Mainboard / Mainboard model = <i>ThinkPad X60 / X60s / X60t</i></li>
+				<li>Mainboard / ROM chip size = <i>2048 KB (2 MB)</i></li>
+				<li>Mainboard / SMBIOS Serial Number = <i>L3B8281</i></li>
+				<li>Mainboard / SMBIOS Version Number = <i>ThinkPad X60 Tablet</i></li>
+				<li>Mainboard / SMBIOS Manufacturer = <i>LENOVO</i></li>
+				<li>Mainboard / SMBIOS Product name = <i>6364WJ1</i></li>
+				<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
+				<li>Devices / Use native graphics initialization = <i>enable</i></li>
+				<li>Generic Drivers / Digitizer = <i>Present</i></li>
+				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
+				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+			</ul>
+			<p>
+				Now go back into Devices:
+			</p>
+			<ul>
+				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+			</ul>
+			<p>
+				The resulting .config file was saved as resources/libreboot/config/<b>x60config</b> and is used by the build
+				scripts for this machine.
+			</p>
+			<p>
+				This is based on an X60T with the Core 2 Duo L7400 processor.
+			</p>
+
+		<h2 id="config_t60">
+			ThinkPad T60 configuration (file: resources/libreboot/config/t60config)
+		</h2>
+			<ul>
+				<li>General setup / Expert mode = <i>enable</i></li>
+				<li>General setup / Local version string = <i>79ETE7WW (2.27 )</i></li>
+				<li>Mainboard / Mainboard vendor = <i>Lenovo</i></li>
+				<li>Mainboard / Mainboard model = <i>ThinkPad T60 / T60p</i></li>
+				<li>Mainboard / ROM chip size = <i>2048 KB (2 MB)</i></li>
+				<li>Mainboard / SMBIOS Serial Number = <i>L3DKE06</i></li>
+				<li>Mainboard / SMBIOS Version Number = <i>ThinkPad T60</i></li>
+				<li>Mainboard / SMBIOS Manufacturer = <i>LENOVO</i></li>
+				<li>Mainboard / SMBIOS Product name = <i>1951FEG</i></li>
+				<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
+				<li>Devices / Use native graphics initialization = <i>enable</i></li>
+				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
+				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+			</ul>
+				Go back into Devices:
+			</p>
+			<ul>
+				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+			</ul>
+			<p>
+				The resulting .config file was saved as resources/libreboot/config/<b>t60config</b> and is used by the build
+				scripts for this machine.
+			</p>	
+			<p>
+				It is believed that the motherboards on 14.1&quot; and 15.1&quot; T60's are the same, so the same configuration is used
+				on both the 14.1&quot; and 15.1&quot; T60's.
+			</p>
+
+		<h2 id="config_macbook21">
+			MacBook2,1 configuration (file: resources/libreboot/config/macbook21config)
+		</h2>
+			<ul>
+				<li>General / Expert mode = <i>enable</i></li>
+				<li>General / Local version string = <i>&quot;&nbsp;&nbsp;&nbsp;&nbsp;MB21.88Z.00A5.B07.0706270922&quot;</i> (without the quotes)</li>
+				<li>Mainboard / Mainboard vendor = <i>Apple</i></li>
+				<li>Mainboard / Mainboard model = <i>Macbook2,1 ICH7 TESTING</i></li>
+				<li>Mainboard / ROM chip size = <i>2048 KB (2 MB)</i></li>
+				<li>Mainboard / SMBIOS Serial Number = <i>W8724XXXXXX</i></li>
+				<li>Mainboard / SMBIOS Version Number = <i>1.0</i></li>
+				<li>Mainboard / SMBIOS Manufacturer = <i>Apple Inc.</i></li>
+				<li>Mainboard / SMBIOS Product Name = <i>MacBook2,1</i></li>
+				<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
+				<li>Devices / Use native graphics initialization = <i>enable</i></li>
+				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
+				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+			</ul>
+			<p>
+				Go back and disable option ROM's:
+			</p>
+			<ul>
+				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+			</ul>
+			<p>
+				The resulting .config file was saved as resources/libreboot/config/<b>macbook21config</b> and is used by the build
+				scripts for this machine.
+			</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="build">How to build the ROM's!</h1>
+
+		<p>If you have anything special in a directory called libreboot_bin, just outside of libreboot_src,
+		then back it up first.</p>
+
+		<p>You don't need to do much: there are scripts already written for you that can build everything automatically.</p>
+
+		<p>Install <b>all</b> dependencies (works on apt-get distros, tested in Trisquel 6)<br/>
+		<b>$ sudo ./builddeb</b></p>
+
+		<p>If your distro uses a different package manager or package names, then you'll need to adapt what you see in
+		'builddeb' and install it yourself - maybe you could share the script for your distro!</p>
+
+		<p>Also, make sure that you have the sha512sum utility installed.</p>
+
+		<p>If running for the first time, run this:<br/>
+		<b>$ ./buildall</b> (also performs the "./build" step below)<br/>
+		Or if you only want to build dependencies (crossgcc, grub and so on):<br/>
+		<b>$ ./builddeps</b></p>
+
+		<p>If you've already run ./builddeps and/or ./buildall before, you don't need to run them again.
+		Just run that from now on to build your ROM's:<br/>
+		<b>$ ./build</b></p>
+
+		<p>To un-build (clean) the build dependencies that you built before, do that:<br/>
+		<b>$ ./cleandeps</b></p>
+
+		<p>Note: after running 'cleandeps', you will need to run 'builddeps' or 'buildall' again before you can use 'build'.</p>
+
+		<p>After 'build' or 'buildall' has finished, an ../libreboot_bin directory will exist outside of libreboot_src containing the ROM's and other files. In libreboot_src will also be
+		a directory called 'bin' which contains all of the ROM's that you compiled.</p>
+
+		<p>The script also generates a 'libreboot_meta' directory outside of libreboot_src, which contains everything in src except for grub, coreboot, memtest,
+		flashrom and bucts. There is a script called 'getall' from src included in meta, which downloads and patches everything needed to create src.</p>
+
+		<p>Reading all of those scripts will teach you how everything is built. It should also be simple to modify it to your needs.</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="supported_t60_list">Supported T60 list</h1>
+
+		<ul>
+			<li>
+				The following ThinkPad T60's are supported:
+				<ul>
+					<li>ThinkPad X60 Tablet (1024x768) with digitizer support</li>
+					<li>ThinkPad X60 Tablet (1400x1050) with digitizer support</li>
+					<li>ThinkPad T60 14.1&quot; SXGA+ (1400x1050) (Intel GPU)</li>
+					<li>ThinkPad T60 15.1&quot; SXGA+ (1400x1050) (Intel GPU)</li>
+					<li>ThinkPad T60 15.1&quot; UXGA (1600x1200) (Intel GPU)</li>
+					<li>ThinkPad T60 15.1&quot; QXGA (2048x1536) (Intel GPU)</li>
+				</ul>
+			</li>
+			<li>
+				Note, the T60 models below are *NOT* supported in this release:
+				<ul>
+					<li>
+						ThinkPad T60 14.1&quot; XGA (1024x768) (Intel GPU)
+						<ul>
+							See below (comments 15.1&quot; XGA T60).
+						</ul>
+					</li>
+					<li>
+						ThinkPad T60 15.1&quot; XGA (1024x768) (Intel GPU)
+						<ul>
+							<li>However, the LCD panels in these models are user-upgradeable in 14.1&quot; and 15.1&quot; to one of the supported panels.</li>
+							<li>See <a href="#t60_inverter">#t60_inverter</a> for information about inverters to use when upgrading the LCD panel.</li>
+							<li>See the list immediately below for a list of LCD panels.</li>
+						</ul>
+					</li>
+					<li>
+						ThinkPad T60/T60p with ATI GPU (all models)
+						<ul>
+							<li>However, on 14.1&quot; and 15.1&quot; T60 (*not* the 15.4&quot; T60p!) that has ATI GPU, you can replace the mainboard with one that has an Intel GPU</li>
+							<li>See <a href="#t60_ati_intel">#t60_ati_intel</a> for pictures showing the differences (when shopping for motherboards).</li>
+						</ul>
+					</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>
+			To find what LCD panel you have, see: <a href="#get_edid_panelname">#get_edid_panelname</a>.
+		</p>
+
+		<h2>Tested LCD panels (as of libreboot 6th release, initial revision)</h2>
+			<ul>
+				<li>
+					<b>T60 14&quot; XGA (1024x768) (not working yet)</b>
+					<ul>
+						<li>
+							<b>None of the tested panels work yet!</b>
+							<ul>
+								<li><b>You can upgrade the LCD panel to SXGA+ though</b></li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+							<ul>
+								<li>Not working: Samsung LTN141XA-L01</li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>CMO N141XC</li>
+								<li>BOE-Hydis HT14X14</li>
+								<li>TMD-Toshiba LTD141ECMB</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 14&quot; SXGA+ (1400x1050) (works!!!)</b>
+					<ul>
+						<li>
+							<b>Source code modifications *not* required!</b>
+							<ul>
+								<li>Works out of the box!</li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+							<ul>
+								<li><b>Working: TMD-Toshiba LTD141EN9B</b></li>
+								<li><b>Working: Samsung LTN141P4-L02</b></li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>Boe-Hydis HT14P12</li>
+							</ul>
+						</li>
+						<li>
+							Part number for inverter board:
+							<ul>
+								<li>FRU P/N  41W1478</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; XGA (1024x768) (not working yet)</b>
+					<ul>
+						<li>
+							<b>None of the tested panels work yet!</b>
+							<ul>
+								<li><b>You can upgrade the panel to SXGA+, UXGA or QXGA, though.</b></li>
+								<li>
+									Make sure that you also upgrade the inverter to one of these: 
+									<ul>
+										<li>P/N 42T0078 FRU 42T0079</li>
+										<li>P/N 41W1338</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+							<ul>
+								<li>Not working: LG-Philips LP150X09</li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>Samsung LTN150XG</li>
+								<li>13N7068 (IDtech)</li>
+								<li>13N7069 (CMO)</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; SXGA+ (1400x1050) (works!!!)</b>
+					<ul>
+						<li>
+							<b>Source code modifications *not* required!</b>
+							<ul>
+								<li>Works out of the box!</li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+							<ul>
+								<li><b>Working: LG-Philips LP150E05-A2K1</b></li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>BOE-Hydis HV150P01-100</li>
+							</ul>
+						</li>
+						<li>
+							Use one of these inverters (advised):
+							<ul>
+								<li>P/N 42T0078 FRU 42T0079</li>
+								<li>P/N 41W1338</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; UXGA (1600x1200) (works!!!)</b>
+					<ul>
+						<li>
+							<b>Source code modifications *not* required!</b>
+							<ul>
+								<li>Works out of the box!</li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+						<ul>
+								<li><b>Working: BOE-Hydis HV150UX1-100</b></li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>IDTech  N150U3-L01</li>
+								<li>BOE-Hydis  HV150UX1-102</li>
+							</ul>
+						</li>
+						<li>
+							Use one of these inverters (advised):
+							<ul>
+								<li>P/N 42T0078 FRU 42T0079</li>
+								<li>P/N 41W1338</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; QXGA (2048x1536) (works!!!)</b>
+					<ul>
+						<li>
+							<b>Source code modifications *not* required!</b>
+							<ul>
+								<li>Works out of the box!</li>
+							</ul>
+						</li>
+						<li>
+							Tested panels:
+							<ul>
+								<li><b>Working: IDtech IAQX10N</b></li>
+							</ul>
+						</li>
+						<li>
+							Untested panels:
+							<ul>
+								<li>IDtech IAQX10S</li>
+							</ul>
+						</li>
+						<li>
+							Use one of these inverters (advised):
+							<ul>
+								<li>P/N 42T0078 FRU 42T0079</li>
+								<li>P/N 41W1338</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="t60_inverter">Inverter boards for ThinkPad T60 when upgrading LCD panel</h1>
+
+		<p>
+			When upgrading the XGA (1024x768) LCD panel to SXGA+ (1400x1050) on the 14.1&quot; T60, you also need to use this inverter board:
+		</p>
+		<ul>
+			<li>
+				FRU P/N 41W1478
+			</li>
+		</ul>
+
+		<p>
+			When upgrading the XGA (1024x768) LCD panel to SXGA+ (1400x1050), UXGA (1600x1200) or QXGA (2048x1536) on the 15.1&quot; T60, you
+			also need to use one of these inverter boards:
+		</p>
+		<ul>
+			<li>
+				P/N 42T0078 FRU 42T0079
+			</li>
+			<li>
+				P/N 41W1338
+			</li>
+		</ul>
+
+		<p>
+			See <a href="#supported_t60_list">#supported_t60_list</a> for a list of LCD panels on ThinkPad T60 14.1&quot; and ThinkPad T60 15.1&quot;.
+		</p>
+
+		<p>
+			The Video BIOS (VBIOS) for T60 has been reverse engineered and replaced with Free Software. However,
+			at the time of preparing this release the free replacement did not yet support the XGA (1024x768) panels,
+			which is what made upgrading them necessary.
+		</p>
+
+		<p>
+			The 'Video BIOS' is what initializes graphics.
+		</p>
+
+		<p>
+			See: <a href="https://en.wikipedia.org/wiki/Video_BIOS">https://en.wikipedia.org/wiki/Video_BIOS</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="t60_ati_intel">ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.</h1>
+
+		<p>
+			If your T60 is a 14.1&quot; or 15.1&quot; model with an ATI GPU, it won't work with libreboot by default but
+			you can replace the motherboard with another T60 motherboard that has an Intel GPU, and then libreboot should work.
+		</p>
+
+		<p>
+			As far as I know, 14.1&quot; (Intel GPU) and 15.1&quot; (Intel GPU) T60 motherboards are the same, where
+			'spacers' are used on the 15.1&quot; T60. In any case, it makes sense to find one that is guaranteed to fit in your chassis.
+		</p>
+
+		<p>
+			Note: the T60<b>p</b> is a 15.4&quot; widescreen laptop and uses completely different shaped motherboards (all of which have ATI). 
+			The T60p laptops cannot be used with libreboot under any circumstances.
+		</p>
+
+		<p>
+			The following T60 motherboard shows an ATI GPU (<b>do not buy this</b>) (highlighted in red, or on the right next to the white CPU socket), which is unsupported by libreboot:<br/>
+			<img src="howtos/t60_mainboard/t60_ati_gpu.jpg" alt="" />
+		</p>
+
+		<p>
+			The following T60 motherboard shows an Intel GPU (<b>buy this!</b>) (highlighted in red or on the right next to the white CPU socket, you can see that the space for ATI GPU is empty):<br/>
+			<img src="howtos/t60_mainboard/t60_intel_gpu.jpg" alt="" />
+		</p>
+
+		<p>
+			The reason that the ATI GPU on T60 is unsupported is due to the VBIOS (Video BIOS) which is non-free. 
+			The VBIOS for the Intel GPU on X60/T60 has been reverse engineered, and replaced with Free Software and
+			so will work in libreboot.
+		</p>
+
+		<p>
+			The 'Video BIOS' is what initializes graphics.
+		</p>
+
+		<p>
+			See: <a href="https://en.wikipedia.org/wiki/Video_BIOS">https://en.wikipedia.org/wiki/Video_BIOS</a>.<br/>
+			In fact, lack of free VBIOS in general is a big problem in coreboot, and is one reason (among others) why many ports for coreboot are 
+			unsuitable for libreboot's purpose.
+		</p>
+
+		<p>
+			Theoretically, the ThinkPad T60 with ATI GPU can work with libreboot and have ROM's compiled for it, however
+			in practise it would not be usable as a laptop because there would be no visual display at all. That being said,
+			such a configuration is acceptable for use in a 'headless' server setup (with serial and/or ssh console as the display).
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="macbook21">Information about the macbook2,1</h1>
+
+		<p>
+			There is an Apple laptop called the macbook2,1 from late 2006 or early 2007 that uses the same i945 chipset
+			as the ThinkPad X60 and ThinkPad T60. A developer ported coreboot to his macbook2,1, and now libreboot can run on it.
+		</p>
+		<p>
+			Mono Moosbart is the person who wrote the port for macbook2,1. Referenced below are copies (up to date at the time of writing, 20140630)
+			of the pages he wrote when porting coreboot to the macbook2,1. They are included here in case the main site goes down for
+			whatever reason, since they include a lot of useful information.
+		</p>
+		<p>
+			Backups created using wget:<br/>
+			<b>$ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/</b><br/>
+			<b>$ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/coreboot/</b><br/>
+			Use <b>-e robots=off</b> if using this trick for other sites and the site restricts using robots.txt
+		</p>
+
+		<p>
+			<b>Links to wget backups (and the backups themselves) of Mono's pages (see above) removed temporarily. Mono has given me permission to distribute them, but I need to ask
+			him to tell me what license these works fall under first. Otherwise, the above URL's should be fine. NOTE TO SELF: REMOVE THIS WHEN DONE</b>
+		</p>
+
+		<h2>
+			Installing GNU/Linux distributions (on Apple EFI firmware)
+		</h2>
+			<ul>
+				<li><a href="#">Parabola GNU/Linux installation on a macbook2,1 with Apple EFI firmware</a> (this is a copy of Mono's page, see above)</li>
+			</ul>
+
+		<h2>
+			Information about coreboot
+		</h2>
+			<ul>
+				<li><a href="#">Coreboot on the macbook2,1</a> (this is a copy of Mono's page, see above)</li>
+			</ul>
+
+		<h2>
+			coreboot wiki page
+		</h2>
+			<ul>
+				<li><a href="http://www.coreboot.org/Board:apple/macbook21">http://www.coreboot.org/Board:apple/macbook21</a></li>
+			</ul>
+
+		<h2>
+			Compatible models
+		</h2>
+			<p>
+				It is believed that all models are compatible, listed here:
+			</p>
+			<ul>
+				<li><a href="http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook2,1">http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook2,1</a></li>
+			</ul>
+			<p>
+				Specifically (Order No. / Model No. / CPU):
+			</p>
+			<ul>
+				<li>MA699LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T5600</li>
+				<li>MA701LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200</li>
+				<li>MB061LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7200</li>
+				<li>MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200</li>
+				<li>MB063LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400</li>
+				<li>MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400</li>
+			</ul>
+
+		<p>
+			Also of interest: <a href="#config_macbook21">#config_macbook21</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="rom">Recommended ROM's to flash</h1>
+
+		<p>Recommended ROM's to flash:</p>
+		<ul>
+			<li>
+				ThinkPad X60, X60s (<b>bin/x60/</b>)
+				<ul>
+					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+				</ul>
+			</li>
+			<li>
+				ThinkPad X60 Tablet (<b>bin/x60t/</b>)
+				<ul>
+					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+				</ul>
+			</li>
+			<li>
+				ThinkPad T60 (<b>bin/t60/</b>) (note, see <a href="#supported_t60_list">#supported_t60_list</a>)
+				<ul>
+					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+				</ul>
+			</li>
+			<li>
+				MacBook2,1 (<b>bin/macbook21/</b>)
+				<ul>
+					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
+					<li>(The MacBook2,1 uses the same chipset, i945, as the X60/X60s X60T and T60 but there is no dock or serial port available for this machine)</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+			This will give you your native keyboard layout in GRUB. The preferences in your OS are not affected, it just makes using
+			the GRUB command line easier (if you ever need to do that).
+			<a href="#grub_keyboard">#grub_keyboard</a>shows you how this was done. If your native keyboard layout
+			differs, you can adapt those notes and hack the 'build' script for your needs.
+		</p>
+		<p>
+			For pictures of what these keyboard layouts look like (so you can compare with yours), see <a href="#keyboards">#keyboards</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="flashrom_lenovobios">X60/T60: How to flash the ROM's onto your machine (if running Lenovo BIOS).</h1>
+
+		<div class="important">
+
+			<p>
+				Hover over the next paragraph to make it black.
+			</p>
+			<p class="lenovobios">
+				Following this guide means simply flashing a libreboot ROM. This guide will not (directly) teach you how to make a backup (dump) of the original Lenovo BIOS
+				because to do so would be to explicitly endorse proprietary software. However, for the purposes of reverse engineering it can be useful
+				to have a backup. Each copy of the original Lenovo BIOS is tied to the specific machine that it came from; it will not run
+				on any other machine, even if it's the same type of machine as yours. What this means is that, effectively, you can back it up now (so that you can
+				re-flash it later if you want to run the original Lenovo BIOS again) or lose it forever. The X60/T60 installation
+				guide on the coreboot wiki will show you how to do this: 
+				<a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.<br/>
+				Do not make this decision lightly! This is your last and only chance.
+			</p>
+
+		</div>
+
+		<p>(the above message is a lot more benign and a lot less scary than it looks)</p>
+
+		<p><b>This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you already have coreboot or libreboot running,
+		then go to <a href="#flashrom">#flashrom</a> instead!</b></p>
+
+		<p><b>If you are flashing a Lenovo ThinkPad T60, be sure to read <a href="#supported_t60_list">#supported_t60_list</a></b></p>
+
+		<p>
+			If you are using Trisquel 6 (32-bit) then the bucts/flashrom binaries are tested. If not (or if you want), recompile them:<br/>
+			<b>See: <a href="#build_flashrom">#build_flashrom</a></b><br/>
+			<b>See: <a href="#build_bucts">#build_bucts</a></b><br/>
+			In any case, you will want the dependencies to run them aswell:<br/>
+			<b>$ sudo ./builddeb-flashrom</b><br/>
+			<b>$ sudo ./builddeb-bucts</b><br/>
+			(^ works on Trisquel 6, maybe other apt-get distros. Adapt for all other distros.)
+		</p>
+
+		<p>&quot;YOURBOARD/YOURROM&quot; should be replaced with what is correct as per <a href="#rom">#rom</a>. Alternatively
+		you may be using your own custom ROM. Adapt.</p>
+
+		<p>
+			Run the script:<br/>
+			<b>$ sudo ./lenovobios_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a>.</b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should see within the output the following:<br/>
+				<b>&quot;Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000 are swapped&quot;</b>.
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Flash chip is in an unknown state&quot;</b>, <b>&quot;FAILED&quot;</b> and <b>&quot;DO NOT SHUTDOWN OR REBOOT&quot;</b><br/>
+				Seeing this means that the operation was a <b>resounding</b> success! <b>DON'T PANIC</b>.
+			</p>
+
+			<p>
+				See this link for more details: 
+				<a href="http://thread.gmane.org/gmane.linux.bios.flashrom/575">http://thread.gmane.org/gmane.linux.bios.flashrom/575</a>.
+			</p>
+
+			<p>
+				If the above is what you see, then <b>SHUT DOWN</b>. Wait a few seconds, and then boot; libreboot is running, but there is a 2nd procedure needed (see below).
+			</p>
+
+		</div>
+
+		<p>
+			When you have booted up again:<br/>
+			<b>$ sudo ./lenovobios_secondflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should see within the output the following:<br/>
+				<b>&quot;Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is untranslated&quot;</b>
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Verifying flash... VERIFIED.&quot;</b>
+			</p>
+
+			<p>Shut down again, wait a few seconds, and then boot.</p>
+
+		</div>
+
+		<p>
+			!!!!
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="flashrom">X60/T60: How to flash the ROM's onto your machine (if running libreboot or coreboot already)</h1>
+
+		<p>
+			<b>These instructions work for both the ThinkPad X60 and T60.</b>
+		</p>
+		<p>
+			<b>This assumes that you already have coreboot or libreboot running</b>
+		</p>
+		<p>
+			<b>If you have Lenovo BIOS running, go to <a href="#flashrom_lenovobios">#flashrom_lenovobios</a> instead.</b>
+		</p>
+		<p>
+			<b>If you are flashing a Lenovo ThinkPad T60, be sure to read <a href="#supported_t60_list">#supported_t60_list</a></b>
+		</p>
+		<p>
+			If you need to recompile flashrom:<br/>
+			<b>See: <a href="#build_flashrom">#build_flashrom</a></b>
+		</p>
+		<p>
+			You also need the run-time dependencies. This script works on apt-get distros:<br/>
+			<b>$ sudo ./builddeb-flashrom</b>
+		</p>
+		<p>
+			Look at <a href="#rom">#rom</a> to see which ROM is suitable for your machine. Alternative you may be using your own
+			custom ROM. Adapt.
+		</p>
+		<p>
+			Flash the ROM:<br/>
+			<b>$ sudo ./flash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+		<p>
+			You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output. <b>SHUT DOWN</b>
+			after you see this, and then boot up again after a few seconds.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="grub_font">Setting font in GRUB (for reference)</h1>
+
+		<p>You don't need to do this unless you would like to change the default font yourself.
+		(this is just for reference. It has already been done for you)</p>
+
+		<p>The old font used was Unifont, and this had some missing characters: for instance, the border showed ??? characters instead of lines.</p>
+
+		<p>I tried DeJavu Sans Mono from this website:
+		<a href="http://dejavu-fonts.org/wiki/Download">dejavu-fonts.org</a></p>
+
+		<p>Specifically, the version that I chose was the latest at the time of writing (Saturday 21 June 2014):
+		<a href="http://sourceforge.net/projects/dejavu/files/dejavu/2.34/dejavu-fonts-ttf-2.34.tar.bz2">this one</a></p>
+
+		<p>This is a free font that is also contained in GNU/Linux distributions like Trisquel or Parabola.</p>
+
+		<p><b>$ cd libreboot_src/grub</b><br/>
+		compile grub ('build' script has the info on how to do this)<br/>
+		come back out into libreboot_src/resources/grub:<br/>
+		<b>$ cd ../libreboot_src/resources/grub/font</b></p>
+
+		<p>I took Dejavu Sans Mono from dejavu (included in this version of libreboot) and did:<br/>
+		<b>$ ../../../grub/grub-mkfont -o dejavusansmono.pf2 ../../../dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf</b></p>
+
+		<p>I then added the instructions to 'build' script to include resources/grub/dejavusansmono.pf2 in all of the ROM's in root of cbfs.<br/>
+		I then added that instructions to the grub.cfg files (to load the font):<br/>
+		<b>loadfont (cbfsdisk)/dejavusansmono.pf2</b></p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="grub_keyboard">GRUB keyboard layouts (for reference)</h1>
+
+		<h2 id="keyboards">Pictures of keyboard layouts</h2>
+
+			<p>
+				Taken from WikiPedia. 
+				See <a href="https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard">https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard</a>
+				and <a href="https://en.wikipedia.org/wiki/QWERTY">https://en.wikipedia.org/wiki/QWERTY</a>.
+			</p>
+
+			<h3 id="keyboards_ukqwerty">QWERTY (United Kingdom)</h3>
+			<p>
+				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png</a>
+			</p>
+
+			<h3 id="keyboards_usqwerty">QWERTY (United States)</h3>
+			<p>
+				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png</a>
+			</p>
+
+			<h3 id="keyboards_ukdvorak">Dvorak (United Kingdom)</h3>
+			<p>
+				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png</a>
+			</p>
+
+			<h3 id="keyboards_usdvorak">Dvorak (United States)</h3>
+			<p>
+				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png</a>
+			</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+
+		<h2 id="grub_custom_keyboard">Custom keyboard layout in GRUB (for reference)</h2>
+
+			<p>You can adapt the notes below and update the 'build' script to make it build a ROM with your custom/other keyboard layout in GRUB.</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+
+		<h2 id="grub_qwerty_keyboard">US Qwerty keyboard layout in GRUB (for reference)</h2>
+
+			<p><b>$ cd libreboot_src/grub</b><br/>
+			compile grub ('build' script has the info on how to do this)<br/>
+			come back out into libreboot_src<br/>
+			<b>$ cd ../</b></p>
+
+			<p>Generate the layout file:<br/>
+			<b>$ ckbcomp us > usqwerty</b><br/>
+			<b>$ cat usqwerty | ./grub/grub-mklayout -o usqwerty.gkb</b></p>
+
+			<p>Note: these files are already included ('build' script also makes use of them). You don't need to do any of this.</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+
+		<h2 id="grub_ukqwerty_keyboard">UK Qwerty keyboard layout in GRUB (for reference)</h2>
+
+			<p><b>$ ckbcomp gb > ukqwerty</b><br/>
+			<b>$ cat ukqwerty | ./grub/grub-mklayout -o ukqwerty.gkb</b></p>
+
+			<p>Note: these files are already included ('build' script makes use of them). You don't need to do it.</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+
+		<h2 id="grub_dvorak_keyboard">US Dvorak keyboard layout in GRUB (for reference)</h2>
+
+			<p>How the dvorak.gkb was made (for US Dvorak layout in GRUB).</p>
+
+			<p><b>$ cd libreboot_src/grub</b><br/>
+			compile grub ('build' script has the info on how to do this)<br/>
+			come back out into libreboot_src:<br/>
+			<b>$ cd ../</b></p>
+
+			<p>Generate the layout file:<br/>
+			<b>$ ckbcomp dvorak > usdvorak</b><br/>
+			<b>$ cat usdvorak | ./grub/grub-mklayout -o dvorak.gkb</b></p>
+
+			<p>Note: these files are already included ('build' script makes use of them). You don't need to do it.</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+
+		<h2 id="grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB (for reference)</h2>
+
+			<p>There isn't much difference.<br/>
+			<b>$ cp usdvorak ukdvorak</b></p>
+
+			<p>Patch ukdvorak like so (diff usdvorak ukdvorak):<br/>
+			diff the usdvorak file with ukdvorak to see how it was patched.</p>
+
+			<p>Now create ukdvorak.gkb<br/>
+			<b>$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb</b></p>
+
+			<p>Note: these files are already included ('build' script makes use of them). You don't need to do any of this.</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="tft_brightness">Brightness controls (ThinkPad X60) - how to prevent 'scrolling'</h1>
+	<p>
+		Sometimes, on some setups, when turning up the brightness while at max, it will loop back to minimum.
+		Also, the minimum will turn the backlight off completely.
+	</p>
+	<p>
+		Install build dependencies (for Trisquel 6. Adapt if your distro is different):<br/>
+		<b>$ sudo apt-get install build-essential</b>
+	</p>
+	<p>
+		Go into the libreboot_src directory. Under coreboot/util/nvramtool/ do that to compile it:
+		<b>$ make</b>
+	</p>
+	<p>
+		Now do that:<br/>
+		<b>$ sudo ./nvramtool -w tft_brightness=0xff</b><br/>
+		Alternatively if there are errors, try:<br/>
+		<b>$ sudo ./nvramtool -y ../../src/mainboard/lenovo/x60/cmos.layout -w tft_brightness=0xff</b>
+	</p>
+	<p>
+		The next time you boot, the looping issue should be gone.
+	</p>
+
+	<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="x60_wifi">ThinkPad X60: Enable or disable wifi</h1>
+		<p>
+			Install build dependencies in Trisquel 6 (adapt for other distro):<br/>
+			<b>$ sudo apt-get install build-essential</b><br/>
+			nvramtool is in coreboot or libreboot source tree until util/:<br/>
+			<b>$ cd libreboot_src/coreboot/util/nvramtool</b><br/>
+			<b>$ make</b><br/>
+			Enable wifi:<br/>
+			<b>$ sudo ./nvramtool -w wlan=Enable</b><br/>
+			Disable wifi:<br/>
+			<b>$ sudo ./nvramtool -w wlan=Disable</b><br/>
+			If that doesn't work, try one of these instead:<br/>
+			<b>$ sudo ./nvramtool -y ../../src/mainboard/lenovo/x60/cmos.layout -w wlan=Enable</b><br/>
+			<b>$ sudo ./nvramtool -y ../../src/mainboard/lenovo/x60/cmos.layout -w wlan=Disable</b>
+		</p>
+		<p>The next time you boot, wifi will be enabled.</p>
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="x60_trackpoint">ThinkPad X60: Enable or disable trackpoint</h1>
+		<p>
+			Install build dependencies in Trisquel 6 (adapt for other distro):<br/>
+			<b>$ sudo apt-get install build-essential</b><br/>
+			nvramtool is in coreboot or libreboot source tree until util/:<br/>
+			<b>$ cd libreboot_src/coreboot/util/nvramtool</b><br/>
+			<b>$ make</b><br/>
+			Enable wifi:<br/>
+			<b>$ sudo ./nvramtool -w trackpoint=Enable</b><br/>
+			Disable wifi:<br/>
+			<b>$ sudo ./nvramtool -w trackpoint=Disable</b><br/>
+			If that doesn't work, try one of these instead:<br/>
+			<b>$ sudo ./nvramtool -y ../../src/mainboard/lenovo/x60/cmos.layout -w trackpoint=Enable</b><br/>
+			<b>$ sudo ./nvramtool -y ../../src/mainboard/lenovo/x60/cmos.layout -w trackpoint=Disable</b>
+		</p>
+		<p>The next time you boot, trackpoint will be enabled.</p>
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="high_pitch_trisquel">High Pitched Whining Noise on Idle (how to remove in Trisquel)</h1>
+
+		<h2 id="howtouse_powertop">Powertop - how to use</h2>
+
+			<p>Now you can use this command to kill that noise:<br/>
+			<b>$ sudo powertop --auto-tune</b></p>
+
+			<p>You can also run it without parameters and then go into 'Tunables' and set everything to 'Good'</p>
+
+			<p>Note: On Trisquel 6, you will need to use a later powertop version from git. The one in the repositories is too old. See below:</p>
+
+		<h2 id="powertop_autostart">Powertop - Start automatically at boot time (Trisquel 6)</h2>
+
+			<p>Included with libreboot is a script called 'powertop.trisquel6'. Run this and it will setup powertop to run with --auto-tune 
+			at boot time. Load the file in your text editor to see how it does that.</p>
+
+			<p><b>$ ./powertop.trisquel6</b></p>
+
+			<p>This has been tested on Trisquel 6.</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</h1>
+
+		<p>The following removes most of the noise. It reduces what is a high frequency whine
+		(that not everyone can hear) to a slight buzz (which most people can't hear or doesn't bother most people).</p>
+
+		<p>This is not perfect! The full solution is still not discovered but this is a step towards that.
+		Also, in some instances you will need to run 'sudo powertop --auto-tune' again.
+		This needs to be implemented properly in coreboot itself!</p>
+
+		<p>On the X60 with coreboot or libreboot, there is a high pitched sound when idle.
+		So far we have use processor.max_cstate=2 or idle=halt in GRUB.
+		These consume power. Stop using them! </p>
+
+		<p>Be root<br/>
+		<b>$ su -</b></p>
+
+		<p>Installed powertop:<br/>
+		<b># pacman -S powertop</b></p>
+
+		<p>and added the following to /etc/systemd/system/powertop.service :</p>
+
+<pre><i>
+[Unit]
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/powertop --auto-tune
+# "powertop --auto-tune" still needs a terminal for some reason. Possibly a bug?
+Environment="TERM=xterm"
+
+[Install]
+WantedBy=multi-user.target
+</i></pre>
+
+
+		<p>Finally, as root do that:<br/>
+		<b># systemctl enable powertop</b><br/>
+		<b># systemctl start powertop</b></p>
+
+		<p>The next time you boot the machine, the buzz will be gone.</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="serial">X60/T60: Serial port - how to use (for dock owners)</h1>
+		<p>
+			For the Thinkpad X60 you can use the <b>&quot;UltraBase X6&quot;</b> dock. For the ThinkPad T60, 
+			you can use the <b>&quot;Advanced Mini Dock&quot;</b>.
+		</p>
+		<p>
+			If you are using one of the ROM's with 'serial' in the name, then you have serial port enabled in libreboot
+			and you have memtest86+ included inside the ROM. Connect your null modem cable to the serial port on the dock
+			and connect the other end to a 2nd machine using your USB Serial adapter.
+		</p>
+		<p>
+			On the 2nd machine, you can try this (using GNU Screen):<br/>
+			<b>$ sudo screen /dev/ttyUSB0 115200</b>
+		</p>
+		<p>
+			How to quit GNU Screen: Ctrl+A then release and press K, and then press Y.
+		</p>
+		<p>There are also others like Minicom but I like GNU Screen</p>
+		<p>
+			By doing this before booting the X60/T60, you will see console output from libreboot. You will also see
+			GRUB displaying on the serial output, and you will be able to see MemTest86+ on the serial output aswell.
+			You can also configure your distro so that a terminal (TTY) is accessible from the serial console.
+		</p>
+		<p>
+			The following guide is for Ubuntu, and can be followed for Trisquel 6.0 which is based on Ubuntu 12.04
+			(should also work in Trisquel 7, based on Ubuntu 14.04) to enable a serial console using GeTTY:<br/>
+			<a href="https://help.ubuntu.com/community/SerialConsoleHowto" target="_blank">https://help.ubuntu.com/community/SerialConsoleHowto</a>
+		</p>
+		<p>
+			Note: part of the tutorial above requires changing your grub.cfg. Just change the <b>linux</b> line to add instructions for enabling getty.
+			See <a href="howtos/grub_cbfs.html">howtos/grub_cbfs.html</a>.
+		</p>
+		<p><a href="#pagetop">Back to top of page</a>
+
+<hr/>
+
+	<h1 id="get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</h1>
+		<p>
+			Get the panel name with <b>sudo get-edit | strings</b><br/>
+			Or look in <b>/sys/class/drm/card0-LVDS-1/edid</b>
+		</p>
+		<p>
+			If neither of these options work (or they are unavailable), physically removing the LCD panel is an option. 
+			Usually, there will be information printed on the back.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+<pre>
+	Unlisted note: http://inertiawar.com/microcode/
+	(link published to coreboot mailing list on July 8, 2014)
+</pre>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="license.html">license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>
+
+

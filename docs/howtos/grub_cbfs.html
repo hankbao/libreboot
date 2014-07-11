@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+	</style>
+
+	<title>Libreboot documentation: GRUB menu</title>
+</head>
+
+<body>
+	<header>
+		<h1 id="pagetop">How to change your default GRUB menu</h1>
+		<aside>Or <a href="../index.html">back to main index</a></aside>
+	</header>
+
+	<p>
+		Libreboot on X60/T60/macbook21 uses the GRUB2 payload, which means that the grub.cfg (which is where your GRUB menu comes from) is inside the ROM along with
+		GRUB itself, executed by libreboot directly in the SPI flash chip. In context, this means that installing distributions and managing them is handled slightly differently
+		compared to traditional BIOS systems.
+	</p>
+
+	<p>
+		A coreboot or libreboot ROM is not simply &quot;flat&quot;; there is an actual filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
+		allows you to change the contents of the ROM. In this case, libreboot is configured such that the grub.cfg exists directly inside CBFS instead of 
+		inside the grub.elf payload's 'memdisk' (which is itself stored in CBFS).
+	</p>
+
+	<p>
+		Here is an excellent writeup about CBFS (coreboot filesystem): <a href="http://lennartb.home.xs4all.nl/coreboot/col5.html" target="_blank">http://lennartb.home.xs4all.nl/coreboot/col5.html</a>.
+	</p>
+
+<hr/>
+
+	<p>
+	Download libreboot_src.tar.gz or libreboot_bin.tar.gz from <a href="http://libreboot.org/" target="_blank">http://libreboot.org/</a>
+	<br/><b>If you downloaded libreboot_meta.tar.gz, refer to <a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
+	</p>
+
+	<p>
+		On apt-get distributions such as Trisquel you can install the build dependency (GCC) by running:<br/>
+		<b>$ sudo apt-get install build-essential</b>
+	</p>
+
+	<p>
+		If you are working with libreboot_src, then you can run <b><i>make</i></b> command in libreboot_src/coreboot/util/cbfstool to build the <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
+		executable.
+	</p>
+	<p>
+		Alternatively if you are working with libreboot_bin, then you can run <b><i>./builddeps-cbfstool</i></b> command inside libreboot_bin/; a <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
+		executable will appear under libreboot_bin/
+	</p>
+
+	<p>
+		You can work directly with one of the ROM's already included in libreboot_bin.tar.gz. For the purpose of this tutorial it is assumed
+		that your ROM is named 'coreboot.rom' so please make sure to adapt.
+	</p>
+
+	<p>
+		If you want to re-use the ROM that you currently have flashed (and running) then see <a href="../index.html#build_flashrom">../index.html#build_flashrom</a>
+		and then run:<br/>
+		<b>$ sudo ./flashrom -p internal -r coreboot.rom</b><br/>
+		Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). This will create a dump (copy) of your current firmware and name it <b>coreboot.rom</b>. You need to take ownership of the file. For example:<br/>
+		<b>$ sudo chown yourusername:yourusername coreboot.rom</b><br/>
+		<b># chown yourusername:yourusername coreboot.rom</b>
+	</p>
+
+	<p>
+		Display contents of ROM:<br/>
+		<b>$ ./cbfstool coreboot.rom print</b>
+	</p>
+
+	<p>
+		The coreboot.rom file contains your grub.cfg.
+	</p>
+
+	<p>
+		Extract grub.cfg from the ROM:<br/>
+		<b>$ ./cbfstool coreboot.rom extract -n grub.cfg -f grub.cfg</b>
+	</p>
+
+	<p>
+		Now you have a grub.cfg in cbfstool directory. Edit it however you wish.
+	</p>
+
+	<p>
+		Delete the grub.cfg that remained inside the ROM:<br/>
+		<b>$ ./cbfstool coreboot.rom remove -n grub.cfg</b>
+	</p>
+
+	<p>
+		Display ROM contents and now you see grub.cfg no longer exists there:<br/>
+		<b>$ ./cbfstool coreboot.rom print</b>
+	</p>
+
+	<p>
+		Add the modified version that you just made:<br/>
+		<b>$ ./cbfstool coreboot.rom add -n grub.cfg -f grub.cfg -t raw</b>
+	</p>
+
+	<p>
+		Now display ROM contents again and see that it exists again:<br/>
+		<b>$ ./cbfstool coreboot.rom print</b>
+	</p>
+
+	<p>
+		Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+		on how to flash it.
+	</p>
+
+	<p>
+		<b>Anecdotally, a user reported that segmentation faults occur with cbfstool when using this procedure depending on the size of the grub.cfg being re-insterted. In his case, a minimum size of 857 bytes was required. This could (at the time of this release) be a bug in cbfstool that should be investigated with the coreboot community. If cbfstool segfaults, then keep this in mind. 'strace' (or gdb? clang?) could be used for debugging. This was in libreboot 5th release (based on coreboot from late 2013). Not sure if the issue perists in the 6th release (based on coreboot from June 1st, 2014 at the time of writing); I have never personally encountered the bug. strace (from that user) is here: <a href="cbfstool_libreboot5_strace">cbfstool_libreboot5_strace</a>. The issue has been reported by a few users, so does not happen all the time: this bug (if it still exists) could (should) be reproduced.</b>
+	</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>

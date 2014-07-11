@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#  buildall script: Builds (absolutely) everything.
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# MAKE SURE THAT YOU RAN "./builddeb" BEFORE RUNNING THIS!
+# IF YOUR DISTRO DOESN'T USE "apt-get", ADAPT WHAT YOU SEE IN "builddeb"
+# AND INSTALL THE BUILD DEPENDENCIES NEEDED TO RUN THIS BUILD SCRIPT!
+
+# Clean old builds first:
+# ------------------------------------------------------
+./cleandeps
+
+# Build the dependencies needed for building ROM's:
+# ------------------------------------------------------
+./builddeps
+
+# Build the ROM's:
+# ------------------------------------------------------
+./build
+
+# ------------------- DONE ----------------------
+

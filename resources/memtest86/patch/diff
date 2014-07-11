@@ -1,0 +1,40 @@
+diff -rupN memtest86+-5.01_/config.h memtest86+-5.01/config.h
+--- memtest86+-5.01_/config.h	2014-06-25 22:57:47.893476783 +0100
++++ memtest86+-5.01/config.h	2014-06-25 22:59:01.269840630 +0100
+@@ -17,7 +17,7 @@
+ #define CONSERVATIVE_SMP 1
+ 
+ /* BEEP_MODE - Beep on error. Default off, Change to 1 to enable */
+-#define BEEP_MODE 0
++#define BEEP_MODE 1
+ 
+ /* BEEP_END_NO_ERROR - Beep at end of each pass without error. Default off, Change to 1 to enable */
+ #define BEEP_END_NO_ERROR 0
+@@ -29,13 +29,13 @@
+ /* SERIAL_CONSOLE_DEFAULT -  The default state of the serial console. */
+ /*	This is normally off since it slows down testing.  Change to a 1 */
+ /*	to enable. */
+-#define SERIAL_CONSOLE_DEFAULT 0
++#define SERIAL_CONSOLE_DEFAULT 1
+ 
+ /* SERIAL_TTY - The default serial port to use. 0=ttyS0, 1=ttyS1 */ 
+ #define SERIAL_TTY 0
+ 
+ /* SERIAL_BAUD_RATE - Baud rate for the serial console */
+-#define SERIAL_BAUD_RATE 9600
++#define SERIAL_BAUD_RATE 115200
+ 
+ /* SCRN_DEBUG - extra check for SCREEN_BUFFER
+  */ 
+diff -rupN memtest86+-5.01_/Makefile memtest86+-5.01/Makefile
+--- memtest86+-5.01_/Makefile	2014-06-25 22:57:47.893476783 +0100
++++ memtest86+-5.01/Makefile	2014-06-25 22:59:19.237929751 +0100
+@@ -21,7 +21,7 @@ OBJS= head.o reloc.o main.o test.o init.
+       
+ 
+ all: clean memtest.bin memtest 
+-		 scp memtest.bin root@192.168.0.12:/srv/tftp/mt86plus
++#		 scp memtest.bin root@192.168.0.12:/srv/tftp/mt86plus
+ 
+ # Link it statically once so I know I don't have undefined
+ # symbols and then link it dynamically so I have full

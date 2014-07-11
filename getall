@@ -1,0 +1,53 @@
+#!/bin/bash
+
+#  getall script: downloads everything extra for libreboot_src and patches to create libreboot_src archive from metadata
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# For libreboot_meta.tar.gz
+# This downloads all of the source code present in libreboot_src.tar.gz
+
+echo "Downloading dependencies for libreboot_src"
+
+# Download bucts
+# ---------------------------------------------------
+
+./getbucts
+
+# Download coreboot
+# ---------------------------------------------------
+
+./getcb
+
+# Download flashrom
+# ---------------------------------------------------
+
+./getflashrom
+
+# Download GRUB
+# ---------------------------------------------------
+
+./getgrub
+
+# Download MemTest86+
+# ---------------------------------------------------
+
+./getmt86
+
+echo "Done. Full source is inside this existing libreboot_meta directory (rename it to libreboot_src before you continue). Now install the dependencies listed in 'builddeb' and then run 'builddeps' and then 'build' (or just use 'buildall')"
+
+# ------------------- DONE ----------------------

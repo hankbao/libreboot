@@ -1,0 +1,58 @@
+#!/bin/bash
+
+#  builddeps-coreboot: builds the dependencies that coreboot needs before building a ROM image
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# This script is used by the main "builddeps" script in libreboot src/meta archives.
+# The reason it is seperated here is so that coreboot can be built separately aswell.
+
+# To use this script, you will need the dependencies in "builddeb".
+# Run it, or adapt it if you do not use an "apt-get" distro.
+
+# This is also used by the "getcb" script.
+
+# Build utilities needed in coreboot directory
+# --------------------------------------------------------------------
+
+cd coreboot
+
+# clean coreboot first
+make clean
+
+# build cbfstool
+# THIS IS NOT THE STANDALONE VERSION
+# SEE "builddeps-cbfstool" for the instructions
+# for the cbfstool_standalone in libreboot_bin/
+cd util/cbfstool
+make clean
+make
+
+# done. go back to coreboot dir
+cd ../../
+
+# remove the payloads (they will be built by "build")
+rm -rf grub.elf
+
+# build reference crossGCC for coreboot
+make crossgcc-clean
+make crossgcc
+
+# done. go back to main directory
+cd ../
+
+# ------------------- DONE ----------------------

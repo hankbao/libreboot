@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+	</style>
+
+	<title>Libreboot documentation: Unbricking the ThinkPad X60</title>
+</head>
+
+<body>
+
+	<header>
+		<h1>Unbricking the ThinkPad X60</h1>
+		<aside>This guide will show you how to recover from a bad flash that prevents your ThinkPad X60 from booting.</aside>
+	</header>
+
+	<p>Or go <a href="../index.html">back to main index</a></p>
+
+	<h2>Table of Contents</h2>
+		<ul>
+			<li><a href="#hardware_requirements">Hardware Requirements</a></li>
+			<li><a href="#software_requirements">Software Requirements</a></li>
+			<li>
+				Types of brick:
+				<ul>
+					<li><a href="#bucts_brick">Brick type 1: bucts not reset</a></li>
+					<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
+				</ul>
+			</li>
+		</ul>
+
+	<h1 id="hardware_requirements">Hardware requirements</h1>
+		<ul>
+			<li>a 2nd computer (maybe another X60. any computer will do)</li>
+			<li>external flashrom-compatible programmer (I'm using the "bus pirate")
+			<li>SOIC-8 IC clip (I'm using the Pomona 5250)</li>
+			<li>Cable (programmer<>clip) - mine came with the bus pirate.</li>
+			<li>USB mini a to b cable (for buspirate<>computer connection).</li>
+		</ul>
+
+	<h1 id="software_requirements">Software requirements</h1>
+		<ul>
+			<li>GNU/Linux (on the 2nd computer)</li>
+			<li>flashrom software (on the 2nd computer): <a href="http://flashrom.org/" target="_blank">http://flashrom.org/</a>
+		</ul>
+
+	<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
+		<p>
+			You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and
+			the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.<br/><br/>
+
+			In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
+			<img src="x60_unbrick/0004.jpg" alt="" /><br/><br/>
+
+			*Those dd commands should be applied to all newly compiled X60 ROM's (the ROM's in libreboot binary archives already have this applied!):<br/>
+			dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
+			dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
+			dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
+			(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
+			using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
+		</p>
+
+	<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
+		<p>
+			In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your machine from
+			booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your machine is bricked and will not boot at all.
+		</p>
+		<p>
+			&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the machine, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
+		</p>
+		<p>
+			Remove those screws:<br/>
+			<img src="x60_unbrick/0000.jpg" alt="" />
+		</p>
+		<p>
+			Push the keyboard forward (carefully):<br/>
+			<img src="x60_unbrick/0001.jpg" alt="" />
+		</p>
+		<p>
+			Lift the keyboard up and disconnect it from the board:<br/>
+			<img src="x60_unbrick/0002.jpg" alt="" />
+		</p>
+		<p>
+			Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:<br/>
+			<img src="x60_unbrick/0003.jpg" alt="" />
+		</p>
+		<p>
+			You should now have this:<br/>
+			<img src="x60_unbrick/0004.jpg" alt="" />
+		</p>
+		<p>
+			Disconnect the wifi antenna cables, the modem cable and the speaker:<br/>
+			<img src="x60_unbrick/0005.jpg" alt="" />
+		</p>
+		<p>
+			Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem
+			cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand
+			side:<br/>
+			<img src="x60_unbrick/0006.jpg" alt="" />
+		</p>
+		<p>
+			Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape
+			that holds it into place:<br/>
+			<img src="x60_unbrick/0008.jpg" alt="" />
+		</p>
+		<p>
+			Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:<br/>
+			<img src="x60_unbrick/0009.jpg" alt="" />
+		</p>
+		<p>
+			Remove the screw that is highlighted (do NOT remove the other one; it holds part of the heatsink (other side) into place):<br/>
+			<img src="x60_unbrick/0011.jpg" alt="" />
+		</p>
+		<p>
+			Remove those screws:<br/>
+			<img src="x60_unbrick/0012.jpg" alt="" />
+		</p>
+		<p>
+			Carefully remove the plate, like so:<br/>
+			<img src="x60_unbrick/0013.jpg" alt="" />
+		</p>
+		<p>
+			Remove the SATA connector:<br/>
+			<img src="x60_unbrick/0014.jpg" alt="" />
+		</p>
+		<p>
+			Now remove the motherboard (gently) and cast the lcd/chassis aside:<br/>
+			<img src="x60_unbrick/0015.jpg" alt="" />
+		</p>
+		<p>
+			Lift back that tape and hold it with something. Highlighted is the SPI flash chip:<br/>
+			<img src="x60_unbrick/0016.jpg" alt="" />
+		</p>
+		<p>
+			At this point, you should wire up your programmer according to it's documentation. For me, this was (see: "SparkFun cable pin reference"):<br/>
+			<a href="http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts" target="_blank">http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts</a>.<br/>
+			Correlating with the following information, I was able to wire up my pirate correctly:<br/>
+			<a href="http://flashrom.org/Bus_Pirate#Connections" target="_blank">http://flashrom.org/Bus_Pirate#Connections</a><br/>
+			And by following that advice:<br/>
+			<a href="http://www.coreboot.org/Board:lenovo/x60/Installation#Howto" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation#Howto</a>.<br/>
+			Note: that last page says to wire up only those 5 pins (see below) like that: 1, 2, 4, 5, 6.<br/>
+			Note: and then, for power it says (on that coreboot.org page) to connect the power jack to the board and connect the
+			AC adapter (without powering on the board).<br/>
+			Note: I ignored that advice, and wired up all 8 pins. And it worked.<br/>
+
+			Here is the pinout (correlate it with your programmer's documentation):<br/>
+			<img src="x60_unbrick/0017.jpg" alt="" />
+		</p>
+
+		<p>
+			My programmer, usb cable and clip:<br/>
+			<img src="x60_unbrick/0018.jpg" alt="" /><br/>
+			My programmer (bus pirate):<br/>
+			<img src="x60_unbrick/0019.jpg" alt="" /><br/>
+			My clip (pomona 5250):<br/>
+			<img src="x60_unbrick/0020.jpg" alt="" /><br/>
+			My USB mini a to b cable:<br/>
+			<img src="x60_unbrick/0021.jpg" alt="" /><br/>
+			Connecting the pomona:<br/>
+			<img src="x60_unbrick/0022.jpg" alt="" /><br/>
+			Connecting the USB cable from programmer to 2nd(working/non-bricked) computer, my T60:<br/>
+			<img src="x60_unbrick/0024.jpg" alt="" /><br/>
+			Programmer is now active:<br/>
+			<img src="x60_unbrick/0023.jpg" alt="" /><br/>
+			Now I install flashrom on the T60 (running Trisquel GNU/Linux) and do this:<br/>
+			<b>flashrom -p buspirate_spi:dev=/dev/ttyUSB0 -w coreboot.rom</b><br/>
+			Note: this is using buspirate as the programmer, so it is flashing the X60, not the T60!<br/>
+			Here's my terminal window on the T60:<br/>
+			<img src="x60_unbrick/0025.jpg" alt="" /><br/>
+			So, you should see the following:<br/>
+			--
+			<pre>
+			flashrom v0.9.5.2-r1517 on Linux 3.2.0-61-generic (i686), built with libpci 3.1.8, GCC 4.6.3, little endian
+			flashrom is free software, get the source code at http://www.flashrom.org
+
+			Calibrating delay loop... delay loop is unreliable, trying to continue OK.
+			Found Macronix flash chip "MX25L1605" (2048 kB, SPI) on buspirate_spi.
+			Reading old flash chip contents... done.
+			Erasing and writing flash chip... Erase/write done.
+			Verifying flash... VERIFIED. 
+			</pre>
+			--<br/>
+			At the end it says "VERIFIED", which means that the procedure worked. If you see this, it means 
+			that you can put your X60 back together. So let's do that now.
+		</p>
+		<p>
+			Remove the programmer and put it away somewhere. Put back the tape and press firmly over it:<br/>
+			<img src="x60_unbrick/0026.jpg" alt="" />
+		</p>
+		<p>
+			Your empty chassis:<br/>
+			<img src="x60_unbrick/0027.jpg" alt="" />
+		</p>
+		<p>
+			Put the motherboard back in:<br/>
+			<img src="x60_unbrick/0028.jpg" alt="" />
+		</p>
+		<p>
+			Reconnect SATA:<br/>
+			<img src="x60_unbrick/0029.jpg" alt="" />
+		</p>
+		<p>
+			Put the plate back and re-insert those screws:<br/>
+			<img src="x60_unbrick/0030.jpg" alt="" />
+		</p>
+		<p>
+			Re-route that antenna cable around the fan and apply the tape:<br/>
+			<img src="x60_unbrick/0031.jpg" alt="" />
+		</p>
+		<p>
+			Route the cable here and then (not shown, due to error on my part) reconnect the monitor cable to the motherboard
+			and re-insert the screws:<br/>
+			<img src="x60_unbrick/0032.jpg" alt="" />
+		</p>
+		<p>
+			Re-insert that screw:<br/>
+			<img src="x60_unbrick/0033.jpg" alt="" />
+		</p>
+		<p>
+			Route the black antenna cable like so:<br/>
+			<img src="x60_unbrick/0034.jpg" alt="" />
+		</p>
+		<p>
+			Tuck it in neatly like so:<br/>
+			<img src="x60_unbrick/0035.jpg" alt="" />
+		</p>
+		<p>
+			Route the modem cable like so:<br/>
+			<img src="x60_unbrick/0036.jpg" alt="" />
+		</p>
+		<p>
+			Connect modem cable to board and tuck it in neatly like so:<br/>
+			<img src="x60_unbrick/0037.jpg" alt="" />
+		</p>
+		<p>
+			Route the power connection and connect it to the board like so:<br/>
+			<img src="x60_unbrick/0038.jpg" alt="" />
+		</p>
+		<p>
+			Route the antenna and modem cables neatly like so:<br/>
+			<img src="x60_unbrick/0039.jpg" alt="" />
+		</p>
+		<p>
+			Connect the wifi antenna cables. At the start of the tutorial, this machine had an Intel wifi chip. Here you see I've replaced it with an 
+			Atheros AR5B95 (supports 802.11n and can be used without blobs):<br/>
+			<img src="x60_unbrick/0040.jpg" alt="" />
+		</p>
+		<p>
+			Connect the modem cable:<br/>
+			<img src="x60_unbrick/0041.jpg" alt="" />
+		</p>
+		<p>
+			Connect the speaker:<br/>
+			<img src="x60_unbrick/0042.jpg" alt="" />
+		</p>
+		<p>
+			You should now have this:<br/>
+			<img src="x60_unbrick/0043.jpg" alt="" />
+		</p>
+		<p>
+			Re-connect the upper chassis:<br/>
+			<img src="x60_unbrick/0044.jpg" alt="" />
+		</p>
+		<p>
+			Re-connect the keyboard:<br/>
+			<img src="x60_unbrick/0045.jpg" alt="" />
+		</p>
+		<p>
+			Re-insert the screws that you removed earlier:<br/>
+			<img src="x60_unbrick/0046.jpg" alt="" />
+		</p>
+		<p>
+			Power on!<br/>
+			<img src="x60_unbrick/0047.jpg" alt="" />
+		</p>
+		<p>
+			Trisquel live USB menu (using GRUB's ISOLINUX parser):<br/>
+			<img src="x60_unbrick/0048.jpg" alt="" />
+		</p>
+		<p>
+			Trisquel live desktop:<br/>
+			<img src="x60_unbrick/0049.jpg" alt="" />
+		</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>

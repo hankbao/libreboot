@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#  builddeps-flashrom: builds flashrom source code
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# This script is used by the main "builddeps" script in libreboot src/meta archives.
+# The reason it is seperated here is so that flashrom can be built separately aswell.
+
+# To build flashrom, you will need the dependencies in "builddeb".
+# Run it, or adapt it if you do not use an "apt-get" distro.
+
+# Build "flashrom" (utility for flashing/dumping ROM's)
+# --------------------------------------------------------------------
+
+cd flashrom
+
+# clean it first
+make clean
+# remove modified binaries aswell
+rm -rf flashrom_lenovobios_sst
+rm -rf flashrom_lenovobios_macronix
+
+# patch flashchips.c to remove the useless Macronix entries (for X60/T60)
+# makes flashrom work without having to use "-c" switch
+mv flashchips.c flashchips.c_
+cp ../resources/flashrom/patch/flashchips.c .
+# build flashrom
+make
+# restore default flashchips.c
+rm -rf flashchips.c
+mv flashchips.c_ flashchips.c
+
+# backup those files
+mv flashrom flashrom_
+mv flashchips.c flashchips.c_
+
+# build patched version for MX25L1605D flash chip on Lenovo BIOS X60/T60
+cp ../resources/flashrom/patch/flashchips.c_lenovobios_macronix flashchips.c
+make
+mv flashrom flashrom_lenovobios_macronix
+rm -rf flashchips.c
+
+# build patched version for SST25VF016B flash chip on Lenovo BIOS X60/T60
+cp ../resources/flashrom/patch/flashchips.c_lenovobios_sst flashchips.c
+make
+mv flashrom flashrom_lenovobios_sst
+rm -rf flashchips.c
+
+# restore default binary/source
+mv flashchips.c_ flashchips.c
+mv flashrom_ flashrom
+
+# done. go back to main directory
+cd ../
+
+# ------------------- DONE ----------------------
+

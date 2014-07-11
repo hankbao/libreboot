@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#  lenovobios_firstflash: flashes libreboot on an X60/T60 while Lenovo BIOS is running
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# USE ROOT OR SUDO WHEN EXECUTING THIS
+
+# for T60 or X60 owners with Lenovo BIOS
+# does the 1st part of the flash before shut down
+
+if (( $# != 1 )); then
+	echo "Usage: ./lenovobios_firstflash yourrom.rom"
+	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
+	echo "You need to specify exactly 1 file"
+	exit
+fi
+
+echo "Don't panic. See docs/index.html for an explanation of what BUC.TS is."
+
+echo "MAKE SURE THAT YOU SEE 'Updated BUC.TS=1' IF NOT CHECK #libreboot ON FREENODE"
+./bucts/bucts 1
+echo "READ THE BIG WARNING ABOVE!"
+
+echo "MAKE SURE THAT YOU SEE 'DO NOT SHUT DOWN OR REBOOT' (YOU WANT TO SEE THAT. MEANS IT WORKED). IF NOT CHECK #libreboot ON FREENODE"
+echo "If (when) you see 'DO NOT SHUTDOWN OR REBOOT' do not panic. That is normal, expected and very good. And you will ignore what it says."
+./flashrom/flashrom_lenovobios_sst -p internal -w $1
+./flashrom/flashrom_lenovobios_macronix -p internal -w $1
+echo "READ THE BIG WARNING ABOVE!"
+
+echo "Now you will SHUT DOWN (ignore the flashrom warning) but first keep in mind before you then boot:"
+echo "Use 'Search for GRUB configuration on local storage' if the normal menus don't work, or check docs/index.html or #libreboot on freenode."
+echo "SHUT DOWN NOW!!!! WAIT A FEW SECS!!!! THEN BOOT."
+echo "DON'T PANIC."

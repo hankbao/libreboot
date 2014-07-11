@@ -1,0 +1,44 @@
+#!/bin/bash
+
+#  lenovobios_secondflash: flashes libreboot during 2nd boot, after 1st initial overwrite of the lenovo bios on X60/T60
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# USE ROOT OR SUDO WHEN EXECUTING THIS
+
+# for T60 or X60 owners with Lenovo BIOS
+# does the 1st part of the flash before shut down
+
+if (( $# != 1 )); then
+	echo "Usage: ./lenovobios_firstflash yourrom.rom"
+	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
+	echo "You need to specify exactly 1 file"
+	exit
+fi
+
+echo "Don't panic. See docs/index.html for an explanation of what BUC.TS is."
+
+echo "MAKE SURE THAT YOU SEE 'VERIFIED' AT THE END (YOU WANT TO SEE THAT. MEANS IT WORKED)."
+./flashrom/flashrom -p internal -w $1
+echo "READ THE BIG WARNING ABOVE!"
+
+echo "MAKE SURE THAT YOU SEE 'Updated BUC.TS=0' IF NOT CHECK #libreboot ON FREENODE"
+./bucts/bucts 0
+echo "READ THE BIG WARNING ABOVE!"
+
+echo "If the above 2 conditions are met, then shut down now. If not, then run: sudo ./bucts/bucts 1"
+echo "DON'T PANIC."

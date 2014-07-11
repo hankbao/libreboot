@@ -1,0 +1,99 @@
+#!/bin/bash
+
+#  cleandeps script: cleans everything (make clean)
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Clean all previous builds.
+
+# clean coreboot utilities (dependencies for 'build'):
+# -------------------------------------------------------
+
+cd coreboot
+
+# clean coreboot itself:
+make clean
+
+# clean cbfstool
+cd util/cbfstool
+make clean
+
+# go back to coreboot dir
+cd ../../
+
+# remove the payloads (they will be built by "build")
+rm -rf grub.elf
+
+# clean reference crossGCC for coreboot
+make crossgcc-clean
+
+# done. go back to main directory
+cd ../
+
+# clean grub
+# --------------------------------------------------------
+
+cd grub
+
+make clean
+
+# done. go back to main directoy
+cd ../
+
+# clean memtest86+
+# --------------------------------------------------------
+
+cd "memtest86+-5.01"
+
+make clean
+
+# done. go back to main directory
+cd ..
+
+# clean bucts
+# --------------------------------------------------------
+
+cd bucts
+make clean
+
+# done. go back to main directory.
+cd ../
+
+# clean flashrom
+# --------------------------------------------------------
+
+cd flashrom
+
+make clean
+# remove modified binaries
+rm -rf flashrom_lenovobios_sst
+rm -rf flashrom_lenovobios_macronix
+
+# done. go back to main directory
+cd ../
+
+# a few more things to do last
+# --------------------------------------------------------
+
+# remove powertop directory (included if the user is on Trisquel 6 and ran "powertop.trisquel6" script
+rm -rf powertop
+
+# remove any ROM's that may exist since the previous build
+rm -rf bin/*
+
+# ------------------- DONE ----------------------
+
