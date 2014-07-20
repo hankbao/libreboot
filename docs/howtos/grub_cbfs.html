@@ -29,7 +29,7 @@
 	</p>
 
 	<p>
-		A coreboot or libreboot ROM is not simply &quot;flat&quot;; there is an actual filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
+		A libreboot (or coreboot) ROM is not simply &quot;flat&quot;; there is an actual filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
 		allows you to change the contents of the ROM. In this case, libreboot is configured such that the grub.cfg exists directly inside CBFS instead of 
 		inside the grub.elf payload's 'memdisk' (which is itself stored in CBFS).
 	</p>
@@ -61,30 +61,30 @@
 
 	<p>
 		You can work directly with one of the ROM's already included in libreboot_bin.tar.gz. For the purpose of this tutorial it is assumed
-		that your ROM is named 'coreboot.rom' so please make sure to adapt.
+		that your ROM is named 'libreboot_usqwerty.rom' so please make sure to adapt.
 	</p>
 
 	<p>
 		If you want to re-use the ROM that you currently have flashed (and running) then see <a href="../index.html#build_flashrom">../index.html#build_flashrom</a>
 		and then run:<br/>
-		<b>$ sudo ./flashrom -p internal -r coreboot.rom</b><br/>
-		Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). This will create a dump (copy) of your current firmware and name it <b>coreboot.rom</b>. You need to take ownership of the file. For example:<br/>
-		<b>$ sudo chown yourusername:yourusername coreboot.rom</b><br/>
-		<b># chown yourusername:yourusername coreboot.rom</b>
+		<b>$ sudo ./flashrom -p internal -r libreboot_usqwerty.rom</b><br/>
+		Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). This will create a dump (copy) of your current firmware and name it <b>libreboot_usqwerty.rom</b>. You need to take ownership of the file. For example:<br/>
+		<b>$ sudo chown yourusername:yourusername libreboot_usqwerty.rom</b><br/>
+		<b># chown yourusername:yourusername libreboot_usqwerty.rom</b>
 	</p>
 
 	<p>
 		Display contents of ROM:<br/>
-		<b>$ ./cbfstool coreboot.rom print</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
 	</p>
 
 	<p>
-		The coreboot.rom file contains your grub.cfg.
+		The libreboot_usqwerty.rom file contains your grub.cfg.
 	</p>
 
 	<p>
 		Extract grub.cfg from the ROM:<br/>
-		<b>$ ./cbfstool coreboot.rom extract -n grub.cfg -f grub.cfg</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom extract -n grub.cfg -f grub.cfg</b>
 	</p>
 
 	<p>
@@ -93,22 +93,22 @@
 
 	<p>
 		Delete the grub.cfg that remained inside the ROM:<br/>
-		<b>$ ./cbfstool coreboot.rom remove -n grub.cfg</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom remove -n grub.cfg</b>
 	</p>
 
 	<p>
 		Display ROM contents and now you see grub.cfg no longer exists there:<br/>
-		<b>$ ./cbfstool coreboot.rom print</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
 	</p>
 
 	<p>
 		Add the modified version that you just made:<br/>
-		<b>$ ./cbfstool coreboot.rom add -n grub.cfg -f grub.cfg -t raw</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom add -n grub.cfg -f grub.cfg -t raw</b>
 	</p>
 
 	<p>
 		Now display ROM contents again and see that it exists again:<br/>
-		<b>$ ./cbfstool coreboot.rom print</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
 	</p>
 
 	<p>

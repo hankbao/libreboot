@@ -42,6 +42,11 @@ cd util/cbfstool
 make clean
 make
 
+# build nvramtool
+cd ../nvramtool
+make clean
+make
+
 # done. go back to coreboot dir
 cd ../../
 

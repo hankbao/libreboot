@@ -55,3 +55,7 @@ reported by a user (dmesg for vbios replacement)
 [  268.986095] [drm] GMBUS [i915 gmbus dpd] timed out, falling back to bit banging on pin 6
 
 ------------
+
+
+
+

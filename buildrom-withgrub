@@ -1,0 +1,135 @@
+#!/bin/bash
+
+#  buildrom-withgrub script: this generically builds the ROM images.
+#  The ROM images built by this script will use the GRUB payload.
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# DO NOT RUN THIS DIRECTLY!
+# Use "build"
+
+# base ROM's: coreboot_usqwerty.rom and coreboot_serial_usqwerty.rom
+# All other ROM's will be based on one of these.
+
+if (( $# != 1 )); then
+	echo "Usage: ./buildrom-withgrub boardname"
+	echo "Example: ./buildrom-withgrub x60"
+	echo "You need to specify exactly 1 argument"
+	exit
+fi
+
+# Build the ROM images:
+# ----------------------------------------------------------------------------------------------------------------------
+
+cd coreboot
+rm -rf .config
+
+# cbfstool will be used quite heavily here.
+mv util/cbfstool/cbfstool .
+
+# prepare libreboot configuration and build it
+cp ../resources/libreboot/config/$1/config .config
+
+# coreboot.rom will appear under ./coreboot/build
+make
+
+# move it out (we'll be cleaning the build)
+# also rename it to libreboot_usqwerty.rom
+mv build/coreboot.rom libreboot_usqwerty.rom
+
+# clean the build
+make clean
+rm -rf .config
+
+# Insert files/configurations and perform operations that are common on all ROM images
+# ---------------------------------------------------------------------------------------------------------------
+
+# Add background image and font
+./cbfstool libreboot_usqwerty.rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+./cbfstool libreboot_usqwerty.rom add -f ../resources/grub/background/gnulove.jpg -n gnulove.jpg -t raw
+./cbfstool libreboot_usqwerty.rom add -f ../resources/grub/font/dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+
+# Insert files/configurations and perform operations that are common on *serial* ROM images
+# ---------------------------------------------------------------------------------------------------------------
+
+# ROM's based on this will have MemTest86+ included inside.
+cp libreboot_usqwerty.rom libreboot_serial_usqwerty.rom
+
+# Add memtest86+ to libreboot_serial_usqwerty.rom
+./cbfstool libreboot_serial_usqwerty.rom add -f ../memtest86+-5.01/memtest -n memtest -t raw
+
+# Prepare ROM's (based on libreboot_usqwerty.rom and libreboot_serial_usqwerty.rom) with
+# alternative keyboard layout configurations inside GRUB
+# ---------------------------------------------------------------------------------------------------------------
+
+# The for loops MUST be separate. Do NOT re-factor them!
+
+# default configs
+cp ../resources/grub/config/$1/grub_usqwerty.cfg .
+cp ../resources/grub/config/$1/grub_serial_usqwerty.cfg .
+
+for keymap in $(ls ../resources/grub/keymap/original)
+do
+	# copy the ROM based on the keymap
+	cp libreboot_usqwerty.rom libreboot_"$keymap".rom
+	cp libreboot_serial_usqwerty.rom libreboot_serial_"$keymap".rom
+done
+
+for keymap in $(ls ../resources/grub/keymap/original)
+do
+	# copy the config based on the keymap:
+	cp grub_usqwerty.cfg grub_"$keymap".cfg
+	cp grub_serial_usqwerty.cfg grub_serial_"$keymap".cfg
+done
+
+for keymap in $(ls ../resources/grub/keymap/original)
+do
+	# Insert GRUB keymap instructions into the config
+	echo "keymap $keymap" >> grub_"$keymap".cfg
+	echo "keymap $keymap" >> grub_serial_"$keymap".cfg
+done
+
+for keymap in $(ls ../resources/grub/keymap/original)
+do
+	# Set the GRUB keymap for the given ROM image
+	./cbfstool libreboot_"$keymap".rom add -f grub_"$keymap".cfg -n grub.cfg -t raw
+	./cbfstool libreboot_serial_"$keymap".rom add -f grub_serial_"$keymap".cfg -n grub.cfg -t raw
+done
+
+# Now we clean up and prepare the binary archive ready for release.
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# we don't need the grub.cfg's anymore
+rm -rf grub*cfg
+
+# prepare directory for new ROM images
+rm -rf $1
+mkdir $1
+# move the ROM's into the newly created directory
+mv libreboot*rom $1
+
+# delete the old ROM's from ../bin
+rm -rf ../bin/$1
+# now put the new ROM's in ./bin
+mv $1 ../bin
+
+# cbfstool no longer needed here, so put it back
+mv cbfstool util/cbfstool/
+
+# go back to main source directory
+cd ../
+

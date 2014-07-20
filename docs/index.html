@@ -61,6 +61,8 @@
 			<li><a href="#supported_t60_list">List of supported ThinkPad T60's</a></li>
 			<li><a href="#t60_inverter">Inverter boards for ThinkPad T60 when upgrading the LCD panel.</a></li>
 			<li><a href="#t60_ati_intel">ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.</a></li>
+			<li><a href="howtos/x60_heatsink.html">ThinkPad X60: change the fan/heatsink</a></li>
+			<li><a href="howtos/x60_security.html">ThinkPad X60: security</a></li>
 		</ul>
 
 	<h2>Macbook2,1</h2>
@@ -92,13 +94,15 @@
 							<li><a href="#keyboards_usqwerty">QWERTY (United States)</a></li>
 							<li><a href="#keyboards_ukdvorak">Dvorak (United Kingdom)</a></li>
 							<li><a href="#keyboards_usdvorak">Dvorak (United States)</a></li>
+							<li><a href="#keyboards_frazerty">AZERTY (French)</a></li>
 						</ul>
 					</li>
 					<li><a href="#grub_custom_keyboard">Custom keyboard layout in GRUB</a></li>
 					<li><a href="#grub_qwerty_keyboard">US Qwerty keyboard layout in GRUB</a></li>
 					<li><a href="#grub_ukqwerty_keyboard">UK Qwerty keyboard layout in GRUB</a></li>
 					<li><a href="#grub_dvorak_keyboard">US Dvorak keyboard layout in GRUB</a></li>
-					<li><a href="#grub_ukdvorak_keyboard">UK Dvorak layout in GRUB</a></li>
+					<li><a href="#grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB</a></li>
+					<li><a href="#grub_frazerty_keyboard">FR AZERTY keyboard layout in GRUB</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -301,7 +305,7 @@
 			</p>
 
 		<h2 id="config_x60">
-			ThinkPad X60 configuration (file: resources/libreboot/config/x60config)
+			ThinkPad X60 configuration (file: resources/libreboot/config/x60/config)
 		</h2>
 			<ul>
 				<li>General setup / Expert mode = <i>enable</i></li>
@@ -328,7 +332,7 @@
 				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
 			</ul>
 			<p>
-				The resulting .config file was saved as resources/libreboot/config/<b>x60config</b> and is used by the build
+				The resulting .config file was saved as resources/libreboot/config/<b>x60/config</b> and is used by the build
 				scripts for this machine.
 			</p>
 			<p>
@@ -340,7 +344,7 @@
 			</p>
 
 		<h2 id="config_x60t">
-			ThinkPad X60 Tablet configuration (file: resources/libreboot/config/x60tconfig)
+			ThinkPad X60 Tablet configuration (file: resources/libreboot/config/x60t/config)
 		</h2>
 			<ul>
 				<li>General setup / Expert mode = <i>enable</i></li>
@@ -367,7 +371,7 @@
 				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
 			</ul>
 			<p>
-				The resulting .config file was saved as resources/libreboot/config/<b>x60config</b> and is used by the build
+				The resulting .config file was saved as resources/libreboot/config/<b>x60t/config</b> and is used by the build
 				scripts for this machine.
 			</p>
 			<p>
@@ -375,7 +379,7 @@
 			</p>
 
 		<h2 id="config_t60">
-			ThinkPad T60 configuration (file: resources/libreboot/config/t60config)
+			ThinkPad T60 configuration (file: resources/libreboot/config/t60/config)
 		</h2>
 			<ul>
 				<li>General setup / Expert mode = <i>enable</i></li>
@@ -400,7 +404,7 @@
 				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
 			</ul>
 			<p>
-				The resulting .config file was saved as resources/libreboot/config/<b>t60config</b> and is used by the build
+				The resulting .config file was saved as resources/libreboot/config/<b>t60/config</b> and is used by the build
 				scripts for this machine.
 			</p>	
 			<p>
@@ -409,7 +413,7 @@
 			</p>
 
 		<h2 id="config_macbook21">
-			MacBook2,1 configuration (file: resources/libreboot/config/macbook21config)
+			MacBook2,1 configuration (file: resources/libreboot/config/macbook21/config)
 		</h2>
 			<ul>
 				<li>General / Expert mode = <i>enable</i></li>
@@ -435,7 +439,7 @@
 				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
 			</ul>
 			<p>
-				The resulting .config file was saved as resources/libreboot/config/<b>macbook21config</b> and is used by the build
+				The resulting .config file was saved as resources/libreboot/config/<b>macbook21/config</b> and is used by the build
 				scripts for this machine.
 			</p>
 
@@ -530,6 +534,30 @@
 				</ul>
 			</li>
 		</ul>
+
+		<div class="important">
+			<p>
+				A user with 2 T60's, each with a Core 2 Duo T7200 processor tried libreboot on each machine.
+				One worked, one did not. It should be explained that in addition to the microcode (on the CPU),
+				updates are usually supplied in coreboot (from Intel) which patch the onboard microcode to fix bugs. 
+				Errata's can be found at <a href="http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf">http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf</a>
+				and <a href="http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf">http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf</a>.
+				These microcode updates are not included in libreboot because they are proprietary (blobs). Most CPU's work fine without them: hundreds
+				of Core Duo T2300/T2400/T2500/L2300/L2400/L2500 processors have been tested on the X60, and a few T5600 CPU's have been tested on the T60 (and X60 and all work).
+				In the case of the T7200, it was found that one of the two tested had instability issues (kernel panics) without the updates: work is being done to find out 
+				exactly what version of the microcode that particular CPU had in this case.
+				If you find that your CPU gives you similar issues (after trying libreboot), the current workaround is to simply try another CPU
+				(fortunately, the CPU's in the T60 are installed in a socket so replacing them is easy).
+			</p>
+			<p>
+				There might be a patched kernel that can be used, or a kernel parameter that can be used in GRUB to work around these (rare) buggy CPU's
+				(it is unknown at the moment whether this is possible).
+				The Core 2 Duo T7600 is untested, but will be tested soon (the lead developer of libreboot project has 3 of them to try out). 
+			</p>
+			<p>
+				If reading this for 2nd beta, note that any debugging obtained so far will be included in the 3rd beta.
+			</p>
+		</div>
 
 		<p>
 			To find what LCD panel you have, see: <a href="#get_edid_panelname">#get_edid_panelname</a>.
@@ -785,6 +813,10 @@
 		</p>
 
 		<p>
+			There is a 15.4&quot; T60 with Intel graphics, which might work. (untested at the time of writing). <b>Note to self: REMOVE THIS WHEN TESTED</b>.
+		</p>
+
+		<p>
 			The following T60 motherboard shows an ATI GPU (<b>do not buy this</b>) (highlighted in red, or on the right next to the white CPU socket), which is unsupported by libreboot:<br/>
 			<img src="howtos/t60_mainboard/t60_ati_gpu.jpg" alt="" />
 		</p>
@@ -900,55 +932,62 @@
 			<li>
 				ThinkPad X60, X60s (<b>bin/x60/</b>)
 				<ul>
-					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
-					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
-					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
-					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
-					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
-					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+					<li>US Qwerty keyboard, no dock: <b>libreboot_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>libreboot_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>libreboot_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>libreboot_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, no dock: <b>libreboot_frazerty.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>libreboot_serial_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>libreboot_serial_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>libreboot_serial_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>libreboot_serial_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, with dock: <b>libreboot_serial_frazerty.rom</b></li>
 				</ul>
 			</li>
 			<li>
 				ThinkPad X60 Tablet (<b>bin/x60t/</b>)
 				<ul>
-					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
-					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
-					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
-					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
-					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
-					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+					<li>US Qwerty keyboard, no dock: <b>libreboot_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>libreboot_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>libreboot_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>libreboot_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, no dock: <b>libreboot_frazerty.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>libreboot_serial_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>libreboot_serial_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>libreboot_serial_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>libreboot_serial_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, with dock: <b>libreboot_serial_frazerty.rom</b></li>
 				</ul>
 			</li>
 			<li>
 				ThinkPad T60 (<b>bin/t60/</b>) (note, see <a href="#supported_t60_list">#supported_t60_list</a>)
 				<ul>
-					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
-					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
-					<li>US Qwerty keyboard, with dock: <b>coreboot_serial.rom</b></li>
-					<li>US Dvorak keyboard, with dock: <b>coreboot_serial_dvorak.rom</b></li>
-					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
-					<li>UK Qwerty keyboard, with dock: <b>coreboot_serial_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, with dock: <b>coreboot_serial_ukdvorak.rom</b></li>
+					<li>US Qwerty keyboard, no dock: <b>libreboot_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, no dock: <b>libreboot_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, no dock: <b>libreboot_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, no dock: <b>libreboot_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, no dock: <b>libreboot_frazerty.rom</b></li>
+					<li>US Qwerty keyboard, with dock: <b>libreboot_serial_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard, with dock: <b>libreboot_serial_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard, with dock: <b>libreboot_serial_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard, with dock: <b>libreboot_serial_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard, with dock: <b>libreboot_serial_frazerty.rom</b></li>
 				</ul>
 			</li>
 			<li>
 				MacBook2,1 (<b>bin/macbook21/</b>)
 				<ul>
-					<li>US Qwerty keyboard, no dock: <b>coreboot.rom</b></li>
-					<li>US Dvorak keyboard, no dock: <b>coreboot_dvorak.rom</b></li>
-					<li>UK Qwerty keyboard, no dock: <b>coreboot_ukqwerty.rom</b></li>
-					<li>UK Dvorak keyboard, no dock: <b>coreboot_ukdvorak.rom</b></li>
-					<li>(The MacBook2,1 uses the same chipset, i945, as the X60/X60s X60T and T60 but there is no dock or serial port available for this machine)</li>
+					<li>US Qwerty keyboard: <b>libreboot_usqwerty.rom</b></li>
+					<li>UK Qwerty keyboard: <b>libreboot_ukqwerty.rom</b></li>
+					<li>US Dvorak keyboard: <b>libreboot_usdvorak.rom</b></li>
+					<li>UK Dvorak keyboard: <b>libreboot_ukdvorak.rom</b></li>
+					<li>FR Azerty keyboard: <b>libreboot_frazerty.rom</b></li>
+					<li>The MacBook2,1 uses the same chipset, i945, as the X60/X60s X60T and T60 but there is no dock or serial port available for this machine.</li>
 				</ul>
 			</li>
 		</ul>
 		<p>
-			This will give you your native keyboard layout in GRUB. The preferences in your OS are not affected, it just makes using
+			This will give you your native keyboard layout inside GRUB. The preferences in your OS are not affected, it just makes using
 			the GRUB command line easier (if you ever need to do that).
 			<a href="#grub_keyboard">#grub_keyboard</a>shows you how this was done. If your native keyboard layout
 			differs, you can adapt those notes and hack the 'build' script for your needs.
@@ -980,8 +1019,6 @@
 			</p>
 
 		</div>
-
-		<p>(the above message is a lot more benign and a lot less scary than it looks)</p>
 
 		<p><b>This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you already have coreboot or libreboot running,
 		then go to <a href="#flashrom">#flashrom</a> instead!</b></p>
@@ -1025,10 +1062,25 @@
 			</p>
 
 			<p>
-				If the above is what you see, then <b>SHUT DOWN</b>. Wait a few seconds, and then boot; libreboot is running, but there is a 2nd procedure needed (see below).
+				If the above is what you see, then <b>SHUT DOWN</b>. Wait a few seconds, and then boot; libreboot is running, but there is a 2nd procedure <b>*needed*</b> (see below).
 			</p>
 
 		</div>
+
+		<p>
+			<b>
+				If you boot and you see nothing, try turning up the backlight (Fn+Home).
+				If this is a ThinkPad X60 and backlight resets to zero when turning it up while at max, look at <a href="#tft_brightness">#tft_brightness</a>.
+			</b>
+		</p>
+
+		<p>
+			<b>
+				After the 2nd flash, if this is a ThinkPad X60 then you can look at <a href="#x60_wifi">#x60_wifi</a> for how to enable/disable wifi.
+				You can also look at <a href="#x60_trackpoint">#x60_trackpoint</a> for how to enable/disable the trackpoint (red mouse on keyboard).
+				You might want to do the 2nd flash first (see below) before doing that.
+			</b>
+		</p>
 
 		<p>
 			When you have booted up again:<br/>
@@ -1050,10 +1102,6 @@
 			<p>Shut down again, wait a few seconds, and then boot.</p>
 
 		</div>
-
-		<p>
-			!!!!
-		</p>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
@@ -1092,6 +1140,20 @@
 		<p>
 			You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output. <b>SHUT DOWN</b>
 			after you see this, and then boot up again after a few seconds.
+		</p>
+
+		<p>
+			<b>
+				If you boot and you see nothing, try turning up the backlight (Fn+Home). 
+				If this is a ThinkPad X60 and backlight resets to zero when turning it up while at max, look at <a href="#tft_brightness">#tft_brightness</a>.
+			</b>
+		</p>
+
+		<p>
+			<b>
+				If this is a ThinkPad X60 then you can look at <a href="#x60_wifi">#x60_wifi</a> for how to enable/disable wifi.
+				You can also look at <a href="#x60_trackpoint">#x60_trackpoint</a> for how to enable/disable the trackpoint (red mouse on keyboard).
+			</b>
 		</p>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
@@ -1135,35 +1197,64 @@
 
 			<p>
 				Taken from WikiPedia. 
-				See <a href="https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard">https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard</a>
-				and <a href="https://en.wikipedia.org/wiki/QWERTY">https://en.wikipedia.org/wiki/QWERTY</a>.
+				See <a href="https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard">https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard</a>,
+				<a href="https://en.wikipedia.org/wiki/QWERTY">https://en.wikipedia.org/wiki/QWERTY</a>
+				and <a href="https://en.wikipedia.org/wiki/AZERTY">https://en.wikipedia.org/wiki/AZERTY</a>.
 			</p>
 
 			<h3 id="keyboards_ukqwerty">QWERTY (United Kingdom)</h3>
-			<p>
-				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png</a>
-			</p>
+				<p>
+					<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/KB_United_Kingdom.svg/900px-KB_United_Kingdom.svg.png</a>
+				</p>
 
 			<h3 id="keyboards_usqwerty">QWERTY (United States)</h3>
-			<p>
-				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png</a>
-			</p>
+				<p>
+					<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/KB_United_States-NoAltGr.svg/900px-KB_United_States-NoAltGr.svg.png</a>
+				</p>
 
 			<h3 id="keyboards_ukdvorak">Dvorak (United Kingdom)</h3>
-			<p>
-				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png</a>
-			</p>
+				<p>
+					<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/KB_United_Kingdom_Dvorak.svg/900px-KB_United_Kingdom_Dvorak.svg.png</a>
+				</p>
 
 			<h3 id="keyboards_usdvorak">Dvorak (United States)</h3>
-			<p>
-				<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png</a>
-			</p>
+				<p>
+					<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/KB_United_States_Dvorak.svg/800px-KB_United_States_Dvorak.svg.png</a>
+				</p>
+
+			<h3 id="keyboards_azerty">AZERTY (French)</h3>
+				<p>
+					<a href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/KB_France.svg/800px-KB_France.svg.png">https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/KB_France.svg/800px-KB_France.svg.png</a>
+				</p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
 
 		<h2 id="grub_custom_keyboard">Custom keyboard layout in GRUB (for reference)</h2>
 
-			<p>You can adapt the notes below and update the 'build' script to make it build a ROM with your custom/other keyboard layout in GRUB.</p>
+			<p>
+				Keymaps are stored in resources/grub/keymap/original (original files) and resources/grub/keymap (.gkb files).
+			</p>
+
+			<p>
+				Example (French Azerty):<br/>
+				<b>$ ckbcomp fr > frazerty</b><br/><br/>
+				Go in grub directory:<br/>
+				<b>cat frazerty | ./grub/grub-mklayout -o frazerty.gkb</b>
+			</p>
+
+			<p>
+				You must make sure that the files are named keymap and keymap.gkb (where 'keymap' can be whatever you want).
+			</p>
+
+			<p>
+				Then from the above example, you would put <b>frazerty</b> in <b>resources/grub/keymap/original/</b> and
+				the <b>frazerty.gkb</b> file goes under <b>resources/grub/keymap/</b>
+			</p>
+
+			<p>
+				The scripts <b>build</b> and <b>buildrom-withgrub</b> will automatically see this, and automatically build
+				ROM's with your custom layout (given the name) and include them under bin. Example: <b>libreboot_frazerty.rom</b>.
+			</p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
 
@@ -1210,7 +1301,7 @@
 
 		<h2 id="grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB (for reference)</h2>
 
-			<p>There isn't much difference.<br/>
+			<p>There isn't much difference to US Dvorak.<br/>
 			<b>$ cp usdvorak ukdvorak</b></p>
 
 			<p>Patch ukdvorak like so (diff usdvorak ukdvorak):<br/>
@@ -1220,6 +1311,21 @@
 			<b>$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb</b></p>
 
 			<p>Note: these files are already included ('build' script makes use of them). You don't need to do any of this.</p>
+
+		<h2 id="grub_frazerty_keyboard">FR AZERTY keyboard layout in GRUB (for reference)</h2>
+
+			<p>How the frazerty.gkb was made (for FR AZERTY layout in GRUB).</p>
+
+			<p><b>$ cd libreboot_src/grub</b><br/>
+			compile grub ('build' script has the info on how to do this)<br/>
+			come back out into libreboot_src:<br/>
+			<b>$ cd ../</b></p>
+
+			<p>Generate the layout file:<br/>
+			<b>$ ckbcomp fr > frazerty</b><br/>
+			<b>$ cat frazerty | ./grub/grub-mklayout -o frazerty.gkb</b></p>
+
+			<p>Note: these files are already included ('build' script makes use of them). You don't need to do it.</p>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
 
@@ -1235,7 +1341,7 @@
 		<b>$ sudo apt-get install build-essential</b>
 	</p>
 	<p>
-		Go into the libreboot_src directory. Under coreboot/util/nvramtool/ do that to compile it:
+		Go into the libreboot_src directory. Under coreboot/util/nvramtool/ do that to compile it:<br/>
 		<b>$ make</b>
 	</p>
 	<p>
@@ -1416,6 +1522,10 @@ WantedBy=multi-user.target
 <pre>
 	Unlisted note: http://inertiawar.com/microcode/
 	(link published to coreboot mailing list on July 8, 2014)
+
+	This page talks about 'calibration' in powertop:
+	https://docs.fedoraproject.org/en-US/Fedora/15/html/Power_Management_Guide/PowerTOP.html
+	I should think about adapting information here based on that page.
 </pre>
 
 <hr/>
