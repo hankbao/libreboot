@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>libreboot tutorials</title>
+
+	<style type="text/css">
+		body {
+			font-family: sans-serif;
+			font-size: 1em;
+			background: #fff;
+			color: #000;
+		}
+		
+	</style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="glugman">
+	<meta name="description" content="tutorials for libreboot, the reboot library.">
+	<meta name="robots" content="all">
+</head>
+
+<body>
+
+	<header>
+		<h1 id="pagetop">Development notes</h1>
+		<aside>These are development notes, for future use.</aside>
+	</header>
+
+	<p>
+		Or go <a href="../">back to main document index</a>.
+	</p>
+
+<hr/>
+
+	<h2>Contents</h2>
+	<ul>
+		<li><a href="#todo">TODO list</a></li>
+		<li><a href="#standard_test">Standard test</a></li>
+		<li><a href="#t60_cpu_microcode">T60 cpu microcode</a></li>
+		<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
+		<li><a href="#blind_x60">Blind X60 - kernel git bisect</a></li>
+		<li><a href="#x60_native_notes">X60 native graphics initialization (backlight controls)</a></li>
+		<li><a href="#t60_native_notes">T60 native graphics initialization (backlight controls)</a></li>
+		<li><a href="#5320_kernel312fix">i945: 3D fix (based on 5927) for kernel 3.12+ on 5320</a></li>
+		<li><a href="#x60_cb5927_testing">i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay code)</a></li>
+		<li><a href="#i945_vbt">i945 X60/T60 VBT implementation (experimental: testing)</a></li>
+		<li><a href="#intelvbttool_results">IntelVbtTool results</a></li>
+		<li><a href="#cpu_cstates_buzzing">CPU c-states (X60/T60) buzzing sound on CPU idle</a></li>
+		<li><a href="#battery_eventc">Battery 'event c' on X60 (and T60?)</a></li>
+	</ul>
+
+<hr/>
+
+	<h1 id="todo">TODO (bold means high priority)</h1>
+	<ul>
+		<li><b><a href="#blind_x60">#blind_x60</a>: kernel git bisect (find which commit broke graphics when native graphics or vbios is not in use)</b></li>
+		<li><b>test the latest version of <a href="http://review.coreboot.org/#/c/5927">http://review.coreboot.org/#/c/5927</a> for Paul Menzel</b></li>
+		<li>
+			<b>test the latest versions of 5320/5345 on X60/T60</b>
+			<ul>
+				<li><b><s>Find how to implement the fix from <a href="http://review.coreboot.org/#/c/5927">5927/3</a></s> (see <a href="#5320_kernel312fix">#5320_kernel312fix</a>) and push with 5320 as dependency</b></li>
+				<li><b>Find how to implement the fix from <a href="http://review.coreboot.org/#/c/5927">5927</a> (latest version after patch set 3) and push with 5320 as dependency</b></li>
+				<li><b>Implement the X60 backlight support (<a href="#x60_native_notes">#x60_native_notes</a>) and push with 5320 as dependency</b></li>
+				<li><b>Implement the T60 backlight support (<a href="#t60_native_notes">#t60_native_notes</a>) and push with 5345 as dependency</b></li>
+			</ul>
+		</li>
+		<li>
+			<b><a href="#intelvbttool_results">#intelvbttool_results</a>: Finish getting runningvga.bin dumps and intelvbttool dumps for all known targets on X60 and T60.</b>
+			<ul>
+				<li>Figure out why 15" T60 with 1024x768 panel doesn't work on native graphics initialization. And fix it (implementing VBT might, also understanding how
+				to correctly interpret EDID, according to phcoder and damo22).</li>
+				<li><b><a href="#i945_vbt">#i945_vbt</a>: Finish getting results when running native init and loading (but not executing) the VBIOS option ROM.</b></li>
+				<li>When VBT is implemented/tested, also test SeaVGABIOS (part of SeaBIOS)</li>
+			</ul>
+		</li>
+		<li>
+			<b>Run oprom trace (coreboot + oprom + grub) on <a href="http://review.coreboot.org/#/c/5345">http://review.coreboot.org/#/c/5345</a> for phcoder.</b>
+			(see <a href="#t60_native_notes">#t60_native_notes</a>)
+		</li>
+		<li>test that patch (DYNAMIC_CBMEM, <a href="http://review.coreboot.org/#/c/6036">http://review.coreboot.org/#/c/6036</a>) on X60 and T60 for kmalkki</li>
+		<li>X60 Tablet digitizer support (<a href="http://review.coreboot.org/#/c/5243/">http://review.coreboot.org/#/c/5243/</a>, also see 5242)</li>
+		<li>
+		<li>Further study how backlight controls work</li>
+		<li>
+			<b>After all (or a satisfactory amount) of the above is done, finish deblobbing latest coreboot revisions.</b>
+			<ul>
+				<li><b>Totally re-tool linux-libre deblob scripts to automatically deblob other revisions of coreboot aswell</b></li>
+				<li><b>Ports for T60 and F2A85M</b></li>
+			</ul>
+		</li>
+		<li><b>Write information about software/hardware modifications (security)</b></li>
+		<li>funfunctor wants me to try building libreboot/coreboot on X60 with clang/llvm because he says there are some issues where boards fail when built with this: fchmmr: well you will need to compile the latest clang, here are some instructions: https://gist.github.com/victoredwardocallaghan/38689e88dd7b9a439468 and also: funfunctor: fchmmr: you will need the latest coreboot code and http://review.coreboot.org/#/c/5814/ to get clang to build whatever board. also! <br/><br/>
+
+		fchmmr: see this topic http://review.coreboot.org/#/q/status:open+project:coreboot+branch:master+topic:clang-fixes,n,z you will need those fixes to get anywhere with building t60/x60 with clang. at the time of writing that was 6122/1, 6121/1, 6120/1 and 6119/1<br/><br/>
+
+		fchmmr: its unclear if http://review.coreboot.org/#/c/6129/ has uncovered a bug yet or not..fchmmr: well this was a bug spotted http://review.coreboot.org/#/c/6052/<br/><br/>
+
+		funfunctor says X60 (not sure about T60) ROM's can now be built with Clang/LLVM</li>
+		<li>Investigate <a href="#battery_eventc">#battery_eventc</a>.</li>
+	</ul>
+
+	<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="standard_test">standard test</h1>
+		<p>
+			These logs are usually obtained when testing changes related to graphics on i945 (X60 and T60).
+		</p>
+		<ul>
+			<li>
+				Make a copy of these files:
+				<ul>
+					<li>/var/log/dmesg</li>
+					<li>/var/log/kern.log</li>
+					<li>/var/log/Xorg.0.log</li>
+					<li>/proc/ioports</li>
+					<li>/proc/iomem</li>
+					<li>/sys/class/drm/card0/error</li>
+				</ul>
+			</li>
+			<li>
+				Record these outputs:
+				<ul>
+					<li>sudo intel_reg_dumper</li>
+					<li>uname -r</li>
+					<li>lspci -vvvvnnnnxxxx</li>
+					<li>sudo modprobe msr</li>
+					<li>sudo inteltool -a</li>
+					<li>sudo cbmem -c</li>
+				</ul>
+			</li>
+			<li>
+				Try some 3D games with latest kernel.
+			</li>
+		</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="t60_cpu_microcode">T60 cpu microcode</h1>
+
+		<p>
+			TODO: T60: find (for rare buggy CPU's that are unstable without microcode updates) if there is a workaround (patched kernel, special parameter, etc) So far, only 1 processor has been found to have issues. See microcode errata sheets http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf and http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf and then look at the debugging results collected in <a href="../t7200q">t7200q</a> directory (q means quirk). 
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</h1>
+
+		<p>
+			Fix X60 Tablet issues (see incompatible panels listed at <a href="../index.html#supported_x60t_list">../index.html#supported_x60t_list</a>).
+		</p>
+
+		<p>
+			Fix T60 issues (see incompatible panels listed at <a href="../index.html#supported_t60_list">../index.html#supported_t60_list</a>).
+		</p>
+
+		<p>
+			Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on machines with the offending panels in:
+		</p>
+			<ul>
+				<li>Coreboot (or libreboot, whatever) with VBIOS (disable native graphics also)</li>
+				<li>(Factory BIOS also?)</li>
+			</ul>
+
+		<p>
+			This shows values in devicetree.cb and src/northbridge/intel/i945/gma.c, the idea is that you run it on factory bios or vbios
+			and that it will (might) show different values: then you try those in the native graphics (in libreboot).
+		</p>
+
+		<p>
+			Other values/registers might also need to be added to the script for these tests.
+		</p>
+		
+		<p>
+			Original getregs.py script can be found at <a href="http://hg.mtjm.eu/scripts/file/tip/intel-regs.py">http://hg.mtjm.eu/scripts/file/tip/intel-regs.py</a>
+			written by Michał Masłowski.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="blind_x60">Blind X60 - kernel git bisect</h1>
+		<p>
+			Older kernels could init GPU on an X60 without a vbios or native graphics. 
+			I have to do a git bisect to find out when that was broken.
+		</p>
+
+		<ul>
+			<li>See <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=613979#102">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=613979#102</a></li>
+			<li><b>git help bisect</b> has an example of how to bisect</li>
+			<li>See <a href="http://git-scm.com/book/en/Git-Tools-Debugging-with-Git#Binary-Search">http://git-scm.com/book/en/Git-Tools-Debugging-with-Git#Binary-Search</a></li>
+			<li>
+				I have ccache. Read on how to compile kernel using ccache instead of regular gcc. (speeds up compiling). How I installed it:
+				<ul>
+					<li>sudo apt-get install ccache</li>
+					<li>echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a ~/.bashrc \ && source ~/.bashrc && echo $PATH</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>
+			Note: &quot;memory_corruption_check=0 i915.lvds_channel_mode=2&quot; kernel parameters were once used
+			successfully for linux-libre 3.10 on a ThinkPad T60 (distribution: Parabola) to get graphics working.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="x60_native_notes">X60 native graphics initialization (with backlight controls)</h1>
+		<p>
+			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
+		</p>
+		<p>
+			<b>The fix below was done on 5320/6 but should work just fine on later versions of 5320.</b>
+		</p>
+		<p>
+			Native gpu init + backlight controls! (Fn keys). Also confirmed on X60 Tablet (1024x768) and X60 Tablet (1400x1050)
+		</p>
+		<p>
+			<b>Checkout <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a> on top of a coreboot git clone.</b>
+		</p>
+		<p>
+			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/x60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x879F879E</b>
+		</p>
+		<p>
+			That's all! <b>This has also been backported into libreboot 5th release (line 1233 in src/mainboard/lenovo/x60/i915io.c)</b>. GNUtoo (Denis Carikli) 
+			told me about the register <b>BLC_PWM_CTL</b> and that you could set it to control backlight. I read that address using devmem2 while running the VBIOS:<br/>
+			<b># devmem2 0xe4361254 w</b>
+		</p>
+		<p>
+			When doing this, it gave back that value. The same trick was used to get backlight controls for T60 (see <a href="#t60_native_notes">#t60_native_notes</a>).
+		</p>
+
+		<h2>Further notes</h2>
+			<p>
+				Reading <b>0xe4361254</b> (address) in Lenovo BIOS always yields FFFFFFFF, even when writing to it (and writing to it doesn't affect brightness controls). 
+				'mtjm' on IRC found that the buttons (Fn keys) control /sys/class/backlight/acpi_video0 which has no affect on 61254 (BLC_PWM_CTL). He says
+				intel_backlight has different values and uses the register. devmem2 works, needs checking <b>lspci -vv</b> for where the memory is mapped,
+				which is different than on coreboot; mtjm found that it was 0xec061254 on his machine (X60 Tablet), and the register value is different too.
+				<b>This is relevant, because we still don't know how backlight controls are actually handled. We got it working by accident. We need to know more.</b>.
+			</p>
+			<p>
+				Intel-gpu-tools may prove useful for further debugging: <a href="http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/">http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/</a>
+			</p>
+			<p>
+				mtjm says 0xe4300000 is an MMIO region of the gpu (lspci -vv shows it), 0x61254 (BLC_PWM_CTL) is a documented register. Searching the kernel driver for backlight
+				shows that in intel_panel.c this register is used (there is an XXX comment about finding the right value, where recent kernels get it from.
+			</p>
+			<p>
+				What we want to do is calculate a good value, instead of setting it in devicetree.cb. mtjm says about backlight physics:
+				it has a light source , uses pulse width modulation (PWM) to turn it on/off, dimming is done by spending less time on. 
+				<b>Note: this may not be correct; he says his understanding is based on how the Lenote yeeloong works</b>.
+			</p>
+			<p>
+				mtjm goes on to say, that the register specifies the frequency used for PWM in its depending on the GPU core frequency, so it
+				might be possible to calculate it without hardcoded laptop-specific values. Therefore, I am supposed to find out the 'display core frequency'
+				(mtjm says there might be a register for it; also, it might be in 5320 or the replay code) and the PWM modulation frequency.
+				https://en.wikipedia.org/wiki/Backlight#Flicker_due_to_backlight_dimming
+			</p>
+			<p>
+				phcoder (Vladimir Serbinenko) who is author of 5320 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering frequency'.
+			</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="t60_native_notes">T60 native graphics initialization (with backlight controls)</h1>
+		<p>
+			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
+		</p>
+		<p>
+			<b>The fix below was done on an earlier version of 5345, but should work on the current version.</b>
+		</p>
+		<p>
+			Native gpu init + backlight controls! (Fn keys). <b>Working on all panels except for 14&quot; XGA (1024x768) and 15&quot; XGA (1024x768)!</b>
+		<p>
+		<p>
+			<b>Checkout <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a>
+			and then cherry-pick <a href="http://review.coreboot.org/#/c/5345">http://review.coreboot.org/#/c/5345</a> on top of a coreboot git clone.</b>
+		</p>
+		<p>
+			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/t60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x58BF58BE</b>
+		</p>
+		<p>
+			Hold on! Check <a href="../index.html#get_edid_panelname">../index.html#get_edid_panelname</a> to know what LCD panel you have. This is important for the next step!
+		</p>
+
+		<h2>Supported panels</h2>
+			<p>
+				<a href="../index.html#supported_t60_list">../index.html#supported_t60_list</a>.
+			</p>
+
+		<p>
+			Note to self: Run oprom trace for phcoder (T60 w/ 5320+5345 + oprom + grub) for phcoder. This (among other things) 
+			might help to get all panels supported, without modification.
+		</p>
+		
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="5320_kernel312fix">i945: 3D fix (based on 5927) for kernel 3.12+ on 5320</h1>
+
+		<p><b>This needs to be rewritten (or better organized, or deleted?)</b>. This is also now included in libreboot 6 (using the proper way, not the 7c0000 method which was a hack)</p>
+
+		<p>
+			<b>This was done on 5320/6 so far. The fix below is for 5320/6 which is now obsolete. This needs to be re-done for the latest version
+			of 5320. The fix below is (in practise) only for reference, therefore.</b>
+		</p>
+
+		<p>
+			See <a href="#x60_cb5927_testing">#x60_cb5927_testing</a> for the original (and current) fix, for the replay code. Now we want
+			to implement that on top of <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a>
+			which is the current code for native graphics initialization on i945.
+		</p>
+
+		<p>
+			src/northbridge/intel/i945/gma.c (using the 7c0000 hack) on 5320: <a href="dumps/5320_7c0000_gma.c">5320_7c0000_gma.c</a> (rename it to gma.c, 
+			replacing the current one). 
+		</p>
+
+		<p>
+			The above is a hack (as is the original). A better (more correct) method is implemented in later versions of 5927, so 
+			that should also be adapted for 5320. For now, you can use the above fix.
+		</p>
+
+		<p>
+			The correct way to do it is to set gtt address to (end of stolen memory - gtt size), which is what later versions of 5927 do (successfully).
+		</p>
+
+		<p>
+			Here is some debugging output using intel_gpu_tools v1.2-1 (from trisquel repositories) using tool "intel_gtt":
+		</p>
+
+		<ul>
+			<li>
+				Trisquel 6. kernel 3.14.4:
+				<ul>
+					<li>with libreboot 5th release (using the 7c0000 gtt hack from 5927/3): <a href="http://paste.debian.net/104306">http://paste.debian.net/104306</a></li>
+					<li>with coreboot+vgarom: <a href="http://paste.debian.net/104309">http://paste.debian.net/104309</a></li>
+				</ul>
+			</li>
+			<li>
+				Trisquel 6. kernel 3.2.0-60 (from Trisquel repositories):
+				<ul>
+					<li>with coreboot (no vbios or native init): <a href="http://paste.debian.net/104341">http://paste.debian.net/104341</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="x60_cb5927_testing">i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code)</h1>
+
+		<p><b>The latest version as-is (5927/11) has not been tested by me yet. Always boot with 'drm.debug=0x06' kernel parameter when testing this.</b></p>
+
+		<p>
+			This is the fix for 3D on kernel 3.12 and higher on i945 (ThinkPad X60 in this case). This is for the replay code.
+			Libreboot 5th release has a version of this backported already (based on 5927/3 using the '7c0000' hack).
+		</p>
+
+		<p>
+			<b>
+				The replay code is obsolete (see 5320 changeset on review.coreboot.org for better version
+				which supports more machines/screens, and then 5345 for T60). Information here for reference since that is where the fix was first applied. 
+			</b>
+		</p>
+
+		<p>
+			Read the information on <a href="http://review.coreboot.org/#/c/5927/">http://review.coreboot.org/#/c/5927/</a>.
+		</p>
+
+		<p>
+			For historical purposes, here is a collection of IRC logs that once existed on this page, related to the issue:
+			<a href="dumps/kernel312_irc">kernel312_irc</a>.
+		</p>
+
+		<p>
+			PGETBL_CTL differs between VBIOS (-) and native graphics init (+).<br/>
+
+			-          PGETBL_CTL: 0x3ffc0001<br/>
+			+          PGETBL_CTL: 0x3f800001
+		</p>
+
+		<p>GTT (graphics translation table) size is PGETBL_save, max 256 KiB. BSM (Base of Stolen Memory) is given by the bios.</p>
+
+		<ul>
+			<li>5927/7: <a href="dumps/5927_7.tar.gz">5927_7.tar.gz</a> (GRUB graphics are correct now, and 3D still works)</li>
+			<li>5927/6: <a href="dumps/5927_6.tar.gz">5927_6.tar.gz</a> (GRUB graphics still corrupt, 3D/everything still works after GRUB)</li>
+			<li>5927/5: <a href="dumps/5927_5.tar.gz">5927_5.tar.gz</a> (GRUB graphics corrupt, 3D/everything still works after GRUB)</li>
+			<li>5927/3: <a href="dumps/5927_3.tar.gz">5927_3.tar.gz</a> (3D still works! kernel 3.14.4) - the '7c0000' hack</li>
+			<li>5927/2: <a href="dumps/5927_2.tar.gz">5927_2.tar.gz</a> (3D works! kernel 3.14.4) - the '7c0000' hack</li>
+			<li>
+				5927/1 (didn't fix the 3D issue):
+				<ul>
+					<li><a href="dumps/5927_cbmemc">cbmem -c</a></li>
+					<li><a href="dumps/5927_crashdump">/sys/class/drm/card0/error</a></li>
+					<li><a href="dumps/5927_config">.config</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="i945_vbt">i945 gfx: X60/T60 VBT implementation (experimental: testing)</h1>
+		<p>
+			<b>Use 'drm.debug=0x06' kernel parameter when booting in grub! Make sure to use kernel 3.14.4 as before (or any recent kernel).</b>
+		</p>
+		<p>
+			Before each test run, boot a live USB and delete the old logs in /var/log (kernel log, xorg log, dmesg and so on).
+		</p>
+		<p>
+			Use latest 5927/5320/5345 on X60/T60 (with GTT/3D/kernel3.12 fix) with native graphics initialization.
+			Load (from the ROM) the runningvga.bin for each LCD panel on each machine; do not execute it, only load it!
+			Rename the ROM appropriately, based on the machine name and the panel name. coreboot_nativegfx_5868_plusrunningvga_t60_14_LTD141ECMB.rom,
+			for instance. Keep a copy for later use.
+		</p>
+
+		<p>It is (theoretically) supposed to:</p>
+		<ul>
+			<li>Enable kernel to see VBT tables so that it can see the panel. (theoretically this will make T60 15&quot; XGA/1024x768 work)</li>
+		</ul>
+		<p>You are supposed to:</p>
+		<ul>
+			<li>enable native graphics in menuconfig</li>
+			<li>include the self-modified VGA ROM (load, but not execute) - for reverse engineering the correct VBT tables.</li>
+		</ul>
+
+		<p>
+			With each boot, make notes about what you see and get logs using the <a href="#standard_test">standard test</a>.
+			You will need the files from <a href="#intelvbttool_results">#intelvbttool_results</a> for each machine.
+		</p>
+
+		Results (# means untested):
+		<ul>
+			<li>
+				<b>X60/X60s:</b>
+				<ul>
+					<li>TMD-Toshiba LTD121ECHB: #</li>
+					<li>CMO N121X5-L06: #</li>
+					<li>Samsung LTN121XJ-L07: #</li>
+					<li>BOE-Hydis HT121X01-101: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>X60T XGA:</b>
+				<ul>
+					<li>BOE-Hydis HV121X03-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>X60T SXGA+:</b>
+				<ul>
+					<li>BOE-Hydis HV121P01-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 14&quot; XGA:</b>
+				<ul>
+					<li>Samsung LTN141XA-L01: #</li>
+					<li>CMO N141XC: #</li>
+					<li>BOE-Hydis HT14X14: #</li>
+					<li>TMD-Toshiba LTD141ECMB: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 14&quot; SXGA+</b>
+				<ul>
+					<li>TMD-Toshiba LTD141EN9B: #</li>
+					<li>Samsung LTN141P4-L02: #</li>
+					<li>Boe-Hydis HT14P12: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; XGA</b>
+				<ul>
+					<li>Samsung LTN150XG-L08: #</li>
+					<li>LG-Philips LP150X09: #</li>
+					<li>13N7068 (IDtech): #</li>
+					<li>13N7069 (CMO): #</li>
+					
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; SXGA+</b>
+				<ul>
+					<li>LG-Philips LP150E05-A2K1: #</li>
+					<li>BOE-Hydis HV150P01-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; UXGA</b>
+				<ul>
+					<li>BOE-Hydis HV150UX1-100: #</li>
+					<li>IDTech  N150U3-L01: #</li>
+					<li>BOE-Hydis  HV150UX1-102: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T50 15&quot; QXGA</b>
+				<ul>
+					<li>IDtech IAQX10N: #</li>
+					<li>IDtech IAQX10S: #</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<h1 id="intelvbttool_results">intelvbttool test results (VGA ROM's)</h1>
+		<p>
+			The VBIOS on i945 (intel gpu) platforms is self-modifying; that is,
+			it's contents change when you run it. intelvbttool takes a dump of 
+			the currently running vbios, and parses it.
+		</p>
+
+		<p>
+			The idea is that we can extract the VBT tables using this knowledge, on the X60, X60 Tablet and T60 (Intel GPU).
+		</p>
+
+		<p>
+			Here is an example of how VBT was implemented on the ThinkPad X230:
+			<a href="http://review.coreboot.org/#/c/5396" target="_blank">http://review.coreboot.org/#/c/5396</a>.
+		</p>
+
+		<p>
+			Use this kernel: 
+			<a href="http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_2_i386.deb">http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_2_i386.deb</a>
+		</p>
+
+		<p>
+			You'll need to build a T60 ROM with SeaBIOS and the VGA ROM (for Intel GPU). An X60 ROM is also needed (same configuration, using the VGA ROM for X60).
+		</p>
+
+		<p>
+			T60 has DVI on it's dock, make sure that the dock is attached when getting this output.
+		</p>
+
+		<p>
+			Get intelvbttool here: <a href="http://review.coreboot.org/#/c/5842">http://review.coreboot.org/#/c/5842</a> (util/intelvbttool).
+		</p>
+
+		<p>
+			Now dump a copy of the running VGA BIOS:
+			<b>$ sudo dd if=/dev/mem bs=64k of=runningvga.bin skip=12 count=1</b><br/>
+			Then do (and record the output):<br/>
+			<b>$ ./intelvbttool runningvga.bin > intelvbttool_out</b>
+		</p>
+
+		<p>
+			Backup both files (runningvga.bin and intelvbttool_out), renaming them to match the machine and LCD panel used.
+			<a href="../index.html#get_edid_panelname">../index.html#get_edid_panelname</a> will show you how to get the name (model) of the LCD panel used.
+		</p>
+
+		<h2>Test results (# means untested and all had docks, unless noted).</h2>
+
+		<ul>
+			<li>
+				<b>X60/X60s:</b>
+				<ul>
+					<li>TMD-Toshiba LTD121ECHB: #</li>
+					<li>CMO N121X5-L06: #</li>
+					<li>Samsung LTN121XJ-L07: #</li>
+					<li>BOE-Hydis HT121X01-101: #</li>		
+				</ul>
+			</li>
+			<li>
+				<b>X60T XGA (1024x768):</b>
+				<ul>
+					<li>BOE-Hydis HV121X03-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>X60T SXGA+ (1400x1050):</b>
+				<ul>
+					<li>BOE-Hydis HV121P01-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 14&quot; XGA (1024x768):</b>
+				<ul>
+					<li>Samsung LTN141XA-L01: #</li>
+					<li>CMO N141XC: #</li>
+					<li>BOE-Hydis HT14X14: #</li>
+					<li>TMD-Toshiba LTD141ECMB: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 14&quot; SXGA+ (1400x1050):</b>
+				<ul>
+					<li>TMD-Toshiba LTD141EN9B: #</li>
+					<li>Samsung LTN141P4-L02: #</li>
+					<li>Boe-Hydis HT14P12: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; XGA (1024x768):</b>
+				<ul>
+					<li>Samsung LTN150XG-L08: #</li>
+					<li>LG-Philips LP150X09: #</li>
+					<li>13N7068 (IDtech): #</li>
+					<li>13N7069 (CMO): #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; SXGA+ (1400x1050):</b>
+				<ul>
+					<li>LG-Philips LP150E05-A2K1: #</li>
+					<li>BOE-Hydis HV150P01-100: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; UXGA (1600x1200):</b>
+				<ul>
+					<li>BOE-Hydis HV150UX1-100: #</li>
+					<li>IDTech  N150U3-L01: #</li>
+					<li>BOE-Hydis  HV150UX1-102: #</li>
+				</ul>
+			</li>
+			<li>
+				<b>T60 15&quot; QXGA (2048x1536):</b>
+				<ul>
+					<li>IDtech IAQX10N: #</li>
+					<li>IDtech IAQX10S: #</li>
+				</ul>
+			</li>
+		</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="cpu_cstates_buzzing">Buzzing / static noise when not using idle=halt or processor.max_cstate=2 in GRUB</h1>
+
+		<p>
+			When idle, the X60 and T60 make a high pitched whining sound. With a recorder, find out where it originates from.
+			'processor.max_cstate=2' or 'idle=halt' kernel parameters can be used in GRUB to remove it. 
+			Alternatively (and for better battery life), another method is to use 'powertop' (see docs/index.html in libreboot release
+			archives).
+		</p>
+
+		<p>
+			funfunctor in IRC says: <i>&quot;sounds like the gain is set to high, AGC of a ADC is not setup correctl probably&quot;</i>.
+		</p>
+		<p>
+			damo22 in IRC says: <i>&quot;damo22: it seems like the T60 (happens on X60 aswell) does not 
+			support certain cpu C-states but is being forced to use them and this causes a noise. i believe it's because 
+			it doesnt let the cpu go into low power state.&quot;</i>.
+		</p>
+		<p>
+			CareBear\ in IRC says: <i>&quot;it has to do with the CPU and chipset switching power states differently with coreboot than with the factory BIOS and as a result the power supply circuitry on the mainboard emits that noise. the whine is quite clearly directly related to the CPU switching between power states
+			&quot;</i>
+		</p>
+
+		<p>
+			Another comment (mailing list):<br/>
+			If this noise doesn't occur with
+			the vendor firmware, has anybody checked if coreboot uses the same
+			power management timing settings? (e.g. C4-TIMING_CNT, see [1], there
+			might be more such settings not mentioned in the public datasheet) <br/>
+			<b>[1] Intel I/O Controller Hub 7 (ICH7) Family Datasheet Document Number: 307013-003 </b>
+		</p>
+
+		<p>
+			
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="battery_eventc">Battery 'event c' on X60 (and T60?)</h1>
+	<p>
+		Look into this later. This isn't necessarily a bug, just a part of the code which someone noticed that seems odd.
+	</p>
+	<p>
+		funfuctor: fchmmr: what is 'eventc' exactly in the devicetree of your board? Is that meant to be programed sequentially somehow?<br/>
+		fchmmr:  looks like something with EC<br/>
+		fchmmr:  src/ec/lenovo/h8/chip.h: u8 eventc_enable;<br/>
+		fchmmr:  src/ec/lenovo/h8/h8.c: ec_write(0x1c, conf->eventc_enable);<br/>
+		funfuctor: fchmmr: yes, better ask phcoder-screen why eventc is defined twice<br/>
+		funfuctor: and which value is correct<br/>
+		fchmmr:  looks like 0x3c is incorrect<br/>
+		fchmmr:  just a guess<br/>
+		fchmmr:  in devicetree.cb it goes event2 then 3 4 5 6 7 c 8 9 then a b c d<br/>
+		fchmmr:  but i don't know what 'event c' is<br/>
+		funfuctor: fchmmr: interesting, well in that case you could prob figure it out yourself..<br/>
+		funfuctor: fchmmr: the order should not matter. basically devicetree is syntax for fill in a C struct<br/>
+		funfuctor: fchmmr: look closely at build/mainboard/lenovo/t60/static.c<br/>
+		fchmmr:  funfunctor: it was sven schnelle who wrote that (I used 'git blame')<br/>
+		fchmmr:  I think &quot;eventc&quot; has something to do with battery<br/>
+		fchmmr:  commit 95ebe66f7f5fef64d363cb48e5a441ad505353d1<br/>
+		fchmmr:  Author: Sven Schnelle &lt;svens@stackframe.org&gt;<br/>
+		fchmmr:  Date:   Thu Apr 28 09:29:06 2011 +0000<br/>
+		fchmmr:  that's the commit that added those lines.<br/>
+		fchmmr:  funfunctor:<br/>
+		fchmmr:                  &quot;&quot;                      // C: OEM information<br/>
+		fchmmr:  src/ec/lenovo/h8/acpi/battery.asl<br/>
+		funfuctor: fchmmr: i'll leave you with the issue of fixing the devicetree duplicate value<br/>
+		funfuctor: fchmmr: you need to read the datasheet to figure out what register 0x3C is<br/>
+		funfuctor: sorry *0x1C rather<br/>
+		funfuctor:  grep eventc src/ec/lenovo/h8/h8.c<br/>
+		funfuctor:  ec_write(0x1c, conf->eventc_enable);<br/>
+		Also look in src/ec/lenovo/h8/h8.c and src/ec/lenovo/h8/chip.h and src/mainboard/lenovo/x60/devicetree.cb<br/>
+		Do a 'git blame' and a 'git log path/to/file' etc. ask sven, even.
+	</p>
+	<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="unlisted">Unlisted Notes</h1>
+	<p>
+		funfunctor: shadow compiling means you run both compilers (context: GCC and Clang/LLVM) at the same time. If one compiler misses a problem the other compiler hopefully finds it<br/>
+		funfunctor: fchmmr: blow your mind (compiler security and reprodicible builds) - http://scienceblogs.com/goodmath/2007/04/15/strange-loops-dennis-ritchie-a/
+	</p>
+	<p>
+		<a href="#pagetop">Back to top of page.</a>
+	</p>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>

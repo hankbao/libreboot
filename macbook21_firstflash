@@ -1,0 +1,39 @@
+#!/bin/bash
+
+#  flash script: uses flashrom to flash a new libreboot ROM image onto your machine
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# USE ROOT OR SUDO WHEN EXECUTING THIS
+# uses flashrom to flash the rom
+
+if (( $# != 1 )); then
+	echo "Usage: ./lenovobios_firstflash yourrom.rom"
+	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
+	echo "You need to specify exactly 1 file"
+	exit
+fi
+if [ ! -f $1 ]; then
+	echo "File not found!"
+	exit
+fi
+
+# flashrom doesn't recognize the machine unless you use that switch: laptop=force_I_want_a_brick
+# after flashing libreboot and booting the machine, flashing normally will just work.
+
+./flashrom/flashrom -p internal:laptop=force_I_want_a_brick -w $1
+echo "IGNORE THE ERRORS. JUST MAKE SURE THAT IT SAYS 'VERIFIED' ABOVE (if not, goto #libreboot on freenode irc)"

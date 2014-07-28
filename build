@@ -136,7 +136,7 @@ cp -r resources ../libreboot_bin
 cp lenovobios_firstflash ../libreboot_bin
 cp lenovobios_secondflash ../libreboot_bin
 
-# Flashrom script (makes flashing easier: ./flash path/to/coreboot.rom)
+# Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
 cp flash ../libreboot_bin
 
 # patch the version of cbfstool included in libreboot_bin,

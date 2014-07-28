@@ -110,11 +110,11 @@ do
 	./cbfstool libreboot_serial_"$keymap".rom add -f grub_serial_"$keymap".cfg -n grub.cfg -t raw
 done
 
-# Now we clean up and prepare the binary archive ready for release.
-# ----------------------------------------------------------------------------------------------------------------------------
-
 # we don't need the grub.cfg's anymore
 rm -rf grub*cfg
+
+# Now we clean up and prepare the binary archive ready for release.
+# ----------------------------------------------------------------------------------------------------------------------------
 
 # prepare directory for new ROM images
 rm -rf $1

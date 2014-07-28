@@ -38,6 +38,14 @@ svn co -r 1822 svn://flashrom.org/flashrom/trunk flashrom
 # there are no permanent patches needed to be applied here:
 # the patches are applied selectively at build time (when running "builddeps-flashrom")
 
+# delete the .svn directory
+# (not needed to work with source code)
+# (reduces size of the archive)
+# flashrom development should be upstream!
+cd flashrom
+rm -rf .svn
+cd ../
+
 echo "FINISHED DOWNLOADING FLASHROM"
 
 # ------------------- DONE ----------------------

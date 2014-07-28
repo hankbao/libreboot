@@ -44,6 +44,35 @@
 			<li>none (at least in the scope of the article as-is)</li>
 		</ul>
 
+	<h1>
+		Rationale
+	</h1>
+		<p>
+			Most people think of security on the software side: the hardware is important aswell.
+			Hardware security is useful in particular to journalists (or activists in a given movement) who need absolute privacy in their work.
+			It is also generally useful to all those that believe security and privacy are inalienable rights.
+			Security starts with the hardware; crypto and network security come later.
+		</p>
+		<p>
+			Paradoxically, going this far to increase your security also makes you a bigger target.
+			At the same time, it protects you in the case that someone does attack your machine.
+			This paradox only exists while few people take adequate steps to protect yourself: it is your <b>duty</b>
+			to protect yourself, not only for your benefit but to make strong security <i>normal</i> so
+			that those who do need protection (and claim it) are a smaller target against the masses.
+		</p>
+		<p>
+			Even if there are levels of security beyond your ability (technically, financially and so on)
+			doing at least <i>something</i> (what you are able to do) is extremely important.
+			If you use the internet and your computer without protection, attacking you is cheap (some say it is
+			only a few US cents). If everyone (majority of people) use strong security by default,
+			it makes attacks more costly and time consuming; in effect, making them disappear.
+		</p>
+		<p>
+			This tutorial deals with reducing the number of devices that have direct memory access that
+			could communicate with inputs/outputs that could be used to remotely
+			command the machine (or leak data).
+		</p>
+
 	<h1 id="procedure">Disassembly</h1>
 
 		<p>
@@ -58,7 +87,7 @@
 			If your model was WWAN, remove the simcard (check anyway):<br/>
 			Uncover those 2 screws at the bottom:<br/>
 			<img src="x60_security/0000_simcard0.jpg" alt="" /><br/>
-			SIM card is in the marked location:<br/>
+			SIM card (not present in the picture) is in the marked location:<br/>
 			<img src="x60_security/0000_simcard1.jpg" alt="" /><br/>
 			Replacement: USB dongle.
 		</p>
@@ -99,9 +128,12 @@
 		<p>
 			Remove the microphone (can desolder it, but you can also easily pull it off with you hands). Already removed here:<br/>
 			<img src="x60_security/0001_microphone.jpg" alt="" /><br/>
-			We do not know what the built-in microcode (on the CPU) is doing. The theory is that it could be programmed to take commands that do something
-			and then the CPU returns results. (meaning, remote security hole). So we remove it, just in case.<br/>
-			Replacement: external microphone on USB or line-in jack.
+			<b>Rationale:</b><br/>
+			Another reason to remove the microphone: If your computer gets<a href="#ref1">[1]</a> compromised, it can
+			record what you say, and use it to receive data from nearby devices if
+			they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically
+			be programmed to accept remote commands from some speaker somewhere (remote security hole). <b>In other words,
+			the machine could already be compromised from the factory.</b>
 		</p>
 
 		<p>
@@ -114,13 +146,25 @@
 			Remove the speaker:<br/>
 			<img src="x60_security/0001_speaker.jpg" alt="" /><br/>
 			Reason: combined with the microphone issue, this could be used to leak data.<br/>
+			If your computer gets<a href="#ref1">[1]</a> compromised, it can be used to
+			transmit data to nearby compromised devices. It's unknown if it can be
+			turned into a microphone<a href="#ref2">[2]</a>.<br/>
 			Replacement: headphones/speakers (line-out) or external DAC (USB).
 		</p>
 
 		<p>
 			Remove the wlan (also remove wwan if you have it):<br/>
 			<img src="x60_security/0001_wlan_wwan.jpg" alt="" /><br/>
-			Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.
+			Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.<br/>
+			<b>Wifi:</b> The ath5k/ath9k cards might not have firmware at all. They might safe but could have
+			access to the computer's RAM trough DMA. If people have an intel
+			card(most X60's come with Intel wifi by default, until you change it),then that card runs
+			a non-free firwamre and has access to the computer's RAM trough DMA! So
+			it's risk-level is very high.<br/>
+			<b>Wwan (3d modem):</b> They run proprietary software and have access to the
+			computer's RAM! So it's like AMT but over the GSM network which is
+			probably even worse.<br/>
+			Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
 		</p>	
 
 		<h2>
@@ -139,7 +183,7 @@
 				or directly to the video: <a href="http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm">http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm</a>.
 			</p>
 			<p>
-				A lot of this tutorial is based on that video. Look towards the second half of the video to see how to do the abev.
+				A lot of this tutorial is based on that video. Look towards the second half of the video to see how to do the above.
 			</p>
 
 		<h2>
@@ -158,7 +202,68 @@
 				<li>
 					General tips/advice and web links showing how to detect physical intrusions.
 				</li>
+				<li>
+					For example: <a href="http://cs.tau.ac.il/~tromer/acoustic/">http://cs.tau.ac.il/~tromer/acoustic/</a>
+				</li>
 			</ul>
+
+	<h1>
+		Extra notes
+	</h1>
+		<p>
+			EC: Cannot be removed but can be mitigated: it contains non-free
+			non-loadable code, but it has no access to the computer's RAM.
+			It has access to the on-switch of the wifi, bluetooth, modem and some
+			other power management features. The issue is that it has access to the
+			keyboard, however if the software security howto <b>(not yet written)</b> is followed correctly,
+			it won't be able to leak data to a local attacker. It has no network
+			access but it may still be able to leak data remotely, but that
+			requires someone to be nearby to recover the data with the help of an
+			SDR and some directional antennas<a href="#ref3">[3]</a>.
+		</p>
+
+		<h2>
+			Risk level
+		</h2>
+			<ul>
+				<li>Modem: highest</li>
+				<li>Intel wifi: Near highest</li>
+				<li>Atheros PCI wifi: unknown, but lower than intel wifi.</li>
+				<li>Microphone: only problematic if the computer gets compromised.</li>
+				<li>Speakers: only problematic if the computer gets compromised.</li>
+				<li>EC: can be mitigated if following the <b>(not yet written)</b> guide on software security.</li>
+			</ul>
+
+	<h1>
+		References
+	</h1>
+		<h2 id="ref1">[1] physical access</h2>
+			<p>
+				Explain that black hats, TAO, and so on might use a 0day to get in,
+				and explain that in this case it mitigates what the attacker can do.
+				Also the TAO do some evaluation before launching an attack: they take
+				the probability of beeing caught into account, along with the kind of
+				target. A 0day costs a lot of money, I heard that it was from 100000$
+				to 400000$, some other websites had prices 10 times lower but that
+				but it was probably a typo. So if people increase their security it
+				makes it more risky and more costly to attack people.
+			</p>
+		<h2 id="ref2">[2] microphone</h2>
+			<p>
+				It's possible to turn headphones into a microphone, you could try
+				yourself, however they don't record loud at all. Also intel cards have
+				the capability to change a connector's function, for instance the
+				microphone jack can now become a headphone plug, that's called
+				retasking. There is some support for it in GNU/Linux but it's not very
+				well known.
+			</p>
+		<h2 id="ref3">[3] Video (CCC)</h2>
+			<p>
+				30c3-5356-en-Firmware_Fat_Camp_webm.webm from the 30th CCC. While
+				their demo is experimental(their hardware also got damaged during the
+				transport), the spies probably already have that since a long time.
+				<a href="http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm">http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm</a>
+			</p>
 
 <hr/>
 

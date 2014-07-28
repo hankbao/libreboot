@@ -32,6 +32,10 @@ make clean
 cd util/cbfstool
 make clean
 
+# clean nvramtool
+cd ../nvramtool
+make clean
+
 # go back to coreboot dir
 cd ../../
 

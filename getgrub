@@ -66,6 +66,11 @@ git apply gitdiff
 # remove the copy (no longer needed)
 rm -rf gitdiff
 
+# We don't need .git* (please submit all upstreamable changes directly to GRUB upstream)
+# removing them, to reduce the size of the archive
+rm -rf .git
+rm -rf .gitignore
+
 # we're done
 cd ../
 
