@@ -121,18 +121,32 @@ git add src/drivers/lenovo
 
 # apply fix for 3D on kernel 3.12+ for X60/T60 on the new native graphics code (5320/9), 
 # based on manually merging 5927/11 and 5932/5 (which fix the 3D on kernel 3.12+ on X60 for the *old* replay code) from review.coreboot.org
-# apply fix for backlight controls for T60 and X60, based on docs/i945_backlight.html
+# apply fix for backlight controls for T60 and X60, based on docs/future/index.html#x60_native_notes and docs/future/index.html#t60_native_notes
 # apply fix for IR/digitizer on X60/T60 and X60 Tablet (respectively), based on manually merging 5243/17, 5242/17 and 5239/19 from review.coreboot.org
 # (see notes above)
 
-# copy the gitdiff into coreboot directory
-cp ../resources/libreboot/patch/gitdiff .
+# the changes are in separate patches under resources/libreboot/patch/
 
-# apply it!
-git apply gitdiff
+# copy the patches into coreboot directory
+cp ../resources/libreboot/patch/*.diff .
 
-# remove the copy (not needed anymore)
-rm -rf gitdiff
+# apply the "git diff" patches
+git apply 0000_x60t_digitizer_irda.git.diff
+git apply 0001_i945_3dfix.git.diff
+rm -rf 0000_x60t_digitizer_irda.git.diff
+rm -rf 0001_i945_3dfix.git.diff
+# apply non-git diff: X60 backlight controls
+mv 0002_x60_backlight.diff src/mainboard/lenovo/x60
+cd src/mainboard/lenovo/x60
+patch devicetree.cb < 0002_x60_backlight.diff
+rm -rf 0002_x60_backlight.diff
+cd ../../../../
+# apply non-git diff: T60 backlight controls
+mv 0003_t60_backlight.diff src/mainboard/lenovo/t60
+cd src/mainboard/lenovo/t60
+patch devicetree.cb < 0003_t60_backlight.diff
+rm -rf 0003_t60_backlight.diff
+cd ../../../../
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------

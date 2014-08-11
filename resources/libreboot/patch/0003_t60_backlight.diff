@@ -1,0 +1,4 @@
+28c28
+< 	register "gpu_backlight" = "0x1280128"
+---
+> 	register "gpu_backlight" = "0x58BF58BE"

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+	</style>
+
+	<title>Libreboot documentation: Unbricking the ThinkPad T60</title>
+</head>
+
+<body>
+
+	<header>
+		<h1>Unbricking the ThinkPad T60</h1>
+		<aside>This guide will show you how to recover from a bad flash that prevents your ThinkPad T60 from booting.</aside>
+	</header>
+
+	<p>Or go <a href="../index.html">back to main index</a></p>
+
+	<h2>Table of Contents</h2>
+		<ul>
+			<li><a href="#hardware_requirements">Hardware Requirements</a></li>
+			<li><a href="#software_requirements">Software Requirements</a></li>
+			<li>
+				Types of brick:
+				<ul>
+					<li><a href="#bucts_brick">Brick type 1: bucts not reset</a></li>
+					<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
+				</ul>
+			</li>
+		</ul>
+
+	<h1 id="hardware_requirements">Hardware requirements</h1>
+		<ul>
+			<li>a 2nd computer (maybe another T60. any computer will do)</li>
+			<li>external flashrom-compatible programmer (I'm using the "bus pirate")
+			<li>SOIC-8 IC clip (I'm using the Pomona 5250)</li>
+			<li>Cable (programmer<>clip) - mine came with the bus pirate.</li>
+			<li>USB mini a to b cable (for buspirate<>computer connection).</li>
+			<li>rubbing a***hol (misspelling intentional. halal internet) and thermal compound for changing CPU heatsink (procedure involves removing heatsink)</li>
+		</ul>
+
+	<h1 id="software_requirements">Software requirements</h1>
+		<ul>
+			<li>GNU/Linux (on the 2nd computer)</li>
+			<li>flashrom software (on the 2nd computer): <a href="http://flashrom.org/" target="_blank">http://flashrom.org/</a>
+		</ul>
+
+	<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
+		<p>
+			You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and
+			the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.<br/><br/>
+
+			In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
+			<img src="t60_dev/0006.JPG" alt="" /><br/><br/>
+
+			*Those dd commands should be applied to all newly compiled T60 ROM's (the ROM's in libreboot binary archives already have this applied!):<br/>
+			dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
+			dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
+			dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
+			(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
+			using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
+			(it says x60, but instructions for t60 are identical)
+		</p>
+
+	<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
+
+		<p>
+			In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your machine from
+			booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your machine is bricked and will not boot at all.
+		</p>
+		<p>
+			&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the machine, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
+		</p>
+
+		<p>
+			Remove those screws and remove the HDD:<br/>
+			<img src="t60_dev/0001.JPG" alt="" /> <img src="t60_dev/0002.JPG" alt="" />
+		</p>
+
+		<p>
+			Lift off the palm rest:<br/>
+			<img src="t60_dev/0003.JPG" alt="" />
+		</p>
+
+		<p>
+			Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:<br/>
+			<img src="t60_dev/0004.JPG" alt="" /> <img src="t60_dev/0005.JPG" alt="" /> <img src="t60_dev/0006.JPG" alt="" />
+		</p>
+
+		<p>
+			Gently wedge both sides loose:<br/>
+			<img src="t60_dev/0007.JPG" alt="" /> <img src="t60_dev/0008.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove that cable from the position:<br/>
+			<img src="t60_dev/0009.JPG" alt="" /> <img src="t60_dev/0010.JPG" alt="" />
+		</p>
+
+		<p>
+			Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):<br/>
+			<img src="t60_dev/0011.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove those screws:<br/>
+			<img src="t60_dev/0012.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect the power jack:<br/>
+			<img src="t60_dev/0013.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove nvram battery:<br/>
+			<img src="t60_dev/0014.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect cable (for 56k modem) and disconnect the other cable:<br/>
+			<img src="t60_dev/0015.JPG" alt="" /> <img src="t60_dev/0016.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect speaker cable:<br/>
+			<img src="t60_dev/0017.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect the other end of the 56k modem cable:<br/>
+			<img src="t60_dev/0018.JPG" alt="" />
+		</p>
+
+		<p>
+			Make sure you removed it:<br/>
+			<img src="t60_dev/0019.JPG" alt="" />
+		</p>
+
+		<p>
+			Unscrew those:<br/>
+			<img src="t60_dev/0020.JPG" alt="" />
+		</p>
+
+		<p>
+			Make sure you removed those:<br/>
+			<img src="t60_dev/0021.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect LCD cable from board:<br/>
+			<img src="t60_dev/0022.JPG" alt="" />
+		</p>
+
+		<p> 
+			Remove those screws then remove the LCD assembly:<br/>
+			<img src="t60_dev/0023.JPG" alt="" /> <img src="t60_dev/0024.JPG" alt="" /> <img src="t60_dev/0025.JPG" alt="" />
+		</p>
+
+		<p>
+			Once again, make sure you removed those:<br/>
+			<img src="t60_dev/0026.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady
+			surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the
+			screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the machine:<br/>
+			<img src="t60_dev/0027.JPG" alt="" /> <img src="t60_dev/0028.JPG" alt="" /> <img src="t60_dev/0029.JPG" alt="" />
+			<img src="t60_dev/0031.JPG" alt="" /> <img src="t60_dev/0032.JPG" alt="" /> <img src="t60_dev/0033.JPG" alt="" />
+		</p>
+
+		<p>
+			At this point, you should wire up your programmer according to it's documentation. For me, this was (see: "SparkFun cable pin reference"):<br/>
+			<a href="http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts" target="_blank">http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts</a>.<br/>
+			Correlating with the following information, I was able to wire up my pirate correctly:<br/>
+			<a href="http://flashrom.org/Bus_Pirate#Connections" target="_blank">http://flashrom.org/Bus_Pirate#Connections</a><br/>
+			And by following that advice:<br/>
+			<a href="http://www.coreboot.org/Board:lenovo/x60/Installation#Howto" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation#Howto</a>.<br/>
+			(it says X60 but instructions are virtually the same for the T60, with except to physical differences in how to disassemble the machine)<br/>
+			Note: that last page says to wire up only those 5 pins (see below) like that: 1, 2, 4, 5, 6.<br/>
+			Note: and then, for power it says (on that coreboot.org page) to connect the power jack to the board and connect the
+			AC adapter (without powering on the board).<br/>
+			Note: I ignored that advice, and wired up all 8 pins. And it worked.<br/>
+
+			Here is the pinout (correlate it with your programmer's documentation):<br/>
+			<img src="t60_dev/0030.JPG" alt="" />
+		</p>
+
+		<p>
+			Connecting the pomona:<br/>
+			<img src="t60_dev/0034.JPG" alt="" />
+		</p>
+
+		<p>
+			Connect programmer to 2nd computer:<br/>
+			<img src="t60_dev/0035.JPG" alt="" />
+		</p>
+
+		<p>
+			Programmer has power:<br/>
+			<img src="t60_dev/0036.JPG" alt="" />
+		</p>
+
+		<p>
+			Now flash the bricked machine using the 2nd computer. in my case I did:<br/>
+			<b>flashrom -p buspirate_spi:dev=/dev/ttyUSB0 -w bin/t60/libreboot_usqwerty.rom</b><br/>
+			Note: there are also other ROM images for T60<br/>
+			Note: this is using buspirate as the programmer, so it is flashing the T60, not the 2nd computer!<br/>
+			Here's my terminal window on the 2nd computer (also the programmer is active):<br/>
+			<img src="t60_dev/0037.JPG" alt="" /> <img src="t60_dev/0038.JPG" alt="" /><br/>
+			So, you should see the following:<br/>
+			--
+			<pre>
+			flashrom v0.9.5.2-r1517 on Linux 3.2.0-61-generic (i686), built with libpci 3.1.8, GCC 4.6.3, little endian
+			flashrom is free software, get the source code at http://www.flashrom.org
+
+			Calibrating delay loop... delay loop is unreliable, trying to continue OK.
+			Found Macronix flash chip "MX25L1605" (2048 kB, SPI) on buspirate_spi.
+			Reading old flash chip contents... done.
+			Erasing and writing flash chip... Erase/write done.
+			Verifying flash... VERIFIED. 
+			</pre>
+			--<br/>
+			At the end it says "VERIFIED", which means that the procedure worked. If you see this, it means 
+			that you can put your T60 back together. So let's do that now.
+		</p>
+
+		<p>
+			Put those screws back:<br/>
+			<img src="t60_dev/0047.JPG" alt="" />
+		</p>
+
+		<p>
+			Put it back into lower chassis:<br/>
+			<img src="t60_dev/0048.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach LCD and insert screws (also, attach the lcd cable to the board):<br/>
+			<img src="t60_dev/0049.JPG" alt="" />
+		</p>
+
+		<p>
+			Insert those screws:<br/>
+			<img src="t60_dev/0050.JPG" alt="" />
+		</p>
+
+		<p>
+			On the CPU (and there is another chip south-east to it, sorry forgot to take pic)
+			clean off the old thermal paste (rubbing a1ocheal (misspelling intentional. halal internet)) and apply new (Artic Silver 5 is good, others are good too)
+			you should also clean the heatsink the same way<br/>
+			<img src="t60_dev/0051.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):<br/>
+			<img src="t60_dev/0052.JPG" alt="" />
+		</p>
+
+		<p>
+			Reinstall that upper bezel:<br/>
+			<img src="t60_dev/0053.JPG" alt="" />
+		</p>
+
+		<p>
+			Do that:<br/>
+			<img src="t60_dev/0054.JPG" alt="" /> <img src="t60_dev/0055.JPG" alt="" />
+		</p>
+
+		<p>
+			Re-attach modem, wifi, (wwan?), and all necessary cables. Sorry, forgot to take pics. Look at previous removal steps to see where they go back to.
+		</p>
+
+		<p>
+			Attach keyboard and install nvram battery:<br/>
+			<img src="t60_dev/0056.JPG" alt="" /> <img src="t60_dev/0057.JPG" alt="" />
+		</p>
+
+		<p>
+			Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:<br/>
+			<img src="t60_dev/0058.JPG" alt="" />
+		</p>
+
+		<p>
+			It lives!<br/>
+			<img src="t60_dev/0071.JPG" alt="" /> <img src="t60_dev/0072.JPG" alt="" /> <img src="t60_dev/0073.JPG" alt="" />
+		</p>
+
+		<p>
+			Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:<br/>
+			<img src="t60_dev/0074.JPG" alt="" />
+		</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>

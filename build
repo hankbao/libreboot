@@ -42,7 +42,7 @@ echo "generating grub.elf payload"
 cd grub
 mv ../grub_memdisk_keymap .
 # Build the GRUB2 payload (grub.elf)
-./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o grub.elf --modules='crypto cryptodisk ahci pata ehci uhci ohci usb_keyboard usbms part_msdos xfs ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs minix_be minix minix3_be minix3 minix2_be minix2 zfs ufs2 ufs1_be ufs1 udf squash4 romfs jfs reiserfs procfs odc ntfs nilfs2 newc iso9660 hfsplus cpio exfat cpio_be afs btrfs bfs hfs video_bochs password png jpeg keystatus sleep loopback gfxterm_background' --install-modules='syslinuxcfg bsd ls cat echo linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=../resources/grub/config/grub_memdisk.cfg $(./grub_memdisk_keymap)
+./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o grub.elf --modules='crypto cryptodisk luks lvm cmosdump cmostest ahci pata ehci uhci ohci usb_keyboard usbms part_msdos xfs ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs minix_be minix minix3_be minix3 minix2_be minix2 zfs ufs2 ufs1_be ufs1 udf squash4 romfs jfs reiserfs procfs odc ntfs nilfs2 newc iso9660 hfsplus cpio exfat cpio_be afs btrfs bfs hfs video_bochs password png jpeg keystatus sleep loopback gfxterm_background' --install-modules='syslinuxcfg bsd ls cat echo linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=../resources/grub/config/grub_memdisk.cfg $(./grub_memdisk_keymap)
 mv grub_memdisk_keymap ../
 
 # move those into coreboot directory:
@@ -119,6 +119,11 @@ cp COPYING ../libreboot_bin
 # Include the same documentation in binary archive
 cp -r docs ../libreboot_bin
 
+# include X60 cmos.layout file
+cp coreboot/src/mainboard/lenovo/x60/cmos.layout ../libreboot_bin/x60cmos.layout
+cp coreboot/src/mainboard/lenovo/t60/cmos.layout ../libreboot_bin/t60cmos.layout
+cp coreboot/src/mainboard/apple/macbook21/cmos.layout ../libreboot_bin/macbook21cmos.layout
+
 # X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
 cp -r bucts ../libreboot_bin
 
@@ -128,6 +133,8 @@ cp -r coreboot/util/nvramtool ../libreboot_bin
 # X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
 cp powertop.trisquel6 ../libreboot_bin
 cp powertop.trisquel6.init ../libreboot_bin
+
+cp macbook21_firstflash ../libreboot_bin
 
 # (lazy hack) to make builddep-flashrom work in libreboot_bin:
 cp -r resources ../libreboot_bin

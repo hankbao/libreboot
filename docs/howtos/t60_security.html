@@ -13,14 +13,14 @@
 		}
 	</style>
 
-	<title>Libreboot documentation: Security on the ThinkPad X60</title>
+	<title>Libreboot documentation: Security on the ThinkPad T60</title>
 </head>
 
 <body>
 
 	<header>
-		<h1>Security on the ThinkPad X60</h1>
-		<aside>Hardware modifications to enhance security on the ThinkPad X60. This tutorial is <b>incomplete</b> at the time of writing.</aside>
+		<h1>Security on the ThinkPad T60</h1>
+		<aside>Hardware modifications to enhance security on the ThinkPad T60. This tutorial is <b>incomplete</b> at the time of writing.</aside>
 	</header>
 
 	<p>Or go <a href="../index.html">back to main index</a></p>
@@ -34,7 +34,7 @@
 
 	<h1 id="hardware_requirements">Hardware requirements</h1>
 		<ul>
-			<li>An X60</li>
+			<li>A T60</li>
 			<li>screwdriver</li>
 			<li>(in a later version of this tutorial: soldering iron and scalpel)</li>
 		</ul>
@@ -77,58 +77,112 @@
 	<h1 id="procedure">Disassembly</h1>
 
 		<p>
-			Firstly remove the bluetooth (if your X60 has this):<br/>
-			The marked screws are underneath those stickers (marked in those 3 locations at the bottom of the LCD assembly):<br/>
-			<img src="x60_security/0000_bluetooth0.jpg" alt="" /><br/>
-			Now gently pry off the bottom part of the front bezel, and the bluetooth module is on the left (easily removable):<br/>
-			<img src="x60_security/0000_bluetooth.jpg" alt="" /><br/>
+			Remove those screws and remove the HDD:<br/>
+			<img src="t60_dev/0001.JPG" alt="" /> <img src="t60_dev/0002.JPG" alt="" />
 		</p>
 
 		<p>
-			If your model was WWAN, remove the simcard (check anyway):<br/>
-			Uncover those 2 screws at the bottom:<br/>
-			<img src="x60_security/0000_simcard0.jpg" alt="" /><br/>
-			SIM card (not present in the picture) is in the marked location:<br/>
-			<img src="x60_security/0000_simcard1.jpg" alt="" /><br/>
-			Replacement: USB dongle.
+			Lift off the palm rest:<br/>
+			<img src="t60_dev/0003.JPG" alt="" />
 		</p>
 
 		<p>
-			Now get into the motherboard.
+			Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:<br/>
+			<img src="t60_dev/0004.JPG" alt="" /> <img src="t60_dev/0005.JPG" alt="" /> <img src="t60_dev/0006.JPG" alt="" />
+		</p>
+
+		<p>
+			Gently wedge both sides loose:<br/>
+			<img src="t60_dev/0007.JPG" alt="" /> <img src="t60_dev/0008.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove that cable from the position:<br/>
+			<img src="t60_dev/0009.JPG" alt="" /> <img src="t60_dev/0010.JPG" alt="" />
+		</p>
+
+		<p>
+			Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):<br/>
+			<img src="t60_dev/0011.JPG" alt="" /><br/>
+			Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.<br/>
+			<b>Wifi:</b> The ath5k/ath9k cards might not have firmware at all. They might safe but could have
+			access to the computer's RAM trough DMA. If people have an intel
+			card(most T60's come with Intel wifi by default, until you change it),then that card runs
+			a non-free firwamre and has access to the computer's RAM trough DMA! So
+			it's risk-level is very high.
 		</p>
 
 		<p>
 			Remove those screws:<br/>
-			<img src="x60_security/0000.jpg" alt="" />
-		</p>
-		<p>
-			Push the keyboard forward (carefully):<br/>
-			<img src="x60_security/0001.jpg" alt="" />
-		</p>
-		<p>
-			Lift the keyboard up and disconnect it from the board:<br/>
-			<img src="x60_security/0002.jpg" alt="" />
-		</p>
-		<p>
-			Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:<br/>
-			<img src="x60_security/0003.jpg" alt="" />
-		</p>
-		<p>
-			You should now have this:<br/>
-			<img src="x60_security/0004.jpg" alt="" />
+			<img src="t60_dev/0012.JPG" alt="" />
 		</p>
 
 		<p>
-			The following is a summary of what you will remove (already done to this machine):<br/>
-			<img src="x60_security/0001_overview.jpg" alt="" /><br/>
-			Note: the blue lines represent antenna cables and modem cables. You don't need to remove these, but you can if you want
-			(to make it tidier after removing other parts). I removed the antenna wires, the modem jack, the modem cable and
-			also (on another model) a device inside the part where the wwan antenna goes (wasn't sure what it was, but I knew it wasn't needed). <b>This is optional</b>
+			Disconnect the power jack:<br/>
+			<img src="t60_dev/0013.JPG" alt="" />
 		</p>
 
 		<p>
-			Remove the microphone (can desolder it, but you can also easily pull it off with you hands). Already removed here:<br/>
-			<img src="x60_security/0001_microphone.jpg" alt="" /><br/>
+			Remove nvram battery (we will put it back later):<br/>
+			<img src="t60_dev/0014.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect cable (for 56k modem) and disconnect the other cable:<br/>
+			<img src="t60_dev/0015.JPG" alt="" /> <img src="t60_dev/0016.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect speaker cable:<br/>
+			<img src="t60_dev/0017.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect the other end of the 56k modem cable:<br/>
+			<img src="t60_dev/0018.JPG" alt="" />
+		</p>
+
+		<p>
+			Make sure you removed it:<br/>
+			<img src="t60_dev/0019.JPG" alt="" />
+		</p>
+
+		<p>
+			Unscrew those:<br/>
+			<img src="t60_dev/0020.JPG" alt="" />
+		</p>
+
+		<p>
+			Make sure you removed those:<br/>
+			<img src="t60_dev/0021.JPG" alt="" />
+		</p>
+
+		<p>
+			Disconnect LCD cable from board:<br/>
+			<img src="t60_dev/0022.JPG" alt="" />
+		</p>
+
+		<p> 
+			Remove those screws then remove the LCD assembly:<br/>
+			<img src="t60_dev/0023.JPG" alt="" /> <img src="t60_dev/0024.JPG" alt="" /> <img src="t60_dev/0025.JPG" alt="" />
+		</p>
+
+		<p>
+			Once again, make sure you removed those:<br/>
+			<img src="t60_dev/0026.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady
+			surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the
+			screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the machine:<br/>
+			<img src="t60_dev/0027.JPG" alt="" /> <img src="t60_dev/0028.JPG" alt="" /> <img src="t60_dev/0029.JPG" alt="" />
+			<img src="t60_dev/0031.JPG" alt="" /> <img src="t60_dev/0032.JPG" alt="" /> <img src="t60_dev/0033.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove microphone (soldering iron not needed. Just wedge it out gently):<br/>
+			<img src="t60_dev/0039.JPG" alt="" /><br/>
 			<b>Rationale:</b><br/>
 			Another reason to remove the microphone: If your computer gets<a href="#ref1">[1]</a> compromised, it can
 			record what you say, and use it to receive data from nearby devices if
@@ -138,14 +192,22 @@
 		</p>
 
 		<p>
-			Remove the modem:<br/>
-			<img src="x60_security/0001_modem.jpg" alt="" /><br/>
-			(useless, obsolete device)
+			Remove infrared:<br/>
+			<img src="t60_dev/0040.JPG" alt="" /> <img src="t60_dev/0042.JPG" alt="" />
 		</p>
 
 		<p>
-			Remove the speaker:<br/>
-			<img src="x60_security/0001_speaker.jpg" alt="" /><br/>
+			Remove cardbus (it's in a socket, no need to disable. Just remove the port itself):<br/>
+			<img src="t60_dev/0041.JPG" alt="" /><br/>
+			<b>Rationale:</b><br/>
+			It has direct memory access and can be used to extract sensitive details (such as LUKS keys). See
+			'GoodBIOS' video linked at the end (speaker is Peter Stuge, a coreboot hacker). The video covers X60
+			but the same topics apply to T60.
+		</p>
+
+		<p>
+			Before re-installing the upper chassis, remove the speaker:<br/>
+			<img src="t60_dev/0043.JPG" alt="" /> <img src="t60_dev/0044.JPG" alt="" /><br/>
 			Reason: combined with the microphone issue, this could be used to leak data.<br/>
 			If your computer gets<a href="#ref1">[1]</a> compromised, it can be used to
 			transmit data to nearby compromised devices. It's unknown if it can be
@@ -154,26 +216,104 @@
 		</p>
 
 		<p>
-			Remove the wlan (also remove wwan if you have it):<br/>
-			<img src="x60_security/0001_wlan_wwan.jpg" alt="" /><br/>
-			Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.<br/>
-			<b>Wifi:</b> The ath5k/ath9k cards might not have firmware at all. They might safe but could have
-			access to the computer's RAM trough DMA. If people have an intel
-			card(most X60's come with Intel wifi by default, until you change it),then that card runs
-			a non-free firwamre and has access to the computer's RAM trough DMA! So
-			it's risk-level is very high.<br/>
+			Remove the wwan:<br/>
+			<img src="t60_dev/0045.JPG" alt="" /><br/>
 			<b>Wwan (3d modem):</b> They run proprietary software and have access to the
 			computer's RAM! So it's like AMT but over the GSM network which is
 			probably even worse.<br/>
 			Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
-		</p>	
+		</p>
+
+		<p>
+			This is where the simcard connector is soldered. See notes above about wwan. Remove simcard by removing battery
+			and then it's accessible (so, remember to do this when you re-assemble. or you could do it now?)<br/>
+			<img src="t60_dev/0046.JPG" alt="" />
+		</p>
+
+		<p>
+			Put those screws back:<br/>
+			<img src="t60_dev/0047.JPG" alt="" />
+		</p>
+
+		<p>
+			Put it back into lower chassis:<br/>
+			<img src="t60_dev/0048.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach LCD and insert screws (also, attach the lcd cable to the board):<br/>
+			<img src="t60_dev/0049.JPG" alt="" />
+		</p>
+
+		<p>
+			Insert those screws:<br/>
+			<img src="t60_dev/0050.JPG" alt="" />
+		</p>
+
+		<p>
+			On the CPU (and there is another chip south-east to it, sorry forgot to take pic)
+			clean off the old thermal paste (rubbing a1ocheal (misspelling intentional. halal internet)) and apply new (Artic Silver 5 is good, others are good too)
+			you should also clean the heatsink the same way<br/>
+			<img src="t60_dev/0051.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):<br/>
+			<img src="t60_dev/0052.JPG" alt="" />
+		</p>
+
+		<p>
+			Reinstall that upper bezel:<br/>
+			<img src="t60_dev/0053.JPG" alt="" />
+		</p>
+
+		<p>
+			Do that:<br/>
+			<img src="t60_dev/0054.JPG" alt="" /> <img src="t60_dev/0055.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach keyboard and install nvram battery:<br/>
+			<img src="t60_dev/0056.JPG" alt="" /> <img src="t60_dev/0057.JPG" alt="" />
+		</p>
+
+		<p>
+			Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:<br/>
+			<img src="t60_dev/0058.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove those covers and unscrew:<br/>
+			<img src="t60_dev/0059.JPG" alt="" /> <img src="t60_dev/0060.JPG" alt="" /> <img src="t60_dev/0061.JPG" alt="" />
+		</p>
+
+		<p>
+			Gently pry off the front bezel (sorry, forgot to take pics).
+		</p>
+
+		<p>
+			Remove bluetooth module:<br/>
+			<img src="t60_dev/0062.JPG" alt="" /> <img src="t60_dev/0063.JPG" alt="" />
+		</p>
+
+		<p>
+			Re-attach the front bezel and re-insert the screws (sorry, forgot to take pics).
+		</p>
+
+		<p>
+			It lives!<br/>
+			<img src="t60_dev/0071.JPG" alt="" /> <img src="t60_dev/0072.JPG" alt="" /> <img src="t60_dev/0073.JPG" alt="" />
+		</p>
+
+		<p>
+			Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:<br/>
+			<img src="t60_dev/0074.JPG" alt="" />
+		</p>
 
 		<h2>
 			Not covered yet:
 		</h2>	
 			<ul>
-				<li>Disable cardbus (has fast/direct memory access)</li>
-				<li>Disable firewire (has fast/direct memory access)</li>
 				<li>Disable flashing the ethernet firmware</li>
 				<li>Disable SPI flash writes (can be re-enabled by unsoldering two parts)</li>
 				<li>Disable use of xrandr/edid on external monitor (cut 2 pins on VGA)</li>
@@ -201,7 +341,6 @@
 					Tips about preventing/mitigating risk of cold boot attack.
 					<ul>
 						<li>soldered RAM?</li>
-						<li>seal RAM door shut (possibly modified lower chassis) so that system has to be disassembled (which has to go through the nail polish)</li>
 						<li>wipe all RAM at boot/power-off/power-on? (patch in coreboot upstream?)</li>
 						<li>ask gnutoo about fallback patches (counts number of boots)</li>
 					</ul>

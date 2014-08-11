@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+		p.lenovobios {
+			font-weight:bold; color:#f00; font-style:italic; font-size:1.2em;
+		}
+		p.lenovobios:hover { /* for people who are colour-blind */
+			color: #000;
+		}
+		div.important {
+			background-color:#ccc;
+		}
+	</style>
+
+	<title>Libreboot release information</title>
+</head>
+<body>
+	<header>
+		<h1 id="pagetop">Libreboot release information</h1>
+		<aside>Documentation for this release can be found at <a href="index.html">index.html</a>.</aside>
+	</header>
+
+	<h2 id="rebootkey">GnuPG public key (signing key)</h2>
+
+		<p>
+			pub&nbsp; 4096R/656F212E 2014-07-04 Libreboot Releases (signing key) &lt;releases@libreboot.org&gt;<br/>
+	 		Fingerprint=C923 4BA3 200C F688 9CC0&nbsp; 764D 6E97 D575 656F 212E 
+		</p>
+		<p>
+			<b>Download the key</b>: <a href="libreboot.asc">libreboot.asc</a>.
+		</p>
+		<p>
+			You should also be able to find it on a key server. Note: the above key is not for email. It is only for verifying the release archives.
+		</p>
+
+	<h2>Releases</h2>
+	<ul>
+		<li><a href="#release6">6th release</a> (2014 August 11th, <b>pre-release, 5th beta</b>)</h1>
+		<li><a href="#release5">5th release</a> (2014 March 7th, revised 2014 June 22nd)</h1>
+		<li><a href="#release4">4th release</a> (2014 February 21st)</h1>
+		<li><a href="#release3">3rd release</a> (2013 December 14th)</h1>
+		<li><a href="#release2">2nd release</a> (2013 December 13th)</h1>
+		<li><a href="#release1">1st release</a> (2013 December 12th)</h1>
+	</ul>
+	<p>
+		<b><i>&quot;Release&quot;</i></b> means that a new coreboot git revision with substantially different code has been adapted for libreboot.
+	</p>
+	<p>
+		<b><i>&quot;Revision&quot;</i></b> means a modification to an existing release, where the result is insubstantially different from what preceded it.
+	</p>
+	<p>
+		The 1st, 2nd, 3rd and 4th releases were really just older revisions of the 5th release.
+		For historical reasons (and to avoid confusion), these are still called 'releases' instead of correcting the mistake.
+	</p>
+
+<hr/>
+
+	<h1 id="release6">6th release (pre-release, 5th beta)</h1>
+
+		<ul>
+			<li>Released 2014 July 11th (pre-release) 1st beta</li>
+			<li>Revised (pre-release, 2nd beta) 2014 July 16th</li>
+			<li>Revised (pre-release, 3rd beta) 2014 July 20th</li>
+			<li>Revised (pre-release, 4th beta) 2014 July 29th</li>
+			<li>Revised (pre-release, 5th beta) 2014 August 11th</li>
+		</ul>
+
+		<div class="important">
+			<h2>Warning: <u>BETA</u> release! <u>TESTING</u> needed! <u>BUGS</u> present!</h2>
+				<p style="font-size:1.2em;">
+					<b><u><i>If flashing on an X60 then note that you might want to enable wifi and trackpoint after 
+					booting libreboot the first time (meaning, **after** you powered off and subsequently booted again). </i></u></b>
+					See <b><a href="../docs/index.html#x60_wifi">../docs/index.html#x60_wifi</a></b> and 
+					<b><a href="../docs/index.html#x60_trackpoint">../docs/index.html#x60_trackpoint</a></b> for how to do that.
+				</p>
+		</div>
+
+		<h2>Binaries (for flashing) (right-click save as, or use wget)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz">http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz.sig">http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz.sig</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz.sha512sum.txt">http://libreboot.org/release/5/prerelease_beta5/libreboot_bin.tar.gz.sha512sum.txt</a></li>
+			</ul>
+		<h2>Source code (for hacking) (right-click save as, or use wget)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz">http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz.sig">http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz.sig</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz.sha512sum.txt">http://libreboot.org/release/5/prerelease_beta5/libreboot_src.tar.gz.sha512sum.txt</a></li>
+			</ul>
+		<h2>Metadata (for re-creating the source archive) (right-click save as, or use wget)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz">http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz.sig">http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz.sig</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz.sha512sum.txt">http://libreboot.org/release/5/prerelease_beta5/libreboot_meta.tar.gz.sha512sum.txt</a></li>
+			</ul>
+
+		<h2>Machines still supported (compared to previous release):</h2>
+			<ul>
+				<li>
+					<b>Lenovo ThinkPad X60/X60s</b>
+					<ul>
+						<li>
+							You can also remove the motherboard from an X61/X61s and replace it with an X60/X60s motherboard.
+						</li>
+					</ul>
+				</li>
+			</ul>
+		<h2>New machines supported in this release:</h2>
+			<ul>
+				<li>
+					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
+					<ul>
+						<li>See <a href="../docs/index.html#supported_x60t_list">../docs/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+					</ul>
+				</li>
+				<li>
+					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)</b>
+					<ul>
+						<li>See notes below for exceptions, and <a href="../docs/index.html#supported_t60_list">../docs/index.html#supported_t60_list</a> for known working LCD panels.</li>
+						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
+						<li>See <a href="../docs/future/index.html#t60_cpu_microcode">../docs/future/index.html#t60_cpu_microcode</a>.</li>
+					</ul>
+				</li>
+				<li>
+					<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
+					<ul>
+						<li>See <a href="../docs/index.html#macbook21">../docs/index.html#macbook21</a>.</li>
+					</ul>
+				</li>
+			</ul>
+		<h2>Machines no longer supported (compared to previous release):</h2>
+			<ul>
+				<li><b>All previous machines still supported!</b></li>
+			</ul>
+
+		<h2>
+			Revisions for 1st beta (2014 July 11th)
+		</h2>
+			<ul>
+				<li>Initial release (new coreboot base, dated June 1st 2014. See 'getcb' script for reference)</li>
+				<li>DEBLOBBED coreboot</li>
+				<li>Removed the part from memtest86+ 'make' where it tried to connect to some scp server while compiling. (commented out line 24 in the Makefile)</li>
+				<li>X60 now uses a single .config (for coreboot)</li>
+				<li>X60 now uses a single grub.cfg (for grub memdisk)</li>
+				<li>X60 now uses a single grub.elf (payload)</li>
+				<li>Added new native graphics code for X60 (replaces the old 'replay' code) from Vladimir Serbinenko: 5320/9 from review.coreboot.org</li>
+				<li>T60 is now supported, with native graphics. (5345/4 from review.coreboot.org, cherry-picked on top of 5320/9 checkout)</li>
+				<li>
+					Added macbook2,1 support (from Mono Moosbart and Vladimir Serbinenko) from review.coreboot.org (see 'getcb' script to know how that was done)
+					<ul>
+						<li>Documentation: added information linking to correct page and talking about which models are supported.</li>
+						<li>Added resources/libreboot/config/macbook21config</li>
+						<li>macbook21: Added 'build-macbook21' script and linked to it in 'build' (ROM's included under bin/macbook21/)</li>
+						<li>macbook21: Removed dd instructions from build-macbook21 script (macbook21 does not need bucts when flashing libreboot while Apple EFI firmware is running)</li>
+						<li>Documentation: Added macbook21 ROM's to the list of ROM's in docs/index.html#rom</li>
+						<li>Documentation: Write documentation linking to Mono Moosbart's macbook21 and parabola page (and include a copy)</li>
+					</ul>
+				</li>
+				<li>Documentation: added a copy of Mono's Parabola install guide (for macbook21 with Apple EFI firmware) and linked in in main index.</li>
+				<li>Documentation: added a copy of Mono's Coreboot page (for macbook21) and linked it in main index.</li>
+				<li>T60: Copy CD option from the grub.cfg's for T60 *serial*.rom images into the grub configs for non-serial images. (T60's have CD/DVD drive on main laptop)</li>
+				<li>macbook21: remove options in build-macbook21 for *serial*.rom (there is no dock or serial port available for macbook21)</li>
+				<li>
+					Added patches for backlight controls on X60 and T60 with help from Denis Carikli (see ./resources/libreboot/patch/gitdiff and ./getcb and docs/i945_backlight.html)
+					<ul>
+						<li>Documentation: added docs/i945_backlight.html showing how backlight controls were made to work on X60/T60</li>
+					</ul>
+				</li>
+				<li>
+					Documentation: Added info about getting LCD panel name based on EDID data.
+					<ul>
+						<li>Documentation: Added a link to this from the list of supported T60's and LCD panels for T60 (so that the user can check what LCD panel they have).</li>
+					</ul>
+				</li>
+				<li>
+					X60/T60: Merged patches for 3D fix (from Paul Menzel) when using kernel 3.12 or higher (see ./resources/libreboot/patch/gitdiff and ./getcb)
+					<ul>
+						<li>based on 5927/11 and 5932/5 from review.coreboot.org</li>
+					</ul>
+				</li>
+				<li>
+					Improved thinkpad_acpi support (from coreboot ): xsensors shows more information.
+					<ul>
+						<li>From 4650/29 in review.coreboot.org (merged in coreboot 'master' on June 1st 2014)</li>
+					</ul>
+				</li>
+				<li>
+					Merged changes for digitizer (X60 Tablet) and IR (X60 and T60) based on 5243/17, 5242/17 and 5239/19 from review.coreboot.org
+					<ul>
+						<li>(see ./resources/libreboot/patch/gitdiff and ./getcb)</li>
+					</ul>
+				</li>
+				<li>Documentation: added information about building flashrom using 'builddeps-flashrom' script.</li>
+				<li>Re-created resources/libreboot/config/x60config</li>
+				<li>Re-created resources/libreboot/config/t60config</li>
+				<li>
+					Added 'x60tconfig' in resources/libreboot/config (because X60 Tablet has different information about serial/model/version in 'dmidecode')
+					<ul>
+						<li>Added 'build-x60t' script</li>
+						<li>Updated 'build' script to use 'build-x60t'</li>
+						<li>Documentation: added to #config section the section #config_x60t (libreboot configuration and dmidecode info)</li>
+						<li>Documentation: added x60t ROM's to the list of ROM's</li>
+					</ul>
+				</li>
+				<li>Tidied up the 'builddeps' script (easier to read)</li>
+				<li>Tidied up the 'cleandeps' script (easier to read)</li>
+				<li>Annotated the 'buildall' script</li>
+				<li>Added 'getcb' script for getting coreboot revision used from git, and patching it.</li>
+				<li>Added 'getgrub' script for getting the GRUB revision used from git, and patching it.</li>
+				<li>Added 'getmt86' script for getting the memtest86+ version used, and patching it.</li>
+				<li>Added 'getbucts' script for getting the bucts version used.</li>
+				<li>Added 'getflashrom' script for getting the flashrom version used, and patching it</li>
+				<li>Added 'getall' script which runs all of the other 'get' scripts.</li>
+				<li>
+					Add instructions to the 'build' script to prepare libreboot_meta.tar.gz
+				 	<ul>
+						<li>New archive: libreboot_meta.tar.gz - minimal archive, using the 'get' scripts to download all the dependencies (coreboot, memtest, grub and so on).</li>
+					</ul>
+				</li>
+				<li>Documentation: added information about where 'build' script prepares the libreboot_meta.tar.gz archive.</li>
+				<li>
+					Documentation: added information about how to use the 'get' scripts in libreboot_meta.tar.gz (to generate libreboot_src.tar.gz)
+					<ul>
+						<li>Documentation: mention that meta doesn't create libreboot_src/ directory, but that libreboot_meta itself becomes the same.</li>
+						<li>Documentation: advise to rename libreboot_meta to libreboot_src after running 'getall'.</li>
+					</ul>
+				</li>
+				<li>Annotated the 'builddeb' script, to say what each set of dependencies are for.</li>
+				<li>Separated bucts/flashrom builddeb sections into separate scripts: builddeb-flashrom, builddeb-bucts.</li>
+				<li>Documentation: Updated relevant parts based on the above.</li>
+				<li>Added instructions to 'build' script for including builddeb-bucts and builddeb-flashrom in libreboot_bin</li>
+				<li>
+					Updated flashrom checkout (r1822 2014-06-16) from SVN (http://flashrom.org/Downloads).
+					<ul>
+						<li>Updated flashing instructions in docs/index.html for new commands needed (Macronix chip on X60/T60)</li>
+						<li>For X60/T60 (flashrom): Patched flashchips.c_lenovobios_macronix and flashchips.c_lenovobios_sst executables for SST/macronix (included in resources/flashrom/patch)</li>
+						<li>Updated builddeps to build flashrom_lenovobios_sst and flashrom_lenovobios_macronix, for X60/T60 users with Lenovo BIOS</li>
+						<li>moved the flashrom build instructions from 'builddeps' and put them in 'builddeps-flashrom', excecuting that from 'builddeps'.</li>
+						<li>Added builddeps-flashrom to libreboot_bin.tar.gz</li>
+					</ul>
+				</li>
+				<li>
+					flashrom: added patched flashchips.c to resources/flashrom/patch (automatically use correct macronix chip on libreboot, without using '-c' switch)
+					<ul>
+				 		<li>removed 'MX25L1605' and 'MX25L1605A/MX25L1606E' entries in flashchips.c for the patched version of flashchips.c</li>
+						<li>added instructions to 'builddeps-flashrom' to automatically use this modified flashchips.c in the default build</li>
+					</ul>
+				</li>
+				<li>Added builddeb to libreboot_bin.tar.gz</li>
+				<li>
+					Moved 'bucts' build instructions from builddeps to builddeps-bucts
+					<ul>
+						<li>builddeps now runs 'builddeps-bucts' instead</li>
+						<li>Added 'builddeps-bucts' to libreboot_bin.tar.gz</li>
+						<li>Documentation: Added information about using 'builddep-bucts' to build the BUC.TS utility.</li>
+					</ul>
+				</li>
+				<li>
+					Added 'lenovobios_firstflash' and 'lenovobios_secondflash' scripts
+					<ul>
+						<li>Added instructions to 'build' script for including those files in libreboot_bin</li>
+						<li>Documentation: Add tutorial for flashing while Lenovo BIOS is running (on X60/T60)</li>
+					</ul>
+				</li>
+				<li>
+					Added 'flash' script (make sure to run builddeps-flashrom first) which (while libreboot is already running) can use flashrom to flash a ROM
+					<ul>
+						<li>eg: &quot;sudo ./flash bin/x60/coreboot_serial_ukdvorak.rom&quot; equivalent to &quot;sudo ./flashrom/flashrom -p internal -w bin/x60/coreboot_uk_dvorak.rom&quot;</li>
+						<li>updated 'build' script to include the 'flash' script in libreboot_bin.tar.gz</li>
+					</ul>
+				</li>
+				<li>Documentation: replaced default flashrom tutorial to recommend the 'flash' script instead.</li>
+				<li>
+					Re-add cbfstool source code back into libreboot_bin.tar.gz, as cbfstool_standalone
+					<ul>
+						<li>Patched that version to work (able to be built and used) without requiring the entire coreboot source code.</li>
+						<li>
+							Created patched version of the relevant source files and added it into resources/cbfstool/patch
+							<ul>
+								<li>see coreboot/util/cbfstool/rmodule.c and then the patched version in resources/cbfstool/patch/rmodule.c</li>
+								<li>see coreboot/src/include/rmodule-defs.h and the rule in 'build' for including this in ../libreboot_bin/cbfstool_standalone</li>
+							</ul>
+						</li>
+						<li>Added instructions to 'build' script for applying this patch to the cbfstool_standalone source in libreboot_bin</li>
+						<li>Added instructions to 'build' script for then re-compiling cbfstool_standalone in libreboot_bin after applying the patch</li>
+						<li>Added a 'builddeps-cbfstool' script (in src, but only used in bin and put in bin by 'build') that compiles cbfstool_standalone in libreboot_bin (make), moves the cbfstool and rmodtool binaries into libreboot_bin/ and then does 'make clean' in libreboot_bin/cbfstool_standalone</li>
+						<li>Updated the 'build' script to put 'builddeps-cbfstool' in libreboot_bin</li>
+						<li>Updated the 'build' script in the cbfstool (standalone) part to accomodate the above.</li>
+						<li>Documentation: added notes about cbfstool (standalone) in libreboot_bin</li>
+					</ul>
+				</li>
+				<li>Documentation: made docs/howtos/grub_cbfs.html slightly easier to follow.</li>
+				<li>Annotate the 'build*' scripts with 'echo' commands, to help the user understand what it actually happening during the build process.</li>
+				<li>
+					Documentation: added information about how 'dmidecode' data was put in the coreboot configs
+				 	<ul>
+						<li>Documentation: In fact, document how the 'config' files in resources/libreboot/config/ were created</li>
+					</ul>
+				</li>
+				<li>Documentation: Added information about which ThinkPad T60's are supported, and which are not.</li>
+				<li>
+					Documentation: added information about LCD inverters (for upgrading the LCD panel on a T60 14.1' XGA or 15.1' XGA)
+					<ul>
+						<li>it's FRU P/N 41W1478 (on T60 14.1&quot;) so this was added to the docs.</li>
+						<li>it's P/N 42T0078 FRU 42T0079 or P/N 41W1338 (on T60 15.1&quot;) so this was added to the docs.</li>
+					</ul>
+				</li>
+				<li>Documentation: added information about names of LCD panels for T60 to the relevant parts of the documentation.</li>
+				<li>Documentation: added information (with pictures) about the differences between T60 with Intel GPU and T60 with ATI GPU.</li>
+				<li>Documentation: added pictures of keyboard layouts (US/UK Qwerty/Dvorak) to the ROM list, to let the user compare with their own keyboard.</li>
+				<li>
+					Move the coreboot build instructions in 'builddeps' into 'builddeps-coreboot' and link it in 'builddeps'
+					<ul>
+						<li>Link to 'builddeps-coreboot' in final stage of 'getcb'</li>
+					</ul>
+				</li>
+				<li>
+					Move GRUB build instructions from 'builddeps' into 'builddeps-grub', link from 'builddeps'
+				 	<ul>
+						<li>Link to 'builddeps-grub' in final stage of 'getgrub'</li>
+					</ul>
+				</li>
+				<li>
+					Move MemTest86+ build instructions from 'builddeps' into 'builddeps-memtest86', link from 'builddeps'
+					<ul>
+						<li>Link to 'builddeps-memtest86' in final stage of 'getmt86'</li>
+					</ul>
+				</li>
+				<li>made 'build' script put resources/ directory in libreboot_bin, to make builddeps-flashrom work in libreboot_bin</li>
+				<li>Removed instructions for building source code in the 'get' script (they don't really belong there)</li>
+				<li>Added libfuse-dev and liblzma-dev to the list of GRUB dependencies in 'builddeb' script.</li>
+				<li>Converted the 'RELEASE' file to 'docs/RELEASE.html'</li>
+				<li>Added those dependencies to builddeb script (for GRUB part): gawk libdevmapper-dev libtool libfreetype6-dev</li>
+				<li>Added to build script the instruction at the end to create a sha512sum.txt with a file manifest plus checksums.</li>
+				<li>Deleted the RELEASE and BACKPORT files (no longer needed)</li>
+				<li>
+					Documentation: added information about X60/T60 dock (ultrabase x6 and advanced mini dock) to relevant sections.
+					<ul>
+						<li>Added to docs/index.html#serial</li>
+					</ul>
+				</li>
+			</ul>
+		<h2>
+			Revisions for 2nd beta (2014 July 16th)
+		</h2>
+			<ul>
+				<li>
+					Deleted all git-related files from the coreboot directory. This was necessary because
+					with those it is possible to run 'git diff' which shows the changes made in the form
+					of a patch (diff format); this includes the blobs that were deleted during deblobbing.
+				</li>
+			</ul>
+
+		<h2>
+			Revisions for 3rd beta (2014 July 20th)
+		</h2>
+			<ul>
+				<li>
+					Fixed typo that existed in 2nd beta where the release date of the 2nd beta was listed as being in year 2016, when in actual fact it was 2014.
+				</li>
+				<li>
+					Documentation: added (preliminary) details about (rare) buggy CPU's on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
+					without the microcode updates. 
+				</li>
+				<li>Documentation: added docs/howtos/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
+				<li>Added ROM images for Azerty (French) keyboard layout in GRUB (courtesy of Olivier Mondoloni)</li>
+				<li>
+					Tidied up some scripts:
+					<ul>
+						<li><s>Re-factored those scripts (made easier to read/maintain): build-x60, build-x60t, build-t60, build-macbook21</s></li>
+						<li><s>Reduced the number of grub configs to 2 (or 1, for macbook21), the build scripts now generate the other configs at build time.</s></li>
+						<li>Deleted build-x60, build-x60t, build-t60, build-macbook21 and replaced with intelligent (generic) buildrom-withgrub script</li>
+						<li>Updated build to use buildrom-withgrub script for building the ROM images.</li>
+						<li>coreboot.rom and coreboot_serial.rom renamed to coreboot_usqwerty.rom and coreboot_serial_usqwerty.rom</li>
+						<li>coreboot_dvorak and coreboot_serial_dvorak.rom renamed to coreboot_usdvorak.rom and coreboot_serial_usdvorak.rom</li>
+						<li>Renamed coreboot*rom to libreboot*rom</li>
+						<li>Made flash, lenovobios_firstflash and lenovobios_secondflash scripts fail if the specified file does not exist.</li>
+						<li>Updated all relevant parts of the documentation to reflect the above.</li>
+					</ul>
+				</li>
+				<li>Replaced background.png with background.jpg. added gnulove.jpg. (resources/grub/background/)</li>
+				<li>Updated buildrom-withgrub to use background.jpg instead of background.png</li>
+				<li>Updated buildrom-withgrub to use gnulove.jpg aswell</li>
+				<li>Updated resources/grub/config/macbook21/grub*cfg to use gnulove.jpg background.</li>
+				<li>Updated resources/grub/config/{x60,t60,x60t}/grub*cfg to use background.jpg background.</li>
+				<li>Documentation: updated docs/index.html#grub_custom_keyboard to be more generally useful.</li>
+				<li>
+					nvramtool:
+					<ul>
+						<li>Updated builddeps-coreboot script to build it</li>
+						<li>Updated build script to include it in libreboot_bin</li>
+					</ul>
+				</li>
+				<li>
+					Documentation: added docs/howtos/x60_security.html (security hardening for X60)
+				</li>
+			</ul>
+
+		<h2>
+			Revisions for 4th beta (2014 July 29th)
+		</h2>
+			<ul>
+				<li>Documentation: improved (more explanations, background info) in docs/howtos/x60_security.html (courtesy of Denis Carikli)</li>
+				<li>MacBook2,1 tested (confirmed)</li>
+				<li>macbook21: Added script 'macbook21_firstflash' for flashing libreboot while Apple EFI firmware is running.</li>
+				<li>Documentation: macbook21: added software-based flashing instructions for flashing libreboot while Apple EFI firmware is running.</li>
+				<li>
+					Reduced size of libreboot_src.tar.gz:
+					<ul>
+						<li>
+							Removed .git and .gitignore from grub directory (libreboot_src); not needed. 
+							Removing them reduces the size of the archive (by a lot). GRUB development should be upstream.
+						</li>
+						<li>
+							Removed .git and .gitignore from bucts directory (libreboot_src); not needed. 
+							Removing them reduces the size of the archive. bucts development should be upstream.
+						</li>
+						<li>
+							Removed .svn from flashrom directory (libreboot_src); not needed. 
+							Removing it reduces the size of the archive. flashrom development should be upstream.
+						</li>
+					</ul>
+				</li>
+				<li>
+					Added ROM's with Qwerty (Italian) layout in GRUB (libreboot*itqwerty.rom)
+				</li>
+				<li>
+					Added resources/utilities/i945gpu/intel-regs.py for debugging issues related to LCD panel compatibility on X60 Tablet and T60. (courtesy of <a href="http://mtjm.eu">Michał Masłowski</a>)
+				</li>
+			</ul>
+
+		<h2>
+			Revisions for 5th beta (2014 March 11th)
+		</h2>
+			<ul>
+				<li>build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the list of modules for grub.elf</li>
+				<li>Documentation: added pics showing T60 unbricking (still need to write a tutorial)</li>
+				<li>build: include cmos.layout (coreboot/src/mainboard/manufacturer/model/cmos.layout) files in libreboot_bin</li>
+				<li>Documentation: added <a href="../docs/howtos/x60tablet_unbrick.html">../docs/howtos/x60tablet_unbrick.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_unbrick.html">../docs/howtos/t60_unbrick.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_lcd_15.html">../docs/howtos/t60_lcd_15.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_security.html">../docs/howtos/t60_security.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_heatsink.html">../docs/howtos/t60_heatsink.html</a></li>
+				<li>Documentation: Renamed RELEASE.html to release.html</li>
+				<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
+				<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
+				<li>Documentation: added preliminary information about preventing/mitigating cold-boot attack in x60_security.html and t60_security.html</li>
+				<li>Documentation: added info to ../docs/index.html#macbook21 warning about issues with macbook21</li>
+		 		<li>
+					Documentation: X60/T60: added information about checking custom ROM's using dd to see whether or not the top 64K 
+					region is duplicated below top or not. Advise caution about this in the tutorial that deals with flashing on top 
+					of Lenovo BIOS, citing the correct dd commands necessary if it is confirmed that the ROM has not been applied with
+					dd yet. (in the case that the user compiled their own ROM's from libreboot, without using the build scripts, or if they forgot to use dd, etc).
+				</li>
+				<li>
+					Split resources/libreboot/patch/gitdiff into separate patch files (getcb script updated to accomodate this change).
+				</li>
+				<li>Re-added .git files to bucts</li>
+				<li>Fixed the oversight where macbook21_firstflash wasn't included in binary archives</li>
+			</ul>
+
+		<div class="important">
+			<h2>
+				Other tasks (to be completed before declaring the initial stable release)
+			</h2>
+				<ul>
+					<li>
+						<b><u><i>TODO:</i></u></b> Fix remaining incompatible LCD panels in native graphics on T60. 
+						(see <a href="../docs/future/index.html#lcd_i945_incompatibility">../docs/future/index.html#lcd_i945_incompatibility</a>) and <b>submit patches upstream</b>.
+					</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> Implement VBT on X60/T60/X60T (and macbook21?) 
+						(see <a href="../docs/future/index.html#i945_vbt">../docs/future/index.html#i945_vbt</a> and 
+						<a href="../docs/future/index.html#intelvbttool_results">../docs/future/index.html#intelvbttool_results</a>) and <b>submit changes upstream</b>.
+					</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> Submit 3D fix (for X60/T60/macbook21/X60T on kernel 3.12+) upstream for 5320 changeset.
+					</li>
+					<li><b><u><i>TODO:</i></u></b> Re-tooled linux-libre deblob scripts for use with coreboot. <b>Deblobbing is already complete; completion of this additional task will simply make future deblobbing work easier.</b></li>
+					<li><b><u><i>TODO:</i></u></b> Remove mention of blob/3rdparty repository in Kconfig</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> Modified coreboot to make wifi and trackpoint be enabled by default on the ThinkPad X60 (so no need for nvramtool)
+					 	<ul>
+							<li><b><u><i>TODO:</i></u></b> added this as a patch under resources/libreboot/patch/</li>
+							<li>(Remove from or add comment in the documentation the notes about disabling wifi/trackpoint)</li>
+							<li>
+								See:
+								<ul>
+									<li><a href="http://review.coreboot.org/#/c/4662/4">http://review.coreboot.org/#/c/4662/4</a></li>
+									<li><a href="http://review.coreboot.org/#/c/4663/4">http://review.coreboot.org/#/c/4663/4</a></li>
+									<li><a href="http://review.coreboot.org/#/c/4652">http://review.coreboot.org/#/c/4652</a></li>
+									<li><a href="http://review.coreboot.org/#/c/4653/">http://review.coreboot.org/#/c/4653/</a></li>
+									<li><a href="http://review.coreboot.org/#/c/4654/">http://review.coreboot.org/#/c/4654/</a></li>
+									<li><a href="http://review.coreboot.org/#/c/4654/5/src/ec/lenovo/pmh7/pmh7.c">http://review.coreboot.org/#/c/4654/5/src/ec/lenovo/pmh7/pmh7.c</a>
+									<li><a href="http://review.coreboot.org/#/c/4678/">http://review.coreboot.org/#/c/4678/</a></li>
+								</ul>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> make writing the cmos.layout to the rom default
+					</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> T60: find (for rare buggy CPU's that are unstable without microcode updates) 
+						if there is a workaround: see <a href="../docs/future/index.html#t60_cpu_microcode">../docs/future/index.html#t60_cpu_microcode</a>
+					</li>
+					<li><b><u><i>TODO:</i></u></b> Modify coreboot so that tft_brightness is 0xff by default (for fixing the looping issue automatically)</li>
+					<li><b><u><i>TODO:</i></u></b> Modify the Kconfig options in coreboot so that the (non-existent, deleted) microcode is never loaded when building.</li>
+					<li><b><u><i>TODO:</i></u></b> Ask Mono what license he wants to use for his pages (see notes in docs/index.html#macbook21) and then include a copy in the relevant part of the documentation. (note: the backups are not included for now, for this exact reason)</li>
+					<li><b><u><i>TODO:</i></u></b> Retroactively GPG-sign the final revisions of each previous release. (SHA512 sums aswell).</li>
+					<li><b><u><i>TODO:</i></u></b> Tested all of the remaining untested LCD panels under docs/index.html#supported_t60_list</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: Added macbook2,1 unbricking tutorial.</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: macbook2,1: Show how to physically remove the built-in webcam (which doesn't work unless you install a non-free driver)</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: macbook2,1: Check if there is another webcam to replace it that can work without requiring any non-free drivers.</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> T60 15&quot; QXGA (2048x1536): fixed issue where GRUB wouldn't show any graphics.
+						<ul>
+							<li>It might be the same issue I ran into with Paul on the X60 (not enough memory being allocated) since the same code works on T60 SXGA+ and UXGA, where GRUB actually display graphics.</li>
+							<li><b>This should be done in coreboot and backported into libreboot. See 5320 and 5345 on review.coreboot.org</b></li>
+							<li><b>For now, see if lowering GRUB's resolution works (as a workaround) since everything (GNU/Linux) works after that.</b></li>
+						</ul>
+					</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: added as many links as I could find, to datasheets and schematics for macbook21/x60/t60 (i945 chipset, EC info for x60/t60/macbook21)</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> Go over the documentation, and find the parts that are not accessible: eg, improve the docs to be friendly for colour-blind people.
+						<ul>
+							<li><b><u><i>TODO:</i></u></b> the X60 unbricking tutorial could use some work. It currently has lots of red and green, for instance. Consider highlighting specific parts of pictures in bold zig-zagged white lines instead of straight red lines.</li>
+						</ul>
+					</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: Added (replicated) the same level of logs (from default firmware) that Mono did for macbook21, for t60/x60/x60t</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: updated the X60 unbrick tutorial to use the 5-pin method instead (safer / less dangerous).</li>
+					<li><b><u><i>TODO:</i></u></b> Documentation: Add a &quot;development guide&quot; for how to maintain libreboot ('get' scripts, deblob scripts, associated files under ./resources and so on)</li>
+					<li>
+						<b><u><i>TODO:</i></u></b> Investigate high boot speeds on X60/T60/macbook21
+						<ul>
+							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078215.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078215.html</a></li>
+							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078216.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078216.html</a></li>
+							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078218.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078218.html</a></li>
+							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078225.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078225.html</a></li>
+							<li><a href="../docs/x60.config">kernel .config file</a></li>
+							<li>
+								<b>
+									Update: ignore the above, look at <a href="../docs/future/index.html#fastboot">../docs/future/index.html#fastboot</a>
+									(information supplied by Charles Devereaux)
+								</b>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b><u><i>TODO:</i></u></b><a href="https://wiki.archlinux.org/index.php/TLP">https://wiki.archlinux.org/index.php/TLP</a> (example article) a user
+						mentioned that this also removes the high-pitched noise (like powertop does). Must look into this.
+					</li>
+				</ul>
+		</div>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="release5">5th release</h1>
+
+		<ul>
+			<li>2014 March 7th</li>
+			<li>revised 2014 June 22nd</li>
+		</ul>
+
+		<h2>Officially supported</h2>
+			<ul>
+				<li>ThinkPad X60</li>
+				<li>ThinkPad X60s</li>
+			</ul>
+
+		<h2>Binaries (for flashing)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/4/libreboot_bin.tar.gz">http://libreboot.org/release/4/libreboot_bin.tar.gz</a></li>
+				<li>sha512: 75aace225cb3f897cf4a64980c5b746727f9a64646a640692f475e7c37989c836f0fc071ec31c6e9a746133feda35b60b3df700a6331d600ecd65fe70646a124</li>
+			</ul>
+
+		<h2>Source code (for hacking)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/4/libreboot_src.tar.gz">http://libreboot.org/release/4/libreboot_src.tar.gz</a></li>
+				<li>sha512: a773462fd60b529f20e14a82281f962985579bd523c3e6c9ab8639f7a12da8f1ccb44a56c648b19de914a15d4490366222d0bbc80552e91419f2afecbddc10ae</li>
+			</ul>
+			<p>
+				(gluglug.org.uk/X60/release/4/X60_source.tar.gz and gluglug.org.uk/X60/release/4/X60_binary.tar.gz were the old links)
+			</p>
+
+		<h2>Development notes</h2>
+			<ul>
+				<li>
+					Binary archive now have 2 images:
+					<ul>
+						<li>With serial output enabled and memtest86+ included (debug level 8 in coreboot)</li>
+						<li>With serial output disabled and memtest86+ excluded (faster boot speeds) (debugging disabled)</li>
+					</ul>
+				</li>
+				<li>
+					Reduced impact on battery life:
+					<ul>
+						<li>'processor.max_cstate=2' instead of 'idle=halt' for booting default kernel</li>
+					</ul>
+				</li>
+				<li>
+					coreboot.rom (faster boot speeds, debugging disabled):
+					<ul>
+						<li>Disabled coreboot serial output (Console-> in &quot;make menuconfig&quot;)</li>
+						<li>Set coreboot debug level to 0 instead of 8 (Console-> in &quot;make menuconfig&quot;)</li>
+						<li>Changed GRUB timeout to 1 second instead of 2 (in grub.cfg</li>
+						<li>Removed background image in GRUB.</li>
+						<li>Removed memtest86+ payload (since it relies on serial output)
+					</ul>
+				</li>
+				<li>
+					coreboot_serial.rom (slower boot speeds, debugging enabled):
+					<ul>
+						<li>Boot time still reduced, but only by ~2 seconds</li>
+					 	<li>has the memtest86+ payload included in the ROM</li>
+						<li>has serial port enabled. How this is achieved (from X60_source): Turn on debugging level to 8, and enable serial output</li>
+					</ul>
+				</li>
+				<li>(in Console-> in coreboot &quot;make menuconfig&quot;)</li>
+				<li>(and build with grub_serial.cfg and grub_memdisk_serial.cfg)</li>
+			</ul>
+
+		<h2>Revision notes (2014 March 9th):</h2>
+			<ul>
+				<li>recreated coreboot config from scratch</li>
+				<li>GRUB loads even faster now (less than 2 seconds).</li>
+				<li>Total boot time reduced by further ~5 seconds.</li>
+				<li>Added crypto and cryptodisk modules to GRUB</li>
+				<li>cbfstool now included in the binary archives</li>
+			</ul>
+
+		<h2>Revision notes (2014 June 5th):</h2>
+			<ul>
+				<li>added backlight support (Fn+Home and Fn+End) on X60</li>
+				<li>fixed broken/unstable 3D when using kernel 3.12 or higher</li>
+				<li>(see 'BACKPORT' file)</li>
+			</ul>
+
+		<h2>Revision notes (2014 June 11th):</h2>
+			<ul>
+				<li>removed 'CD' boot option from coreboot.rom (not needed)</li>
+			 	<li>removed 'processor.max_cstate=2' and 'idle=halt' options (see README.powertop file)</li>
+			</ul>
+
+		<h2>Revision notes (2014 June 22nd)</h2>
+			<ul>
+				<li>updated GRUB (git 4b8b9135f1676924a8458da528d264bbc7bbb301, April 20th 2014)</li>
+				<li>Made &quot;DeJavu Sans Mono&quot; the default font in GRUB (fixes border corruption).</li>
+				<li>re-added background image in GRUB (meditating GNU)</li>
+				<li>
+					added 6 more images: 
+					<ul>
+						<li>coreboot_ukqwerty.rom (UK Qwerty keyboard layout in GRUB)</li>
+						<li>coreboot_serial_ukqwerty.rom (UK Qwerty keyboard layout in GRUB)</li>
+						<li>coreboot_dvorak.rom (US Dvorak keyboard layout in GRUB)</li>
+						<li>coreboot_serial_dvorak.rom (US Dvorak keyboard layout in GRUB)</li>
+						<li>coreboot_ukdvorak.rom (UK Dvorak keyboard layout in GRUB)</li>
+						<li>coreboot_serial_ukdvorak.rom (UK Dvorak keyboard layout in GRUB)</li>
+						<li>(coreboot.rom and coreboot_serial.rom have US Qwerty keyboard layout in GRUB, as usual)</li>
+					</ul>
+				</li>
+				<li>
+					improved the documentation:
+					<ul>
+						<li>removed FLASH_INSTRUCTION and README.powertop and merged them with README</li>
+						<li>removed obsolete info from README and tidied it up</li>
+						<li>deleted README (replaced with docs/index.html)</li>
+					</ul>
+				</li>
+				<li>tidied up the menu entries in GRUB</li>
+				<li>tidied up the root directory of X60_source/, sorted more files into subdirectories</li>
+				<li>added 'pkg-config' to the list of dependencies for building powertop on Trisquel</li>
+				<li>wrote a script (powertop.trisquel6) to automatically setup Powertop to run at boot time (for Trisquel 6 users)</li>
+				<li>improved the commenting inside the 'build' script (should make modifying it easier)</li>
+				<li>Renamed X60_binary.tar.gz and X60_source.tar.gz to libreboot_bin.tar.gz and libreboot_src.tar.gz, respectively.</li>
+				<li>Replaced &quot;GNU GRUB version&quot; with &quot;FREE AS IN FREEDOM&quot; on GNU GRUB start screen.</li>
+				<li>Added sha512.txt files in libreboot_src and libreboot_bin. (inside the archives)</li>
+				<li>Added libreboot_bin.tar.gz.sha512.txt and libreboot_src.tar.gz.sha512.txt files (outside of the archives)</li>
+			</ul>
+
+		<h2>Revision (2014 June 22nd - extra)</h2>
+			<ul>
+				<li>Documentation: Improved the instructions for using flashrom</li>
+				<li>Documentation: Improved the instructions for using cbfstool (to change the default GRUB menu)</li>
+				<li>Documentation: Numerous small fixes.</li>
+			</ul>
+
+		<h2>Revision (2014 June 22nd - extra)</h2>
+			<ul>
+				<li>Documentation: added X60 Unbricking tutorial</li>
+				<li>Documentation: added info about enabling or disabling wifi</li>
+				<li>Documentation: added info about enabling or disabling trackpoint</li>
+			</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="release4">4th release</h1>
+
+		<ul>
+			<li>2014 February 21st</li>
+		</ul>
+
+		<h2>Officially supported</h2>
+			<ul>
+				<li>ThinkPad X60</li>
+				<li>ThinkPad X60s</li>
+			</ul>
+
+		<h2>Binaries (for flashing)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/3/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/3/X60_binary.tar.gz</a></li>
+			</ul>
+
+		<h2>Source code (for hacking)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/3/X60_source.tar.gz">http://gluglug.org.uk/X60/release/3/X60_source.tar.gz</a></li>
+			</ul>
+
+		<h2>Development notes</h2>
+			<ul>
+				<li>Removed SeaBIOS (redundant)</li>
+				<li>
+					New GRUB version (2.02~beta2)
+					<ul>
+						<li>Fixes some USB issues</li>
+						<li>Includes ISOLINUX/SYSLINUX parser</li>
+					</ul>
+				</li>
+				<li>New grub.cfg</li>
+				<li>
+					Removed useless options:
+					<ul>
+				 		<li>options for booting sda 2/3/4</li>
+						<li>seabios boot option</li>
+					</ul>
+				</li>
+				<li>
+					Added new menu entries:
+					<ul>
+						<li>Parse ISOLINUX config (USB)</li>
+						<li>Parse ISOLINUX config (CD)</li>
+						<li>Added 'cat' module for use on GRUB command line.</li>
+					</ul>
+				</li>
+				<li>&quot;set pager=1&quot; is set in grub.cfg, for less-like functionality</li>
+			</ul>
+			<p>
+				The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB,
+				and automatically converts it to a grub config and switches to the boot menu of that distro.
+				This makes booting ISO's *much* easier than before.
+			</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="release3">3rd release</h1>
+
+		<ul>
+			<li>2013 December 14th</li>
+		</ul>
+
+		<h2>Supported:</h2>
+			<ul>
+				<li>ThinkPad X60</li>
+				<li>ThinkPad X60s</li>
+			</ul>
+
+		<h2>Binaries (for flashing)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/2/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/2/X60_binary.tar.gz</a></li>
+			</ul>
+
+		<h2>Source code (for hacking)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/2/X60_source.tar.gz">http://gluglug.org.uk/X60/release/2/X60_source.tar.gz</a></li>
+			</ul>
+
+		<h2>Development notes</h2>
+			<ul>
+				<li>Added SeaBIOS payload to GRUB2 (for booting USB drives)</li>
+				<li>new grub.cfg</li>
+			</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="release2">2nd release</h1>
+
+		<ul>
+			<li>2013 December 13th</li>
+		</ul>
+
+		<h2>Supported:</h2>
+			<ul>
+				<li>ThinkPad X60</li>
+				<li>ThinkPad X60s</li>
+			</ul>
+
+		<h2>Binaries (for flashing)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/1/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/1/X60_binary.tar.gz</a></li>
+			</ul>
+
+		<h2>Source code (for hacking)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/1/X60_source.tar.gz">http://gluglug.org.uk/X60/release/1/X60_source.tar.gz</a></li>
+			</ul>
+
+		<h2>Development notes</h2>
+			<ul>
+				<li>added background image to GRUB2</li>
+				<li>added memtest86+ payload to grub2</li>
+				<li>improvements to the documentation</li>
+				<li>new grub.cfg</li>
+			</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="release1">1st release</h1>
+
+		<ul>
+			<li>2013 December 12th</li>
+		</ul>
+
+		<h2>Supported:</h2>
+			<ul>
+				<li>ThinkPad X60</li>
+				<li>ThinkPad X60s</li>
+			</ul>
+
+		<h2>Binaries (for flashing)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/0/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/0/X60_binary.tar.gz</a></li>
+			</ul>
+
+		<h2>Source code (for hacking)</h2>
+			<ul>
+				<li><a href="http://gluglug.org.uk/X60/release/0/X60_source.tar.gz">http://gluglug.org.uk/X60/release/0/X60_source.tar.gz</a></li>
+			</ul>
+
+		<h2>Development notes</h2>
+			<ul>
+				<li>initial release</li>
+				<li>source code deblobbed</li>
+			</ul>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="license.html">license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>

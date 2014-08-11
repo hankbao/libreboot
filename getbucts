@@ -45,8 +45,10 @@ git reset --hard dc27919d7a66a6e8685ce07c71aefa4f03ef7c07
 
 # We don't need .git* (please submit all upstreamable changes directly to bucts upstream)
 # removing them, to reduce the size of the archive
-rm -rf .git
-rm -rf .gitignore
+# rm -rf .git
+# rm -rf .gitignore
+# it was found to cause issues when deleting:
+# GIT_DISCOVERY_ACROSS_FILESYSTEM not set
 
 # we're done
 cd ../

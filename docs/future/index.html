@@ -38,6 +38,7 @@
 		<li><a href="#todo">TODO list</a></li>
 		<li><a href="#standard_test">Standard test</a></li>
 		<li><a href="#t60_cpu_microcode">T60 cpu microcode</a></li>
+		<li><a href="#fastboot">Fast boot</a></li>
 		<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
 		<li><a href="#blind_x60">Blind X60 - kernel git bisect</a></li>
 		<li><a href="#x60_native_notes">X60 native graphics initialization (backlight controls)</a></li>
@@ -54,17 +55,6 @@
 
 	<h1 id="todo">TODO (bold means high priority)</h1>
 	<ul>
-		<li><b><a href="#blind_x60">#blind_x60</a>: kernel git bisect (find which commit broke graphics when native graphics or vbios is not in use)</b></li>
-		<li><b>test the latest version of <a href="http://review.coreboot.org/#/c/5927">http://review.coreboot.org/#/c/5927</a> for Paul Menzel</b></li>
-		<li>
-			<b>test the latest versions of 5320/5345 on X60/T60</b>
-			<ul>
-				<li><b><s>Find how to implement the fix from <a href="http://review.coreboot.org/#/c/5927">5927/3</a></s> (see <a href="#5320_kernel312fix">#5320_kernel312fix</a>) and push with 5320 as dependency</b></li>
-				<li><b>Find how to implement the fix from <a href="http://review.coreboot.org/#/c/5927">5927</a> (latest version after patch set 3) and push with 5320 as dependency</b></li>
-				<li><b>Implement the X60 backlight support (<a href="#x60_native_notes">#x60_native_notes</a>) and push with 5320 as dependency</b></li>
-				<li><b>Implement the T60 backlight support (<a href="#t60_native_notes">#t60_native_notes</a>) and push with 5345 as dependency</b></li>
-			</ul>
-		</li>
 		<li>
 			<b><a href="#intelvbttool_results">#intelvbttool_results</a>: Finish getting runningvga.bin dumps and intelvbttool dumps for all known targets on X60 and T60.</b>
 			<ul>
@@ -74,23 +64,9 @@
 				<li>When VBT is implemented/tested, also test SeaVGABIOS (part of SeaBIOS)</li>
 			</ul>
 		</li>
-		<li>
-			<b>Run oprom trace (coreboot + oprom + grub) on <a href="http://review.coreboot.org/#/c/5345">http://review.coreboot.org/#/c/5345</a> for phcoder.</b>
-			(see <a href="#t60_native_notes">#t60_native_notes</a>)
-		</li>
 		<li>test that patch (DYNAMIC_CBMEM, <a href="http://review.coreboot.org/#/c/6036">http://review.coreboot.org/#/c/6036</a>) on X60 and T60 for kmalkki</li>
-		<li>X60 Tablet digitizer support (<a href="http://review.coreboot.org/#/c/5243/">http://review.coreboot.org/#/c/5243/</a>, also see 5242)</li>
-		<li>
 		<li>Further study how backlight controls work</li>
-		<li>
-			<b>After all (or a satisfactory amount) of the above is done, finish deblobbing latest coreboot revisions.</b>
-			<ul>
-				<li><b>Totally re-tool linux-libre deblob scripts to automatically deblob other revisions of coreboot aswell</b></li>
-				<li><b>Ports for T60 and F2A85M</b></li>
-			</ul>
-		</li>
-		<li><b>Write information about software/hardware modifications (security)</b></li>
-		<li>funfunctor wants me to try building libreboot/coreboot on X60 with clang/llvm because he says there are some issues where boards fail when built with this: fchmmr: well you will need to compile the latest clang, here are some instructions: https://gist.github.com/victoredwardocallaghan/38689e88dd7b9a439468 and also: funfunctor: fchmmr: you will need the latest coreboot code and http://review.coreboot.org/#/c/5814/ to get clang to build whatever board. also! <br/><br/>
+		<li>funfunctor (from coreboot IRC) wants me to try building libreboot/coreboot on X60 with clang/llvm because he says there are some issues where boards fail when built with this: fchmmr: well you will need to compile the latest clang, here are some instructions: https://gist.github.com/victoredwardocallaghan/38689e88dd7b9a439468 and also: funfunctor: fchmmr: you will need the latest coreboot code and http://review.coreboot.org/#/c/5814/ to get clang to build whatever board. also! <br/><br/>
 
 		fchmmr: see this topic http://review.coreboot.org/#/q/status:open+project:coreboot+branch:master+topic:clang-fixes,n,z you will need those fixes to get anywhere with building t60/x60 with clang. at the time of writing that was 6122/1, 6121/1, 6120/1 and 6119/1<br/><br/>
 
@@ -146,15 +122,100 @@
 			TODO: T60: find (for rare buggy CPU's that are unstable without microcode updates) if there is a workaround (patched kernel, special parameter, etc) So far, only 1 processor has been found to have issues. See microcode errata sheets http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf and http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf and then look at the debugging results collected in <a href="../t7200q">t7200q</a> directory (q means quirk). 
 		</p>
 
+		<p>
+			Every other T7200 tested so far has worked without microcode updates.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="fastboot">Fast boot</h1>
+
+		<p>
+			Based on information supplied by Charles Devereaux. Look into this. The following are the files 
+			that he gave me, and what he said:
+		</p>
+
+		<ul>
+			<li><a href="fastboot/x60.config">x60.config</a></li>
+			<li><a href="fastboot/get-systemd.sh">get-systemd.sh</a></li>
+			<li><a href="fastboot/grub.cfg.memdisk">grub.cfg.memdisk</a></li>
+			<li><a href="fastboot/grub.cfg">grub.cfg</a></li>
+		</ul>
+
+		<p>
+			failsafes to allow people to experiment with few risks.The memdisk tries to load a grub.cfg from each partition,
+			failing that from the CBFS, and failing that prepares the serial port and
+			shows a simple menu reminding the user that this is the memdisk (beeps are
+			also played) and some simple options (ex: call directly a linux kernel).
+		</p>
+
+		<p>
+			The grub.cfg from the CBFS tries to load a working grub.cfg from a
+			thumbdrive, and failing that shows a menu offering to boot on seabios (for
+			CD boot)
+		</p>
+
+		<p>
+			This makes it possible to say remove the HD and still have a booting
+			machine (using a thumbdrive) - which may be an interesting option to offer
+			to your users (a "rescue/reinstall" thumbdrive, or a simple failsafe in
+			case the user wants to reinstall from a CD into a brand new HD)
+		</p>
+
+		<p>
+			It's also hacker friendly:
+		</p>
+		<ul>
+			<li>
+				the memdisk acts as a failsave in case the flash has had its grub.cfg removed or damanged
+			</li>
+			<li>
+				the flash grub.cfg is a failsafe in case the HD grub.cfg was damaged or removed
+			</li>
+		</ul>
+
+		<p>
+			Just some simple if logic, but it does the job.
+		</p>
+
+		<p>
+			Besides that, if you want to experiment with fast booting, my systemd
+			configure script follows. Just boot your kernel with
+			init=/lib/systemd/systemd. You also need to add at the botton of the
+			resulting /lib/udev/rules.d/99-systemd.rules the following to make network
+			configuration automatic:<br/>
+			<b>
+				SUBSYSTEM=="net", KERNEL!="lo", TAG+="systemd",<br/>
+				ENV{SYSTEMD_ALIAS}+="/sys/subsystem/net/devices/$name"<br/>
+				ENV{SYSTEMD_WANTS}="ifup@%k.service"
+			</b>
+		</p>
+
+		<p>
+			It will put the systemd stuff in /lib/systemd instead of /usr/lib/systemd
+			(on debian), allowing a peacefull coexistence, and won't use any of the old
+			/etc/init.d stuff (major cause of slowdown).
+		</p>
+
+		<p>
+			This is the exact systemd configuration I used to get a system up in 0.6s
+			as reported on the mailing list.
+		</p>
+	
+		<p>	
+			Further optimizations of the boot-time requires to optimize the kernel
+			configuration even more. Here is my current .config (everything is
+			built-in, slowly removing modules (ex: yenta, firewire) one by one to see
+			where I can gain speed.
+		</p>
+
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
 <hr/>
 
 	<h1 id="lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</h1>
-
-		<p>
-			Fix X60 Tablet issues (see incompatible panels listed at <a href="../index.html#supported_x60t_list">../index.html#supported_x60t_list</a>).
-		</p>
 
 		<p>
 			Fix T60 issues (see incompatible panels listed at <a href="../index.html#supported_t60_list">../index.html#supported_t60_list</a>).
@@ -175,6 +236,20 @@
 
 		<p>
 			Other values/registers might also need to be added to the script for these tests.
+		</p>
+
+		<p>
+			check if intel_bios_reader from intel-gpu-tools reports the same value (BIOS has a hardcoded value) for PWM modulation frequency. 
+			This file can read the VBIOS (64K dump).
+		</p>
+
+		<p>
+			Check other tools in intel-gpu-tools aswell, compare outputs. Possibly add more information to intel-regs.py output (submit changes to mtjm).
+			Do oprom trace / replay (<a href="http://www.coreboot.org/User:GNUtoo#How_to_get_rid_of_the_vbios_of_the_x60_.5BNew_Version.5D">http://www.coreboot.org/User:GNUtoo#How_to_get_rid_of_the_vbios_of_the_x60_.5BNew_Version.5D</a>)
+		</p>
+
+		<p>
+			Study how EDID works and how gma.c handles it.
 		</p>
 		
 		<p>
@@ -219,13 +294,10 @@
 			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
 		</p>
 		<p>
-			<b>The fix below was done on 5320/6 but should work just fine on later versions of 5320.</b>
+			<b>The fix below was done on 5320/6 (from review.coreboot.org) but should work just fine on later versions of 5320.</b>
 		</p>
 		<p>
 			Native gpu init + backlight controls! (Fn keys). Also confirmed on X60 Tablet (1024x768) and X60 Tablet (1400x1050)
-		</p>
-		<p>
-			<b>Checkout <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a> on top of a coreboot git clone.</b>
 		</p>
 		<p>
 			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/x60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x879F879E</b>
@@ -234,6 +306,9 @@
 			That's all! <b>This has also been backported into libreboot 5th release (line 1233 in src/mainboard/lenovo/x60/i915io.c)</b>. GNUtoo (Denis Carikli) 
 			told me about the register <b>BLC_PWM_CTL</b> and that you could set it to control backlight. I read that address using devmem2 while running the VBIOS:<br/>
 			<b># devmem2 0xe4361254 w</b>
+		</p>
+		<p>
+			The change is also included in libreboot 6.
 		</p>
 		<p>
 			When doing this, it gave back that value. The same trick was used to get backlight controls for T60 (see <a href="#t60_native_notes">#t60_native_notes</a>).
@@ -278,14 +353,7 @@
 			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
 		</p>
 		<p>
-			<b>The fix below was done on an earlier version of 5345, but should work on the current version.</b>
-		</p>
-		<p>
-			Native gpu init + backlight controls! (Fn keys). <b>Working on all panels except for 14&quot; XGA (1024x768) and 15&quot; XGA (1024x768)!</b>
-		<p>
-		<p>
-			<b>Checkout <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a>
-			and then cherry-pick <a href="http://review.coreboot.org/#/c/5345">http://review.coreboot.org/#/c/5345</a> on top of a coreboot git clone.</b>
+			<b>The fix below was done on an earlier version of 5345 changeset (review.coreboot.org), but should work on the current version. it is included in libreboot 6</b>
 		</p>
 		<p>
 			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/t60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x58BF58BE</b>
@@ -300,8 +368,7 @@
 			</p>
 
 		<p>
-			Note to self: Run oprom trace for phcoder (T60 w/ 5320+5345 + oprom + grub) for phcoder. This (among other things) 
-			might help to get all panels supported, without modification.
+			See <a href="#lcd_i945_incompatibility">#lcd_i945_incompatibility</a>.
 		</p>
 		
 		<p><a href="#pagetop">Back to top of page</a></p>
@@ -416,6 +483,9 @@
 <hr/>
 
 	<h1 id="i945_vbt">i945 gfx: X60/T60 VBT implementation (experimental: testing)</h1>
+		<p>
+			intel_bios_dumper (use man) in intel-gpu-tools seems interesting.
+		</p>
 		<p>
 			<b>Use 'drm.debug=0x06' kernel parameter when booting in grub! Make sure to use kernel 3.14.4 as before (or any recent kernel).</b>
 		</p>

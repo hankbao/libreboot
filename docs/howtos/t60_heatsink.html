@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		body {
+			background:#fff;
+			color:#000;
+			font-family:sans-serif;
+			font-size:1em;
+		}
+	</style>
+
+	<title>Libreboot documentation: Unbricking the ThinkPad T60</title>
+</head>
+
+<body>
+
+	<header>
+		<h1>Changing heatsink (or CPU) on the ThinkPad T60</h1>
+		<aside>Using this guide you can also change/upgrade the CPU.</aside>
+	</header>
+
+	<p>Or go <a href="../index.html">back to main index</a></p>
+
+	<h1 id="hardware_requirements">Hardware requirements</h1>
+		<ul>
+			<li>rubbing a***hol (misspelling intentional. halal internet) and thermal compound for changing CPU heatsink (procedure involves removing heatsink)</li>
+			<li>thermal compound/paste (Arctic Silver 5 is good. Others are also good.)</li>
+		</ul>
+
+	<h1 id="software_requirements">Software requirements</h1>
+		<ul>
+			<li>xsensors</li>
+			<li>stress</li>
+		</ul>
+
+	<h1 id="recovery">Disassembly</h1>
+
+		<p>
+			Remove those screws and remove the HDD:<br/>
+			<img src="t60_dev/0001.JPG" alt="" /> <img src="t60_dev/0002.JPG" alt="" />
+		</p>
+
+		<p>
+			Lift off the palm rest:<br/>
+			<img src="t60_dev/0003.JPG" alt="" />
+		</p>
+
+		<p>
+			Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:<br/>
+			<img src="t60_dev/0004.JPG" alt="" /> <img src="t60_dev/0005.JPG" alt="" /> <img src="t60_dev/0006.JPG" alt="" />
+		</p>
+
+		<p>
+			Gently wedge both sides loose:<br/>
+			<img src="t60_dev/0007.JPG" alt="" /> <img src="t60_dev/0008.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove that cable from the position:<br/>
+			<img src="t60_dev/0009.JPG" alt="" /> <img src="t60_dev/0010.JPG" alt="" />
+		</p>
+
+		<p>
+			Remove the bezel (sorry forgot to take pics).
+		</p>
+
+		<p>
+			On the CPU (and there is another chip south-east to it, sorry forgot to take pic)
+			clean off the old thermal paste (rubbing a1ocheal (misspelling intentional. halal internet)) and apply new (Artic Silver 5 is good, others are good too)
+			you should also clean the heatsink the same way<br/>
+			<img src="t60_dev/0051.JPG" alt="" />
+		</p>
+
+		<p>
+			This is also an opportunity to change the CPU to another one. For example if you had a Core Duo T2400, you can upgrade it to a better processor
+			(higher speed, 64-bit support). A Core 2 Duo T7600 was installed here.
+		</p>
+
+		<p>
+			Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):<br/>
+			<img src="t60_dev/0052.JPG" alt="" />
+		</p>
+
+		<p>
+			Reinstall that upper bezel:<br/>
+			<img src="t60_dev/0053.JPG" alt="" />
+		</p>
+
+		<p>
+			Do that:<br/>
+			<img src="t60_dev/0054.JPG" alt="" /> <img src="t60_dev/0055.JPG" alt="" />
+		</p>
+
+		<p>
+			Attach keyboard:<br/>
+			<img src="t60_dev/0056.JPG" alt="" />
+		</p>
+
+		<p>
+			Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:<br/>
+			<img src="t60_dev/0058.JPG" alt="" />
+		</p>
+
+		<p>
+			It lives!<br/>
+			<img src="t60_dev/0071.JPG" alt="" /> <img src="t60_dev/0072.JPG" alt="" /> <img src="t60_dev/0073.JPG" alt="" />
+		</p>
+
+		<p>
+			Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:<br/>
+			<img src="t60_dev/0074.JPG" alt="" />
+		</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
+		See <a href="../license.html">../license.html</a> for license conditions.
+	</p>
+
+</body>
+</html>
