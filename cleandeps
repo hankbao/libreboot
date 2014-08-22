@@ -53,7 +53,7 @@ cd ../
 
 cd grub
 
-make clean
+[[ -f Makefile ]] && make clean
 
 # done. go back to main directoy
 cd ../

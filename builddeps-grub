@@ -32,7 +32,7 @@
 cd grub
 
 # clean it first
-make clean
+[[ -f Makefile ]] && make clean
 
 # build grub
 ./autogen.sh

@@ -39,7 +39,7 @@ cd coreboot
 rm -rf .config
 
 # cbfstool will be used quite heavily here.
-mv util/cbfstool/cbfstool .
+[[ -f cbfstool ]] || mv util/cbfstool/cbfstool .
 
 # prepare libreboot configuration and build it
 cp ../resources/libreboot/config/$1/config .config
@@ -84,16 +84,20 @@ cp ../resources/grub/config/$1/grub_serial_usqwerty.cfg .
 
 for keymap in $(ls ../resources/grub/keymap/original)
 do
+    if [[ "$keymap" != usqwerty ]]; then
 	# copy the ROM based on the keymap
 	cp libreboot_usqwerty.rom libreboot_"$keymap".rom
 	cp libreboot_serial_usqwerty.rom libreboot_serial_"$keymap".rom
+    fi
 done
 
 for keymap in $(ls ../resources/grub/keymap/original)
 do
+    if [[ "$keymap" != usqwerty ]]; then
 	# copy the config based on the keymap:
 	cp grub_usqwerty.cfg grub_"$keymap".cfg
 	cp grub_serial_usqwerty.cfg grub_serial_"$keymap".cfg
+    fi
 done
 
 for keymap in $(ls ../resources/grub/keymap/original)
