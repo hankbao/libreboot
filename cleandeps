@@ -105,24 +105,6 @@ make clean
 
 cd ../
 
-# clean grubinvaders
-# --------------------------------------------------------
-
-cd grubinvaders
-
-./clean.sh
-
-cd ../
-
-# clean i945-pwm
-# --------------------------------------------------------
-
-cd resources/utilities/i945-pwm
-
-make clean
-
-cd ../../../
-
 # a few more things to do last
 # --------------------------------------------------------
 
