@@ -1,0 +1,46 @@
+diff --git a/src/mainboard/lenovo/t60/Kconfig b/src/mainboard/lenovo/t60/Kconfig
+index 5903c8b..e2638d8 100644
+--- a/src/mainboard/lenovo/t60/Kconfig
++++ b/src/mainboard/lenovo/t60/Kconfig
+@@ -20,6 +20,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select HAVE_ACPI_TABLES
+ 	select HAVE_ACPI_RESUME
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT
++	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 	select H8_DOCK_EARLY_INIT
+ 	select HAVE_CMOS_DEFAULT
+ 	select INTEL_EDID
+diff --git a/src/mainboard/lenovo/t60/devicetree.cb b/src/mainboard/lenovo/t60/devicetree.cb
+index 54b7da3..f187bfb 100644
+--- a/src/mainboard/lenovo/t60/devicetree.cb
++++ b/src/mainboard/lenovo/t60/devicetree.cb
+@@ -25,7 +25,6 @@ chip northbridge/intel/i945
+ 	register "gpu_hotplug" = "0x00000220"
+ 	register "gpu_lvds_use_spread_spectrum_clock" = "1"
+ 	register "gpu_lvds_is_dual_channel" = "1"
+-	register "gpu_backlight" = "0x1280128"
+ 
+ 	device cpu_cluster 0 on
+ 		chip cpu/intel/socket_mFCPGA478
+diff --git a/src/northbridge/intel/i945/acpi/igd.asl b/src/northbridge/intel/i945/acpi/igd.asl
+index 47b66a7..f9c8ef4 100644
+--- a/src/northbridge/intel/i945/acpi/igd.asl
++++ b/src/northbridge/intel/i945/acpi/igd.asl
+@@ -216,14 +216,14 @@ Device (GFX0)
+ 
+ 		Method (_BCM, 1, NotSerialized)
+ 		{
+-			Store (ShiftLeft (Arg0, 4), ^^BCLV)
++			Store (ShiftLeft (Arg0, 9), ^^BCLV)
+ 			Store (0x80000000, ^^CR1)
+-			Store (ShiftLeft (0x61, 4), ^^BCLM)
++			Store (ShiftLeft (0x61, 9), ^^BCLM)
+ 		}
+ 		Method (_BQC, 0, NotSerialized)
+ 		{
+ 			Store (^^BCLV, Local0)
+-			ShiftRight (Local0, 4, Local0)
++			ShiftRight (Local0, 9, Local0)
+ 			Return (Local0)
+ 		}
+ 

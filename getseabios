@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#  getgrub script: Downloads SeaBIOS and patches it.
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Get GRUB, revert to commit last used and apply patches.
+
+# Remove the old version that may still exist
+# -------------------------------------------------------------------------------
+
+echo "DOWNLOADING GRUB"
+
+rm -rf seabios
+
+# Get latest GRUB
+# -------------------------------------------------------------------------------
+
+# download it using git
+git clone git://git.seabios.org/seabios.git seabios
+
+cd seabios
+
+# Reset to the last commit that was tested
+# --------------------------------------------------------------------------------
+
+#
+# commit 275672eb70efdf81c51b997d41a4409b404aa8f6
+# Author: Markus Armbruster <armbru@redhat.com>
+# Date:   Fri Aug 15 08:58:17 2014 +0200
+#
+
+git reset --hard 275672eb70efdf81c51b997d41a4409b404aa8f6
+
+# Apply patches
+# --------------------------------------------------------------------------------
+
+# No patches needed for SeaBIOS at present.
+
+# we're done
+cd ../
+
+echo "FINISHED DOWNLOADING SEABIOS"
+
+# ------------------- DONE ----------------------
+
+

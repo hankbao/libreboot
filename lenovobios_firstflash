@@ -2,7 +2,7 @@
 
 #  lenovobios_firstflash: flashes libreboot on an X60/T60 while Lenovo BIOS is running
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

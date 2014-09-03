@@ -1,0 +1,94 @@
+#!/bin/bash
+
+#  builddeb script: Installs build dependencies from apt-get (tested in Trisquel 6)
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Install build dependencies
+# For trisquel. This might also work on other apt-get distributions.
+
+# Duplications are intentional. Please do not re-factor.
+#
+# This is so that individual scripts can be installed for specific applications.
+# This is, alternatively, so that I can more easily move each part to a separate script.
+#
+
+# Really. Most distros come with this anyway
+# Parabola does not! If you are using parabola, use "pacman -S wget"
+# ------------------------------------------------------------
+
+apt-get -y install wget
+
+# For downloading source code
+# ------------------------------------------------------------
+
+apt-get -y install subversion git
+
+# For building source code:
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# Memtest86+ build dependencies
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# SeaBIOS build dependencies
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# GRUB Invaders build dependencies
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# i945-pwm build dependencies
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# Coreboot build dependencies (also requires build-essential and git)
+# ------------------------------------------------------------
+
+apt-get -y install libncurses5-dev doxygen iasl gdb flex bison build-essential git
+
+# GRUB build dependencies (also requires build-essential, bison and flex)
+# ------------------------------------------------------------
+
+apt-get -y install ttf-unifont libopts25 libselinux1-dev autogen m4 autoconf help2man libopts25-dev libfont-freetype-perl automake autotools-dev build-essential bison flex libfuse-dev liblzma-dev gawk libdevmapper-dev libtool libfreetype6-dev
+
+#
+# The following have had their dependency lists moved to external scripts:
+#
+# This is so that users in libreboot_bin can more easily install the dependencies 
+# for these, without having to install all of the dependencies for the entire source code
+#
+
+# BucTS build dependencies (external script)
+# ------------------------------------------------------------
+
+apt-get -y install build-essential
+
+# Flashrom build dependencies (also requires build-essential and subversion)
+# ------------------------------------------------------------
+
+apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential subversion
+
+# ------------------- DONE ----------------------
+

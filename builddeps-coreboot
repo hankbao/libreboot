@@ -2,7 +2,7 @@
 
 #  builddeps-coreboot: builds the dependencies that coreboot needs before building a ROM image
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -57,7 +57,20 @@ rm -rf grub.elf
 make crossgcc-clean
 make crossgcc
 
-# done. go back to main directory
+# build libpayload
+cd payloads/libpayload
+make clean
+rm -rf install
+# copy the config     
+rm -rf .config  
+cp ../../../resources/libreboot/config/libpayload/config .config
+# build libpayload (root not needed for make install. it puts under 'install' directory in same directory)
+make
+make install
+# come back to main coreboot directory
+cd ../../
+
+# done. go back to main libreboot_src directory
 cd ../
 
 # ------------------- DONE ----------------------

@@ -1,0 +1,22 @@
+diff --git a/src/northbridge/intel/i945/acpi/igd.asl b/src/northbridge/intel/i945/acpi/igd.asl
+index 47b66a7..f9c8ef4 100644
+--- a/src/northbridge/intel/i945/acpi/igd.asl
++++ b/src/northbridge/intel/i945/acpi/igd.asl
+@@ -216,14 +216,14 @@ Device (GFX0)
+ 
+ 		Method (_BCM, 1, NotSerialized)
+ 		{
+-			Store (ShiftLeft (Arg0, 4), ^^BCLV)
++			Store (ShiftLeft (Arg0, 9), ^^BCLV)
+ 			Store (0x80000000, ^^CR1)
+-			Store (ShiftLeft (0x61, 4), ^^BCLM)
++			Store (ShiftLeft (0x61, 9), ^^BCLM)
+ 		}
+ 		Method (_BQC, 0, NotSerialized)
+ 		{
+ 			Store (^^BCLV, Local0)
+-			ShiftRight (Local0, 4, Local0)
++			ShiftRight (Local0, 9, Local0)
+ 			Return (Local0)
+ 		}
+ 

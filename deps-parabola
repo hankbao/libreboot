@@ -1,0 +1,73 @@
+#!/bin/bash
+
+#  buildpac script: Installs build dependencies from pacman (Parabola)
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# Install build dependencies
+# For parabola. This might also work on other pacman distributions.
+
+# Duplications are intentional. Please do not re-factor.
+#
+# This is so that individual scripts can be installed for specific applications.
+# This is, alternatively, so that I can more easily move each part to a separate script.
+#
+
+# Really. Most distros come with this anyway
+# Parabola does not! If you are using parabola, use "pacman -S wget"
+# ------------------------------------------------------------
+pacman --noconfirm -S wget
+
+# really. I'm serious. This is sinister.
+
+# For downloading source code
+# ------------------------------------------------------------
+
+pacman --noconfirm -S subversion git 
+
+# For building source code:
+# ------------------------------------------------------------
+
+pacman --noconfirm -S base-devel
+
+# Memtest86+ build dependencies
+# ------------------------------------------------------------
+
+pacman --noconfirm -S base-devel
+
+# Coreboot build dependencies (also requires build-essential and git)
+# ------------------------------------------------------------
+
+pacman --noconfirm -S ncurses doxygen iasl gdb flex bison base-devel git
+
+# GRUB build dependencies (also requires build-essential, bison and flex)
+# ------------------------------------------------------------
+
+pacman --noconfirm -S ttf-unifont autogen libselinux autoconf m4 base-devel help2man automake autotools base-devel bison flex fuse xz-utils gawk dev-mapper libtool freetype2
+
+# BucTS build dependencies
+# ------------------------------------------------------------
+
+pacman --noconfirm -S base-devel
+
+# Flashrom build dependencies
+# ------------------------------------------------------------
+
+pacman --noconfirm -S pciutils zlib libftdi base-devel subversion
+
+# ------------------- DONE ----------------------
+

@@ -2,7 +2,7 @@
 
 #  cleandeps script: cleans everything (make clean)
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -44,6 +44,12 @@ rm -rf grub.elf
 
 # clean reference crossGCC for coreboot
 make crossgcc-clean
+
+# clean libpayload
+cd payloads/libpayload
+make clean
+rm -rf install
+cd ../../
 
 # done. go back to main directory
 cd ../
@@ -89,6 +95,33 @@ rm -rf flashrom_lenovobios_macronix
 
 # done. go back to main directory
 cd ../
+
+# clean seabios
+# --------------------------------------------------------
+
+cd seabios
+
+make clean
+
+cd ../
+
+# clean grubinvaders
+# --------------------------------------------------------
+
+cd grubinvaders
+
+./clean.sh
+
+cd ../
+
+# clean i945-pwm
+# --------------------------------------------------------
+
+cd resources/utilities/i945-pwm
+
+make clean
+
+cd ../../../
 
 # a few more things to do last
 # --------------------------------------------------------

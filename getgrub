@@ -2,7 +2,7 @@
 
 #  getgrub script: Downloads GRUB and patches it.
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -39,17 +39,15 @@ cd grub
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
-# Commit ID used (see "git log"):
 #
-# commit 4b8b9135f1676924a8458da528d264bbc7bbb301
-# Author: Vladimir Serbinenko <phcoder@gmail.com>
-# Date:   Sun Apr 20 16:12:41 2014 +0200
+# commit c291f47b2c003ef6daeafaedd458db838bad6fb8
+# Author: Andrey Borzenkov <arvidjaar@gmail.com>
+# Date:   Thu Aug 14 21:02:31 2014 +0400
 #
-#        * grub-core/kern/misc.c (__bzero): Don't compile in GRUB_UTIL.
-#    
-#        Reported by: Yves Blusseau <blusseau@zetam.org>.
+#    Fix typo (gettext_print instead of gettext_printf)
+#
 
-git reset --hard 4b8b9135f1676924a8458da528d264bbc7bbb301
+git reset --hard c291f47b2c003ef6daeafaedd458db838bad6fb8
 
 # Apply patches
 # --------------------------------------------------------------------------------
@@ -65,11 +63,6 @@ git apply gitdiff
 
 # remove the copy (no longer needed)
 rm -rf gitdiff
-
-# We don't need .git* (please submit all upstreamable changes directly to GRUB upstream)
-# removing them, to reduce the size of the archive
-rm -rf .git
-rm -rf .gitignore
 
 # we're done
 cd ../

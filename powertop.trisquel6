@@ -2,7 +2,7 @@
 
 #  powertop.trisquel6: automatically sets up powertop --auto-tune on startup in trisquel 6
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -24,11 +24,13 @@
 # powertop on Trisquel 6 is out of date. We will get it from git.
 # We are using a specific git revision (one that I have tested)
 
+# RUN THIS AS ROOT
+
 # Delete the one that is already installed from repo's (if it is installed)
-sudo apt-get -y purge powertop
+apt-get -y purge powertop
 
 # Install dependencies:
-sudo apt-get -y install libpci-dev libncurses-dev libnl-dev build-essential git autoconf2.13 libtool autotools-dev autopoint pkg-config
+apt-get -y install libpci-dev libncurses-dev libnl-dev build-essential git autoconf2.13 libtool autotools-dev autopoint pkg-config
 
 # remove previous git clone if it exists:
 rm -rf powertop
@@ -47,26 +49,26 @@ git reset --hard e70c89eb5d7b6b8f898bb126adefcbf3202d5acf
 make
 
 # install it
-sudo make install
+make install
 
 # Remove startup symlink if it exists
-sudo update-rc.d powertop remove
+update-rc.d powertop remove
 # Remove previous file if it exists
-sudo rm  -rf /etc/init.d/powertop
+rm  -rf /etc/init.d/powertop
 
 # write the correct commands there:
-sudo cp ../powertop.trisquel6.init /etc/init.d/powertop
+cp ../powertop.trisquel6.init /etc/init.d/powertop
 
 # make it executable:
-sudo chmod +x /etc/init.d/powertop
+chmod +x /etc/init.d/powertop
 
 # Add the service to make it run automatically at boot time:
-sudo update-rc.d powertop defaults
+update-rc.d powertop defaults
 
 # Done.
 
 # Run powertop now and tell the user
-sudo powertop --auto-tune
+powertop --auto-tune
 echo "Done. Run 'powertop --auto-tune' now. This will also run automatically at boot time. Run it again at any time, if needed. This has also been done for you just now."
 
 # Come out of powertop directory (we are done)

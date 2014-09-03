@@ -2,7 +2,7 @@
 
 #  getflashrom script: downloads flashrom and patches it
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -31,20 +31,10 @@ rm -rf flashrom
 # ---------------------------------------------------------------------
 
 # download it using subversion
-svn co -r 1822 svn://flashrom.org/flashrom/trunk flashrom
-
-# r1822 2014-06-16 is the revision last tested/patched
+svn co -r 1846 svn://flashrom.org/flashrom/trunk flashrom
 
 # there are no permanent patches needed to be applied here:
 # the patches are applied selectively at build time (when running "builddeps-flashrom")
-
-# delete the .svn directory
-# (not needed to work with source code)
-# (reduces size of the archive)
-# flashrom development should be upstream!
-cd flashrom
-rm -rf .svn
-cd ../
 
 echo "FINISHED DOWNLOADING FLASHROM"
 

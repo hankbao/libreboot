@@ -1,0 +1,195 @@
+#!/bin/bash
+
+#
+#  build-release script: generates libreboot_bin and libreboot_src release archives
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
+# You should also run the 'build' script before running this 
+
+# Delete old archives before continuing
+# ----------------------------------------------------------------------------------------------------------------------------
+
+echo "Deleting old release archives"
+
+rm -rf libreboot_src.tar.xz
+rm -rf libreboot_bin.tar.xz
+
+# Get manifest which will be used to copy everything
+ls > releasefilelist
+
+# Prepare libreboot_src archive ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+echo "Preparing libreboot_src release archive"
+
+mkdir libreboot_src
+
+for resource in $(cat releasefilelist)
+do
+	cp -r $resource libreboot_src
+done
+
+cd libreboot_src
+
+# clean everything
+./cleandeps
+
+# back to main checkout directory
+cd ../
+
+# Further work in libreboot_src: delete *.git and *.svn
+# To save space since they are not useful in the release archives
+# Changes to these projects should be submitted upstream
+# ----------------------------------------------------------------------------------------------------------------------------
+
+cd libreboot_src
+
+# These instructions will also work even if .git or .svn are already deleted
+# because "rm -rf" won't complain if they are missing. It is still useful on
+# the release archives (non-git), for example if the user re-downloads these programmes.
+
+# # bucts needs .git to stay, otherwise it won't compile
+# # We don't need .git* (please submit all upstreamable changes directly to bucts upstream)
+# # removing them, to reduce the size of the archive
+# cd bucts
+# rm -rf .git
+# rm -rf .gitignore
+# cd ../
+# # it was found to cause issues when deleting:
+# # GIT_DISCOVERY_ACROSS_FILESYSTEM not set
+
+# coreboot:
+# the instructions for coreboot remain in getgb script
+# they need to stay there, because otherwise "git diff"
+# will show the blobs that were deleted (which means,
+# that libreboot would be distributing blobs)
+
+# Flashrom:
+cd flashrom
+rm -rf .svn
+cd ../
+
+# GRUB:
+cd grub/
+rm -rf .git
+rm -rf .gitignore
+cd ../
+
+# SeaBIOS:
+cd seabios
+rm -rf .git
+rm -rf .gitignore
+cd ../
+
+cd ../
+
+# Prepare libreboot_bin archive ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+echo "Preparing libreboot_bin release archive"
+
+mkdir libreboot_bin
+
+# Include the ROM's in the binary archive
+cp -r bin libreboot_bin/
+
+# Include flashrom utility in binary archive
+# (source only, no binaries. To eliminate cross-distro dependency issue)
+cp -r libreboot_src/flashrom libreboot_bin/
+
+# For installing build dependencies
+cp deps-trisquel libreboot_bin/
+cp deps-parabola libreboot_bin/
+
+# Build scripts for flashrom and bucts
+cp builddeps-flashrom libreboot_bin/
+cp builddeps-bucts libreboot_bin/
+
+# Include the same documentation in binary archive
+cp -r docs libreboot_bin/
+
+# include X60 cmos.layout file
+cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_bin/x60cmos.layout
+cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_bin/t60cmos.layout
+cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_bin/macbook21cmos.layout
+
+# X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
+# (source only, no binaries. To eliminate cross-distro dependency issue)
+cp -r libreboot_src/bucts libreboot_bin/
+
+# Include a copy of nvramtool in libreboot_bin
+# (source only, no binaries. To eliminate cross-distro dependency issue)
+cp -r libreboot_src/coreboot/util/nvramtool libreboot_bin/
+
+# X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
+cp powertop.trisquel6 libreboot_bin/
+cp powertop.trisquel6.init libreboot_bin/
+
+cp macbook21_firstflash ../libreboot_bin
+
+# (lazy hack) to make builddep-flashrom work in libreboot_bin:
+cp -r resources libreboot_bin/
+
+# X60/T60: so that the user can use libreboot_bin to overwrite lenovo bios with libreboot
+cp lenovobios_firstflash libreboot_bin/
+cp lenovobios_secondflash libreboot_bin/
+
+# Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
+cp flash libreboot_bin/
+
+# patch the version of cbfstool included in libreboot_bin,
+# so that it can be built/executed standalone
+# this modification is only suitable for the version included in libreboot_bin
+# do not patch the one in libreboot_src with this
+# (source only, no binaries. To eliminate cross-distro dependency issue)
+cp -r libreboot_src/coreboot/util/cbfstool libreboot_bin/cbfstool_standalone
+# Patching libreboot_bin/cbfstool_standalone to be buildable (and executable) without residing in coreboot source tree
+rm -rf libreboot_bin/cbfstool_standalone/rmodule.c
+cp resources/cbfstool/patch/rmodule.c libreboot_bin/cbfstool_standalone/rmodule.c
+cp libreboot_src/coreboot/src/include/rmodule-defs.h libreboot_bin/cbfstool_standalone/rmodule-defs.h
+
+# Create the release tarballs
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# Also delete the manifest
+rm -rf libreboot_src/releasefilelist
+rm -rf libreboot_bin/releasefilelist
+rm -rf releasefilelist
+
+echo "Creating compressed libreboot_src release archive"
+
+# create lzma compressed src archive
+tar cfJ libreboot_src.tar.xz libreboot_src
+
+echo "Creating compressed libreboot_bin release archive"
+
+# create lzma compressed bin archive
+tar cfJ libreboot_bin.tar.xz libreboot_bin
+
+# Delete the uncompressed release directories
+# ----------------------------------------------------------------------------------------------------------------------------
+
+echo "Deleted the uncompressed release archives"
+
+rm -rf libreboot_src
+rm -rf libreboot_bin
+
+echo "DONE. See libreboot_src.tar.xz and libreboot_bin.tar.xz"
+
+# ------------------- DONE ----------------------

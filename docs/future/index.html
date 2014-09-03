@@ -24,7 +24,7 @@
 
 	<header>
 		<h1 id="pagetop">Development notes</h1>
-		<aside>These are development notes, for future use.</aside>
+		<aside>These are development notes, for future use. For old (obselete) notes, see <a href="old.html">old.html</a>.</aside>
 	</header>
 
 	<p>
@@ -41,42 +41,11 @@
 		<li><a href="#fastboot">Fast boot</a></li>
 		<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
 		<li><a href="#blind_x60">Blind X60 - kernel git bisect</a></li>
-		<li><a href="#x60_native_notes">X60 native graphics initialization (backlight controls)</a></li>
-		<li><a href="#t60_native_notes">T60 native graphics initialization (backlight controls)</a></li>
-		<li><a href="#5320_kernel312fix">i945: 3D fix (based on 5927) for kernel 3.12+ on 5320</a></li>
-		<li><a href="#x60_cb5927_testing">i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay code)</a></li>
 		<li><a href="#i945_vbt">i945 X60/T60 VBT implementation (experimental: testing)</a></li>
 		<li><a href="#intelvbttool_results">IntelVbtTool results</a></li>
 		<li><a href="#cpu_cstates_buzzing">CPU c-states (X60/T60) buzzing sound on CPU idle</a></li>
 		<li><a href="#battery_eventc">Battery 'event c' on X60 (and T60?)</a></li>
 	</ul>
-
-<hr/>
-
-	<h1 id="todo">TODO (bold means high priority)</h1>
-	<ul>
-		<li>
-			<b><a href="#intelvbttool_results">#intelvbttool_results</a>: Finish getting runningvga.bin dumps and intelvbttool dumps for all known targets on X60 and T60.</b>
-			<ul>
-				<li>Figure out why 15" T60 with 1024x768 panel doesn't work on native graphics initialization. And fix it (implementing VBT might, also understanding how
-				to correctly interpret EDID, according to phcoder and damo22).</li>
-				<li><b><a href="#i945_vbt">#i945_vbt</a>: Finish getting results when running native init and loading (but not executing) the VBIOS option ROM.</b></li>
-				<li>When VBT is implemented/tested, also test SeaVGABIOS (part of SeaBIOS)</li>
-			</ul>
-		</li>
-		<li>test that patch (DYNAMIC_CBMEM, <a href="http://review.coreboot.org/#/c/6036">http://review.coreboot.org/#/c/6036</a>) on X60 and T60 for kmalkki</li>
-		<li>Further study how backlight controls work</li>
-		<li>funfunctor (from coreboot IRC) wants me to try building libreboot/coreboot on X60 with clang/llvm because he says there are some issues where boards fail when built with this: fchmmr: well you will need to compile the latest clang, here are some instructions: https://gist.github.com/victoredwardocallaghan/38689e88dd7b9a439468 and also: funfunctor: fchmmr: you will need the latest coreboot code and http://review.coreboot.org/#/c/5814/ to get clang to build whatever board. also! <br/><br/>
-
-		fchmmr: see this topic http://review.coreboot.org/#/q/status:open+project:coreboot+branch:master+topic:clang-fixes,n,z you will need those fixes to get anywhere with building t60/x60 with clang. at the time of writing that was 6122/1, 6121/1, 6120/1 and 6119/1<br/><br/>
-
-		fchmmr: its unclear if http://review.coreboot.org/#/c/6129/ has uncovered a bug yet or not..fchmmr: well this was a bug spotted http://review.coreboot.org/#/c/6052/<br/><br/>
-
-		funfunctor says X60 (not sure about T60) ROM's can now be built with Clang/LLVM</li>
-		<li>Investigate <a href="#battery_eventc">#battery_eventc</a>.</li>
-	</ul>
-
-	<p><a href="#pagetop">Back to top of page</a></p>
 
 <hr/>
 
@@ -284,199 +253,6 @@
 			Note: &quot;memory_corruption_check=0 i915.lvds_channel_mode=2&quot; kernel parameters were once used
 			successfully for linux-libre 3.10 on a ThinkPad T60 (distribution: Parabola) to get graphics working.
 		</p>
-
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
-	<h1 id="x60_native_notes">X60 native graphics initialization (with backlight controls)</h1>
-		<p>
-			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
-		</p>
-		<p>
-			<b>The fix below was done on 5320/6 (from review.coreboot.org) but should work just fine on later versions of 5320.</b>
-		</p>
-		<p>
-			Native gpu init + backlight controls! (Fn keys). Also confirmed on X60 Tablet (1024x768) and X60 Tablet (1400x1050)
-		</p>
-		<p>
-			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/x60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x879F879E</b>
-		</p>
-		<p>
-			That's all! <b>This has also been backported into libreboot 5th release (line 1233 in src/mainboard/lenovo/x60/i915io.c)</b>. GNUtoo (Denis Carikli) 
-			told me about the register <b>BLC_PWM_CTL</b> and that you could set it to control backlight. I read that address using devmem2 while running the VBIOS:<br/>
-			<b># devmem2 0xe4361254 w</b>
-		</p>
-		<p>
-			The change is also included in libreboot 6.
-		</p>
-		<p>
-			When doing this, it gave back that value. The same trick was used to get backlight controls for T60 (see <a href="#t60_native_notes">#t60_native_notes</a>).
-		</p>
-
-		<h2>Further notes</h2>
-			<p>
-				Reading <b>0xe4361254</b> (address) in Lenovo BIOS always yields FFFFFFFF, even when writing to it (and writing to it doesn't affect brightness controls). 
-				'mtjm' on IRC found that the buttons (Fn keys) control /sys/class/backlight/acpi_video0 which has no affect on 61254 (BLC_PWM_CTL). He says
-				intel_backlight has different values and uses the register. devmem2 works, needs checking <b>lspci -vv</b> for where the memory is mapped,
-				which is different than on coreboot; mtjm found that it was 0xec061254 on his machine (X60 Tablet), and the register value is different too.
-				<b>This is relevant, because we still don't know how backlight controls are actually handled. We got it working by accident. We need to know more.</b>.
-			</p>
-			<p>
-				Intel-gpu-tools may prove useful for further debugging: <a href="http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/">http://cgit.freedesktop.org/xorg/app/intel-gpu-tools/</a>
-			</p>
-			<p>
-				mtjm says 0xe4300000 is an MMIO region of the gpu (lspci -vv shows it), 0x61254 (BLC_PWM_CTL) is a documented register. Searching the kernel driver for backlight
-				shows that in intel_panel.c this register is used (there is an XXX comment about finding the right value, where recent kernels get it from.
-			</p>
-			<p>
-				What we want to do is calculate a good value, instead of setting it in devicetree.cb. mtjm says about backlight physics:
-				it has a light source , uses pulse width modulation (PWM) to turn it on/off, dimming is done by spending less time on. 
-				<b>Note: this may not be correct; he says his understanding is based on how the Lenote yeeloong works</b>.
-			</p>
-			<p>
-				mtjm goes on to say, that the register specifies the frequency used for PWM in its depending on the GPU core frequency, so it
-				might be possible to calculate it without hardcoded laptop-specific values. Therefore, I am supposed to find out the 'display core frequency'
-				(mtjm says there might be a register for it; also, it might be in 5320 or the replay code) and the PWM modulation frequency.
-				https://en.wikipedia.org/wiki/Backlight#Flicker_due_to_backlight_dimming
-			</p>
-			<p>
-				phcoder (Vladimir Serbinenko) who is author of 5320 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering frequency'.
-			</p>
-
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
-	<h1 id="t60_native_notes">T60 native graphics initialization (with backlight controls)</h1>
-		<p>
-			<b><i>Also check <a href="#5320_kernel312fix">#5320_kernel312fix</a> (to fix 3D on kernel 3.12/higher)</i></b>
-		</p>
-		<p>
-			<b>The fix below was done on an earlier version of 5345 changeset (review.coreboot.org), but should work on the current version. it is included in libreboot 6</b>
-		</p>
-		<p>
-			<b>Add backlight controls:</b> in <i>src/mainboard/lenovo/t60/devicetree.cb</i>, change <b>gpu_backlight</b> to <b>0x58BF58BE</b>
-		</p>
-		<p>
-			Hold on! Check <a href="../index.html#get_edid_panelname">../index.html#get_edid_panelname</a> to know what LCD panel you have. This is important for the next step!
-		</p>
-
-		<h2>Supported panels</h2>
-			<p>
-				<a href="../index.html#supported_t60_list">../index.html#supported_t60_list</a>.
-			</p>
-
-		<p>
-			See <a href="#lcd_i945_incompatibility">#lcd_i945_incompatibility</a>.
-		</p>
-		
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
-	<h1 id="5320_kernel312fix">i945: 3D fix (based on 5927) for kernel 3.12+ on 5320</h1>
-
-		<p><b>This needs to be rewritten (or better organized, or deleted?)</b>. This is also now included in libreboot 6 (using the proper way, not the 7c0000 method which was a hack)</p>
-
-		<p>
-			<b>This was done on 5320/6 so far. The fix below is for 5320/6 which is now obsolete. This needs to be re-done for the latest version
-			of 5320. The fix below is (in practise) only for reference, therefore.</b>
-		</p>
-
-		<p>
-			See <a href="#x60_cb5927_testing">#x60_cb5927_testing</a> for the original (and current) fix, for the replay code. Now we want
-			to implement that on top of <a href="http://review.coreboot.org/#/c/5320">http://review.coreboot.org/#/c/5320</a>
-			which is the current code for native graphics initialization on i945.
-		</p>
-
-		<p>
-			src/northbridge/intel/i945/gma.c (using the 7c0000 hack) on 5320: <a href="dumps/5320_7c0000_gma.c">5320_7c0000_gma.c</a> (rename it to gma.c, 
-			replacing the current one). 
-		</p>
-
-		<p>
-			The above is a hack (as is the original). A better (more correct) method is implemented in later versions of 5927, so 
-			that should also be adapted for 5320. For now, you can use the above fix.
-		</p>
-
-		<p>
-			The correct way to do it is to set gtt address to (end of stolen memory - gtt size), which is what later versions of 5927 do (successfully).
-		</p>
-
-		<p>
-			Here is some debugging output using intel_gpu_tools v1.2-1 (from trisquel repositories) using tool "intel_gtt":
-		</p>
-
-		<ul>
-			<li>
-				Trisquel 6. kernel 3.14.4:
-				<ul>
-					<li>with libreboot 5th release (using the 7c0000 gtt hack from 5927/3): <a href="http://paste.debian.net/104306">http://paste.debian.net/104306</a></li>
-					<li>with coreboot+vgarom: <a href="http://paste.debian.net/104309">http://paste.debian.net/104309</a></li>
-				</ul>
-			</li>
-			<li>
-				Trisquel 6. kernel 3.2.0-60 (from Trisquel repositories):
-				<ul>
-					<li>with coreboot (no vbios or native init): <a href="http://paste.debian.net/104341">http://paste.debian.net/104341</a></li>
-				</ul>
-			</li>
-		</ul>
-
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
-	<h1 id="x60_cb5927_testing">i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code)</h1>
-
-		<p><b>The latest version as-is (5927/11) has not been tested by me yet. Always boot with 'drm.debug=0x06' kernel parameter when testing this.</b></p>
-
-		<p>
-			This is the fix for 3D on kernel 3.12 and higher on i945 (ThinkPad X60 in this case). This is for the replay code.
-			Libreboot 5th release has a version of this backported already (based on 5927/3 using the '7c0000' hack).
-		</p>
-
-		<p>
-			<b>
-				The replay code is obsolete (see 5320 changeset on review.coreboot.org for better version
-				which supports more machines/screens, and then 5345 for T60). Information here for reference since that is where the fix was first applied. 
-			</b>
-		</p>
-
-		<p>
-			Read the information on <a href="http://review.coreboot.org/#/c/5927/">http://review.coreboot.org/#/c/5927/</a>.
-		</p>
-
-		<p>
-			For historical purposes, here is a collection of IRC logs that once existed on this page, related to the issue:
-			<a href="dumps/kernel312_irc">kernel312_irc</a>.
-		</p>
-
-		<p>
-			PGETBL_CTL differs between VBIOS (-) and native graphics init (+).<br/>
-
-			-          PGETBL_CTL: 0x3ffc0001<br/>
-			+          PGETBL_CTL: 0x3f800001
-		</p>
-
-		<p>GTT (graphics translation table) size is PGETBL_save, max 256 KiB. BSM (Base of Stolen Memory) is given by the bios.</p>
-
-		<ul>
-			<li>5927/7: <a href="dumps/5927_7.tar.gz">5927_7.tar.gz</a> (GRUB graphics are correct now, and 3D still works)</li>
-			<li>5927/6: <a href="dumps/5927_6.tar.gz">5927_6.tar.gz</a> (GRUB graphics still corrupt, 3D/everything still works after GRUB)</li>
-			<li>5927/5: <a href="dumps/5927_5.tar.gz">5927_5.tar.gz</a> (GRUB graphics corrupt, 3D/everything still works after GRUB)</li>
-			<li>5927/3: <a href="dumps/5927_3.tar.gz">5927_3.tar.gz</a> (3D still works! kernel 3.14.4) - the '7c0000' hack</li>
-			<li>5927/2: <a href="dumps/5927_2.tar.gz">5927_2.tar.gz</a> (3D works! kernel 3.14.4) - the '7c0000' hack</li>
-			<li>
-				5927/1 (didn't fix the 3D issue):
-				<ul>
-					<li><a href="dumps/5927_cbmemc">cbmem -c</a></li>
-					<li><a href="dumps/5927_crashdump">/sys/class/drm/card0/error</a></li>
-					<li><a href="dumps/5927_config">.config</a></li>
-				</ul>
-			</li>
-		</ul>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
 
@@ -802,9 +578,18 @@
 		<a href="#pagetop">Back to top of page.</a>
 	</p>
 
+<hr/>
+
 	<p>
-		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
-		See <a href="../license.html">../license.html</a> for license conditions.
+		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+	</p>
+
+	<p>
+		This document is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 	</p>
 
 </body>
