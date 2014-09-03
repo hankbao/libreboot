@@ -26,9 +26,6 @@
 
 cd resources/utilities/i945-pwm/
 
-# clean it first
-make clean
-
 # build it
 make
 
