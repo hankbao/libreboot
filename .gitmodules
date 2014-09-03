@@ -1,0 +1,3 @@
+[submodule "resources/utilities/i945-pwm"]
+	path = resources/utilities/i945-pwm
+	url = git://git.mtjm.eu/i945-pwm.git
