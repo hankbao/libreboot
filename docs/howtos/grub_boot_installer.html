@@ -63,11 +63,43 @@
 		the way you specified.
 	</p>
 
+	<h1>Troubleshooting</h1>
+
+	<h2>debian-installer (trisquel net install) graphical corruption in text-mode</h2>
+	<p>
+		When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
+		booting the Trisquel net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
+		exist. Use that kernel parameter on the 'linux' line when booting it:<br/>
+		<b>vga=normal fb=false</b>
+	</p>
+
+	<p>
+		Tested in Trisquel 6 (and 7). This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
+	</p>
+
+	<p>
+		If selecting text-mode from a GRUB menu created using the ISOLINUX parser, you can press E on the menu entry to add this.
+		Or, if you are booting manually (from GRUB terminal) then just add the parameters.
+	</p>
+
+	<p>
+		This workaround was found on the page: <a href="https://www.debian.org/releases/stable/i386/ch05s04.html">https://www.debian.org/releases/stable/i386/ch05s04.html</a>.
+		It should also work for gNewSense, Debian and any other apt-get distro that provides debian-installer (text mode) net install method.
+	</p>
+
 <hr/>
 
 	<p>
-		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
-		See <a href="../license.html">../license.html</a> for license conditions.
+		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 	</p>
+
+	<p>
+		This document is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+	</p>
+
 </body>
 </html>

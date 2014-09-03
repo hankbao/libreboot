@@ -1,33 +1,18 @@
-The following files inside this directory:
+# GRUB configuration files under resources/grub/config/
 
- * grub_memdisk.cfg
- * macbook21/grub.cfg
- * macbook21/grub_dvorak.cfg
- * macbook21/grub_ukdvorak.cfg
- * macbook21/grub_ukqwerty.cfg
- * t60/grub.cfg
- * t60/grub_dvorak.cfg
- * t60/grub_ukdvorak.cfg
- * t60/grub_ukqwerty.cfg
- * t60/grub_serial.cfg
- * t60/grub_serial_dvorak.cfg
- * t60/grub_serial_ukdvorak.cfg
- * t60/grub_serial_ukqwerty.cfg
- * x60/grub.cfg
- * x60/grub_dvorak.cfg
- * x60/grub_ukdvorak.cfg
- * x60/grub_ukqwerty.cfg
- * x60/grub_serial.cfg
- * x60/grub_serial_dvorak.cfg
- * x60/grub_serial_ukdvorak.cfg
- * x60/grub_serial_ukqwerty.cfg
- * x60t/grub.cfg
- * x60t/grub_dvorak.cfg
- * x60t/grub_ukdvorak.cfg
- * x60t/grub_ukqwerty.cfg
- * x60t/grub_serial.cfg
- * x60t/grub_serial_dvorak.cfg
- * x60t/grub_serial_ukdvorak.cfg
- * x60t/grub_serial_ukqwerty.cfg
-
-Look inside each file for copyright information
+#
+#	Copyright (C) 2014 Francis Rowe
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#

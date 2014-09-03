@@ -27,17 +27,31 @@ _MEMORY = re.compile(r"^\s+Memory\s+at\s+([0-9a-f]+)\s+\(32-bit, non-prefetchabl
 
 def get_pci_data():
     # lspci has a machine readable format, but it doesn't have the needed data.
-    for devid in "8086:27a2", "8086:27a6":
+    for devid in ("8086:27a2",):
         lspci = subprocess.Popen(("lspci", "-vn", "-d", devid),
                                  stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE)
+        address = None
+        memory = None
         for line in lspci.communicate()[0].split("\n"):
+            if line and line[0] == "0":
+                address = line.split()[0]
             match = _MEMORY.match(line)
             if match is not None:
-                yield int(match.group(1), 16)
+                memory = int(match.group(1), 16)
                 break
+        yield (address, memory)
 
-func0, func1 = list(get_pci_data())
+
+def config_byte(address, offset):
+    """Return byte at specified offset in PCI config space of device
+    identified by address."""
+    with open("/sys/bus/pci/devices/0000:%s/config" % address, "rb") as f:
+        f.seek(offset)
+        return struct.unpack("=B", f.read(1))
+
+
+addr0, func0 = list(get_pci_data())[0]
 
 
 def read32(fo, base, offset):
@@ -91,3 +105,4 @@ if __name__ == "__main__":
         print "backlight modulation frequency = %f Hz" % mod_freq
         print "duty cycle = %d%%" % (100.0 * (backlight & 0xffff)
                                      / (backlight >> 16))
+        print "legacy backlight brightness = 0x%02x" % config_byte(addr0, 0xf4)

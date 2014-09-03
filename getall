@@ -2,7 +2,7 @@
 
 #  getall script: downloads everything extra for libreboot_src and patches to create libreboot_src archive from metadata
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -49,5 +49,15 @@ echo "Downloading dependencies for libreboot_src"
 ./getmt86
 
 echo "Done. Full source is inside this existing libreboot_meta directory (rename it to libreboot_src before you continue). Now install the dependencies listed in 'builddeb' and then run 'builddeps' and then 'build' (or just use 'buildall')"
+
+# Download SeaBIOS
+# ---------------------------------------------------
+
+./getseabios
+
+# Download GRUB Invaders
+# ---------------------------------------------------
+
+./getgrubinvaders
 
 # ------------------- DONE ----------------------

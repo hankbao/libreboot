@@ -2,7 +2,7 @@
 
 #  getcb script: downloads coreboot and patches/deblobs it
 #
-#	Copyright (C) 2014 Francis Rowe
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -23,41 +23,7 @@
 
 # (the idea is that this script will reproduce the coreboot directory included with this version of libreboot)
 
-# You need the dependencies from ./builddeb to use this script.
-
-#
-# The deblobbing target (coreboot git revision) for coreboot-libre is
-# the following commit in the coreboot git repository named "master":
-#
-# commit 63acd22dc5366c72a7165138f5030df9523824dc
-# Author: Vladimir Serbinenko <phcoder@gmail.com>
-# Date:   Sun Jun 1 00:26:48 2014 +0200
-# 
-#     lenovo: Make version look like something thinkpad_acpi would accept
-#     
-#     thinkpad_acpi checks that BIOS version matches some pattern.
-#     Report version in this form.
-#     
-#     Not cleaned up as the idea of this patch seems to be met with resistance.
-#     Can make it Thinkpad-specific if the idea is accepted.
-#     
-#     Change-Id: I15e33e87e7a7f42d6a06f12fb39b5172153af8a1
-#     Signed-off-by: Vladimir Serbinenko <phcoder@gmail.com>
-#     Reviewed-on: http://review.coreboot.org/4650
-#     Tested-by: build bot (Jenkins)
-#     Reviewed-by: Kyösti Mälkki <kyosti.malkki@gmail.com>
-#
-
-#
-# We do not need to do a "git reset --hard 63acd22dc5366c72a7165138f5030df9523824dc" here
-# because 5324/9 checkout (see below) eventually goes down to dependency 5320/9
-# which is checked out on top of 63acd22dc5366c72a7165138f5030df9523824dc
-#
-
-#
-# Use "git log" in coreboot after this is done, to see what was done.
-# Also use "git diff" to see uncommited changes (after the patch was applied by this script)
-#
+# You need the dependencies from ./builddeb or ./buildpac to use this script.
 
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
@@ -75,78 +41,47 @@ git clone http://review.coreboot.org/coreboot
 # there are modifications required
 cd coreboot
 
-# Get patches for "native graphics initialization" on X60 and T60
+# reset to previously tested revision
+git reset --hard 23aad4a83c3390dc39f7d1c1f5422f7ac54a80f3
+
+# Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
 
-# CHECKOUT (the XXXX/Y numbers are gerrit/git):
-# Checks out the following from the gerrit site at http://review.coreboot.org/
-# 5324/9 review.coreboot.org (not merged in cb master on day 20140630) - apple/macbook21: Fix audio.
-# 5323/9 review.coreboot.org (not merged in cb master on day 20140630) - apple/macbook21: EC handline ACPI implementation.
-# 5321/14 review.coreboot.org (not merged in cb master on day 20140630) - A new port apple/macbook21. (new macbook21 port + native graphics)
-# 5320/9 review.coreboot.org (not merged in cb master on day 20140630) - i945: Replace video gfx init. (X60 native graphics)
-# 5320/9 is the end (locically). It's dependency 4650/29 was merged since day 20140601 (and included already in this libreboot tree, even).
-# 4650/29 (merged in cb master on 20140601) - lenovo: Make version look like something thinkpad_acpi would accept
-git fetch http://review.coreboot.org/coreboot refs/changes/24/5324/9 && git checkout FETCH_HEAD
- 
-# CHERRY PICK (the XXXX/Y numbers are gerrit/git):
-# Cherry picks the following from the gerrit site at http://review.coreboot.org/
-# 5345/4 review.coreboot.org (not merged in cb master on day 20140630) - lenovo/t60: Enable native intel gfx init.
-# 5345//4 is the end (logically). It's dependency 5344/4, or rather 5344/5 was merged in cb master on 20140601 (and included in this libreboot tree, even)
-# Note: 5345/4 is based on the older 5344/4 before the merge so isn't rebased at the time of writing.
-git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/4 && git cherry-pick FETCH_HEAD
+# Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
+git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/1 && git cherry-pick FETCH_HEAD
 
-# Apply necessary patches
+# Backlight controls on i945 (X60/T60/macbook21)
+git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/6 && git cherry-pick FETCH_HEAD
+
+# Enable T60 native graphics
+git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/7 && git cherry-pick FETCH_HEAD
+
+# Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
 
-mkdir src/drivers/lenovo
+# look at resources/libreboot/patch/gitdiff to see what the whole patch looks like when all of these are applied.
 
-touch src/drivers/lenovo/Kconfig
-touch src/drivers/lenovo/Makefile.inc
-touch src/drivers/lenovo/lenovo.h
-touch src/drivers/lenovo/wacom.c
+# copy all the patches here for this release
+cp ../resources/libreboot/patch/0000_t60_6723_and_6725_1_extension_textmode.git.diff .
+cp ../resources/libreboot/patch/0001_t60_6731_6_extension_acpi_brightness.git.diff .
+cp ../resources/libreboot/patch/0002_i945_6731_6_extension_fix_uneven_backlight.git.diff .
 
-git add src/drivers/lenovo
+# Add text-mode for T60 (enables text-mode payloads like memtest, seabios, grub invaders, etc)
+# Based on 6723 (merged) and 6725/1 from coreboot gerrit site (review.coreboot.org)
+git apply 0000_t60_6723_and_6725_1_extension_textmode.git.diff
 
-# The above 4 files were all that were added on those changesets (5243/17, 5242/17 and 5239/19 from review.coreboot.org)
-# I create empty versions of the files, and add them using "git add"
-# Now I add the content to those files and all other changes, they will show up in a "git diff" which 
-# was used to create the "gitdiff" file used below. This is also required for applying the gitdiff.
+# Cleanup patch for T60 ACPI backlight controls, based on 6731/6 from coreboot gerrit site (review.coreboot.org)
+# Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
+git apply 0001_t60_6731_6_extension_acpi_brightness.git.diff
 
-# THE ABOVE IS A HACK. "git add -N" I'm told can do the same thing as above, but that older versions of git do not have this.
+# Fix uneven backlight (also removes accoustic noise from (most likely) the inverter board underneath lcd, when reducing brightness)
+# Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
+git apply 0002_i945_6731_6_extension_fix_uneven_backlight.git.diff
 
-# The changes below are in a patch at resources/libreboot/patch/gitdiff
-# These were merged manually.
-# Reason for manual merge: cherry pick wouldn't work with this branch. Didn't want to rebase just to scrap it later. Manual was easier.
-# Also, some of the changes were for different code (eg the 3D fix was previously for the old native graphics code, not the new one).
-
-# apply fix for 3D on kernel 3.12+ for X60/T60 on the new native graphics code (5320/9), 
-# based on manually merging 5927/11 and 5932/5 (which fix the 3D on kernel 3.12+ on X60 for the *old* replay code) from review.coreboot.org
-# apply fix for backlight controls for T60 and X60, based on docs/future/index.html#x60_native_notes and docs/future/index.html#t60_native_notes
-# apply fix for IR/digitizer on X60/T60 and X60 Tablet (respectively), based on manually merging 5243/17, 5242/17 and 5239/19 from review.coreboot.org
-# (see notes above)
-
-# the changes are in separate patches under resources/libreboot/patch/
-
-# copy the patches into coreboot directory
-cp ../resources/libreboot/patch/*.diff .
-
-# apply the "git diff" patches
-git apply 0000_x60t_digitizer_irda.git.diff
-git apply 0001_i945_3dfix.git.diff
-rm -rf 0000_x60t_digitizer_irda.git.diff
-rm -rf 0001_i945_3dfix.git.diff
-# apply non-git diff: X60 backlight controls
-mv 0002_x60_backlight.diff src/mainboard/lenovo/x60
-cd src/mainboard/lenovo/x60
-patch devicetree.cb < 0002_x60_backlight.diff
-rm -rf 0002_x60_backlight.diff
-cd ../../../../
-# apply non-git diff: T60 backlight controls
-mv 0003_t60_backlight.diff src/mainboard/lenovo/t60
-cd src/mainboard/lenovo/t60
-patch devicetree.cb < 0003_t60_backlight.diff
-rm -rf 0003_t60_backlight.diff
-cd ../../../../
+# delete the copies of the patches (not needed anymore)
+rm -rf 0000_t60_6723_and_6725_1_extension_textmode.git.diff
+rm -rf 0001_t60_6731_6_extension_acpi_brightness.git.diff
+rm -rf 0002_i945_6731_6_extension_fix_uneven_backlight.git.diff
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------

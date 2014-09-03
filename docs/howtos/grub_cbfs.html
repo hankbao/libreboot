@@ -11,6 +11,9 @@
 			font-family:sans-serif;
 			font-size:1em;
 		}
+		div.important {
+			background-color:#ccc;
+		}
 	</style>
 
 	<title>Libreboot documentation: GRUB menu</title>
@@ -42,12 +45,11 @@
 
 	<p>
 	Download libreboot_src.tar.gz or libreboot_bin.tar.gz from <a href="http://libreboot.org/" target="_blank">http://libreboot.org/</a>
-	<br/><b>If you downloaded libreboot_meta.tar.gz, refer to <a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
+	<br/><b>If you downloaded libreboot from git, refer to <a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
 	</p>
 
 	<p>
-		On apt-get distributions such as Trisquel you can install the build dependency (GCC) by running:<br/>
-		<b>$ sudo apt-get install build-essential</b>
+		First, <a href="../index.html#build_dependencies">install the build dependencies</a>.
 	</p>
 
 	<p>
@@ -74,21 +76,152 @@
 	</p>
 
 	<p>
+		If you currently have flashed a ROM image from an older version, it is recommended to update first: basically, modify one of the latest ROM's
+		and then flash it.
+	</p>
+
+	<p>
 		Display contents of ROM:<br/>
 		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
 	</p>
 
 	<p>
-		The libreboot_usqwerty.rom file contains your grub.cfg.
+		The libreboot_usqwerty.rom file contains your grub.cfg, along with a copy called grubtest.cfg. 
+		You should extract, modify and re-insert the copy first. grub.cfg will load first, but it has a menu entry for switching to the copy (grubtest.cfg).
+		This reduces your chance of making a mistake that could make your machine unbootable (or very hard to boot).
 	</p>
 
 	<p>
 		Extract grub.cfg from the ROM:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom extract -n grub.cfg -f grub.cfg</b>
+		<b>$ ./cbfstool libreboot_usqwerty.rom extract -n grubtest.cfg -f grubtest.cfg</b>
 	</p>
 
 	<p>
-		Now you have a grub.cfg in cbfstool directory. Edit it however you wish.
+		Now you have a grubtest.cfg in cbfstool directory. Edit it however you wish.
+	</p>
+
+	<div class="important">
+
+		<h2>Example modification (Trisquel GNU/Linux, can also be adapted, or copied, for other apt-get distros)</h2>
+
+			<p>
+				Look at the 3 lines under the menu entry 'Load Operating System'; these are all you need to change.
+			</p>
+
+			<p>
+				As an example, on my test system in /boot/grub/grub.cfg I see for the main menu entry:
+				<b>linux	/boot/vmlinuz-3.15.1-gnu.nonpae root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro   crashkernel=384M-2G:64M,2G-:128M quiet splash $vt_handoff</b>
+				<b>initrd	/boot/initrd.img-3.15.1-gnu.nonpae</b>
+			</p>
+
+			<p>
+				crashkernel=384M-2G:64M,2G-:128M and $vt_handoff can be safely ignored.
+			</p>
+
+			<p>
+				I use this to get my partition layout:<br/>
+				$ <b>lsblk</b>
+			</p>
+
+			<p>
+				In my case, I have no /boot partition, instead /boot is on the same partition as / on sda1. Yours might be different.
+				In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending on whether I am using MBR or GPT partitioning.
+				Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or (ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
+				'msdos' is GRUB's name simply because this partitioning type is traditionally used by MS-DOS. It doesn't mean you have a 
+				proprietary OS.
+			</p>
+
+			<p>
+				Trisquel doesn't keep the filenames of kernels consistent, instead it keeps old kernels and new kernel updates are provided
+				with the version in the filename. This can make GRUB payload a bit tricky. Fortunately, there are symlinks /vmlinuz and /initrd.img
+				so if your /boot and / are on the same partition, you can set GRUB to boot from that. These are also updated automatically when
+				installing kernel updates from your distributions apt-get repositories.
+				NOte: when using jxself.org/linux-libre kernels, these are not updated at all and you have to update them manually.
+			</p>
+
+			<p>
+				For the GRUB payload's grub.cfg (in 'Load Operating System' menu entry), we therefore have (in this example):<br/>
+				<b>set root='ahci0,msdos1'</b><br/>
+				<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro quiet splash</b><br/>
+				<b>initrd /initrd.img</b>
+			</p>
+
+			<p>
+				Optionally, you can convert the UUID to it's real device name, for example /dev/sda1 in this case.
+				sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
+			</p>
+
+			<p>
+				Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
+				Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
+				$ <b>sudo -s</b><br/>
+				# <b>cd /boot/</b><br/>
+				# <b>rm -rf vmlinuz initrd.img</b><br/>
+				# <b>ln -s <u>kernel</u> ksym</b><br/>
+				# <b>ln -s <u>initrd</u> isym</b><br/>
+				# <b>exit</b>
+			</p>
+
+			<p>
+				Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
+			</p>
+
+			<p>
+				Then your grub.cfg menu entry (for payload) becomes like that, for example if / was on sda2 and /boot was on sda1:<br/>
+				<b>set root='ahci0,msdos1'</b><br/>
+				<b>linux /ksym root=/dev/sda2 ro quiet splash</b><br/>
+				<b>initrd /isym</b>
+			</p>
+
+			<p>
+				There are lots of possible variations so please try to adapt.
+			</p>
+
+		<h2>Parabola GNU/Linux-libre</h2>
+
+			<p>
+				You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
+				are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
+			</p>
+
+	</div>
+
+	<p>
+		Now you have your modified grub.cfg. (right?)
+	</p>
+
+	<p>
+		Delete the grubtest.cfg that remained inside the ROM:<br/>
+		<b>$ ./cbfstool libreboot_usqwerty.rom remove -n grubtest.cfg</b>
+	</p>
+
+	<p>
+		Display ROM contents and now you see grubtest.cfg no longer exists there:<br/>
+		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
+	</p>
+
+	<p>
+		Add the modified version that you just made:<br/>
+		<b>$ ./cbfstool libreboot_usqwerty.rom add -n grubtest.cfg -f grubtest.cfg -t raw</b>
+	</p>
+
+	<p>
+		Now display ROM contents again and see that it exists again:<br/>
+		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
+	</p>
+
+	<p>
+		Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+		on how to flash it.
+	</p>
+
+	<p>
+		Choose (in GRUB) the menu entry that switches to grubtest.cfg. If it works, then your config is safe and you can continue below.
+	</p>
+
+	<p>
+		Rename (just reduce confusion):<br/>
+		$ <b>mv grubtest.cfg grub.cfg</b>
 	</p>
 
 	<p>
@@ -117,14 +250,25 @@
 	</p>
 
 	<p>
+		If all went well, GRUB should now boot your system the way you intended.
+	</p>
+
+	<p>
 		<b>Anecdotally, a user reported that segmentation faults occur with cbfstool when using this procedure depending on the size of the grub.cfg being re-insterted. In his case, a minimum size of 857 bytes was required. This could (at the time of this release) be a bug in cbfstool that should be investigated with the coreboot community. If cbfstool segfaults, then keep this in mind. 'strace' (or gdb? clang?) could be used for debugging. This was in libreboot 5th release (based on coreboot from late 2013). Not sure if the issue perists in the 6th release (based on coreboot from June 1st, 2014 at the time of writing); I have never personally encountered the bug. strace (from that user) is here: <a href="cbfstool_libreboot5_strace">cbfstool_libreboot5_strace</a>. The issue has been reported by a few users, so does not happen all the time: this bug (if it still exists) could (should) be reproduced.</b>
 	</p>
 
 <hr/>
 
 	<p>
-		Copyright &copy; 2014 Francis Rowe, All Rights Reserved.<br/>
-		See <a href="../license.html">../license.html</a> for license conditions.
+		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+	</p>
+
+	<p>
+		This document is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 	</p>
 
 </body>

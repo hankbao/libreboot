@@ -1,0 +1,12 @@
+diff --git a/src/mainboard/lenovo/t60/devicetree.cb b/src/mainboard/lenovo/t60/devicetree.cb
+index 54b7da3..f187bfb 100644
+--- a/src/mainboard/lenovo/t60/devicetree.cb
++++ b/src/mainboard/lenovo/t60/devicetree.cb
+@@ -25,7 +25,6 @@ chip northbridge/intel/i945
+ 	register "gpu_hotplug" = "0x00000220"
+ 	register "gpu_lvds_use_spread_spectrum_clock" = "1"
+ 	register "gpu_lvds_is_dual_channel" = "1"
+-	register "gpu_backlight" = "0x1280128"
+ 
+ 	device cpu_cluster 0 on
+ 		chip cpu/intel/socket_mFCPGA478
