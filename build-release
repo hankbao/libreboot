@@ -164,6 +164,9 @@ rm -rf libreboot_bin/cbfstool_standalone/rmodule.c
 cp resources/cbfstool/patch/rmodule.c libreboot_bin/cbfstool_standalone/rmodule.c
 cp libreboot_src/coreboot/src/include/rmodule-defs.h libreboot_bin/cbfstool_standalone/rmodule-defs.h
 
+# Include builddeps-cbfstool in binary release archive
+cp builddeps-cbfstool libreboot_bin/
+
 # Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
