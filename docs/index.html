@@ -975,7 +975,7 @@
 				<li>MA699LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T5600 <b>(tested - working)</b></li>
 				<li>MA701LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 <b>(tested - working)</b></li>
 				<li>MB061LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7200 (untested)</li>
-				<li>MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 (untested)</li>
+				<li>MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 <b>(tested - working)</b></li>
 				<li>MB063LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 (untested)</li>
 				<li>MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 <b>(tested - working)</b></li>
 			</ul>
@@ -1044,6 +1044,53 @@
 				The MacBook2,1 comes with a webcam, which does not work without proprietary software. Also, webcams are a security risk; cover it up! Or remove it.
 			</b>
 		</p>
+
+		<p>
+			A user reported that they could get better response from the touchpad with the following in their xorg.conf:
+		</p>
+
+<pre>
+Section "InputClass"
+ Identifier "Synaptics Touchpad"
+ Driver "synaptics"
+ MatchIsTouchpad "on"
+ MatchDevicePath "/dev/input/event*"
+ Driver "synaptics"
+# The next two values determine how much pressure one needs
+# for tapping, moving the cursor and other events.
+ Option "FingerLow" "10"
+ Option "FingerHigh" "15"
+# Do not emulate mouse buttons in the touchpad corners.
+ Option "RTCornerButton" "0"
+ Option "RBCornerButton" "0"
+ Option "LTCornerButton" "0"
+ Option "LBCornerButton" "0"
+# One finger tap = left-click
+ Option "TapButton1" "1"
+# Two fingers tap = right-click
+ Option "TapButton2" "3"
+# Three fingers tap = middle-mouse
+ Option "TapButton3" "2"
+# Try to not count the palm of the hand landing on the touchpad
+# as a tap. Not sure if helps.
+ Option "PalmDetect" "1"
+# The following modifies how long and how fast scrolling continues
+# after lifting the finger when scrolling
+ Option "CoastingSpeed" "20"
+ Option "CoastingFriction" "200"
+# Smaller number means that the finger has to travel less distance
+# for it to count as cursor movement. Larger number prevents cursor
+# shaking.
+ Option "HorizHysteresis" "10"
+ Option "VertHysteresis" "10"
+# Prevent two-finger scrolling. Very jerky movement
+ Option "HorizTwoFingerScroll" "0"
+ Option "VertTwoFingerScroll" "0"
+# Use edge scrolling
+ Option "HorizEdgeScroll" "1"
+ Option "VertEdgeScroll" "1"
+EndSection
+</pre>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
