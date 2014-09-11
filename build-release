@@ -64,6 +64,9 @@ cd libreboot_src
 # because "rm -rf" won't complain if they are missing. It is still useful on
 # the release archives (non-git), for example if the user re-downloads these programmes.
 
+# remove .git for libreboot project itself
+rm -rf .git*
+
 # # bucts needs .git to stay, otherwise it won't compile
 # # We don't need .git* (please submit all upstreamable changes directly to bucts upstream)
 # # removing them, to reduce the size of the archive

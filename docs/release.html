@@ -45,7 +45,7 @@
 
 	<h2>Releases</h2>
 	<ul>
-		<li><a href="#release6">6th release</a> (2014 September 3rd <b>pre-release, 6th beta</b>) (see <a href="#critical_tasks">critical</a> and <a href="#noncritical_tasks">non-critical</a> tasks)</h1>
+		<li><a href="#release6">6th release</a> (2014 September 11th <b>pre-release, 7th beta</b>) (see <a href="#critical_tasks">critical</a> and <a href="#noncritical_tasks">non-critical</a> tasks)</h1>
 		<li><a href="#release5">5th release</a> (2014 March 7th, revised 2014 June 22nd)</h1>
 		<li><a href="#release4">4th release</a> (2014 February 21st)</h1>
 		<li><a href="#release3">3rd release</a> (2013 December 14th)</h1>
@@ -74,6 +74,7 @@
 			<li>Revised (pre-release, 4th beta) 2014 July 29th</li>
 			<li>Revised (pre-release, 5th beta) 2014 August 11th (corrected 2014 August 11th)</li>
 			<li>Revised (pre-release, 6th beta) 2014 September 3rd</li>
+			<li>Revised (pre-release, 7th beta) 2014 September 11th</li>
 		</ul>
 
 		<div class="important">
@@ -88,13 +89,13 @@
 
 		<h2>Binaries (for flashing) (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/5/prerelease_beta6/libreboot_bin.tar.xz">http://libreboot.org/release/5/prerelease_beta6/libreboot_bin.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/5/prerelease_beta6/libreboot_bin.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta6/libreboot_bin.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz">http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz.sig</a></li>
 			</ul>
 		<h2>Source code (for hacking) (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/5/prerelease_beta6/libreboot_src.tar.xz">http://libreboot.org/release/5/prerelease_beta6/libreboot_src.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/5/prerelease_beta6/libreboot_src.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta6/libreboot_src.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz">http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz.sig</a></li>
 			</ul>
 
 		<h2>Machines still supported (compared to previous release):</h2>
@@ -633,15 +634,32 @@
 				</li>
 			</ul>
 
+		<h2>
+			Revisions for 7th beta (2014 September 11th)
+		</h2>
+			<ul>
+				<li>The changes below were made in a git repository, unlike in previous releases. Descriptions below are copied from 'git log'.</li>
+				<li>Update .gitignore for new dependencies.</li>
+				<li>Use a submodule for i945-pwm.</li>
+				<li>Don't clean packages that fail or don't need cleaning.</li>
+				<li>Don't clean i945-pwm, it's not needed.</li>
+				<li>Regression fix: Parabola live ISO boot issues</li>
+				<li>Re-enable background images in ISOLINUX/SYSLINUX GRUB parser menus</li>
+				<li>Regression fix: Re-add CD-ROM (ata0) in GRUB</li>
+				<li>Documentation: add notes about performance penalty when using ecryptfs.</li>
+				<li>Documentation: Fixed spelling and grammatical errors.</li>
+				<li>Documentation: macbook21: add new machine as tested</li>
+    			<li>Documentation: macbook21: add info about improving touchpad sensitivity</li>
+				<li>Documentation: X60 Tablet: add more information about finger input</li>
+				<li>Documentation: release.html: Add information about recently merged commit in coreboot</li>
+			</ul>
+
 		<div class="important">
 
 			<h2 id="critical_tasks">
 				Critical tasks (to be completed before declacing the initial stable release)
 			</h2>
 				<ul>
-					<li>
-						<b>GIT! GIT! GIT! Setup a git repository for libreboot_meta. (on dev.libreboot.org): git init, git add, git commit</b>
-					</li>
 					<li>
 						<b>Look at notes and TODO's about untested changes from changelog in libreboot 6th release beta 6, and test them. include test results in next change log.
 						(and for those commits that become merged in coreboot, mention them)</b>
