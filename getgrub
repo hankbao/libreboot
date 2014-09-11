@@ -39,15 +39,17 @@ cd grub
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
+# Commit ID used (see "git log"):
 #
-# commit c291f47b2c003ef6daeafaedd458db838bad6fb8
-# Author: Andrey Borzenkov <arvidjaar@gmail.com>
-# Date:   Thu Aug 14 21:02:31 2014 +0400
+# commit 4b8b9135f1676924a8458da528d264bbc7bbb301
+# Author: Vladimir Serbinenko <phcoder@gmail.com>
+# Date:   Sun Apr 20 16:12:41 2014 +0200
 #
-#    Fix typo (gettext_print instead of gettext_printf)
-#
+#        * grub-core/kern/misc.c (__bzero): Don't compile in GRUB_UTIL.
+#    
+#        Reported by: Yves Blusseau <blusseau@zetam.org>.
 
-git reset --hard c291f47b2c003ef6daeafaedd458db838bad6fb8
+git reset --hard 4b8b9135f1676924a8458da528d264bbc7bbb301
 
 # Apply patches
 # --------------------------------------------------------------------------------

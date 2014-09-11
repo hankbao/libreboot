@@ -9,12 +9,10 @@
 # This is where GRUB is expected to be (outside of the grub-assemble, instead in main checkout)
 grubdir="../../../grub"
 
-# Modules
-# Unused. If wanting to add, put after --modules: --install-modules="$grub_install_modules" \
-# Added 'pata' because otherwise, error would appear on X60 saying 'error: no device connected'
+# Install modules (installed, but not automatically loaded)
 grub_install_modules="adler32 all_video archelp ata backtrace bitmap bitmap_scale cmp cpio_be cpio cpuid crc64 cs5536 div_test efiemu elf eval exfat extcmd file fshelp gettext gfxmenu gfxterm_background gfxterm_menu gptsync gzio hashsum hexdump http jpeg linux16 loadenv lzopio mda_text mmap mpi msdospart multiboot2 multiboot nativedisk net newc ntfscomp ntfs odc offsetio parttool png priority_queue procfs progress read relocator scsi search_fs_file search_fs_uuid search_label search setjmp setpci sleep squash4 tar terminfo testload testspeed tftp tga time trig tr true udf ufs1_be ufs1 ufs2 usbserial_common usbserial_ftdi usbserial_pl2303 usbserial_usbdebug usbtest video_colors videotest_checksum xzio"
 
-# More modules
+# Modules (and always loaded)
 grub_modules="acpi ahci at_keyboard boot cat cbfs cbls cbtime chain cmosdump cmostest cbmemc crypto cryptodisk configfile datehook date datetime diskfilter disk echo ext2 ehci fat halt help iorw iso9660 keystatus linux loopback ls lsacpi lsmmap lspci luks lvm memdisk minicmd memrw morse normal ohci part_gpt part_msdos password password_pbkdf2 pbkdf2 pcidump pci play probe reboot serial terminal test usb_keyboard usbms uhci gcry_arcfour gcry_blowfish gcry_camellia gcry_cast5 gcry_crc gcry_des gcry_dsa gcry_idea gcry_md4 gcry_md5 gcry_rfc2268 gcry_rijndael gcry_rmd160 gcry_rsa gcry_seed gcry_serpent gcry_sha1 gcry_sha256 gcry_sha512 gcry_tiger gcry_twofish gcry_whirlpool hdparm regexp spkmodem syslinuxcfg usb verify videoinfo videotest xfs btrfs zfs sfs romfs reiserfs nilfs2 minix_be minix3_be minix3 minix2_be minix2 minix jfs hfsplus hfs bfs afs affs"
 
 # Generate the grub.elf
