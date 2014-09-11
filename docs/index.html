@@ -722,6 +722,59 @@
 			just remove the card and install another one <b>after</b> libreboot is installed. See <a href="#recommended_wifi">#recommended_wifi</a> for replacements.
 		</p>
 
+		<p>
+			A user with a X60T that has digitizer+finger support, reported that they could get finger input working. They
+			used linuxwacom at git tag 0.25.99.2 and had the following in their xorg.conf:
+		</p>
+
+<pre>
+# This file be public domain.
+
+# Now, for some reason (probably a bug in linuxwacom),
+# the 'Touch=on' directive gets reset to 'off'.
+# So you'll need to do
+# $ xsetwacom --set WTouch Touch on
+#
+# tested with linuxwacom git 42a42b2a8636abc9e105559e5dea467163499de7
+
+Section "Monitor"
+    Identifier             "<default monitor>"
+    DisplaySize     245 184
+EndSection
+
+Section "Screen"
+    Identifier "Default Screen Section"
+    Monitor    "<default monitor>"
+EndSection
+
+Section "InputDevice"
+    Identifier  "WTouch"
+    Driver      "wacom"
+    Option      "Device" "/dev/ttyS0"
+#    Option      "DebugLevel" "12"
+    Option      "BaudRate" "38400"
+    Option      "Type" "touch"
+    Option      "Touch" "on"
+    Option      "Gesture" "on"
+    Option      "ForceDevice" "ISDV4"
+#    Option      "KeepShape" "on"
+    Option      "Mode" "Absolute"
+    Option      "RawSample" "2"
+#    Option      "TPCButton" "off"
+    Option      "TopX" "17"
+    Option      "TopY" "53"
+    Option      "BottomX" "961"
+    Option      "BottomY" "985"
+EndSection
+
+Section "ServerLayout"
+  Identifier    "Default Layout"
+  Screen        "Default Screen Section"
+  InputDevice   "WTouch" "SendCoreEvents"
+EndSection
+
+</pre>
+
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
 <hr/>
