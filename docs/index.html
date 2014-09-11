@@ -37,7 +37,7 @@
 	</p>
 
 	<p>
-		The information here is user documentation mainly. For development notes and TODO's, see <a href="release.html">release.html</a> and
+		The information here is mainly user documentation. For development notes and TODO's, see <a href="release.html">release.html</a> and
 		<a href="future/index.html">future/index.html</a>
 	</p>
 
@@ -148,9 +148,9 @@
 					Coreboot contains blobs (proprietary data/code) and libreboot does not (it intentionally removes them).
 				</li>
 				<li>
-					Coreboot is hacker-friendly and focusses on software developers, libreboot is user-focussed and attempts to 
-					turn coreboot into a distribution, sort of like a GNU/Linux distribution (same concept, different software): for example, libreboot 
-					distributes GRUB/memtest86+/bucts (and more) and comes with user-focussed documentation and build scripts; libreboot 
+					Coreboot is hacker-friendly and focuses on software developers, libreboot is user-focused and attempts to 
+					turn coreboot into a distribution, sort of like a GNU/Linux distribution (same concept, different software). For example, libreboot 
+					distributes GRUB/memtest86+/bucts (and more) and comes with user-focused documentation and build scripts; libreboot 
 					is therefore made more 'user-friendly'.
 				</li>
 			</ul>
@@ -178,9 +178,9 @@
 					(and it is therefore quite volatile; one day when you build coreboot, it may or may not work correctly on your machine).
 				</li>
 				<li>
-					Libreboot changes less often (as far as the release model is concerned), focussing instead of 'tested' releases for <i>specific machines</i>
-					(at any given time, it may be possible to build and use libreboot ROM's for systems other than those officially supported; if you manage to get another
-					board working in a given release (without violating the <i>'coreboot development goes in coreboot'</i> rule), other users might also benefit from your work).
+					Libreboot changes less often (as far as the release model is concerned), focusing instead on 'tested' releases for <i>specific machines</i>
+					At any given time, it might also be possible to build ROM images for systems other than those officially supported. If you get your board to work
+					(without violating the <i>&quot;coreboot development goes in coreboot&quot;</i>, then others could benefit from your work.
 				</li>
 			</ul>
 
@@ -285,7 +285,7 @@
 		</p>
 
 		<p>
-			To build bucts, do that in the main directory:<br/>
+			To build bucts, do this in the main directory:<br/>
 			<b>$ ./builddeps-bucts</b>
 		</p>
 
@@ -362,7 +362,7 @@
 		</p>
 
 		<p>
-			Configurations are saved then as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
+			Configurations are then saved as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
 			for each machine type by the libreboot build scripts are stored in resources/libreboot/config/
 		</p>
 
@@ -432,7 +432,7 @@
 				This is based on an X60S with the Core 2 Duo L7400 processor.
 			</p>
 			<p>
-				SMBIOS Version Number is ThinkPad X60 on the X60, but it is believed that X60 and X60s both have identical
+				SMBIOS Version Number is ThinkPad X60 on the X60, but it is believed that the X60 and X60s both have identical
 				motherboards where the only difference is the CPU. This same configuration is used on the X60 and X60s.
 			</p>
 
@@ -563,7 +563,7 @@
 
 	<h1 id="build">How to build the ROM's!</h1>
 
-		<p>You don't need to do much: there are scripts already written for you that can build everything automatically.</p>
+		<p>You don't need to do much, as there are scripts already written for you that can build everything automatically.</p>
 
 		<p>
 			First, <a href="#build_dependencies">install the build dependencies</a>.
@@ -578,7 +578,7 @@
 		Just run that from now on to build your ROM's:<br/>
 		<b>$ ./build</b></p>
 
-		<p>To un-build (clean) the build dependencies that you built before, do that:<br/>
+		<p>To un-build (clean) the build dependencies that you built before, do the following:<br/>
 		This also deletes the ROM images under ./bin/:<br/>
 		<b>$ ./cleandeps</b></p>
 
@@ -621,7 +621,7 @@
 		</p>
 
 		<p>
-			It is possible to build ROM images (from source) for other machines aswell (and virtual machines, e.g. QEMU).
+			It is also possible to build ROM images (from source) for other machines (and virtual machines, e.g. QEMU).
 		</p>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
