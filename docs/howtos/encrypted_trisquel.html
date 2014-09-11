@@ -35,8 +35,14 @@
 	</p>
 
 	<p>
-		Set a strong user password (ideally above 40 characters, of lowercase/uppercase, numbers and symbols) and when the installer asks you to setup
-		encryption (ecryptfs) for your home directory, select 'Yes'.
+		Set a strong user password (ideally above 40 characters, of lowercase/uppercase, numbers and symbols).
+	</p>
+
+	<p>
+		when the installer asks you to setup
+		encryption (ecryptfs) for your home directory, select 'Yes' if you want to: <b>LUKS is already secure and performs well. Having ecryptfs on top of it
+		will add noticeable performance penalty, for little security gain in most use cases. This is therefore optional, and not recommended.
+		Choose 'no'.</b>
 	</p>
 
 	<p>
@@ -182,6 +188,10 @@
 	<h1>
 		ecryptfs
 	</h1>
+
+		<p>
+			If you didn't encrypted your home directory, then you can safely ignore this section.
+		</p>
 
 		<p>
 			Immediately after logging in, do that:<br/>
