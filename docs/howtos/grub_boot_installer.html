@@ -65,6 +65,22 @@
 
 	<h1>Troubleshooting</h1>
 
+	<p>
+		Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer.
+		This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU/Linux distributions
+		it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
+	</p>
+
+	<p>
+		In most cases, you should use the vesafb ROM's. Example filename: libreboot_ukdvorak_vesafb.rom.
+	</p>
+
+	<h2>parabola won't boot in text-mode</h2>
+
+	<p>
+		Use one of the ROM images with vesafb in the filename (uses coreboot framebuffer instead of text-mode).
+	</p>
+
 	<h2>debian-installer (trisquel net install) graphical corruption in text-mode</h2>
 	<p>
 		When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
