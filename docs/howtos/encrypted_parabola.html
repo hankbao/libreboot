@@ -236,6 +236,10 @@
 				# <b>pacman -S linux-libre-lts</b>
 			</p>
 			<p>
+				It was also suggested that you should install this kernel (read up on what GRSEC is):<br/>
+				# <b>pacman -S linux-libre-grsec</b>
+			</p>
+			<p>
 				This is another kernel that sits inside /boot, which you can use. LTS means 'long-term support'. These are so-called 'stable' kernels
 				that can be used as a fallback during updates, if a bad kernel causes issues for you.
 			</p>
@@ -305,7 +309,9 @@
 					Now using mkinitcpio, you can create the kernel and ramdisk for booting with (note, this is different than Arch, specifying linux-libre instead of linux):<br/>
 					# <b>mkinitcpio -p linux-libre</b><br/>
 					Also do it for linux-libre-lts:<br/>
-					# <b>mkinitcpio -p linux-libre-lts</b>
+					# <b>mkinitcpio -p linux-libre-lts</b><br/>
+					Also do it for linux-libre-grsec:<br/>
+					# <b>mkinitcpio -p linux-libre-grsec</b>
 				</li>
 			</ul>
 
@@ -383,6 +389,9 @@
 				grub> <b>initrd /boot/initramfs-linux-libre<u>-lts</u>.img</b><br/>
 				grub> <b>boot</b><br/>
 			</p>
+			<p>
+				You could also make it load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
+			</p>
 
 <hr/>
 
@@ -405,6 +414,7 @@
 		<p>
 			Note: the underlined parts above (-lts) can also be removed, to boot the latest kernel instead of LTS (long-term support) kernels.
 			You could also copy the menu entry and in one have -lts, and without in the other menuentry.
+			You could also create a menu entry to load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
 		</p>
 
 		<p>
