@@ -129,7 +129,10 @@
 		</p>
 		<p>
 			Open the LUKS partition:<br/>
-			# <b>cryptsetup open --type luks /dev/sda1 lvm</b> (it will be available at /dev/mapper/lvm)
+			# <b>cryptsetup open --type luks /dev/sda1 lvm</b><br/>
+			(it will be available at /dev/mapper/lvm)<br/>
+			I'm told that the above is old syntax, which is what I did anyway. You could also try:<br/>
+			# <b>cryptsetup luksOpen /dev/sda1 lvm</b>
 		</p>
 		<p>
 			Create LVM partition:<br/>
