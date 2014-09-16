@@ -55,7 +55,7 @@ rm -rf grub.elf
 
 # build reference crossGCC for coreboot
 make crossgcc-clean
-make crossgcc
+make crossgcc-i386
 
 # build libpayload
 cd payloads/libpayload
