@@ -65,12 +65,10 @@ rm -rf .config config_txtmode
 # Insert files/configurations and perform operations that are common on all images
 # ---------------------------------------------------------------------------------------------------------------
 
-for rom in libreboot_vesafb.rom libreboot_txtmode.rom
-do
-	# Add SeaBIOS and SeaVGABIOS
-	./cbfstool $rom add -f ../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
-	./cbfstool $rom add -f ../seabios/out/bios.bin.elf -n bios.bin.elf -t raw
-done
+# for rom in libreboot_vesafb.rom libreboot_txtmode.rom
+# do
+	# Nothing to do here
+# done
 
 # Insert files/configurations and perform operations that are common on libreboot_vesafb.rom (coreboot framebuffer configuration)
 # ---------------------------------------------------------------------------------------------------------------

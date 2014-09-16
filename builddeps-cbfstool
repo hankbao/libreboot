@@ -21,6 +21,13 @@
 # DO NOT RUN THIS IN libreboot_src OR libreboot_meta
 # THIS IS FOR libreboot_bin
 
+# Because the DEBLOB script isn't included in the binary archives.
+# This is how we know.
+if [ -f "DEBLOB" ]; then
+	echo "Do not run this in meta/src directory. Do it in binary archive, either with libreboot-supplied ROM images or your own binary archive created with 'build-release'."
+	exit
+fi
+
 cd cbfstool_standalone
 make clean
 make

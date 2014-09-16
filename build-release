@@ -112,6 +112,12 @@ mkdir libreboot_bin
 # Include the ROM's in the binary archive
 cp -r bin libreboot_bin/
 
+# Include SeaBIOS and SeaVGABIOS option ROM in the binary archive
+cp seabios/out/vgabios.bin libreboot_bin/
+cp seabios/out/bios.bin.elf libreboot_bin/
+# Add the script for it
+cp addseabios libreboot_bin/
+
 # Include flashrom utility in binary archive
 # (source only, no binaries. To eliminate cross-distro dependency issue)
 cp -r libreboot_src/flashrom libreboot_bin/
