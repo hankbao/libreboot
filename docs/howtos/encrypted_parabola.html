@@ -35,6 +35,10 @@
 	</p>
 
 	<p>
+		For this guide I used the 2013 09 01 image to boot the live installer and install the system.
+	</p>
+
+	<p>
 		Parabola is much more flexible than Trisquel, but also more involved to setup. Use Parabola. It's 10 million times better than Trisquel.
 	</p>
 
@@ -45,17 +49,42 @@
 	</p>
 
 	<p>
+		<b>If you are using an SSD for this, make sure it's brand-new (or barely used). Or, otherwise, be sure that it never previously
+		contained plaintext copies of your data.</b>
+	</p>
+
+	<p>
 		Wipe the MBR (if you use MBR):<br/>
 		# <b>lsblk</b><br/>
 		Your HDD is probably /dev/sda:
-		# <b>dd if=/dev/zero of=/dev/sda bs=446 count=1</b><br/>
+		# <b>dd if=/dev/zero of=/dev/sda bs=446 count=1; sync</b><br/>
 		Never use SeaBIOS! The MBR section can easily be changed with malicious code, which SeaBIOS will blindly execute. 
 		This guide is for libreboot with GRUB-as-payload only.
 	</p>
 
 	<p>
 		Securely wipe the drive:<br/>
-		# <b>dd if=/dev/urandom of=/dev/sda</b>
+		# <b>dd if=/dev/urandom of=/dev/sda; sync</b><br/>
+		NOTE: If you have an SSD, only do this the first time. If it was already LUKS-encrypted before,
+		use the info below to wipe the LUKS header. Also, check online for your SSD what the recommended 
+		erase block size is. For example if it was 2MiB:<br/>
+		# <b>dd if=/dev/urandom of=/dev/sda bs=2M; sync</b>
+	</p>
+	<p>
+		If your drive was already LUKS encrypted (maybe you are re-installing your distro) then
+		it is already 'wiped'. You should just wipe the LUKS header.
+		<a href="https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/">https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/</a>
+		showed me how to do this. It recommends to do the first 3MiB. Now, that guide is recommending putting zero there. I'm doing to use urandom. Do this:<br/>
+		# <b>head -c 3145728 /dev/urandom > /dev/sda; sync</b><br/>
+		(wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
+	</p>
+	<p>
+		<b>
+			If you do plan to use an SSD, make sure to read
+			<a href="https://wiki.archlinux.org/index.php/Solid_State_Drives">https://wiki.archlinux.org/index.php/Solid_State_Drives</a><br/>
+			Edit /etc/fstab later on when chrooted into your install. Also, read the whole article and keep all points in mind, adapting
+			them for this guide. 
+		</b>
 	</p>
 
 	<p>
@@ -197,30 +226,43 @@
 			Otherwise, refer to <a href="https://wiki.archlinux.org/index.php/Configuring_Network">https://wiki.archlinux.org/index.php/Configuring_Network</a>.
 			You can test to see if internet is already working by pinging a few domains.
 		</p>
-		<p>
-			The following is based on 'Verification of package signatures' in the Parabola install guide. Check there first to see if steps differ by now.
-			Now you have to update the default Parabola keyring. This is used for signing and verifying packages:<br/>
-			# <b>pacman -Sy parabola-keyring</b><br/>
-			It says that you you get GPG errors, it's probably an expired key so do:<br/>
-			# <b>pacman-key --populate parabola</b><br/>
-			# <b>pacman-key --refresh-keys</b><br/>
-			# <b>pacman -Sy parabola-keyring</b><br/>
-			To be honest, you should do the above anyway. Parabola has a lot of maintainers, and a lot of keys. Really!<br/>
-			Also, it says that if the clock is set incorrectly then you have to manually set the correct time (if keys are listed as expired because of it):<br/>
-			# <b>date MMDDhhmm[[CC]YY][.ss]</b>
-		</p>
 
-		<h3>Install the base system</h3>
-			<p>
-				I commented out all lines except the Server line for the UK Parabola server (main server) in <b>/etc/pacman.d/mirrorlist</b> and then did:<br/>
-				# <b>pacman -Syu</b><br/>
-				I also had to upgrade pacman and then do the above again:<br/>
-				# <b>pacman -Sy pacman</b>
-			</p>
-			<p>
-				I also like to install other packages (base-devel, compilers and so on) and wpa_supplicant/dialog are needed for wireless after the install:<br/>
-				# <b>pacstrap /mnt base base-devel wpa_supplicant dialog</b>
-			</p>
+		<p>
+			I commented out all lines except the Server line for the UK Parabola server (main server) in <b>/etc/pacman.d/mirrorlist</b> and then did:<br/>
+			# <b>pacman -Syy</b><br/>
+			# <b>pacman -Syu</b><br/>
+			# <b>pacman -Sy pacman</b> (and then I did the other 2 steps above, again)<br/>
+			In my case I did the steps in the next paragraph, and followed the steps in this paragraph again.
+		</p>
+		<p>
+			&lt;troubleshooting&gt;<br/>
+				&nbsp;&nbsp;&nbsp;The following is based on 'Verification of package signatures' in the Parabola install guide.<br/>
+				&nbsp;&nbsp;&nbsp;Check there first to see if steps differ by now.<br/>
+				&nbsp;&nbsp;&nbsp;Now you have to update the default Parabola keyring. This is used for signing and verifying packages:<br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman -Sy parabola-keyring</b><br/>
+				&nbsp;&nbsp;&nbsp;It says that you you get GPG errors, it's probably an expired key so do:<br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman-key --populate parabola</b><br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman-key --refresh-keys</b><br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman -Sy parabola-keyring</b><br/>
+				&nbsp;&nbsp;&nbsp;To be honest, you should do the above anyway. Parabola has a lot of maintainers, and a lot of keys. Really!<br/>
+				&nbsp;&nbsp;&nbsp;Also, it says that if the clock is set incorrectly then you have to manually set the correct time <br/>
+				&nbsp;&nbsp;&nbsp;(if keys are listed as expired because of it):<br/>
+				&nbsp;&nbsp;&nbsp;# <b>date MMDDhhmm[[CC]YY][.ss]</b><br/>
+				&nbsp;&nbsp;&nbsp;I also had to install:<br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman -S archlinux-keyring</b><br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman-key --populate archlinux</b><br/>
+				&nbsp;&nbsp;&nbsp;In my case I saw some conflicting files reported in pacman, stopping me from using it.<br/>
+				&nbsp;&nbsp;&nbsp;I deleted the files that it mentioned
+				and then it worked. Specifically, I had this error:<br/>
+				&nbsp;&nbsp;&nbsp;<i>licenses: /usr/share/licenses/common/MPS exists in filesystem</i><br/>
+				&nbsp;&nbsp;&nbsp;I rm -rf'd the file and then pacman worked. I'm told that the following would have also made it work:<br/>
+				&nbsp;&nbsp;&nbsp;# <b>pacman -Sf licenses</b><br/>
+			&lt;/troubleshooting&gt;<br/>
+		</p>
+		<p>
+			I also like to install other packages (base-devel, compilers and so on) and wpa_supplicant/dialog are needed for wireless after the install:<br/>
+			# <b>pacstrap /mnt base base-devel wpa_supplicant dialog</b>
+		</p>
 
 		<h3>Configure the system</h3>
 			<p>
@@ -345,7 +387,7 @@
 				Or just delete it. Above it, put:<br/>
 				<i>auth required pam_tally.so deny=2 unlock_time=600 onerr=succeed file=/var/log/faillog</i><br/>
 				To unlock a user manually (if a password attempt is failed 3 times), do:<br/>
-				# <b>pam_tally --user --reset</b>
+				# <b>pam_tally --user <i>theusername</i> --reset</b>
 				What the above configuration does is lock the user out for 10 minutes, if they make 3 failed login attempts.
 			</p>
 			<p>
@@ -418,6 +460,10 @@
 		</p>
 
 		<p>
+			Personally, I opted to have the entry for linux-libre-grsec at the top, so that it would load by default.
+		</p>
+
+		<p>
 			Above the 'Load Operating System' menu entry you should also add a GRUB password, like so:
 		</p>
 <pre><b><i>set superusers=&quot;root&quot;
@@ -469,6 +515,12 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 			# <b>pacman -S dmidecode</b>
 		</p>
 
+		<p>
+			When done, deleted GRUB (remember, we only needed it for the <i>grub-mkpasswd-pbkdf2</i> utility;
+			GRUB is already part of libreboot, flashed alongside it as a <i>payload</i>):<br/>
+			# <b>pacman -R grub</b>
+		</p>
+
 <hr/>
 
 	<p>
@@ -483,6 +535,16 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 		<p>
 			<a href="https://wiki.archlinux.org/index.php/Security">https://wiki.archlinux.org/index.php/Security</a>.<br/>
 			<a href="https://wiki.parabolagnulinux.org/User:GNUtoo/laptop">https://wiki.parabolagnulinux.org/User:GNUtoo/laptop</a>
+		</p>
+
+<hr/>
+
+	<h2>Follow-up tutorial: configuring Parabola</h2>
+		<p>
+			<a href="configuring_parabola.html">configuring_parabola.html</a> shows my own notes post-installation. Using these, you can get a basic
+			system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system. 
+			Parabola is user-centric, which means that you are in control. For more information, read <a href="https://wiki.archlinux.org/index.php/The_Arch_Way">The Arch Way</a>
+			(Parabola also follows it).
 		</p>
 
 <hr/>
