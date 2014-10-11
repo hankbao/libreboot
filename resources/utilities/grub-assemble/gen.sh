@@ -15,9 +15,6 @@ grub_install_modules="adler32 all_video archelp ata backtrace bitmap bitmap_scal
 # Modules (and always loaded)
 grub_modules="acpi ahci at_keyboard boot cat cbfs cbls cbtime chain cmosdump cmostest cbmemc crypto cryptodisk configfile datehook date datetime diskfilter disk echo ext2 ehci fat halt help iorw iso9660 keystatus linux loopback ls lsacpi lsmmap lspci luks lvm memdisk minicmd memrw morse normal ohci part_gpt part_msdos password password_pbkdf2 pbkdf2 pcidump pci play probe reboot serial terminal test usb_keyboard usbms uhci gcry_arcfour gcry_blowfish gcry_camellia gcry_cast5 gcry_crc gcry_des gcry_dsa gcry_idea gcry_md4 gcry_md5 gcry_rfc2268 gcry_rijndael gcry_rmd160 gcry_rsa gcry_seed gcry_serpent gcry_sha1 gcry_sha256 gcry_sha512 gcry_tiger gcry_twofish gcry_whirlpool hdparm regexp spkmodem syslinuxcfg usb verify videoinfo videotest xfs btrfs zfs sfs romfs reiserfs nilfs2 minix_be minix3_be minix3 minix2_be minix2 minix jfs hfsplus hfs bfs afs affs gfxmenu gfxterm_background gfxterm_menu jpeg png tga pata"
 
-# Modules (always load) for booting from SDHC. For example, the X60 has a built-in SD card reader.
-grub_sdhc_modules="mmc_core mmc_block sdhci sdhci-pci vfat"
-
 # Generate the grub.elf
 $grubdir/grub-mkstandalone \
   --grub-mkimage=$grubdir/grub-mkimage \
@@ -25,7 +22,7 @@ $grubdir/grub-mkstandalone \
   -o grub.elf \
   -d $grubdir/grub-core/ \
   --fonts= --themes= --locales=  \
-  --modules="$grub_modules $grub_sdhc_modules" \
+  --modules="$grub_modules" \
   --install-modules="$grub_install_modules" \
   /boot/grub/grub.cfg=../../../resources/grub/config/grub_memdisk.cfg \
   $(./grub_memdisk_keymap) \
