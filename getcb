@@ -47,35 +47,32 @@ git reset --hard 23aad4a83c3390dc39f7d1c1f5422f7ac54a80f3
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
 
-# Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
-git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/1 && git cherry-pick FETCH_HEAD
-
 ## Backlight controls on i945 (X60/T60/macbook21)
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/7 && git cherry-pick FETCH_HEAD
 # ^ the above is not needed, because 7049 (see below) uses it 
 # ACPI brighness fix: fix uneven backlight on i945 targets:
 git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
 
-# Enable T60 native graphics
-git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/7 && git cherry-pick FETCH_HEAD
+# Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
+git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
+
+## Enable T60 native graphics
+# git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/8 && git cherry-pick FETCH_HEAD
+# ^ the above is not needed, because 7050 (see below) uses it
+# lenovo/t60: Enable text mode native gfx init:
+git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/1 && git cherry-pick FETCH_HEAD
 
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
 
 # copy all the patches here for this release
-cp ../resources/libreboot/patch/0000_t60_6723_and_6725_1_extension_textmode.git.diff .
 cp ../resources/libreboot/patch/0001_t60_6731_6_extension_acpi_brightness.git.diff .
-
-# Add text-mode for T60 (enables text-mode payloads like memtest, seabios, grub invaders, etc)
-# Based on 6723 (merged) and 6725/1 from coreboot gerrit site (review.coreboot.org)
-git apply 0000_t60_6723_and_6725_1_extension_textmode.git.diff
 
 # Cleanup patch for T60 ACPI backlight controls, based on 6731/6 from coreboot gerrit site (review.coreboot.org)
 # Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
 git apply 0001_t60_6731_6_extension_acpi_brightness.git.diff
 
 # delete the copies of the patches (not needed anymore)
-rm -rf 0000_t60_6723_and_6725_1_extension_textmode.git.diff
 rm -rf 0001_t60_6731_6_extension_acpi_brightness.git.diff
 
 # Run coreboot-libre deblob scripts
