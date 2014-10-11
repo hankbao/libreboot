@@ -42,7 +42,7 @@ git clone http://review.coreboot.org/coreboot
 cd coreboot
 
 # reset to previously tested revision
-git reset --hard 23aad4a83c3390dc39f7d1c1f5422f7ac54a80f3
+git reset --hard 9310df8d0351842e7bb9efe3cabc0ff82ec99c53
 
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
@@ -53,11 +53,12 @@ git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cher
 # lenovo/x60: Enable legacy brightness controls (native graphics)
 git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/4 && git cherry-pick FETCH_HEAD
 
-## Enable T60 native graphics
-# git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/8 && git cherry-pick FETCH_HEAD
-# ^ the above is not needed, because 7050 (see below) uses it
-# lenovo/t60: Enable text mode native gfx init:
-git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/1 && git cherry-pick FETCH_HEAD
+# Enable T60 native graphics
+git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/9 && git cherry-pick FETCH_HEAD
+# Enable text-mode graphics for T60
+git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cherry-pick FETCH_HEAD
+# lenovo/t60: Enable legacy brightness controls (native graphics)
+git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
 
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
