@@ -73,7 +73,10 @@ git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cher
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
 
-# no diffs needed at the moment
+# T60: fix compilation when using 6731 from review.coreboot.org
+git apply ../resources/libreboot/patch/t60_6731buildfix.diff
+## 6731 is abandoned and there's no point putting this in coreboot gerrit.
+## there is no harm in it being a diff
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
