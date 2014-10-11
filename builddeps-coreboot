@@ -57,19 +57,6 @@ rm -rf grub.elf
 make crossgcc-clean
 make crossgcc-i386
 
-# build libpayload
-cd payloads/libpayload
-make clean
-rm -rf install
-# copy the config     
-rm -rf .config  
-cp ../../../resources/libreboot/config/libpayload/config .config
-# build libpayload (root not needed for make install. it puts under 'install' directory in same directory)
-make
-make install
-# come back to main coreboot directory
-cd ../../
-
 # done. go back to main libreboot_src directory
 cd ../
 
