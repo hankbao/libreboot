@@ -78,9 +78,6 @@ rm -rf 0001_t60_6731_6_extension_acpi_brightness.git.diff
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 
-# Apply coreboot-libre deblob script for coreboot git revision 63acd22dc5366c72a7165138f5030df9523824dc
-# TODO: implement this.
-
 # Deblobbing was done manually for this pre-release (will re-tool linux-libre deblob scripts later):
 cd ../
 echo "deblobbing coreboot"
