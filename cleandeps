@@ -45,12 +45,6 @@ rm -rf grub.elf
 # clean reference crossGCC for coreboot
 make crossgcc-clean
 
-# clean libpayload
-cd payloads/libpayload
-make clean
-rm -rf install
-cd ../../
-
 # done. go back to main directory
 cd ../
 
