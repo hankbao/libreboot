@@ -50,14 +50,14 @@ git reset --hard 23aad4a83c3390dc39f7d1c1f5422f7ac54a80f3
 # Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
 git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/1 && git cherry-pick FETCH_HEAD
 
-# Backlight controls on i945 (X60/T60/macbook21)
-git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/6 && git cherry-pick FETCH_HEAD
+## Backlight controls on i945 (X60/T60/macbook21)
+# git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/7 && git cherry-pick FETCH_HEAD
+# ^ the above is not needed, because 7049 (see below) uses it 
+# ACPI brighness fix: fix uneven backlight on i945 targets:
+git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
 
 # Enable T60 native graphics
 git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/7 && git cherry-pick FETCH_HEAD
-
-# ACPI brighness fix: fix uneven backlight on i945 targets:
-git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
 
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
