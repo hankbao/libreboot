@@ -47,12 +47,6 @@ git reset --hard 23aad4a83c3390dc39f7d1c1f5422f7ac54a80f3
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
 
-## Backlight controls on i945 (X60/T60/macbook21)
-# git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/7 && git cherry-pick FETCH_HEAD
-# ^ the above is not needed, because 7049 (see below) uses it 
-# ACPI brighness fix: fix uneven backlight on i945 targets:
-git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
-
 # Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
 git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
 
@@ -65,15 +59,7 @@ git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/1 && git cher
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
 
-# copy all the patches here for this release
-cp ../resources/libreboot/patch/0001_t60_6731_6_extension_acpi_brightness.git.diff .
-
-# Cleanup patch for T60 ACPI backlight controls, based on 6731/6 from coreboot gerrit site (review.coreboot.org)
-# Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
-git apply 0001_t60_6731_6_extension_acpi_brightness.git.diff
-
-# delete the copies of the patches (not needed anymore)
-rm -rf 0001_t60_6731_6_extension_acpi_brightness.git.diff
+# no diffs needed at the moment
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
