@@ -50,15 +50,25 @@ git reset --hard 9310df8d0351842e7bb9efe3cabc0ff82ec99c53
 # Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
 git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
 
-# lenovo/x60: Enable legacy brightness controls (native graphics)
-git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/4 && git cherry-pick FETCH_HEAD
+## lenovo/x60: Enable legacy brightness controls (native graphics)
+## NOT NEEDED. SEE ACPI BRIGHTNESS PATCH BELOW
+# git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/4 && git cherry-pick FETCH_HEAD
 
 # Enable T60 native graphics
 git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/9 && git cherry-pick FETCH_HEAD
 # Enable text-mode graphics for T60
 git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cherry-pick FETCH_HEAD
-# lenovo/t60: Enable legacy brightness controls (native graphics)
-git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
+## lenovo/t60: Enable legacy brightness controls (native graphics)
+## NOT NEEDED. SEE ACPI BRIGHTNESS PATCH BELOW
+# git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
+
+# ACPI brightness for i945 targets (x60/t60/x60t/x60s/macbook21):
+git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/7 && git cherry-pick FETCH_HEAD
+# Fix uneven backlight levels:
+git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
+## note that the 2 changes above are abandoned. Libreboot might have to revert to legacy brightness later on (see above)
+## 6731 and and 7049 are still used for now, since they work in GNU/Linux. The author of 6731 abandoned it
+## because of incompatibility with Windows, but obviously libreboot doesn't care about that.
 
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
