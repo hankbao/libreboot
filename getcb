@@ -56,6 +56,9 @@ git fetch http://review.coreboot.org/coreboot refs/changes/31/6731/6 && git cher
 # Enable T60 native graphics
 git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/7 && git cherry-pick FETCH_HEAD
 
+# ACPI brighness fix: fix uneven backlight on i945 targets:
+git fetch http://review.coreboot.org/coreboot refs/changes/49/7049/1 && git cherry-pick FETCH_HEAD
+
 # Apply necessary patches (from resources/libreboot/patch/)
 # ---------------------------------------------------------------------------------
 
@@ -64,7 +67,6 @@ git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/7 && git cher
 # copy all the patches here for this release
 cp ../resources/libreboot/patch/0000_t60_6723_and_6725_1_extension_textmode.git.diff .
 cp ../resources/libreboot/patch/0001_t60_6731_6_extension_acpi_brightness.git.diff .
-cp ../resources/libreboot/patch/0002_i945_6731_6_extension_fix_uneven_backlight.git.diff .
 
 # Add text-mode for T60 (enables text-mode payloads like memtest, seabios, grub invaders, etc)
 # Based on 6723 (merged) and 6725/1 from coreboot gerrit site (review.coreboot.org)
@@ -74,14 +76,9 @@ git apply 0000_t60_6723_and_6725_1_extension_textmode.git.diff
 # Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
 git apply 0001_t60_6731_6_extension_acpi_brightness.git.diff
 
-# Fix uneven backlight (also removes accoustic noise from (most likely) the inverter board underneath lcd, when reducing brightness)
-# Won't commit to coreboot for this release, since 6731 is currently -2'd in gerrit (on 20140824) and will be improved.
-git apply 0002_i945_6731_6_extension_fix_uneven_backlight.git.diff
-
 # delete the copies of the patches (not needed anymore)
 rm -rf 0000_t60_6723_and_6725_1_extension_textmode.git.diff
 rm -rf 0001_t60_6731_6_extension_acpi_brightness.git.diff
-rm -rf 0002_i945_6731_6_extension_fix_uneven_backlight.git.diff
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
