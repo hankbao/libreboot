@@ -674,73 +674,6 @@
 						</ul>
 					</li>
 					<li>
-						ACPI brightness (tested on X60/T60): left half of screen is darker than the right side, when turning down brightness. Investigate.<br/>
-						mtjm: I'll send you my very hacky program for changing brightness and PWM frequency, it makes testing easier<br/>
-						mtjm: git://git.mtjm.eu/i945-pwm.git, exponent = 4, divisor = 0 is what 6731 would do<br/>
-						Setting exponent 9 and divisor 0 is what libreboot is doing currently (as a modification to 6731)
-						<ul>
-							<li>mtjm says: ACPI spec appendix B video extensions documents what IDs do, igd.asl doesn't use them correctly</li>
-							<li>phcoder says: igd.asl is so broken. Mismatching IDs, listing methods returning garbage, phantom devices. Any one of those is enough to break ACPI spec and windows. We have all 3. On all chipsets.</li>
-							<li>6731 (currently cherry picked in libreboot) is -2'd at this time of writing 20140824 while phcoder works on improving it. (worked in GNU/Linux, though).</li>
-							<li><b>A temporary fix (for uneven backlight) is provided in libreboot. Work in coreboot to fix it properly (phcoder says src/northbridge/intel/i945/acpi/igd.asl needs re-written)</b></li>
-						</ul>
-					</li>
-					<li>
-						There are issues with i945 text mode graphics initialization:<br/>
-						<b>This might not be a problem at all, but instead because there is no framebuffer available when using text-mode. A workaround for
-						the debian-installer issue below, detailed in docs/howtos/grub_boot_installer.html</b>
-						<a href="http://www.coreboot.org/pipermail/coreboot/2014-August/078468.html">http://www.coreboot.org/pipermail/coreboot/2014-August/078468.html</a>
-						look into it, follow up on that post and try to fix it.
-						<ul>
-							<li>Trisquel isolinux menu doesn't show up in seabios (seavgabios) with text-mode, it just says 'Error setting up gfxboot',
-							but it works in text-mode with the extract vbios. Looking at gma.c, it looks like this isn't setup in text-mode by native init,
-							but obviously when using the extracted vbios, it is setting everything up properly?</li>
-							<li>
-								Debian/Trisquel net-install shows graphical corruption (see mailing list link) when booting directly from GRUB in text-mode, but
-								works just fine when using the extracted vbios instead of seavgabios. Are these using text-mode or trying
-								to use graphics? <b>(graphical installers work just fine in native init or with
-								extracted vbios)</b>
-							</li>
-							<li>
-								Debian net-installer (graphical one) fails (trisquel graphical installer is ok) in native graphics and text-mode whether using
-								native graphics or extracted vbios (works fine in vesa/cbfb):
-								<ul>
-									<li>Scrolling/flickering text in a loop (segmentation fault):</li>
-									<li>Xorg (xorg_backtrace+0x49) [0xb7*******] <i>(numbers change)</i></li>
-									<li>Xorg (0xb75******) [0xb7*******] <i>(numbers change</i></li>
-									<li>(vdso) (__kernel_rt_sigreturn+0x0) [0xb7******] <i>(numbers change)</i></li>
-									<li>/lib/libc.so.6 (cfree+0x49) [0xb7******] <i>(numbers change)</i></li>
-									<li>Xorg (xf86DeleteMode+0x51) [0xb7******] <i>(numbers change)</i></li>
-									<li>Segmentation fault at address 0xb7200000</li>
-									<li>Fatal server error:</li>
-									<li>Caught signal 11 (Segmentation fault). Server aborting</li>
-								</ul>
-							</li>
-							<li>
-								An already-installed (on the HDD) Trisquel or Debian system boots and works just fine with native graphics + text mode.
-							</li>
-							<li>
-								phcoder says that there are limitations in native graphic: for example, he says native init doesn't provide int10h at all, and that it lacks VBT
-								(sometimes referred to as VBE).
-								Are there other issues? He says that there are also lots of ACPI issues in general.
-							</li>
-							<li><b>Right now it is recommended to use the vesa/cbfb ROM's (these do not use text-mode, they use coreboot's vesa framebuffer instead). MemTest86+
-							does work in text-mode, though.</b></li>
-							<li>
-								<b>Most (maybe all?) of the above are not a problem, I think.</b><br/>
-								mtjm: text mode is for payloads/OSes that use the 80x25 VGA text mode and do not change mode, or run KMS<br/>
-								mtjm: a more featureful VGA ROM is needed for payloads/OSes that use int10h interfaces to change modes (e.g. VESA drivers) (also, VBT and other fixes are needed)<br/>
-								Systems that have int10h (interrupt service) code available for reference:<br/>
-								Geode boards and QEMU (look in coreboot or seabios source code).
-							</li>
-							<li>
-								phcoder: paging will not help with mtrr granularity. This was already investigated<br/>
-								phcoder: interesting: coreboot exposed mistakes in fwts (firmware test suite). Like its mtrr check assumes that default=uncachable.<br/>
-								(might be related to those debian-installer issues in text-mode)
-							</li>
-						</ul>
-					</li>
-					<li>
 						About fixing remaining LCD panels on 5345:<br/>
 						'polarity' is mentioned in coreboot log (cbmem -c). compare output (with working and non-working panel). (and see the other notes in docs/future/index.html)<br/>
 						phcoder says: hint for T60: it might be that failing panels are 8bpc<br/>
@@ -846,21 +779,7 @@
 					<li>
 						Re-write the "Parse USB" options based on the "Search local HDD for grub.cfg" menu entry (make it more intelligent).
 					</li>
-					<li>update info on x60/t60/macbook21 pages on coreboot wiki (not really a libreboot todo, but something that I should do anyway)</li>
 					<li>get all useful info from http://www.coreboot.org/GRUB2 and https://wiki.parabolagnulinux.org/User:GNUtoo/laptop and make it into a tutorial</li>
-					<li>
-						Test that commit and include it (maybe get it merged in coreboot):
-						<a href="http://review.coreboot.org/#/c/5242/17">http://review.coreboot.org/#/c/5242/17</a> (test this!)
-					</li>
-					<li>
-						Test that commit and include it (maybe get it merged in coreboot):
-						<a href="http://review.coreboot.org/#/c/5243/">http://review.coreboot.org/#/c/5243/</a> (test this!)
-					</li>
-					<li>
-						<s>Todo: (after rebase): include 6694 from review.coreboot.org (still some hanging issues). This is needed for reliable booting (for now) on macbook21</s> merged in master!<br/>
-						<b>work with phcoder to try and re-implement it properly (for example, ask him how to found those entries to add)</b><br/>
-						He says that the cst_arrays array was based on _CST object from vendor BIOS. Use acpidump and 'iasl -d' to find them.
-					</li>
 					<li>
 						Todo: test gnutoo's fallback patches: <a href="http://www.coreboot.org/Fallback_mechanism">http://www.coreboot.org/Fallback_mechanism</a>
 						(some parts use systemd. adapt for upstart, which is what trisquel uses)<br/>
@@ -907,32 +826,6 @@
 					<li><b><u><i>TODO:</i></u></b> Documentation: Added (replicated) the same level of logs (from default firmware) that Mono did for macbook21, for t60/x60/x60t</li>
 					<li><b><u><i>TODO:</i></u></b> Documentation: updated the X60 unbrick tutorial to use the 5-pin method instead (safer / less dangerous).</li>
 					<li><b><u><i>TODO:</i></u></b> Documentation: Add a &quot;development guide&quot; for how to maintain libreboot ('get' scripts, deblob scripts, associated files under ./resources and so on)</li>
-					<li>
-						<b><u><i>TODO:</i></u></b> Investigate high boot speeds on X60/T60/macbook21
-						<ul>
-							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078215.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078215.html</a></li>
-							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078216.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078216.html</a></li>
-							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078218.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078218.html</a></li>
-							<li><a href="http://www.coreboot.org/pipermail/coreboot/2014-July/078225.html">http://www.coreboot.org/pipermail/coreboot/2014-July/078225.html</a></li>
-							<li><a href="../docs/x60.config">kernel .config file</a></li>
-							<li>
-								<b>
-									Update: ignore the above, look at <a href="../docs/future/index.html#fastboot">../docs/future/index.html#fastboot</a>
-									(information supplied by Charles Devereaux)
-								</b>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<b><u><i>TODO:</i></u></b><a href="https://wiki.archlinux.org/index.php/TLP">https://wiki.archlinux.org/index.php/TLP</a> (example article) a user
-						mentioned that this also removes the high-pitched noise (like powertop does). Must look into this.
-					</li>
-					<li>
-						<b><u><i>TODO:</i></u></b> For images that use foreign layouts, create translated grub menus aswell. (i18n!). Modify the build scripts to do this automatically.
-					</li>
-					<li>
-						Add tint payload to GRUB: <a href="http://www.coreboot.org/Tint">http://www.coreboot.org/Tint</a>
-					</li>
 				</ul>
 		</div>
 
