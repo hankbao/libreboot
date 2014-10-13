@@ -79,6 +79,9 @@
 
 		<div class="important">
 			<h2>Warning: <u>BETA</u> release! <u>TESTING</u> needed! <u>BUGS</u> present!</h2>
+			<p>
+				See <a href="#critical_tasks">critical tasks</a> and <a href="#noncritical_tasks">non-critical tasks</a>.
+			</p>
 		</div>
 
 		<h2>Binaries (for flashing) (right-click save as, or use wget)</h2>
@@ -137,6 +140,308 @@
 		<h2>Machines no longer supported (compared to previous release):</h2>
 			<ul>
 				<li><b>All previous machines still supported!</b></li>
+			</ul>
+
+		<h2>
+			Revisions for 7th beta (2014 September 11th)
+		</h2>
+			<ul>
+				<li>The changes below were made in a git repository, unlike in previous releases. Descriptions below are copied from 'git log'.</li>
+				<li>Update .gitignore for new dependencies.</li>
+				<li>Use a submodule for i945-pwm.</li>
+				<li>Don't clean packages that fail or don't need cleaning.</li>
+				<li>Don't clean i945-pwm, it's not needed.</li>
+				<li>Regression fix: Parabola live ISO boot issues</li>
+				<li>Re-enable background images in ISOLINUX/SYSLINUX GRUB parser menus</li>
+				<li>Regression fix: Re-add CD-ROM (ata0) in GRUB</li>
+				<li>Documentation: add notes about performance penalty when using ecryptfs.</li>
+				<li>Documentation: Fixed spelling and grammatical errors.</li>
+				<li>Documentation: macbook21: add new machine as tested</li>
+    			<li>Documentation: macbook21: add info about improving touchpad sensitivity</li>
+				<li>Documentation: X60 Tablet: add more information about finger input</li>
+				<li>Documentation: release.html: Add information about recently merged commit in coreboot</li>
+			</ul>
+
+		<h2>
+			Revisions for 6th beta (2014 September 3rd)
+		</h2>
+			<ul>
+				<li>Added modified builddeb* scripts for Parabola GNU/Linux-libre: buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah Vesely)</li>
+				<li>Documentation: updated all relevant areas to mention use of buildpac* scripts for Parabola users.</li>
+				<li>Documentation: added information showing how to enable or disable bluetooth on the X60</li>
+				<li>MacBook1,1 tested! See <a href="../docs/index.html#macbook11">../docs/index.html#macbook11"</a></li>
+				<li>Documentation: fixed typo in ../docs/index.html#get_edid_panelname (get-edit changed to get-edid)</li>
+				<li>Documentation: added ../docs/howtos/x60_lcd_change/ (pics only for now)</li>
+				<li>Added gcry_serpent and gcry_whirlpool to the GRUB module list in the 'build' script (for luks users)</li>
+				<li>
+					<b>Libreboot is now based on a new coreboot version from August 23rd, 2014:<br/>
+					Merged commits (relates to boards that were already supported in libreboot):</b>
+					<ul>
+						<li><a href="http://review.coreboot.org/#/c/6697/">http://review.coreboot.org/#/c/6697/</a></li>
+						<li><a href="http://review.coreboot.org/#/c/6698/">http://review.coreboot.org/#/c/6698/</a> (merged already)</li>
+						<li><a href="http://review.coreboot.org/#/c/6699/">http://review.coreboot.org/#/c/6699/</a> (merged already)</li>
+						<li><a href="http://review.coreboot.org/#/c/6696/">http://review.coreboot.org/#/c/6696/</a> (merged already)</li>
+						<li><a href="http://review.coreboot.org/#/c/6695/">http://review.coreboot.org/#/c/6695/</a> (merged already)</li>
+						<li><b><a href="http://review.coreboot.org/#/c/5927/">http://review.coreboot.org/#/c/5927/</a> (merged already)</b></li>
+						<li><a href="http://review.coreboot.org/#/c/6717/">http://review.coreboot.org/#/c/6717/</a> (merged already)</li>
+						<li><a href="http://review.coreboot.org/#/c/6718/">http://review.coreboot.org/#/c/6718/</a> (merged already)</li>
+						<li>
+							<a href="http://review.coreboot.org/#/c/6723/">http://review.coreboot.org/#/c/6723/</a> (merged already)
+							(text-mode patch, might enable memtest. macbook21)
+						</li>
+						<li>
+							<a href="http://review.coreboot.org/#/c/6732/">http://review.coreboot.org/#/c/6732/</a> (MERGED)
+							(remove useless ps/2 keyboard delay from macbook21. already merged)
+						</li>
+					</ul>
+				</li>
+				<li>
+					These were also merged in coreboot (relates to boards that libreboot already supported):
+					<ul>
+						<li><a href="http://review.coreboot.org/#/c/5320/">http://review.coreboot.org/#/c/5320/</a> (merged)</li>
+						<li><a href="http://review.coreboot.org/#/c/5321/">http://review.coreboot.org/#/c/5321/</a> (merged)</li>
+						<li><a href="http://review.coreboot.org/#/c/5323/">http://review.coreboot.org/#/c/5323/</a> (merged)</li>
+						<li><a href="http://review.coreboot.org/#/c/6693/">http://review.coreboot.org/#/c/6693/</a> (merged)</li>
+						<li><a href="http://review.coreboot.org/#/c/6694/">http://review.coreboot.org/#/c/6694/</a> (merged)</li>
+						<li><a href="http://review.coreboot.org/#/c/5324/">http://review.coreboot.org/#/c/5324/</a> (merged)</li>
+					</ul>
+				</li>
+				<li>Documentation: removed the section about tft_brightness on X60 (new code makes it obsolete)</li>
+				<li>Removed all patches from resources/libreboot/patch/ and added new patch: 0000_t60_textmode.git.diff</li>
+				<li>Updated getcb script and DEBLOB script.</li>
+				<li>Updated configuration files under resources/libreboot/config/ to accomodate new coreboot version.</li>
+				<li>
+					Removed grub_serial*.cfg and libreboot_serial*.rom, all configs/rom's are now unified (containing same configuration as serial rom's from before).
+					<ul>
+						<li>Documentation: updated ../docs/index.html#rom to reflect the above.</li>
+					</ul>
+				</li>
+				<li>Updated GRUB to new version from August 14th, 2014.</li>
+				<li>Unified all grub configurations for all machines to a single grub.cfg under resources/grub/config/</li>
+				<li>Updated flashrom to new version from August 20th, 2014</li>
+				<li>
+					Added getseabios and builddeps-seabios (builddeps and getall were also updated)
+					<ul>
+						<li>
+							Added instructions to 'buildrom-withgrub' to include bios.bin.elf and vgaroms/vgabios.bin from SeaBIOS inside the ROM.
+						</li>
+					</ul>
+				</li>
+				<li>Added seabios (and sgavgabios) to grub as payload option in menu</li>
+				<li>
+					Disabled serial output in Memtest86+ (no longer needed) to speed up tests.
+					<ul>
+						<li>MemTest86+ now works properly, it can output on the laptop screen (no serial port needed anymore).</li>
+					</ul>
+				</li>
+				<li>
+					Added getgrubinvaders, builddeps-grubinvaders scripts. Added these to getall and builddeps.
+					<ul>
+						<li>
+							Added <a href="http://www.coreboot.org/GRUB_invaders">GRUB Invaders</a> menu entry in resources/grub/config/grub.cfg
+						</li>
+					</ul>
+				</li>
+				<li>Added rules to builddeps-coreboot to build libpayload with TinyCurses. (added appropriate instructions to cleandeps script).</li>
+				<li>Commented out lines in resources/grub/config/grub.cfg for loading font/background (not useful anymore, now that GRUB is in text-mode).</li>
+				<li>Commented out lines in buildrom-withgrub that included backgrounds/fonts (not useful anymore, now that GRUB is in text-mode).</li>
+				<li>
+					Added resources/utilities/i945-pwm/ (from git://git.mtjm.eu/i945-pwm), for debugging acpi brightness on i945 machines.
+					<ul>
+						<li>Added instructions for it in builddeps, builddeps-i945pwm, builddeb and cleandeps</li>
+					</ul>
+				</li>
+				<li>'build' script: removed the parts that generated sha512sum manifests (not needed, since release tarballs are GPG-signed)</li>
+				<li>
+					'build' script: removed the parts that generated libreboot_meta directory (not needed anymore, since _meta will be hosted in git)
+					<ul>
+						<li>Updated ../docs/index.html#build_meta (and other parts of documentation) to accomodate this change.</li>
+					</ul>
+				</li>
+				<li>Documentation: simplified (refactored) the notes in ../docs/index.html#rom</li>
+				<li>
+					'build' script: removed the parts that generated libreboot_bin and added them to a new script: 'build-release'
+					<ul>
+						<li>Documentation: ../docs/index.html#build updated to reflect the above.</li>
+					</ul>
+				</li>
+				<li>Removed 'sudo' from builddeb, builddeb-flashrom, powertop.trisquel6 and builddeb-bucts scripts (assuming that the user has it is a really bad idea).</li>
+				<li><s>Added all gcry_* modules to grub (luks/cryptomount): gcry_arcfour gcry_camellia gcry_crc gcry_dsa gcry_md4 gcry_rfc2268 gcry_rmd160 gcry_seed gcry_sha1 gcry_sha512 gcry_twofish gcry_blowfish gcry_cast5 gcry_des gcry_idea gcry_md5 gcry_rijndael gcry_rsa gcry_serpent gcry_sha256 gcry_tiger gcry_whirlpool</s></li>
+				<li>Added GNUtoo's list of GRUB modules (includes all of the gcry_* modules above), cryptomount should be working now.</li>
+				<li>Removed builddeb-bucts and builddeb-flashrom, merged them with builddeb (../docs/index.html updated accordingly)</li>
+				<li>Removed buildpac-bucts and buildpac-flashrom, merged them with buildpac (../docs/index.html updated accordingly)</li>
+				<li>Renamed builddeb to deps-trisquel (../docs/index.html updated accordingly)</li>
+				<li>Renamed buildpac to deps-parabola (../docs/index.html updated accordingly)</li>
+				<li>Documentation: removed all parts talking about build dependencies, replaced them with links to ../docs/index.html#build_dependencies</li>
+				<li>Documentation: emphasized more strongly on the documentation, the need to re-build bucts and/or flashrom before flashing a ROM image.</li>
+				<li>build-release: flashrom, nvramtool, cbfstool and bucts are no longer provided pre-compiled in binary archives, and are now in source form only. (to maximize distro compatibility).</li>
+				<li>Documentation: added ../docs/howtos/encrypted_trisquel.html showing how to setup a fully encrypted Trisquel installation (including /boot) and boot it from the GRUB payload.</li>
+				<li>'build' script: replaced grub.elf assembly instructons, it's now handled by a utility added under resources/utilities/grub-assemble</li>
+				<li>Moved resources/grub/keymap to resources/utilities/grub-assemble/keymap, and updated that utility to use it</li>
+				<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
+				<li>Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory</li>
+				<li>'buildrom-withgrub' script: updated it to create 2 sets of ROM's for each machine: one with text-mode, one with coreboot framebuffer.</li>
+				<li>Documentation: updated ../docs/index.html#rom to reflect the above</li>
+				<li>Deleted unused README and COPYING file from main directory</li>
+				<li>Removed some rm -rf .git* instructions from the get* scripts and moved them to build-release script</li>
+				<li>
+					Split up default grub.cfg into 6 parts: extra/{common.cfg,txtmode.cfg,vesafb.cfg} and menuentries/{common.cfg,txtmode.cfg,vesafb.cfg}
+					<ul>
+						<li>buildrom-withgrub script uses these to generate the correct grub.cfg for each type of configuration.</li>
+					</ul>
+				</li>
+				<li>grub_memdisk.cfg (used inside grub.elf) now only loads grub.cfg from cbfs. It no longer enables serial output or sets prefix. (menuentries/common.cfg does instead)</li> 
+				<li>
+					resources/grub/config/extra/common.cfg, added:
+					<ul>
+						<li>insmod instructions to load those modules: nativedisk, ehci, ohci, uhci, usb, usbserial_pl2303, usbserial_ftdi, usbserial_usbdebug</li>
+						<li>set prefix=(memdisk)/boot/grub</li>
+						<li>
+							For native graphics (recommended by coreboot wiki):<br/>
+							gfxpayload=keep<br/>
+							terminal_output --append gfxterm
+						</li>
+						<li>
+							Play a beep on startup:<br/>
+							play 480 440 1
+						</li>
+					</ul>
+				</li>
+				<li>
+					Documentation: added note about 'fb=false' workaround for text-mode debian-installer (Trisquel net install) to 
+					../docs/howtos/grub_boot_installer.html
+				</li>
+				<li>
+					Documentation: updated ../docs/howtos/grub_cbfs.html to make it safer (and easier) to follow.
+				</li>
+			</ul>
+
+		<h2>
+			Corrections to 5th beta (2014 August 2014)
+		</h2>
+			<ul>
+				<li>Fixed typo where revision list for 5th beta was listed as March 11th 2014, when in fact it was August 11th 2014</li>
+				<li>Fixed incorrect grub.cfg that was actually placed in resources/grub/config/x60/grub_usqwerty.cfg which broke the default GRUB menu entry on X60</li>
+			</ul>
+
+		<h2>
+			Revisions for 5th beta (2014 August 11th)
+		</h2>
+			<ul>
+				<li>build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the list of modules for grub.elf</li>
+				<li>Documentation: added pics showing T60 unbricking (still need to write a tutorial)</li>
+				<li>build: include cmos.layout (coreboot/src/mainboard/manufacturer/model/cmos.layout) files in libreboot_bin</li>
+				<li>Documentation: added <a href="../docs/howtos/x60tablet_unbrick.html">../docs/howtos/x60tablet_unbrick.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_unbrick.html">../docs/howtos/t60_unbrick.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_lcd_15.html">../docs/howtos/t60_lcd_15.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_security.html">../docs/howtos/t60_security.html</a></li>
+				<li>Documentation: added <a href="../docs/howtos/t60_heatsink.html">../docs/howtos/t60_heatsink.html</a></li>
+				<li>Documentation: Renamed RELEASE.html to release.html</li>
+				<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
+				<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
+				<li>Documentation: added preliminary information about preventing/mitigating cold-boot attack in x60_security.html and t60_security.html</li>
+				<li>Documentation: added info to ../docs/index.html#macbook21 warning about issues with macbook21</li>
+		 		<li>
+					Documentation: X60/T60: added information about checking custom ROM's using dd to see whether or not the top 64K 
+					region is duplicated below top or not. Advise caution about this in the tutorial that deals with flashing on top 
+					of Lenovo BIOS, citing the correct dd commands necessary if it is confirmed that the ROM has not been applied with
+					dd yet. (in the case that the user compiled their own ROM's from libreboot, without using the build scripts, or if they forgot to use dd, etc).
+				</li>
+				<li>
+					Split resources/libreboot/patch/gitdiff into separate patch files (getcb script updated to accomodate this change).
+				</li>
+				<li>Re-added .git files to bucts</li>
+				<li>Fixed the oversight where macbook21_firstflash wasn't included in binary archives</li>
+				<li>Release archives are now compressed using .tar.xz for better compression</li>
+			</ul>
+
+		<h2>
+			Revisions for 4th beta (2014 July 29th)
+		</h2>
+			<ul>
+				<li>Documentation: improved (more explanations, background info) in docs/howtos/x60_security.html (courtesy of Denis Carikli)</li>
+				<li>MacBook2,1 tested (confirmed)</li>
+				<li>macbook21: Added script 'macbook21_firstflash' for flashing libreboot while Apple EFI firmware is running.</li>
+				<li>Documentation: macbook21: added software-based flashing instructions for flashing libreboot while Apple EFI firmware is running.</li>
+				<li>
+					Reduced size of libreboot_src.tar.gz:
+					<ul>
+						<li>
+							Removed .git and .gitignore from grub directory (libreboot_src); not needed. 
+							Removing them reduces the size of the archive (by a lot). GRUB development should be upstream.
+						</li>
+						<li>
+							Removed .git and .gitignore from bucts directory (libreboot_src); not needed. 
+							Removing them reduces the size of the archive. bucts development should be upstream.
+						</li>
+						<li>
+							Removed .svn from flashrom directory (libreboot_src); not needed. 
+							Removing it reduces the size of the archive. flashrom development should be upstream.
+						</li>
+					</ul>
+				</li>
+				<li>
+					Added ROM's with Qwerty (Italian) layout in GRUB (libreboot*itqwerty.rom)
+				</li>
+				<li>
+					Added resources/utilities/i945gpu/intel-regs.py for debugging issues related to LCD panel compatibility on X60 Tablet and T60. (courtesy of <a href="http://mtjm.eu">Michał Masłowski</a>)
+				</li>
+			</ul>
+
+		<h2>
+			Revisions for 3rd beta (2014 July 20th)
+		</h2>
+			<ul>
+				<li>
+					Fixed typo that existed in 2nd beta where the release date of the 2nd beta was listed as being in year 2016, when in actual fact it was 2014.
+				</li>
+				<li>
+					Documentation: added (preliminary) details about (rare) buggy CPU's on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
+					without the microcode updates. 
+				</li>
+				<li>Documentation: added docs/howtos/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
+				<li>Added ROM images for Azerty (French) keyboard layout in GRUB (courtesy of Olivier Mondoloni)</li>
+				<li>
+					Tidied up some scripts:
+					<ul>
+						<li><s>Re-factored those scripts (made easier to read/maintain): build-x60, build-x60t, build-t60, build-macbook21</s></li>
+						<li><s>Reduced the number of grub configs to 2 (or 1, for macbook21), the build scripts now generate the other configs at build time.</s></li>
+						<li>Deleted build-x60, build-x60t, build-t60, build-macbook21 and replaced with intelligent (generic) buildrom-withgrub script</li>
+						<li>Updated build to use buildrom-withgrub script for building the ROM images.</li>
+						<li>coreboot.rom and coreboot_serial.rom renamed to coreboot_usqwerty.rom and coreboot_serial_usqwerty.rom</li>
+						<li>coreboot_dvorak and coreboot_serial_dvorak.rom renamed to coreboot_usdvorak.rom and coreboot_serial_usdvorak.rom</li>
+						<li>Renamed coreboot*rom to libreboot*rom</li>
+						<li>Made flash, lenovobios_firstflash and lenovobios_secondflash scripts fail if the specified file does not exist.</li>
+						<li>Updated all relevant parts of the documentation to reflect the above.</li>
+					</ul>
+				</li>
+				<li>Replaced background.png with background.jpg. added gnulove.jpg. (resources/grub/background/)</li>
+				<li>Updated buildrom-withgrub to use background.jpg instead of background.png</li>
+				<li>Updated buildrom-withgrub to use gnulove.jpg aswell</li>
+				<li>Updated resources/grub/config/macbook21/grub*cfg to use gnulove.jpg background.</li>
+				<li>Updated resources/grub/config/{x60,t60,x60t}/grub*cfg to use background.jpg background.</li>
+				<li>Documentation: updated docs/index.html#grub_custom_keyboard to be more generally useful.</li>
+				<li>
+					nvramtool:
+					<ul>
+						<li>Updated builddeps-coreboot script to build it</li>
+						<li>Updated build script to include it in libreboot_bin</li>
+					</ul>
+				</li>
+				<li>
+					Documentation: added docs/howtos/x60_security.html (security hardening for X60)
+				</li>
+			</ul>
+
+		<h2>
+			Revisions for 2nd beta (2014 July 16th)
+		</h2>
+			<ul>
+				<li>
+					Deleted all git-related files from the coreboot directory. This was necessary because
+					with those it is possible to run 'git diff' which shows the changes made in the form
+					of a patch (diff format); this includes the blobs that were deleted during deblobbing.
+				</li>
 			</ul>
 
 		<h2>
@@ -346,307 +651,6 @@
 					</ul>
 				</li>
 			</ul>
-		<h2>
-			Revisions for 2nd beta (2014 July 16th)
-		</h2>
-			<ul>
-				<li>
-					Deleted all git-related files from the coreboot directory. This was necessary because
-					with those it is possible to run 'git diff' which shows the changes made in the form
-					of a patch (diff format); this includes the blobs that were deleted during deblobbing.
-				</li>
-			</ul>
-
-		<h2>
-			Revisions for 3rd beta (2014 July 20th)
-		</h2>
-			<ul>
-				<li>
-					Fixed typo that existed in 2nd beta where the release date of the 2nd beta was listed as being in year 2016, when in actual fact it was 2014.
-				</li>
-				<li>
-					Documentation: added (preliminary) details about (rare) buggy CPU's on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
-					without the microcode updates. 
-				</li>
-				<li>Documentation: added docs/howtos/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
-				<li>Added ROM images for Azerty (French) keyboard layout in GRUB (courtesy of Olivier Mondoloni)</li>
-				<li>
-					Tidied up some scripts:
-					<ul>
-						<li><s>Re-factored those scripts (made easier to read/maintain): build-x60, build-x60t, build-t60, build-macbook21</s></li>
-						<li><s>Reduced the number of grub configs to 2 (or 1, for macbook21), the build scripts now generate the other configs at build time.</s></li>
-						<li>Deleted build-x60, build-x60t, build-t60, build-macbook21 and replaced with intelligent (generic) buildrom-withgrub script</li>
-						<li>Updated build to use buildrom-withgrub script for building the ROM images.</li>
-						<li>coreboot.rom and coreboot_serial.rom renamed to coreboot_usqwerty.rom and coreboot_serial_usqwerty.rom</li>
-						<li>coreboot_dvorak and coreboot_serial_dvorak.rom renamed to coreboot_usdvorak.rom and coreboot_serial_usdvorak.rom</li>
-						<li>Renamed coreboot*rom to libreboot*rom</li>
-						<li>Made flash, lenovobios_firstflash and lenovobios_secondflash scripts fail if the specified file does not exist.</li>
-						<li>Updated all relevant parts of the documentation to reflect the above.</li>
-					</ul>
-				</li>
-				<li>Replaced background.png with background.jpg. added gnulove.jpg. (resources/grub/background/)</li>
-				<li>Updated buildrom-withgrub to use background.jpg instead of background.png</li>
-				<li>Updated buildrom-withgrub to use gnulove.jpg aswell</li>
-				<li>Updated resources/grub/config/macbook21/grub*cfg to use gnulove.jpg background.</li>
-				<li>Updated resources/grub/config/{x60,t60,x60t}/grub*cfg to use background.jpg background.</li>
-				<li>Documentation: updated docs/index.html#grub_custom_keyboard to be more generally useful.</li>
-				<li>
-					nvramtool:
-					<ul>
-						<li>Updated builddeps-coreboot script to build it</li>
-						<li>Updated build script to include it in libreboot_bin</li>
-					</ul>
-				</li>
-				<li>
-					Documentation: added docs/howtos/x60_security.html (security hardening for X60)
-				</li>
-			</ul>
-
-		<h2>
-			Revisions for 4th beta (2014 July 29th)
-		</h2>
-			<ul>
-				<li>Documentation: improved (more explanations, background info) in docs/howtos/x60_security.html (courtesy of Denis Carikli)</li>
-				<li>MacBook2,1 tested (confirmed)</li>
-				<li>macbook21: Added script 'macbook21_firstflash' for flashing libreboot while Apple EFI firmware is running.</li>
-				<li>Documentation: macbook21: added software-based flashing instructions for flashing libreboot while Apple EFI firmware is running.</li>
-				<li>
-					Reduced size of libreboot_src.tar.gz:
-					<ul>
-						<li>
-							Removed .git and .gitignore from grub directory (libreboot_src); not needed. 
-							Removing them reduces the size of the archive (by a lot). GRUB development should be upstream.
-						</li>
-						<li>
-							Removed .git and .gitignore from bucts directory (libreboot_src); not needed. 
-							Removing them reduces the size of the archive. bucts development should be upstream.
-						</li>
-						<li>
-							Removed .svn from flashrom directory (libreboot_src); not needed. 
-							Removing it reduces the size of the archive. flashrom development should be upstream.
-						</li>
-					</ul>
-				</li>
-				<li>
-					Added ROM's with Qwerty (Italian) layout in GRUB (libreboot*itqwerty.rom)
-				</li>
-				<li>
-					Added resources/utilities/i945gpu/intel-regs.py for debugging issues related to LCD panel compatibility on X60 Tablet and T60. (courtesy of <a href="http://mtjm.eu">Michał Masłowski</a>)
-				</li>
-			</ul>
-
-		<h2>
-			Revisions for 5th beta (2014 August 11th)
-		</h2>
-			<ul>
-				<li>build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the list of modules for grub.elf</li>
-				<li>Documentation: added pics showing T60 unbricking (still need to write a tutorial)</li>
-				<li>build: include cmos.layout (coreboot/src/mainboard/manufacturer/model/cmos.layout) files in libreboot_bin</li>
-				<li>Documentation: added <a href="../docs/howtos/x60tablet_unbrick.html">../docs/howtos/x60tablet_unbrick.html</a></li>
-				<li>Documentation: added <a href="../docs/howtos/t60_unbrick.html">../docs/howtos/t60_unbrick.html</a></li>
-				<li>Documentation: added <a href="../docs/howtos/t60_lcd_15.html">../docs/howtos/t60_lcd_15.html</a></li>
-				<li>Documentation: added <a href="../docs/howtos/t60_security.html">../docs/howtos/t60_security.html</a></li>
-				<li>Documentation: added <a href="../docs/howtos/t60_heatsink.html">../docs/howtos/t60_heatsink.html</a></li>
-				<li>Documentation: Renamed RELEASE.html to release.html</li>
-				<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
-				<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
-				<li>Documentation: added preliminary information about preventing/mitigating cold-boot attack in x60_security.html and t60_security.html</li>
-				<li>Documentation: added info to ../docs/index.html#macbook21 warning about issues with macbook21</li>
-		 		<li>
-					Documentation: X60/T60: added information about checking custom ROM's using dd to see whether or not the top 64K 
-					region is duplicated below top or not. Advise caution about this in the tutorial that deals with flashing on top 
-					of Lenovo BIOS, citing the correct dd commands necessary if it is confirmed that the ROM has not been applied with
-					dd yet. (in the case that the user compiled their own ROM's from libreboot, without using the build scripts, or if they forgot to use dd, etc).
-				</li>
-				<li>
-					Split resources/libreboot/patch/gitdiff into separate patch files (getcb script updated to accomodate this change).
-				</li>
-				<li>Re-added .git files to bucts</li>
-				<li>Fixed the oversight where macbook21_firstflash wasn't included in binary archives</li>
-				<li>Release archives are now compressed using .tar.xz for better compression</li>
-			</ul>
-
-		<h2>
-			Corrections to 5th beta (2014 August 2014)
-		</h2>
-			<ul>
-				<li>Fixed typo where revision list for 5th beta was listed as March 11th 2014, when in fact it was August 11th 2014</li>
-				<li>Fixed incorrect grub.cfg that was actually placed in resources/grub/config/x60/grub_usqwerty.cfg which broke the default GRUB menu entry on X60</li>
-			</ul>
-
-		<h2>
-			Revisions for 6th beta (2014 September 3rd)
-		</h2>
-			<ul>
-				<li>Added modified builddeb* scripts for Parabola GNU/Linux-libre: buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah Vesely)</li>
-				<li>Documentation: updated all relevant areas to mention use of buildpac* scripts for Parabola users.</li>
-				<li>Documentation: added information showing how to enable or disable bluetooth on the X60</li>
-				<li>MacBook1,1 tested! See <a href="../docs/index.html#macbook11">../docs/index.html#macbook11"</a></li>
-				<li>Documentation: fixed typo in ../docs/index.html#get_edid_panelname (get-edit changed to get-edid)</li>
-				<li>Documentation: added ../docs/howtos/x60_lcd_change/ (pics only for now)</li>
-				<li>Added gcry_serpent and gcry_whirlpool to the GRUB module list in the 'build' script (for luks users)</li>
-				<li>
-					<b>Libreboot is now based on a new coreboot version from August 23rd, 2014:<br/>
-					Merged commits (relates to boards that were already supported in libreboot):</b>
-					<ul>
-						<li><a href="http://review.coreboot.org/#/c/6697/">http://review.coreboot.org/#/c/6697/</a></li>
-						<li><a href="http://review.coreboot.org/#/c/6698/">http://review.coreboot.org/#/c/6698/</a> (merged already)</li>
-						<li><a href="http://review.coreboot.org/#/c/6699/">http://review.coreboot.org/#/c/6699/</a> (merged already)</li>
-						<li><a href="http://review.coreboot.org/#/c/6696/">http://review.coreboot.org/#/c/6696/</a> (merged already)</li>
-						<li><a href="http://review.coreboot.org/#/c/6695/">http://review.coreboot.org/#/c/6695/</a> (merged already)</li>
-						<li><b><a href="http://review.coreboot.org/#/c/5927/">http://review.coreboot.org/#/c/5927/</a> (merged already)</b></li>
-						<li><a href="http://review.coreboot.org/#/c/6717/">http://review.coreboot.org/#/c/6717/</a> (merged already)</li>
-						<li><a href="http://review.coreboot.org/#/c/6718/">http://review.coreboot.org/#/c/6718/</a> (merged already)</li>
-						<li>
-							<a href="http://review.coreboot.org/#/c/6723/">http://review.coreboot.org/#/c/6723/</a> (merged already)
-							(text-mode patch, might enable memtest. macbook21)
-						</li>
-						<li>
-							<a href="http://review.coreboot.org/#/c/6732/">http://review.coreboot.org/#/c/6732/</a> (MERGED)
-							(remove useless ps/2 keyboard delay from macbook21. already merged)
-						</li>
-					</ul>
-				</li>
-				<li>
-					These were also merged in coreboot (relates to boards that libreboot already supported):
-					<ul>
-						<li><a href="http://review.coreboot.org/#/c/5320/">http://review.coreboot.org/#/c/5320/</a> (merged)</li>
-						<li><a href="http://review.coreboot.org/#/c/5321/">http://review.coreboot.org/#/c/5321/</a> (merged)</li>
-						<li><a href="http://review.coreboot.org/#/c/5323/">http://review.coreboot.org/#/c/5323/</a> (merged)</li>
-						<li><a href="http://review.coreboot.org/#/c/6693/">http://review.coreboot.org/#/c/6693/</a> (merged)</li>
-						<li><a href="http://review.coreboot.org/#/c/6694/">http://review.coreboot.org/#/c/6694/</a> (merged)</li>
-						<li><a href="http://review.coreboot.org/#/c/5324/">http://review.coreboot.org/#/c/5324/</a> (merged)</li>
-					</ul>
-				</li>
-				<li>Documentation: removed the section about tft_brightness on X60 (new code makes it obsolete)</li>
-				<li>Removed all patches from resources/libreboot/patch/ and added new patch: 0000_t60_textmode.git.diff</li>
-				<li>Updated getcb script and DEBLOB script.</li>
-				<li>Updated configuration files under resources/libreboot/config/ to accomodate new coreboot version.</li>
-				<li>
-					Removed grub_serial*.cfg and libreboot_serial*.rom, all configs/rom's are now unified (containing same configuration as serial rom's from before).
-					<ul>
-						<li>Documentation: updated ../docs/index.html#rom to reflect the above.</li>
-					</ul>
-				</li>
-				<li>Updated GRUB to new version from August 14th, 2014.</li>
-				<li>Unified all grub configurations for all machines to a single grub.cfg under resources/grub/config/</li>
-				<li>Updated flashrom to new version from August 20th, 2014</li>
-				<li>
-					Added getseabios and builddeps-seabios (builddeps and getall were also updated)
-					<ul>
-						<li>
-							Added instructions to 'buildrom-withgrub' to include bios.bin.elf and vgaroms/vgabios.bin from SeaBIOS inside the ROM.
-						</li>
-					</ul>
-				</li>
-				<li>Added seabios (and sgavgabios) to grub as payload option in menu</li>
-				<li>
-					Disabled serial output in Memtest86+ (no longer needed) to speed up tests.
-					<ul>
-						<li>MemTest86+ now works properly, it can output on the laptop screen (no serial port needed anymore).</li>
-					</ul>
-				</li>
-				<li>
-					Added getgrubinvaders, builddeps-grubinvaders scripts. Added these to getall and builddeps.
-					<ul>
-						<li>
-							Added <a href="http://www.coreboot.org/GRUB_invaders">GRUB Invaders</a> menu entry in resources/grub/config/grub.cfg
-						</li>
-					</ul>
-				</li>
-				<li>Added rules to builddeps-coreboot to build libpayload with TinyCurses. (added appropriate instructions to cleandeps script).</li>
-				<li>Commented out lines in resources/grub/config/grub.cfg for loading font/background (not useful anymore, now that GRUB is in text-mode).</li>
-				<li>Commented out lines in buildrom-withgrub that included backgrounds/fonts (not useful anymore, now that GRUB is in text-mode).</li>
-				<li>
-					Added resources/utilities/i945-pwm/ (from git://git.mtjm.eu/i945-pwm), for debugging acpi brightness on i945 machines.
-					<ul>
-						<li>Added instructions for it in builddeps, builddeps-i945pwm, builddeb and cleandeps</li>
-					</ul>
-				</li>
-				<li>'build' script: removed the parts that generated sha512sum manifests (not needed, since release tarballs are GPG-signed)</li>
-				<li>
-					'build' script: removed the parts that generated libreboot_meta directory (not needed anymore, since _meta will be hosted in git)
-					<ul>
-						<li>Updated ../docs/index.html#build_meta (and other parts of documentation) to accomodate this change.</li>
-					</ul>
-				</li>
-				<li>Documentation: simplified (refactored) the notes in ../docs/index.html#rom</li>
-				<li>
-					'build' script: removed the parts that generated libreboot_bin and added them to a new script: 'build-release'
-					<ul>
-						<li>Documentation: ../docs/index.html#build updated to reflect the above.</li>
-					</ul>
-				</li>
-				<li>Removed 'sudo' from builddeb, builddeb-flashrom, powertop.trisquel6 and builddeb-bucts scripts (assuming that the user has it is a really bad idea).</li>
-				<li><s>Added all gcry_* modules to grub (luks/cryptomount): gcry_arcfour gcry_camellia gcry_crc gcry_dsa gcry_md4 gcry_rfc2268 gcry_rmd160 gcry_seed gcry_sha1 gcry_sha512 gcry_twofish gcry_blowfish gcry_cast5 gcry_des gcry_idea gcry_md5 gcry_rijndael gcry_rsa gcry_serpent gcry_sha256 gcry_tiger gcry_whirlpool</s></li>
-				<li>Added GNUtoo's list of GRUB modules (includes all of the gcry_* modules above), cryptomount should be working now.</li>
-				<li>Removed builddeb-bucts and builddeb-flashrom, merged them with builddeb (../docs/index.html updated accordingly)</li>
-				<li>Removed buildpac-bucts and buildpac-flashrom, merged them with buildpac (../docs/index.html updated accordingly)</li>
-				<li>Renamed builddeb to deps-trisquel (../docs/index.html updated accordingly)</li>
-				<li>Renamed buildpac to deps-parabola (../docs/index.html updated accordingly)</li>
-				<li>Documentation: removed all parts talking about build dependencies, replaced them with links to ../docs/index.html#build_dependencies</li>
-				<li>Documentation: emphasized more strongly on the documentation, the need to re-build bucts and/or flashrom before flashing a ROM image.</li>
-				<li>build-release: flashrom, nvramtool, cbfstool and bucts are no longer provided pre-compiled in binary archives, and are now in source form only. (to maximize distro compatibility).</li>
-				<li>Documentation: added ../docs/howtos/encrypted_trisquel.html showing how to setup a fully encrypted Trisquel installation (including /boot) and boot it from the GRUB payload.</li>
-				<li>'build' script: replaced grub.elf assembly instructons, it's now handled by a utility added under resources/utilities/grub-assemble</li>
-				<li>Moved resources/grub/keymap to resources/utilities/grub-assemble/keymap, and updated that utility to use it</li>
-				<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
-				<li>Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory</li>
-				<li>'buildrom-withgrub' script: updated it to create 2 sets of ROM's for each machine: one with text-mode, one with coreboot framebuffer.</li>
-				<li>Documentation: updated ../docs/index.html#rom to reflect the above</li>
-				<li>Deleted unused README and COPYING file from main directory</li>
-				<li>Removed some rm -rf .git* instructions from the get* scripts and moved them to build-release script</li>
-				<li>
-					Split up default grub.cfg into 6 parts: extra/{common.cfg,txtmode.cfg,vesafb.cfg} and menuentries/{common.cfg,txtmode.cfg,vesafb.cfg}
-					<ul>
-						<li>buildrom-withgrub script uses these to generate the correct grub.cfg for each type of configuration.</li>
-					</ul>
-				</li>
-				<li>grub_memdisk.cfg (used inside grub.elf) now only loads grub.cfg from cbfs. It no longer enables serial output or sets prefix. (menuentries/common.cfg does instead)</li> 
-				<li>
-					resources/grub/config/extra/common.cfg, added:
-					<ul>
-						<li>insmod instructions to load those modules: nativedisk, ehci, ohci, uhci, usb, usbserial_pl2303, usbserial_ftdi, usbserial_usbdebug</li>
-						<li>set prefix=(memdisk)/boot/grub</li>
-						<li>
-							For native graphics (recommended by coreboot wiki):<br/>
-							gfxpayload=keep<br/>
-							terminal_output --append gfxterm
-						</li>
-						<li>
-							Play a beep on startup:<br/>
-							play 480 440 1
-						</li>
-					</ul>
-				</li>
-				<li>
-					Documentation: added note about 'fb=false' workaround for text-mode debian-installer (Trisquel net install) to 
-					../docs/howtos/grub_boot_installer.html
-				</li>
-				<li>
-					Documentation: updated ../docs/howtos/grub_cbfs.html to make it safer (and easier) to follow.
-				</li>
-			</ul>
-
-		<h2>
-			Revisions for 7th beta (2014 September 11th)
-		</h2>
-			<ul>
-				<li>The changes below were made in a git repository, unlike in previous releases. Descriptions below are copied from 'git log'.</li>
-				<li>Update .gitignore for new dependencies.</li>
-				<li>Use a submodule for i945-pwm.</li>
-				<li>Don't clean packages that fail or don't need cleaning.</li>
-				<li>Don't clean i945-pwm, it's not needed.</li>
-				<li>Regression fix: Parabola live ISO boot issues</li>
-				<li>Re-enable background images in ISOLINUX/SYSLINUX GRUB parser menus</li>
-				<li>Regression fix: Re-add CD-ROM (ata0) in GRUB</li>
-				<li>Documentation: add notes about performance penalty when using ecryptfs.</li>
-				<li>Documentation: Fixed spelling and grammatical errors.</li>
-				<li>Documentation: macbook21: add new machine as tested</li>
-    			<li>Documentation: macbook21: add info about improving touchpad sensitivity</li>
-				<li>Documentation: X60 Tablet: add more information about finger input</li>
-				<li>Documentation: release.html: Add information about recently merged commit in coreboot</li>
-			</ul>
 
 		<div class="important">
 
@@ -661,8 +665,6 @@
 					<li>
 						Keep an eye on these commits for next rebase:
 						<ul>
-							<li><a href="http://review.coreboot.org/#/c/6792/">http://review.coreboot.org/#/c/6792/</a></li>
-							<li><a href="http://review.coreboot.org/#/c/6813/">http://review.coreboot.org/#/c/6813/</a></li>
 							<li><a href="http://review.coreboot.org/#/c/6804/">http://review.coreboot.org/#/c/6804/</a></li>
 						</ul>
 					</li>
@@ -793,6 +795,9 @@
 						<b><u><i>TODO:</i></u></b> Implement VBT on X60/T60/X60T (and macbook21?) 
 						(see <a href="../docs/future/index.html#i945_vbt">../docs/future/index.html#i945_vbt</a> and 
 						<a href="../docs/future/index.html#intelvbttool_results">../docs/future/index.html#intelvbttool_results</a>) and <b>submit changes upstream</b>.
+					</li>
+					<li>
+						Implement INT 10H support in i945 native graphics.
 					</li>
 					<li><b><u><i>TODO:</i></u></b> Re-tooled linux-libre deblob scripts for use with coreboot. <b>Deblobbing is already complete; completion of this additional task will simply make future deblobbing work easier.</b></li>
 					<li><b>Alternatively, host actual libreboot deblobbed git tree. pehjota writes: If you want to permanently rewrite the Git history, see the "git filter-branch" command.  Of course all commit IDs change with that, so it may not be ideal for you.  But it can give you the full Git history, with no blobs anywhere (not even recoverable with "git reset" or "git checkout").</b></li>
