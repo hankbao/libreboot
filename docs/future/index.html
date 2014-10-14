@@ -35,16 +35,12 @@
 
 	<h2>Contents</h2>
 	<ul>
-		<li><a href="#todo">TODO list</a></li>
 		<li><a href="#standard_test">Standard test</a></li>
 		<li><a href="#t60_cpu_microcode">T60 cpu microcode</a></li>
-		<li><a href="#fastboot">Fast boot</a></li>
+		<li><a href="#i945_vram_size">i945 VRAM size</a></li>
 		<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
-		<li><a href="#blind_x60">Blind X60 - kernel git bisect</a></li>
 		<li><a href="#i945_vbt">i945 X60/T60 VBT implementation (experimental: testing)</a></li>
 		<li><a href="#intelvbttool_results">IntelVbtTool results</a></li>
-		<li><a href="#cpu_cstates_buzzing">CPU c-states (X60/T60) buzzing sound on CPU idle</a></li>
-		<li><a href="#battery_eventc">Battery 'event c' on X60 (and T60?)</a></li>
 	</ul>
 
 <hr/>
@@ -99,88 +95,36 @@
 
 <hr/>
 
-	<h1 id="fastboot">Fast boot</h1>
+	<h1 id="i945_vram_size">i945 VRAM size</h1>
 
 		<p>
-			Based on information supplied by Charles Devereaux. Look into this. The following are the files 
-			that he gave me, and what he said:
+			Apparently, only 8MB VRAM is available on i945 GPU's (though it could do 64MB):<br/>
+			phcoder: No. Hardware default is 8 MiB. When I wanted to make it configurable, I saw that docs mention only one other alternative: 1MiB. Later isn't event enough for 1024x768 at 24bpp without any acceleration or double buffering. It's possible there are undocumented values. Which options do you have in vendor BIOS?
+			How to find out how much vram you have:<br/>
+			phcoder: TOM - BSM<br/>
+			phcoder: check what vendor BIOS offers as options<br/>
+			fchmmr: I thought it could do 64MB usually<br/>
+			phcoder: not accorging to doc.<br/>
+			phcoder: see mobile-945-express-chipset-datasheet page 93<br/>
+			phcoder: see also src/northbridge/intel/i945/{early_init,northbridge,gma}.c<br/>
+			fchmmr: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for<br/>
+			fchmmr: frame buffer."<br/>
+			fchmmr: "Others - reserved"<br/>
+			phcoder: the easiest way is a loop at this position which tries different values and reads (and prints) BSM with them<br/>
+			stefanct: fchmmr: he suggest that you change the value and look how BSM reacts to that<br/>
+			stefanct: as he pointed out earlier vram size = TOM - BSM<br/>
+			stefanct: different values of GMS<br/>
+			stefanct: phcoder: hm... this could be a hint. look at the text description of TOLUD at page 103<br/>
+			stefanct: it mentions 64 MB in the text about BSM as well<br/>
+			stefanct: table 18...<br/>
+			phcoder: stefanct: I have a guess which value make is 64 but I will not tell to avoid skewing test results<br/>
+			stefanct: phcoder: sure... i assumed you were not sure if it supports it at all. testing it properly is of course a good idea :)<br/>
+			stefanct: test the various possible (but reserved) values of GMS and see what the resulting VRAM size is<br/>
+			fchmmr: so, TOM - BSM
 		</p>
-
-		<ul>
-			<li><a href="fastboot/x60.config">x60.config</a></li>
-			<li><a href="fastboot/get-systemd.sh">get-systemd.sh</a></li>
-			<li><a href="fastboot/grub.cfg.memdisk">grub.cfg.memdisk</a></li>
-			<li><a href="fastboot/grub.cfg">grub.cfg</a></li>
-		</ul>
-
 		<p>
-			failsafes to allow people to experiment with few risks.The memdisk tries to load a grub.cfg from each partition,
-			failing that from the CBFS, and failing that prepares the serial port and
-			shows a simple menu reminding the user that this is the memdisk (beeps are
-			also played) and some simple options (ex: call directly a linux kernel).
+			<a href="#pagetop">Back to top of page.</a>
 		</p>
-
-		<p>
-			The grub.cfg from the CBFS tries to load a working grub.cfg from a
-			thumbdrive, and failing that shows a menu offering to boot on seabios (for
-			CD boot)
-		</p>
-
-		<p>
-			This makes it possible to say remove the HD and still have a booting
-			machine (using a thumbdrive) - which may be an interesting option to offer
-			to your users (a "rescue/reinstall" thumbdrive, or a simple failsafe in
-			case the user wants to reinstall from a CD into a brand new HD)
-		</p>
-
-		<p>
-			It's also hacker friendly:
-		</p>
-		<ul>
-			<li>
-				the memdisk acts as a failsave in case the flash has had its grub.cfg removed or damanged
-			</li>
-			<li>
-				the flash grub.cfg is a failsafe in case the HD grub.cfg was damaged or removed
-			</li>
-		</ul>
-
-		<p>
-			Just some simple if logic, but it does the job.
-		</p>
-
-		<p>
-			Besides that, if you want to experiment with fast booting, my systemd
-			configure script follows. Just boot your kernel with
-			init=/lib/systemd/systemd. You also need to add at the botton of the
-			resulting /lib/udev/rules.d/99-systemd.rules the following to make network
-			configuration automatic:<br/>
-			<b>
-				SUBSYSTEM=="net", KERNEL!="lo", TAG+="systemd",<br/>
-				ENV{SYSTEMD_ALIAS}+="/sys/subsystem/net/devices/$name"<br/>
-				ENV{SYSTEMD_WANTS}="ifup@%k.service"
-			</b>
-		</p>
-
-		<p>
-			It will put the systemd stuff in /lib/systemd instead of /usr/lib/systemd
-			(on debian), allowing a peacefull coexistence, and won't use any of the old
-			/etc/init.d stuff (major cause of slowdown).
-		</p>
-
-		<p>
-			This is the exact systemd configuration I used to get a system up in 0.6s
-			as reported on the mailing list.
-		</p>
-	
-		<p>	
-			Further optimizations of the boot-time requires to optimize the kernel
-			configuration even more. Here is my current .config (everything is
-			built-in, slowly removing modules (ex: yenta, firewire) one by one to see
-			where I can gain speed.
-		</p>
-
-		<p><a href="#pagetop">Back to top of page.</a></p>
 
 <hr/>
 
@@ -226,64 +170,43 @@
 			written by Michał Masłowski.
 		</p>
 
+		<p>
+			About fixing remaining LCD panels on 5345:<br/>
+			'polarity' is mentioned in coreboot log (cbmem -c). compare output (with working and non-working panel). (and see the other notes in docs/future/index.html)<br/>
+			phcoder says: hint for T60: it might be that failing panels are 8bpc<br/>
+			fchmmr: what does 8bpc mean? And what do you think the other (non-failing) panel are?<br/>
+			phcoder: 6bpc. bits per colour. May also be reffered as 18-bit vs 24-bit panels<br/>
+			phcoder: just collect EDIDs from failing and working panels<br/>
+			<b>phcoder gave me this for collecting EDID data: 
+			<a href="http://www.o2genum.com/2013/08/lp156wh2-tlaa-lcd-panel-edid.html">http://www.o2genum.com/2013/08/lp156wh2-tlaa-lcd-panel-edid.html</a></b>
+		</p>
+
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
 <hr/>
 
-	<h1 id="blind_x60">Blind X60 - kernel git bisect</h1>
-		<p>
-			Older kernels could init GPU on an X60 without a vbios or native graphics. 
-			I have to do a git bisect to find out when that was broken.
-		</p>
-
-		<ul>
-			<li>See <a href="https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=613979#102">https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=613979#102</a></li>
-			<li><b>git help bisect</b> has an example of how to bisect</li>
-			<li>See <a href="http://git-scm.com/book/en/Git-Tools-Debugging-with-Git#Binary-Search">http://git-scm.com/book/en/Git-Tools-Debugging-with-Git#Binary-Search</a></li>
-			<li>
-				I have ccache. Read on how to compile kernel using ccache instead of regular gcc. (speeds up compiling). How I installed it:
-				<ul>
-					<li>sudo apt-get install ccache</li>
-					<li>echo 'export PATH="/usr/lib/ccache:$PATH"' | tee -a ~/.bashrc \ && source ~/.bashrc && echo $PATH</li>
-				</ul>
-			</li>
-		</ul>
-
-		<p>
-			Note: &quot;memory_corruption_check=0 i915.lvds_channel_mode=2&quot; kernel parameters were once used
-			successfully for linux-libre 3.10 on a ThinkPad T60 (distribution: Parabola) to get graphics working.
-		</p>
-
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
 	<h1 id="i945_vbt">i945 gfx: X60/T60 VBT implementation (experimental: testing)</h1>
+
 		<p>
-			intel_bios_dumper (use man) in intel-gpu-tools seems interesting.
+			intel_bios_dumper in intel-gpu-tools seems interesting.
 		</p>
 		<p>
-			<b>Use 'drm.debug=0x06' kernel parameter when booting in grub! Make sure to use kernel 3.14.4 as before (or any recent kernel).</b>
+			<b>Use 'drm.debug=0x06' kernel parameter when booting in grub!</b>
 		</p>
 		<p>
 			Before each test run, boot a live USB and delete the old logs in /var/log (kernel log, xorg log, dmesg and so on).
 		</p>
 		<p>
-			Use latest 5927/5320/5345 on X60/T60 (with GTT/3D/kernel3.12 fix) with native graphics initialization.
-			Load (from the ROM) the runningvga.bin for each LCD panel on each machine; do not execute it, only load it!
+			Load (from the ROM) the runningvga.bin for each LCD panel on each machine; do not execute it, only load it! (coreboot will have to be modified).
 			Rename the ROM appropriately, based on the machine name and the panel name. coreboot_nativegfx_5868_plusrunningvga_t60_14_LTD141ECMB.rom,
 			for instance. Keep a copy for later use.
 		</p>
 
-		<p>It is (theoretically) supposed to:</p>
-		<ul>
-			<li>Enable kernel to see VBT tables so that it can see the panel. (theoretically this will make T60 15&quot; XGA/1024x768 work)</li>
-		</ul>
 		<p>You are supposed to:</p>
-		<ul>
-			<li>enable native graphics in menuconfig</li>
-			<li>include the self-modified VGA ROM (load, but not execute) - for reverse engineering the correct VBT tables.</li>
-		</ul>
+			<ul>
+				<li>enable native graphics in menuconfig</li>
+				<li>include the self-modified VGA ROM (load, but not execute) - for reverse engineering the correct VBT tables.</li>
+			</ul>
 
 		<p>
 			With each boot, make notes about what you see and get logs using the <a href="#standard_test">standard test</a>.
@@ -291,78 +214,78 @@
 		</p>
 
 		Results (# means untested):
-		<ul>
-			<li>
-				<b>X60/X60s:</b>
-				<ul>
-					<li>TMD-Toshiba LTD121ECHB: #</li>
-					<li>CMO N121X5-L06: #</li>
-					<li>Samsung LTN121XJ-L07: #</li>
-					<li>BOE-Hydis HT121X01-101: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>X60T XGA:</b>
-				<ul>
-					<li>BOE-Hydis HV121X03-100: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>X60T SXGA+:</b>
-				<ul>
-					<li>BOE-Hydis HV121P01-100: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>T60 14&quot; XGA:</b>
-				<ul>
-					<li>Samsung LTN141XA-L01: #</li>
-					<li>CMO N141XC: #</li>
-					<li>BOE-Hydis HT14X14: #</li>
-					<li>TMD-Toshiba LTD141ECMB: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>T60 14&quot; SXGA+</b>
-				<ul>
-					<li>TMD-Toshiba LTD141EN9B: #</li>
-					<li>Samsung LTN141P4-L02: #</li>
-					<li>Boe-Hydis HT14P12: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>T60 15&quot; XGA</b>
-				<ul>
-					<li>Samsung LTN150XG-L08: #</li>
-					<li>LG-Philips LP150X09: #</li>
-					<li>13N7068 (IDtech): #</li>
-					<li>13N7069 (CMO): #</li>
+			<ul>
+				<li>
+					<b>X60/X60s:</b>
+					<ul>
+						<li>TMD-Toshiba LTD121ECHB: #</li>
+						<li>CMO N121X5-L06: #</li>
+						<li>Samsung LTN121XJ-L07: #</li>
+						<li>BOE-Hydis HT121X01-101: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>X60T XGA:</b>
+					<ul>
+						<li>BOE-Hydis HV121X03-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>X60T SXGA+:</b>
+					<ul>
+						<li>BOE-Hydis HV121P01-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 14&quot; XGA:</b>
+					<ul>
+						<li>Samsung LTN141XA-L01: #</li>
+						<li>CMO N141XC: #</li>
+						<li>BOE-Hydis HT14X14: #</li>
+						<li>TMD-Toshiba LTD141ECMB: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 14&quot; SXGA+</b>
+					<ul>
+						<li>TMD-Toshiba LTD141EN9B: #</li>
+						<li>Samsung LTN141P4-L02: #</li>
+						<li>Boe-Hydis HT14P12: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; XGA</b>
+					<ul>
+						<li>Samsung LTN150XG-L08: #</li>
+						<li>LG-Philips LP150X09: #</li>
+						<li>13N7068 (IDtech): #</li>
+						<li>13N7069 (CMO): #</li>
 					
-				</ul>
-			</li>
-			<li>
-				<b>T60 15&quot; SXGA+</b>
-				<ul>
-					<li>LG-Philips LP150E05-A2K1: #</li>
-					<li>BOE-Hydis HV150P01-100: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>T60 15&quot; UXGA</b>
-				<ul>
-					<li>BOE-Hydis HV150UX1-100: #</li>
-					<li>IDTech  N150U3-L01: #</li>
-					<li>BOE-Hydis  HV150UX1-102: #</li>
-				</ul>
-			</li>
-			<li>
-				<b>T50 15&quot; QXGA</b>
-				<ul>
-					<li>IDtech IAQX10N: #</li>
-					<li>IDtech IAQX10S: #</li>
-				</ul>
-			</li>
-		</ul>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; SXGA+</b>
+					<ul>
+						<li>LG-Philips LP150E05-A2K1: #</li>
+						<li>BOE-Hydis HV150P01-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; UXGA</b>
+					<ul>
+						<li>BOE-Hydis HV150UX1-100: #</li>
+						<li>IDTech  N150U3-L01: #</li>
+						<li>BOE-Hydis  HV150UX1-102: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T50 15&quot; QXGA</b>
+					<ul>
+						<li>IDtech IAQX10N: #</li>
+						<li>IDtech IAQX10S: #</li>
+					</ul>
+				</li>
+			</ul>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
 
@@ -382,11 +305,6 @@
 		<p>
 			Here is an example of how VBT was implemented on the ThinkPad X230:
 			<a href="http://review.coreboot.org/#/c/5396" target="_blank">http://review.coreboot.org/#/c/5396</a>.
-		</p>
-
-		<p>
-			Use this kernel: 
-			<a href="http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_2_i386.deb">http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_2_i386.deb</a>
 		</p>
 
 		<p>
@@ -488,95 +406,6 @@
 		</ul>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
-
-<hr/>
-
-	<h1 id="cpu_cstates_buzzing">Buzzing / static noise when not using idle=halt or processor.max_cstate=2 in GRUB</h1>
-
-		<p>
-			When idle, the X60 and T60 make a high pitched whining sound. With a recorder, find out where it originates from.
-			'processor.max_cstate=2' or 'idle=halt' kernel parameters can be used in GRUB to remove it. 
-			Alternatively (and for better battery life), another method is to use 'powertop' (see docs/index.html in libreboot release
-			archives).
-		</p>
-
-		<p>
-			funfunctor in IRC says: <i>&quot;sounds like the gain is set to high, AGC of a ADC is not setup correctl probably&quot;</i>.
-		</p>
-		<p>
-			damo22 in IRC says: <i>&quot;damo22: it seems like the T60 (happens on X60 aswell) does not 
-			support certain cpu C-states but is being forced to use them and this causes a noise. i believe it's because 
-			it doesnt let the cpu go into low power state.&quot;</i>.
-		</p>
-		<p>
-			CareBear\ in IRC says: <i>&quot;it has to do with the CPU and chipset switching power states differently with coreboot than with the factory BIOS and as a result the power supply circuitry on the mainboard emits that noise. the whine is quite clearly directly related to the CPU switching between power states
-			&quot;</i>
-		</p>
-
-		<p>
-			Another comment (mailing list):<br/>
-			If this noise doesn't occur with
-			the vendor firmware, has anybody checked if coreboot uses the same
-			power management timing settings? (e.g. C4-TIMING_CNT, see [1], there
-			might be more such settings not mentioned in the public datasheet) <br/>
-			<b>[1] Intel I/O Controller Hub 7 (ICH7) Family Datasheet Document Number: 307013-003 </b>
-		</p>
-
-		<p>
-			
-		</p>
-
-		<p><a href="#pagetop">Back to top of page.</a></p>
-
-<hr/>
-
-	<h1 id="battery_eventc">Battery 'event c' on X60 (and T60?)</h1>
-	<p>
-		Look into this later. This isn't necessarily a bug, just a part of the code which someone noticed that seems odd.
-	</p>
-	<p>
-		funfuctor: fchmmr: what is 'eventc' exactly in the devicetree of your board? Is that meant to be programed sequentially somehow?<br/>
-		fchmmr:  looks like something with EC<br/>
-		fchmmr:  src/ec/lenovo/h8/chip.h: u8 eventc_enable;<br/>
-		fchmmr:  src/ec/lenovo/h8/h8.c: ec_write(0x1c, conf->eventc_enable);<br/>
-		funfuctor: fchmmr: yes, better ask phcoder-screen why eventc is defined twice<br/>
-		funfuctor: and which value is correct<br/>
-		fchmmr:  looks like 0x3c is incorrect<br/>
-		fchmmr:  just a guess<br/>
-		fchmmr:  in devicetree.cb it goes event2 then 3 4 5 6 7 c 8 9 then a b c d<br/>
-		fchmmr:  but i don't know what 'event c' is<br/>
-		funfuctor: fchmmr: interesting, well in that case you could prob figure it out yourself..<br/>
-		funfuctor: fchmmr: the order should not matter. basically devicetree is syntax for fill in a C struct<br/>
-		funfuctor: fchmmr: look closely at build/mainboard/lenovo/t60/static.c<br/>
-		fchmmr:  funfunctor: it was sven schnelle who wrote that (I used 'git blame')<br/>
-		fchmmr:  I think &quot;eventc&quot; has something to do with battery<br/>
-		fchmmr:  commit 95ebe66f7f5fef64d363cb48e5a441ad505353d1<br/>
-		fchmmr:  Author: Sven Schnelle &lt;svens@stackframe.org&gt;<br/>
-		fchmmr:  Date:   Thu Apr 28 09:29:06 2011 +0000<br/>
-		fchmmr:  that's the commit that added those lines.<br/>
-		fchmmr:  funfunctor:<br/>
-		fchmmr:                  &quot;&quot;                      // C: OEM information<br/>
-		fchmmr:  src/ec/lenovo/h8/acpi/battery.asl<br/>
-		funfuctor: fchmmr: i'll leave you with the issue of fixing the devicetree duplicate value<br/>
-		funfuctor: fchmmr: you need to read the datasheet to figure out what register 0x3C is<br/>
-		funfuctor: sorry *0x1C rather<br/>
-		funfuctor:  grep eventc src/ec/lenovo/h8/h8.c<br/>
-		funfuctor:  ec_write(0x1c, conf->eventc_enable);<br/>
-		Also look in src/ec/lenovo/h8/h8.c and src/ec/lenovo/h8/chip.h and src/mainboard/lenovo/x60/devicetree.cb<br/>
-		Do a 'git blame' and a 'git log path/to/file' etc. ask sven, even.
-	</p>
-	<p><a href="#pagetop">Back to top of page.</a></p>
-
-<hr/>
-
-	<h1 id="unlisted">Unlisted Notes</h1>
-	<p>
-		funfunctor: shadow compiling means you run both compilers (context: GCC and Clang/LLVM) at the same time. If one compiler misses a problem the other compiler hopefully finds it<br/>
-		funfunctor: fchmmr: blow your mind (compiler security and reprodicible builds) - http://scienceblogs.com/goodmath/2007/04/15/strange-loops-dennis-ritchie-a/
-	</p>
-	<p>
-		<a href="#pagetop">Back to top of page.</a>
-	</p>
 
 <hr/>
 
