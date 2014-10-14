@@ -39,17 +39,7 @@ cd grub
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
-# Commit ID used (see "git log"):
-#
-# commit 4b8b9135f1676924a8458da528d264bbc7bbb301
-# Author: Vladimir Serbinenko <phcoder@gmail.com>
-# Date:   Sun Apr 20 16:12:41 2014 +0200
-#
-#        * grub-core/kern/misc.c (__bzero): Don't compile in GRUB_UTIL.
-#    
-#        Reported by: Yves Blusseau <blusseau@zetam.org>.
-
-git reset --hard 4b8b9135f1676924a8458da528d264bbc7bbb301
+git reset --hard 77063f4cb672f423272db7e21ca448cf3de98dcf
 
 # Apply patches
 # --------------------------------------------------------------------------------
@@ -58,17 +48,9 @@ git reset --hard 4b8b9135f1676924a8458da528d264bbc7bbb301
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 
 # copy it from resources
-cp ../resources/grub/patch/gitdiff .
+git apply ../resources/grub/patch/gitdiff
 
-# apply it
-git apply gitdiff
-
-# remove the copy (no longer needed)
-rm -rf gitdiff
-
-# we're done
 cd ../
-
 echo "FINISHED DOWNLOADING GRUB"
 
 # ------------------- DONE ----------------------
