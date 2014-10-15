@@ -42,7 +42,7 @@ git clone http://review.coreboot.org/coreboot
 cd coreboot
 
 # reset to previously tested revision
-git reset --hard 9310df8d0351842e7bb9efe3cabc0ff82ec99c53
+git reset --hard 8ffc085e1affaabbe3dca8ac6a89346b71dfc02e
 
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
