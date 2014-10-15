@@ -39,7 +39,7 @@ cd grub
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
-git reset --hard 77063f4cb672f423272db7e21ca448cf3de98dcf
+git reset --hard 9a67e1ac8e92cd0b7521c75a734fcaf2e58523ad
 
 # Apply patches
 # --------------------------------------------------------------------------------
