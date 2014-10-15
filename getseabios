@@ -38,13 +38,7 @@ cd seabios
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
-#
-# commit 275672eb70efdf81c51b997d41a4409b404aa8f6
-# Author: Markus Armbruster <armbru@redhat.com>
-# Date:   Fri Aug 15 08:58:17 2014 +0200
-#
-
-git reset --hard 275672eb70efdf81c51b997d41a4409b404aa8f6
+git reset --hard 67d1fbef0f630e1e823f137d1bae7fa5790bcf4e
 
 # Apply patches
 # --------------------------------------------------------------------------------
