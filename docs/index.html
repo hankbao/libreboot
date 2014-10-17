@@ -1127,18 +1127,8 @@ EndSection
 			factory.bin: 2 hours left on idle (99% battery), 48mins left on stress (82% battery)
 		</p>
 		<p>
-			mtjm:  see what Macbook's vendor boot firmware has in its ACPI tables?<br/>
-			fchmmr: if this works, I'll add the patch to libreboot proper, and udpate the build scripts to use it (also, I should submit the change upstream)<br/>
-			fchmmr: mtjm, how do I do that?<br/>
-			mtjm:  (I don't know if these values are generic or specific to something)<br/>
-			mtjm:  fchmmr: get them, decompile, read, use the spec to understand what _CST does; acpidump and iasl help<br/>
-			so, acpidump and then iasl -d ?<br/>
-			http://smackerelofopinion.blogspot.co.uk/2009/10/dumping-acpi-tables-using-acpidump-and.html
-			cstate entries should be is SSDT.dat. so use iasl -d on it
-		</p>
-		<p>
-			The following patch was made (copied from x60 mainboard.c): <a href="future/donotusethis_macbook_acpi.diff">do not use this</a><br/>
-			(resulted in bricked macbook21: grub booted, but kernel would get stuck while booting (flashing text). wasn't sure how to debug)
+			Todo: see what the non-free firmware has in it's ACPI tables using acpidump and iasl -d. Try to implement cstate support in coreboot
+			(this will allow for lower temperatures).
 		</p>
 
 		<p>
