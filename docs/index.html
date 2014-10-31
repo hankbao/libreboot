@@ -1736,6 +1736,13 @@ WantedBy=multi-user.target
 			Or look in <b>/sys/class/drm/card0-LVDS-1/edid</b>
 		</p>
 		<p>
+			Alternatively you can use i2cdump. In Trisquel, this is in the package i2c-tools.<br/>
+			$ <b>sudo modprobe i2c-dev</b><br/>
+			$ <b>sudo i2cdump -y 5 0x50</b><br/>
+			$ <b>sudo rmmod i2c-dev</b><br/>
+			You'll see the panel name in the output (from the EDID dump). 
+		</p>
+		<p>
 			If neither of these options work (or they are unavailable), physically removing the LCD panel is an option. 
 			Usually, there will be information printed on the back.
 		</p>
