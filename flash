@@ -36,5 +36,5 @@ fi
 # and the old ones are "ThinkPad X60 / X60s" and flashrom complains otherwise
 
 echo "MAKE SURE THAT YOU SEE 'VERIFIED' AT THE END (YOU WANT TO SEE THAT. MEANS IT WORKED)."
-./flashrom/flashrom -p internal:boardmismatch=force -w $1
+./flashrom/flashrom -p internal -w $1
 echo "MAKE SURE THAT YOU SEE 'VERIFIED' WRITTEN ABOVE (YOU WANT TO SEE THAT. MEANS IT WORKED)."
