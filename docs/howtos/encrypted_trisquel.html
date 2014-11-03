@@ -180,7 +180,7 @@
 			Do that:<br/>
 			grub&gt; <b>cryptomount -a (ahci0,msdos1)</b><br/>
 			grub&gt; <b>set root='lvm/buzz-distro'</b><br/>
-			grub&gt; <b>linux /vmlinuz root=/dev/mapper/buzz-distro cryptdevice=/dev/mapper/buzz-distro:root quiet splash ro</b><br/>
+			grub&gt; <b>linux /vmlinuz root=/dev/mapper/buzz-distro cryptdevice=/dev/mapper/buzz-distro:root</b><br/>
 			grub&gt; <b>initrd /initrd.img</b><br/>
 			grub&gt; <b>boot</b>
 		</p>
@@ -219,7 +219,7 @@
 		<p>
 			<b>cryptomount -a (ahci0,msdos1)</b><br/>
 			<b>set root='lvm/buzz-distro'</b><br/>
-			<b>linux /vmlinuz root=/dev/mapper/buzz-distro cryptdevice=/dev/mapper/buzz-distro:root quiet splash ro</b><br/>
+			<b>linux /vmlinuz root=/dev/mapper/buzz-distro cryptdevice=/dev/mapper/buzz-distro:root</b><br/>
 			<b>initrd /initrd.img</b>
 		</p>
 
