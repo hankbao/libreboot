@@ -26,236 +26,369 @@
 	</header>
 
 	<p>
-		Libreboot on X60/T60/macbook21 uses the GRUB2 payload, which means that the grub.cfg (which is where your GRUB menu comes from) is inside the ROM along with
-		GRUB itself, executed by libreboot directly in the SPI flash chip. In context, this means that installing distributions and managing them is handled slightly differently
-		compared to traditional BIOS systems.
+		Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
+		by default, which means that the GRUB configuration file 
+		(where your GRUB menu comes from) is stored directly alongside libreboot
+		and it's GRUB payload executable, executed by libreboot inside
+		the flash chip. In context, this means that installing distributions and managing them 
+		is handled slightly differently compared to traditional BIOS systems.
 	</p>
 
 	<p>
-		A libreboot (or coreboot) ROM is not simply &quot;flat&quot;; there is an actual filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
-		allows you to change the contents of the ROM. In this case, libreboot is configured such that the grub.cfg exists directly inside CBFS instead of 
-		inside the grub.elf payload's 'memdisk' (which is itself stored in CBFS).
+		A libreboot (or coreboot) ROM image is not simply &quot;flat&quot;; there is an actual 
+		filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
+		allows you to change the contents of the ROM image. In this case, libreboot is configured 
+		such that the 'grub.cfg' and 'grubtest.cfg' files exists directly inside CBFS instead of 
+		inside the GRUB payload's 'memdisk' (which is itself stored in CBFS).
 	</p>
 
 	<p>
-		Here is an excellent writeup about CBFS (coreboot filesystem): <a href="http://lennartb.home.xs4all.nl/coreboot/col5.html" target="_blank">http://lennartb.home.xs4all.nl/coreboot/col5.html</a>.
+		Here is an excellent writeup about CBFS (coreboot filesystem): 
+		<a href="http://lennartb.home.xs4all.nl/coreboot/col5.html" target="_blank">http://lennartb.home.xs4all.nl/coreboot/col5.html</a>.
 	</p>
 
 <hr/>
 
-	<p>
-	Download libreboot_src.tar.gz or libreboot_bin.tar.gz from <a href="http://libreboot.org/" target="_blank">http://libreboot.org/</a>
-	<br/><b>If you downloaded libreboot from git, refer to <a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
-	</p>
+	<h2>Table of Contents</h2>
 
-	<p>
-		First, <a href="../index.html#build_dependencies">install the build dependencies</a>.
-	</p>
+		<ul>
+			<li><a href="#getting_started">Getting started</a></li>
+			<li><a href="#build_cbfstool">Build 'cbfstool' from source</a></li>
+			<li><a href="#which_rom">Which ROM image should I use?</a></li>
+			<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
+			<li>
+				<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
+				<ul>
+					<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
+					<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
+				</lu>
+			</ul>
+			<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
+			<li><a href="#test_it">Test it!</a>
+			<li><a href="#final_steps">Final steps</a></li>
+			<li><a href="#troubleshooting">Troubleshooting</a></li>
+		</ul>
 
-	<p>
-		If you are working with libreboot_src, then you can run <b><i>make</i></b> command in libreboot_src/coreboot/util/cbfstool to build the <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
-		executable.
-	</p>
-	<p>
-		Alternatively if you are working with libreboot_bin, then you can run <b><i>./builddeps-cbfstool</i></b> command inside libreboot_bin/; a <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
-		executable will appear under libreboot_bin/
-	</p>
+<hr/>
 
-	<p>
-		You can work directly with one of the ROM's already included in libreboot_bin.tar.gz. For the purpose of this tutorial it is assumed
-		that your ROM is named 'libreboot_usqwerty.rom' so please make sure to adapt.
-	</p>
+	<h2 id="getting_started">Getting started</h2>
 
-	<p>
-		If you want to re-use the ROM that you currently have flashed (and running) then see <a href="../index.html#build_flashrom">../index.html#build_flashrom</a>
-		and then run:<br/>
-		<b>$ sudo ./flashrom -p internal -r libreboot_usqwerty.rom</b><br/>
-		Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). This will create a dump (copy) of your current firmware and name it <b>libreboot_usqwerty.rom</b>. You need to take ownership of the file. For example:<br/>
-		<b>$ sudo chown yourusername:yourusername libreboot_usqwerty.rom</b><br/>
-		<b># chown yourusername:yourusername libreboot_usqwerty.rom</b>
-	</p>
+		<p>
+			Download the latest release from 
+			<a href="http://libreboot.org/" target="_blank">http://libreboot.org/</a>
+			<br/><b>If you downloaded from git, refer to 
+			<a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
+		</p>
 
-	<p>
-		If you currently have flashed a ROM image from an older version, it is recommended to update first: basically, modify one of the latest ROM's
-		and then flash it.
-	</p>
+		<p>
+			<a href="../index.html#build_dependencies">Install the build dependencies</a>.
+		</p>
 
-	<p>
-		Display contents of ROM:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
-	</p>
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
 
-	<p>
-		The libreboot_usqwerty.rom file contains your grub.cfg, along with a copy called grubtest.cfg. 
-		You should extract, modify and re-insert the copy first. grub.cfg will load first, but it has a menu entry for switching to the copy (grubtest.cfg).
-		This reduces your chance of making a mistake that could make your machine unbootable (or very hard to boot).
-	</p>
+<hr/>
 
-	<p>
-		Extract grub.cfg from the ROM:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom extract -n grubtest.cfg -f grubtest.cfg</b>
-	</p>
+	<h2 id="build_cbfstool">Build 'cbfstool' from source</h2>
 
-	<p>
-		Now you have a grubtest.cfg in cbfstool directory. Edit it however you wish.
-	</p>
+		<p>
+			If you are working with libreboot_src, then you can run <b><i>make</i></b> command in 
+			libreboot_src/coreboot/util/cbfstool to build the <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
+			executable.
+		</p>
+		<p>
+			Alternatively if you are working with libreboot_bin, then you can run <b><i>./builddeps-cbfstool</i></b>
+			command inside libreboot_bin/; a <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
+			executable will appear under libreboot_bin/
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
+
+	<h2 id="which_rom">Which ROM image should I use?</h2>
+
+		<p>
+			You can work directly with one of the ROM's already included in libreboot_bin.tar.gz. For the purpose of 
+			this tutorial it is assumed that your ROM is named 'libreboot.rom' so please make sure to adapt.
+		</p>
+
+		<p>
+			If you want to re-use the ROM that you currently have flashed (and running) then see 
+			<a href="../index.html#build_flashrom">../index.html#build_flashrom</a>
+			and then run:<br/>
+			<b>$ sudo ./flashrom -p internal -r libreboot.rom</b><br/>
+			Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). 
+			This will create a dump (copy) of your current firmware and name it <b>libreboot.rom</b>. 
+			You need to take ownership of the file. For example:<br/>
+			<b>$ sudo chown yourusername:yourusername libreboot.rom</b><br/>
+			<b># chown yourusername:yourusername libreboot.rom</b>
+		</p>
+
+		<p>
+			If you currently have flashed a ROM image from an older version, it is recommended to update first: 
+			basically, modify one of the latest ROM's and then flash it.
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
+
+	<h2 id="extract_grubtest">Extract grubtest.cfg from the ROM image</h2>
+
+		<p>
+			Display contents of ROM:<br/>
+			<b>$ ./cbfstool libreboot.rom print</b>
+		</p>
+
+		<p>
+			The libreboot.rom file contains your <i>grub.cfg</i> and <i>grubtest.cfg</i> files. 
+			You should extract, modify and re-insert the copy first. grub.cfg will load first, 
+			but it has a menu entry for switching to the copy (grubtest.cfg).
+			This reduces your chance of making a mistake that could make your machine unbootable (or very hard to boot).
+		</p>
+
+		<p>
+			Extract grubtest.cfg from the ROM image:<br/>
+			<b>$ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg</b>
+		</p>
+
+		<p>
+			Now you have a grubtest.cfg in cbfstool directory. Edit it however you wish.
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
 
 	<div class="important">
 
-		<h2>Example modification (Trisquel GNU/Linux, can also be adapted, or copied, for other apt-get distros)</h2>
+		<h2 id="example_modifications">Example modifications for <i>grubtest.cfg</i></h2>
 
 			<p>
-				Look at the 3 lines under the menu entry 'Load Operating System'; these are all you need to change.
+				These are some common examples of ways in which the grubtest.cfg file can be modified.
 			</p>
 
-			<p>
-				As an example, on my test system in /boot/grub/grub.cfg I see for the main menu entry:
-				<b>linux	/boot/vmlinuz-3.15.1-gnu.nonpae root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro   crashkernel=384M-2G:64M,2G-:128M quiet splash $vt_handoff</b>
-				<b>initrd	/boot/initrd.img-3.15.1-gnu.nonpae</b>
-			</p>
+			<h3 id="example_modifications_trisquel">Trisquel GNU/Linux-libre</h3>
 
-			<p>
-				crashkernel=384M-2G:64M,2G-:128M and $vt_handoff can be safely ignored.
-			</p>
+				<p>
+					As an example, on my test system in /boot/grub/grub.cfg (on the HDD/SSD) I see for the main menu entry:
+				</p>
+				<ul>
+						<li><b>linux	/boot/vmlinuz-3.15.1-gnu.nonpae root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro   crashkernel=384M-2G:64M,2G-:128M quiet splash $vt_handoff</b></li>
+						<li><b>initrd	/boot/initrd.img-3.15.1-gnu.nonpae</b></li>
+				</ul>
 
-			<p>
-				I use this to get my partition layout:<br/>
-				$ <b>lsblk</b>
-			</p>
+				<p>
+					<b>ro</b>, <b>quiet</b>, <b>splash</b>, <b>crashkernel=384M-2G:64M,2G-:128M</b> and 
+					<b>$vt_handoff</b> can be safely ignored.
+				</p>
 
-			<p>
-				In my case, I have no /boot partition, instead /boot is on the same partition as / on sda1. Yours might be different.
-				In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending on whether I am using MBR or GPT partitioning.
-				Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or (ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
-				'msdos' is GRUB's name simply because this partitioning type is traditionally used by MS-DOS. It doesn't mean you have a 
-				proprietary OS.
-			</p>
+				<p>
+					I use this to get my partition layout:<br/>
+					$ <b>lsblk</b>
+				</p>
 
-			<p>
-				Trisquel doesn't keep the filenames of kernels consistent, instead it keeps old kernels and new kernel updates are provided
-				with the version in the filename. This can make GRUB payload a bit tricky. Fortunately, there are symlinks /vmlinuz and /initrd.img
-				so if your /boot and / are on the same partition, you can set GRUB to boot from that. These are also updated automatically when
-				installing kernel updates from your distributions apt-get repositories.
-				NOte: when using jxself.org/linux-libre kernels, these are not updated at all and you have to update them manually.
-			</p>
+				<p>
+					In my case, I have no /boot partition, instead /boot is on the same partition as / on sda1. 
+					Yours might be different. In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending 
+					on whether I am using MBR or GPT partitioning. Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or 
+					(ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
+					'msdos' is GRUB's name simply because this partitioning type is traditionally used by MS-DOS. 
+					It doesn't mean you have a proprietary OS.
+				</p>
 
-			<p>
-				For the GRUB payload's grub.cfg (in 'Load Operating System' menu entry), we therefore have (in this example):<br/>
-				<b>set root='ahci0,msdos1'</b><br/>
-				<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro quiet splash</b><br/>
-				<b>initrd /initrd.img</b>
-			</p>
+				<p>
+					Trisquel doesn't keep the filenames of kernels consistent, instead it keeps old kernels and 
+					new kernel updates are provided with the version in the filename. This can make GRUB payload 
+					a bit tricky. Fortunately, there are symlinks /vmlinuz and /initrd.img
+					so if your /boot and / are on the same partition, you can set GRUB to boot from that. 
+					These are also updated automatically when installing kernel updates from your distributions 
+					apt-get repositories.
+					<b>
+						Note: when using <a href="http://jxself.org/linux-libre">jxself kernel releases</a>, 
+						these are not updated at all and you have to update them manually.
+					</b>
+				</p>
 
-			<p>
-				Optionally, you can convert the UUID to it's real device name, for example /dev/sda1 in this case.
-				sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
-			</p>
+				<p>
+					For the GRUB payload's grubtest.cfg (in the 'Load Operating System' menu entry), we therefore have (in this example):<br/>
+					<b>set root='ahci0,msdos1'</b><br/>
+					<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951</b><br/>
+					<b>initrd /initrd.img</b>
+				</p>
 
-			<p>
-				Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
-				Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
-				$ <b>sudo -s</b><br/>
-				# <b>cd /boot/</b><br/>
-				# <b>rm -rf vmlinuz initrd.img</b><br/>
-				# <b>ln -s <u>kernel</u> ksym</b><br/>
-				# <b>ln -s <u>initrd</u> isym</b><br/>
-				# <b>exit</b>
-			</p>
+				<p>
+					Optionally, you can convert the UUID to it's real device name, for example /dev/sda1 in this case.
+					sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
+				</p>
 
-			<p>
-				Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
-			</p>
+				<p>
+					Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
+					Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
+					$ <b>sudo -s</b><br/>
+					# <b>cd /boot/</b><br/>
+					# <b>rm -rf vmlinuz initrd.img</b><br/>
+					# <b>ln -s <u>kernel</u> ksym</b><br/>
+					# <b>ln -s <u>initrd</u> isym</b><br/>
+					# <b>exit</b>
+				</p>
 
-			<p>
-				Then your grub.cfg menu entry (for payload) becomes like that, for example if / was on sda2 and /boot was on sda1:<br/>
-				<b>set root='ahci0,msdos1'</b><br/>
-				<b>linux /ksym root=/dev/sda2 ro quiet splash</b><br/>
-				<b>initrd /isym</b>
-			</p>
+				<p>
+					Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
+				</p>
 
-			<p>
-				There are lots of possible variations so please try to adapt.
-			</p>
+				<p>
+					Then your grubtest.cfg menu entry (for payload) becomes like that, for example if / was on sda2 and /boot was on sda1:<br/>
+					<b>set root='ahci0,msdos1'</b><br/>
+					<b>linux /ksym root=/dev/sda2</b><br/>
+					<b>initrd /isym</b>
+				</p>
 
-		<h2>Parabola GNU/Linux-libre</h2>
+				<p>
+					There are lots of possible variations so please try to adapt.
+				</p>
 
-			<p>
-				You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
-				are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
-			</p>
+			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h2>
+
+				<p>
+					You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
+					are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
+				</p>
 
 	</div>
 
 	<p>
-		Now you have your modified grub.cfg. (right?)
+		<a href="#pagetop">Back to top of page.</a>
 	</p>
 
-	<p>
-		Delete the grubtest.cfg that remained inside the ROM:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom remove -n grubtest.cfg</b>
-	</p>
+<hr/>
 
-	<p>
-		Display ROM contents and now you see grubtest.cfg no longer exists there:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
-	</p>
+	<h2 id="reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</h2>
 
-	<p>
-		Add the modified version that you just made:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom add -n grubtest.cfg -f grubtest.cfg -t raw</b>
-	</p>
+		<p>
+			Delete the grubtest.cfg that remained inside the ROM:<br/>
+			<b>$ ./cbfstool libreboot.rom remove -n grubtest.cfg</b>
+		</p>
 
-	<p>
-		Now display ROM contents again and see that it exists again:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
-	</p>
+		<p>
+			Display ROM contents and now you see grubtest.cfg no longer exists there:<br/>
+			<b>$ ./cbfstool libreboot.rom print</b>
+		</p>
 
-	<p>
-		Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
-		on how to flash it.
-	</p>
+		<p>
+			Add the modified version that you just made:<br/>
+			<b>$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw</b>
+		</p>
 
-	<p>
-		Choose (in GRUB) the menu entry that switches to grubtest.cfg. If it works, then your config is safe and you can continue below.
-	</p>
+		<p>
+			Now display ROM contents again and see that it exists again:<br/>
+			<b>$ ./cbfstool libreboot.rom print</b>
+		</p>
 
-	<p>
-		Rename (just reduce confusion):<br/>
-		$ <b>mv grubtest.cfg grub.cfg</b>
-	</p>
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
 
-	<p>
-		Delete the grub.cfg that remained inside the ROM:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom remove -n grub.cfg</b>
-	</p>
+<hr/>
 
-	<p>
-		Display ROM contents and now you see grub.cfg no longer exists there:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
-	</p>
+	<h2 id="test_it">Test it!</h2>
 
-	<p>
-		Add the modified version that you just made:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom add -n grub.cfg -f grub.cfg -t raw</b>
-	</p>
+		<p>
+			<b>
+				Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+				on how to flash it. Once you have done that, shut down and then boot up with your new test configuration.
+			</b>
+		</p>
 
-	<p>
-		Now display ROM contents again and see that it exists again:<br/>
-		<b>$ ./cbfstool libreboot_usqwerty.rom print</b>
-	</p>
+		<p>
+			Choose (in GRUB) the menu entry that switches to grubtest.cfg. If it works, then your config is safe and you can continue below.
+		</p>
 
-	<p>
-		Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
-		on how to flash it.
-	</p>
+		<p>
+			<b>
+				If it does not work like you want it to, if you are unsure or sceptical in any way, 
+				then re-do the steps above until you get it right! Do *not* proceed past this point
+				unless you are 100% sure that your new configuration is safe (or desirable) to use.
+			</b>
+		</p>
 
-	<p>
-		If all went well, GRUB should now boot your system the way you intended.
-	</p>
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
 
-	<p>
-		<b>Anecdotally, a user reported that segmentation faults occur with cbfstool when using this procedure depending on the size of the grub.cfg being re-insterted. In his case, a minimum size of 857 bytes was required. This could (at the time of this release) be a bug in cbfstool that should be investigated with the coreboot community. If cbfstool segfaults, then keep this in mind. 'strace' (or gdb? clang?) could be used for debugging. This was in libreboot 5th release (based on coreboot from late 2013). Not sure if the issue perists in the 6th release (based on coreboot from June 1st, 2014 at the time of writing); I have never personally encountered the bug. strace (from that user) is here: <a href="cbfstool_libreboot5_strace">cbfstool_libreboot5_strace</a>. The issue has been reported by a few users, so does not happen all the time: this bug (if it still exists) could (should) be reproduced.</b>
-	</p>
+<hr/>
+
+	<h2 id="final_steps">Final steps</h2>
+
+		<p>
+			Create a copy of grubtest.cfg, called grub.cfg, which is the same except for one difference: 
+			change the menuentry 'Switch to grub.cfg' to 'Switch to grubtest.cfg' and inside it,
+			change all instances of grub.cfg to grubtest.cfg. This is so that the main config still
+			links (in the menu) to grubtest.cfg, so that you don't have to manually switch to it, in
+			case you ever want to follow this guide again in the future (modifying the already modified config)<br/>
+			$ <b>sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e 's:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt; grub.cfg</b><br/>
+		</p>
+
+		<p>
+			Delete the grub.cfg that remained inside the ROM:<br/>
+			<b>$ ./cbfstool libreboot.rom remove -n grub.cfg</b>
+		</p>
+
+		<p>
+			Display ROM contents and now you see grub.cfg no longer exists there:<br/>
+			<b>$ ./cbfstool libreboot.rom print</b>
+		</p>
+
+		<p>
+			Add the modified version that you just made:<br/>
+			<b>$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw</b>
+		</p>
+
+		<p>
+			Now display ROM contents again and see that it exists again:<br/>
+			<b>$ ./cbfstool libreboot.rom print</b>
+		</p>
+
+		<p>
+			<b>
+				Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+				on how to flash it. Once you have done that, shut down and then boot up with your new configuration.
+			</b>
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
+
+	<h2 id="troubleshooting">Troubleshooting</h2>
+
+		<p>
+			A user reported that segmentation faults occur with cbfstool 
+			when using this procedure depending on the size of the grub.cfg being re-insterted. 
+			In his case, a minimum size of 857 bytes was required. This could (at the time of 
+			this release) be a bug in cbfstool that should be investigated with the coreboot 
+			community. If cbfstool segfaults, then keep this in mind. 'strace' (or gdb? clang?) 
+			could be used for debugging. This was in libreboot 5th release (based on coreboot 
+			from late 2013), and I'm not sure if the issue perists in the current releases.
+			I have not been able to reproduce it. strace (from that user) is here: 
+			<a href="cbfstool_libreboot5_strace">cbfstool_libreboot5_strace</a>. 
+			The issue has been reported by a few users, so it does not happen all the time: 
+			this bug (if it still exists) could (should) be reproduced.
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
 
 <hr/>
 
