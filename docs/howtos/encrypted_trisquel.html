@@ -26,8 +26,20 @@
 	</header>
 
 	<p>
-		Because GRUB is installed directly as a payload of libreboot (or coreboot), you don't need an unencrypted /boot partition
-		when setting up an encrypted system. This means that your machine can really secure data while powered off.
+		Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
+		by default, which means that the GRUB configuration file 
+		(where your GRUB menu comes from) is stored directly alongside libreboot
+		and it's GRUB payload executable, inside
+		the flash chip. In context, this means that installing distributions and managing them 
+		is handled slightly differently compared to traditional BIOS systems.
+	</p>
+
+	<p>
+		On most systems, the /boot partition has to be left unencrypted while the others are encrypted.
+		This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware
+		can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a 
+		payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical
+		access to the machine.
 	</p>
 
 	<p>
