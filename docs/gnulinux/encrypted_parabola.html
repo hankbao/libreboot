@@ -5,15 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
-		div.important {
-			background-color:#ccc;
-		}
+		@import url('../css/main.css');
 	</style>
 
 	<title>Installing Parabola GNU/Linux with full disk encryption (including /boot)</title>
@@ -22,7 +14,7 @@
 <body>
 	<header>
 		<h1>Installing Parabola GNU/Linux with full disk encryption (including /boot)</h1>
-		<aside>Or <a href="../index.html">back to main index</a></aside>
+		<aside>Or <a href="index.html">back to main index</a></aside>
 	</header>
 
 	<p>
@@ -87,7 +79,7 @@
 		it is already 'wiped'. You should just wipe the LUKS header.
 		<a href="https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/">https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/</a>
 		showed me how to do this. It recommends to do the first 3MiB. Now, that guide is recommending putting zero there. I'm doing to use urandom. Do this:<br/>
-		# <b>head -c 3145728 /dev/urandom > /dev/sda; sync</b><br/>
+		# <b>head -c 3145728 /dev/urandom &gt; /dev/sda; sync</b><br/>
 		(wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
 	</p>
 	<p>
@@ -279,7 +271,7 @@
 		<h3>Configure the system</h3>
 			<p>
 				From the Parabola installation guide (Arch's one was identical):<br/>
-				# <b>genfstab -p /mnt >> /mnt/etc/fstab</b>
+				# <b>genfstab -p /mnt &gt;&gt; /mnt/etc/fstab</b>
 			</p>
 			<p>
 				Chroot into new system:<br/>

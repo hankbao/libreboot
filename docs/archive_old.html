@@ -5,21 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
-		p.lenovobios {
-			font-weight:bold; color:#f00; font-style:italic; font-size:1.2em;
-		}
-		p.lenovobios:hover { /* for people who are colour-blind */
-			color: #000;
-		}
-		div.important {
-			background-color:#ccc;
-		}
+		@import url('css/main.css');
 	</style>
 
 	<title>Libreboot release information (old)</title>
@@ -27,7 +13,7 @@
 <body>
 	<header>
 		<h1 id="pagetop">Libreboot release information (old)</h1>
-		<aside>Documentation for this release can be found at <a href="index.html">index.html</a>.</aside>
+		<aside>Current release information can be found at <a href="release.html">release.html</a>.</aside>
 	</header>
 
 	<div class="important">
@@ -51,12 +37,12 @@
 
 	<h2>Releases</h2>
 	<ul>
-		<li><a href="#release6">6th release</a> (2014 September 11th <b>pre-release, 7th beta</b>) (see <a href="#critical_tasks">critical</a> and <a href="#noncritical_tasks">non-critical</a> tasks)</h1>
-		<li><a href="#release5">5th release</a> (2014 March 7th, revised 2014 June 22nd)</h1>
-		<li><a href="#release4">4th release</a> (2014 February 21st)</h1>
-		<li><a href="#release3">3rd release</a> (2013 December 14th)</h1>
-		<li><a href="#release2">2nd release</a> (2013 December 13th)</h1>
-		<li><a href="#release1">1st release</a> (2013 December 12th)</h1>
+		<li><a href="#release6">6th release</a> (2014 September 11th <b>pre-release, 7th beta</b>)</li>
+		<li><a href="#release5">5th release</a> (2014 March 7th, revised 2014 June 22nd)</li>
+		<li><a href="#release4">4th release</a> (2014 February 21st)</li>
+		<li><a href="#release3">3rd release</a> (2013 December 14th)</li>
+		<li><a href="#release2">2nd release</a> (2013 December 13th)</li>
+		<li><a href="#release1">1st release</a> (2013 December 12th)</li>
 	</ul>
 	<p>
 		<b><i>&quot;Release&quot;</i></b> means that a new coreboot git revision with substantially different code has been adapted for libreboot.
@@ -110,29 +96,28 @@
 				<li>
 					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 					<ul>
-						<li>See <a href="index.html#supported_x60t_list">index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+						<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
 						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 					</ul>
 				</li>
 				<li>
-					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)</b>
+					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)
 					<ul>
-						<li>See notes below for exceptions, and <a href="index.html#supported_t60_list">index.html#supported_t60_list</a> for known working LCD panels.</li>
+						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
 						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
-						<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
-						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="index.html#t60_ati_intel">index.html#t60_ati_intel</a></li>
+						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
 					</ul>
 				</li>
 				<li>
 					<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 					<ul>
-						<li>See <a href="index.html#macbook11">index.html#macbook11</a>.</li>
+						<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
 					</ul>
 				</li>
 				<li>
 					<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 					<ul>
-						<li>See <a href="index.html#macbook21">index.html#macbook21</a>.</li>
+						<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
 					</ul>
 				</li>
 			</ul>
@@ -168,9 +153,9 @@
 				<li>Added modified builddeb* scripts for Parabola GNU/Linux-libre: buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah Vesely)</li>
 				<li>Documentation: updated all relevant areas to mention use of buildpac* scripts for Parabola users.</li>
 				<li>Documentation: added information showing how to enable or disable bluetooth on the X60</li>
-				<li>MacBook1,1 tested! See <a href="index.html#macbook11">index.html#macbook11"</a></li>
+				<li>MacBook1,1 tested! See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a></li>
 				<li>Documentation: fixed typo in index.html#get_edid_panelname (get-edit changed to get-edid)</li>
-				<li>Documentation: added howtos/x60_lcd_change/ (pics only for now)</li>
+				<li>Documentation: added images/x60_lcd_change/ (pics only for now)</li>
 				<li>Added gcry_serpent and gcry_whirlpool to the GRUB module list in the 'build' script (for luks users)</li>
 				<li>
 					<b>Libreboot is now based on a new coreboot version from August 23rd, 2014:<br/>
@@ -274,7 +259,7 @@
 				<li>Documentation: removed all parts talking about build dependencies, replaced them with links to index.html#build_dependencies</li>
 				<li>Documentation: emphasized more strongly on the documentation, the need to re-build bucts and/or flashrom before flashing a ROM image.</li>
 				<li>build-release: flashrom, nvramtool, cbfstool and bucts are no longer provided pre-compiled in binary archives, and are now in source form only. (to maximize distro compatibility).</li>
-				<li>Documentation: added howtos/encrypted_trisquel.html showing how to setup a fully encrypted Trisquel installation (including /boot) and boot it from the GRUB payload.</li>
+				<li>Documentation: added gnulinux/encrypted_trisquel.html showing how to setup a fully encrypted Trisquel installation (including /boot) and boot it from the GRUB payload.</li>
 				<li>'build' script: replaced grub.elf assembly instructons, it's now handled by a utility added under resources/utilities/grub-assemble</li>
 				<li>Moved resources/grub/keymap to resources/utilities/grub-assemble/keymap, and updated that utility to use it</li>
 				<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
@@ -308,10 +293,10 @@
 				</li>
 				<li>
 					Documentation: added note about 'fb=false' workaround for text-mode debian-installer (Trisquel net install) to 
-					howtos/grub_boot_installer.html
+					gnulinux/grub_boot_installer.html
 				</li>
 				<li>
-					Documentation: updated howtos/grub_cbfs.html to make it safer (and easier) to follow.
+					Documentation: updated gnulinux/grub_cbfs.html to make it safer (and easier) to follow.
 				</li>
 			</ul>
 
@@ -330,11 +315,11 @@
 				<li>build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the list of modules for grub.elf</li>
 				<li>Documentation: added pics showing T60 unbricking (still need to write a tutorial)</li>
 				<li>build: include cmos.layout (coreboot/src/mainboard/manufacturer/model/cmos.layout) files in libreboot_bin</li>
-				<li>Documentation: added <a href="howtos/x60tablet_unbrick.html">howtos/x60tablet_unbrick.html</a></li>
-				<li>Documentation: added <a href="howtos/t60_unbrick.html">howtos/t60_unbrick.html</a></li>
-				<li>Documentation: added <a href="howtos/t60_lcd_15.html">howtos/t60_lcd_15.html</a></li>
-				<li>Documentation: added <a href="howtos/t60_security.html">howtos/t60_security.html</a></li>
-				<li>Documentation: added <a href="howtos/t60_heatsink.html">howtos/t60_heatsink.html</a></li>
+				<li>Documentation: added <a href="install/x60tablet_unbrick.html">install/x60tablet_unbrick.html</a></li>
+				<li>Documentation: added <a href="install/t60_unbrick.html">install/t60_unbrick.html</a></li>
+				<li>Documentation: added <a href="hardware/t60_lcd_15.html">install/t60_lcd_15.html</a></li>
+				<li>Documentation: added <a href="security/t60_security.html">install/t60_security.html</a></li>
+				<li>Documentation: added <a href="hardware/t60_heatsink.html">install/t60_heatsink.html</a></li>
 				<li>Documentation: Renamed RELEASE.html to release.html</li>
 				<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
 				<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
@@ -358,7 +343,7 @@
 			Revisions for 4th beta (2014 July 29th)
 		</h2>
 			<ul>
-				<li>Documentation: improved (more explanations, background info) in docs/howtos/x60_security.html (courtesy of Denis Carikli)</li>
+				<li>Documentation: improved (more explanations, background info) in docs/security/x60_security.html (courtesy of Denis Carikli)</li>
 				<li>MacBook2,1 tested (confirmed)</li>
 				<li>macbook21: Added script 'macbook21_firstflash' for flashing libreboot while Apple EFI firmware is running.</li>
 				<li>Documentation: macbook21: added software-based flashing instructions for flashing libreboot while Apple EFI firmware is running.</li>
@@ -398,7 +383,7 @@
 					Documentation: added (preliminary) details about (rare) buggy CPU's on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
 					without the microcode updates. 
 				</li>
-				<li>Documentation: added docs/howtos/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
+				<li>Documentation: added docs/hardware/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
 				<li>Added ROM images for Azerty (French) keyboard layout in GRUB (courtesy of Olivier Mondoloni)</li>
 				<li>
 					Tidied up some scripts:
@@ -428,7 +413,7 @@
 					</ul>
 				</li>
 				<li>
-					Documentation: added docs/howtos/x60_security.html (security hardening for X60)
+					Documentation: added docs/security/x60_security.html (security hardening for X60)
 				</li>
 			</ul>
 
@@ -599,7 +584,7 @@
 						<li>Documentation: added notes about cbfstool (standalone) in libreboot_bin</li>
 					</ul>
 				</li>
-				<li>Documentation: made docs/howtos/grub_cbfs.html slightly easier to follow.</li>
+				<li>Documentation: made docs/gnulinux/grub_cbfs.html slightly easier to follow.</li>
 				<li>Annotate the 'build*' scripts with 'echo' commands, to help the user understand what it actually happening during the build process.</li>
 				<li>
 					Documentation: added information about how 'dmidecode' data was put in the coreboot configs
@@ -680,7 +665,8 @@
 				<li>sha512: a773462fd60b529f20e14a82281f962985579bd523c3e6c9ab8639f7a12da8f1ccb44a56c648b19de914a15d4490366222d0bbc80552e91419f2afecbddc10ae</li>
 			</ul>
 			<p>
-				(gluglug.org.uk/X60/release/4/X60_source.tar.gz and gluglug.org.uk/X60/release/4/X60_binary.tar.gz were the old links)
+				(gluglug.org.uk/X60/release/4/X60_source.tar.gz and gluglug.org.uk/X60/release/4/X60_binary.tar.gz were the old links,
+				but they no longer exist)
 			</p>
 
 		<h2>Development notes</h2>
@@ -810,12 +796,12 @@
 
 		<h2>Binaries (for flashing)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/3/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/3/X60_binary.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/3/X60_binary.tar.gz">http://libreboot.org/release/ancient/3/X60_binary.tar.gz</a></li>
 			</ul>
 
 		<h2>Source code (for hacking)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/3/X60_source.tar.gz">http://gluglug.org.uk/X60/release/3/X60_source.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/3/X60_source.tar.gz">http://libreboot.org/release/ancient/3/X60_source.tar.gz</a></li>
 			</ul>
 
 		<h2>Development notes</h2>
@@ -870,12 +856,12 @@
 
 		<h2>Binaries (for flashing)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/2/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/2/X60_binary.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/2/X60_binary.tar.gz">http://libreboot.org/release/ancient/2/X60_binary.tar.gz</a></li>
 			</ul>
 
 		<h2>Source code (for hacking)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/2/X60_source.tar.gz">http://gluglug.org.uk/X60/release/2/X60_source.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/2/X60_source.tar.gz">http://libreboot.org/release/ancient/2/X60_source.tar.gz</a></li>
 			</ul>
 
 		<h2>Development notes</h2>
@@ -902,12 +888,12 @@
 
 		<h2>Binaries (for flashing)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/1/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/1/X60_binary.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/1/X60_binary.tar.gz">http://libreboot.org/release/ancient/1/X60_binary.tar.gz</a></li>
 			</ul>
 
 		<h2>Source code (for hacking)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/1/X60_source.tar.gz">http://gluglug.org.uk/X60/release/1/X60_source.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/1/X60_source.tar.gz">http://libreboot.org/release/ancient/1/X60_source.tar.gz</a></li>
 			</ul>
 
 		<h2>Development notes</h2>
@@ -936,12 +922,12 @@
 
 		<h2>Binaries (for flashing)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/0/X60_binary.tar.gz">http://gluglug.org.uk/X60/release/0/X60_binary.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/0/X60_binary.tar.gz">http://libreboot.org/release/ancient/0/X60_binary.tar.gz</a></li>
 			</ul>
 
 		<h2>Source code (for hacking)</h2>
 			<ul>
-				<li><a href="http://gluglug.org.uk/X60/release/0/X60_source.tar.gz">http://gluglug.org.uk/X60/release/0/X60_source.tar.gz</a></li>
+				<li><a href="http://libreboot.org/release/ancient/0/X60_source.tar.gz">http://libreboot.org/release/ancient/0/X60_source.tar.gz</a></li>
 			</ul>
 
 		<h2>Development notes</h2>

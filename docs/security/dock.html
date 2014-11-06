@@ -5,15 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
-		div.important {
-			background-color:#ccc;
-		}
+		@import url('css/main.css');
 	</style>
 
 	<title>Notes about DMA and the docking station (X60/T60)</title>
@@ -22,7 +14,6 @@
 <body>
 	<header>
 		<h1>Notes about DMA and the docking station (X60/T60)</h1>
-		<aside>Or <a href="../index.html">back to main index</a></aside>
 	</header>
 
 <pre>
@@ -67,7 +58,7 @@ other one is in the laptop, so we have:
                             ________________
  _________________         |                |
 |                 |        | Dock connector:|
-|Dock: NSC pc87982|<--LPC--->D_LPC_DREQ0    |
+|Dock: NSC pc87982|&lt;--LPC---&gt;D_LPC_DREQ0    |
 |_________________|        |_______^________|
                                    |
                                    |
@@ -112,7 +103,7 @@ outside:
 &gt;          int timeout = 1000;
 &gt; +        int val;
 &gt; +        
-&gt; +        if (get_option(&val, "dock") != CB_SUCCESS)
+&gt; +        if (get_option(&amp;val, &quot;dock&quot;) != CB_SUCCESS)
 &gt; +                val = 1;
 &gt; +        if (val == 0)
 &gt; +                return 0;
@@ -156,7 +147,7 @@ added too?
 	<p>
 		This document is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a&gt; for more information.
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 	</p>
 
 </body>

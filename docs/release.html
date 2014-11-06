@@ -5,21 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
-		p.lenovobios {
-			font-weight:bold; color:#f00; font-style:italic; font-size:1.2em;
-		}
-		p.lenovobios:hover { /* for people who are colour-blind */
-			color: #000;
-		}
-		div.important {
-			background-color:#ccc;
-		}
+		@import url('css/main.css');
 	</style>
 
 	<title>Libreboot release information</title>
@@ -73,8 +59,8 @@
 			</ul>
 
 			<p>
-				Installation instructions can be found at <a href="index.html#flashrom">index.html#flashrom</a>. 
-				Building instructions (for source code) can be found at <a href="index.html#build">index.html#build</a>.
+				Installation instructions can be found at <a href="install/index.html#flashrom">install/index.html#flashrom</a>. 
+				Building instructions (for source code) can be found at <a href="git/index.html#build">git/index.html#build</a>.
 			</p>
 
 		<h2>Machines supported in this release:</h2>
@@ -91,29 +77,29 @@
 				<li>
 					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 					<ul>
-						<li>See <a href="index.html#supported_x60t_list">index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+						<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
 						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 					</ul>
 				</li>
 				<li>
-					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)</b>
+					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 					<ul>
-						<li>See notes below for exceptions, and <a href="index.html#supported_t60_list">index.html#supported_t60_list</a> for known working LCD panels.</li>
+						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
 						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
 						<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
-						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="index.html#t60_ati_intel">index.html#t60_ati_intel</a></li>
+						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
 					</ul>
 				</li>
 				<li>
 					<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 					<ul>
-						<li>See <a href="index.html#macbook11">index.html#macbook11</a>.</li>
+						<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
 					</ul>
 				</li>
 				<li>
 					<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 					<ul>
-						<li>See <a href="index.html#macbook21">index.html#macbook21</a>.</li>
+						<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
 					</ul>
 				</li>
 			</ul>
@@ -139,7 +125,7 @@
 				</li>
 				<li>builddeps-coreboot: use 'make crossgcc-i386' instead of 'make crossgcc'. Libreboot only targets x86 at the time of writing.</li>
 				<li>ROM images no longer include SeaBIOS. Instead, the user adds it afterwards. Documentation and scripts updated.</li>
-				<li>docs/howtos/encrypted_parabola.html: Notes about linux-libre-grsec</li>
+				<li>docs/images/encrypted_parabola.html: Notes about linux-libre-grsec</li>
 				<li>Documentation: encrypted_parabola.html: add tutorial for encrypted Parabola GNU/Linux installation.</li>
 				<li>Documentation: added more info about wifi chipsets</li>
 			</ul>

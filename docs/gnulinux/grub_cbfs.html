@@ -5,15 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
-		div.important {
-			background-color:#ccc;
-		}
+		@import url('../css/main.css');
 	</style>
 
 	<title>Libreboot documentation: GRUB menu</title>
@@ -22,7 +14,7 @@
 <body>
 	<header>
 		<h1 id="pagetop">How to change your default GRUB menu</h1>
-		<aside>Or <a href="../index.html">back to main index</a></aside>
+		<aside>Or <a href="index.html">back to main index</a></aside>
 	</header>
 
 	<p>
@@ -44,7 +36,7 @@
 
 	<p>
 		Here is an excellent writeup about CBFS (coreboot filesystem): 
-		<a href="http://lennartb.home.xs4all.nl/coreboot/col5.html" target="_blank">http://lennartb.home.xs4all.nl/coreboot/col5.html</a>.
+		<a href="http://lennartb.home.xs4all.nl/coreboot/col5.html">http://lennartb.home.xs4all.nl/coreboot/col5.html</a>.
 	</p>
 
 <hr/>
@@ -61,8 +53,8 @@
 				<ul>
 					<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
 					<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
-				</lu>
-			</ul>
+				</ul>
+			</li>
 			<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
 			<li><a href="#test_it">Test it!</a>
 			<li><a href="#final_steps">Final steps</a></li>
@@ -75,13 +67,13 @@
 
 		<p>
 			Download the latest release from 
-			<a href="http://libreboot.org/" target="_blank">http://libreboot.org/</a>
+			<a href="http://libreboot.org/">http://libreboot.org/</a>
 			<br/><b>If you downloaded from git, refer to 
-			<a href="../index.html#build_meta">../index.html#build_meta</a> before continuing.</b>
+			<a href="../git/index.html#build_meta">../git/index.html#build_meta</a> before continuing.</b>
 		</p>
 
 		<p>
-			<a href="../index.html#build_dependencies">Install the build dependencies</a>.
+			<a href="../git/index.html#build_dependencies">Install the build dependencies</a>.
 		</p>
 
 		<p>
@@ -118,7 +110,7 @@
 
 		<p>
 			If you want to re-use the ROM that you currently have flashed (and running) then see 
-			<a href="../index.html#build_flashrom">../index.html#build_flashrom</a>
+			<a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a>
 			and then run:<br/>
 			<b>$ sudo ./flashrom -p internal -r libreboot.rom</b><br/>
 			Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). 
@@ -256,7 +248,7 @@
 					There are lots of possible variations so please try to adapt.
 				</p>
 
-			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h2>
+			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h3>
 
 				<p>
 					You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
@@ -303,7 +295,7 @@
 
 		<p>
 			<b>
-				Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+				Now you have a modified ROM. Refer back to <a href="../install/index.html#flashrom">../install/index.html#flashrom</a> for information
 				on how to flash it. Once you have done that, shut down and then boot up with your new test configuration.
 			</b>
 		</p>
@@ -359,7 +351,7 @@
 
 		<p>
 			<b>
-				Now you have a modified ROM. Refer back to <a href="../index.html#flashrom">../index.html#flashrom</a> for information
+				Now you have a modified ROM. Refer back to <a href="../install/index.html#flashrom">../install/index.html#flashrom</a> for information
 				on how to flash it. Once you have done that, shut down and then boot up with your new configuration.
 			</b>
 		</p>

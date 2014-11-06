@@ -38,7 +38,7 @@ Back then we had no idea that GTT address was incorrect, and we had no idea what
 Note: see <a href="#i945_312fix">this fix</a> for the initial fix that was found.
 
 <b><font color="red">not working yet</font></b>
-<a href="http://review.coreboot.org/#/c/5885/" target="_blank">http://review.coreboot.org/#/c/5885/</a>
+<a href="http://review.coreboot.org/#/c/5885/" >http://review.coreboot.org/#/c/5885/</a>
 
 untested. will test this.
 checkout 5320. cherry pick 5345 on top.
@@ -131,13 +131,13 @@ http://lists.freedesktop.org/archives/intel-gfx/2014-May/046310.html
 <pre>
 Note: see <a href="#i945_312fix">this fix</a> for the initial fix that was found.
 
-see: <a href="http://www.coreboot.org/Board:lenovo/x60#Problems_in_native_graphics_code_exposed_by_recent_kernels" target="_blank">http://www.coreboot.org/Board:lenovo/x60#Problems_in_native_graphics_code_exposed_by_recent_kernels</a>
-see: <a href="http://www.coreboot.org/Lenovo_x60x_vgainit_todos" target="_blank">http://www.coreboot.org/Lenovo_x60x_vgainit_todos</a>
+see: <a href="http://www.coreboot.org/Board:lenovo/x60#Problems_in_native_graphics_code_exposed_by_recent_kernels" >http://www.coreboot.org/Board:lenovo/x60#Problems_in_native_graphics_code_exposed_by_recent_kernels</a>
+see: <a href="http://www.coreboot.org/Lenovo_x60x_vgainit_todos" >http://www.coreboot.org/Lenovo_x60x_vgainit_todos</a>
 
 Non-coreboot (not even i945) platforms also have issues with 3.12+
-see: <a href="https://bugs.freedesktop.org/show_bug.cgi?id=76520" target="_blank">https://bugs.freedesktop.org/show_bug.cgi?id=76520</a>
+see: <a href="https://bugs.freedesktop.org/show_bug.cgi?id=76520" >https://bugs.freedesktop.org/show_bug.cgi?id=76520</a>
 
-Is this relevant?: <a href="http://lists.freedesktop.org/archives/intel-gfx/2014-February/040771.html" target="_blank">http://lists.freedesktop.org/archives/intel-gfx/2014-February/040771.html</a>
+Is this relevant?: <a href="http://lists.freedesktop.org/archives/intel-gfx/2014-February/040771.html" >http://lists.freedesktop.org/archives/intel-gfx/2014-February/040771.html</a>
 
 
 
@@ -244,7 +244,7 @@ fchmmr: samnob we think it might be classed under linux "no regression" policy
 fchmmr: PaulePanter's idea
 samnob: can't hurt to try :)
 
-Here is the debugging results then: <a href="coreboot_native_3.12_bug.tar.gz" target="_blank">coreboot_native_3.12_bug.tar.gz</a>
+Here is the debugging results then: <a href="coreboot_native_3.12_bug.tar.gz" >coreboot_native_3.12_bug.tar.gz</a>
 
 ---
 

@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Installing libreboot</title>
+</head>
+
+<body>
+
+	<h1 id="pagetop">Installing libreboot</h1>
+		<p>
+			This section relates to installing libreboot on supported targets.
+		</p>
+		<p>
+			Or <a href="../index.html">Back to main index</a>.
+		</p>
+		<h2>Installing libreboot (software)</h2>
+			<ul>
+				<li><a href="#rom">Recommended ROM's to flash</a></li>
+				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
+				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
+				<li><a href="#flashrom">X60/X60S/X60T/T60/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
+			</ul>
+
+		<h2>Installing libreboot (hardware)</h2>
+			<ul>
+				<li><a href="x60_unbrick.html">ThinkPad X60/X60S: How to unbrick</a></li>
+				<li><a href="x60tablet_unbrick.html">ThinkPad X60 Tablet: How to unbrick</a></li>
+				<li><a href="t60_unbrick.html">ThinkPad T60: How to unbrick</a></li>
+			</ul>
+
+<hr/>
+
+	<h1 id="rom">Recommended ROM's to flash</h1>
+
+		<p>
+			List of directories corresponding to each board:
+		</p>
+			<ul>
+				<li>ThinkPad X60, X60s: <b>bin/x60/</b></li>
+				<li>ThinkPad X60 Tablet: <b>bin/x60t/</b></li>
+				<li>ThinkPad T60: <b>bin/t60/</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
+				<li>Apple MacBook2,1: <b>bin/macbook21/</b></li>
+				<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROM's work)</li>
+			</ul>
+
+		<p>These images use coreboot text-mode graphics:</p>
+			<ul>
+				<li>US Qwerty keyboard: <b>libreboot_usqwerty_txtmode.rom</b></li>
+				<li>UK Qwerty keyboard: <b>libreboot_ukqwerty_txtmode.rom</b></li>
+				<li>US Dvorak keyboard: <b>libreboot_usdvorak_txtmode.rom</b></li>
+				<li>UK Dvorak keyboard: <b>libreboot_ukdvorak_txtmode.rom</b></li>
+				<li>French Azerty keyboard: <b>libreboot_frazerty_txtmode.rom</b></li>
+				<li>Italian Qwerty keyboard: <b>libreboot_itqwerty_txtmode.rom</b></li>
+				<li>Swedish Qwerty keyboard: <b>libreboot_svenska_txtmode.rom</b></li>
+			</ul>
+		<p>These images use coreboot framebuffer graphics:</p>
+			<ul>
+				<li>US Qwerty keyboard: <b>libreboot_usqwerty_vesafb.rom</b></li>
+				<li>UK Qwerty keyboard: <b>libreboot_ukqwerty_vesafb.rom</b></li>
+				<li>US Dvorak keyboard: <b>libreboot_usdvorak_vesafb.rom</b></li>
+				<li>UK Dvorak keyboard: <b>libreboot_ukdvorak_vesafb.rom</b></li>
+				<li>French Azerty keyboard: <b>libreboot_frazerty_vesafb.rom</b></li>
+				<li>Italian Qwerty keyboard: <b>libreboot_itqwerty_vesafb.rom</b></li>
+				<li>Swedish Qwerty keyboard: <b>libreboot_svenska_vesafb.rom</b></li>
+			</ul>
+
+		<p>
+			_txtmode images come with a working MemTest86+ and GRUB Invaders, both of which require text-mode.
+			_vesafb images are recommended in most cases.
+		</p>
+
+		<p>
+			This will give you your native keyboard layout inside GRUB. The preferences in your OS are not affected, it just makes using
+			the GRUB command line easier (if you ever need to do that).
+			<a href="../grub/index.html#grub_keyboard">../grub/index.html#grub_keyboard</a> shows you how this was done. If your native keyboard layout
+			differs, you can adapt those notes and hack the 'build' script for your needs.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="flashrom_lenovobios">X60/X60S/X60T/T60: How to flash the ROM's onto your machine (if running Lenovo BIOS firmware).</h1>
+
+		<div class="important">
+
+			<p>
+				Hover over the next paragraph to make it black.
+			</p>
+			<p class="lenovobios">
+				Following this guide means simply flashing a libreboot ROM. This guide will not (directly) teach you how to make a backup (dump) of the original Lenovo BIOS
+				because to do so would be to explicitly endorse proprietary software. However, for the purposes of reverse engineering it can be useful
+				to have a backup. Each copy of the original Lenovo BIOS is tied to the specific machine that it came from; it will not run
+				on any other machine, even if it's the same type of machine as yours. What this means is that, effectively, you can back it up now (so that you can
+				re-flash it later if you want to run the original Lenovo BIOS again) or lose it forever. The X60/T60 installation
+				guide on the coreboot wiki will show you how to do this: 
+				<a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.<br/>
+				Do not make this decision lightly! This is your last and only chance.
+			</p>
+
+			<p>
+				The following is for the libreboot image and *not* the factory bios dump:
+			</p>
+			<p>
+				Check the last two 64K regions in your ROM file (libreboot.rom in this example):<br/>
+				<b>$ dd if=libreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s libreboot.rom) - 0x10000] count=64k</b><br/>
+				<b>$ dd if=libreboot.rom of=lower64k.bin bs=1 skip=$[$(stat -c %s libreboot.rom) - 0x20000] count=64k</b><br/>
+				<b>$ sha512sum lower64k.bin top64k.bin</b><br/>
+				Make *sure* that they match before you continue. The ROM's included pre-compiled in libreboot should already match.
+				If they don't match, then do this (based on those instructions from <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">coreboot wiki</a>):<br/>
+				<b>$ dd if=top64k.bin of=libreboot.rom bs=1 seek=$[$(stat -c %s libreboot.rom) - 0x20000] count=64k conv=notrunc</b><br/>
+				After this, the ROM will be safe to flash. Explanation is provided in <a href="../git/index.html#build_bucts">../git/index.html#build_bucts</a>.
+			</p>
+
+		</div>
+
+		<p><b>This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you already have coreboot or libreboot running,
+		then go to <a href="#flashrom">#flashrom</a> instead!</b></p>
+
+		<p><b>If you are flashing a Lenovo ThinkPad T60, be sure to read <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a></b></p>
+
+		<p>
+			First, <a href="../git/index.html#build_dependencies">install the build dependencies</a>.
+		</p>
+
+		<div class="important">
+
+			<p>
+				<b>
+					Before you proceed, make *sure* to build flashrom and bucts from source. Both are provided. This is very important!
+				</b>
+			</p>
+				<ul>
+					<li><a href="../git/index.html#build_flashrom">How to build flashrom from source</a></li>
+					<li><a href="../git/index.html#build_bucts">How to build bucts from source</a></li>
+				</ul>
+
+		</div>
+
+		<p>&quot;YOURBOARD/YOURROM&quot; should be replaced with what is correct as per <a href="#rom">#rom</a>. Alternatively
+		you may be using your own custom ROM. Adapt.</p>
+
+		<p>
+			Run the script:<br/>
+			<b>$ sudo ./lenovobios_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a>.</b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should see within the output the following:<br/>
+				<b>&quot;Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000 are swapped&quot;</b>.
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Flash chip is in an unknown state&quot;</b>, <b>&quot;FAILED&quot;</b> and <b>&quot;DO NOT SHUTDOWN OR REBOOT&quot;</b><br/>
+				Seeing this means that the operation was a <b>resounding</b> success! <b>DON'T PANIC</b>.
+			</p>
+
+			<p>
+				See this link for more details: 
+				<a href="http://thread.gmane.org/gmane.linux.bios.flashrom/575">http://thread.gmane.org/gmane.linux.bios.flashrom/575</a>.
+			</p>
+
+			<p>
+				If the above is what you see, then <b>SHUT DOWN</b>. Wait a few seconds, and then boot; libreboot is running, but there is a 2nd procedure <b>*needed*</b> (see below).
+			</p>
+
+		</div>
+
+		<p>
+			<b>
+				If you boot and you see nothing, try turning up the backlight (Fn+Home).
+			</b>
+		</p>
+
+		<p>
+			When you have booted up again:<br/>
+			<b>$ sudo ./lenovobios_secondflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should see within the output the following:<br/>
+				<b>&quot;Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is untranslated&quot;</b>
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Verifying flash... VERIFIED.&quot;</b>
+			</p>
+
+			<p>Shut down again, wait a few seconds, and then boot.</p>
+
+		</div>
+
+		<p>
+			Some thinkpads come with WWAN cards installed, along with sim cards. These use non-free firmware and should be removed. 
+			You might also want to remove bluetooth. See <a href="../security/x60_security.html">../security/x60_security.html</a> and
+			<a href="../security/t60_security.html">../security/t60_security.html</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</h1>
+
+		<div class="important">
+
+			<p>
+				Hover over the next paragraph to make it black.
+			</p>
+			<p class="lenovobios">
+				Following this guide means simply flashing a libreboot ROM. This guide will not (directly) teach you how to make a backup (dump) of the original Apple EFI firmware
+				because to do so would be to explicitly endorse proprietary software. However, for the purposes of reverse engineering it can be useful
+				to have a backup. Each copy of the original Apple EFI is (believed, but unproven to be) tied to the specific machine that it came from; it will not (as is believed) run
+				on any other machine, even if it's the same type of machine as yours. What this means is that, effectively, you can back it up now (so that you can
+				re-flash it later if you want to run the original Apple EFI firmware again) or lose it forever. The macbook21 installation
+				guide on the coreboot wiki will show you how to do this: 
+				<a href="http://www.coreboot.org/Board:apple/macbook21">http://www.coreboot.org/Board:apple/macbook21</a>.<br/>
+				Do not make this decision lightly! This is (very likely) your last and only chance.
+			</p>
+
+			<p>
+				(this theory is untested at the time of writing)
+			</p>
+
+			<p>
+				Note: <b>If you have a MacBook1,1 then these instructions will not work. See <a href="../hcl/index.html#macbook11">../hcl/index.html#macbook11</a> for MacBook1,1 flashing instructions.</b>
+			</p>
+
+		</div>
+
+		<p>
+			<b>
+				This is for the MacBook2,1 while running Apple EFI firmware. If you already have 
+				coreboot or libreboot running, then go to <a href="#flashrom">#flashrom</a> instead!
+			</b>
+		</p>
+
+		<p>
+			Be sure to read the information in <a href="../hcl/index.html#macbook21">../hcl/index.html#macbook21</a>.
+		</p>
+
+		<p>
+			First, <a href="../git/index.html#build_dependencies">install the build dependencies</a>.
+		</p>
+
+		<div class="important">
+
+			<p>
+				<b>
+					Before you proceed, make *sure* to build flashrom from source. This is very important!
+				</b>
+			</p>
+				<ul>
+					<li><a href="../git/index.html#build_flashrom">How to build flashrom from source</a></li>
+				</ul>
+
+		</div>
+
+		<p>
+			Look at <a href="#rom">#rom</a> to see which ROM is suitable for your machine. Alternatively you may be using your own
+			custom ROM. Adapt.
+		</p>
+
+		<p>
+			Flashing is actually easy (compared to X60/T60).<br/>
+			<b>$ sudo flashrom -p internal:laptop=force_I_want_a_brick -w bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+
+		<p>
+			Alternatively, a script is provided which does the same thing:<br/>
+			<b>$ sudo ./macbook21_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Verifying flash... VERIFIED.&quot;</b>
+			</p>
+
+			<p>
+				If you see that, great! Shut down now (power off). Wait a few seconds and then boot!
+			</p>
+
+			<p>
+				<b>
+					If you boot and you see nothing, try turning up the backlight (F2 for macbook21). 
+				</b>
+			</p>
+
+
+		</div>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+
+<hr/>
+
+	<h1 id="flashrom">X60/X60S/X60T/T60/macbook21: How to flash the ROM's onto your machine (if running libreboot or coreboot already)</h1>
+
+		<p>
+			<b>
+				These instructions work for the Lenovo ThinkPad X60/X60S/X60T/T60 and Apple MacBook2,1.
+			</b>
+		</p>
+		<p>
+			<b>
+				This assumes that you already have coreboot or libreboot running.
+			</b>
+		</p>
+		<p>
+			<b>
+				If you have Lenovo BIOS running (X60/X60S/X60T/T60), go to <a href="#flashrom_lenovobios">#flashrom_lenovobios</a> instead.
+			</b>
+		</p>
+		<p>
+			<b>
+				If you have Apple EFI firmware running (macbook21), go to <a href="#flashrom_macbook21">#flashrom_macbook21</a> instead.
+			</b>
+		</p>
+		<p>
+			<b>
+				If you are flashing a Lenovo ThinkPad T60, be sure to read <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>.
+			</b>
+		</p>
+		<p>
+			<b>
+				If you are flashing an Apple MacBook2,1, be sure to read the information in <a href="../hcl/index.html#macbook21">../hcl/index.html#macbook21</a>.
+			</b>
+		</p>
+		<p>
+			First, <a href="../git/index.html#build_dependencies">install the build dependencies</a>.
+		</p>
+		<div class="important">
+
+			<p>
+				<b>
+					Before you proceed, make *sure* to build flashrom from source. This is very important!
+				</b>
+			</p>
+				<ul>
+					<li><a href="../git/index.html#build_flashrom">How to build flashrom from source</a></li>
+				</ul>
+
+		</div>
+		<p>
+			Look at <a href="#rom">#rom</a> to see which ROM is suitable for your machine. Alternative you may be using your own
+			custom ROM. Adapt.
+		</p>
+		<p>
+			Flash the ROM:<br/>
+			<b>$ sudo ./flash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+		</p>
+
+		<div class="important">
+
+			<p>
+				You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output. <b>SHUT DOWN</b>
+				after you see this, and then boot up again after a few seconds.
+			</p>
+
+			<p>
+				<b>
+					If you boot and you see nothing, try turning up the backlight (Fn+Home for X60/X60S/X60T/T60, F2 for macbook21). 
+				</b>
+			</p>
+
+		</div>
+
+		<p>
+			Some thinkpads come with WWAN cards installed, along with sim cards. These use non-free firmware and should be removed. 
+			You might also want to remove bluetooth. See <a href="../security/x60_security.html">../security/x60_security.html</a> and
+			<a href="../security/t60_security.html">../security/t60_security.html</a>.
+		</p>
+
+		<p><a href="#pagetop">Back to top of page</a></p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+	</p>
+
+	<p>
+		This document is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+	</p>
+
+</body>
+</html>

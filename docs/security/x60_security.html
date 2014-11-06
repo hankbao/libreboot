@@ -5,12 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
+		@import url('../css/main.css');
 	</style>
 
 	<title>Libreboot documentation: Security on the ThinkPad X60</title>
@@ -23,7 +18,7 @@
 		<aside>Hardware modifications to enhance security on the ThinkPad X60. This tutorial is <b>incomplete</b> at the time of writing.</aside>
 	</header>
 
-	<p>Or go <a href="../index.html">back to main index</a></p>
+	<p>Or go <a href="index.html">back to main index</a></p>
 
 	<h2>Table of Contents</h2>
 		<ul>
@@ -79,17 +74,17 @@
 		<p>
 			Firstly remove the bluetooth (if your X60 has this):<br/>
 			The marked screws are underneath those stickers (marked in those 3 locations at the bottom of the LCD assembly):<br/>
-			<img src="x60_security/0000_bluetooth0.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0000_bluetooth0.jpg" alt="" /><br/>
 			Now gently pry off the bottom part of the front bezel, and the bluetooth module is on the left (easily removable):<br/>
-			<img src="x60_security/0000_bluetooth.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0000_bluetooth.jpg" alt="" /><br/>
 		</p>
 
 		<p>
 			If your model was WWAN, remove the simcard (check anyway):<br/>
 			Uncover those 2 screws at the bottom:<br/>
-			<img src="x60_security/0000_simcard0.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0000_simcard0.jpg" alt="" /><br/>
 			SIM card (not present in the picture) is in the marked location:<br/>
-			<img src="x60_security/0000_simcard1.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0000_simcard1.jpg" alt="" /><br/>
 			Replacement: USB dongle.
 		</p>
 
@@ -99,28 +94,28 @@
 
 		<p>
 			Remove those screws:<br/>
-			<img src="x60_security/0000.jpg" alt="" />
+			<img src="../images/x60_security/0000.jpg" alt="" />
 		</p>
 		<p>
 			Push the keyboard forward (carefully):<br/>
-			<img src="x60_security/0001.jpg" alt="" />
+			<img src="../images/x60_security/0001.jpg" alt="" />
 		</p>
 		<p>
 			Lift the keyboard up and disconnect it from the board:<br/>
-			<img src="x60_security/0002.jpg" alt="" />
+			<img src="../images/x60_security/0002.jpg" alt="" />
 		</p>
 		<p>
 			Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:<br/>
-			<img src="x60_security/0003.jpg" alt="" />
+			<img src="../images/x60_security/0003.jpg" alt="" />
 		</p>
 		<p>
 			You should now have this:<br/>
-			<img src="x60_security/0004.jpg" alt="" />
+			<img src="../images/x60_security/0004.jpg" alt="" />
 		</p>
 
 		<p>
 			The following is a summary of what you will remove (already done to this machine):<br/>
-			<img src="x60_security/0001_overview.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0001_overview.jpg" alt="" /><br/>
 			Note: the blue lines represent antenna cables and modem cables. You don't need to remove these, but you can if you want
 			(to make it tidier after removing other parts). I removed the antenna wires, the modem jack, the modem cable and
 			also (on another model) a device inside the part where the wwan antenna goes (wasn't sure what it was, but I knew it wasn't needed). <b>This is optional</b>
@@ -128,7 +123,7 @@
 
 		<p>
 			Remove the microphone (can desolder it, but you can also easily pull it off with you hands). Already removed here:<br/>
-			<img src="x60_security/0001_microphone.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0001_microphone.jpg" alt="" /><br/>
 			<b>Rationale:</b><br/>
 			Another reason to remove the microphone: If your computer gets<a href="#ref1">[1]</a> compromised, it can
 			record what you say, and use it to receive data from nearby devices if
@@ -139,13 +134,13 @@
 
 		<p>
 			Remove the modem:<br/>
-			<img src="x60_security/0001_modem.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0001_modem.jpg" alt="" /><br/>
 			(useless, obsolete device)
 		</p>
 
 		<p>
 			Remove the speaker:<br/>
-			<img src="x60_security/0001_speaker.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0001_speaker.jpg" alt="" /><br/>
 			Reason: combined with the microphone issue, this could be used to leak data.<br/>
 			If your computer gets<a href="#ref1">[1]</a> compromised, it can be used to
 			transmit data to nearby compromised devices. It's unknown if it can be
@@ -155,7 +150,7 @@
 
 		<p>
 			Remove the wlan (also remove wwan if you have it):<br/>
-			<img src="x60_security/0001_wlan_wwan.jpg" alt="" /><br/>
+			<img src="../images/x60_security/0001_wlan_wwan.jpg" alt="" /><br/>
 			Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.<br/>
 			<b>Wifi:</b> The ath5k/ath9k cards might not have firmware at all. They might safe but could have
 			access to the computer's RAM trough DMA. If people have an intel
@@ -252,8 +247,8 @@
 		Further reading material (software security)
 	</h1>
 		<ul>
-			<li><a href="encrypted_trisquel.html">Installing Trisquel GNU/Linux with full disk encryption (including /boot)</a></li>
-			<li><a href="encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
+			<li><a href="../gnulinux/encrypted_trisquel.html">Installing Trisquel GNU/Linux with full disk encryption (including /boot)</a></li>
+			<li><a href="../gnulinux/encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
 			<li><a href="dock.html">Notes about DMA access and the docking station</a></li>
 		</ul>
 

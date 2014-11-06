@@ -5,12 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		body {
-			background:#fff;
-			color:#000;
-			font-family:sans-serif;
-			font-size:1em;
-		}
+		@import url('../css/main.css');
 	</style>
 
 	<title>Libreboot documentation: Unbricking the ThinkPad X60 Tablet</title>
@@ -23,7 +18,7 @@
 		<aside>This guide will show you how to recover from a bad flash that prevents your ThinkPad X60 Tablet from booting.</aside>
 	</header>
 
-	<p>Or go <a href="../index.html">back to main index</a></p>
+	<p>Or go <a href="index.html">back to main index</a></p>
 
 	<h2>Table of Contents</h2>
 		<ul>
@@ -43,14 +38,14 @@
 			<li>a 2nd computer (maybe another X60 Tablet. any computer will do)</li>
 			<li>external flashrom-compatible programmer (I'm using the "bus pirate")
 			<li>SOIC-8 IC clip (I'm using the Pomona 5250)</li>
-			<li>Cable (programmer<>clip) - mine came with the bus pirate.</li>
-			<li>USB mini a to b cable (for buspirate<>computer connection).</li>
+			<li>Cable (programmer&lt;&gt;clip) - mine came with the bus pirate.</li>
+			<li>USB mini a to b cable (for buspirate&lt;&gt;computer connection).</li>
 		</ul>
 
 	<h1 id="software_requirements">Software requirements</h1>
 		<ul>
 			<li>GNU/Linux (on the 2nd computer)</li>
-			<li>flashrom software (on the 2nd computer): <a href="http://flashrom.org/" target="_blank">http://flashrom.org/</a>
+			<li>flashrom software (on the 2nd computer): <a href="http://flashrom.org/">http://flashrom.org/</a>
 		</ul>
 
 	<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
@@ -59,14 +54,14 @@
 			the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.<br/><br/>
 
 			In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
-			<img src="x60t_unbrick/0008.JPG" alt="" /><br/><br/>
+			<img src="../images/x60t_unbrick/0008.JPG" alt="" /><br/><br/>
 
 			*Those dd commands should be applied to all newly compiled X60 ROM's (the ROM's in libreboot binary archives already have this applied!):<br/>
 			dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
 			dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
 			dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
 			(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
-			using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
+			using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
 		</p>
 
 	<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
@@ -79,103 +74,98 @@
 		</p>
 
 		<p>
-			<img src="x60t_unbrick/0000.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0000.JPG" alt="" />
 		</p>
 
 		<p>
 			Remove those screws:<br/>
-			<img src="x60t_unbrick/0001.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0001.JPG" alt="" />
 		</p>
 
 		<p>
 			Remove the HDD:<br/>
-			<img src="x60t_unbrick/0002.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0002.JPG" alt="" />
 		</p>
 
 		<p>
 			Push keyboard forward to loosen it:<br/>
-			<img src="x60t_unbrick/0003.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0003.JPG" alt="" />
 		</p>
 
 		<p>
 			Lift:<br/>
-			<img src="x60t_unbrick/0004.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0004.JPG" alt="" />
 		</p>
 
 		<p>
 			Remove those:<br/>
-			<img src="x60t_unbrick/0005.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0005.JPG" alt="" />
 		</p>
 
 		<p>
 			
-			<img src="x60t_unbrick/0006.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0006.JPG" alt="" />
 		</p>
 
 		<p>
 			Also remove that (marked) and unroute the antenna cables:<br/>
-			<img src="x60t_unbrick/0007.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0007.JPG" alt="" />
 		</p>
 
 		<p>
 			Some X60T's you have to unroute those too:<br/>
-			<img src="x60t_unbrick/0010.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0010.JPG" alt="" />
 		</p>
 
 		<p>
 			Remove the LCD extend board screws. Also remove those screws (see blue marks) and remove/unroute the cables and remove the metal plate:<br/>
-			<img src="x60t_unbrick/0008.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0008.JPG" alt="" />
 		</p>
 
 		<p>
 			Remove that screw and then remove the board:<br/>
-			<img src="x60t_unbrick/0009.JPG" alt="" />
+			<img src="../images/x60t_unbrick/0009.JPG" alt="" />
 		</p>
 
 		<p>
 			At this point, you should wire up your programmer according to it's documentation. For me, this was (see: "SparkFun cable pin reference"):<br/>
-			<a href="http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts" target="_blank">http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts</a>.<br/>
+			<a href="http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts">http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts</a>.<br/>
 			Correlating with the following information, I was able to wire up my pirate correctly:<br/>
-			<a href="http://flashrom.org/Bus_Pirate#Connections" target="_blank">http://flashrom.org/Bus_Pirate#Connections</a><br/>
+			<a href="http://flashrom.org/Bus_Pirate#Connections">http://flashrom.org/Bus_Pirate#Connections</a><br/>
 			And by following that advice:<br/>
-			<a href="http://www.coreboot.org/Board:lenovo/x60/Installation#Howto" target="_blank">http://www.coreboot.org/Board:lenovo/x60/Installation#Howto</a>.<br/>
+			<a href="http://www.coreboot.org/Board:lenovo/x60/Installation#Howto">http://www.coreboot.org/Board:lenovo/x60/Installation#Howto</a>.<br/>
 			Note: that last page says to wire up only those 5 pins (see below) like that: 1, 2, 4, 5, 6.<br/>
 			Note: and then, for power it says (on that coreboot.org page) to connect the power jack to the board and connect the
 			AC adapter (without powering on the board).<br/>
 			Note: I ignored that advice, and wired up all 8 pins. And it worked.<br/>
 
 			Here is the pinout (correlate it with your programmer's documentation):<br/>
-			<img src="x60t_unbrick/0011.JPG" alt="" /><br/>
+			<img src="../images/x60t_unbrick/0011.JPG" alt="" /><br/>
 			(SPI chip here is on the bottom of the board)
 		</p>
 
 		<p>
 			Bus pirate:<br/>
-			<img src="x60_unbrick/0019.jpg" alt="" /> 
+			<img src="../images/x60_unbrick/0019.jpg" alt="" /> 
 		</p>
 
 		<p>
 			Pomona 5250:<br/>
-			<img src="x60_unbrick/0020.jpg" alt="" /> 
+			<img src="../images/x60_unbrick/0020.jpg" alt="" /> 
 		</p>
 
 		<p>
 			Connect pomona:<br/>
-			<img src="x60_unbrick/0022.jpg" alt="" /> 
+			<img src="../images/x60_unbrick/0022.jpg" alt="" /> 
 		</p>
 
 		<p>
 			Connect pirate to USB on 2nd computer:<br/>
-			<img src="x60_unbrick/0024.jpg" alt="" /> 
+			<img src="../images/x60_unbrick/0024.jpg" alt="" /> 
 		</p>
 
 		<p>
-			Pirate is active:<br/>
-			<img src="x60_unbrick/0023.jpg" alt="" /> 
-		</p>
-
-		<p>
-			<img src="x60_unbrick/0025.jpg" alt="" /> 
+			<img src="../images/x60_unbrick/0025.jpg" alt="" /> 
 		</p>
 
 		<p>
