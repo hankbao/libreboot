@@ -38,7 +38,7 @@ rm -rf .config
 # prepare libreboot configuration and build it
 # it is assumed that these configs use coreboot text-mode
 # instead of coreboot framebuffer, by default
-cp ../resources/libreboot/config/$1/config .config
+cp ../resources/libreboot/config/"$1"/config .config
 # coreboot.rom will appear under ./coreboot/build
 make
 # move it out (we'll be cleaning the build)
@@ -126,15 +126,15 @@ rm -rf grub*cfg
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # prepare directory for new ROM images
-rm -rf $1
-mkdir $1
+rm -rf "$1"
+mkdir "$1"
 # move the ROM's into the newly created directory
-mv libreboot*rom $1
+mv libreboot*rom "$1"
 
 # delete the old ROM's from ../bin
-rm -rf ../bin/$1
+rm -rf ../bin/"$1"
 # now put the new ROM's in ./bin
-mv $1 ../bin
+mv "$1" ../bin
 
 # go back to main source directory
 cd ../
