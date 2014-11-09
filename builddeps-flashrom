@@ -24,6 +24,8 @@
 # To build flashrom, you will need the dependencies in "builddeb".
 # Run it, or adapt it if you do not use an "apt-get" distro.
 
+set -u -e -v
+
 # Build "flashrom" (utility for flashing/dumping ROM's)
 # --------------------------------------------------------------------
 

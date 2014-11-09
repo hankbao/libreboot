@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # Get bucts and checkout last revision used
 
 # Remove the old version that may exist

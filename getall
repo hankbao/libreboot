@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # For libreboot_meta.tar.gz
 # This downloads all of the source code present in libreboot_src.tar.gz
 

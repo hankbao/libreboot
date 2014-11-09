@@ -19,6 +19,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 for keymap in $(ls keymap/original)
 do
 	printf "/boot/grub/layouts/$keymap.gkb=keymap/$keymap.gkb "

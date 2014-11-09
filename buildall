@@ -22,6 +22,8 @@
 # IF YOUR DISTRO DOESN'T USE "apt-get", ADAPT WHAT YOU SEE IN "builddeb"
 # AND INSTALL THE BUILD DEPENDENCIES NEEDED TO RUN THIS BUILD SCRIPT!
 
+set -u -e -v
+
 # Clean old builds first:
 # ------------------------------------------------------
 ./cleandeps

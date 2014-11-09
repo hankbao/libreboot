@@ -18,6 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+## Don't add here. errors are expected.
+# set -u -e -v
+set -v
+
 # USE ROOT OR SUDO WHEN EXECUTING THIS
 
 # for T60 or X60 owners with Lenovo BIOS

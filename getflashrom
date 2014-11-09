@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # Get flashrom at the last previously tested revision
 
 # Remove the old version that may still exist:

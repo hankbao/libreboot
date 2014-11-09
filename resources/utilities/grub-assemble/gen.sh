@@ -4,6 +4,8 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 
+set -u -e -v
+
 # TODO: Fail (and clean up) if GRUB isn't actually built. Error checking.
 
 # This is where GRUB is expected to be (outside of the grub-assemble, instead in main checkout)

@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # This script is used by the main "builddeps" script in libreboot src/meta archives.
 # The reason it is seperated here is so that MemTest86+ can be built separately aswell.
 

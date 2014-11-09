@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # Get the last version of MemTest86+ used, apply patches, build it.
 
 # You need the dependencies from ./builddeb to use this script.

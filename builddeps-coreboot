@@ -26,6 +26,8 @@
 
 # This is also used by the "getcb" script.
 
+set -u -e -v
+
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 

@@ -19,6 +19,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 echo "Adding SeaBIOS and SeaVGABIOS to the ROM's"
 
 # Because the DEBLOB script isn't included in the binary archives.

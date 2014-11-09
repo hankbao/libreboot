@@ -24,6 +24,8 @@
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
 
+set -u -e -v
+
 echo "running 'make clean' in coreboot"
 
 # prepare coreboot

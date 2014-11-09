@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # Install build dependencies
 # For parabola. This might also work on other pacman distributions.
 

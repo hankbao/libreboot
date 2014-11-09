@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # For Trisquel 6.0 (and 6.0.1) users.
 # This may also work on other apt distros.
 

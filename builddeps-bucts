@@ -26,6 +26,8 @@
 
 # "getbucts" script also makes use of this script.
 
+set -u -e -v
+
 # Build BUC.TS utility (needed for flashing ROM's on X60/T60 while Lenovo BIOS is running)
 # --------------------------------------------------------------------
 

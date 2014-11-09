@@ -18,6 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # DO NOT RUN THIS IN libreboot_src OR libreboot_meta
 # THIS IS FOR libreboot_bin
 

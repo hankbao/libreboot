@@ -27,6 +27,8 @@
 # NOTE: If you downloaded the "meta" archive and ran "getall", then
 # you do not need to run this at all. getall does all of the below:
 
+set -u -e -v
+
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 
