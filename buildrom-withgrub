@@ -35,9 +35,6 @@ fi
 cd coreboot
 rm -rf .config
 
-# cbfstool will be used quite heavily here.
-[[ -f cbfstool ]] || mv util/cbfstool/cbfstool .
-
 # prepare libreboot configuration and build it
 # it is assumed that these configs use coreboot text-mode
 # instead of coreboot framebuffer, by default
@@ -74,19 +71,19 @@ rm -rf .config config_txtmode
 # ---------------------------------------------------------------------------------------------------------------
 
 # Add background image and font
-./cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
-# ./cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/gnulove.jpg -n gnulove.jpg -t raw
-./cbfstool libreboot_vesafb.rom add -f ../resources/grub/font/dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+# ./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/gnulove.jpg -n gnulove.jpg -t raw
+./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/font/dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
 
 # Insert files/configurations and perform operations that are common on libreboot_txtmode.rom (coreboot text mode)
 # ---------------------------------------------------------------------------------------------------------------
 
 # Add memtest86+
-./cbfstool libreboot_txtmode.rom add -f ../memtest86+-5.01/memtest -n memtest -t raw
+./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../memtest86+-5.01/memtest -n memtest -t raw
 
 # Add GRUB Invaders
-./cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders -n invaders -t raw
-./cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders.exec -n invaders.exec -t raw
+./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders -n invaders -t raw
+./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders.exec -n invaders.exec -t raw
 
 # Generate the GRUB configurations and add them to each ROM image as grub.cfg and grubtest.cfg
 # ---------------------------------------------------------------------------------------------------------------
@@ -108,13 +105,13 @@ do
 		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
 
 		# Insert grub config into the image
-		./cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
+		./util/cbfstool/cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
 
 		# grubtest.cfg should be able to switch back to grub.cfg
 		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
 
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
-		./cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
+		./util/cbfstool/cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
 	done
 done
 
@@ -138,9 +135,6 @@ mv libreboot*rom $1
 rm -rf ../bin/$1
 # now put the new ROM's in ./bin
 mv $1 ../bin
-
-# cbfstool no longer needed here, so put it back
-mv cbfstool util/cbfstool/
 
 # go back to main source directory
 cd ../
