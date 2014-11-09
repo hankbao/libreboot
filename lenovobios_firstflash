@@ -38,19 +38,10 @@ if [ ! -f $1 ]; then
 	exit
 fi
 
-echo "Don't panic. See docs/index.html for an explanation of what BUC.TS is."
-
-echo "MAKE SURE THAT YOU SEE 'Updated BUC.TS=1' IF NOT CHECK #libreboot ON FREENODE"
+# needed for first flashing, otherwise machine will be bricked
 ./bucts/bucts 1
-echo "READ THE BIG WARNING ABOVE!"
 
-echo "MAKE SURE THAT YOU SEE 'DO NOT SHUT DOWN OR REBOOT' (YOU WANT TO SEE THAT. MEANS IT WORKED). IF NOT CHECK #libreboot ON FREENODE"
-echo "If (when) you see 'DO NOT SHUTDOWN OR REBOOT' do not panic. That is normal, expected and very good. And you will ignore what it says."
+# run both. one will fail (and be harmless), the other will succeed. 
 ./flashrom/flashrom_lenovobios_sst -p internal -w $1
 ./flashrom/flashrom_lenovobios_macronix -p internal -w $1
-echo "READ THE BIG WARNING ABOVE!"
 
-echo "Now you will SHUT DOWN (ignore the flashrom warning) but first keep in mind before you then boot:"
-echo "Use 'Search for GRUB configuration on local storage' if the normal menus don't work, or check docs/index.html or #libreboot on freenode."
-echo "SHUT DOWN NOW!!!! WAIT A FEW SECS!!!! THEN BOOT."
-echo "DON'T PANIC."

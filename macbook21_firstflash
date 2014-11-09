@@ -40,4 +40,4 @@ fi
 # after flashing libreboot and booting the machine, flashing normally will just work.
 
 ./flashrom/flashrom -p internal:laptop=force_I_want_a_brick -w $1
-echo "IGNORE THE ERRORS. JUST MAKE SURE THAT IT SAYS 'VERIFIED' ABOVE (if not, goto #libreboot on freenode irc)"
+
