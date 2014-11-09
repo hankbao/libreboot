@@ -42,7 +42,7 @@ cp ../resources/libreboot/config/"$1"/config .config
 # coreboot.rom will appear under ./coreboot/build
 make
 # move it out (we'll be cleaning the build)
-mv build/coreboot.rom libreboot_txtmode.rom
+mv build/coreboot.rom "$1"_txtmode.rom
 # clean the build
 make clean
 
@@ -52,7 +52,7 @@ mv .config config_txtmode
 sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < config_txtmode > .config
 # build new ROM
 make
-mv build/coreboot.rom libreboot_vesafb.rom
+mv build/coreboot.rom "$1"_vesafb.rom
 # clean coreboot (again)
 make clean
 
@@ -62,28 +62,28 @@ rm -rf .config config_txtmode
 # Insert files/configurations and perform operations that are common on all images
 # ---------------------------------------------------------------------------------------------------------------
 
-# for rom in libreboot_vesafb.rom libreboot_txtmode.rom
+# for rom in "$1"_vesafb.rom "$1"_txtmode.rom
 # do
 	# Nothing to do here
 # done
 
-# Insert files/configurations and perform operations that are common on libreboot_vesafb.rom (coreboot framebuffer configuration)
+# Insert files/configurations and perform operations that are common on "$1"_vesafb.rom (coreboot framebuffer configuration)
 # ---------------------------------------------------------------------------------------------------------------
 
 # Add background image and font
-./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
-# ./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/background/gnulove.jpg -n gnulove.jpg -t raw
-./util/cbfstool/cbfstool libreboot_vesafb.rom add -f ../resources/grub/font/dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
+./util/cbfstool/cbfstool "$1"_vesafb.rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+# ./util/cbfstool/cbfstool "$1"_vesafb.rom add -f ../resources/grub/background/gnulove.jpg -n gnulove.jpg -t raw
+./util/cbfstool/cbfstool "$1"_vesafb.rom add -f ../resources/grub/font/dejavusansmono.pf2 -n dejavusansmono.pf2 -t raw
 
-# Insert files/configurations and perform operations that are common on libreboot_txtmode.rom (coreboot text mode)
+# Insert files/configurations and perform operations that are common on "$1"_txtmode.rom (coreboot text mode)
 # ---------------------------------------------------------------------------------------------------------------
 
 # Add memtest86+
-./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../memtest86+-5.01/memtest -n memtest -t raw
+./util/cbfstool/cbfstool "$1"_txtmode.rom add -f ../memtest86+-5.01/memtest -n memtest -t raw
 
 # Add GRUB Invaders
-./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders -n invaders -t raw
-./util/cbfstool/cbfstool libreboot_txtmode.rom add -f ../grubinvaders/invaders.exec -n invaders.exec -t raw
+./util/cbfstool/cbfstool "$1"_txtmode.rom add -f ../grubinvaders/invaders -n invaders -t raw
+./util/cbfstool/cbfstool "$1"_txtmode.rom add -f ../grubinvaders/invaders.exec -n invaders.exec -t raw
 
 # Generate the GRUB configurations and add them to each ROM image as grub.cfg and grubtest.cfg
 # ---------------------------------------------------------------------------------------------------------------
@@ -93,7 +93,7 @@ do
 	for romtype in txtmode vesafb
 	do
 		# copy the images based on the keymap
-		cp libreboot_"$romtype".rom libreboot_"$keymap"_"$romtype".rom
+		cp "$1"_"$romtype".rom "$1"_"$keymap"_"$romtype".rom
 
 		# generate the correct grub config
 		touch grub_"$keymap"_"$romtype".cfg
@@ -105,19 +105,19 @@ do
 		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
 
 		# Insert grub config into the image
-		./util/cbfstool/cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
+		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
 
 		# grubtest.cfg should be able to switch back to grub.cfg
 		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
 
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
-		./util/cbfstool/cbfstool libreboot_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
+		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
 	done
 done
 
 # we don't need the generic rom images anymore
-rm -rf libreboot_txtmode.rom
-rm -rf libreboot_vesafb.rom
+rm -rf "$1"_txtmode.rom
+rm -rf "$1"_vesafb.rom
 
 # we don't need the grub configs anymore
 rm -rf grub*cfg
@@ -129,7 +129,7 @@ rm -rf grub*cfg
 rm -rf "$1"
 mkdir "$1"
 # move the ROM's into the newly created directory
-mv libreboot*rom "$1"
+mv "$1"*rom "$1"
 
 # delete the old ROM's from ../bin
 rm -rf ../bin/"$1"
