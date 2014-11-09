@@ -39,7 +39,13 @@ if [ ! -f $1 ]; then
 fi
 
 # needed for first flashing, otherwise machine will be bricked
-./bucts/bucts 1
+{ # try
+	./bucts/bucts 1
+} || { # catch
+	echo "BUCTS issue (most likely not compiled). Make sure BUC.TS is 1, or else you will brick your machine."
+	echo "ABORTING so as to protect against bricking the machine."
+	exit
+}
 
 # run both. one will fail (and be harmless), the other will succeed. 
 ./flashrom/flashrom_lenovobios_sst -p internal -w $1
