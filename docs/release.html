@@ -160,14 +160,6 @@
 							</li>
 						</ul>
 					</li>
-					<li>
-						Look into these machines (based on discussions from IRC):
-						&lt;pehjota&gt; After the conversation yesterday about KolibriOS, I stumbled upon some hardware that community seems to like: the Vortex86 series of i586-compatible SoCs and the DMP EBOX nettops that use those SoCs.  coreboot supports one computer by DMP (src/mainboard/dmp/vortex86ex/) which appears to be the EBOX-3100 (the only EBOX nettop AFAICT without VGA).  Three years ago someone ported coreboot to the<br/>
-						&lt;pehjota&gt; EBOX-3300MX but apparently never upstreamed that work.  These Vortex86 SoCs look pretty good, freedom-wise: I think there's no microcode at all, the VGA cores don't seem to need option ROMs, and there are no blobs for things like ME/MRC/AGESA.  They have relatively low CPU clock rates (most at 600 or 933 MHz), so they aren't great for compiling or gaming.  But they're sold as nettops, thin clients,<br/>
-						&lt;pehjota&gt; and embedded systems, and the prices ($95–$269 from the US distributor) aren't bad.<br/>
-						&lt;pehjota&gt; DMP EBOX computers: <a href="http://www.compactpc.com.tw/en/index.html">http://www.compactpc.com.tw/en/index.html</a>.  EBOX-3300MX coreboot port: <a href="https://github.com/XVilka/coreboot">https://github.com/XVilka/coreboot</a> (last six commits).  Basic (and incomplete) information on the Vortex86 SoCs: <a href="http://www.vortex86.com/">http://www.vortex86.com/</a>.  Some technical overviews and resources: <a href="http://www.dmp.com.tw/tech/">http://www.dmp.com.tw/tech/</a>.  DMP's BusyBox/Linux distribution (with a Linux config file but apparently no source code):<br/>
-						&lt;pehjota&gt; <a href="http://www.dmp.com.tw/tech/os-xlinux/">http://www.dmp.com.tw/tech/os-xlinux/</a>.
-					</li>
 				</ul>
 
 		</div>
@@ -177,6 +169,9 @@
 				Other tasks (non-critical, but still important)
 			</h2>
 				<ul>
+					<li>
+						Look at vortex86ex boards. See <a href="http://libreboot.org/vortex86ex">http://libreboot.org/vortex86ex</a>.
+					</li>
 					<li>
 						Keep an eye on these commits for next rebase:
 						<ul>
