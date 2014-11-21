@@ -38,6 +38,14 @@ cd coreboot
 
 for romtype in txtmode vesafb
 do
+	# Build the GRUB payload (ELF executable)
+	# and add it to coreboot directory:
+	cd ../resources/utilities/grub-assemble
+	./gen."$romtype".sh
+	rm -rf ../../../coreboot/grub.elf
+	mv grub.elf ../../../coreboot/
+	cd ../../../coreboot
+
 	# Build coreboot ROM image
 	rm -rf .config
 	make clean
@@ -53,21 +61,11 @@ do
 	# .config no longer needed
 	rm -rf .config
 
-	# Build the correct GRUB payload for this type of ROM image
 	# Generate each type of GRUB configuration for this type of ROM image
 	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
 	do
 		# copy the images based on the keymap
 		cp "$1"_"$romtype".rom "$1"_"$keymap"_"$romtype".rom
-
-		# Build the GRUB payload (ELF executable) and add it to the ROM
-		# Has to be done here to get the right keymap for this image.
-		cd ../resources/utilities/grub-assemble
-		./gen."$romtype".sh $keymap
-		rm -rf ../../../coreboot/grub_"$romtype".elf
-		mv grub_"$romtype".elf ../../../coreboot/
-		cd ../../../coreboot
-		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add-payload -f grub_"$romtype".elf -n fallback/payload -c lzma
 
 		# generate the correct grub config
 		touch grub_"$keymap"_"$romtype".cfg
