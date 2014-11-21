@@ -29,11 +29,11 @@ if (( $# != 1 )); then
 	echo "Usage: ./lenovobios_firstflash yourrom.rom"
 	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
-	exit
+	exit 1
 fi
 if [ ! -f $1 ]; then
 	echo "File not found!"
-	exit
+	exit 1
 fi
 
 # flashrom doesn't recognize the machine unless you use that switch: laptop=force_I_want_a_brick

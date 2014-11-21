@@ -27,12 +27,12 @@ echo "Adding SeaBIOS and SeaVGABIOS to the ROM's"
 # This is how we know.
 if [ -f "DEBLOB" ]; then
 	echo "Do not run this in meta/src directory. Do it in binary archive, either with libreboot-supplied ROM images or your own binary archive created with 'build-release'."
-	exit
+	exit 1
 fi
 
 if [ ! -f "cbfstool" ]; then
 	echo "cbfstool not found. Please run ./builddeps-cbfstool first. Check the docs for how to get build dependencies."
-	exit
+	exit 1
 fi
 
 # Add SeaBIOS and SeaVGABIOS to *all* ROM's

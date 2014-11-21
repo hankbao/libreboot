@@ -27,7 +27,7 @@ set -u -e -v
 # This is how we know.
 if [ -f "DEBLOB" ]; then
 	echo "Do not run this in meta/src directory. Do it in binary archive, either with libreboot-supplied ROM images or your own binary archive created with 'build-release'."
-	exit
+	exit 1
 fi
 
 cd cbfstool_standalone

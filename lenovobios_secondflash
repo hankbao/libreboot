@@ -31,11 +31,11 @@ if (( $# != 1 )); then
 	echo "Usage: ./lenovobios_firstflash yourrom.rom"
 	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
-	exit
+	exit 1
 fi
 if [ ! -f $1 ]; then
 	echo "File not found!"
-	exit
+	exit 1
 fi
 
 # Flash it a 2nd time, to write upper 64K block

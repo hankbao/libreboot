@@ -29,11 +29,11 @@ if (( $# != 1 )); then
 	echo "Usage: ./lenovobios_firstflash yourrom.rom"
 	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
-	exit
+	exit 1
 fi
 if [ ! -f $1 ]; then
 	echo "File not found!"
-	exit
+	exit 1
 fi
 
 # boardmismatch=force is for people upgrading from libreboot 5th release, where the new ROM's are "ThinkPad X60 / X60s / X60t"
