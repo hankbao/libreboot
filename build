@@ -19,58 +19,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+set -u -e -v
+
 # Build the ROM's
 
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
 
-set -u -e -v
-
-echo "running 'make clean' in coreboot"
-
-# prepare coreboot
-cd coreboot
-
-# run "make clean" in coreboot (will re-build later)
-make clean
-rm -rf grub.elf 
-
-# come back to main directory
-cd ../
-
-echo "finished running 'make clean' in coreboot"
-
-# Build the GRUB payload (ELF executable):
-# ----------------------------------------------------------------------------------------------------------------------
-
-echo "generating grub.elf payload"
-
-cd resources/utilities/grub-assemble
-
-# Generate grub.elf inside the directory
-./gen.sh
-
-# Replace the old one
-rm -rf ../../../coreboot/grub.elf
-mv grub.elf ../../../coreboot/
-
-# come back to main directory
-cd ../../../
-
-echo "finished generating grub.elf payload (it's now in coreboot/ directory)"
-
-# Build the ROM's (for flashing)
-# ----------------------------------------------------------------------------------------------------------------------
-
 # ROM images for supported Thinkpads
 # (x60 also means x60s)
-for board in x60 t60 x60t
+for i945lenovoboard in x60 t60 x60t
 do
 	# Build the ROM (with GRUB payload)
-	./buildrom-withgrub $board
+	./buildrom-withgrub $i945lenovoboard
 
 	# These are needed for the 'bucts' workarounds on X60/T60
-	cd bin/$board
+	cd bin/$i945lenovoboard
 	for rom in $(find -type f)
 	do
 		dd if=$rom of=top64k.bin bs=1 skip=$[$(stat -c %s $rom) - 0x10000] count=64k
@@ -83,8 +47,6 @@ done
 
 # build macbook21 rom
 ./buildrom-withgrub macbook21
-
-echo "BUILD COMPLETE. ROM IMAGES ARE IN ./bin/"
 
 # ------------------- DONE ----------------------
 
