@@ -66,21 +66,8 @@ do
 		# copy the images based on the keymap
 		cp "$1"_"$romtype".rom "$1"_"$keymap"_"$romtype".rom
 
-		# generate the correct grub config
-		touch grub_"$keymap"_"$romtype".cfg
-		# generate contents:
-		cat ../resources/grub/config/extra/common.cfg >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/extra/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
-		echo "keymap $keymap" >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/common.cfg >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
-
 		# Insert grub config into the image
 		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
-
-		# grubtest.cfg should be able to switch back to grub.cfg
-		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
-
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
 		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
 	done
@@ -90,9 +77,6 @@ done
 
 # Now we clean up and prepare the bin directory containing all the images
 # ----------------------------------------------------------------------------------------------------------------------------
-
-# we don't need the grub configs anymore
-rm -rf grub*cfg
 
 # prepare directory for new ROM images
 rm -rf "$1"

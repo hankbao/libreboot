@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  build script: builds the ROM images and puts them in ./bin/
+#  build script: builds the ROM images with GRUB payloads and puts them in ./bin/
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -26,8 +26,8 @@ set -u -e -v
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
 
-# Build the GRUB payloads (ELF executable)
-# and add them to the coreboot directory:
+# Put GRUB payloads and config files
+# in the coreboot directory, ready for next step
 cd coreboot/
 for romtype in txtmode vesafb
 do
@@ -36,6 +36,18 @@ do
 	rm -rf ../../../coreboot/grub_"$romtype".elf
 	mv grub_"$romtype".elf ../../../coreboot/
 	cd ../../../coreboot
+
+	# GRUB configuration files
+	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
+	do
+		cat ../resources/grub/config/extra/common.cfg > grub_"$keymap"_"$romtype".cfg
+		cat ../resources/grub/config/extra/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
+		echo "keymap $keymap" >> grub_"$keymap"_"$romtype".cfg
+		cat ../resources/grub/config/menuentries/common.cfg >> grub_"$keymap"_"$romtype".cfg
+		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
+		# grubtest.cfg should be able to switch back to grub.cfg
+		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
+	done
 done
 cd ../
 
@@ -48,6 +60,8 @@ done
 # The GRUB payloads are no longer needed
 rm -rf coreboot/grub_vesafb.elf
 rm -rf coreboot/grub_txtmode.elf
+# The GRUB configs are no longer needed
+rm -rf coreboot/grub*cfg
 
 # ------------------- DONE ----------------------
 
