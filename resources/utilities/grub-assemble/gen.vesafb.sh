@@ -21,7 +21,7 @@ grub_modules="acpi ahci at_keyboard boot cat cbfs cbls cbtime chain cmosdump cmo
 $grubdir/grub-mkstandalone \
   --grub-mkimage=$grubdir/grub-mkimage \
   -O i386-coreboot \
-  -o grub.elf \
+  -o grub_vesafb.elf \
   -d $grubdir/grub-core/ \
   --fonts= --themes= --locales=  \
   --modules="$grub_modules" \

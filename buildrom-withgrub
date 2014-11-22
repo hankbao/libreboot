@@ -41,18 +41,12 @@ sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VE
 
 for romtype in txtmode vesafb
 do
-	# Build the GRUB payload (ELF executable)
-	# and add it to coreboot directory:
-	cd ../resources/utilities/grub-assemble
-	./gen."$romtype".sh
-	rm -rf ../../../coreboot/grub.elf
-	mv grub.elf ../../../coreboot/
-	cd ../../../coreboot
-
 	# Build coreboot ROM image
 	make clean
 	mv config_"$romtype" .config
+	mv grub_"$romtype".elf grub.elf
 	make
+	mv grub.elf grub_"$romtype".elf
 	mv build/coreboot.rom "$1"_"$romtype".rom
 	# .config no longer needed
 	rm -rf .config

@@ -26,11 +26,28 @@ set -u -e -v
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
 
+# Build the GRUB payloads (ELF executable)
+# and add them to the coreboot directory:
+cd coreboot/
+for romtype in txtmode vesafb
+do
+	cd ../resources/utilities/grub-assemble
+	./gen."$romtype".sh
+	rm -rf ../../../coreboot/grub_"$romtype".elf
+	mv grub_"$romtype".elf ../../../coreboot/
+	cd ../../../coreboot
+done
+cd ../
+
 # Build ROM images for supported boards
 for board in x60 t60 x60t macbook21
 do
 	./buildrom-withgrub $board
 done
+
+# The GRUB payloads are no longer needed
+rm -rf coreboot/grub_vesafb.rom
+rm -rf coreboot/grub_txtmode.rom
 
 # ------------------- DONE ----------------------
 
