@@ -21,9 +21,6 @@
 
 set -u -e -v
 
-# DO NOT RUN THIS DIRECTLY!
-# Use "build"
-
 if (( $# != 1 )); then
 	echo "Usage: ./buildrom-withgrub boardname"
 	echo "Example: ./buildrom-withgrub x60"
