@@ -60,7 +60,7 @@ do
 			rm -rf top64k.bin
 	fi
 
-	# Generate each type of GRUB configuration for this type of ROM image
+	# Add the correct GRUB configuration file for this image.
 	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
 	do
 		# copy the images based on the keymap
