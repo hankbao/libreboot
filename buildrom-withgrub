@@ -72,6 +72,7 @@ do
 		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
 	done
 
+	# This config-less ROM is no longer needed
 	rm -rf "$1"_"$romtype".rom
 done
 
