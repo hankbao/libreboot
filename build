@@ -26,27 +26,11 @@ set -u -e -v
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
 
-# ROM images for supported Thinkpads
-# (x60 also means x60s)
-for i945lenovoboard in x60 t60 x60t
+# Build ROM images for supported boards
+for board in x60 t60 x60t macbook21
 do
-	# Build the ROM (with GRUB payload)
-	./buildrom-withgrub $i945lenovoboard
-
-	# These are needed for the 'bucts' workarounds on X60/T60
-	cd bin/$i945lenovoboard
-	for rom in $(find -type f)
-	do
-		dd if=$rom of=top64k.bin bs=1 skip=$[$(stat -c %s $rom) - 0x10000] count=64k
-		dd if=$rom bs=1 skip=$[$(stat -c %s $rom) - 0x20000] count=64k | hexdump
-		dd if=top64k.bin of=$rom bs=1 seek=$[$(stat -c %s $rom) - 0x20000] count=64k conv=notrunc
-		rm -rf top64k.bin
-	done
-	cd ../../
+	./buildrom-withgrub $board
 done
-
-# build macbook21 rom
-./buildrom-withgrub macbook21
 
 # ------------------- DONE ----------------------
 
