@@ -46,8 +46,8 @@ do
 done
 
 # The GRUB payloads are no longer needed
-rm -rf coreboot/grub_vesafb.rom
-rm -rf coreboot/grub_txtmode.rom
+rm -rf coreboot/grub_vesafb.elf
+rm -rf coreboot/grub_txtmode.elf
 
 # ------------------- DONE ----------------------
 
