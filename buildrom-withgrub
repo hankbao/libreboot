@@ -33,6 +33,9 @@ cd coreboot
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
 
+cp ../resources/libreboot/config/"$1"/config config_txtmode
+sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < config_txtmode > config_vesafb
+
 for romtype in txtmode vesafb
 do
 	# Build the GRUB payload (ELF executable)
@@ -44,15 +47,8 @@ do
 	cd ../../../coreboot
 
 	# Build coreboot ROM image
-	rm -rf .config
 	make clean
-	cp ../resources/libreboot/config/"$1"/config .config
-	if [ "$romtype" = "vesafb" ]
-		then
-			mv .config config_txtmode
-			sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < config_txtmode > .config
-			rm -rf config_txtmode
-	fi
+	mv config_"$romtype" .config
 	make
 	mv build/coreboot.rom "$1"_"$romtype".rom
 	# .config no longer needed
