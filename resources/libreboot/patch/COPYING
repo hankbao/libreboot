@@ -1,6 +1,0 @@
-The "gitdiff" file is a patch for the coreboot project. Look at coreboot's copyright information
-therefore to see what conditions the patch falls under.
-
-Also, look at "getcb" script in a text editor in libreboot_src.tar.gz for this version of libreboot (go to ../../../docs/RELEASE.html
-to find out how to get libreboot_src.tar.gz for this version of libreboot) for attribution (acknowledgement) of
-the links to the original patches, since the gitdiff contains changes originally written by other people.

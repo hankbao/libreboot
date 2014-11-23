@@ -82,11 +82,37 @@ static int should_emit_386(struct rmod_context *ctx, Elf64_Rela *rel)
 	return (type == R_386_32);
 }
 
+static int valid_reloc_arm(struct rmod_context *ctx, Elf64_Rela *rel)
+{
+	int type;
+
+	type = ELF64_R_TYPE(rel->r_info);
+
+	/* Only these 3 relocations are expected to be found. */
+	return (type == R_ARM_ABS32 || type == R_ARM_THM_PC22 ||
+                type == R_ARM_THM_JUMP24);
+}
+
+static int should_emit_arm(struct rmod_context *ctx, Elf64_Rela *rel)
+{
+	int type;
+
+	type = ELF64_R_TYPE(rel->r_info);
+
+	/* R_ARM_ABS32 relocations are absolute. Must emit these. */
+	return (type == R_ARM_ABS32);
+}
+
 static struct arch_ops reloc_ops[] = {
 	{
 		.arch = EM_386,
 		.valid_type = valid_reloc_386,
 		.should_emit = should_emit_386,
+	},
+	{
+		.arch = EM_ARM,
+		.valid_type = valid_reloc_arm,
+		.should_emit = should_emit_arm,
 	},
 };
 
@@ -259,10 +285,8 @@ static int collect_relocations(struct rmod_context *ctx)
 
 	nrelocs = ctx->nrelocs;
 	INFO("%d relocations to be emitted.\n", nrelocs);
-	if (!nrelocs) {
-		ERROR("No valid relocations in file.\n");
-		return -1;
-	}
+	if (!nrelocs)
+		return 0;
 
 	/* Reset the counter for indexing into the array. */
 	ctx->nrelocs = 0;
@@ -518,11 +542,11 @@ write_elf(const struct rmod_context *ctx, const struct buffer *in,
 	 * is considered a part of the program.
 	 */
 	total_size += buffer_size(&rmod_header);
-	total_size += ctx->phdr->p_memsz;
-	if (buffer_size(&relocs) + ctx->phdr->p_filesz > total_size) {
-		total_size -= ctx->phdr->p_memsz;
+	if (buffer_size(&relocs) + ctx->phdr->p_filesz > ctx->phdr->p_memsz) {
 		total_size += buffer_size(&relocs);
 		total_size += ctx->phdr->p_filesz;
+	} else {
+		total_size += ctx->phdr->p_memsz;
 	}
 
 	ret = add_section(ew, &rmod_header, ".header", addr,
@@ -536,10 +560,13 @@ write_elf(const struct rmod_context *ctx, const struct buffer *in,
 		goto out;
 	addr += ctx->phdr->p_filesz;
 
-	ret = add_section(ew, &relocs, ".relocs", addr, buffer_size(&relocs));
-	if (ret < 0)
-		goto out;
-	addr += buffer_size(&relocs);
+	if (ctx->nrelocs) {
+		ret = add_section(ew, &relocs, ".relocs", addr,
+				  buffer_size(&relocs));
+		if (ret < 0)
+			goto out;
+		addr += buffer_size(&relocs);
+	}
 
 	if (total_size != addr) {
 		ret = add_section(ew, NULL, ".empty", addr, total_size - addr);

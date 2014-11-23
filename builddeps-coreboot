@@ -33,30 +33,21 @@ set -u -e -v
 
 cd coreboot
 
-# clean coreboot first
-make clean
-
 # build cbfstool
 # THIS IS NOT THE STANDALONE VERSION
 # SEE "builddeps-cbfstool" for the instructions
 # for the cbfstool_standalone in libreboot_bin/
 cd util/cbfstool
-make clean
 make
 
 # build nvramtool
 cd ../nvramtool
-make clean
 make
 
 # done. go back to coreboot dir
 cd ../../
 
-# remove the payloads (they will be built by "build")
-rm -rf grub.elf
-
 # build reference crossGCC for coreboot
-make crossgcc-clean
 make crossgcc-i386
 
 # done. go back to main libreboot_src directory

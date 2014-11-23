@@ -25,8 +25,6 @@ set -u -e -v
 
 # (the idea is that this script will reproduce the coreboot directory included with this version of libreboot)
 
-# You need the dependencies from ./builddeb or ./buildpac to use this script.
-
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
 
@@ -44,7 +42,7 @@ git clone http://review.coreboot.org/coreboot
 cd coreboot
 
 # reset to previously tested revision
-git reset --hard 8ffc085e1affaabbe3dca8ac6a89346b71dfc02e
+git reset --hard c637a887dde1c63bf3863e70cbe19dedf5f6ca02
 
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
@@ -67,13 +65,8 @@ git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cher
 # ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan
 git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cherry-pick FETCH_HEAD
 
-# Apply necessary patches (from resources/libreboot/patch/)
-# ---------------------------------------------------------------------------------
-
-# T60: fix compilation when using 6731 from review.coreboot.org
-git apply ../resources/libreboot/patch/t60_6731buildfix.diff
-## 6731 is abandoned and there's no point putting this in coreboot gerrit.
-## there is no harm in it being a diff
+# i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and "scrolling" backlight
+git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
