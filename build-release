@@ -164,6 +164,9 @@ cp lenovobios_secondflash libreboot_bin/
 # Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
 cp flash libreboot_bin/
 
+# For those upgrading from libreboot 5th release (or lower) to latest, on the X60
+cp x60flashfrom5 libreboot_bin/
+
 # patch the version of cbfstool included in libreboot_bin,
 # so that it can be built/executed standalone
 # this modification is only suitable for the version included in libreboot_bin
