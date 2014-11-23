@@ -33,7 +33,7 @@ rm -rf flashrom
 # ---------------------------------------------------------------------
 
 # download it using subversion
-svn co -r 1850 svn://flashrom.org/flashrom/trunk flashrom
+svn co -r 1854 svn://flashrom.org/flashrom/trunk flashrom
 
 # there are no permanent patches needed to be applied here:
 # the patches are applied selectively at build time (when running "builddeps-flashrom")
