@@ -90,13 +90,6 @@ fi
 
 apt-get -y install ttf-unifont libopts25 libselinux1-dev autogen m4 autoconf help2man libopts25-dev libfont-freetype-perl automake autotools-dev build-essential bison flex libfuse-dev liblzma-dev gawk libdevmapper-dev libtool libfreetype6-dev
 
-#
-# The following have had their dependency lists moved to external scripts:
-#
-# This is so that users in libreboot_bin can more easily install the dependencies 
-# for these, without having to install all of the dependencies for the entire source code
-#
-
 # BucTS build dependencies (external script)
 # ------------------------------------------------------------
 
