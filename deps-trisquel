@@ -45,6 +45,15 @@ apt-get -y install subversion git
 
 apt-get -y install build-essential
 
+# For cross-compiling i686 target on x86_64 host.
+if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		apt-get -y install gcc-multilib libc6-i386 libc6-dev-i386 
+		apt-get -y install lib32stdc++6 g++-multilib dh-autoreconf
+		# recommended, but not sure what for:
+		apt-get -y install lib32tinfo-dev texi2html
+fi
+
 # Memtest86+ build dependencies
 # ------------------------------------------------------------
 
@@ -70,6 +79,12 @@ apt-get -y install build-essential
 
 apt-get -y install libncurses5-dev doxygen iasl gdb flex bison build-essential git
 
+# For cross-compiling i686 target on x86_64 host.
+if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		apt-get -y install lib32ncurses5-dev 
+fi
+
 # GRUB build dependencies (also requires build-essential, bison and flex)
 # ------------------------------------------------------------
 
@@ -91,6 +106,12 @@ apt-get -y install build-essential
 # ------------------------------------------------------------
 
 apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential subversion
+
+# For cross-compiling i686 target on x86_64 host.
+if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		apt-get -y install lib32z1-dev 
+fi
 
 # ------------------- DONE ----------------------
 
