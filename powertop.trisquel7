@@ -1,0 +1,52 @@
+#!/bin/bash
+
+#  powertop.trisquel7: automatically sets up powertop --auto-tune on startup in trisquel 7
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -u -e -v
+
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
+# For Trisquel 7 users.
+# This may also work on other apt distros.
+
+sudo apt-get -y install powertop
+
+# Remove startup symlink if it exists
+update-rc.d powertop remove
+# Remove previous file if it exists
+rm  -rf /etc/init.d/powertop
+
+# write the correct commands there:
+cp powertop.trisquel7.init /etc/init.d/powertop
+
+# make it executable:
+chmod +x /etc/init.d/powertop
+
+# Add the service to make it run automatically at boot time:
+update-rc.d powertop defaults
+
+# Done.
+
+# Run powertop now and tell the user
+powertop --auto-tune
+echo "Done. Run 'powertop --auto-tune' now. This will also run automatically at boot time. Run it again at any time, if needed. This has also been done for you just now."
+
