@@ -22,6 +22,11 @@
 # set -u -e -v
 set -v
 
+if [[ $EUID -ne 0 ]]; then
+   echo "This script must be run as root" 
+   exit 1
+fi
+
 # USE ROOT OR SUDO WHEN EXECUTING THIS
 # uses flashrom to flash the rom
 
