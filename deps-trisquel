@@ -48,7 +48,7 @@ apt-get -y install subversion git
 # For building source code:
 # ------------------------------------------------------------
 
-apt-get -y install build-essential
+apt-get -y install build-essential binutils-source
 
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
@@ -57,7 +57,6 @@ if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 		apt-get -y install lib32stdc++6 g++-multilib dh-autoreconf
 		# recommended, but not sure what for:
 		apt-get -y install lib32tinfo-dev texi2html
-		apt-get -y install binutils-source binutils-multiarch
 fi
 
 # Memtest86+ build dependencies
