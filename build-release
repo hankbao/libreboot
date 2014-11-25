@@ -168,10 +168,6 @@ mv bucts_ bucts
 # ----------------
 # Flashrom related
 # ----------------
-# Include flashrom utility in binary archive
-# (source only, no binaries. To eliminate cross-distro dependency issue)
-# cp -r libreboot_src/flashrom libreboot_bin/
-
 # Flashrom is used to install libreboot on supported targets
 # Include it statically compiled
 cp -r flashrom flashrom_
