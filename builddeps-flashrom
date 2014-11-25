@@ -42,7 +42,11 @@ rm -rf flashrom_lenovobios_macronix
 mv flashchips.c flashchips.c_
 cp ../resources/flashrom/patch/flashchips.c .
 # build flashrom
-make
+if (( $# != 1 )); then
+	make
+else
+	make SHARED=0 CC='gcc -static'
+fi
 # restore default flashchips.c
 rm -rf flashchips.c
 mv flashchips.c_ flashchips.c
@@ -53,13 +57,21 @@ mv flashchips.c flashchips.c_
 
 # build patched version for MX25L1605D flash chip on Lenovo BIOS X60/T60
 cp ../resources/flashrom/patch/flashchips.c_lenovobios_macronix flashchips.c
-make
+if (( $# != 1 )); then
+	make
+else
+	make SHARED=0 CC='gcc -static'
+fi
 mv flashrom flashrom_lenovobios_macronix
 rm -rf flashchips.c
 
 # build patched version for SST25VF016B flash chip on Lenovo BIOS X60/T60
 cp ../resources/flashrom/patch/flashchips.c_lenovobios_sst flashchips.c
-make
+if (( $# != 1 )); then
+	make
+else
+	make SHARED=0 CC='gcc -static'
+fi
 mv flashrom flashrom_lenovobios_sst
 rm -rf flashchips.c
 

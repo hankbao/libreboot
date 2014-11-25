@@ -122,6 +122,10 @@
 			&quot;BUC&quot; means &quot;<b>B</b>ack<b>u</b>p <b>C</b>ontrol&quot; (it's a register) and &quot;TS&quot; means &quot;<b>T</b>op <b>S</b>wap&quot;
 			(it's a status bit). Hence &quot;bucts&quot; (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
 		</p>
+		
+		<p>
+			If you have the binary release archive, you'll find executables under ./bucts/. Otherwise if you need to build from source, continue reading.
+		</p>
 
 		<p>
 			First, <a href="#build_dependencies">install the build dependencies</a>.
@@ -149,6 +153,12 @@
 		<p>
 			Flashrom source code is included in libreboot_src.tar.gz and libreboot_bin.tar.gz.<br/>
 			<b>If you downloaded from git, follow <a href="#build_meta">#build_meta</a> before you proceed.</b>
+		</p>
+		
+		<p>
+			If you are using the binary release archive, then there are already binaries included
+			under ./bin/. The flashing scripts will try to choose the correct one for you. Otherwise
+			if you wish to re-build flashrom from source, continue reading.
 		</p>
 
 		<p>
@@ -422,6 +432,13 @@
 		<p>You don't need to do much, as there are scripts already written for you that can build everything automatically.</p>
 
 		<p>
+			You can build libreboot from source on a 32-bit (i686) or 64-bit (x86_64) system. Recommended (if possible): x86_64.
+			On a ThinkPad T60, you can replace the CPU (Core 2 Duo T5600, T7200 or T7600. T5600 recommended) for 64-bit support. 
+			On an X60s, you can replace the board with one that has a Core 2 Duo L7400 (you could also use an X60 Tablet board with the same CPU).
+			On an X60, you can replace the board with one that has a Core 2 Duo T5600 or T7200 (T5600 is recommended).
+		</p>
+
+		<p>
 			First, <a href="#build_dependencies">install the build dependencies</a>.
 		</p>
 		<p>
@@ -453,6 +470,22 @@
 			</p>
 
 			<p>
+				If you are building on an i686 host, this will include statically linked 32-bit binaries in the binary release archive that you created,
+				for: <b>nvramtool, cbfstool, bucts, flashrom</b>.
+			</p>
+
+			<p>
+				If you are building on an x86_64 host, this will include statically linked 32- and 64-bit binaries for <b>cbfstool</b> and <b>nvramtool</b>, while <b>flashrom</b>
+				and <b>bucts</b> will be included only as 64-bit statically linked binaries. <b>To include a statically linked flashrom and bucts for i686, you
+				will need to build them on a chroot, a virtual machine or a real 32-bit system. You can find the build dependencies for these packages listed in deps-*</b>
+			</p>
+
+			<p>
+				If you are building 32-bit binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:<br/>
+				$ <b>make SHARED=0 CC='gcc -static'</b>
+			</p>
+
+			<p>
 				You'll find that the files libreboot_bin.tar.xz and libreboot_src.tar.xz have been created.
 			</p>
 
@@ -479,8 +512,8 @@
 		</p>
 
 		<p>
-			Build cbfstool:<br/>
-			$ <b>./builddeps-cbfstool</b>
+			Binaries for cbfstool are provided (built from libreboot_src) statically linked under cbfstool/ and the <b>addseabios</b>
+			script (see below) will try to automatically select the right one to use.
 		</p>
 
 		<p>

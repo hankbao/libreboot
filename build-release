@@ -21,10 +21,23 @@
 
 set -u -e -v
 
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		echo "Running on i686. ok."
+		sleep 5
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		echo "Running on x86_64. ok."
+		sleep 5
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
+fi
+
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # You should also run the 'build' script before running this 
 
-# Delete old archives before continuing
+# ### Delete old archives before continuing
 # ----------------------------------------------------------------------------------------------------------------------------
 
 echo "Deleting old release archives"
@@ -35,7 +48,7 @@ rm -rf libreboot_bin.tar.xz
 # Get manifest which will be used to copy everything
 ls > releasefilelist
 
-# Prepare libreboot_src archive ready for release
+# ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
 echo "Preparing libreboot_src release archive"
@@ -47,7 +60,7 @@ do
 	cp -r $resource libreboot_src
 done
 
-cd libreboot_src
+cd libreboot_src/
 
 # clean everything
 ./cleandeps
@@ -55,12 +68,12 @@ cd libreboot_src
 # back to main checkout directory
 cd ../
 
-# Further work in libreboot_src: delete *.git and *.svn
-# To save space since they are not useful in the release archives
-# Changes to these projects should be submitted upstream
+# ### Further work in libreboot_src: delete *.git and *.svn
+# ### To save space since they are not useful in the release archives
+# ### Changes to these projects should be submitted upstream
 # ----------------------------------------------------------------------------------------------------------------------------
 
-cd libreboot_src
+cd libreboot_src/
 
 # These instructions will also work even if .git or .svn are already deleted
 # because "rm -rf" won't complain if they are missing. It is still useful on
@@ -86,7 +99,7 @@ rm -rf .git*
 # that libreboot would be distributing blobs)
 
 # Flashrom:
-cd flashrom
+cd flashrom/
 rm -rf .svn
 cd ../
 
@@ -97,97 +110,201 @@ rm -rf .gitignore
 cd ../
 
 # SeaBIOS:
-cd seabios
+cd seabios/
 rm -rf .git
 rm -rf .gitignore
 cd ../
 
 cd ../
 
-# Prepare libreboot_bin archive ready for release
+# ### Prepare libreboot_bin archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
 echo "Preparing libreboot_bin release archive"
 
 mkdir libreboot_bin
 
+# ---------------------------------------
 # Include the ROM's in the binary archive
+# ---------------------------------------
 cp -r bin libreboot_bin/
 
+# ---------------
+# SeaBIOS related
+# ---------------
 # Include SeaBIOS and SeaVGABIOS option ROM in the binary archive
 cp seabios/out/vgabios.bin libreboot_bin/
 cp seabios/out/bios.bin.elf libreboot_bin/
 # Add the script for it
 cp addseabios libreboot_bin/
+# Menu entry to be added to grub configs
+cp resources/grub/config/seabios.cfg libreboot_bin/
 
+# --------------
+# BUC.TS related
+# --------------
+# X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
+# Include it statically compiled
+cp -r bucts bucts_
+cd bucts/
+# make it statically compile
+git apply ../resources/bucts/patch/staticlink.diff
+make clean
+make
+mkdir ../libreboot_bin/bucts
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		mkdir ../libreboot_bin/bucts/i686
+		mv bucts ../libreboot_bin/bucts/i686
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		mkdir ../libreboot_bin/bucts/x86_64
+		mv bucts ../libreboot_bin/bucts/x86_64
+fi
+cd ../
+rm -rf bucts
+mv bucts_ bucts
+
+# ----------------
+# Flashrom related
+# ----------------
 # Include flashrom utility in binary archive
 # (source only, no binaries. To eliminate cross-distro dependency issue)
-cp -r libreboot_src/flashrom libreboot_bin/
+# cp -r libreboot_src/flashrom libreboot_bin/
 
-# For installing build dependencies
-cp deps-trisquel libreboot_bin/
-cp deps-parabola libreboot_bin/
+# Flashrom is used to install libreboot on supported targets
+# Include it statically compiled
+cp -r flashrom flashrom_
+# make it statically compile
+./builddeps-flashrom static
+mkdir libreboot_bin/flashrom
+cd flashrom/
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		mkdir ../libreboot_bin/flashrom/i686
+		mv flashrom ../libreboot_bin/flashrom/i686
+		mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/i686
+		mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/i686
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		mkdir ../libreboot_bin/flashrom/x86_64
+		mv flashrom ../libreboot_bin/flashrom/x86_64
+		mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/x86_64
+		mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/x86_64
+fi
+cd ../
+rm -rf flashrom
+mv flashrom_ flashrom
 
-# Build scripts for flashrom and bucts
-cp builddeps-flashrom libreboot_bin/
-cp builddeps-bucts libreboot_bin/
+# ----------------
+# cbfstool related
+# ----------------
+# build cbfstool, compiled (statically linked) and include the binary
+cd coreboot/util/
+cp -r cbfstool cbfstool_
+cd cbfstool
+make clean
+make SHARED=0 CC='gcc -static'
+mkdir ../../../libreboot_bin/cbfstool
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# User is building on 32-bit host. Build only 32-bit binaries
+		mkdir ../../../libreboot_bin/cbfstool/i686
+		mv cbfstool ../../../libreboot_bin/cbfstool/i686/
+		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
+elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
+	then
+		# Build the 64-bit binaries
+		mkdir ../../../libreboot_bin/cbfstool/x86_64
+		mv cbfstool ../../../libreboot_bin/cbfstool/x86_64/
+		mv rmodtool ../../../libreboot_bin/cbfstool/x86_64/
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir ../../../libreboot_bin/cbfstool/i686
+		mv cbfstool ../../../libreboot_bin/cbfstool/i686/
+		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
+fi
+cd ../
+rm -rf cbfstool
+mv cbfstool_ cbfstool
+cd ../../
 
-# Include the same documentation in binary archive
+# -----------------
+# nvramtool related
+# -----------------
+# build nvramtool, compiled (statically linked) and include the binary
+cd coreboot/util/
+cp -r nvramtool nvramtool_
+cd nvramtool
+make clean
+make SHARED=0 CC='gcc -static'
+mkdir ../../../libreboot_bin/nvramtool
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# User is building on 32-bit host. Build only 32-bit binaries
+		mkdir ../../../libreboot_bin/nvramtool/i686
+		mv nvramtool ../../../libreboot_bin/nvramtool/i686/
+elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
+	then
+		# Build the 64-bit binaries
+		mkdir ../../../libreboot_bin/nvramtool/x86_64
+		mv nvramtool ../../../libreboot_bin/nvramtool/x86_64/
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir ../../../libreboot_bin/nvramtool/i686
+		mv nvramtool ../../../libreboot_bin/nvramtool/i686/
+fi
+cd ../
+rm -rf nvramtool
+mv nvramtool_ nvramtool
+cd ../../
+
+# ---------------------
+# Include documentation
+# ---------------------
 cp -r docs libreboot_bin/
 
+# -----------------------------------------------------------------------
+# X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
+# -----------------------------------------------------------------------
+cp powertop.trisquel6 libreboot_bin/
+cp powertop.trisquel6.init libreboot_bin/
+cp powertop.trisquel7 libreboot_bin/
+cp powertop.trisquel7.init libreboot_bin/
+
+# -------------
+# Miscellaneous
+# -------------
 # include X60 cmos.layout file
 cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_bin/x60cmos.layout
 cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_bin/t60cmos.layout
 cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_bin/macbook21cmos.layout
 
-# X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
-# (source only, no binaries. To eliminate cross-distro dependency issue)
-cp -r libreboot_src/bucts libreboot_bin/
-
-# Include a copy of nvramtool in libreboot_bin
-# (source only, no binaries. To eliminate cross-distro dependency issue)
-cp -r libreboot_src/coreboot/util/nvramtool libreboot_bin/
-
-# X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
-cp powertop.trisquel6 libreboot_bin/
-cp powertop.trisquel6.init libreboot_bin/
-
-cp macbook21_firstflash ../libreboot_bin
-
-# (lazy hack) to make builddep-flashrom work in libreboot_bin:
-cp -r resources libreboot_bin/
-
+# FLASHING SCRIPTS
+# Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
+cp flash libreboot_bin/
+# For those upgrading from libreboot 5th release (or lower) to latest, on the X60
+cp x60flashfrom5 libreboot_bin/
 # X60/T60: so that the user can use libreboot_bin to overwrite lenovo bios with libreboot
 cp lenovobios_firstflash libreboot_bin/
 cp lenovobios_secondflash libreboot_bin/
+# For initial flashing on macbook21/11
+cp macbook21_firstflash libreboot_bin/
 
-# Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
-cp flash libreboot_bin/
-
-# For those upgrading from libreboot 5th release (or lower) to latest, on the X60
-cp x60flashfrom5 libreboot_bin/
-
-# patch the version of cbfstool included in libreboot_bin,
-# so that it can be built/executed standalone
-# this modification is only suitable for the version included in libreboot_bin
-# do not patch the one in libreboot_src with this
-# (source only, no binaries. To eliminate cross-distro dependency issue)
-cp -r libreboot_src/coreboot/util/cbfstool libreboot_bin/cbfstool_standalone
-# Patching libreboot_bin/cbfstool_standalone to be buildable (and executable) without residing in coreboot source tree
-rm -rf libreboot_bin/cbfstool_standalone/rmodule.c
-cp resources/cbfstool/patch/rmodule.c libreboot_bin/cbfstool_standalone/rmodule.c
-cp libreboot_src/coreboot/src/include/rmodule-defs.h libreboot_bin/cbfstool_standalone/rmodule-defs.h
-
-# Include builddeps-cbfstool in binary release archive
-cp builddeps-cbfstool libreboot_bin/
-
-# Create the release tarballs
+# ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # Also delete the manifest
 rm -rf libreboot_src/releasefilelist
 rm -rf libreboot_bin/releasefilelist
 rm -rf releasefilelist
+
+# We don't want to encourage development
+# to happen on the release archives. 
+# Development goes in git.
+rm -rf libreboot_src/build-release
 
 echo "Creating compressed libreboot_src release archive"
 
@@ -199,7 +316,7 @@ echo "Creating compressed libreboot_bin release archive"
 # create lzma compressed bin archive
 tar cfJ libreboot_bin.tar.xz libreboot_bin
 
-# Delete the uncompressed release directories
+# ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
 
 echo "Deleted the uncompressed release archives"

@@ -22,9 +22,35 @@
 # set -u -e -v
 set -v
 
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		echo "Running on i686. ok."
+		sleep 5
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		echo "Running on x86_64. ok."
+		sleep 5
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
+fi
+
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
+fi
+
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		echo "Running on i686. ok."
+		sleep 5
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		echo "Running on x86_64"
+		sleep 5
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
 fi
 
 # USE ROOT OR SUDO WHEN EXECUTING THIS
@@ -43,16 +69,58 @@ if [ ! -f $1 ]; then
 	exit 1
 fi
 
-# needed for first flashing, otherwise machine will be bricked
-{ # try
-	./bucts/bucts 1
-} || { # catch
-	echo "BUCTS issue (most likely not compiled). Make sure BUC.TS is 1, or else you will brick your machine."
-	echo "ABORTING so as to protect against bricking the machine."
-	exit 1
-}
+$errOut = " \
+			BUCTS failed. Make sure BUC.TS is 1, or else you will brick your machine. \
+			ABORTING so as to protect against bricking the machine. \
+			"
+if [ ! -f "DEBLOB" ]
+	then
+		# this means we are working in bin
+		if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+			then
+				# i686
+				# needed for first flashing, otherwise machine will be bricked
+				{ # try
+					./bucts/i686/bucts 1
+				} || { # catch
+					echo "$errOut"
+					exit 1
+				}
+		else
+			# x86_64
+			# needed for first flashing, otherwise machine will be bricked
+			{ # try
+				./bucts/x86_64/bucts 1
+			} || { # catch
+				echo "$errOut"
+				exit 1
+			}
+else
+	# this means we are working in src
+	# needed for first flashing, otherwise machine will be bricked
+	{ # try
+		./bucts/bucts 1
+	} || { # catch
+		echo "$errOut"
+		exit 1
+	}
+fi
 
 # run both. one will fail (and be harmless), the other will succeed. 
-./flashrom/flashrom_lenovobios_sst -p internal -w $1
-./flashrom/flashrom_lenovobios_macronix -p internal -w $1
+
+if [ -f "DEBLOB" ]; then
+	# Means we are in src archive or git
+	./flashrom/flashrom_lenovobios_sst -p internal -w $1
+	./flashrom/flashrom_lenovobios_macronix -p internal -w $1
+elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# Means we are in bin archive and on an i686 host
+		./flashrom/i686/flashrom_lenovobios_sst -p internal -w $1
+		./flashrom/i686/flashrom_lenovobios_macronix -p internal -w $1
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		# Means we are in bin archive and on an x86_64 host
+		./flashrom/x86_64/flashrom_lenovobios_sst -p internal -w $1
+		./flashrom/x86_64/flashrom_lenovobios_macronix -p internal -w $1
+fi
 
