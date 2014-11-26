@@ -41,7 +41,7 @@ wget http://www.erikyyy.de/invaders/invaders-1.0.0.tar.gz
 tar -xf "invaders-1.0.0.tar.gz"
 
 # delete the tar file (no longer needed)
-rm -rf "invaders-1.0.0.tar.gz"
+rm -f "invaders-1.0.0.tar.gz"
 
 # rename directory (for consistency with script names)
 mv invaders grubinvaders
@@ -59,8 +59,8 @@ patch < diff.patch
 patch compile.sh < compile.sh.patch
 
 # delete the copy of the patch (no longer needed)
-rm -rf diff.patch
-rm -rf compile.sh.patch
+rm -f diff.patch
+rm -f compile.sh.patch
 
 # we're done
 cd ../

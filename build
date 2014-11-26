@@ -33,7 +33,7 @@ for romtype in txtmode vesafb
 do
 	cd ../resources/utilities/grub-assemble
 	./gen."$romtype".sh
-	rm -rf ../../../coreboot/grub_"$romtype".elf
+	rm -f ../../../coreboot/grub_"$romtype".elf
 	mv grub_"$romtype".elf ../../../coreboot/
 	cd ../../../coreboot
 
@@ -58,10 +58,10 @@ do
 done
 
 # The GRUB payloads are no longer needed
-rm -rf coreboot/grub_vesafb.elf
-rm -rf coreboot/grub_txtmode.elf
+rm -f coreboot/grub_vesafb.elf
+rm -f coreboot/grub_txtmode.elf
 # The GRUB configs are no longer needed
-rm -rf coreboot/grub*cfg
+rm -f coreboot/grub*cfg
 
 # ------------------- DONE ----------------------
 

@@ -42,8 +42,8 @@ fi
 
 echo "Deleting old release archives"
 
-rm -rf libreboot_src.tar.xz
-rm -rf libreboot_bin.tar.xz
+rm -f libreboot_src.tar.xz
+rm -f libreboot_bin.tar.xz
 
 # Get manifest which will be used to copy everything
 ls > releasefilelist
@@ -106,13 +106,13 @@ cd ../
 # GRUB:
 cd grub/
 rm -rf .git
-rm -rf .gitignore
+rm -f .gitignore
 cd ../
 
 # SeaBIOS:
 cd seabios/
 rm -rf .git
-rm -rf .gitignore
+rm -f .gitignore
 cd ../
 
 cd ../
@@ -293,14 +293,14 @@ cp macbook21_firstflash libreboot_bin/
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # Also delete the manifest
-rm -rf libreboot_src/releasefilelist
-rm -rf libreboot_bin/releasefilelist
-rm -rf releasefilelist
+rm -f libreboot_src/releasefilelist
+rm -f libreboot_bin/releasefilelist
+rm -f releasefilelist
 
 # We don't want to encourage development
 # to happen on the release archives. 
 # Development goes in git.
-rm -rf libreboot_src/build-release
+rm -f libreboot_src/build-release
 
 echo "Creating compressed libreboot_src release archive"
 

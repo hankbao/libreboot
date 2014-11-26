@@ -43,7 +43,7 @@ cp ../resources/seabios/config/config .config
 make
 
 # delete the copy of the config (no longer needed)
-rm -rf .config
+rm -f .config
 
 # done. go back to main directory
 cd ../

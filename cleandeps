@@ -42,7 +42,7 @@ make clean
 cd ../../
 
 # remove the payloads (they will be built by "build")
-rm -rf grub.elf
+rm -f grub*.elf
 
 # clean reference crossGCC for coreboot
 make crossgcc-clean
@@ -86,8 +86,8 @@ cd flashrom
 
 make clean
 # remove modified binaries
-rm -rf flashrom_lenovobios_sst
-rm -rf flashrom_lenovobios_macronix
+rm -f flashrom_lenovobios_sst
+rm -f flashrom_lenovobios_macronix
 
 # done. go back to main directory
 cd ../

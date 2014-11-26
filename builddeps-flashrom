@@ -34,8 +34,8 @@ cd flashrom
 # clean it first
 make clean
 # remove modified binaries aswell
-rm -rf flashrom_lenovobios_sst
-rm -rf flashrom_lenovobios_macronix
+rm -f flashrom_lenovobios_sst
+rm -f flashrom_lenovobios_macronix
 
 # patch flashchips.c to remove the useless Macronix entries (for X60/T60)
 # makes flashrom work without having to use "-c" switch
@@ -48,7 +48,7 @@ else
 	make SHARED=0 CC='gcc -static'
 fi
 # restore default flashchips.c
-rm -rf flashchips.c
+rm -f flashchips.c
 mv flashchips.c_ flashchips.c
 
 # backup those files
@@ -63,7 +63,7 @@ else
 	make SHARED=0 CC='gcc -static'
 fi
 mv flashrom flashrom_lenovobios_macronix
-rm -rf flashchips.c
+rm -f flashchips.c
 
 # build patched version for SST25VF016B flash chip on Lenovo BIOS X60/T60
 cp ../resources/flashrom/patch/flashchips.c_lenovobios_sst flashchips.c
@@ -73,7 +73,7 @@ else
 	make SHARED=0 CC='gcc -static'
 fi
 mv flashrom flashrom_lenovobios_sst
-rm -rf flashchips.c
+rm -f flashchips.c
 
 # restore default binary/source
 mv flashchips.c_ flashchips.c

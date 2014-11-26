@@ -78,9 +78,9 @@ echo "deblobbing coreboot"
 # The git history (git diff command) shows what blobs were deleted (including the blobs themselves) which is a freedom issue. Just delete .git altogether:
 cd coreboot
 rm -rf .git
-rm -rf .gitreview
-rm -rf .gitmodules
-rm -rf .gitignore
+rm -f .gitreview
+rm -f .gitmodules
+rm -f .gitignore
 cd ../
 echo "finished deblobbing coreboot"
 

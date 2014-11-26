@@ -49,7 +49,7 @@ do
 	mv grub.elf grub_"$romtype".elf
 	mv build/coreboot.rom "$1"_"$romtype".rom
 	# .config no longer needed
-	rm -rf .config
+	rm -f .config
 
 	# Needed on i945 systems for the bucts/dd trick (documented)
 	# This enables the ROM to be flashed over the lenovo bios firmware
@@ -57,7 +57,7 @@ do
 		then
 			dd if="$1"_"$romtype".rom of=top64k.bin bs=1 skip=$[$(stat -c %s "$1"_"$romtype".rom) - 0x10000] count=64k
 			dd if=top64k.bin of="$1"_"$romtype".rom bs=1 seek=$[$(stat -c %s "$1"_"$romtype".rom) - 0x20000] count=64k conv=notrunc
-			rm -rf top64k.bin
+			rm -f top64k.bin
 	fi
 
 	# Add the correct GRUB configuration file for this image.

@@ -25,7 +25,7 @@ cd coreboot/
 # ---------------------
 # CPU microcode updates
 # ---------------------
-rm -rf \
+rm -f \
 "src/cpu/intel/model_68x/microcode-617-MU16860c.h" \
 "src/cpu/intel/model_68x/microcode-550-MU168307.h" \
 "src/cpu/intel/model_68x/microcode-618-MU268602.h" \
@@ -247,7 +247,7 @@ rm -rf \
 # --------------------------------------
 # Misunderstood (weird: purpose unknown)
 # --------------------------------------
-rm -rf \
+rm -f \
 "src/mainboard/google/slippy/Micron_4KTF25664HZ.spd.hex" \
 "src/mainboard/google/falco/Micron_4KTF25664HZ.spd.hex" \
 "src/mainboard/google/peppy/Micron_4KTF25664HZ.spd.hex" \
@@ -276,7 +276,7 @@ rm -rf \
 # -------------------------------------
 # DSDT/SSDT (pre-coreboot/compiled blobs)
 # -------------------------------------
-rm -rf \
+rm -f \
 "src/vendorcode/amd/agesa/f14/Proc/GNB/PCIe/Family/0x14/F14PcieAlibSsdt.h" \
 "src/vendorcode/amd/agesa/f12/Proc/GNB/PCIe/Family/LN/F12PcieAlibSsdt.h" \
 "src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/AlibSsdtKB.h" \
@@ -287,7 +287,7 @@ rm -rf \
 # -----------------------------------------------------------
 # southbridge nvidia/sis (unknown purpose, looks like a blob)
 # -----------------------------------------------------------
-rm -rf \
+rm -f \
 "src/southbridge/nvidia/mcp55/early_setup_ss.h" \
 "src/southbridge/nvidia/ck804/early_setup_ss.h" \
 "src/southbridge/sis/sis966/early_setup_ss.h"
@@ -295,7 +295,7 @@ rm -rf \
 # ---------------------------
 # northbridge intel (raminit)
 # ---------------------------
-rm -rf \
+rm -f \
 "src/northbridge/intel/nehalem/raminit_tables.c" \
 "src/northbridge/intel/sandybridge/raminit_patterns.h"
 
