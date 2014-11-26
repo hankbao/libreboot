@@ -49,11 +49,9 @@ else
 fi
 # restore default flashchips.c
 rm -f flashchips.c
-mv flashchips.c_ flashchips.c
 
 # backup those files
 mv flashrom flashrom_
-mv flashchips.c flashchips.c_
 
 # build patched version for MX25L1605D flash chip on Lenovo BIOS X60/T60
 cp ../resources/flashrom/patch/flashchips.c_lenovobios_macronix flashchips.c
