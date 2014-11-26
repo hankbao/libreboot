@@ -28,7 +28,7 @@ fi
 # For Trisquel 7 users.
 # This may also work on other apt distros.
 
-sudo apt-get -y install powertop
+apt-get -y install powertop
 
 # Remove startup symlink if it exists
 update-rc.d powertop remove
