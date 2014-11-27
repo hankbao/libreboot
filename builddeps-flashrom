@@ -45,8 +45,10 @@ do
 	cp ../resources/flashrom/patch/flashchips.c"$patchname" flashchips.c
 	rm -f flashrom"$patchname"
 	if (( $# != 1 )); then
+		# build it dynamically linked
 		make
 	else
+		# build it statically linked
 		make SHARED=0 CC='gcc -static'
 	fi
 	mv flashrom flashrom"$patchname"
