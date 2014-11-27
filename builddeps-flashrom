@@ -41,7 +41,6 @@ mv flashchips.c flashchips.c_
 # - these patches are for people who have lenovo bios running
 for patchname in "_normal" "_lenovobios_macronix" "_lenovobios_sst"
 do
-	rm -f flashchips.c"$patchname"
 	cp ../resources/flashrom/patch/flashchips.c"$patchname" flashchips.c
 	rm -f flashrom"$patchname"
 	if (( $# != 1 )); then
