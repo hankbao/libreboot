@@ -51,15 +51,6 @@ do
 	# .config no longer needed
 	rm -f .config
 
-	# Needed on i945 systems for the bucts/dd trick (documented)
-	# This enables the ROM to be flashed over the lenovo bios firmware
-	if [ "$1" = "x60" ] || [ "$1" = "x60t" ] || [ "$1" = "t60" ]
-		then
-			dd if="$1"_"$romtype".rom of=top64k.bin bs=1 skip=$[$(stat -c %s "$1"_"$romtype".rom) - 0x10000] count=64k
-			dd if=top64k.bin of="$1"_"$romtype".rom bs=1 seek=$[$(stat -c %s "$1"_"$romtype".rom) - 0x20000] count=64k conv=notrunc
-			rm -f top64k.bin
-	fi
-
 	# Add the correct GRUB configuration file for this image.
 	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
 	do
