@@ -20,8 +20,6 @@
 
 set -u -e -v
 
-echo "Downloading dependencies for libreboot_src"
-
 # Download bucts
 # ---------------------------------------------------
 
@@ -46,8 +44,6 @@ echo "Downloading dependencies for libreboot_src"
 # ---------------------------------------------------
 
 ./getmt86
-
-echo "Done. Full source is inside this existing libreboot_meta directory (rename it to libreboot_src before you continue). Now install the dependencies listed in 'builddeb' and then run 'builddeps' and then 'build' (or just use 'buildall')"
 
 # Download SeaBIOS
 # ---------------------------------------------------
