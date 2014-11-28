@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  builddeps-coreboot: builds the dependencies that coreboot needs before building a ROM image
+#  builddeps-seabios: builds the dependencies that coreboot needs before building a ROM image
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -21,17 +21,12 @@
 set -u -e -v
 
 # This script is used by the main "builddeps" script in libreboot src/meta archives.
-# The reason it is seperated here is so that coreboot can be built separately aswell.
-
-# To use this script, you will need the dependencies in "builddeb".
-# Run it, or adapt it if you do not use an "apt-get" distro.
-
-# This is also used by the "getcb" script.
+# The reason it is seperated here is so that seabios can be built separately aswell.
 
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 
-cd seabios
+cd seabios/
 
 # clean coreboot first
 make clean
