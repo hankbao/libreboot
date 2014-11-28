@@ -34,9 +34,6 @@ set -u -e -v
 cd coreboot
 
 # build cbfstool
-# THIS IS NOT THE STANDALONE VERSION
-# SEE "builddeps-cbfstool" for the instructions
-# for the cbfstool_standalone in libreboot_bin/
 cd util/cbfstool
 make
 
