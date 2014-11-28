@@ -179,43 +179,9 @@
 					<li>
 						Look at vortex86ex boards. See <a href="http://libreboot.org/vortex86ex">http://libreboot.org/vortex86ex</a>.
 					</li>
-					<li>
-						PTE errors still exist with 6718 (which is merged). <a href="http://review.coreboot.org/#/c/6718/">http://review.coreboot.org/#/c/6718/</a>
-						<ul>
-							<li><a href="future/dumps/pte_x60_6718/dmesg">dmesg</a></li>
-							<li><a href="future/dumps/pte_x60_6718/kern.log">kern.log</a></li>
-							<li>This doesn't seem to cause any issues for general use.</li>
-						</ul>
-					</li>
-					<li>
-						Make libreboot buildable in Parabola: update deps-parabola for a default Parabola install (base repository only). 
-					</li>
-					<li>get all useful info from http://www.coreboot.org/GRUB2 and https://wiki.parabolagnulinux.org/User:GNUtoo/laptop and make it into a tutorial</li>
-					<li>
-						Todo: test gnutoo's fallback patches: <a href="http://www.coreboot.org/Fallback_mechanism">http://www.coreboot.org/Fallback_mechanism</a>
-						(some parts use systemd. adapt for upstart, which is what trisquel uses)<br/>
-						see <a href="future/gnutoo_fallback_patch">this IRC log</a> (warning, not cleaned up)
-					</li>
-					<li>
-						Implement VBT for i945 laptops: <a href="future/index.html#i945_vbt">future/index.html#i945_vbt</a> and 
-						<a href="future/index.html#intelvbttool_results">future/index.html#intelvbttool_results</a>).
-					</li>
-					<li>
-						Implement INT 10H support in i945 native graphics. (this will be a lot of work. SeaBIOS has code for some geode boards, to get a general idea).
-					</li>
-					<li>Adapt linux-libre deblob scripts for use with coreboot.</li>
-					<li>
-						T60: find (for rare buggy CPU's that are unstable without microcode updates) 
-						if there is a workaround: see <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>
-					</li>
-					<li>
-						T60 15&quot; QXGA (2048x1536): fixed issue where GRUB wouldn't show any graphics.
-						<ul>
-							<li>It might be the same issue I ran into with Paul on the X60 (not enough memory being allocated) since the same code works on T60 SXGA+ and UXGA, where GRUB actually display graphics.</li>
-						</ul>
-					</li>
-					<li>Documentation: added as many links as I could find, to datasheets and schematics for macbook21/x60/t60 (i945 chipset, EC info for x60/t60/macbook21)</li>
-					<li>Documentation: Add a &quot;development guide&quot; for how to maintain libreboot ('get' scripts, deblob scripts, associated files under ./resources and so on)</li>
+					<li>Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed
+					using it's own script, but updating it is still a bit too manual. linux-libre's deblob
+					scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.</li>
 				</ul>
 		</div>
 

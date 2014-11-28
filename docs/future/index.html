@@ -35,6 +35,7 @@
 		<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
 		<li><a href="#i945_vbt">i945 X60/T60 VBT implementation (experimental: testing)</a></li>
 		<li><a href="#intelvbttool_results">IntelVbtTool results</a></li>
+		<li><a href="#fallback_patches">Fallback patches for i945</a></li>
 	</ul>
 
 <hr/>
@@ -400,6 +401,42 @@
 		</ul>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
+		
+<hr/>	
+	
+	<h1 id="fallback_patches">Fallback patches</h1>
+
+		<ul>
+			<li>
+				Todo: test gnutoo's fallback patches: <a href="http://www.coreboot.org/Fallback_mechanism">http://www.coreboot.org/Fallback_mechanism</a>
+				(some parts use systemd. adapt for upstart, which is what trisquel uses)<br/>
+				see <a href="gnutoo_fallback_patch">this IRC log</a> (warning, not cleaned up)
+			</li>
+		</ul>
+		
+<hr/>
+
+	<h1 id="other">Other - unlisted (low priority)</h1>
+	
+		<ul>
+			<li>
+				PTE errors still exist on i945 with 6718 (which is merged). <a href="http://review.coreboot.org/#/c/6718/">http://review.coreboot.org/#/c/6718/</a>
+				<ul>
+					<li><a href="future/dumps/pte_x60_6718/dmesg">dmesg</a></li>
+					<li><a href="future/dumps/pte_x60_6718/kern.log">kern.log</a></li>
+					<li>This doesn't seem to cause any issues for general use.</li>
+				</ul>
+			</li>
+			<li>
+				Implement INT 10H support in i945 native graphics. (this will be a lot of work. SeaBIOS has code for some geode boards, to get a general idea).
+			</li>
+			<li>
+				T60 15&quot; QXGA (2048x1536): fixed issue where GRUB wouldn't show any graphics. (Not many people have this panel)
+				<ul>
+					<li>It might be the same issue I ran into with Paul on the X60 (not enough memory being allocated) since the same code works on T60 SXGA+ and UXGA, where GRUB actually display graphics.</li>
+				</ul>
+			</li>
+		</ul>
 
 <hr/>
 
