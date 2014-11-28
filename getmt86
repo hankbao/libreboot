@@ -47,15 +47,6 @@ cd "memtest86+-5.01"/
 # Apply necessary patches
 # ---------------------------------------------------------------------------------
 
-# Remove the line in the Makefile (comment line 24) that makes memtest86+ connect to an scp server during build
-# Set the following in config.h (to enable use of memtest86+ on serial port):
-
-#	#define SERIAL_TTY 0
-#	#define SERIAL_BAUD_RATE 115200
-
-#	/* BEEP_MODE - Beep on error. Default off, Change to 1 to enable */
-#	#define BEEP_MODE 1
-
 # place the right config
 rm -f config.h
 cp ../resources/memtest86/patch/config.h .
