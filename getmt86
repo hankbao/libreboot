@@ -22,8 +22,6 @@ set -u -e -v
 
 # Get the last version of MemTest86+ used, apply patches, build it.
 
-# You need the dependencies from ./builddeb to use this script.
-
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
 
@@ -44,7 +42,7 @@ tar -xf "memtest86+-5.01.tar.gz"
 rm -f "memtest86+-5.01.tar.gz"
 
 # there are modifications required
-cd "memtest86+-5.01"
+cd "memtest86+-5.01"/
 
 # Apply necessary patches
 # ---------------------------------------------------------------------------------
