@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  flash script: uses flashrom to flash a new libreboot ROM image onto your machine
+#  macbook21_firstflash script: initial flashing script for MacBook2,1
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
