@@ -26,7 +26,7 @@ set -u -e -v
 # Build utilies needed for building GRUB payloads
 # ---------------------------------------------------------------------
 
-cd grub
+cd grub/
 
 # clean it first
 [[ -f Makefile ]] && make clean
