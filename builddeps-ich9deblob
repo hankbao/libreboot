@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  buildall script: Builds (absolutely) everything.
+#  builddeps-ich9deblob: builds ich9deblob source code
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -18,19 +18,23 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# This script is used by the main "builddeps" script in libreboot src/meta archives.
+# The reason it is seperated here is so that ich9deblob can be built separately aswell.
+
 set -u -e -v
 
-# Clean old builds first:
-# ------------------------------------------------------
-./cleandeps
+# Build ich9deblob utility
+# --------------------------------------------------------------------
 
-# Build the dependencies needed for building ROM's:
-# ------------------------------------------------------
-./builddeps
+cd resources/utilities/ich9deblob
 
-# Build the ROM's:
-# ------------------------------------------------------
-./build
+# clean it first
+rm -f ich9deblob
+
+# build ich9deblob
+gcc -o ich9deblob ich9deblob.c ich9desc.c -I.
+
+# done. go back to main directory
+cd ../../../
 
 # ------------------- DONE ----------------------
-

@@ -21,11 +21,6 @@
 # This script is used by the main "builddeps" script in libreboot src/meta archives.
 # The reason it is seperated here is so that bucts can be built separately aswell.
 
-# To build bucts, you will need the dependencies in "builddeb".
-# Run it, or adapt it if you do not use an "apt-get" distro.
-
-# "getbucts" script also makes use of this script.
-
 set -u -e -v
 
 # Build BUC.TS utility (needed for flashing ROM's on X60/T60 while Lenovo BIOS is running)

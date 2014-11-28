@@ -198,7 +198,7 @@ mv flashrom_ flashrom
 # build cbfstool, compiled (statically linked) and include the binary
 cd coreboot/util/
 cp -r cbfstool cbfstool_
-cd cbfstool
+cd cbfstool/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/cbfstool
@@ -224,6 +224,36 @@ fi
 cd ../
 rm -rf cbfstool
 mv cbfstool_ cbfstool
+cd ../../
+
+# ----------------
+# ich9deblob related
+# ----------------
+# build ich9deblob, compiled (statically linked) and include the binary
+cd resources/utilities/
+cp -r ich9deblob ich9deblob_
+cd ich9deblob/
+rm -f ich9deblob
+gcc -static -o ich9deblob ich9deblob.c ich9desc.c -I.
+mkdir ../../../libreboot_bin/ich9deblob
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# User is building on 32-bit host. Build only 32-bit binaries
+		mkdir ../../../libreboot_bin/ich9deblob/i686
+		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
+elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
+	then
+		# Build the 64-bit binaries
+		mkdir ../../../libreboot_bin/ich9deblob/x86_64
+		mv ich9deblob ../../../libreboot_bin/ich9deblob/x86_64/
+		# Now build 32-bit binaries
+		gcc -static -m32 -o ich9deblob ich9deblob.c ich9desc.c -I.
+		mkdir ../../../libreboot_bin/ich9deblob/i686
+		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
+fi
+cd ../
+rm -rf ich9deblob
+mv ich9deblob_ ich9deblob
 cd ../../
 
 # -----------------

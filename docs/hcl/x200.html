@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ThinkPad X200</title>
+</head>
+
+<body>
+
+	<h1 id="pagetop">ThinkPad X200</h1>
+		<p>
+			This sections relates to known hardware compatibility in libreboot.
+		</p>
+		<p>
+			Or <a href="index.html">back to main index</a>.
+		</p>
+		
+		<p>
+			It is believed that all X200 laptops are compatible. X200s and X200t may also work,
+			but require soldering (for the initial installation/flashing of a ROM image, or
+			dumping the current firmware). <b>Only the X200 is tested so far.</b>
+		</p>
+		<p>
+			It *might* be possible to put an X200 motherboard in an X201 chassis, though this is currently untested
+			by the libreboot project. The same may also apply between X200s and X201s; again, this is untested.
+			<b>It's most likely true.</b>
+		</p>
+		
+		<p>
+			There are two possible flash chip sizes for the X200: 4MiB (32Mbit) or 8MiB (64Mbit). 
+			This can be identified by the type of flash chip below the palmrest: 4MiB is SOIC-8, 8MiB
+			is SOIC-16.
+		</p>
+		
+		<p>
+			<b>The X200 laptops come with ME (and sometimes AMT) before flashing libreboot. Libreboot disables and removes it
+			by using a modified descriptor: see <a href="x200_remove_me.html">x200_remove_me.html</a></b> (contains notes, plus
+			instructions)
+		</p>
+		
+		<p>
+			Flashing instructions can be found at <a href="../install/index.html#flashrom_x200">../install/index.html#flashrom_x200</a>
+		</p>
+
+<hr/>
+
+	<h1 id="lcd_supported_list">LCD compatibility list</h1>
+		<p>
+			Unless otherwise noted (italic styling, underlined), these are CCFL 1280x800 screens with TN panels inside.
+			Please do advise if you spot mistakes here.
+		</p>
+		<p>
+			Use the instructions at <a href="../misc/index.html#get_edid_panelname">../misc/index.html#get_edid_panelname</a>
+			to get the name of your panel, then check it against the list below. If your panel is untested, then by all means
+			try it! (and get in touch with the libreboot project to advise whether or not it worked).
+		</p>
+		<p>
+			AUO = AU Optronics. List of panels below based on
+			<a href="http://www.thinkwiki.org/wiki/TFT_display">http://www.thinkwiki.org/wiki/TFT_display</a>
+		</p>
+		<p>
+			Tested LCD panels (confirmed working):
+		</p>
+			<ul>
+				<li>X200/X200s: LG-Philips LP121WX3-TLC1 (sgsit on IRC has this panel) (LED backlight)</li>
+				<li>X200/X200s: Samsung LTN121AT03 (phcoder on IRC has this panel)</li>
+				<li>X200/X200s: AUO B121EW03 V.6 (fchmmr on IRC has this panel)</li>
+			</ul>
+		<p>
+			Untested LCD panels (status unknown):
+		</p>
+			<ul>
+				<li>X200 Tablet: TMD-Toshiba LTD121KX6B (LED backlight)</li>
+				<li>X200/X200s: TMD-Toshiba LTD121EWVB</li>
+				<li>X200/X200s: AOU B121EW09 V.2 (LED backlight)</li>
+				<li>X200/X200s: FRU 42T0715 (no manufacturer/model given) (LED backlight)</li>
+				<li>X200/X200s: LG-Philips LP121WX3-TLA1 (LED backlight)</li>
+				<li>X200/X200s: 42T0713 FRU (no model/manufacturer given) (LED backlight)</li>
+				<li>X200s (not X200): TMD-Toshiba LTD121EQ3B (1440x900 resolution) (LED backlight)</li>
+			</ul>
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+		
+		<h2 id="ips">
+			AFFS/IPS panels
+		</h2>
+			<h3>X200</h3>
+				<p>
+					Adapted from <a href="https://github.com/bibanon/Coreboot-ThinkPads/wiki/ThinkPad-X200">https://github.com/bibanon/Coreboot-ThinkPads/wiki/ThinkPad-X200</a>
+				</p>
+				<p>
+					Look at wikipedia for difference between TN and IPS panels. IPS have much better colour/contrast than
+					a regular TN, and will typically have good viewing angles.
+				</p>
+				<p>
+					These seem to be from the X200 tablet. You need to find one without the glass touchscreen protection on it
+					(might be able to remove it, though). It also must not have a digitizer on it (again, might be possible to 
+					just simply remove the digitizer).
+				</p>
+					<ul>
+						<li>BOE-Hydis HV121WX4-120, HV121WX4-110 or HV121WX4-100 - cheap-ish, might be hard to find</li>
+						<li>Samsung LTN121AP02-001 - common to find, cheap</li>
+					</ul>
+				<p>
+					<b>If your X200 has an LED backlit panel in it, then you also need to get an inverter and harness cable 
+					that is compatible with the CCFL panels. To see which panel type you have, see 
+					<a href="#led_howtotell">#led_howtotell</a>. If you need the inverter/cable, here are part numbers:
+					44C9909 for CCFL LVDS cable with bluetooth and camera connections, and 42W8009 or 42W8010 for the
+					inverter.</b>
+				</p>
+				<p>
+					There are glossy and matte versions of these. Matte means anti-glare, which is what you want (in this authors opinion).
+				</p>
+				<p>
+					Refer to the HMM (hardware maintenance manual) for how to replace the screen.
+				</p>
+				<p>Sources:</p>
+					<ul>
+						<li><a href="http://forum.thinkpads.com/viewtopic.php?f=2&t=84941">ThinkPad Forums - Matte AFFS Panel on X200</a></li>
+						<li><a href="http://forum.thinkpads.com/viewtopic.php?p=660662#p660662">ThinkPad Forums - Parts for X200 AFFS Mod</a></li>
+						<li><a href="http://thinkwiki.de/X200_Displayumbau">ThinkWiki.de - X200 Displayumbau</a> (achtung: du musst lesen und/oder spreche deutsch;
+						oder ein freund fur hilfe)</li>
+					</ul>
+			<h3>X200s</h3>
+				<p>
+					<a href="http://forum.thinkpads.com/viewtopic.php?p=618928#p618928">http://forum.thinkpads.com/viewtopic.php?p=618928#p618928</a>
+					explains that the X200s screens/assemblies are thinner. You need to replace the whole lid with one from a normal X200/X201.
+				</p>
+			
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+		
+<hr/>
+
+	<h1 id="led_howtotell">How to tell if it has an LED or CCFL?</h1>
+	
+		<p>
+			Some X200's have a CCFL backlight and some have an LED backlight, in their LCD panel. This 
+			also means that the inverters will vary, so you must be careful if ever replacing either
+			the panel and/or inverter. (a CCFL inverter is high-voltage and will destroy an LED backlit panel).
+		</p>
+		<p>
+			CCFL's contain mercury. An X200 with a CCFL backlight will (<b></b>unless it has been changed to an LED,
+			with the correct inverter. Check with your supplier!</b>) the following: <i>&quot;This product
+			contains Lithium Ion Battery, Lithium Battery and a lamp which contains mercury; dispose according to
+			local, state or federal laws&quot;</i> (one with an LED backlit panel will say something different).
+		</p>
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
+
+	<p>
+		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+	</p>
+
+	<p>
+		This document is distributed in the hope that it will be useful,
+		but WITHOUT ANY WARRANTY; without even the implied warranty of
+		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../../license.txt</a> for more information.
+	</p>
+
+</body>
+</html>

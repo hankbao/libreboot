@@ -26,6 +26,7 @@
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
 				<li><a href="#flashrom">X60/X60S/X60T/T60/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
+				<li><a href="#flashrom_x200">X200: Flashing libreboot (hardware or software)</a></li>
 			</ul>
 
 		<h2>Installing libreboot (hardware)</h2>
@@ -46,6 +47,7 @@
 				<li>ThinkPad X60, X60s: <b>bin/x60/</b></li>
 				<li>ThinkPad X60 Tablet: <b>bin/x60t/</b></li>
 				<li>ThinkPad T60: <b>bin/t60/</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
+				<li>ThinkPad X200: <b>bin/x200_8mb/</b> (8MiB flash chip) or <b>bin/x200_4mb</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
 				<li>Apple MacBook2,1: <b>bin/macbook21/</b></li>
 				<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROM's work)</li>
 			</ul>
@@ -75,7 +77,7 @@
 
 		<p>
 			<b><i>boardname</i></b> should be replaced with one of the following: <b>macbook21</b>, <b>t60</b>,
-			<b>x60</b> or <b>x60t</b>.
+			<b>x60</b>, <b>x60t</b>, <b>x200_8mb</b> or <b>x200_4mb</b>.
 		</p>
 
 		<p>
@@ -398,6 +400,23 @@
 		</p>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
+		
+<hr/>
+
+	<h1 id="flashrom_x200">X200: Flashing libreboot (hardware or software)</h1>
+
+		<p>
+			If your X200 is running the original firmware (Lenovo BIOS), follow the instructions at
+			<a href="x200_external.html">x200_external.html</a> first.
+		</p>
+		
+		<p>
+			Software flashing instructions not written yet (TODO).
+		</p>
+		
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
 
 <hr/>
 
