@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  getgrub script: Downloads SeaBIOS and patches it.
+#  getseabios script: Downloads SeaBIOS and patches it.
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -20,8 +20,6 @@
 
 set -u -e -v
 
-# Get GRUB, revert to commit last used and apply patches.
-
 # Remove the old version that may still exist
 # -------------------------------------------------------------------------------
 
@@ -35,7 +33,7 @@ rm -rf seabios
 # download it using git
 git clone git://git.seabios.org/seabios.git seabios
 
-cd seabios
+cd seabios/
 
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
