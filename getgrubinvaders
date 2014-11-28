@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  getmt86: Downloads MemTest86+ and patches it
+#  getmt86: Downloads gRUB Invaders and patches it
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -20,14 +20,10 @@
 
 set -u -e -v
 
-# Get the last version of MemTest86+ used, apply patches, build it.
-
-# You need the dependencies from ./builddeb to use this script.
+# Get the last version of GRUB invaders used, apply patches, build it.
 
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
-
-echo "DOWNLOADING GRUB INVADERS"
 
 rm -rf grubinvaders
 
@@ -47,7 +43,7 @@ rm -f "invaders-1.0.0.tar.gz"
 mv invaders grubinvaders
 
 # there are modifications required
-cd grubinvaders
+cd grubinvaders/
 
 # Apply necessary patches
 # ---------------------------------------------------------------------------------
@@ -64,8 +60,6 @@ rm -f compile.sh.patch
 
 # we're done
 cd ../
-
-echo "FINISHED DOWNLOADING GRUB INVADERS"
 
 # ------------------- DONE ----------------------
 
