@@ -25,7 +25,7 @@ set -u -e -v
 # clean coreboot utilities (dependencies for 'build'):
 # -------------------------------------------------------
 
-cd coreboot
+cd coreboot/
 
 # ----------------------
 # clean coreboot itself:
@@ -36,10 +36,10 @@ make clean
 # clean the utilities
 # -------------------
 # clean cbfstool
-cd util/cbfstool
+cd util/cbfstool/
 make clean
 # clean nvramtool
-cd ../nvramtool
+cd ../nvramtool/
 make clean
 
 # go back to coreboot dir
@@ -57,7 +57,7 @@ cd ../
 # clean grub
 # --------------------------------------------------------
 
-cd grub
+cd grub/
 
 [[ -f Makefile ]] && make clean
 
@@ -67,7 +67,7 @@ cd ../
 # clean memtest86+
 # --------------------------------------------------------
 
-cd "memtest86+-5.01"
+cd "memtest86+-5.01"/
 
 make clean
 
@@ -77,7 +77,7 @@ cd ..
 # clean bucts
 # --------------------------------------------------------
 
-cd bucts
+cd bucts/
 make clean
 
 # done. go back to main directory.
@@ -86,7 +86,7 @@ cd ../
 # clean flashrom
 # --------------------------------------------------------
 
-cd flashrom
+cd flashrom/
 
 make clean
 # remove patched binaries
@@ -99,7 +99,7 @@ cd ../
 # clean seabios
 # --------------------------------------------------------
 
-cd seabios
+cd seabios/
 
 make clean
 
