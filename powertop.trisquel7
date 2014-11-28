@@ -26,7 +26,6 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # For Trisquel 7 users.
-# This may also work on other apt distros.
 
 apt-get -y install powertop
 
@@ -43,8 +42,6 @@ chmod +x /etc/init.d/powertop
 
 # Add the service to make it run automatically at boot time:
 update-rc.d powertop defaults
-
-# Done.
 
 # Run powertop now and tell the user
 powertop --auto-tune
