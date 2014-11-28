@@ -26,12 +26,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # For Trisquel 6.0 (and 6.0.1) users.
-# This may also work on other apt distros.
 
 # powertop on Trisquel 6 is out of date. We will get it from git.
 # We are using a specific git revision (one that I have tested)
-
-# RUN THIS AS ROOT
 
 # Delete the one that is already installed from repo's (if it is installed)
 apt-get -y purge powertop
@@ -45,7 +42,7 @@ rm -rf powertop
 # Download from git
 git clone https://github.com/fenrus75/powertop.git
 
-cd ./powertop
+cd powertop/
 
 # Revert to specific commit (from when powertop was last tested):
 git reset --hard e70c89eb5d7b6b8f898bb126adefcbf3202d5acf
@@ -71,8 +68,6 @@ chmod +x /etc/init.d/powertop
 
 # Add the service to make it run automatically at boot time:
 update-rc.d powertop defaults
-
-# Done.
 
 # Run powertop now and tell the user
 powertop --auto-tune
