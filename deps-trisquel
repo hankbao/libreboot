@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  builddeb script: Installs build dependencies from apt-get (tested in Trisquel 6)
+#  deps-trisquel script: installs build dependencies for Trisquel 6 and 7
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -25,18 +25,10 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# Install build dependencies
-# For trisquel. This might also work on other apt-get distributions.
-
 # Duplications are intentional. Please do not re-factor.
 #
-# This is so that individual scripts can be installed for specific applications.
-# This is, alternatively, so that I can more easily move each part to a separate script.
+# This is so that they can moved to separate scripts.
 #
-
-# Really. Most distros come with this anyway
-# Parabola does not! If you are using parabola, use "pacman -S wget"
-# ------------------------------------------------------------
 
 apt-get -y install wget
 
