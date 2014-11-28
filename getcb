@@ -26,8 +26,6 @@ set -u -e -v
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
 
-echo "DOWNLOADING AND PATCHING COREBOOT"
-
 rm -rf coreboot
 
 # Get latest coreboot:
@@ -37,7 +35,7 @@ rm -rf coreboot
 git clone http://review.coreboot.org/coreboot
 
 # there are modifications required
-cd coreboot
+cd coreboot/
 
 # reset to previously tested revision
 git reset --hard c637a887dde1c63bf3863e70cbe19dedf5f6ca02
@@ -69,21 +67,18 @@ git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cher
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 
-# Deblobbing was done manually for this pre-release (will re-tool linux-libre deblob scripts later):
-cd ../
-echo "deblobbing coreboot"
-./DEBLOB
-# The git history (git diff command) shows what blobs were deleted (including the blobs themselves) which is a freedom issue. Just delete .git altogether:
-cd coreboot
+# The git history (git diff command) shows what blobs were deleted 
+# along with the contents of those blobs. This needs to be deleted
+# for libreboot's purposes.
 rm -rf .git
 rm -f .gitreview
 rm -f .gitmodules
 rm -f .gitignore
-cd ../
-echo "finished deblobbing coreboot"
 
-# we're done
-echo "FINISHED DOWNLOADING AND PATCHING COREBOOT"
+cd ../
+
+# Deblob coreboot
+./DEBLOB
 
 # ------------------- DONE ----------------------
 
