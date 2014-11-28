@@ -21,9 +21,7 @@
 set -u -e -v
 
 # This grabs current base used, and applies patches
-# This is also used to run deblob scripts.
-
-# (the idea is that this script will reproduce the coreboot directory included with this version of libreboot)
+# This is also used to run the deblob scripts.
 
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
