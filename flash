@@ -22,6 +22,7 @@
 # set -u -e -v
 set -v
 
+# These are the tested platforms
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
 	then
 		echo "Running on i686. ok."
@@ -35,24 +36,26 @@ else
 	exit 1
 fi
 
+# the user must be root to use flashrom
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
 
-# USE ROOT OR SUDO WHEN EXECUTING THIS
-# uses flashrom to flash the rom
-
+# check that the user supplied a path to a ROM image:
 if (( $# != 1 )); then
 	echo "Usage: ./lenovobios_firstflash yourrom.rom"
 	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
 	exit 1
 fi
+# if the user did supply a path, check that it exists:
 if [ ! -f $1 ]; then
 	echo "File not found!"
 	exit 1
 fi
+
+# Use flashrom to flash the ROM image:
 
 if [ -f "DEBLOB" ]; then
 	# Means we are in src archive or git
