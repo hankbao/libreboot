@@ -18,15 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This builds all of the dependencies that the "build" script relies on.
-
-# MAKE SURE THAT YOU RAN "./builddeb" BEFORE RUNNING THIS!
-# IF YOUR DISTRO DOESN'T USE "apt-get", ADAPT WHAT YOU SEE IN "builddeb"
-# AND INSTALL THE BUILD DEPENDENCIES NEEDED TO RUN THIS BUILD SCRIPT!
-
-# NOTE: If you downloaded the "meta" archive and ran "getall", then
-# you do not need to run this at all. getall does all of the below:
-
 set -u -e -v
 
 # Build utilities needed in coreboot directory
