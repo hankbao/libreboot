@@ -37,10 +37,10 @@ cd coreboot
 # Build the utilities required by libreboot
 # -----------------------------------------
 
-# build cbfstool
+# cbfstool
 cd util/cbfstool
 make
-# build nvramtool
+# nvramtool
 cd ../nvramtool
 make
 

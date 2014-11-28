@@ -27,13 +27,17 @@ set -u -e -v
 
 cd coreboot
 
+# ----------------------
 # clean coreboot itself:
+# ----------------------
 make clean
 
+# -------------------
+# clean the utilities
+# -------------------
 # clean cbfstool
 cd util/cbfstool
 make clean
-
 # clean nvramtool
 cd ../nvramtool
 make clean
@@ -41,10 +45,10 @@ make clean
 # go back to coreboot dir
 cd ../../
 
-# remove the payloads (they will be built by "build")
-rm -f grub*.elf
-
+# -------------------------------------
 # clean reference crossGCC for coreboot
+# source archive not deleted (intended)
+# -------------------------------------
 make crossgcc-clean
 
 # done. go back to main directory
@@ -85,7 +89,7 @@ cd ../
 cd flashrom
 
 make clean
-# remove modified binaries
+# remove patched binaries
 rm -f flashrom_lenovobios_sst
 rm -f flashrom_lenovobios_macronix
 
