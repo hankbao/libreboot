@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  builddeps-grubinvaders script: builds grub invaders source code
+#  builddeps-grub script: builds grub source code
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -21,10 +21,7 @@
 set -u -e -v
 
 # This script is used by the main "builddeps" script in libreboot src/meta archives.
-# The reason it is seperated here is so that MemTest86+ can be built separately aswell.
-
-# To use this script, you will need the dependencies in "builddeb".
-# Run it, or adapt it if you do not use an "apt-get" distro.
+# The reason it is seperated here is so that GRUB can be built separately aswell.
 
 # Build GRUB Invaders payload (for GRUB)
 # --------------------------------------------------------------------
