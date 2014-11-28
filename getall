@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  getall script: downloads everything extra for libreboot_src and patches to create libreboot_src archive from metadata
+#  getall script: download everything from upstreams and apply patches
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #
@@ -19,9 +19,6 @@
 #
 
 set -u -e -v
-
-# For libreboot_meta.tar.gz
-# This downloads all of the source code present in libreboot_src.tar.gz
 
 echo "Downloading dependencies for libreboot_src"
 
