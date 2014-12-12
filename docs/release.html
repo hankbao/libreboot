@@ -45,17 +45,21 @@
 
 <hr/>
 
-	<h1 id="release6">Release 20141015</h1>
+	<h1 id="release20141225">Release 20141225</h1>
+	
+		<p>
+			Release date: December 25th, 2014.
+		</p>
 
 		<h2>Binaries (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz">http://libreboot.org/release/20141015/libreboot_bin.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/20141225/libreboot_bin.tar.xz">http://libreboot.org/release/20141225/libreboot_bin.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20141225/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20141225/libreboot_bin.tar.xz.sig</a></li>
 			</ul>
 		<h2>Source code (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz">http://libreboot.org/release/20141015/libreboot_src.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/20141225/libreboot_src.tar.xz">http://libreboot.org/release/20141225/libreboot_src.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20141225/libreboot_src.tar.xz.sig">http://libreboot.org/release/20141225/libreboot_src.tar.xz.sig</a></li>
 			</ul>
 
 			<p>
@@ -82,12 +86,20 @@
 					</ul>
 				</li>
 				<li>
-					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
+					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issuesinstall/x200_external.html; see below):
 					<ul>
 						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
 						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
 						<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
 						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+					</ul>
+				</li>
+				<li>
+					<b>Lenovo ThinkPad X200</b>
+					<ul>
+						<li>X200S and X200 Tablet are unsupported in this release. <a href="hcl/x200.html">hcl/x200.html</a></li>
+						<li>Machines come with ME/AMT: it can be removed. <a href="hcl/x200_remove_me.html">hcl/x200_remove_me.html</a></li>
+						<li>External hardware required for initial flashing procedure. <a href="install/x200_external.html">install/x200_external.html</a></li>
 					</ul>
 				</li>
 				<li>
@@ -108,26 +120,106 @@
 			Changes for this release (latest changes first, earliest changes last)
 		</h2>
 			<ul>
-				<li>Updated coreboot (git commit 8ffc085e1affaabbe3dca8ac6a89346b71dfc02e), the latest at the time of writing.</li>
-				<li>Updated SeaBIOS (git commit 67d1fbef0f630e1e823f137d1bae7fa5790bcf4e), the latest at the time of writing.</li>
-				<li>Updated Flashrom (svn revision 1850), the latest at the time of writing.</li>
-				<li>Updated GRUB (git commit 9a67e1ac8e92cd0b7521c75a734fcaf2e58523ad), the latest at the time of writing.</li>
-				<li>Cleaned up the documentation, removed unneeded files.</li>
-				<li>ec/lenovo/h8 (x60/x60s/x60t/t60): Enable wifi/bluetooth/wwan/touchpad/trackpoint by default.</li>
-				<li>Documentation: Updated list of T60 LCD's (Samsung LTN150XG 15&quot; XGA listed as non-working).</li>
-				<li>builddeps-coreboot: Don't build libpayload (not needed. This was leftover by mistake, when trying out the TINT payload).</li>
-				<li>Replaced most diff files (patches) for coreboot with gerrit checkouts (cherry-pick).</li>
-				<li>Documentation: x60_security.html and t60_security.html: added links to info about the ethernet controller (Intel 82573).</li>
-				<li>Documentation: x60_security.html and t60_security.html: added notes about DMA and the docking station.</li>
+				<li>ThinkPad X200 support added to libreboot</li>
+				<li>coreboot-libre config (all boards): enable USB dongle log output (for BeagleBone Black)</li>
+				<li>cleandeps: actually clean grubinvaders</li>
+				<li>.gitignore: add powertop directory</li>
+				<li>cleandeps: clean i945-pwm utility</li>
+				<li>scripts (all): fix typo's</li>
+				<li>Documentation: general cleanup.</li>
+				<li>builddeps-flashrom: reduce build commands to a single for loop</li>
+				<li>scripts (all): replace unnecessary rm -rf with rm -f</li>
+				<li>powertop.trisquel7: remove sudo (script already checks if the user is root)</li>
+				<li>docs/release.html: add lenovo g505s to the list of candidates</li>
+				<li>.gitignore: add libreboot_bin.tar.xz and libreboot_src.tar.xz</li>
 				<li>
-					Documentation: configuring_parabola.html: basic post-install steps for Parabola GNU/Linux 
-					(helpful, since libreboot development is being moved to Parabola at the time of writing).
+					libreboot_bin.tar.xz: Include utils as statically linked binaries
+					<ul>
+						<li>This means that the user does not have to install build dependency
+						or build from source anymore.</li>
+					</ul>
 				</li>
-				<li>builddeps-coreboot: use 'make crossgcc-i386' instead of 'make crossgcc'. Libreboot only targets x86 at the time of writing.</li>
-				<li>ROM images no longer include SeaBIOS. Instead, the user adds it afterwards. Documentation and scripts updated.</li>
-				<li>docs/images/encrypted_parabola.html: Notes about linux-libre-grsec</li>
-				<li>Documentation: encrypted_parabola.html: add tutorial for encrypted Parabola GNU/Linux installation.</li>
-				<li>Documentation: added more info about wifi chipsets</li>
+				<li>deps-trisquel: Add binutils-source</li>
+				<li>powertop.trisquel7 (new): Setup powertop on trisquel 7</li>
+				<li>deps-trisquel,flash,lenovobios_firstflash,lenovobios_secondflash,macbook21_firstflash
+				x60flashfrom5,powertop.trisquel6: check if user is root</li>
+				<li>deps-trisquel: Make GRUB build on in Trisquel 7 x86_64. (cross compile dependencies. fixes build error in GRUB)</li>
+				<li>deps-parabola (removed) Remove Parabola dependencies script. Will re-add later (properly tested)</li>
+				<li>grub.cfg: Add more path checks to isolinux parser (more ISO's should work now)</li>
+				<li>Update SeaBIOS</li>
+				<li>x60flashfrom5 (new), for X60 users upgrading from 5th/early release</li>
+				<li>Update flashrom</li>
+				<li>Update GRUB</li>
+				<li>
+					Updated coreboot-libre
+					<ul>
+						<li>i945: permanently set tft_brightness to 0xff (fixes bug on X60 where
+						turning up brightness at max would make it loop back to low brightness)</li>
+					</ul>
+				</li>
+				<li>
+					getcb: Revert X60/T60 to legacy backlight controls
+					<ul>
+						<li>The ACPI brightness patches were abandoned and obsolete.</li>
+					</ul>
+				</li>
+				<li>grub.cfg: Only load initrd.img if it exists. Add rw to linux line (for ProteanOS)</li>
+				<li>build: Only generate the GRUB configurations once (re-use on all images)</li>
+				<li>Only build 2 GRUB payload executables, re-use on all boards.</li>
+				<li>
+					resources/utilities/grub-assemble/gen.txtmode.sh: Use GNU BASH<br/>
+					resources/utilities/grub-assemble/gen.vesafb.sh: Use GNU BASH
+				</li>
+				<li>scripts (error handling): Replace exit with exit 1 (make debugging easier)</li>
+				<li>
+					Move most files in CBFS to GRUB memdisk, except grub.cfg and grubtest.cfg
+					<ul>
+						This reduces the space used in CBFS because coreboot compresses
+						it's payloads with LZMA by default. grub.cfg is all that most users
+						will want to modify, which remains in CBFS.
+					</ul>
+				</li>
+				<li>docs/release.html Add DMP vortex86ex to list of candidates.</li>
+				<li>docs/release.html Add ThinkPad X201 to list of candidates.</li>
+				<li>New links added to docs/security/x60_security and docs/security/t60_security</li>
+				<li>lenovobios_secondflash: Warn if BUCTS is not present. (not a dealbreaker. Can just pull out nvram battery/coin).</li>
+				<li>lenovobios_firstflash: Fail if BUCTS fails. (anti-bricking precaution)</li>
+				<li>Removed obnoxious warnings from flashing scripts, improved documentation instead.</li>
+				<li>scripts (all): add proper error checking (fail fast, fail early. Do not continue if there are errors)</li>
+				<li>buildrom-withgrub: rename image to boardname_layout_romtype.rom</li>
+				<li>buildrom-withgrub: don't move cbfstool, execute directly</li>
+				<li>resources/utilities/grub-assemble: add French Dvorak (BEPO) keyboard layout.</li>
+				<li>Documentation: add docs/hardware/x60_keyboard.html (show how to replace keyboard on X60/X60T)</li>
+				<li>Documentation: major cleanup (better structure, easier to find things)</li>
+				<li>
+					docs/release.html: Remove Acer CB5 from list of future candidates.
+					<ul>
+						<li>
+							Too many issues. Chromebooks are crippled (soldered RAM/storage/wifi)
+							and have too many usability issues for the libreboot project.
+						</li>
+					</ul>
+				</li>
+				<li>docs/gnulinux/grub_cbfs.html Major cleanup. Usability improvements.</li>
+				<li>hocs/gnulinux/encrypted_trisquel.html: Fixed mistakes/typo's. General improvements</li>
+				<li>
+					flash (flashrom script): remove boardmismatch=force
+					<ul>
+						<li>
+							 This was put there before for users upgrading from libreboot r5
+							 to r6, but also allows the user to flash the wrong image. For
+							 example, the user could flash a T60 image on an X60, thus
+							 bricking the machine. It's almost certain that most people
+							 have upgraded by now, so remove this potentially dangerous
+							 option.
+						</li>
+					</ul>
+				</li>
+				<li>Documentation: update compatibility list for X60T LCD panels.</li>
+				<li>docs/release.html: add note about X60 Tablet board in X60/X60s</li>
+				<li>docs/howtos/grub_boot_installer.html: small corrections</li>
+				<li>docs/howtos/grub_boot_installer.html: improved readability, fixed html errors</li>
+				<li>Documentation (macbook21 related): clean up</li>
 			</ul>
 
 <hr/>
@@ -147,10 +239,8 @@
 						Look into those machines:
 						<ul>
 							<li>
-								ThinkPad X200 - uses the same chipset (gm45) as the Roda RK9 which doesn't have ME; it might be optional on the X200. See <a href="http://libreboot.org/x200/">libreboot.org/x200/</a>.
-							</li>
-							<li>
-								ThinkPad X201 - see <a href="http://libreboot.org/x201/">http://libreboot.org/x201/</a>.
+								ThinkPad X201 - ME ignition is an issue. Watchdog for ME is an issue. Might be possible to disable watchdog in the flash descriptor
+								(soft straps).
 							</li>
 							<li>
 								ThinkPad R400 (needs to be ported to coreboot). Uses the same chipset as the X200.
@@ -176,6 +266,8 @@
 				Other tasks (non-critical, but still important)
 			</h2>
 				<ul>
+					<li>linux 3.18 broke acpi brightness on i945. Libreboot reverted to legacy brightness for now. Look into why it
+					broke on 3.18 (do a git bisect).</li>
 					<li>
 						Look at vortex86ex boards. See <a href="http://libreboot.org/vortex86ex">http://libreboot.org/vortex86ex</a>.
 					</li>

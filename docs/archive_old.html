@@ -37,6 +37,7 @@
 
 	<h2>Releases</h2>
 	<ul>
+		<li><a href="#release20141015">r20141015 (2014 October 15th)</a></li>
 		<li><a href="#release6">6th release</a> (2014 September 11th <b>pre-release, 7th beta</b>)</li>
 		<li><a href="#release5">5th release</a> (2014 March 7th, revised 2014 June 22nd)</li>
 		<li><a href="#release4">4th release</a> (2014 February 21st)</li>
@@ -54,6 +55,94 @@
 		The 1st, 2nd, 3rd and 4th releases were really just older revisions of the 5th release.
 		For historical reasons (and to avoid confusion), these are still called 'releases' instead of correcting the mistake.
 	</p>
+
+<hr/>
+
+	<h1 id="release20141015">Release 20141015</h1>
+
+		<h2>Binaries (right-click save as, or use wget)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz">http://libreboot.org/release/20141015/libreboot_bin.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig</a></li>
+			</ul>
+		<h2>Source code (right-click save as, or use wget)</h2>
+			<ul>
+				<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz">http://libreboot.org/release/20141015/libreboot_src.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig</a></li>
+			</ul>
+
+			<p>
+				Installation instructions can be found at <a href="install/index.html#flashrom">install/index.html#flashrom</a>. 
+				Building instructions (for source code) can be found at <a href="git/index.html#build">git/index.html#build</a>.
+			</p>
+
+		<h2>Machines supported in this release:</h2>
+			<ul>
+				<li>
+					<b>Lenovo ThinkPad X60/X60s</b>
+					<ul>
+						<li>
+							You can also remove the motherboard from an X61/X61s and replace it with an X60/X60s motherboard.
+							An X60 Tablet motherboard will also fit inside an X60/X60s. 
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
+					<ul>
+						<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+					</ul>
+				</li>
+				<li>
+					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
+					<ul>
+						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
+						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
+						<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
+						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+					</ul>
+				</li>
+				<li>
+					<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
+					<ul>
+						<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
+					</ul>
+				</li>
+				<li>
+					<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
+					<ul>
+						<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
+					</ul>
+				</li>
+			</ul>
+
+		<h2>
+			Changes for this release (latest changes first, earliest changes last)
+		</h2>
+			<ul>
+				<li>Updated coreboot (git commit 8ffc085e1affaabbe3dca8ac6a89346b71dfc02e), the latest at the time of writing.</li>
+				<li>Updated SeaBIOS (git commit 67d1fbef0f630e1e823f137d1bae7fa5790bcf4e), the latest at the time of writing.</li>
+				<li>Updated Flashrom (svn revision 1850), the latest at the time of writing.</li>
+				<li>Updated GRUB (git commit 9a67e1ac8e92cd0b7521c75a734fcaf2e58523ad), the latest at the time of writing.</li>
+				<li>Cleaned up the documentation, removed unneeded files.</li>
+				<li>ec/lenovo/h8 (x60/x60s/x60t/t60): Enable wifi/bluetooth/wwan/touchpad/trackpoint by default.</li>
+				<li>Documentation: Updated list of T60 LCD's (Samsung LTN150XG 15&quot; XGA listed as non-working).</li>
+				<li>builddeps-coreboot: Don't build libpayload (not needed. This was leftover by mistake, when trying out the TINT payload).</li>
+				<li>Replaced most diff files (patches) for coreboot with gerrit checkouts (cherry-pick).</li>
+				<li>Documentation: x60_security.html and t60_security.html: added links to info about the ethernet controller (Intel 82573).</li>
+				<li>Documentation: x60_security.html and t60_security.html: added notes about DMA and the docking station.</li>
+				<li>
+					Documentation: configuring_parabola.html: basic post-install steps for Parabola GNU/Linux 
+					(helpful, since libreboot development is being moved to Parabola at the time of writing).
+				</li>
+				<li>builddeps-coreboot: use 'make crossgcc-i386' instead of 'make crossgcc'. Libreboot only targets x86 at the time of writing.</li>
+				<li>ROM images no longer include SeaBIOS. Instead, the user adds it afterwards. Documentation and scripts updated.</li>
+				<li>docs/images/encrypted_parabola.html: Notes about linux-libre-grsec</li>
+				<li>Documentation: encrypted_parabola.html: add tutorial for encrypted Parabola GNU/Linux installation.</li>
+				<li>Documentation: added more info about wifi chipsets</li>
+			</ul>
+
 
 <hr/>
 
