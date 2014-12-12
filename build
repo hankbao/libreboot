@@ -52,7 +52,7 @@ done
 cd ../
 
 # Build ROM images for supported boards
-for board in x60 x60t t60 x200_4mb x200_8mb macbook21
+for board in $(ls resources/libreboot/config/)
 do
 	./buildrom-withgrub $board
 done
