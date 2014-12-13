@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+# This is used when updating the version of
+# coreboot that libreboot uses, to know what
+# new blobs have landed in coreboot
+
+# full deblob scripts based on linux-libre
+# will replace this script later on. For now, 
+# this will have to do.
+
+echo "finding blobs in coreboot..."
+
+cp deblob-check ../../../coreboot
+cd ../../../coreboot/
+
+chmod +x deblob-check
+find -type f | xargs ./deblob-check > blobs
+rm -f deblob-check
+
+rm -f tocheck
+touch tocheck
+
+for file in $(cat blobs)
+do
+	if ! grep -Fxq "$file" ../resources/utilities/coreboot-libre/nonblobs
+	then
+		 echo "$file" >> tocheck
+	fi
+done
+rm -f blobs
+
+rm -f ../resources/utilities/coreboot-libre/tocheck
+mv tocheck ../resources/utilities/coreboot-libre
+
+cd ../resources/utilities/coreboot-libre
+
+echo "open resources/utilities/coreboot-libre/tocheck in an editor"
+echo "this will contain the names of the files that you must decide whether they are blobs or not"

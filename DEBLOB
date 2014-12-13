@@ -242,7 +242,8 @@ rm -f \
 "src/soc/intel/broadwell/microcode/microcode-M7240651_0000001C.h" \
 "src/soc/intel/broadwell/microcode/microcode-MF2306D2_FFFF0009.h" \
 "src/soc/intel/broadwell/microcode/microcode-MC0306D3_FFFF0010.h" \
-"src/soc/intel/broadwell/microcode/microcode-MC0306D4_0000000D.h"
+"src/soc/intel/broadwell/microcode/microcode-MC0306D4_0000000D.h" \
+"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c"
 
 # --------------------------------------
 # Misunderstood (weird: purpose unknown)
