@@ -33,10 +33,13 @@ cd coreboot
 # -----------------------------------------
 
 # cbfstool
-cd util/cbfstool
+cd util/cbfstool/
 make
 # nvramtool
-cd ../nvramtool
+cd ../nvramtool/
+make
+# cbmem
+cd ../cbmem/
 make
 
 # done. go back to coreboot dir

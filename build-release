@@ -258,7 +258,7 @@ cd ../../
 # build nvramtool, compiled (statically linked) and include the binary
 cd coreboot/util/
 cp -r nvramtool nvramtool_
-cd nvramtool
+cd nvramtool/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/nvramtool
@@ -281,6 +281,37 @@ fi
 cd ../
 rm -rf nvramtool
 mv nvramtool_ nvramtool
+cd ../../
+
+# -----------------
+# cbmem related
+# -----------------
+# build cbmem, compiled (statically linked) and include the binary
+cd coreboot/util/
+cp -r cbmem cbmem_
+cd cbmem/
+make clean
+make SHARED=0 CC='gcc -static'
+mkdir ../../../libreboot_bin/cbmem
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# User is building on 32-bit host. Build only 32-bit binaries
+		mkdir ../../../libreboot_bin/cbmem/i686
+		mv cbmem ../../../libreboot_bin/cbmem/i686/
+elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
+	then
+		# Build the 64-bit binaries
+		mkdir ../../../libreboot_bin/cbmem/x86_64
+		mv cbmem ../../../libreboot_bin/cbmem/x86_64/
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir ../../../libreboot_bin/cbmem/i686
+		mv cbmem ../../../libreboot_bin/cbmem/i686/
+fi
+cd ../
+rm -rf cbmem
+mv cbmem_ cbmem
 cd ../../
 
 # ---------------------
