@@ -22,8 +22,6 @@
 
 	<h2>Table of Contents</h2>
 		<ul>
-			<li><a href="#hardware_requirements">Hardware Requirements</a></li>
-			<li><a href="#software_requirements">Software Requirements</a></li>
 			<li>
 				Types of brick:
 				<ul>
@@ -31,21 +29,6 @@
 					<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
 				</ul>
 			</li>
-		</ul>
-
-	<h1 id="hardware_requirements">Hardware requirements</h1>
-		<ul>
-			<li>a 2nd computer (maybe another X60. any computer will do)</li>
-			<li>external flashrom-compatible programmer (I'm using the "bus pirate")
-			<li>SOIC-8 IC clip (I'm using the Pomona 5250)</li>
-			<li>Cable (programmer&lt;&gt;clip) - mine came with the bus pirate.</li>
-			<li>USB mini a to b cable (for buspirate&lt;&gt;computer connection).</li>
-		</ul>
-
-	<h1 id="software_requirements">Software requirements</h1>
-		<ul>
-			<li>GNU/Linux (on the 2nd computer)</li>
-			<li>flashrom software (on the 2nd computer): <a href="http://flashrom.org/">http://flashrom.org/</a>
 		</ul>
 
 	<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
@@ -136,54 +119,42 @@
 			<img src="../images/x60_unbrick/0016.jpg" alt="" />
 		</p>
 		<p>
-			At this point, you should wire up your programmer according to it's documentation. For me, this was (see: "SparkFun cable pin reference"):<br/>
-			<a href="http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts">http://dangerousprototypes.com/docs/Common_Bus_Pirate_cable_pinouts</a>.<br/>
-			Correlating with the following information, I was able to wire up my pirate correctly:<br/>
-			<a href="http://flashrom.org/Bus_Pirate#Connections">http://flashrom.org/Bus_Pirate#Connections</a><br/>
-			And by following that advice:<br/>
-			<a href="http://www.coreboot.org/Board:lenovo/x60/Installation#Howto">http://www.coreboot.org/Board:lenovo/x60/Installation#Howto</a>.<br/>
-			Note: that last page says to wire up only those 5 pins (see below) like that: 1, 2, 4, 5, 6.<br/>
-			Note: and then, for power it says (on that coreboot.org page) to connect the power jack to the board and connect the
-			AC adapter (without powering on the board).<br/>
-			Note: I ignored that advice, and wired up all 8 pins. And it worked.<br/>
-
-			Here is the pinout (correlate it with your programmer's documentation):<br/>
-			<img src="../images/x60_unbrick/0017.jpg" alt="" />
-		</p>
-
-		<p>
-			My programmer (bus pirate):<br/>
-			<img src="../images/x60_unbrick/0019.jpg" alt="" /><br/>
-			My clip (pomona 5250):<br/>
-			<img src="../images/x60_unbrick/0020.jpg" alt="" /><br/>
-			Connecting the pomona:<br/>
-			<img src="../images/x60_unbrick/0022.jpg" alt="" /><br/>
-			Connecting the USB cable from programmer to 2nd(working/non-bricked) computer, my T60:<br/>
-			<img src="../images/x60_unbrick/0024.jpg" alt="" /><br/>
-			Now I install flashrom on the T60 (running Trisquel GNU/Linux) and do this:<br/>
-			<b>flashrom -p buspirate_spi:dev=/dev/ttyUSB0 -w bin/x60/libreboot_usqwerty.rom</b><br/>
-			Note: there are also other ROM images for X60<br/>
-			Note: this is using buspirate as the programmer, so it is flashing the X60, not the T60!<br/>
-			Here's my terminal window on the T60:<br/>
-			<img src="../images/x60_unbrick/0025.jpg" alt="" /><br/>
-			So, you should see the following:<br/>
-			--
+			Now wire up the BBB and the Pomona with your PSU.<br/>
+			Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to setup
+			the BBB for flashing.<br/>
+			<b>Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60:
+			if you don't have or don't want to use an external PSU, then make
+			sure not to connect the red/black 3.3v leads mentioned in the guide;
+			instead, connect the AC adapter (the one that normally charges your
+			battery) so that the board has power (but don't boot it up)</b>
+			<img src="../images/x60_unbrick/0017.jpg" alt="" /><br/>
+			Correlate the following with the BBB guide linked above:
 		</p>
 <pre>
-flashrom v0.9.5.2-r1517 on Linux 3.2.0-61-generic (i686), built with libpci 3.1.8, GCC 4.6.3, little endian
-flashrom is free software, get the source code at http://www.flashrom.org
-
-Calibrating delay loop... delay loop is unreliable, trying to continue OK.
-Found Macronix flash chip "MX25L1605" (2048 kB, SPI) on buspirate_spi.
-Reading old flash chip contents... done.
-Erasing and writing flash chip... Erase/write done.
-Verifying flash... VERIFIED. 
+POMONA 5250:
+===  golden finger and wifi switch ====
+ 18              -       - 1
+ 22              -       - NC                    ---------- audio jacks are on this end
+ NC              -       - 21
+ 3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
+===  CPU fan ===
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 </pre>
+
 		<p>
-			--<br/>
-			At the end it says "VERIFIED", which means that the procedure worked. If you see this, it means 
-			that you can put your X60 back together. So let's do that now.
+			Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):<br/>
+			<img src="images/x60/th_bbb_flashing.jpg" alt="" />
 		</p>
+
+		<p>
+			SSH'd into the BBB:<br/>
+			# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom</b>
+		</p>
+		<p>
+			It should be <b>Verifying flash... VERIFIED</b> at the end. If flashrom complains about multiple flash chip
+			definitions detected, then choose one of them following the instructions in the output.
+		</p>
+
 		<p>
 			Remove the programmer and put it away somewhere. Put back the tape and press firmly over it:<br/>
 			<img src="../images/x60_unbrick/0026.jpg" alt="" />

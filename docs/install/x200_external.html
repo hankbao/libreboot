@@ -42,7 +42,7 @@
 
 <hr/>
 
-	<h1 id="hardware_requirements">Hardware requirements</h1>
+	<h1 id="flashchips">Flash chips</h1>
 	
 		<p>
 			There are two possible flash chip sizes for the X200: 4MiB
@@ -54,242 +54,24 @@
 		</p>
 	
 		<p>
-			Shopping list (pictures of this hardware is shown later):
-		</p>
-			<ul>
-				<li>
-					External SPI programmer: <b>BeagleBone Black</b> (rev. C)
-					is highly recommended. Sometimes referred to as 'BBB'.
-				</li>
-				<li>
-					Clip for connecting to the flash chip: <b>Pomona 5250</b>
-					(SOIC-8) or <b>Pomona 5250</b> (SOIC-16) is recommended
-					(<b>X200S and X200 Tablet users will need a soldering iron
-					instead</b>, because of the type of package the flash chip is
-					in on those machines).
-				</li>
-				<li>
-					<b>External 3.3V DC power supply</b>. The one used by this
-					author has the label HF100W-SF-3.3 on it, but any decent
-					supply will be fine. Some people use the 3.3V from an ATX
-					PSU for instance (the kind that you get on a typical
-					Intel/AMD desktop computer. 6A supply should be fine,
-					the one used by this author is 20A (it won't actually use
-					that, it's just what the PSU is capable of).
-				</li>
-				<li>
-					Dupont <b>jumper cables</b> (2.54mm / 0.1&quot; headers)
-					You should get male-male, male-female and female-female
-					cables in 10cm and 20cm sizes. Just get a load of them.
-				</li>
-				<li>
-					<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
-					with one.)
-				</li>
-				<li>
-					<b>FTDI serial board</b>, for unbricking the BeagleBone if
-					necessary.
-				</li>
-				<li>
-					<b>5V DC power supply</b> (from wall outlet to the BeagleBone).
-					The BeagleBone can have power supplied via USB, but a
-					dedicated power supply is recommended. 
-				</li>
-			</ul>
-	
-		<p>
 			<a href="#pagetop">Back to top of page.</a>
 		</p>
 		
 <hr/>
 
-	<h1 id="configure_bbb">Configuring the BeagleBone Black</h1>
+	<h1>Initial BBB setup</h1>
 	
-		<h2>Setting up the 3.3V DC PSU</h2>
-			<p>
-				With my PSU, first I had wire up the mains power cable. Any clover or kettle lead will do. Cut the end off (not the one
-				that goes in the wall, but the kettle/clover connector).
-				Strip the protection away by a decent length, then strip the wires inside so that a decent amount of
-				copper is shown. Then wire up earth/live/neutral. This will vary according to what country you live in
-				and/or the colour codes that your cable uses inside. <b>Make sure to get this right, as a botched job
-				could result in extreme damage to you and your surroundings. Here's what mine looks like after wiring up
-				the power cable: <a href="images/x200/psu_power.jpg">images/x200/psu_power.jpg</a> - also, make sure
-				that the plug (for the wall) has the correct fuse. In my case I had a 240V wall socket, and the device
-				says that it accepts 1.5A at that voltage, so I used the smallest fuse available (3A). For 110-120V the device
-				says it needs 2.8A.</b> Also, if yours looks like in the image linked above, make sure to wrap electrical tape (lots)
-				around it for safety. (otherwise, don't touch the terminals while the PSU is plugged in).
-			</p>
-			<p>
-				Now take a red and black 20cm female-female jumper lead, and cut one of the ends off. Strip away the bare copper by about 1 or
-				1.5cm so you get this: <a href="images/x200/stripped_jumper_lead.jpg">images/x200/stripped_jumper_lead.jpg</a>. 
-			</p>
-			<p>
-				Black goes on -V, red goes on +V. In my case, I removed those screws from my PSU like this:
-				<a href="images/x200/psu_screws_removed.jpg">images/x200/psu_screws_removed.jpg</a>. Then,
-			</p>
-			<p>
-				Then I twisted the exposed copper on the jumper leads (so that they don't fray), and wrapped each to one of the
-				screws each, around it near the head. I then screwed them in:
-				<a href="images/x200/psu_jumper_leads.jpg">images/x200/psu_jumper_leads.jpg</a>.
-			</p>
-			<p>
-				If you are using a different PSU, then the steps will change from those above. Anyway, once you are satisfied,
-				continue reading...
-			</p>
-		<h2>Setting up the BBB</h2>
-			<p>
-				Since it's a bare board (no case) and you are also touching inside your X200, you should be earthed/grounded. 
-				<a href="images/x200/strap.jpg">images/x200/strap.jpg</a> shows how I earthed myself. This is to prevent you 
-				from causing any ESD damage. The surface that you place components on should also be earthed/grounded.
-				(for this, I used a shielded ESD bag with a wire, copper exposed, attached from the bag to the exposed metal
-				part on a radiator, which was earthed - not professional, but it should work. see <a href="images/x200/mat.jpg">images/x200/mat.jpg</a>).
-				Most people ignore this advice and don't ground/earth themselves, at their own risk. You should also store the BBB
-				in a shielded anti-static bag when you are finished with it.
-				(the principles above apply to any computer components, since they are extremely sensitive te ESD).
-			</p>
-			<p>
-				These instructions may or may not work for you. They are simply the steps that this author took.
-			</p>
-			<p>
-				setting up SPIDEV on the BBB: <a href="http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0">http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0</a>
-				- If you only setup SPI0, you don't have to disable the HDMI out. (you only need one).
-				That guide is for seting up the device overlay for SPIDEV, last part is to make it persist across reboots.
-				Needed to turn the BBB into an SPI flasher.
-			</p>
-			<p>
-				Don't bother modifying uEnv.txt. it won't work;
-				use the workaround here instead: <a href="http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#Loading_custom_capes">http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#Loading_custom_capes</a>.
-			</p>
-			<p>
-				Follow the instructions at <a href="http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0">http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0</a>
-				up to (and excluding) the point where it tells you to modify uEnv.txt
-			</p>
-			<p>
-				You need to update the software on the BBB first. Before being able to use apt-get,
-				I had to use the workaround defined <a href="https://groups.google.com/forum/?_escaped_fragment_=msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ#!msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ">here</a>:<br/>
-				- Replace the contents of /etc/init.d/led_aging.sh with:
-			</p>
-<pre>
-#!/bin/sh -e
-### BEGIN INIT INFO
-# Provides:          led_aging.sh
-# Required-Start:    $local_fs
-# Required-Stop:     $local_fs
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Short-Description: Start LED aging
-# Description:       Starts LED aging (whatever that is)
-### END INIT INFO
+		<p>
+			Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to
+			setup the BBB for flashing.
+		</p>
 
-x=$(/bin/ps -ef | /bin/grep "[l]ed_acc")
-if [ ! -n "$x" -a -x /usr/bin/led_acc ]; then
-    /usr/bin/led_acc &amp;
-fi
-</pre>
-			</p>
-				Run <b>apt-get update</b> and <b>apt-get upgrade</b> then reboot the BBB, before continuing.
-			</p>
-			<p>
-				Run those commands:<br/>
-				# <b>echo BB-SPI0-01 &gt; /sys/devices/bone_capemgr.*/slots</b><br/>
-				Then I did:<br/>
-				# <b>ls -al /dev/spidev0.*</b><br/>
-				<i>ls: cannot access /dev/spidev0.*: No such file or directory</i><br/>
-				Then I rebooted and did:<br/>
-				# <b>cat /sys/devices/bone_capemgr.*/slots</b><br/>
-				Output:
-			</p>
+		<p>
+			The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-16 (clip: Pomona 5252):
+		</p>
 <pre>
- 0: 54:PF--- 
- 1: 55:PF--- 
- 2: 56:PF--- 
- 3: 57:PF--- 
- 4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
- 5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-</pre>
-			<p>
-				And then:<br/>
-				# <b>ls /lib/firmware/BB-SPI0-01-00A0.*</b><br/>
-				Output:
-			</p>
-<pre>
-/lib/firmware/BB-SPI0-01-00A0.dtbo
-</pre>
-			<p>
-				Then:<br/>
-				# <b>echo BB-SPI0-01 &gt; /sys/devices/bone_capemgr.*/slots</b><br/>
-				# <b>cat /sys/devices/bone_capemgr.*/slots</b><br/>
-				Output:
-			</p>
-<pre>
- 0: 54:PF--- 
- 1: 55:PF--- 
- 2: 56:PF--- 
- 3: 57:PF--- 
- 4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
- 5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
- 7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
-</pre>
-			<p>
-				Then check if the device exists:<br/>
-				# <b>ls -al /dev/spidev0.*</b><br/>
-				Output:
-			</p>
-<pre>
-ls: cannot access /dev/spidev0.*: No such file or directory
-</pre>
-			<p>
-				It didn't exist under that name, but I then did:<br/>
-				# <b>ls -al /dev/spid*</b><br/>
-				Output:
-			</p>
-<pre>
-crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
-</pre>
-			<p>
-				Now the BBB is ready to be used for flashing. Make this persist
-				across reboots:<br/>
-				In /etc/default/capemgr add <b>CAPE=BB-SPI0-01</b> at the end
-				(or change the existing <b>CAPE=</b> entry to say that, if an
-				entry already exists.
-			</p>
-			<p>
-				Now you will download and build <b>flashrom</b> on the BBB.<br/>
-				# <b>apt-get install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential subversion</b><br/>
-				# <b>svn co svn://flashrom.org/flashrom/trunk flashrom</b><br/>
-				# <b>cd flashrom/</b><br/>
-				# <b>make</b>
-			</p>
-			
-			<p>
-				Now test flashrom:<br/>
-				# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
-				Output:
-			</p>
-<pre>
-Calibrating delay loop... OK.
-No EEPROM/flash device found.
-Note: flashrom can never write if the flash chip isn't found automatically.
-</pre>
-
-			<p>
-				This means that it's working (the clip isn't connected to any flash chip,
-				so the error is fine).
-			</p>
-		<h2>
-			Connecting the Pomona 5250/5252
-		</h2>
-			<p>
-				Use this image for reference when connecting the pomona to the BBB:
-				<a href="http://beagleboard.org/Support/bone101#headers">http://beagleboard.org/Support/bone101#headers</a>
-				(D0 = MISO or connects to MISO).
-			</p>
-		
-			<p>
-				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-16 (clip: Pomona 5252):
-			</p>
-<pre>
-===  front (display) ====
+POMONA 5252 (correlate with the BBB guide)
+===  front (display) on your X200 ====
  NC              -       - 21
  1               -       - 17
  NC              -       - NC
@@ -298,48 +80,30 @@ Note: flashrom can never write if the flash chip isn't found automatically.
  NC              -       - NC
  18              -       - 3.3V PSU RED
  22              -       - NC - this is pin 1 on the flash chip
-===  back (palmrest) ===
+===  back (palmrest) on your X200 ===
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 </pre>
-			<p>
-				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
-			</p>
+		<p>
+			The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
+		</p>
 <pre>
-===  front (display) ====
+POMONA 5250 (correlate with the BBB guide)
+===  front (display) on your X200 ====
  18              -       - 1
  22              -       - NC
  NC              -       - 21
  3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
-===  back (palmrest) ===
+===  back (palmrest) on your X200 ===
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 </pre>
-			<p>
-				<b>On the X200S the flash chip is underneath the board, in a WSON package. 
-				The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available). 
-				<a href="images/x200/wson_soldered.jpg">images/x200/wson_soldered.jpg</a> (image copyright (C) 2014 <a href="mailto:sgsit@libreboot.org">Steve Shenton</a> under CC-BY-SA 4.0
-				or higher, same license that this document uses) shows it wired (soldered) and
-				connected to a BBB.</b>
-			</p>
-			<p>
-				<b>NC = no connection</b>
-			</p>
-			<p>
-				<b><u>DO NOT</u> connect 3.3V PSU RED yet. ONLY connect this once the pomona is connected to the flash chip.</b>
-			</p>
-			<p>
-				<b>You also need to connect the BLACK wire from the 3.3V PSU to pin 2 on the BBB (P9 header). It is safe to install this now.</b>
-			</p>
-			<p>
-				if you need to extend the 3.3v psu leads, just use the same colour M-F leads, <b>but</b> keep all other 
-				leads short (10cm or less)
-			</p>
-			
-			<p>
-				<a href="images/x200/5252_bbb0.jpg">images/x200/5252_bbb0.jpg</a> and
-				<a href="images/x200/5252_bbb1.jpg">images/x200/5252_bbb1.jpg</a> shows a properly wired up BBB with Pomona
-				5252 before being connected to the flash chip on the X200.
-			</p>
-			
+		<p>
+			<b>On the X200S the flash chip is underneath the board, in a WSON package. 
+			The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available). 
+			<a href="images/x200/wson_soldered.jpg">images/x200/wson_soldered.jpg</a> (image copyright (C) 2014 <a href="mailto:sgsit@libreboot.org">Steve Shenton</a> under CC-BY-SA 4.0
+			or higher, same license that this document uses) shows it wired (soldered) and
+			connected to a BBB.</b>
+		</p>
+
 		<h2>
 			Connect Pomona 5252/5250 to the X200 flash chip, and dump/flash
 		</h2>
@@ -356,7 +120,7 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 				Then connect the 3.3v PSU wire (red one) and make sure that everything else is connected.
 			</p>
 			<p>
-				I did:<br/>
+				I did (SSH'd into the BBB):<br/>
 				# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
 				In my case, the output was:
 			</p>
