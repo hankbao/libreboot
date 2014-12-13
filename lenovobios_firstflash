@@ -80,30 +80,28 @@ if [ ! -f "DEBLOB" ]
 			then
 				# i686
 				# needed for first flashing, otherwise machine will be bricked
-				{ # try
-					./bucts/i686/bucts 1
-				} || { # catch
+				if [ ! -f "bucts/i686/bucts" ]; then
 					echo "$errOut"
 					exit 1
-				}
+				fi
+				./bucts/i686/bucts 1
 		else
 			# x86_64
 			# needed for first flashing, otherwise machine will be bricked
-			{ # try
-				./bucts/x86_64/bucts 1
-			} || { # catch
+			if [ ! -f "bucts/x86_64/bucts" ]; then
 				echo "$errOut"
 				exit 1
-			}
+			fi
+			./bucts/x86_64/bucts 1
+		fi
 else
 	# this means we are working in src
 	# needed for first flashing, otherwise machine will be bricked
-	{ # try
-		./bucts/bucts 1
-	} || { # catch
+	if [ ! -f "bucts/bucts" ]; then
 		echo "$errOut"
 		exit 1
-	}
+	fi
+	./bucts/bucts 1
 fi
 
 # run both. one will fail (and be harmless), the other will succeed. 
