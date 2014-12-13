@@ -108,8 +108,10 @@
 		
 		</div>
 		
+<hr/>
+
 		<div class="section">
-		
+
 			<h2 id="flashchips">Flash chips</h2>
 			
 				<ul>
@@ -133,37 +135,13 @@
 		
 		</div>
 		
-		<div class="section">
-
-			<h2 id="compatibility">Compatibility (without blobs)</h2>
-			
-				<p>sgsit said this: There are problems with the DMAR table and I get a kernel panic with KVM but day to day it's fine with no ME or microcode.</p>
-				
-				<p>Usual limitations apply for native graphics initialization (no VBT and/or INT10H and only GRUB works so no BIOS, so no DOS/Windows support
-				- who cares? There is no system but GNU, and Linux is one of it's kernels).</p>
-				
-				<p>When connecting the AC adapter while system is powered off, system will then power on. This probably happens in coreboot aswell. 
-				It's a minor annoyance, but it should be fixed (if it's not already fixed by now).</p>
-
-				<p>This method of disabling the ME leaves the flash descriptor and gbe in place (non-functional data, fully documented)
-				and disables the ME using soft straps. This means that the gigabit ethernet will still work (putting the machine in
-				non-descriptor mode would wipe it out, not to mention require hardware modifications that most users will be unwilling to make).</p>
-
-		</div>
+<hr/>
 		
 		<div class="section">
 		
 			<h2 id="early_development_notes">Early development notes</h2>
-			
-				<p>
-					There is a tool called FITC which contains all the descriptor manipulation tools. This is what sgsit used initially;
-					it's proprietary software, for Windows, but it was useful for liberating the X200 and making it a real target in
-					libreboot. End justified means, and the software is no longer needed. 
-				</p>
 				
 <pre>
-&lt;sgsit&gt; here's some output:
-<b>Was a paste link. putting it here instead:</b>
 <i>
 Start (hex)	End (hex)	Length (hex)	Area Name
 -----------	---------	------------	---------
@@ -192,11 +170,7 @@ Start (hex)	End (hex)	Length (hex)	Area Name
 001F6000	001F7FFF	00002000	GbE Region
 001F8000	001FFFFF	00008000	PDR Region
 00200000	003FFFFF	00200000	BIOS Region
-</i>
 
-&lt;sgsit&gt; this is the one that's running on my machine at the moment:
-<b>Was a paste link. Putting here instead:</b>
-<i>
 Start (hex)	End (hex)	Length (hex)	Area Name
 -----------	---------	------------	---------
 00000000	003FFFFF	00400000	Flash Image
@@ -228,35 +202,39 @@ Build Settings
 Flash Erase Size = 0x1000
 
 </i>
-
-Tool used:
-&lt;sgsit&gt; it's called 'Flash Image Tool' from the 4.x package
-&lt;sgsit&gt; you drag a complete image into it and the the tool decomposes the various components
-&lt;sgsit&gt; and allows you to set the soft straps
-
-This tool is proprietary, for Windows only, but was used to deblob the X200. End justified by means, and
-the utility is no longer needed (sgsit's ich9deblob utility documented at the top of the page is now
-used to create deblobbed descriptors).
-
 </pre>
-		
+
+				<p>
+					It's a utility called 'Flash Image Tool' for ME 4.x that was used for this. You drag a complete
+					image into in and the utility decomposes the various components, allowing you to set soft straps.
+				</p>
+				<p>
+					This tool is proprietary, for Windows only, but was used to deblob the X200. End justified means, and
+					the utility is no longer needed since the ich9deblob utility (documented on this page) can now be
+					used to create deblobbed descriptors.
+				</p>
+
 		</div>
-		
+
+<hr/>
+
 		<div class="section">
 		
-			<h2 class="gbe_region">
+			<h2 id="gbe_region">
 				GBE (gigabit ethernet) region in SPI flash
 			</h2>
-			
+
 				<p>
 					Of the 8K, about 95% is 0xFF. 
 					The data is the gbe region is fully documented in this public datasheet:
 					<a href="http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf">http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf</a>
 				</p>
-				
+
+				<p>
+					The only actual content found was:
+				</p>
+
 <pre>
-&lt;sgsit&gt; this is the only content:
-<b>Was a paste link. putting it here instead:</b>
 <i>
 00  1F  1F  1F  1F  1F  00  08  FF  FF  83  10  FF  FF  FF  FF  
 08  10  FF  FF  C3  10  EE  20  AA  17  F5  10  86  80  00  00  
@@ -270,35 +248,39 @@ FF  FF  FF  FF  FF  FF  FF  FF  FF  FF  FF  FF  FF  FF  D9  F0
 DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00  
 00  80  1D  00  00  00  1F  
 </i>
-&lt;sgsit&gt; the first part is the MAC address which I've set to all 0x1F
-&lt;sgsit&gt; it's repeated half way through the 8k area. the rest is 0xFF
-&lt;sgsit&gt; <b>it's not a blob - i've just found the intel docs with the full spec of the data there</b>
-&lt;sgsit&gt; <b>thanks to mtjm: <a href="http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf">http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf</a></b>
-&lt;sgsit&gt; so we have a mostly functional libre x200
-&lt;sgsit&gt; just need to sort some ACPI issues
 </pre>
+
+			<p>
+				The first part is the MAC address set to all 0x1F. It's repeated haly way through
+				the 8K area, and the rest is all 0xFF. This is all documented in the datasheet.
+			</p>
 		
 			<p>
 				The GBe region starts at 0x20A000 bytes from the *end* of a factory image and is 0x2000 bytes long.
-				In libreboot (deblobbed) the descriptor is set to put it directly after the initial 4K flash descriptor. 
+				In libreboot (deblobbed) the descriptor is set to put gbe directly after the initial 4K flash descriptor. 
 				So the first 4K of the ROM is the descriptor, and then the next 8K is the gbe region.
 			</p>
-			
-<pre>
-&lt;sgsit&gt; interesting fact about the gbe checksum: it's supposed to add up to 0xBABA (in honour of Baba O'Reilly apparently) but it is actually 0x3ABA
-&lt;sgsit&gt; either the checksum doesn't matter or the MSB of the checksum isn't checked. strange though
-&lt;sgsit&gt; <a href="https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums">https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums</a>
-&lt;sgsit&gt; &quot;One of those engineers loves classic rock music, so he selected 0xBABA&quot;
-&lt;sgsit&gt; 0xBABA and 0x3ABA only differ by the most significant bit.
 
-&lt;sgsit&gt; the checksum in the GBe region of my X200S is 0x34BA
-&lt;sgsit&gt; when it should be 0xBABA
-34BA is BABA in L33T speak. 3=B and 4=A. Thus, 34BA=BABA
-Apparently these intel people have a sense of humour. 
-</pre>
+			<h3 id="gbe_region_changemacaddress">GBE region: change MAC address</h3>
+
+				<p>
+					According to the datasheet, it's supposed to add up to 0xBABA but can actually be 0x3ABA.
+					Either the checksum doesn't matter or the most significant bit of the checksum isn't checked. 
+					<a href="https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums">https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums</a>
+				</p>
+				<p>
+					<i>&quot;One of those engineers loves classic rock music, so he selected 0xBABA&quot;</i>
+				</p>
+				<p>
+					0xBABA and 0x3ABA only differ by the most significant bit. The checksum of the GBe region from an X200S
+					was found to be 0x34BA; again, it should be 0xBABA. 34BA is actually BABA in L33T speak (look it up).
+				</p>
+				<p>In honour of the song <i>Baba O'Reilly</i> by <i>The Who</i> apparently. We're not making this stuff up...</p>
 		
 		</div>
 		
+<hr/>
+
 		<div class="section">
 		
 			<h2 id="flash_descriptor_region">Flash descriptor region</h2>
@@ -347,201 +329,47 @@ Apparently these intel people have a sense of humour.
 						<li>Then it can be dd'd into the first 12K part of a coreboot image.</li>
 						<li>the GBe region always starts 0x20A000 bytes from the end of the ROM</li>
 					</ul>
+					
+				<p>
+					This means that libreboot's descriptor region will simply define the following regions:
+				</p>
+					<ul>
+						<li>descriptor (4K)</li>
+						<li>gbe (8K)</li>
+						<li>bios (rest of flash chip. CBFS also set to occupy this whole size)</li>
+					</ul>
+
+				<p>
+					The data in the descriptor region is little endian, and it represents bits 24:12 of the address
+					(bits 12-24, written this way since bit 24 is nearer to left than bit 12 in the binary representation).
+				</p>
+				<p>
+					So, <i>x &lt;&lt; 12 = address</i>
+				</p>
+				<p>
+					If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
+				</p>
 				
-<pre>
-&lt;sgsit&gt; the data in the descriptor is little endian
-&lt;sgsit&gt; and it represents bits 24:12 of the address (bits 12-24. written as 24:12 since bit 24 is more nearer to left than bit 12)
-&lt;sgsit&gt; so x &lt;&lt; 12 = address
---
-&lt;sgsit&gt; if it is in descriptor mode, the first 4 bytes will be 5A A5 F0 0F
---
-&lt;fchmmr&gt; so there are just 3 regions in libreboot (X200) rom then:
-&lt;fchmmr&gt; * descriptor (4K)
-&lt;fchmmr&gt; * gbe (8K)
-&lt;fchmmr&gt; * bios (rest of flash chip. CBFS also set to occupy this whole size)
-</pre>
-		
 		</div>
+		
+<hr/>
 		
 		<div class="section">
 		
 			<h2 id="platform_data_region">platform data partition in boot flash (factory.rom / lenovo bios)</h2>
 			
 				<p>
-					Basically useless for libreboot. Removing it didn't cause any issues.
+					Basically useless for libreboot, since it appears to be a blob.
+					Removing it didn't cause any issues in libreboot.
 				</p>
-			
-<pre>
-&lt;mtjm&gt; sgsit: thanks; have you checked what platform data partition has?  my notes state that it has only a 448 byte fragment different from 0x00 or 0xff
-&lt;sgsit&gt; mtjm: the contents of mine from the stock rom are here:
-<b>Was a paste link. Moving it here:</b>
-<i>
-53  FC  75  06  91  CA  FA  62  91  27  D9  BF  59  93  A6  03  
-38  FA  2E  96  02  8C  BD  1D  F5  5F  A6  6A  87  30  47  45  
-25  70  9A  60  B9  62  FD  9D  64  E1  88  37  FB  59  17  C2  
-91  B0  A5  25  26  9B  36  44  85  09  E4  02  CC  91  28  8F  
-01  FF  22  D9  7B  AA  61  97  5B  E6  EE  7D  CD  F2  7F  B1  
-83  74  36  88  6B  4C  4F  D5  DF  11  1E  DF  C0  D9  87  48  
-CA  DC  57  B7  F9  65  E4  E5  78  BA  90  78  D7  1E  CB  3B  
-C3  8E  34  27  B9  B7  29  3D  AA  53  96  0B  7D  F7  47  82  
-C6  E2  08  CD  94  49  10  C4  6D  BD  B2  2F  BD  84  1B  20  
-EC  8C  7E  33  6A  B0  20  8D  A4  7C  10  61  AD  11  66  BA  
-8F  B1  07  B1  52  C2  F0  B7  88  BB  3A  6F  27  8F  C1  EA  
-F7  BF  82  11  92  39  44  51  AB  19  25  2B  8A  7A  D1  66  
-2B  82  FF  CE  C7  EC  78  E2  9F  47  BE  C2  37  F7  5A  2E  
-A6  57  B6  B3  66  2B  2D  33  20  C6  4D  F7  26  41  57  70  
-DC  04  42  39  BD  B8  96  71  3E  B1  9C  13  76  BF  E2  AC  
-DD  65  E1  82  D6  46  F3  39  EA  B5  FE  F6  56  3F  B9  67  
-DE  5E  08  8B  00  77  D9  94  D0  16  F0  97  BF  A6  44  3A  
-C1  27  22  E1  7C  DD  2F  15  A1  D5  53  61  2A  37  F8  E1  
-94  8E  1F  3D  8F  79  08  37  09  45  AC  1B  33  75  FB  3D  
-1D  6E  67  22  3D  C3  90  B4  F8  9E  31  09  6F  70  1F  BC  
-9E  48  29  A0  1F  29  5E  1B  B5  D3  C3  D7  6C  14  AE  63  
-FE  F3  3A  23  98  78  4C  C9  7E  9E  F0  A4  72  9F  FF  25  
-CC  6F  2B  D1  41  27  00  A5  79  4A  37  D3  83  63  32  89  
-FB  03  2C  AE  6B  33  31  1A  5A  A2  A8  C5  5E  1F  A5  BD  
-40  A7  76  7D  A9  AC  AC  18  21  6D  F6  74  7D  18  19  C4  
-DE  6D  D1  55  A0  C9  2C  FD  6A  56  BB  1B  08  C1  B6  60  
-16  B7  EB  D3  8B  D8  BC  41  5F  D6  86  A5  45  F8  A7  99  
-68  6E  EA  4D  EA  B6  39  6E  9B  5D  0E  58  9B  D8  00  00  
-</i>
-&lt;sgsit&gt; i've removed it - doesn't seem to have had any ill effect
-&lt;sgsit&gt; the region is 32k but like yours the rest of it is 0x00 or 0xFF
-&lt;mtjm&gt; mine is different; maybe it's just something that the BIOS used
-&lt;sgsit&gt; i think that's the case
-</pre>
-		
-		</div>
-		
-		<div class="section">
-		
-			<h2 id="new_targets">New targets</h2>
-
-<pre>
-R400, R500
-T400, T400s, T500
-W500
-X200, X200s, X200 Tablet, X301
-^ these are other gm45 targets for coreboot (not yet ported at the time of writing) that could be in libreboot one day
-^ some of them have ATI or Intel graphics. Avoid ATI (proprietary video bios rom needed)
-
-&lt;sgsit&gt; from the mailing list where somebody was enquiring abouy an R400 port:
-&lt;sgsit&gt; Your dmidecode.log shows that you have DDR2 memory.
-&lt;sgsit&gt; Sadly, our current GM45 chipset code does only support DDR3 (which is used in the Roda RK9).
-&lt;sgsit&gt; If this isn't a fault in your DMI tables and you really have DDR2 memory, porting coreboot will be especially hard (some more month of extra)
-&lt;sgsit&gt; re DDR3 on the R400, that's really weird
-&lt;sgsit&gt; mtjm will be able to confirm but maybe there's something messed up in the HW of the R400 because it reports DDR2
-<a href="text/r400/r400_dmidecode.txt">text/r400/r400_dmidecode.txt</a> is dmidecode output from factory bios on R400. 
-
-Some of them use DDR2 memory, or DDR3 memory that is detected as DDR2, or they are GS45 chipset. Basically, some of
-them involve the hell of getting raminit right. but these are all fine targets that could be ported to coreboot
-based on the X200 port.
-</pre>
-		
-		</div>
-		
-		<div class="section">
-		
-			<h2 id="unsorted">Unsorted notes</h2>
-			
-<pre>
-&lt;sgsit&gt; do you know if it's possible to flash thinkpads over the LPC debug connector at the front edge?
-&lt;sgsit&gt; that would make life much easier for machines like this
-&lt;sgsit&gt; all the Wistron manufactured machines have this thing called a "golden finger", normally at the front edge of the board
-&lt;sgsit&gt; you can plug a board in which gives diagnostic codes but i'm wondering whether it is capable of more
-&lt;sgsit&gt; <a href="http://www.endeer.cz/bios.tools/bios.html">http://www.endeer.cz/bios.tools/bios.html</a>
-</pre>
-
-			<p>
-				sgsit couldn't use vt-x without microcode updates. setting vm to have 1 core made vm kernel panic. 
-				setting vm to use 2 cores made host kernel panic. Might be possible to workaround this in qemu.
-				according to sgsit (if not, just use software-only virtualization, no acceleration)
-				<a href="http://download.intel.com/design/mobile/specupdt/320121.pdf">http://download.intel.com/design/mobile/specupdt/320121.pdf</a>
-			</p>
-		
-		</div>
-		
-		<div class="section">
-		
-			<h2 class="x200s">X200S and X200T</h2>
+				<p>
+					This is a 32K region from the factory image. It could be data
+					(non-functional) that the original Lenovo BIOS used, but we don't know.
+				</p>
 			
 				<p>
-					Only X200 is known to work so far. X200S and X200 Tablet have raminit issues at the time of writing
-					(GS45 chipset. X200 is GM45).
+					It has only a 448 byte fragment different from 0x00 or 0xFF.
 				</p>
-			
-<pre>
-X200S issues (X200T probably also affected):
-&lt;sgsit&gt; fchmmr: some light reading - <a href="https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf">https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf</a>
-&lt;sgsit&gt; mentions RCOMP which is the current stumbling block
-&lt;sgsit&gt; oh god - SFF platform unsupported in write i/o initialization.
-&lt;sgsit&gt; i think the X200S is doomed
-&lt;sgsit&gt; hi. i've just flashed the X200 image to an X200S and i'm getting the error "SFF platform unsupported in RCOMP initialization." after "Setting IGD memory frequencies for VCO #1.". can anyone point me in the right direction to resolve this?
-&lt;sgsit&gt; full log here: <a href="text/x200s/cblog00.txt">text/x200s/cblog00.txt</a>
-&lt;sgsit&gt; i've tried many different SODIMM combinations
-&lt;PaulePanter&gt; sgsit: src/northbridge/intel/gm45/raminit.c:           die("SFF platform unsupported in RCOMP initialization.\n");
-&lt;PaulePanter&gt; sgsit: Check the source why it gets there. Found with `git grep "SFF platform"`.
-&lt;sgsit&gt; PaulePanter: thanks, i'll investigate
-&lt;sgsit&gt; PaulePanter: damn, looks like GS45 is unsupported
-&lt;sgsit&gt; pgeorgi: do you know if adding RCOMP and write i/o init support to GS45 is going to be a nightmare? or is it a matter of studying datasheets? did you write the GM45 raminit code?
-&lt;pgeorgi&gt; sgsit: I helped write some parts, but nico was the principal author
-&lt;pgeorgi&gt; sgsit: I think the ddr3 side is pretty complete
-&lt;fchmmr&gt; nico_h ?
-&lt;sgsit&gt; pgeorgi: is it possible that GM45 is marked as unsupported because it wasn't able to be tested?
-&lt;sgsit&gt; *GS45
-&lt;pgeorgi&gt; sgsit: we wrote that specifically for gm45. gs45 is unsupported because nobody ever cared for it
-&lt;sgsit&gt; i know that GS45 only supports 1066/1333 and GM45 supports 800 too. i wonder if that points to big differences in the ram init code
-&lt;pgeorgi&gt; fchmmr: nico_h, yes
-&lt;sgsit&gt; sorry i meant 667/800/1066
-&lt;pgeorgi&gt; sgsit: everything is possible. my approach on this (absent reasonable datasheet access) would be to trace the vendor bios with serialice, then compare against the gm45 code, since it's probably somewhat similar
-&lt;sgsit&gt; pgeorgi: thanks for the advice. you've given me hope
-&lt;pgeorgi&gt; of course, after testing that the current gm45 code isn't just blocked by something trivial (eg. a pci id test)
-&lt;sgsit&gt; yes, i was going to try removing the die command first.. the laptop i'm working on has a WSON-8 flash chip so i'm going to have to get the soldering iron out again. boo
-&lt;kmalkki&gt; sgsit: some lenovo boards have WSON-8 and SOIC-8 layout on the PCB in parallel
-&lt;kmalkki&gt; sgsit: does the silk screen have SPI1 and SPI2 ?
-&lt;sgsit&gt; kmalkki: on the X200S the land array can take a SOIC-8 too. i don't (yet) have a hot air rework tool though
-&lt;sgsit&gt; only thing is the supported SOIC-8 chips on that board are all 4MiB
-&lt;kmalkki&gt; sgsit: you can switch from WSON-8 to SOIC-8 if you have matching IDs on the SPI flash part
-&lt;kmalkki&gt; vendor bios might care, but for coreboot and flashrom you can switch to different SPI part entirely
-&lt;sgsit&gt; but i was looking forward to having loads of free space to do interesting things with
-&lt;kmalkki&gt; several options for 8MiB in SOIC-8
-&lt;sgsit&gt; kmalkki: sorry, i hadn't realised the significance of what you were saying. i actually have some new MX25L6445EM2I-10G here which i could probably swap over then. would flashing internally, using the ICH be a problem?
-&lt;kmalkki&gt; sgsit: change of SPI flash part may confuse vendor BIOS and may require (simple) coreboot and flashrom development work
-&lt;kmalkki&gt; sgsit: internal flashing is only issue once your system boots to OS
-&lt;sgsit&gt; fchmmr: i have renewed hope for the X200S. after digging through the datasheet, i've discovered that the GS45 operates in 2 modes.
-&lt;sgsit&gt; low and high performance
-&lt;sgsit&gt; low performance uses the SU range of ultra-low voltage chips eg SU9400
-&lt;sgsit&gt; my X200S has an SL9400 which is in the high-performance category
-&lt;sgsit&gt; from the docs, the GS45 behaves just like the GM45 when it's in high performance mode.
-&lt;sgsit&gt; i expect / hope that the coreboot devs were wary of the other mode. with any luck, if i remove the checks (or hardcode the sff param to 0) the board may just boot up. i may have time to try this later
-&lt;sgsit&gt; &lt;fchmmr&gt; I take it that the low-performance ones still wouldn't work, so for now you'd have to be careful to get one that has a particular cpu in it.
-&lt;sgsit&gt; that's my assumption
-&lt;sgsit&gt; orly_owl: no, i don't think so. the ulv cpus run at a different voltage. this is good news though, unless you buy an SUxxxx model
-&lt;sgsit&gt; fchmmr: my hand crafted and untested patch for raminit.c:
-&lt;sgsit&gt; ---
-&lt;sgsit&gt; 113
-&lt;sgsit&gt; +++                         sysinfo-&gt;gs45_low_power_mode = 1;
-&lt;sgsit&gt; 113                         sysinfo-&gt;gs45_low_power_mode = 0;
-&lt;sgsit&gt; ---
-&lt;sgsit&gt; 1696         const int sff = sysinfo-&gt;gfx_type == GMCH_GS45;
-&lt;sgsit&gt; +++
-&lt;sgsit&gt; 1696         const int sff = sysinfo-&gt;gfx_type == GMCH_GS45 &amp;&amp; sysinfo-&gt;gs45_low_power_mode = 1;
-&lt;sgsit&gt; * 1696         const int sff = sysinfo-&gt;gfx_type == GMCH_GS45 &amp;&amp; sysinfo-&gt;gs45_low_power_mode == 1;
-&lt;sgsit&gt; i'll try it later
-&lt;sgsit&gt; it assumes that GS45 is in high performance mode rather than low power which is no good for the masses
-&lt;sgsit&gt; fchmmr: progress ;)
-&lt;sgsit&gt; <a href="text/x200s/cblog01.txt">text/x200s/cblog01.txt</a>
-&lt;sgsit&gt; doesn't like my 2GB dimms but it at least boots with 2x4GB
-&lt;sgsit&gt; haven't put it back together yet so no idea if it's stable
-&lt;sgsit&gt; note line 12 - GMCH: GS45, using high performance mode by default
-&lt;sgsit&gt; with the patch i wrote blind earlier
-&lt;sgsit&gt; needs testing
-&lt;sgsit&gt; may be barely functional
-&lt;sgsit&gt; and has problems with some SODIMMS
-&lt;sgsit&gt; <a href="text/x200s/cblog02.txt">text/x200s/cblog02.txt</a> (2x2GB)
-&lt;sgsit&gt; <a href="text/x200s/cblog03.txt">text/x200s/cblog03.txt</a> (1x2GB)
-&lt;sgsit&gt; the GS45 in high performance mode is just a shrunken GM45 afaict
-</pre>
 		
 		</div>
 

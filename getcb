@@ -64,6 +64,9 @@ git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cher
 # i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and "scrolling" backlight
 git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
 
+# northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)
+git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cherry-pick FETCH_HEAD
+
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 

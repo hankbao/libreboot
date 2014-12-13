@@ -27,8 +27,8 @@
 	
 	<p>
 		The X200S is also briefly covered (image showing soldering joints, wired up
-		to a BBB). Note, the X200S and X200T are unsupported both in coreboot an libreboot at the time of writing (raminit doesn't work). This info
-is just for future reference. <b>Only the X200 is supported.</b>
+		to a BBB). Note, not all X200S or X200 Tablet configurations are supported yet 
+		(see <a href="../hcl/x200.html#x200s">../hcl/x200.html#x200s</a></b>
 	</p>
 	
 	<p>
@@ -64,6 +64,9 @@ is just for future reference. <b>Only the X200 is supported.</b>
 				<li>
 					Clip for connecting to the flash chip: <b>Pomona 5250</b>
 					(SOIC-8) or <b>Pomona 5250</b> (SOIC-16) is recommended
+					(<b>X200S and X200 Tablet users will need a soldering iron
+					instead</b>, because of the type of package the flash chip is
+					in on those machines).
 				</li>
 				<li>
 					<b>External 3.3V DC power supply</b>. The one used by this
@@ -75,12 +78,9 @@ is just for future reference. <b>Only the X200 is supported.</b>
 					that, it's just what the PSU is capable of).
 				</li>
 				<li>
-					Dupont <b>jumper cables</b> (the kinds of cables that you see 
-					used on the pins on a raspberry pi - note: the pi is
-					proprietary and not endorsed by libreboot, merely refered
-					to in this instance to let you know the type of cables.
+					Dupont <b>jumper cables</b> (2.54mm / 0.1&quot; headers)
 					You should get male-male, male-female and female-female
-					cables in 10cm and 20cm sizes. 
+					cables in 10cm and 20cm sizes. Just get a load of them.
 				</li>
 				<li>
 					<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
@@ -312,13 +312,14 @@ Note: flashrom can never write if the flash chip isn't found automatically.
  3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
 ===  back (palmrest) ===
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
-<b>On the X200S (not fully covered in this guide) the flash chip is underneath the board, in a WSON package. 
-The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available). 
-<a href="images/x200/wson_soldered.jpg">images/x200/wson_soldered.jpg</a> (image copyright (C) 2014 <a href="mailto:sgsit@libreboot.org">Steve Shenton</a> under CC-BY-SA 4.0
-or higher, same license that this document uses) shows it wired (soldered) and
-connected to a BBB. Note, the X200S and X200T are unsupported both in coreboot an libreboot at the time of writing (raminit doesn't work). This info
-is just for future reference.</b>
 </pre>
+			<p>
+				<b>On the X200S the flash chip is underneath the board, in a WSON package. 
+				The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available). 
+				<a href="images/x200/wson_soldered.jpg">images/x200/wson_soldered.jpg</a> (image copyright (C) 2014 <a href="mailto:sgsit@libreboot.org">Steve Shenton</a> under CC-BY-SA 4.0
+				or higher, same license that this document uses) shows it wired (soldered) and
+				connected to a BBB.</b>
+			</p>
 			<p>
 				<b>NC = no connection</b>
 			</p>
@@ -413,7 +414,7 @@ Please specify which chip definition to use with the -c &lt;chipname&gt; option.
 flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
 flashrom is free software, get the source code at http://www.flashrom.org
 Calibrating delay loop... OK.
-Found Macronix flash chip "MX25L6405(D)" (8192 kB, SPI) on linux_spi.
+Found Macronix flash chip &quot;MX25L6405(D)&quot; (8192 kB, SPI) on linux_spi.
 Reading old flash chip contents... done.
 Erasing and writing flash chip... FAILED at 0x00001000! Expected=0xff, Found=0x00, failed byte count from 0x00000000-0x0000ffff: 0xd716
 ERASE FAILED!

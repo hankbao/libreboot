@@ -15,20 +15,16 @@
 
 	<h1 id="pagetop">ThinkPad X200</h1>
 		<p>
-			This sections relates to known hardware compatibility in libreboot.
-		</p>
-		<p>
 			Or <a href="index.html">back to main index</a>.
 		</p>
 		
 		<p>
-			It is believed that all X200 laptops are compatible. X200s and X200t may also work,
-			but require soldering (for the initial installation/flashing of a ROM image, or
-			dumping the current firmware). <b>Only the X200 is tested so far.</b>
+			It is believed that all X200 laptops are compatible. X200S and X200 Tablet will
+			also work, <a href="#x200s">depending on the configuration</a>.
 		</p>
 		<p>
 			It *might* be possible to put an X200 motherboard in an X201 chassis, though this is currently untested
-			by the libreboot project. The same may also apply between X200s and X201s; again, this is untested.
+			by the libreboot project. The same may also apply between X200S and X201S; again, this is untested.
 			<b>It's most likely true.</b>
 		</p>
 		
@@ -39,14 +35,132 @@
 		</p>
 		
 		<p>
-			<b>The X200 laptops come with ME (and sometimes AMT) before flashing libreboot. Libreboot disables and removes it
+			<b>The X200 laptops come with the ME (and sometimes AMT in addition) before flashing libreboot. Libreboot disables and removes it
 			by using a modified descriptor: see <a href="x200_remove_me.html">x200_remove_me.html</a></b> (contains notes, plus
 			instructions)
 		</p>
-		
+
 		<p>
 			Flashing instructions can be found at <a href="../install/index.html#flashrom_x200">../install/index.html#flashrom_x200</a>
 		</p>
+
+<hr/>
+
+	<div class="section">
+
+		<h2 id="compatibility_noblobs">Compatibility (without blobs)</h2>
+
+			<p>
+				Usual limitations apply for native graphics initialization
+				(no VBT and/or INT10H and only GRUB works so no BIOS, so no DOS/Windows support
+				- who cares? There is no system but GNU, and Linux is one of it's kernels).
+			</p>
+
+			<p>
+				When connecting the AC adapter while system is powered off, system will then power on.
+				This probably happens in coreboot aswell (with or without blobs).
+				It's a minor annoyance, but it should be fixed (if it's not already fixed by now).
+			</p>
+
+			<p>
+				This method of disabling the ME leaves the flash descriptor and gbe in place (non-functional data, fully documented)
+				and disables the ME using soft straps. This means that the gigabit ethernet will still work (putting the machine in
+				non-descriptor mode would wipe it out, not to mention require hardware modifications that most users will be unwilling to make).
+			</p>
+
+			<h3 id="hwvirt">Hardware virtualization (vt-x)</h3>
+				<p>
+					The X200, when run without CPU microcode updates in coreboot, currently kernel panics
+					if running QEMU with vt-x enabled on 2 cores for the guest. With a single core enabled
+					for the guest, the guest panics (but the host is fine). Working around this in QEMU
+					might be possible; if not, software virtualization should work fine (it's just slower).
+				</p>
+				<p>
+					The following errata datasheet from Intel might help with investigation:
+					<a href="http://download.intel.com/design/mobile/specupdt/320121.pdf">http://download.intel.com/design/mobile/specupdt/320121.pdf</a>
+				</p>
+
+	</div>
+
+<hr/>
+
+	<div class="section">
+
+		<h2 id="x200s">X200S and X200 Tablet.</h2>
+
+			<p>
+				X200S and X200 Tablet have raminit issues at the time of writing
+				(GS45 chipset. X200 uses GM45).
+			</p>
+
+			<p>
+				X200S is known to work, but only with certain CPU+RAM configurations.
+				The current stumbling block is RCOMP and SFF, mentioned in
+				<a href="https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf">https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf</a>.
+			</p>
+			<p>
+				The X200 Tablet should also work, but it is not guaranteed.
+			</p>
+			<p>
+				The issues mostly relate to raminit (memory initialization). With an
+				unpatched coreboot, you get the following: <a href="text/x200s/cblog00.txt">text/x200s/cblog00.txt</a>.
+				No SODIMM combination that was tested would work. At first glance, it looks
+				like GS45 (chipset that X200S uses. X200 uses GM45) is unsupported, but
+				there is a workaround that can be used to make certain models of the X200S
+				work, depending on the RAM.
+			</p>
+			<p>
+				The datasheet for GS45 describes two modes: low-performance and
+				high-performance. Low performance uses the SU range of ultra-low
+				voltage procesors (SU9400, for example), and high-performance uses the
+				SL range of processors (SL9400, for example). According to datasheets,
+				GS45 behaves very similarly to GM45 when operating in high-performance
+				mode.
+			</p>
+			<p>
+				The theory then was that you could simply remove
+				the checks in coreboot and make it pass GS45 off as GM45; the idea is
+				that, with a high-performance mode CPU (SL9400, for example) it would
+				just boot up and work.
+			</p>
+			<p>
+				This suspicion was confirmed with the following log:
+				<a href="text/x200s/cblog01.txt">text/x200s/cblog01.txt</a>.
+				The memory modules in this case are 2x4GB. <b>However, not all
+				configurations work: <a href="text/x200s/cblog02.txt">text/x200s/cblog02.txt</a> (2x2GB)
+				and <a href="text/x200s/cblog03.txt">text/x200s/cblog03.txt</a> (1x2GB)
+				show a failed bootup.</b>
+			</p>
+			<p>
+				This was then pushed as a patch for coreboot, which can be found at
+				<a href="http://review.coreboot.org/#/c/7786/">http://review.coreboot.org/#/c/7786/</a>
+				(libreboot merges this patch in coreboot-libre now. Check the 'getcb' script in
+				src or git).
+			</p>
+
+			<h3 id="x200s_raminit">Proper GS45 raminit</h3>
+				<p>
+					A new northbridge gs45 should be added to coreboot, based on gm45,
+					and a new port x200st (X200S and X200T) should be added based on
+					the x200 port.
+				</p>
+				<p>
+					This port would have proper raminit. Alternatively, gs45 (if
+					raminit is taken to be the only issue with it) can be part of
+					gm45 northbridge support (and X200S/Tablet being part of the X200
+					port) with conditional checks in the raminit that make raminit
+					work differently (as required) for GS45. nico_h and pgeorgi/patrickg
+					in the coreboot IRC channel should know more about raminit on gm45
+					and likely gs45.
+				</p>
+				<p>
+					pgeorgi recommends to run SerialICE on the factory BIOS (for X200S),
+					comparing it with X200 (factory BIOS) and X200 (gm45 raminit code
+					in coreboot), to see what the differences are. Then tweak raminit
+					code based on that.
+				</p>
+
+	</div>
 
 <hr/>
 
@@ -68,21 +182,21 @@
 			Tested LCD panels (confirmed working):
 		</p>
 			<ul>
-				<li>X200/X200s: LG-Philips LP121WX3-TLC1 (sgsit on IRC has this panel) (LED backlight)</li>
-				<li>X200/X200s: Samsung LTN121AT03 (phcoder on IRC has this panel)</li>
-				<li>X200/X200s: AUO B121EW03 V.6 (fchmmr on IRC has this panel)</li>
+				<li>X200/X200S: LG-Philips LP121WX3-TLC1 (sgsit on IRC has this panel) (LED backlight)</li>
+				<li>X200/X200S: Samsung LTN121AT03 (phcoder on IRC has this panel)</li>
+				<li>X200/X200S: AUO B121EW03 V.6 (fchmmr on IRC has this panel)</li>
+				<li>X200S: TMD-Toshiba LTD121EQ3B (1440x900 resolution) (LED backlight) (sgsit on IRC has this panel)</li>
 			</ul>
 		<p>
 			Untested LCD panels (status unknown):
 		</p>
 			<ul>
 				<li>X200 Tablet: TMD-Toshiba LTD121KX6B (LED backlight)</li>
-				<li>X200/X200s: TMD-Toshiba LTD121EWVB</li>
-				<li>X200/X200s: AOU B121EW09 V.2 (LED backlight)</li>
-				<li>X200/X200s: FRU 42T0715 (no manufacturer/model given) (LED backlight)</li>
-				<li>X200/X200s: LG-Philips LP121WX3-TLA1 (LED backlight)</li>
-				<li>X200/X200s: 42T0713 FRU (no model/manufacturer given) (LED backlight)</li>
-				<li>X200s (not X200): TMD-Toshiba LTD121EQ3B (1440x900 resolution) (LED backlight)</li>
+				<li>X200/X200S: TMD-Toshiba LTD121EWVB</li>
+				<li>X200/X200S: AOU B121EW09 V.2 (LED backlight)</li>
+				<li>X200/X200S: FRU 42T0715 (no manufacturer/model given) (LED backlight)</li>
+				<li>X200/X200S: LG-Philips LP121WX3-TLA1 (LED backlight)</li>
+				<li>X200/X200S: 42T0713 FRU (no model/manufacturer given) (LED backlight)</li>
 			</ul>
 		<p>
 			<a href="#pagetop">Back to top of page.</a>
@@ -128,10 +242,10 @@
 						<li><a href="http://thinkwiki.de/X200_Displayumbau">ThinkWiki.de - X200 Displayumbau</a> (achtung: du musst lesen und/oder spreche deutsch;
 						oder ein freund fur hilfe)</li>
 					</ul>
-			<h3>X200s</h3>
+			<h3>X200S</h3>
 				<p>
 					<a href="http://forum.thinkpads.com/viewtopic.php?p=618928#p618928">http://forum.thinkpads.com/viewtopic.php?p=618928#p618928</a>
-					explains that the X200s screens/assemblies are thinner. You need to replace the whole lid with one from a normal X200/X201.
+					explains that the X200S screens/assemblies are thinner. You need to replace the whole lid with one from a normal X200/X201.
 				</p>
 			
 			<p>
@@ -156,6 +270,48 @@
 		<p>
 			<a href="#pagetop">Back to top of page.</a>
 		</p>
+
+<hr/>
+
+	<div class="section">
+
+		<h2 id="new_targets">New targets</h2>
+
+			<p>
+				ThinkPad R400/R500/T400/T400S/T500/W500. These all use either the GM45 or GS45
+				chipset, and should be easy-ish to port to coreboot (based on the X200 port and
+				the GM45 code), then adapted for use in libreboot.
+			</p>
+
+			<p>
+				There may be issues (most likely to do with raminit) on some of them, and
+				some of them might sometimse come with ATI graphics (to be avoided) instead
+				of Intel.
+			</p>
+
+			<p>
+				For example, the R400 currently has issues with raminit (not yet ported to coreboot)
+				where it's DDR3 memory reported as DDR2, as shown in
+				<a href="text/r400/r400_dmidecode.txt">text/r400/r400_dmidecode.txt</a>
+			</p>
+
+	</div>
+
+<hr/>
+
+	<div class="section">
+
+		<h2 id="unsorted">Unsorted notes</h2>
+
+<pre>
+&lt;sgsit&gt; do you know if it's possible to flash thinkpads over the LPC debug connector at the front edge?
+&lt;sgsit&gt; that would make life much easier for machines like this
+&lt;sgsit&gt; all the Wistron manufactured machines have this thing called a "golden finger", normally at the front edge of the board
+&lt;sgsit&gt; you can plug a board in which gives diagnostic codes but i'm wondering whether it is capable of more
+&lt;sgsit&gt; <a href="http://www.endeer.cz/bios.tools/bios.html">http://www.endeer.cz/bios.tools/bios.html</a>
+</pre>
+
+	</div>
 
 <hr/>
 
