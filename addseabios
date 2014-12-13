@@ -19,7 +19,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -u -e -v
+set -e -v
+
+CBFSTOOL="seebeeeffesstool"
 
 echo "Adding SeaBIOS and SeaVGABIOS to the ROM's"
 
@@ -37,7 +39,7 @@ if [ $(uname -i) = "i686" ] || [ $(uname -i) = "i686" ]
 			echo "cbfstool binary not found. You will need to build it from source and put it in cbfstool/i686/"
 			exit 1
 		fi
-		$cbfstool = "../cbfstool/i686/cbfstool"
+		CBFSTOOL="../cbfstool/i686/cbfstool"
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -i) = "x86_64" ]
 	then
 		echo "You are on an x86_64 host"
@@ -45,7 +47,7 @@ elif [ $(uname -i) = "x86_64" ] || [ $(uname -i) = "x86_64" ]
 			echo "cbfstool binary not found. You will need to build it from source and put it in cbfstool/x86_64/"
 			exit 1
 		fi
-		$cbfstool = "../cbfstool/x86_64/cbfstool"
+		CBFSTOOL="../cbfstool/x86_64/cbfstool"
 else
 	echo "You need to run this script on an i686 or x86_64 host"
 	exit 1
@@ -56,26 +58,26 @@ cd bin/
 for rom in $(find -type f)
 do
 	# Add them
-	$cbfstool $rom add -f ../vgabios.bin -n vgaroms/vgabios.bin -t raw
-	$cbfstool $rom add -f ../bios.bin.elf -n bios.bin.elf -t raw
+	$(echo $CBFSTOOL) $rom add -f ../vgabios.bin -n vgaroms/vgabios.bin -t raw
+	$(echo $CBFSTOOL) $rom add -f ../bios.bin.elf -n bios.bin.elf -t raw
 
 	# Modify the GRUB configuration
 	for config in grub.cfg grubtest.cfg
 	do
 		# Extract (dump) the config
-		$cbfstool $rom extract -n $config -f $config
+		$(echo $CBFSTOOL) $rom extract -n $config -f $config
 
 		# Delete it from the ROM
-		$cbfstool $rom remove -n $config
+		$(echo $CBFSTOOL) $rom remove -n $config
 
 		# Add the menuentry for loading SeaBIOS
-		cat seabios.cfg >> $config
+		cat ../seabios.cfg >> $config
 
 		# Re-add the newly modified GRUB configuration to the ROM
-		$cbfstool $rom add -f $config -n $config -t raw
+		$(echo $CBFSTOOL) $rom add -f $config -n $config -t raw
 
 		# The GRUB configuration is no longer needed
-		rm -rf $config
+		rm -f $config
 	done
 done
 cd ../
