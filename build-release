@@ -146,22 +146,18 @@ cp resources/grub/config/seabios.cfg libreboot_bin/
 # X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
 # Include it statically compiled
 cp -r bucts bucts_
-cd bucts/
 # make it statically compile
-git apply ../resources/bucts/patch/staticlink.diff
-make clean
-make
-mkdir ../libreboot_bin/bucts
+./builddeps-bucts static
+mkdir libreboot_bin/bucts
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
 	then
-		mkdir ../libreboot_bin/bucts/i686
-		mv bucts ../libreboot_bin/bucts/i686
+		mkdir libreboot_bin/bucts/i686
+		mv bucts/bucts libreboot_bin/bucts/i686
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
-		mkdir ../libreboot_bin/bucts/x86_64
-		mv bucts ../libreboot_bin/bucts/x86_64
+		mkdir libreboot_bin/bucts/x86_64
+		mv bucts/bucts libreboot_bin/bucts/x86_64
 fi
-cd ../
 rm -rf bucts
 mv bucts_ bucts
 

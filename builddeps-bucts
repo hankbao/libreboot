@@ -32,7 +32,14 @@ cd bucts
 make clean
 
 # build bucts
-make
+if (( $# != 1 )); then
+	# build it dynamically linked
+	make
+else
+	git apply ../resources/bucts/patch/staticlink.diff
+	# build it statically linked
+	make
+fi
 
 # done. go back to main directory
 cd ../
