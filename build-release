@@ -331,6 +331,15 @@ rm -f releasefilelist
 # to happen on the release archives. 
 # Development goes in git.
 rm -f libreboot_src/build-release
+rm -f libreboot_src/getall
+rm -f libreboot_src/getbucts
+rm -f libreboot_src/getcb
+rm -f libreboot_src/getflashrom
+rm -f libreboot_src/getgrub
+rm -f libreboot_src/getgrubinvaders
+rm -f libreboot_src/getmt86
+rm -f libreboot_src/getseabios
+rm -f libreboot_src/DEBLOB
 
 echo "Creating compressed libreboot_src release archive"
 
