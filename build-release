@@ -46,7 +46,7 @@ rm -f libreboot_src.tar.xz
 rm -f libreboot_bin.tar.xz
 
 # Get manifest which will be used to copy everything
-ls > releasefilelist
+find -maxdepth 1 > releasefilelist
 
 # ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -57,7 +57,10 @@ mkdir libreboot_src
 
 for resource in $(cat releasefilelist)
 do
-	cp -r $resource libreboot_src
+	if [ "$resource" != "." ]
+		then
+			cp -r $resource libreboot_src
+	fi
 done
 
 cd libreboot_src/
