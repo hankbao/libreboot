@@ -41,6 +41,15 @@ sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VE
 
 for romtype in txtmode vesafb
 do
+	if [ "$1" = "x200_8mb" ] || [ "$1" = "x200_4mb" ]
+		then
+			if [ "$romtype" = "txtmode" ]
+				then
+					echo "Text mode graphics is currently broken on X200. Only framebuffer mode works."
+					continue
+			fi
+	fi
+
 	# Build coreboot ROM image
 	make clean
 	mv config_"$romtype" .config

@@ -120,6 +120,7 @@
 			Changes for this release (latest changes first, earliest changes last)
 		</h2>
 			<ul>
+				<li>buildrom-withgrub: disabled creation of *txtmode*.rom for X200 (only framebuffer graphics work)</li>
 				<li>Updated SeaBIOS (again)</li>
 				<li>docs/install/index.html#flashrom_x200: improve instructions</li>
 				<li>Updated flashrom (again) - patches updated</li>
@@ -241,6 +242,14 @@
 				Critical tasks for future release
 			</h2>
 				<ul>
+					<li>
+						X200: only framebuffer graphics work. This is fine, since it's what most people use,
+						but text-mode graphics initialization is currently broken, which means that
+						memtest86+ will require serial output or ehci debugging.
+					</li>
+					<li>
+						X200: at very low brightness levels, the backlight is uneven. Fix that.
+					</li>
 					<li>
 						Fix remaining incompatible LCD panels in native graphics on T60. 
 						See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
