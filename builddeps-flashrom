@@ -27,22 +27,23 @@ set -u -e -v
 
 cd flashrom/
 
-# clean it first
-make clean
-
-# default flashchips.c
-mv flashchips.c flashchips.c_
-
 # build patched binary for libreboot X60/T60 (MX25L1605D chip)
 # - this patch removes redundant definitions from flashchips.c
 # - this patch removes the need to use the -c parameter in flashrom
 # build patched binaries for MX25L1605D and SST25VF016B flash chips
 # - these patches are needed for initial installation on an X60 or T60
 # - these patches are for people who have lenovo bios running
-for patchname in "_normal" "_lenovobios_macronix" "_lenovobios_sst"
+for patchname in "normal" "lenovobios_macronix" "lenovobios_sst"
 do
-	cp ../resources/flashrom/patch/flashchips.c"$patchname" flashchips.c
-	rm -f flashrom"$patchname"
+	# first remove the existing build
+	make clean
+	rm -f flashrom_"$patchname"
+	
+	# backup the unpatched flashchips.c (it will be patched)
+	cp flashchips.c flashchips.c_
+	# patch flashchips.c
+	patch flashchips.c < ../resources/flashrom/patch/flashchips.c.diff."$patchname"
+	
 	if (( $# != 1 )); then
 		# build it dynamically linked
 		make
@@ -50,13 +51,16 @@ do
 		# build it statically linked
 		make SHARED=0 CC='gcc -static'
 	fi
-	mv flashrom flashrom"$patchname"
+	
+	# Rename the binary based on the patch name
+	mv flashrom flashrom_"$patchname"
+	
+	# restore unpatched flashchips.c
 	rm -f flashchips.c
+	mv flashchips.c_ flashchips.c
 done
+# flashrom normal should actually be considered the default
 mv flashrom_normal flashrom
-
-# default flashchips.c
-mv flashchips.c_ flashchips.c
 
 cd ../
 
