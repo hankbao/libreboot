@@ -276,6 +276,15 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 					was found to be 0x34BA; again, it should be 0xBABA. 34BA is actually BABA in L33T speak (look it up).
 				</p>
 				<p>In honour of the song <i>Baba O'Reilly</i> by <i>The Who</i> apparently. We're not making this stuff up...</p>
+				
+				<p>
+					Look at resources/utilities/ich9deblob/ich9deblob.c.
+				</p>
+					<ul>
+						<li>Add the first 0x3F 16bit numbers (unsigned) of the GBe descriptor together (this includes the checksum value)
+						and that has to add up to 0xBABA. In other words, the checksum is 0xBABA minus the total of the first
+						0x3E 16bit numbers (unsigned), ignoring any overflow.</li>
+					</ul>
 		
 		</div>
 		
