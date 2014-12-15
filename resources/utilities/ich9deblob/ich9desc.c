@@ -183,7 +183,14 @@ struct OEMSECTIONRECORD {
 };
 
 struct GBEREGIONRECORD {
-	unsigned char gbeRegion[8192];                //todo: implement and document this
+	unsigned char macAddress[6];
+	unsigned char otherStuff[120];
+	unsigned short checkSum;
+	unsigned char padding1[3968];
+	unsigned char macAddress2[6];
+	unsigned char otherStuff2[120];
+	unsigned short checkSum2;
+	unsigned char padding2[3968];
 };
 
 struct DESCRIPTORREGIONRECORD {
