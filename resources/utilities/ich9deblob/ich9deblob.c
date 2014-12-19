@@ -3,6 +3,7 @@
  *
  *  gcc -o ich9deblob ich9deblob.c ich9desc.c -I.
  *
+ *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -19,58 +20,68 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <stdio.h>
 #include <string.h>
-#include "ich9desc.c"
+#include "ich9desc.c" // structs describing what's in the descriptor and gbe regions
 
-#define DESCRIPTORREGIONSIZE 0x1000
-#define GBEREGIONSIZE 0x2000
+#define DESCRIPTORREGIONSIZE 0x1000 // 4096 bytes / 4KiB
+#define GBEREGIONSIZE 0x2000 // 8192 bytes / 8KiB
 
-unsigned short GetChecksum(char* buffer, unsigned short desiredValue);
-unsigned short GetRegionWord(int i, char* buffer);
+unsigned short GetChecksum(char* buffer, unsigned short desiredValue); // for GBe region (checksum calculation)
+unsigned short GetRegionWord(int i, char* buffer); // used for getting each word needed to calculate said checksum
 
 int main(int argc, char *argv[])
 {
 	// check compiler bit-packs in a compatible way
 	struct DESCRIPTORREGIONRECORD descriptorRegion;
 	unsigned int descriptorRegionStructSize = sizeof(descriptorRegion);
-
+	// basically, it is expected that this code will be used on x86
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
 		return 1;
 	}
 
+	// supplied by user, dumped from their machine before flashing libreboot
 	char* factoryRomFilename = "factory.rom";
+	// name of the file that this utility will create (deblobbed descriptor+gbe)
 	char* deblobbedDescriptorFilename = "deblobbed_descriptor.bin";
 
+	// Open factory.rom, needed for extracting descriptor and gbe
+	// -----------------------------------------------
 	FILE* fp = NULL;
-	fp = fopen(factoryRomFilename, "rb");
-
+	fp = fopen(factoryRomFilename, "rb"); // open factory.rom
 	if (NULL == fp)
 	{
 		printf("\nerror: could not open factory.rom\n");
 		return 1;
 	}
-
 	printf("\nfactory.rom opened successfully\n");
+	// -----------------------------------------------
 
+	// Create empty descriptor buffer (populated below)
 	char descriptorBuffer[DESCRIPTORREGIONSIZE];
 
+	// Extract the descriptor region from the factory.rom dump
+	// (goes in descriptorBuffer variable)
 	unsigned int readLen;
 	readLen = fread(descriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
-	if (DESCRIPTORREGIONSIZE != readLen)
+	if (DESCRIPTORREGIONSIZE != readLen) // 
 	{
 		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", readLen);
 		return 1;
 	}
-
 	printf("\ndescriptor region read successfully\n");
 
 	// copy descriptor buffer into descriptor struct memory
+	// descriptorRegion is an instance of a struct that actually
+	// defines the locations of all these variables in the descriptor,
+	// as defined in the datasheets. This allows us to map the extracted
+	// descriptor over the struct so that it can then be modified
+	// for libreboot's purpose
 	memcpy(&descriptorRegion, &descriptorBuffer, DESCRIPTORREGIONSIZE);
 
 	// get original GBe region location
+	// (it will be moved to the beginning of the flash, after the descriptor region)
 	unsigned int flRegionBitShift = 12;
 	unsigned int gbeRegionLocation = descriptorRegion.regionSection.flReg3.BASE << flRegionBitShift;
 
@@ -85,7 +96,8 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	// get rom size
+	// Get size of ROM image
+	// This is needed for relocating the BIOS region (per descriptor)
 	fseek(fp, 0L, SEEK_END);
 	int romSize = ftell(fp);
 
@@ -130,7 +142,7 @@ int main(int argc, char *argv[])
 	// disable ME, apart from chipset bugfixes (ME region still required)
 	//descriptorRegion.mchStraps.mchStrap0.meAlternateDisable = 1;
 
-
+	// debugging
 	printf("\nRelocated Descriptor start block: %08x ; Descriptor end block: %08x\n", descriptorRegion.regionSection.flReg0.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg0.LIMIT << flRegionBitShift);
 	printf("Relocated BIOS start block: %08x ; BIOS end block: %08x\n", descriptorRegion.regionSection.flReg1.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg1.LIMIT << flRegionBitShift);
 	printf("Relocated ME start block: %08x ; ME end block: %08x\n", descriptorRegion.regionSection.flReg2.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg2.LIMIT << flRegionBitShift);
@@ -159,7 +171,13 @@ int main(int argc, char *argv[])
 
 	printf("\ndeblobbed descriptor successfully created: deblobbed_descriptor.bin \n");
 
-	unsigned short gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA); // observed values 0xBABA 0x3ABA 0x34BA. spec defined as 0xBABA.
+	// calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
+	// observed values (from actual factory.rom dumps) 0xBABA 0x3ABA 0x34BA. spec defined as 0xBABA.
+	// theoretically, this could be any l33t speak variation of BABA, eg 3434 or BA34, and so on, but this is untested. so far.
+	// 40BA was also observed in another factory dump for another X200 - this is not l33t speak. 
+	// maybe only the 8 least significant bits are checked? or something deeper than that
+	unsigned short gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA);
+	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
 	unsigned short gbeChecksum = GetRegionWord(0x3F, gbeBuffer);
 
 	printf("\ncalculated Gbe checksum: 0x%hx actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
@@ -181,6 +199,7 @@ unsigned short GetChecksum(char* regionData, unsigned short desiredValue)
 	return checksum;
 }
 
+// Read a 16-bit unsigned int from a supplied region buffer
 unsigned short GetRegionWord(int index, char* regionData)
 {
 	return *((unsigned short*)(regionData + (index * 2)));
