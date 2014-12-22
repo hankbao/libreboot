@@ -88,11 +88,11 @@ int main(int argc, char *argv[])
 	// Get the descriptor region dump from the factory.rom
 
 	// Create empty descriptor buffer (populated below)
-	char descriptorBuffer[DESCRIPTORREGIONSIZE];
+	char factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	// Extract the descriptor region from the factory.rom dump
-	// (goes in descriptorBuffer variable)
+	// (goes in factoryDescriptorBuffer variable)
 	unsigned int readLen;
-	readLen = fread(descriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
+	readLen = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
 	if (DESCRIPTORREGIONSIZE != readLen) // 
 	{
 		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", readLen);
@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
 	// as defined in the datasheets. This allows us to map the extracted
 	// descriptor over the struct so that it can then be modified
 	// for libreboot's purpose
-	memcpy(&factoryDescriptorStruct, &descriptorBuffer, DESCRIPTORREGIONSIZE);
+	memcpy(&factoryDescriptorStruct, &factoryDescriptorBuffer, DESCRIPTORREGIONSIZE);
 	
 	// -----------------------------------------------------------------------------------------------
 	
