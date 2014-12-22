@@ -118,13 +118,13 @@ int main(int argc, char *argv[])
 	// get original GBe region location
 	// (it will be moved to the beginning of the flash, after the descriptor region)
 	unsigned int flRegionBitShift = 12;// bits 12-24 are represented.
-	// note for example, gbeRegionLocation is set to <<12 of actual address (in C). this is how the addresses
+	// note for example, factoryGbeRegionLocation is set to <<12 of actual address (in C). this is how the addresses
 	// are stored in the descriptor.
-	unsigned int gbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << flRegionBitShift;
+	unsigned int factoryGbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << flRegionBitShift;
 
 	// Set offset so that we can read the data from
 	// the gbe region
-	fseek(fp, gbeRegionLocation, SEEK_SET);
+	fseek(fp, factoryGbeRegionLocation, SEEK_SET);
 	// data will go in here
 	char factoryGbeBuffer[GBEREGIONSIZE];
 	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer
@@ -152,7 +152,7 @@ int main(int argc, char *argv[])
 	printf("\nOriginal Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg0.LIMIT << flRegionBitShift);
 	printf("Original BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg1.LIMIT << flRegionBitShift);
 	printf("Original ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg2.LIMIT << flRegionBitShift);
-	printf("Original GBe start block: %08x ; GBe end block: %08x\n", gbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << flRegionBitShift);
+	printf("Original GBe start block: %08x ; GBe end block: %08x\n", factoryGbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << flRegionBitShift);
 
 	// Now we need to modify the descriptor so that the ME can be excluded
 	// from the final ROM image (libreboot one) after adding the modified
