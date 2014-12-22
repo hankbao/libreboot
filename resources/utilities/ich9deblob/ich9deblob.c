@@ -59,7 +59,7 @@
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int romSize, unsigned int factoryGbeRegionLocation);
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 int structBitfieldWrongOrder();
@@ -87,11 +87,6 @@ int main(int argc, char *argv[])
 	// region inside the factory.rom image.
 	unsigned int factoryGbeRegionLocation;
 	
-	// These are used later to present the user
-	// before-after Gbe checksums when modifying the gbe region
-	unsigned short gbeCalculatedChecksum;
-	unsigned short gbeChecksum;
-	
 	// names of the files that this utility will handle
 	char* factoryRomFilename = "factory.rom"; // user-supplied factory.bin dump (original firmware)
 	char* deblobbedDescriptorFilename = "deblobbed_descriptor.bin"; // descriptor+gbe: to be dd'd to beginning of a libreboot image
@@ -100,7 +95,7 @@ int main(int argc, char *argv[])
 	unsigned int bufferLength;
 	
 	// For storing the size of the factory.rom dump in bytes
-	int romSize;
+	unsigned int romSize;
 	
 	// -----------------------------------------------------------------------------------------------
 	
@@ -111,9 +106,9 @@ int main(int argc, char *argv[])
 
 	// Open factory.rom, needed for extracting descriptor and gbe
 	// -----------------------------------------------
-	FILE* fp = NULL;
-	fp = fopen(factoryRomFilename, "rb"); // open factory.rom
-	if (NULL == fp)
+	FILE* fileStream = NULL;
+	fileStream = fopen(factoryRomFilename, "rb"); // open factory.rom
+	if (NULL == fileStream)
 	{
 		printf("\nerror: could not open factory.rom\n");
 		return 1;
@@ -123,7 +118,7 @@ int main(int argc, char *argv[])
 	
 	// Get the descriptor region dump from the factory.rom
 	// (goes in factoryDescriptorBuffer variable)
-	bufferLength = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
+	bufferLength = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fileStream);
 	if (DESCRIPTORREGIONSIZE != bufferLength) // 
 	{
 		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", bufferLength);
@@ -152,9 +147,9 @@ int main(int argc, char *argv[])
 
 	// Set offset so that we can read the data from
 	// the gbe region
-	fseek(fp, factoryGbeRegionLocation, SEEK_SET);
+	fseek(fileStream, factoryGbeRegionLocation, SEEK_SET);
 	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k
-	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp);
+	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fileStream);
 	if (GBEREGIONSIZE != bufferLength)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", bufferLength);
@@ -175,30 +170,18 @@ int main(int argc, char *argv[])
 
 	// Get size of ROM image
 	// This is needed for relocating the BIOS region (per descriptor)
-	fseek(fp, 0L, SEEK_END);
-	romSize = ftell(fp);
+	fseek(fileStream, 0L, SEEK_END);
+	romSize = ftell(fileStream);
 
 	printf("\nfactory.rom size: [%i] bytes\n", romSize);
 
-	fclose(fp);
+	fclose(fileStream);
 	
 	// -----------------------------------------------------------------------------------------------
 
-	// debugging
-	printf("\nOriginal (factory.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) GBe start block: %08x ; GBe end block: %08x\n", factoryGbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
-
 	// Disable the ME and Platform regions. Put Gbe at the beginning (after descriptor). 
 	// Also, extend the BIOS region to fill the ROM image (after descriptor+gbe).
-	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(deblobbedDescriptorStruct, romSize);
-
-	// debugging
-	printf("\nRelocated (libreboot.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) BIOS start block: %08x ; BIOS end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) ME start block: %08x ; ME end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) GBe start block: %08x ; GBe end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
+	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, romSize, factoryGbeRegionLocation);
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -216,54 +199,27 @@ int main(int argc, char *argv[])
 	// delete old file before continuing
 	remove(deblobbedDescriptorFilename);
 	// open new file for writing the deblobbed descriptor+gbe
-	fp = fopen(deblobbedDescriptorFilename, "ab");
+	fileStream = fopen(deblobbedDescriptorFilename, "ab");
 
 	// write the descriptor region into the first part
-	if (DESCRIPTORREGIONSIZE != fwrite(deblobbedDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp))
+	if (DESCRIPTORREGIONSIZE != fwrite(deblobbedDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fileStream))
 	{
 		printf("\nerror: writing descriptor region failed\n");
 		return 1;
 	}
 
 	// add gbe to the end of the file
-	if (GBEREGIONSIZE != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp))
+	if (GBEREGIONSIZE != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fileStream))
 	{
 		printf("\nerror: writing GBe region failed\n");
 		return 1;
 	}
 
-	fclose(fp);
+	fclose(fileStream);
 
 	printf("\ndeblobbed descriptor successfully created: deblobbed_descriptor.bin \n");
 
 	// -------------------------------------------------------------------------------------
-
-	// calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
-	// observed checksum matches (from X200 factory.rom dumps) on main: 0x3ABA 0x34BA 0x40BA. spec defined as 0xBABA.
-	// X200 ships with a broken main gbe region by default (invalid checksum, and more)
-	// The "backup" gbe regions on these machines are correct, though, and is what the machines default to
-	// For libreboot's purpose, we can do much better than that by fixing the main one... below is only debugging
-	
-	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.main, 0xBABA);
-	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = factoryGbeStruct8k.main.checkSum; // for the libreboot.rom image
-	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
-	// same as above, but for 2nd region ("backup") in gbe
-	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.backup, 0xBABA); // factory.rom
-	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = factoryGbeStruct8k.backup.checkSum; // from the factory.rom
-	printf("factory Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
-	
-	// Do the same as above, for the deblobbed gbe region:
-	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.main, 0xBABA);
-	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = deblobbedGbeStruct8k.main.checkSum; // for the libreboot.rom image
-	printf("\ndeblobbed Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
-	// same as above, but for 2nd region ("backup") in gbe
-	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
-	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = deblobbedGbeStruct8k.backup.checkSum; // for the libreboot.rom image
-	printf("deblobbed Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 
 	printf("\nNow do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc");
 	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n");
@@ -299,8 +255,11 @@ int systemIsBigEndian() {
 }
 
 // fail if members are presented in the wrong order
-int structMembersWrongOrder() {
+int structMembersWrongOrder()
+{
+	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
+	unsigned char *meVsccTablePtr = (unsigned char*)&descriptorDummy.meVsccTable;
 	
 	// These do not use bitfields. 
 	descriptorDummy.meVsccTable.jid0 = 0x01020304;  // unsigned int 32-bit
@@ -323,12 +282,10 @@ int structMembersWrongOrder() {
 	// 04030201 40302010 44332211 08070605 80706050 88776655 AA BB CC DD (ignore this. not byte-separated, just working it out:)
 	// 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
 	
-	unsigned char *meVsccTablePtr = (unsigned char*)&descriptorDummy.meVsccTable;
-	
 	printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
 	printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
 	printf("\nAnd it is: ");
-	int i;
+	
 	for (i = 0; i < 28; i++) {
 		printf("%02x ", *(meVsccTablePtr + i));	
 	}
@@ -354,8 +311,11 @@ int structMembersWrongOrder() {
 }
 
 // fail if bit fields are presented in the wrong order
-int structBitfieldWrongOrder() {
+int structBitfieldWrongOrder() 
+{
+	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
+	unsigned char *flMap0Ptr = (unsigned char*)&descriptorDummy.flMaps.flMap0;
 	
 	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      // :8 --> 10100010
 	descriptorDummy.flMaps.flMap0.NC = 0x02;        // :2 --> 10
@@ -372,12 +332,10 @@ int structBitfieldWrongOrder() {
 	// or in hex:
 	// A2 E2 D2 E5
 	
-	unsigned char *flMap0Ptr = (unsigned char*)&descriptorDummy.flMaps.flMap0;
-	
 	printf("\nBitfield order check (descriptorDummy.flMaps.flMaps0) with junk/dummy data:");
 	printf("\nShould be: a2 e2 d2 e5 ");
 	printf("\nAnd it is: ");
-	int i;
+
 	for (i = 0; i < 4; i++) {
 		printf("%02x ", *(flMap0Ptr + i));	
 	}
@@ -413,13 +371,24 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
 	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE>>1);
 	
+	// Debugging:
+	// calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
+	// observed checksum matches (from X200 factory.rom dumps) on main: 0x3ABA 0x34BA 0x40BA. spec defined as 0xBABA.
+	// X200 ships with a broken main gbe region by default (invalid checksum, and more)
+	// The "backup" gbe regions on these machines are correct, though, and is what the machines default to
+	// For libreboot's purpose, we can do much better than that by fixing the main one... below is only debugging
+	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.main, 0xBABA), factoryGbeStruct8k.main.checkSum);
+	printf("factory Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.backup, 0xBABA), factoryGbeStruct8k.backup.checkSum);
+	printf("\ndeblobbed Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.main, 0xBABA), deblobbedGbeStruct8k.main.checkSum);
+	printf("deblobbed Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA), deblobbedGbeStruct8k.backup.checkSum);
+	
 	return deblobbedGbeStruct8k;
 }
 
 // Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
 // Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills romSize-12k) are left.
 // Tested on ThinkPad X200 and X200S. X200T and other GM45 targets may also work.
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize)
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int romSize, unsigned int factoryGbeRegionLocation)
 {
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
@@ -479,6 +448,17 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	// but may be interesting for others)
 	// deblobbedDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1;
 	
+	// debugging
+	printf("\nOriginal (factory.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
+	printf("Original (factory.rom) BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
+	printf("Original (factory.rom) ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
+	printf("Original (factory.rom) GBe start block: %08x ; GBe end block: %08x\n", factoryGbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
+	
+	printf("\nRelocated (libreboot.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
+	printf("Relocated (libreboot.rom) BIOS start block: %08x ; BIOS end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
+	printf("Relocated (libreboot.rom) ME start block: %08x ; ME end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
+	printf("Relocated (libreboot.rom) GBe start block: %08x ; GBe end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
+	
 	return deblobbedDescriptorStruct;
 }
 
@@ -493,14 +473,15 @@ unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k,
 // also works for 4k buffers, so long as isBackup remains false
 unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, char isBackup)
 {
-	unsigned short regionWord;
-	unsigned short checksum = 0;
-
+	int i;
+	
+	unsigned short regionWord; // store words here for adding to checksum
+	unsigned short checksum = 0; // this gbe's checksum
+	unsigned short offset = 0; // in bytes, from the start of the gbe region.
+	
 	// if isBackup is true, use 2nd gbe region ("backup" region)
-	unsigned short offset = 0;
 	if (isBackup) offset = 0x1000>>1; // this function uses *word* not *byte* indexes.
 
-	int i;
 	for (i = 0; i < 0x3F; i++) {
 		regionWord = gbeGetRegionWordFrom8kBuffer(i+offset, regionData);
 		checksum += regionWord;
