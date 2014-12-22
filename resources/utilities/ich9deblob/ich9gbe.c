@@ -30,12 +30,12 @@ struct GBEREGIONRECORD_4K {
 	unsigned char otherStuff[120];  // 0x3c words, or 0x7E bytes
 	unsigned short checkSum; // when added to the sum of all words above, this should be 0xBABA
 	unsigned char padding1[3968];
-}
+};
 
 // main and backup region in gbe
 struct GBEREGIONRECORD_8K {
-	GBEREGIONRECORD_4K main;
-	GBEREGIONRECORD_4K backup;
+	struct GBEREGIONRECORD_4K main;
+	struct GBEREGIONRECORD_4K backup;
 	// Backup region:
 	// This is actually "main" on X200, since the real main has a bad checksum
 	// and other errors. You should do what you need on this one (if modifying
