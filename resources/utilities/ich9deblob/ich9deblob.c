@@ -59,7 +59,7 @@
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionLocation);
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionStart);
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 int structBitfieldWrongOrder();
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
 	
 	// Used to store the location of the Gbe
 	// region inside the factory.rom image.
-	unsigned int factoryGbeRegionLocation;
+	unsigned int factoryGbeRegionStart;
 	
 	// names of the files that this utility will handle
 	char* factoryRomFilename = "factory.rom"; // user-supplied factory.bin dump (original firmware)
@@ -141,13 +141,13 @@ int main(int argc, char *argv[])
 
 	// get original GBe region location
 	// (it will be moved to the beginning of the flash, after the descriptor region)
-	// note for example, factoryGbeRegionLocation is set to <<FLREGIONBITSHIFT of actual address (in C). this is how the addresses
+	// note for example, factoryGbeRegionStart is set to <<FLREGIONBITSHIFT of actual address (in C). this is how the addresses
 	// are stored in the descriptor.
-	factoryGbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
+	factoryGbeRegionStart = factoryDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
 
 	// Set offset so that we can read the data from
 	// the gbe region
-	fseek(fileStream, factoryGbeRegionLocation, SEEK_SET);
+	fseek(fileStream, factoryGbeRegionStart, SEEK_SET);
 	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k
 	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fileStream);
 	if (GBEREGIONSIZE != bufferLength)
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 
 	// Disable the ME and Platform regions. Put Gbe at the beginning (after descriptor). 
 	// Also, extend the BIOS region to fill the ROM image (after descriptor+gbe).
-	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, factoryRomSize, factoryGbeRegionLocation);
+	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, factoryRomSize, factoryGbeRegionStart);
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -388,7 +388,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 // Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
 // Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills factoryRomSize-12k) are left.
 // Tested on ThinkPad X200 and X200S. X200T and other GM45 targets may also work.
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionLocation)
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionStart)
 {
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
@@ -452,7 +452,7 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	printf("\nOriginal (factory.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
 	printf("Original (factory.rom) BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
 	printf("Original (factory.rom) ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) GBe start block: %08x ; GBe end block: %08x\n", factoryGbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
+	printf("Original (factory.rom) GBe start block: %08x ; GBe end block: %08x\n", factoryGbeRegionStart, factoryDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
 	
 	printf("\nRelocated (libreboot.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
 	printf("Relocated (libreboot.rom) BIOS start block: %08x ; BIOS end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
