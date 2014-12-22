@@ -64,6 +64,7 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 int systemIsBigEndian();
 int structBitfieldWrongOrder();
 int structMembersWrongOrder();
+struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k);
 
 int main(int argc, char *argv[])
 {
@@ -191,12 +192,8 @@ int main(int argc, char *argv[])
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	// Correct the main gbe region. By default, the X200 (as shipped from Lenovo) comes
-	// with a broken main gbe region, where the backup gbe region is used instead. Modify
-	// the descriptor so that the main region is usable.
-	
-	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
-	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE>>1);
+	// Modify the Gbe descriptor (see function for details)
+	deblobbedGbeStruct8k = deblobbedGbeStructFromFactory(factoryGbeStruct8k);
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -388,6 +385,21 @@ int structBitfieldWrongOrder() {
 	}
 	printf("Correct order.\n");
 	return 0;
+}
+
+struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k) 
+{	
+	// Correct the main gbe region. By default, the X200 (as shipped from Lenovo) comes
+	// with a broken main gbe region, where the backup gbe region is used instead. Modify
+	// the descriptor so that the main region is usable.
+	
+	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
+	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE);
+	
+	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
+	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE>>1);
+	
+	return deblobbedGbeStruct8k;
 }
 
 // Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
