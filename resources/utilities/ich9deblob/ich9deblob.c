@@ -65,6 +65,7 @@ int systemIsBigEndian();
 int structBitfieldWrongOrder();
 int structMembersWrongOrder();
 struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k);
+int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k);
 
 int main(int argc, char *argv[])
 {
@@ -101,10 +102,7 @@ int main(int argc, char *argv[])
 	// -----------------------------------------------------------------------------------------------
 	
 	// Compatibility checks. This version of ich9deblob is not yet porable.
-	if (structSizesIncorrect(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
-	if (systemIsBigEndian()) return 1;
-	if (structBitfieldWrongOrder()) return 1;
-	if (structMembersWrongOrder()) return 1; 
+	if (systemOrCompilerIncompatible(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
 	
 	// -----------------------------------------------------------------------------------------------
 
@@ -387,6 +385,16 @@ int structBitfieldWrongOrder() {
 		return 1;
 	}
 	printf("Correct order.\n");
+	return 0;
+}
+
+// Compatibility checks. This version of ich9deblob is not yet porable.
+int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k) 
+{
+	if (structSizesIncorrect(descriptorStruct, gbeStruct8k)) return 1;
+	if (systemIsBigEndian()) return 1;
+	if (structBitfieldWrongOrder()) return 1;
+	if (structMembersWrongOrder()) return 1; 
 	return 0;
 }
 
