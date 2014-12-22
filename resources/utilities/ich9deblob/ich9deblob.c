@@ -245,12 +245,10 @@ int main(int argc, char *argv[])
 	// -------------------------------------------------------------------------------------
 
 	// calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
-	// observed values (from actual factory.rom dumps) 0xBABA 0x3ABA 0x34BA. spec defined as 0xBABA.
-	// theoretically, this could be any l33t speak variation of BABA, eg 3434 or BA34, and so on, but this is untested. so far.
-	// 40BA was also observed in another factory dump for another X200 - this is l33t speak for aoba, not baba.... 
-	// maybe only the 8 least significant bits are checked? or something deeper than that
-	// it will need to be tested if those gbe regions that use something other than baba
-	// will also work with the checksum changed to match baba (per datasheets)
+	// observed checksum matches (from X200 factory.rom dumps) on main: 0x3ABA 0x34BA 0x40BA. spec defined as 0xBABA.
+	// X200 ships with a broken main gbe region by default (invalid checksum, and more)
+	// The "backup" gbe regions on these machines are correct, though, and is what the machines default to
+	// For libreboot's purpose, we can do much better than that by fixing the main one...
 	unsigned short gbeCalculatedChecksum = GetChecksum(factoryGbeBuffer, 0xBABA, 0);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
 	unsigned short gbeChecksum = GetRegionWord(0x3F, factoryGbeBuffer); // from the original factory.rom
