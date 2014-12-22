@@ -60,8 +60,8 @@ int main(int argc, char *argv[])
 {
 	
 	// descriptor region. Will have actual descriptor mapped to it (from the factory.rom dump)
-	struct DESCRIPTORREGIONRECORD descriptorRegion;
-	unsigned int descriptorRegionStructSize = sizeof(descriptorRegion);
+	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
+	unsigned int descriptorRegionStructSize = sizeof(factoryDescriptorStruct);
 	// check compiler bit-packs in a compatible way basically, it is expected that this code will be used on x86
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
@@ -100,12 +100,12 @@ int main(int argc, char *argv[])
 	}
 	printf("\ndescriptor region read successfully\n");
 	// copy descriptor buffer into descriptor struct memory
-	// descriptorRegion is an instance of a struct that actually
+	// factoryDescriptorStruct is an instance of a struct that actually
 	// defines the locations of all these variables in the descriptor,
 	// as defined in the datasheets. This allows us to map the extracted
 	// descriptor over the struct so that it can then be modified
 	// for libreboot's purpose
-	memcpy(&descriptorRegion, &descriptorBuffer, DESCRIPTORREGIONSIZE);
+	memcpy(&factoryDescriptorStruct, &descriptorBuffer, DESCRIPTORREGIONSIZE);
 	
 	// -----------------------------------------------------------------------------------------------
 	
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 	unsigned int flRegionBitShift = 12;// bits 12-24 are represented.
 	// note for example, gbeRegionLocation is set to <<12 of actual address (in C). this is how the addresses
 	// are stored in the descriptor.
-	unsigned int gbeRegionLocation = descriptorRegion.regionSection.flReg3.BASE << flRegionBitShift;
+	unsigned int gbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << flRegionBitShift;
 
 	// Set offset so that we can read the data from
 	// the gbe region
@@ -145,10 +145,10 @@ int main(int argc, char *argv[])
 	// -----------------------------------------------------------------------------------------------
 
 	// debugging
-	printf("\nOriginal Descriptor start block: %08x ; Descriptor end block: %08x\n", descriptorRegion.regionSection.flReg0.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg0.LIMIT << flRegionBitShift);
-	printf("Original BIOS start block: %08x ; BIOS end block: %08x\n", descriptorRegion.regionSection.flReg1.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg1.LIMIT << flRegionBitShift);
-	printf("Original ME start block: %08x ; ME end block: %08x\n", descriptorRegion.regionSection.flReg2.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg2.LIMIT << flRegionBitShift);
-	printf("Original GBe start block: %08x ; GBe end block: %08x\n", gbeRegionLocation, descriptorRegion.regionSection.flReg3.LIMIT << flRegionBitShift);
+	printf("\nOriginal Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg0.LIMIT << flRegionBitShift);
+	printf("Original BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg1.LIMIT << flRegionBitShift);
+	printf("Original ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg2.LIMIT << flRegionBitShift);
+	printf("Original GBe start block: %08x ; GBe end block: %08x\n", gbeRegionLocation, factoryDescriptorStruct.regionSection.flReg3.LIMIT << flRegionBitShift);
 
 	// Now we need to modify the descriptor so that the ME can be excluded
 	// from the final ROM image (libreboot one) after adding the modified
@@ -156,18 +156,18 @@ int main(int argc, char *argv[])
 
 	// set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 	// means 3. We want 3 regions: descriptor, gbe and bios, in that order)
-	descriptorRegion.flMaps.flMap0.NR = 2;
+	factoryDescriptorStruct.flMaps.flMap0.NR = 2;
 
 	// make descriptor writable from OS. This is that the user can run:
 	// sudo ./flashrom -p internal:laptop=force_I_want_a_brick 
 	// from the OS, without relying an an external SPI flasher, while
 	// being able to write to the descriptor region (locked by default,
 	// until making the change below):
-	descriptorRegion.masterAccessSection.flMstr1.fdRegionWriteAccess = 1;
+	factoryDescriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 1;
 
 	// relocate BIOS region and increase size to fill image
-	descriptorRegion.regionSection.flReg1.BASE = 3; // 3<<12 is 12KiB, which is where BIOS region is to begin (after descriptor and gbe)
-	descriptorRegion.regionSection.flReg1.LIMIT = ((romSize >> flRegionBitShift) - 1);
+	factoryDescriptorStruct.regionSection.flReg1.BASE = 3; // 3<<12 is 12KiB, which is where BIOS region is to begin (after descriptor and gbe)
+	factoryDescriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> flRegionBitShift) - 1);
 	// ^ for example, 8MB ROM, that's 8388608 bytes.
 	// ^ 8388608>>12 (or 8388608/4096) = 2048 bytes
 	// 2048 - 1 = 2047 bytes. 
@@ -176,40 +176,40 @@ int main(int argc, char *argv[])
 	// (it can't be 0x7FFFFF because of limited number of bits)
 
 	// set ME region size to 0 - the ME is a blob, we don't want it in libreboot
-	descriptorRegion.regionSection.flReg2.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<12 is outside of the ROM image (8MB) size?
+	factoryDescriptorStruct.regionSection.flReg2.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<12 is outside of the ROM image (8MB) size?
 	// ^ datasheet says to set this to 1FFF, but FFF was previously used and also worked.
-	descriptorRegion.regionSection.flReg2.LIMIT = 0;
+	factoryDescriptorStruct.regionSection.flReg2.LIMIT = 0;
 	// ^ 0<<12=0, so basically, the size is 0, and the base (1FFF>>12) is well outside the higher 8MB range. 
 	
 	// relocate Gbe region to begin at 4KiB (immediately after the flash descriptor)
-	descriptorRegion.regionSection.flReg3.BASE = 1; // 1<<12 is 4096, which is where the Gbe region is to begin (after the descriptor)
-	descriptorRegion.regionSection.flReg3.LIMIT = 2;
+	factoryDescriptorStruct.regionSection.flReg3.BASE = 1; // 1<<12 is 4096, which is where the Gbe region is to begin (after the descriptor)
+	factoryDescriptorStruct.regionSection.flReg3.LIMIT = 2;
 	// ^ 2<<12=8192 bytes. So we are set it to size 8KiB after the first 4KiB in the flash chip.
 
 	// set Platform region size to 0 - another blob that we don't want
-	descriptorRegion.regionSection.flReg4.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<12 is outside of the ROM image (8MB) size?
+	factoryDescriptorStruct.regionSection.flReg4.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<12 is outside of the ROM image (8MB) size?
 	// ^ datasheet says to set this to 1FFF, but FFF was previously used and also worked.
-	descriptorRegion.regionSection.flReg4.LIMIT = 0;
+	factoryDescriptorStruct.regionSection.flReg4.LIMIT = 0;
 	// ^ 0<<12=0, so basically, the size is 0, and the base (1FFF>>12) is well outside the higher 8MB range.
 
 	// disable ME in ICHSTRAP0 - the ME is a blob, we don't want it in libreboot
-	descriptorRegion.ichStraps.ichStrap0.meDisable = 1;
+	factoryDescriptorStruct.ichStraps.ichStrap0.meDisable = 1;
 
 	// disable ME and TPM in MCHSTRAP0
-	descriptorRegion.mchStraps.mchStrap0.meDisable = 1; // ME is a blob. not wanted in libreboot.
-	descriptorRegion.mchStraps.mchStrap0.tpmDisable = 1; // not wanted in libreboot
+	factoryDescriptorStruct.mchStraps.mchStrap0.meDisable = 1; // ME is a blob. not wanted in libreboot.
+	factoryDescriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; // not wanted in libreboot
 
 	// disable ME, apart from chipset bugfixes (ME region should first be re-enabled above)
 	// This is sort of like the CPU microcode updates, but for the chipset
 	// (commented out below here, since blobs go against libreboot's purpose,
 	// but may be interesting for others)
-	// descriptorRegion.mchStraps.mchStrap0.meAlternateDisable = 1;
+	// factoryDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1;
 
 	// debugging
-	printf("\nRelocated Descriptor start block: %08x ; Descriptor end block: %08x\n", descriptorRegion.regionSection.flReg0.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg0.LIMIT << flRegionBitShift);
-	printf("Relocated BIOS start block: %08x ; BIOS end block: %08x\n", descriptorRegion.regionSection.flReg1.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg1.LIMIT << flRegionBitShift);
-	printf("Relocated ME start block: %08x ; ME end block: %08x\n", descriptorRegion.regionSection.flReg2.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg2.LIMIT << flRegionBitShift);
-	printf("Relocated GBe start block: %08x ; GBe end block: %08x\n", descriptorRegion.regionSection.flReg3.BASE << flRegionBitShift, descriptorRegion.regionSection.flReg3.LIMIT << flRegionBitShift);
+	printf("\nRelocated Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg0.LIMIT << flRegionBitShift);
+	printf("Relocated BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg1.LIMIT << flRegionBitShift);
+	printf("Relocated ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg2.LIMIT << flRegionBitShift);
+	printf("Relocated GBe start block: %08x ; GBe end block: %08x\n", factoryDescriptorStruct.regionSection.flReg3.BASE << flRegionBitShift, factoryDescriptorStruct.regionSection.flReg3.LIMIT << flRegionBitShift);
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
 	// can more easily be written to files:
 	// deblobbed descriptor region
 	char deblobbedDescriptorBuffer[DESCRIPTORREGIONSIZE];
-	memcpy(&deblobbedDescriptorBuffer, &descriptorRegion, DESCRIPTORREGIONSIZE);
+	memcpy(&deblobbedDescriptorBuffer, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
 
 	// delete old file before continuing
 	remove(deblobbedDescriptorFilename);
