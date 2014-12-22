@@ -264,18 +264,24 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 			<h3 id="gbe_region_changemacaddress">GBE region: change MAC address</h3>
 
 				<p>
-					According to the datasheet, it's supposed to add up to 0xBABA but can actually be 0x3ABA.
-					Either the checksum doesn't matter or the most significant bit of the checksum isn't checked. 
+					According to the datasheet, it's supposed to add up to 0xBABA but can actually be others on the X200.
 					<a href="https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums">https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums</a>
 				</p>
 				<p>
 					<i>&quot;One of those engineers loves classic rock music, so he selected 0xBABA&quot;</i>
 				</p>
-				<p>
-					0xBABA and 0x3ABA only differ by the most significant bit. The checksum of the GBe region from an X200S
-					was found to be 0x34BA; again, it should be 0xBABA. 34BA is actually BABA in L33T speak (look it up).
-				</p>
 				<p>In honour of the song <i>Baba O'Reilly</i> by <i>The Who</i> apparently. We're not making this stuff up...</p>
+
+				<p>
+					0x3ABA, 0x34BA, 0x40BA and more have been observed in the main Gbe regions on the X200 factory.rom dumps.
+					The checksums of the backup regions match BABA, however. 
+				</p>
+				
+				<p>
+					By default, the X200 (as shipped by Lenovo) actually has an invalid main gbe checksum. The backup gbe region is correct,
+					and is what these machines default to. Basically, you should do what you need on the *backup* gbe region, and
+					then correct the main one by copying from the backup.
+				</p>
 				
 				<p>
 					Look at resources/utilities/ich9deblob/ich9deblob.c.
