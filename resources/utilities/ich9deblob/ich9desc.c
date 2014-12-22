@@ -34,12 +34,12 @@ struct FLMAP0 {
 	// least signicant bits
 	unsigned char FCBA                      : 8;
 	unsigned char NC                        : 2;
-	unsigned char                           : 6;
+	unsigned char reserved1                 : 6;
 	// ^^^^ unnamed members like these represent unused bits (per datasheet). 
 	// the same applies for all structs in this file.
 	unsigned char FRBA                      : 8;
 	unsigned char NR                        : 3;
-	unsigned char                           : 5;
+	unsigned char reserved2                 : 5;
 	// most significant bits. 
 	
 	// the datasheet lists msb's first and lsb's last, in each table.
@@ -54,7 +54,7 @@ struct FLMAP0 {
 struct FLMAP1 {
 	unsigned char FMBA                      : 8;
 	unsigned char NM                        : 3;
-	unsigned char                           : 5;
+	unsigned char reserved                  : 5;
 	unsigned char FISBA                     : 8;
 	unsigned char ISL                       : 8;
 };
@@ -62,7 +62,7 @@ struct FLMAP1 {
 struct FLMAP2 {
 	unsigned char FMSBA                     : 8;
 	unsigned char MSL                       : 8;
-	unsigned short                          : 16;
+	unsigned short reserved                 : 16;
 };
 
 struct FLMAPS {
@@ -74,15 +74,15 @@ struct FLMAPS {
 struct FLCOMP {
 	unsigned char component1Density         : 3;
 	unsigned char component2Density         : 3;
-	unsigned char                           : 2;
-	unsigned char                           : 8;
-	unsigned char                           : 1;
+	unsigned char reserved1                 : 2;
+	unsigned char reserved2                 : 8;
+	unsigned char reserved3                 : 1;
 	unsigned char readClockFrequency        : 3;
 	unsigned char fastReadSupport           : 1;
 	unsigned char fastreadClockFrequency    : 3;
 	unsigned char writeEraseClockFrequency  : 3;
 	unsigned char readStatusClockFrequency  : 3;
-	unsigned char                           : 2;
+	unsigned char reserved4                 : 2;
 };
 
 struct COMPONENTSECTIONRECORD {
@@ -94,9 +94,9 @@ struct COMPONENTSECTIONRECORD {
 
 struct FLREG {
 	unsigned short BASE                     : 13;
-	unsigned short                          : 3;
+	unsigned short reserved1                : 3;
 	unsigned short LIMIT                    : 13;
-	unsigned short                          : 3;
+	unsigned short reserved2                : 3;
 };
 
 struct REGIONSECTIONRECORD {
@@ -109,19 +109,19 @@ struct REGIONSECTIONRECORD {
 };
 
 struct FLMSTR {
-    unsigned short requesterId              : 16;
+    unsigned short requesterId             : 16;
 	unsigned char fdRegionReadAccess        : 1;
 	unsigned char biosRegionReadAccess      : 1;
 	unsigned char meRegionReadAccess        : 1;
 	unsigned char gbeRegionReadAccess       : 1;
 	unsigned char pdRegionReadAccess        : 1;
-	unsigned char reserved1                  : 3;
+	unsigned char reserved1                 : 3;
 	unsigned char fdRegionWriteAccess       : 1;
 	unsigned char biosRegionWriteAccess     : 1;
 	unsigned char meRegionWriteAccess       : 1;
 	unsigned char gbeRegionWriteAccess      : 1;
 	unsigned char pdRegionWriteAccess       : 1;
-	unsigned char reserved2                  : 3;
+	unsigned char reserved2                 : 3;
 };
 
 
@@ -135,15 +135,15 @@ struct MASTERACCESSSECTIONRECORD {
 struct ICHSTRAP0 {
 	                                             // todo: add MeSmBus2Sel (boring setting)
 	unsigned char meDisable                 : 1; // If true, ME is disabled.
-	unsigned char                           : 6;
+	unsigned char reserved1                 : 6;
 	unsigned char tcoMode                   : 1; // TCO Mode: (Legacy,TCO Mode) The TCO Mode, along with the BMCMODE strap, determines the behavior of the IAMT SmBus controller.
 	unsigned char smBusAddress              : 7; // The ME SmBus 7-bit address.
 	unsigned char bmcMode                   : 1; // BMC mode: If true, device is in BMC mode.  If Intel(R) AMT or ASF using Intel integrated LAN then this should be false.
 	unsigned char tripPointSelect           : 1; // Trip Point Select: false the NJCLK input buffer is matched to 3.3v signal from the external PHY device, true is matched to 1.8v.
-	unsigned char                           : 2;
+	unsigned char reserved2                 : 2;
 	unsigned char integratedGbe             : 1; // Integrated GbE or PCI Express select: (PCI Express,,Integrated GbE) Defines what PCIe Port 6 is used for.
 	unsigned char lanPhy                    : 1; // LANPHYPC_GP12_SEL: Set to 0 for GP12 to be used as GPIO (General Purpose Input/Output), or 1 for GP12 to be used for native mode as LAN_PHYPC for 82566 LCD device
-	unsigned char                           : 3;
+	unsigned char reserved3                 : 3;
 	unsigned char dmiRequesterId            : 1; // DMI requestor ID security check disable: The primary purpose of this strap is to support server environments with multiple CPUs that each have a different RequesterID that can access the Flash.
 	unsigned char smBus2Address             : 7; // The ME SmBus 2 7-bit address.
 };
@@ -153,10 +153,10 @@ struct ICHSTRAP1 {
 	unsigned char southMlink                : 1;  // South MLink Dynamic Clock Gate Enable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers.
 	unsigned char meSmbus                   : 1;  // ME SmBus Dynamic Clock Gate Enable : Sets the default value for the ME SMBus Dynamic Clock Gate Enable for both the ME SmBus controllers.
 	unsigned char sstDynamic                : 1;  // SST Dynamic Clock Gate Enable : Sets the default value for the SST Clock Gate Enable registers.
-	unsigned char                           : 4;
+	unsigned char reserved1                 : 4;
 	unsigned char northMlink2               : 1;  // North MLink 2 Non-Posted Enable : 'true':North MLink supports two downstream non-posted requests. 'false':North MLink supports one downstream non-posted requests.
-	unsigned char                           : 7;
-	unsigned short                          : 16;
+	unsigned char reserved2                 : 7;
+	unsigned short reserved3                : 16;
 };
 
 
@@ -170,11 +170,11 @@ struct MCHSTRAP0 {
 	unsigned char meDisable                 : 1;  // If true, ME is disabled.
 	unsigned char meBootFromFlash           : 1;  // ME boot from Flash - guessed location
 	unsigned char tpmDisable                : 1;  // iTPM Disable : When set true, iTPM Host Interface is disabled. When set false (default), iTPM is enabled.
-	unsigned char                           : 3;
+	unsigned char reserved1                 : 3;
 	unsigned char spiFingerprint            : 1;  // SPI Fingerprint Sensor Present: Indicates if an SPI Fingerprint sensor is present at CS#1.
 	unsigned char meAlternateDisable        : 1;  // ME Alternate Disable: Setting this bit allows ME to perform critical chipset functions but prevents loading of any ME FW applications.
-	unsigned char                           : 8;
-	unsigned short                          : 16;
+	unsigned char reserved2                 : 8;
+	unsigned short reserved3                : 16;
 };
 
 struct MCHSTRAPSRECORD {
@@ -195,7 +195,7 @@ struct MEVSCCTABLERECORD {
 struct DESCRIPTORMAP2RECORD {
 	unsigned char meVsccTableBaseAddress    : 8;
 	unsigned char meVsccTableLength         : 8;
-	unsigned short                          : 16;
+	unsigned short reserved                 : 16;
 };
 
 struct OEMSECTIONRECORD {

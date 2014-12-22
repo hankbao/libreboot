@@ -63,6 +63,12 @@ struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 
+/*int structBitfieldWrongOrder() {
+	DESCRIPTORREGIONRECORD descriptorDummy;
+	
+	descriptorDummy.flMap0.
+}*/
+
 int main(int argc, char *argv[])
 {
 	// descriptor region. Will have actual descriptor mapped to it (from the factory.rom dump)
