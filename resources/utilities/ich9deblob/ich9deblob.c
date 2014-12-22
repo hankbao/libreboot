@@ -62,6 +62,22 @@ unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredVa
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
 struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
 
+// Basically, this should only return true on non-x86 machines
+int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) {
+	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
+	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
+	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
+	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
+		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
+		return 1;
+	}
+	if (GBEREGIONSIZE != gbeRegion8kStructSize){
+		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
+		return 1;
+	}
+	return 0;
+}
+
 int main(int argc, char *argv[])
 {
 	
@@ -69,23 +85,12 @@ int main(int argc, char *argv[])
 	// and then it will be modified (deblobbed) to remove the ME/AMT
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
-	unsigned int descriptorRegionStructSize = sizeof(factoryDescriptorStruct);
-	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
-	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
-		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
-		return 1;
-	}
-	
 	// gbe region. Well have actual gbe buffer mapped to it (from the factory.rom dump)
 	// and then it will be modified to correct the main region
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
-	unsigned int gbeRegion8kStructSize = sizeof(factoryGbeStruct8k);
-	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
-	if (GBEREGIONSIZE != gbeRegion8kStructSize){
-		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
-		return 1;
-	}
+	
+	if (structSizesIncorrect(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
 	
 	// endianness check. big endian forced to fail
 	unsigned short steak = 0xBEEF;
