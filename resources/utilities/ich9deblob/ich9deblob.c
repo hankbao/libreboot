@@ -287,7 +287,7 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 int systemIsBigEndian() {
 	// endianness check. big endian forced to fail
 	unsigned short steak = 0xBEEF;
-	unsigned char *grill = (char*)&steak;
+	unsigned char *grill = (unsigned char*)&steak;
 	if (*grill==0xBE) {
 		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
 		return 1;
