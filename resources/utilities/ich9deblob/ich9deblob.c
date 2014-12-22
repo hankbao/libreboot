@@ -87,6 +87,14 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	
+	// endianness check. big endian forced to fail
+	unsigned short steak = 0xBEEF;
+	unsigned char *grill = (char*)&steak;
+	if (*grill==0xBE) {
+		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
+		return 1;
+	}
+	
 	// -----------------------------------------------------------------------------------------------
 	
 	// files that this utility will handle
