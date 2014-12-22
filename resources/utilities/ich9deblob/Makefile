@@ -20,8 +20,8 @@
 CC=gcc
 CFLAGS=-I.
 
-ich9deblob: ich9deblob.c ich9desc.c
-	$(CC) $(CFLAGS) ich9deblob.c ich9desc.c -o ich9deblob
+ich9deblob: ich9deblob.c ich9desc.c ich9gbe.c
+	$(CC) $(CFLAGS) ich9deblob.c ich9desc.c ich9gbe.c -o ich9deblob
 	
 clean:
 	rm -f ich9deblob

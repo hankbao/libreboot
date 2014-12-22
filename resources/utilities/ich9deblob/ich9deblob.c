@@ -1,10 +1,8 @@
 /*
  *  ich9deblob.c
  *
- *  gcc -o ich9deblob ich9deblob.c ich9desc.c -I.
- *
- *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
+ *                     Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -22,7 +20,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "ich9desc.c" // structs describing what's in the descriptor and gbe regions
+#include "ich9desc.c" // structs describing what's in the descriptor region
+#include "ich9gbe.c" // structs describing what's in the gbe region
 
 #define DESCRIPTORREGIONSIZE 0x1000 // 4096 bytes / 4KiB
 #define GBEREGIONSIZE 0x2000 // 8192 bytes / 8KiB

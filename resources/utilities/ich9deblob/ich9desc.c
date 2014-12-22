@@ -2,6 +2,7 @@
  *  ich9desc.c
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
+ *                     Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -180,17 +181,6 @@ struct DESCRIPTORMAP2RECORD {
 struct OEMSECTIONRECORD {
 	unsigned char magicString[8];
 	unsigned char padding[248];
-};
-
-struct GBEREGIONRECORD {
-	unsigned char macAddress[6];
-	unsigned char otherStuff[120];
-	unsigned short checkSum;
-	unsigned char padding1[3968];
-	unsigned char macAddress2[6];
-	unsigned char otherStuff2[120];
-	unsigned short checkSum2;
-	unsigned char padding2[3968];
 };
 
 struct DESCRIPTORREGIONRECORD {
