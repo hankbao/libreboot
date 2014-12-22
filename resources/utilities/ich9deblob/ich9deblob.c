@@ -59,7 +59,7 @@
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
-struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 int structBitfieldWrongOrder();
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 
 	// Disable the ME and Platform regions. Put Gbe at the beginning (after descriptor). 
 	// Also, extend the BIOS region to fill the ROM image (after descriptor+gbe).
-	deblobbedDescriptorStruct = deblobbedFromFactory(deblobbedDescriptorStruct, romSize);
+	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(deblobbedDescriptorStruct, romSize);
 
 	// debugging
 	printf("\nRelocated (libreboot.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
@@ -405,7 +405,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 // Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
 // Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills romSize-12k) are left.
 // Tested on ThinkPad X200 and X200S. X200T and other GM45 targets may also work.
-struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize)
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize)
 {
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
