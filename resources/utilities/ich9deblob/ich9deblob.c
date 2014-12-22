@@ -316,6 +316,9 @@ int main(int argc, char *argv[])
 	gbeChecksum = deblobbedGbeStruct8k.backup.checkSum; // for the libreboot.rom image
 	printf("deblobbed Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 
+	printf("\nNow do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc");
+	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n");
+
 	return 0;
 }
 
