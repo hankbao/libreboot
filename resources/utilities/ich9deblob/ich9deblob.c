@@ -56,7 +56,6 @@
 #define FLREGIONBITSHIFT 0xC // bits 12(0xC)-24(0x18) are represented for words found in the flash descriptor
 												 // To manipulate these easily in C, we shift them by FLREGIONBITSHIFT and then shift them back when done
 
-// gbe checksum related functions
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
