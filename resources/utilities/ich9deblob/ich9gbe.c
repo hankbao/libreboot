@@ -18,12 +18,16 @@
  */
 
 struct GBEREGIONRECORD {
-	unsigned char macAddress[6];
-	unsigned char otherStuff[120];
-	unsigned short checkSum;
+	unsigned char macAddress[6]; // 0x03 words, or 0x06 bytes
+	unsigned char otherStuff[120];  // 0x3c words, or 0x7E bytes
+	unsigned short checkSum; // when added to the sum of all words above, this should be 0xBABA
 	unsigned char padding1[3968];
-	unsigned char macAddress2[6];
-	unsigned char otherStuff2[120];
-	unsigned short checkSum2;
+	// Backup region:
+	// This is actually "main" on X200, since the real main has a bad checksum
+	// and other errors. You should do what you need on this one (if modifying
+	// lenovobios's gbe region) and then copy to main
+	unsigned char macAddress2[6]; // ditto
+	unsigned char otherStuff2[120]; // ditto 
+	unsigned short checkSum2; // ditto
 	unsigned char padding2[3968];
 };

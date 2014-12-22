@@ -1,5 +1,6 @@
 /*
  *  ich9desc.c
+ *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Francis Rowe <info@gluglug.org.uk>
@@ -17,18 +18,37 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+// Purpose: provide struct representing descriptor region.
+// Map actual buffers of this regions, directly to instances of these
+// structs. This makes working with descriptor really easy.
+ 
+// bit fields used, corresponding to datasheet. See links to datasheets
+// and documentation in ich9deblob.c
 
 struct FLVALSIG{
 	unsigned int signature;
 };
 
 struct FLMAP0 {
+	// least signicant bits
 	unsigned char FCBA                      : 8;
 	unsigned char NC                        : 2;
 	unsigned char                           : 6;
+	// ^^^^ unnamed members like these represent unused bits (per datasheet). 
+	// the same applies for all structs in this file.
 	unsigned char FRBA                      : 8;
 	unsigned char NR                        : 3;
 	unsigned char                           : 5;
+	// most significant bits. 
+	
+	// the datasheet lists msb's first and lsb's last, in each table.
+	// meanwhile, x86 gcc treats the members at the top of the struct as lsb's
+	// and at the bottom of the struct, the members there are msb's. The same
+	// fact applies to all the other structs below.
+	
+	// non-x86 (and/or non-gcc) is untested
+	// little endian assumed
 };
 
 struct FLMAP1 {
