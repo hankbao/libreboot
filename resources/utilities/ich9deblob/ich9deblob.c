@@ -61,26 +61,11 @@ unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k,
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
 struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
-
-// Basically, this should only return true on non-x86 machines
-int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) {
-	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
-	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
-	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
-	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
-		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
-		return 1;
-	}
-	if (GBEREGIONSIZE != gbeRegion8kStructSize){
-		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
-		return 1;
-	}
-	return 0;
-}
+int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
+int systemIsBigEndian();
 
 int main(int argc, char *argv[])
 {
-	
 	// descriptor region. Will have actual descriptor mapped to it (from the factory.rom dump)
 	// and then it will be modified (deblobbed) to remove the ME/AMT
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
@@ -90,15 +75,9 @@ int main(int argc, char *argv[])
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	
+	// Compatibility checks. This version of ich9deblob is not yet porable.
 	if (structSizesIncorrect(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
-	
-	// endianness check. big endian forced to fail
-	unsigned short steak = 0xBEEF;
-	unsigned char *grill = (char*)&steak;
-	if (*grill==0xBE) {
-		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
-		return 1;
-	}
+	if (systemIsBigEndian()) return 1;
 	
 	// -----------------------------------------------------------------------------------------------
 	
@@ -285,6 +264,33 @@ int main(int argc, char *argv[])
 	printf("\nNow do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc");
 	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n");
 
+	return 0;
+}
+
+// Basically, this should only return true on non-x86 machines
+int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) {
+	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
+	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
+	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
+	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
+		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
+		return 1;
+	}
+	if (GBEREGIONSIZE != gbeRegion8kStructSize){
+		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
+		return 1;
+	}
+	return 0;
+}
+
+int systemIsBigEndian() {
+	// endianness check. big endian forced to fail
+	unsigned short steak = 0xBEEF;
+	unsigned char *grill = (char*)&steak;
+	if (*grill==0xBE) {
+		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
+		return 1;
+	}
 	return 0;
 }
 
