@@ -122,9 +122,9 @@ int main(int argc, char *argv[])
 	// the gbe region
 	fseek(fp, gbeRegionLocation, SEEK_SET);
 	// data will go in here
-	char gbeBuffer[GBEREGIONSIZE];
-	// Read the gbe data from the factory.rom and put it in gbeBuffer
-	readLen = fread(gbeBuffer, sizeof(char), GBEREGIONSIZE, fp);
+	char factoryGbeBuffer[GBEREGIONSIZE];
+	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer
+	readLen = fread(factoryGbeBuffer, sizeof(char), GBEREGIONSIZE, fp);
 	if (GBEREGIONSIZE != readLen)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", readLen);
@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
 	}
 
 	// add gbe to the end of the file
-	if (GBEREGIONSIZE != fwrite(gbeBuffer, sizeof(char), GBEREGIONSIZE, fp))
+	if (GBEREGIONSIZE != fwrite(factoryGbeBuffer, sizeof(char), GBEREGIONSIZE, fp))
 	{
 		printf("\nerror: writing GBe region failed\n");
 		return 1;
@@ -251,16 +251,16 @@ int main(int argc, char *argv[])
 	// maybe only the 8 least significant bits are checked? or something deeper than that
 	// it will need to be tested if those gbe regions that use something other than baba
 	// will also work with the checksum changed to match baba (per datasheets)
-	unsigned short gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA, 0);
+	unsigned short gbeCalculatedChecksum = GetChecksum(factoryGbeBuffer, 0xBABA, 0);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	unsigned short gbeChecksum = GetRegionWord(0x3F, gbeBuffer); // from the original factory.rom
-	printf("\noriginal Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	unsigned short gbeChecksum = GetRegionWord(0x3F, factoryGbeBuffer); // from the original factory.rom
+	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 	
 	// same as above, but for 2nd region ("backup") in gbe
-	gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA, 1);
+	gbeCalculatedChecksum = GetChecksum(factoryGbeBuffer, 0xBABA, 1);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = GetRegionWord(0x3F+(0x1000>>1), gbeBuffer);
-	printf("original Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	gbeChecksum = GetRegionWord(0x3F+(0x1000>>1), factoryGbeBuffer);
+	printf("factory Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 
 	return 0;
 }
