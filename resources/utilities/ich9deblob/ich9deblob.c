@@ -45,8 +45,8 @@
 #include "ich9desc.c" // structs describing what's in the descriptor region
 #include "ich9gbe.c" // structs describing what's in the gbe region
 
-#define DESCRIPTORREGIONSIZE 0x1000 // 4096 bytes / 4KiB
-#define GBEREGIONSIZE 0x2000 // 8192 bytes / 8KiB
+#define DESCRIPTORREGIONSIZE 0x1000 // 4 KiB
+#define GBEREGIONSIZE 0x2000 // 8 KiB
 // These will have a modified descriptor+gbe based on what's in the factory.rom
 // These will be joined into a single 12KiB buffer (descriptor, then gbe) and saved to a file
 // NOTE: The GBE region of 8K is actually 2x 4K regions in a single region; both 4K blocks can be identical (and by default, are)
