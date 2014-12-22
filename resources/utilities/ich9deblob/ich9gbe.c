@@ -1,5 +1,6 @@
 /*
  *  ich9gbe.c
+ *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
  *
@@ -16,18 +17,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+ 
+// Purpose: provide struct representing gbe region.
+// Map actual buffers of this regions, directly to instances of these
+// structs. This makes working with gbe really easy.
+ 
+// bit fields used, corresponding to datasheet. See links to datasheets
+// and documentation in ich9deblob.c
 
-struct GBEREGIONRECORD {
+struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6]; // 0x03 words, or 0x06 bytes
 	unsigned char otherStuff[120];  // 0x3c words, or 0x7E bytes
 	unsigned short checkSum; // when added to the sum of all words above, this should be 0xBABA
 	unsigned char padding1[3968];
+}
+
+// main and backup region in gbe
+struct GBEREGIONRECORD_8K {
+	GBEREGIONRECORD_4K main;
+	GBEREGIONRECORD_4K backup;
 	// Backup region:
 	// This is actually "main" on X200, since the real main has a bad checksum
 	// and other errors. You should do what you need on this one (if modifying
 	// lenovobios's gbe region) and then copy to main
-	unsigned char macAddress2[6]; // ditto
-	unsigned char otherStuff2[120]; // ditto 
-	unsigned short checkSum2; // ditto
-	unsigned char padding2[3968];
 };
