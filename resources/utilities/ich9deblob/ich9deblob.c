@@ -53,8 +53,9 @@
 // The 2nd one is a "backup", but we don't know when it's used. perhaps it's used when the checksum on the first one does not match?
 
 // gbe checksum related functions
-unsigned short GetChecksum(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
-unsigned short GetRegionWord(int i, char* buffer); // used for getting each word needed to calculate said checksum
+unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
+unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
+unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
 
 int main(int argc, char *argv[])
 {
@@ -64,11 +65,26 @@ int main(int argc, char *argv[])
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	unsigned int descriptorRegionStructSize = sizeof(factoryDescriptorStruct);
-	// check compiler bit-packs in a compatible way basically, it is expected that this code will be used on x86
+	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
 		return 1;
 	}
+	
+	// gbe region. Well have actual gbe buffer mapped to it (from the factory.rom dump)
+	// and then it will be modified to correct the main region
+	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
+	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
+	unsigned int gbeRegion8kStructSize = sizeof(factoryGbeStruct8k);
+	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
+	if (GBEREGIONSIZE != gbeRegion8kStructSize){
+		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
+		return 1;
+	}
+	
+	// -----------------------------------------------------------------------------------------------
+	
+	// files that this utility will handle
 
 	// supplied by user, dumped from their machine before flashing libreboot
 	char* factoryRomFilename = "factory.rom";
@@ -126,14 +142,24 @@ int main(int argc, char *argv[])
 	// the gbe region
 	fseek(fp, factoryGbeRegionLocation, SEEK_SET);
 	// data will go in here
-	char factoryGbeBuffer[GBEREGIONSIZE];
-	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer
-	readLen = fread(factoryGbeBuffer, sizeof(char), GBEREGIONSIZE, fp);
+	char factoryGbeBuffer8k[GBEREGIONSIZE];
+	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k
+	readLen = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp);
 	if (GBEREGIONSIZE != readLen)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", readLen);
 		return 1;
 	}
+	printf("\ngbe (8KiB) region read successfully\n");
+	// copy gbe buffer into gbe struct memory
+	// factoryGbeStruct8k is an instance of a struct that actually
+	// defines the locations of all these variables in the gbe,
+	// as defined in the datasheets. This allows us to map the extracted
+	// gbe over the struct so that it can then be modified
+	// for libreboot's purpose
+	memcpy(&factoryGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE);
+	// the original factoryGbeStruct8k is only reference. Changes go here:
+	memcpy(&deblobbedGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE);
 
 	// -----------------------------------------------------------------------------------------------
 
@@ -217,11 +243,23 @@ int main(int argc, char *argv[])
 
 	// ----------------------------------------------------------------------------------------------------------------
 
+	// Correct the main gbe region. By default, the X200 (as shipped from Lenovo) comes
+	// with a broken main gbe region, where the backup gbe region is used instead. Modify
+	// the descriptor so that the main region is usable.
+	
+	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
+	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE>>1);
+
+	// ----------------------------------------------------------------------------------------------------------------
+
 	// Convert the descriptor and gbe back to byte arrays, so that they
 	// can more easily be written to files:
 	// deblobbed descriptor region
 	char deblobbedDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	memcpy(&deblobbedDescriptorBuffer, &deblobbedDescriptorStruct, DESCRIPTORREGIONSIZE);
+	
+	char deblobbedGbeBuffer8k[GBEREGIONSIZE];
+	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE);
 
 	// delete old file before continuing
 	remove(deblobbedDescriptorFilename);
@@ -236,7 +274,7 @@ int main(int argc, char *argv[])
 	}
 
 	// add gbe to the end of the file
-	if (GBEREGIONSIZE != fwrite(factoryGbeBuffer, sizeof(char), GBEREGIONSIZE, fp))
+	if (GBEREGIONSIZE != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp))
 	{
 		printf("\nerror: writing GBe region failed\n");
 		return 1;
@@ -252,23 +290,45 @@ int main(int argc, char *argv[])
 	// observed checksum matches (from X200 factory.rom dumps) on main: 0x3ABA 0x34BA 0x40BA. spec defined as 0xBABA.
 	// X200 ships with a broken main gbe region by default (invalid checksum, and more)
 	// The "backup" gbe regions on these machines are correct, though, and is what the machines default to
-	// For libreboot's purpose, we can do much better than that by fixing the main one...
-	unsigned short gbeCalculatedChecksum = GetChecksum(factoryGbeBuffer, 0xBABA, 0);
-	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	unsigned short gbeChecksum = GetRegionWord(0x3F, factoryGbeBuffer); // from the original factory.rom
-	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	// For libreboot's purpose, we can do much better than that by fixing the main one... below is only debugging
 	
-	// same as above, but for 2nd region ("backup") in gbe
-	gbeCalculatedChecksum = GetChecksum(factoryGbeBuffer, 0xBABA, 1);
+	unsigned short gbeCalculatedChecksum;
+	unsigned short gbeChecksum;
+	
+	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.main, 0xBABA);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
-	gbeChecksum = GetRegionWord(0x3F+(0x1000>>1), factoryGbeBuffer);
+	gbeChecksum = factoryGbeStruct8k.main.checkSum; // for the libreboot.rom image
+	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	// same as above, but for 2nd region ("backup") in gbe
+	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.backup, 0xBABA); // factory.rom
+	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
+	gbeChecksum = factoryGbeStruct8k.backup.checkSum; // from the factory.rom
 	printf("factory Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	
+	// Do the same as above, for the deblobbed gbe region:
+	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.main, 0xBABA);
+	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
+	gbeChecksum = deblobbedGbeStruct8k.main.checkSum; // for the libreboot.rom image
+	printf("\ndeblobbed Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	// same as above, but for 2nd region ("backup") in gbe
+	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
+	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
+	gbeChecksum = deblobbedGbeStruct8k.backup.checkSum; // for the libreboot.rom image
+	printf("deblobbed Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 
 	return 0;
 }
 
-// checksum calculation for gbe region (algorithm based on datasheet)
-unsigned short GetChecksum(char* regionData, unsigned short desiredValue, char isBackup)
+// checksum calculation for 4k gbe struct (algorithm based on datasheet)
+unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue)
+{
+	char gbeBuffer4k[GBEREGIONSIZE>>1];
+	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE>>1);
+	return gbeGetChecksumFrom8kBuffer(gbeBuffer4k, desiredValue, 0);
+}
+// checksum calculation for 8k gbe region (algorithm based on datasheet)
+// also works for 4k buffers, so long as isBackup remains false
+unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, char isBackup)
 {
 	unsigned short regionWord;
 	unsigned short checksum = 0;
@@ -279,14 +339,14 @@ unsigned short GetChecksum(char* regionData, unsigned short desiredValue, char i
 
 	int i;
 	for (i = 0; i < 0x3F; i++) {
-		regionWord = GetRegionWord(i+offset, regionData);
+		regionWord = gbeGetRegionWordFrom8kBuffer(i+offset, regionData);
 		checksum += regionWord;
 	}
 	checksum = desiredValue - checksum;
 	return checksum;
 }
 // Read a 16-bit unsigned int from a supplied region buffer
-unsigned short GetRegionWord(int index, char* regionData)
+unsigned short gbeGetRegionWordFrom8kBuffer(int index, char* regionData)
 {
 	return *((unsigned short*)(regionData + (index * 2)));
 }
