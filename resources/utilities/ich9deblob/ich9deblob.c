@@ -59,7 +59,7 @@
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 unsigned short gbeGetChecksumFrom8kBuffer(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for getting each word needed to calculate said checksum
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int romSize, unsigned int factoryGbeRegionLocation);
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionLocation);
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 int structBitfieldWrongOrder();
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
 	unsigned int bufferLength;
 	
 	// For storing the size of the factory.rom dump in bytes
-	unsigned int romSize;
+	unsigned int factoryRomSize;
 	
 	// -----------------------------------------------------------------------------------------------
 	
@@ -171,9 +171,9 @@ int main(int argc, char *argv[])
 	// Get size of ROM image
 	// This is needed for relocating the BIOS region (per descriptor)
 	fseek(fileStream, 0L, SEEK_END);
-	romSize = ftell(fileStream);
+	factoryRomSize = ftell(fileStream);
 
-	printf("\nfactory.rom size: [%i] bytes\n", romSize);
+	printf("\nfactory.rom size: [%i] bytes\n", factoryRomSize);
 
 	fclose(fileStream);
 	
@@ -181,7 +181,7 @@ int main(int argc, char *argv[])
 
 	// Disable the ME and Platform regions. Put Gbe at the beginning (after descriptor). 
 	// Also, extend the BIOS region to fill the ROM image (after descriptor+gbe).
-	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, romSize, factoryGbeRegionLocation);
+	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, factoryRomSize, factoryGbeRegionLocation);
 
 	// ----------------------------------------------------------------------------------------------------------------
 
@@ -386,9 +386,9 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 }
 
 // Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
-// Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills romSize-12k) are left.
+// Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills factoryRomSize-12k) are left.
 // Tested on ThinkPad X200 and X200S. X200T and other GM45 targets may also work.
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int romSize, unsigned int factoryGbeRegionLocation)
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize, unsigned int factoryGbeRegionLocation)
 {
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
@@ -410,7 +410,7 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 
 	// relocate BIOS region and increase size to fill image
 	deblobbedDescriptorStruct.regionSection.flReg1.BASE = 3; // 3<<FLREGIONBITSHIFT is 12KiB, which is where BIOS region is to begin (after descriptor and gbe)
-	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1);
+	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = ((factoryRomSize >> FLREGIONBITSHIFT) - 1);
 	// ^ for example, 8MB ROM, that's 8388608 bytes.
 	// ^ 8388608>>FLREGIONBITSHIFT (or 8388608/4096) = 2048 bytes
 	// 2048 - 1 = 2047 bytes. 
