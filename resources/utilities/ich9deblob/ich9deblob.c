@@ -99,6 +99,9 @@ int main(int argc, char *argv[])
 	// Used when reading the factory.rom to extract descriptor/gbe regions
 	unsigned int bufferLength;
 	
+	// For storing the size of the factory.rom dump in bytes
+	int romSize;
+	
 	// -----------------------------------------------------------------------------------------------
 	
 	// Compatibility checks. This version of ich9deblob is not yet porable.
@@ -173,7 +176,7 @@ int main(int argc, char *argv[])
 	// Get size of ROM image
 	// This is needed for relocating the BIOS region (per descriptor)
 	fseek(fp, 0L, SEEK_END);
-	int romSize = ftell(fp);
+	romSize = ftell(fp);
 
 	printf("\nfactory.rom size: [%i] bytes\n", romSize);
 
