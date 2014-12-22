@@ -68,14 +68,37 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 
 int main(int argc, char *argv[])
 {
-	// descriptor region. Will have actual descriptor mapped to it (from the factory.rom dump)
+	// descriptor region. Will have an actual descriptor struct mapped to it (from the factory.rom dump)
 	// and then it will be modified (deblobbed) to remove the ME/AMT
+	char factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
+	char deblobbedDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
+	
 	// gbe region. Well have actual gbe buffer mapped to it (from the factory.rom dump)
 	// and then it will be modified to correct the main region
+	char factoryGbeBuffer8k[GBEREGIONSIZE];
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
+	char deblobbedGbeBuffer8k[GBEREGIONSIZE];
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
+	
+	// Used to store the location of the Gbe
+	// region inside the factory.rom image.
+	unsigned int factoryGbeRegionLocation;
+	
+	// These are used later to present the user
+	// before-after Gbe checksums when modifying the gbe region
+	unsigned short gbeCalculatedChecksum;
+	unsigned short gbeChecksum;
+	
+	// names of the files that this utility will handle
+	char* factoryRomFilename = "factory.rom"; // user-supplied factory.bin dump (original firmware)
+	char* deblobbedDescriptorFilename = "deblobbed_descriptor.bin"; // descriptor+gbe: to be dd'd to beginning of a libreboot image
+	
+	// Used when reading the factory.rom to extract descriptor/gbe regions
+	unsigned int bufferLength;
+	
+	// -----------------------------------------------------------------------------------------------
 	
 	// Compatibility checks. This version of ich9deblob is not yet porable.
 	if (structSizesIncorrect(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
@@ -84,13 +107,6 @@ int main(int argc, char *argv[])
 	if (structMembersWrongOrder()) return 1; 
 	
 	// -----------------------------------------------------------------------------------------------
-	
-	// files that this utility will handle
-
-	// supplied by user, dumped from their machine before flashing libreboot
-	char* factoryRomFilename = "factory.rom";
-	// name of the file that this utility will create (deblobbed descriptor+gbe)
-	char* deblobbedDescriptorFilename = "deblobbed_descriptor.bin";
 
 	// Open factory.rom, needed for extracting descriptor and gbe
 	// -----------------------------------------------
@@ -105,16 +121,11 @@ int main(int argc, char *argv[])
 	// -----------------------------------------------
 	
 	// Get the descriptor region dump from the factory.rom
-
-	// Create empty descriptor buffer (populated below)
-	char factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
-	// Extract the descriptor region from the factory.rom dump
 	// (goes in factoryDescriptorBuffer variable)
-	unsigned int readLen;
-	readLen = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
-	if (DESCRIPTORREGIONSIZE != readLen) // 
+	bufferLength = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fp);
+	if (DESCRIPTORREGIONSIZE != bufferLength) // 
 	{
-		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", readLen);
+		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", bufferLength);
 		return 1;
 	}
 	printf("\ndescriptor region read successfully\n");
@@ -136,18 +147,16 @@ int main(int argc, char *argv[])
 	// (it will be moved to the beginning of the flash, after the descriptor region)
 	// note for example, factoryGbeRegionLocation is set to <<FLREGIONBITSHIFT of actual address (in C). this is how the addresses
 	// are stored in the descriptor.
-	unsigned int factoryGbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
+	factoryGbeRegionLocation = factoryDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
 
 	// Set offset so that we can read the data from
 	// the gbe region
 	fseek(fp, factoryGbeRegionLocation, SEEK_SET);
-	// data will go in here
-	char factoryGbeBuffer8k[GBEREGIONSIZE];
 	// Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k
-	readLen = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp);
-	if (GBEREGIONSIZE != readLen)
+	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fp);
+	if (GBEREGIONSIZE != bufferLength)
 	{
-		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", readLen);
+		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", bufferLength);
 		return 1;
 	}
 	printf("\ngbe (8KiB) region read successfully\n");
@@ -197,14 +206,11 @@ int main(int argc, char *argv[])
 
 	// ----------------------------------------------------------------------------------------------------------------
 
-	// Convert the descriptor and gbe back to byte arrays, so that they
+	// Convert the deblobbed descriptor and gbe back to byte arrays, so that they
 	// can more easily be written to files:
 	// deblobbed descriptor region
-	char deblobbedDescriptorBuffer[DESCRIPTORREGIONSIZE];
-	memcpy(&deblobbedDescriptorBuffer, &deblobbedDescriptorStruct, DESCRIPTORREGIONSIZE);
-	
-	char deblobbedGbeBuffer8k[GBEREGIONSIZE];
-	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE);
+	memcpy(&deblobbedDescriptorBuffer, &deblobbedDescriptorStruct, DESCRIPTORREGIONSIZE); // descriptor
+	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE); // gbe
 
 	// delete old file before continuing
 	remove(deblobbedDescriptorFilename);
@@ -236,9 +242,6 @@ int main(int argc, char *argv[])
 	// X200 ships with a broken main gbe region by default (invalid checksum, and more)
 	// The "backup" gbe regions on these machines are correct, though, and is what the machines default to
 	// For libreboot's purpose, we can do much better than that by fixing the main one... below is only debugging
-	
-	unsigned short gbeCalculatedChecksum;
-	unsigned short gbeChecksum;
 	
 	gbeCalculatedChecksum = gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.main, 0xBABA);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
