@@ -53,7 +53,7 @@
 // The 2nd one is a "backup", but we don't know when it's used. perhaps it's used when the checksum on the first one does not match?
 
 // gbe checksum related functions
-unsigned short GetChecksum(char* buffer, unsigned short desiredValue); // for GBe region (checksum calculation)
+unsigned short GetChecksum(char* buffer, unsigned short desiredValue, char isBackup); // for GBe region (checksum calculation)
 unsigned short GetRegionWord(int i, char* buffer); // used for getting each word needed to calculate said checksum
 
 int main(int argc, char *argv[])
@@ -242,6 +242,8 @@ int main(int argc, char *argv[])
 
 	printf("\ndeblobbed descriptor successfully created: deblobbed_descriptor.bin \n");
 
+	// -------------------------------------------------------------------------------------
+
 	// calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
 	// observed values (from actual factory.rom dumps) 0xBABA 0x3ABA 0x34BA. spec defined as 0xBABA.
 	// theoretically, this could be any l33t speak variation of BABA, eg 3434 or BA34, and so on, but this is untested. so far.
@@ -249,24 +251,33 @@ int main(int argc, char *argv[])
 	// maybe only the 8 least significant bits are checked? or something deeper than that
 	// it will need to be tested if those gbe regions that use something other than baba
 	// will also work with the checksum changed to match baba (per datasheets)
-	unsigned short gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA);
+	unsigned short gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA, 0);
 	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
 	unsigned short gbeChecksum = GetRegionWord(0x3F, gbeBuffer); // from the original factory.rom
-
-	printf("\ncalculated Gbe checksum: 0x%hx actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	printf("\noriginal Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
+	
+	// same as above, but for 2nd region ("backup") in gbe
+	gbeCalculatedChecksum = GetChecksum(gbeBuffer, 0xBABA, 1);
+	// get the actual 0x3F'th 16-bit uint that was already in the supplied (pre-compiled) region data
+	gbeChecksum = GetRegionWord(0x3F+(0x1000>>1), gbeBuffer);
+	printf("original Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeCalculatedChecksum, gbeChecksum);
 
 	return 0;
 }
 
 // checksum calculation for gbe region (algorithm based on datasheet)
-unsigned short GetChecksum(char* regionData, unsigned short desiredValue)
+unsigned short GetChecksum(char* regionData, unsigned short desiredValue, char isBackup)
 {
 	unsigned short regionWord;
 	unsigned short checksum = 0;
 
+	// if isBackup is true, use 2nd gbe region ("backup" region)
+	unsigned short offset = 0;
+	if (isBackup) offset = 0x1000>>1; // this function uses *word* not *byte* indexes.
+
 	int i;
 	for (i = 0; i < 0x3F; i++) {
-		regionWord = GetRegionWord(i, regionData);
+		regionWord = GetRegionWord(i+offset, regionData);
 		checksum += regionWord;
 	}
 	checksum = desiredValue - checksum;
