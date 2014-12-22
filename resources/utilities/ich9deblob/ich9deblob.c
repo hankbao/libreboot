@@ -62,6 +62,7 @@ unsigned short gbeGetRegionWordFrom8kBuffer(int i, char* buffer); // used for ge
 struct DESCRIPTORREGIONRECORD deblobbedFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, int romSize);
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
+int structBitfieldWrongOrder();
 
 int main(int argc, char *argv[])
 {
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
 	// Compatibility checks. This version of ich9deblob is not yet porable.
 	if (structSizesIncorrect(factoryDescriptorStruct, factoryGbeStruct8k)) return 1;
 	if (systemIsBigEndian()) return 1;
+	if (structBitfieldWrongOrder()) return 1;
 	
 	// -----------------------------------------------------------------------------------------------
 	
@@ -290,6 +292,44 @@ int systemIsBigEndian() {
 		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
 		return 1;
 	}
+	return 0;
+}
+
+// fail if bit fields are presented in the wrong order
+int structBitfieldWrongOrder() {
+	struct DESCRIPTORREGIONRECORD descriptorDummy;
+	
+	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      // :8 --> 10100010
+	descriptorDummy.flMaps.flMap0.NC = 0x02;        // :2 --> 10
+	descriptorDummy.flMaps.flMap0.reserved1 = 0x38; // :6 --> 111000
+	descriptorDummy.flMaps.flMap0.FRBA = 0xD2;      // :8 --> 11010010
+	descriptorDummy.flMaps.flMap0.NR = 0x05;        // :3 --> 101
+	descriptorDummy.flMaps.flMap0.reserved2 = 0x1C; // :5 --> 11100
+	
+	// Look from the top bottom up, and concatenate the binary strings.
+	// Then, convert the 8-bit groups to hex and reverse the (8-bit)byte order
+	
+	// combined, these should become (in memory), in binary:
+	// 10100010 11100010 11010010 11100101
+	// or in hex:
+	// A2 E2 D2 E5
+	
+	unsigned char *flMap0Ptr = (unsigned char*)&descriptorDummy.flMaps.flMap0;
+	
+	printf("Bitfield order check (descriptorDummy.flMaps.flMaps0):");
+	printf("\nShould be: a2 e2 d2 e5 ");
+	printf("\nAnd it is: ");
+	int i;
+	for (i = 0; i < 4; i++) {
+		printf("%x ", *(flMap0Ptr + i));	
+	}
+	printf("\n");
+	
+	if (!(*flMap0Ptr == 0xA2 && *(flMap0Ptr+1) == 0xE2 && *(flMap0Ptr+2) == 0xD2 && *(flMap0Ptr+3) == 0xE5)) {
+		printf("Incorrect order.\n");
+		return 1;
+	}
+	printf("Correct order.\n");
 	return 0;
 }
 
