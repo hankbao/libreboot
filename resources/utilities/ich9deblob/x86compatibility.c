@@ -44,8 +44,8 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
 		return 1;
 	}
-	if (GBEREGIONSIZE != gbeRegion8kStructSize){
-		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
+	if (GBEREGIONSIZE_8K != gbeRegion8kStructSize){
+		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE_8K);
 		return 1;
 	}
 	

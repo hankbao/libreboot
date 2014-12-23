@@ -65,9 +65,9 @@ int main(int argc, char *argv[])
 	 * gbe region. Well have actual gbe buffer mapped to it (from the factory.rom dump)
 	 * and then it will be modified to correct the main region
 	 */
-	char factoryGbeBuffer8k[GBEREGIONSIZE];
+	char factoryGbeBuffer8k[GBEREGIONSIZE_8K];
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
-	char deblobbedGbeBuffer8k[GBEREGIONSIZE];
+	char deblobbedGbeBuffer8k[GBEREGIONSIZE_8K];
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	
 	/*
@@ -152,8 +152,8 @@ int main(int argc, char *argv[])
 	 */
 	fseek(fileStream, factoryGbeRegionStart, SEEK_SET);
 	/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
-	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fileStream);
-	if (GBEREGIONSIZE != bufferLength)
+	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE_8K, fileStream);
+	if (GBEREGIONSIZE_8K != bufferLength)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", bufferLength);
 		return 1;
@@ -167,11 +167,11 @@ int main(int argc, char *argv[])
 	 * gbe over the struct so that it can then be modified
 	 * for libreboot's purpose
 	 */
-	memcpy(&factoryGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE);
+	memcpy(&factoryGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE_8K);
 	/*
 	 * the original factoryGbeStruct8k is only reference. Changes go here:
 	 */
-	memcpy(&deblobbedGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE);
+	memcpy(&deblobbedGbeStruct8k, &factoryGbeBuffer8k, GBEREGIONSIZE_8K);
 
 	/* 
 	 * Get size of ROM image
@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
 	 * deblobbed descriptor region
 	 */
 	memcpy(&deblobbedDescriptorBuffer, &deblobbedDescriptorStruct, DESCRIPTORREGIONSIZE); /* descriptor */
-	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE);                  /* gbe */
+	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE_8K);                  /* gbe */
 
 	/* delete old file before continuing */
 	remove(deblobbedDescriptorFilename);
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
 	}
 
 	/* add gbe to the end of the file */
-	if (GBEREGIONSIZE != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE, fileStream))
+	if (GBEREGIONSIZE_8K != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE_8K, fileStream))
 	{
 		printf("\nerror: writing GBe region failed\n");
 		return 1;

@@ -37,7 +37,7 @@
 #include <string.h>
 
 /* Size of gbe region in bytes */
-#define GBEREGIONSIZE 0x2000
+#define GBEREGIONSIZE_8K 0x2000
 
 /*
  * These will have a modified descriptor+gbe based on what's in the factory.rom
@@ -112,8 +112,8 @@ unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desir
 /* checksum calculation for 4k gbe struct (algorithm based on datasheet) */
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue)
 {
-	char gbeBuffer4k[GBEREGIONSIZE>>1];
-	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE>>1);
+	char gbeBuffer4k[GBEREGIONSIZE_8K>>1];
+	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE_8K>>1);
 	return gbeGetChecksumFrom8kBuffer(gbeBuffer4k, desiredValue, 0);
 }
 
@@ -127,10 +127,10 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	 */
 	
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
-	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE);
+	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE_8K);
 	
 	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
-	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE>>1);
+	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_8K>>1);
 	
 	/*
 	 * Debugging:
