@@ -1,5 +1,5 @@
 /*
- *  ich9gbe.c
+ *  ich9gbe.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
@@ -25,6 +25,15 @@
 // bit fields used, corresponding to datasheet. See links to datasheets
 // and documentation in ich9deblob.c
 
+#ifndef ICH9GBE_H
+#define ICH9GBE_H
+
+#define GBEREGIONSIZE 0x2000 // 8 KiB
+// These will have a modified descriptor+gbe based on what's in the factory.rom
+// These will be joined into a single 12KiB buffer (descriptor, then gbe) and saved to a file
+// NOTE: The GBE region of 8K is actually 2x 4K regions in a single region; both 4K blocks can be identical (and by default, are)
+// The 2nd one is a "backup", but we don't know when it's used. perhaps it's used when the checksum on the first one does not match?
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6]; // 0x03 words, or 0x06 bytes
 	unsigned char otherStuff[120];  // 0x3c words, or 0x7E bytes
@@ -41,3 +50,5 @@ struct GBEREGIONRECORD_8K {
 	// and other errors. You should do what you need on this one (if modifying
 	// lenovobios's gbe region) and then copy to main
 };
+
+#endif

@@ -1,5 +1,5 @@
 /*
- *  ich9desc.c
+ *  ich9desc.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -25,6 +25,15 @@
  
 // bit fields used, corresponding to datasheet. See links to datasheets
 // and documentation in ich9deblob.c
+
+#ifndef ICH9DESC_H
+#define ICH9DESC_H
+
+#define DESCRIPTORREGIONSIZE 0x1000 // 4 KiB
+
+// Related to the flash descriptor
+#define FLREGIONBITSHIFT 0xC // bits 12(0xC)-24(0x18) are represented for words found in the flash descriptor
+												 // To manipulate these easily in C, we shift them by FLREGIONBITSHIFT and then shift them back when done
 
 struct FLVALSIG{
 	unsigned int signature;
@@ -215,3 +224,5 @@ struct DESCRIPTORREGIONRECORD {
 	struct DESCRIPTORMAP2RECORD descriptor2Map;
 	struct OEMSECTIONRECORD oemSection;
 };
+
+#endif
