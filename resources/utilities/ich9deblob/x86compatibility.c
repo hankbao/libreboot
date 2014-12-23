@@ -24,18 +24,22 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "descriptor/descriptor.h" // structs describing what's in the descriptor region
-#include "gbe/gbe.h" // structs describing what's in the gbe region, plus functions that use them
+#include "descriptor/descriptor.h" /* structs describing what's in the descriptor region */
+#include "gbe/gbe.h" /* structs describing what's in the gbe region, plus functions that use them */
 
-// ---------------------------------------------------------------------
-// x86 compatibility checking:
-// ---------------------------------------------------------------------
+/*
+ * ---------------------------------------------------------------------
+ * x86 compatibility checking:
+ * ---------------------------------------------------------------------
+ */
 
-// Basically, this should only return true on non-x86 machines
-int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) {
+/* fail if struct size is incorrect */
+int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) 
+{
 	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
 	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
-	// check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86
+	
+	/* check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86 */
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
 		return 1;
@@ -44,47 +48,52 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE);
 		return 1;
 	}
+	
 	return 0;
 }
 
-int systemIsBigEndian() {
-	// endianness check. big endian forced to fail
+/* endianness check. big endian forced to fail */
+int systemIsBigEndian() 
+{
 	unsigned short steak = 0xBEEF;
 	unsigned char *grill = (unsigned char*)&steak;
+	
 	if (*grill==0xBE) {
 		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
 		return 1;
 	}
-	return 0;
+	return 0; /* you got the good half of the steak */
 }
 
-// fail if members are presented in the wrong order
+/* fail if members are presented in the wrong order */
 int structMembersWrongOrder()
 {
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
 	unsigned char *meVsccTablePtr = (unsigned char*)&descriptorDummy.meVsccTable;
 	
-	// These do not use bitfields. 
-	descriptorDummy.meVsccTable.jid0 = 0x01020304;  // unsigned int 32-bit
-	descriptorDummy.meVsccTable.vscc0 = 0x10203040; // unsigned int 32-bit
-	descriptorDummy.meVsccTable.jid1 = 0x11223344;  // unsigned int 32-bit
-	descriptorDummy.meVsccTable.vscc1 = 0x05060708; // unsigned int 32-bit
-	descriptorDummy.meVsccTable.jid2 = 0x50607080;  // unsigned int 32-bit
-	descriptorDummy.meVsccTable.vscc2 = 0x55667788; // unsigned int 32-bit
-	descriptorDummy.meVsccTable.padding[0] = 0xAA;  // unsigned char 8-bit
-	descriptorDummy.meVsccTable.padding[1] = 0xBB;  // unsigned char 8-bit
-	descriptorDummy.meVsccTable.padding[2] = 0xCC;  // unsigned char 8-bit
-	descriptorDummy.meVsccTable.padding[3] = 0xDD;  // unsigned char 8-bit
+	/* These do not use bitfields.  */
+	descriptorDummy.meVsccTable.jid0 = 0x01020304;  /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.vscc0 = 0x10203040; /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.jid1 = 0x11223344;  /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.vscc1 = 0x05060708; /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.jid2 = 0x50607080;  /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.vscc2 = 0x55667788; /* unsigned int 32-bit */
+	descriptorDummy.meVsccTable.padding[0] = 0xAA;  /* unsigned char 8-bit */
+	descriptorDummy.meVsccTable.padding[1] = 0xBB;  /* unsigned char 8-bit */
+	descriptorDummy.meVsccTable.padding[2] = 0xCC;  /* unsigned char 8-bit */
+	descriptorDummy.meVsccTable.padding[3] = 0xDD;  /* unsigned char 8-bit */
 	
-	// Look from the top down, and concatenate the unsigned ints but
-	// with each unsigned in little endian order. 
-	// Then, concatenate the unsigned chars in big endian order. (in the padding array)
-	
-	// combined, these should become:
-	// 01020304 10203040 11223344 05060708 50607080 55667788 AA BB CC DD (ignore this. big endian. just working it out manually:)
-	// 04030201 40302010 44332211 08070605 80706050 88776655 AA BB CC DD (ignore this. not byte-separated, just working it out:)
-	// 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
+	/*
+	 * Look from the top down, and concatenate the unsigned ints but
+	 * with each unsigned in little endian order. 
+	 * Then, concatenate the unsigned chars in big endian order. (in the padding array)
+	 *
+	 * combined, these should become:
+	 * 01020304 10203040 11223344 05060708 50607080 55667788 AA BB CC DD (ignore this. big endian. just working it out manually:)
+	 * 04030201 40302010 44332211 08070605 80706050 88776655 AA BB CC DD (ignore this. not byte-separated, just working it out:)
+	 * 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
+	 */
 	
 	printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
 	printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
@@ -110,31 +119,34 @@ int structMembersWrongOrder()
 		printf("Incorrect order.\n");
 		return 1;
 	}
+	
 	printf("Correct order.\n");
 	return 0;
 }
 
-// fail if bit fields are presented in the wrong order
+/* fail if bit fields are presented in the wrong order */
 int structBitfieldWrongOrder() 
 {
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
 	unsigned char *flMap0Ptr = (unsigned char*)&descriptorDummy.flMaps.flMap0;
 	
-	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      // :8 --> 10100010
-	descriptorDummy.flMaps.flMap0.NC = 0x02;        // :2 --> 10
-	descriptorDummy.flMaps.flMap0.reserved1 = 0x38; // :6 --> 111000
-	descriptorDummy.flMaps.flMap0.FRBA = 0xD2;      // :8 --> 11010010
-	descriptorDummy.flMaps.flMap0.NR = 0x05;        // :3 --> 101
-	descriptorDummy.flMaps.flMap0.reserved2 = 0x1C; // :5 --> 11100
+	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      /* :8 --> 10100010 */
+	descriptorDummy.flMaps.flMap0.NC = 0x02;        /* :2 --> 10       */
+	descriptorDummy.flMaps.flMap0.reserved1 = 0x38; /* :6 --> 111000   */
+	descriptorDummy.flMaps.flMap0.FRBA = 0xD2;      /* :8 --> 11010010 */
+	descriptorDummy.flMaps.flMap0.NR = 0x05;        /* :3 --> 101      */
+	descriptorDummy.flMaps.flMap0.reserved2 = 0x1C; /* :5 --> 11100    */
 	
-	// Look from the top bottom up, and concatenate the binary strings.
-	// Then, convert the 8-bit groups to hex and reverse the (8-bit)byte order
-	
-	// combined, these should become (in memory), in binary:
-	// 10100010 11100010 11010010 11100101
-	// or in hex:
-	// A2 E2 D2 E5
+	/*
+	 * Look from the top bottom up, and concatenate the binary strings.
+	 * Then, convert the 8-bit groups to hex and reverse the (8-bit)byte order
+	 * 
+	 * combined, these should become (in memory), in binary:
+	 * 10100010 11100010 11010010 11100101
+	 * or in hex:
+	 * A2 E2 D2 E5
+	 */
 	
 	printf("\nBitfield order check (descriptorDummy.flMaps.flMaps0) with junk/dummy data:");
 	printf("\nShould be: a2 e2 d2 e5 ");
@@ -149,11 +161,12 @@ int structBitfieldWrongOrder()
 		printf("Incorrect order.\n");
 		return 1;
 	}
+	
 	printf("Correct order.\n");
 	return 0;
 }
 
-// Compatibility checks. This version of ich9deblob is not yet porable.
+/* Compatibility checks. This version of ich9deblob is not yet porable. */
 int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k) 
 {
 	if (structSizesIncorrect(descriptorStruct, gbeStruct8k)) return 1;
