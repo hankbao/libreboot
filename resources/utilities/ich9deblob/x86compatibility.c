@@ -24,7 +24,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "ich9desc.h" // structs describing what's in the descriptor region
+#include "descriptor/struct.h" // structs describing what's in the descriptor region
 #include "gbe/struct.h" // structs describing what's in the gbe region
 
 // ---------------------------------------------------------------------

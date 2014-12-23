@@ -1,5 +1,5 @@
 /*
- *  ich9desc.h
+ *  descriptor/struct.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -26,8 +26,8 @@
 // bit fields used, corresponding to datasheet. See links to datasheets
 // and documentation in ich9deblob.c
 
-#ifndef ICH9DESC_H
-#define ICH9DESC_H
+#ifndef DESCRIPTORSTRUCT_H
+#define DESCRIPTORSTRUCT_H
 
 #define DESCRIPTORREGIONSIZE 0x1000 // 4 KiB
 
