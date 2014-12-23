@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "ich9desc.h" // structs describing what's in the descriptor region
-#include "ich9gbe.h" // structs describing what's in the gbe region
+#include "gbe/struct.h" // structs describing what's in the gbe region
 #include "x86compatibility.c" // compatibility checks. this utility is not portable yet.
 
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);

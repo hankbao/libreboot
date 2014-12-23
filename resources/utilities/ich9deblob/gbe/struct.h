@@ -1,5 +1,5 @@
 /*
- *  ich9gbe.h
+ *  gbe/struct.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
@@ -25,8 +25,8 @@
 // bit fields used, corresponding to datasheet. See links to datasheets
 // and documentation in ich9deblob.c
 
-#ifndef ICH9GBE_H
-#define ICH9GBE_H
+#ifndef GBESTRUCT_H
+#define GBESTRUCT_H
 
 #define GBEREGIONSIZE 0x2000 // 8 KiB
 // These will have a modified descriptor+gbe based on what's in the factory.rom

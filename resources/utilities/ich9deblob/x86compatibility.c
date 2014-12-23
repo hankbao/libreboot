@@ -2,7 +2,7 @@
 #include <string.h>
 
 #include "ich9desc.h" // structs describing what's in the descriptor region
-#include "ich9gbe.h" // structs describing what's in the gbe region
+#include "gbe/struct.h" // structs describing what's in the gbe region
 
 // ---------------------------------------------------------------------
 // x86 compatibility checking:
