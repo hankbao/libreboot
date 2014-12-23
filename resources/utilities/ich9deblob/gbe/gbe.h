@@ -1,5 +1,5 @@
 /*
- *  gbe/struct.h
+ *  gbe/gbe.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>

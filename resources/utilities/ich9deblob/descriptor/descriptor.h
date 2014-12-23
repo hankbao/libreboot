@@ -1,5 +1,5 @@
 /*
- *  descriptor/struct.h
+ *  descriptor/descriptor.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
