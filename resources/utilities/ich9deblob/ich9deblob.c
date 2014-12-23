@@ -43,7 +43,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "descriptor/struct.h" // structs describing what's in the descriptor region
-#include "gbe/struct.h" // structs describing what's in the gbe region
+#include "gbe/gbe.h" // structs describing what's in the gbe region, plus functions that use them
 #include "x86compatibility.c" // compatibility checks. this utility is not portable yet.
 
 struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize);

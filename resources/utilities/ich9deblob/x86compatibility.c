@@ -25,7 +25,7 @@
 #include <string.h>
 
 #include "descriptor/struct.h" // structs describing what's in the descriptor region
-#include "gbe/struct.h" // structs describing what's in the gbe region
+#include "gbe/gbe.h" // structs describing what's in the gbe region, plus functions that use them
 
 // ---------------------------------------------------------------------
 // x86 compatibility checking:
