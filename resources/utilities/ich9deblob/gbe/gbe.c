@@ -45,22 +45,21 @@ unsigned short gbeGetRegionWordFrom8kBuffer(int index, char* regionData)
  * checksum calculation for 8k gbe region (algorithm based on datasheet)
  * also works for 4k buffers, so long as isBackup remains false
  */
-unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, char isBackup)
+unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, int byteOffset)
 {
 	int i;
 	
+	/* 
+	 * byteOffset defines the byte address where the gbe begins in the buffer "regionData".
+	 * However, this function works with 16-bit words. Shift the byte offset to the right for the word (16-bit) offset.
+	 */
+	int wordOffset = byteOffset >> 1;
+	
 	unsigned short regionWord; /* store words here for adding to checksum */
 	unsigned short checksum = 0; /* this gbe's checksum */
-	unsigned short offset = 0; /* in bytes, from the start of the gbe region. */
-	
-	/* 
-	 * if isBackup is true, use 2nd gbe region ("backup" region)
-	 * this function uses *word* not *byte* indexes, hence the bit shift.
-	 */
-	if (isBackup) offset = GBEREGIONSIZE_4K>>1;
 
 	for (i = 0; i < 0x3F; i++) {
-		regionWord = gbeGetRegionWordFrom8kBuffer(i+offset, regionData);
+		regionWord = gbeGetRegionWordFrom8kBuffer(i+wordOffset, regionData);
 		checksum += regionWord;
 	}
 	checksum = desiredValue - checksum;
