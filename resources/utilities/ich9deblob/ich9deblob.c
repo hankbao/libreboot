@@ -200,6 +200,13 @@ int main(int argc, char *argv[])
 	 * Modify the Gbe region (see function for details)
 	 */
 	deblobbedGbeStruct8k = deblobbedGbeStructFromFactory(factoryGbeStruct8k);
+	/*
+	 * Debugging: show difference between Gbe checksums in the
+	 * original gbe and the modified one
+	 */
+	printf("\n");
+	printGbeChecksumDataFromStruct8k(factoryGbeStruct8k, "Original");
+	printGbeChecksumDataFromStruct8k(deblobbedGbeStruct8k, "Modified");
 
 	/*
 	 * ------------------------------------------------------------------

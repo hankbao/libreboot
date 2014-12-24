@@ -89,18 +89,36 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
 	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_4K);
 	
-	/*
-	 * Debugging:
-	 * calculate the 0x3F'th 16-bit uint to make the desired final checksum for GBe
-	 * observed checksum matches (from X200 factory.rom dumps) on main: 0x3ABA 0x34BA 0x40BA. spec defined as 0xBABA.
-	 * X200 ships with a broken main gbe region by default (invalid checksum, and more)
-	 * The "backup" gbe regions on these machines are correct, though, and is what the machines default to
-	 * For libreboot's purpose, we can do much better than that by fixing the main one... below is only debugging
-	 */
-	printf("\nfactory Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.main, 0xBABA), factoryGbeStruct8k.main.checkSum);
-	printf("factory Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(factoryGbeStruct8k.backup, 0xBABA), factoryGbeStruct8k.backup.checkSum);
-	printf("\ndeblobbed Gbe (main): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.main, 0xBABA), deblobbedGbeStruct8k.main.checkSum);
-	printf("deblobbed Gbe (backup) calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA), deblobbedGbeStruct8k.backup.checkSum);
-	
 	return deblobbedGbeStruct8k;
+}
+
+/*
+ * ---------------------------------------------------------------------
+ * Debugging functions:
+ * ---------------------------------------------------------------------
+ */
+
+/*
+ * show debugging info: show calculated (correct) cbe checksum and what
+ * is actually stored, in a 4K gbe struct. Only for a single region.
+ */
+void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char *romName, char* regionName)
+{
+	printf(
+		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", 
+		romName,
+		regionName,
+		gbeGetChecksumFrom4kStruct(gbeStruct4k, 0xBABA), 
+		gbeStruct4k.checkSum
+	);
+}
+
+/*
+ * show debugging info: show calculated (correct) gbe checksum and what 
+ * is actually stored, in a 8K gbe struct. Do so for main and backup regions.
+ */
+void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, char* romName)
+{	
+	printGbeChecksumDataFromStruct4k(gbeStruct8k.main, romName, "main");
+	printGbeChecksumDataFromStruct4k(gbeStruct8k.backup, romName, "backup");
 }
