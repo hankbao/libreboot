@@ -110,6 +110,8 @@ void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, cha
 		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL), 
 		gbeStruct4k.checkSum
 	);
+	
+	return;
 }
 
 /*
@@ -120,4 +122,6 @@ void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, cha
 {	
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.main, romName, "main");
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.backup, romName, "backup");
+	
+	return;
 }

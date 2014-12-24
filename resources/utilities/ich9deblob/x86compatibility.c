@@ -94,15 +94,6 @@ int structMembersWrongOrder()
 	 * 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
 	 */
 	
-	printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
-	printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
-	printf("\nAnd it is: ");
-	
-	for (i = 0; i < 28; i++) {
-		printf("%02x ", *(meVsccTablePtr + i));	
-	}
-	printf("\n");
-	
 	if (
 			!
 			(
@@ -115,11 +106,19 @@ int structMembersWrongOrder()
 			&& *(meVsccTablePtr+24) == 0xAA && *(meVsccTablePtr+25) == 0xBB && *(meVsccTablePtr+26) == 0xCC && *(meVsccTablePtr+27) == 0xDD
 	      )
 	   ) {
-		printf("Incorrect order.\n");
+			
+		printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
+		printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
+		printf("\nAnd it is: ");
+		
+		for (i = 0; i < 28; i++) {
+			printf("%02x ", *(meVsccTablePtr + i));	
+		}
+		printf("\nIncorrect order.\n");
+		
 		return 1;
 	}
 	
-	printf("Correct order.\n");
 	return 0;
 }
 
@@ -146,22 +145,21 @@ int structBitfieldWrongOrder()
 	 * or in hex:
 	 * A2 E2 D2 E5
 	 */
-	
-	printf("\nBitfield order check (descriptorDummy.flMaps.flMaps0) with junk/dummy data:");
-	printf("\nShould be: a2 e2 d2 e5 ");
-	printf("\nAnd it is: ");
+		
+	if (!(*flMap0Ptr == 0xA2 && *(flMap0Ptr+1) == 0xE2 && *(flMap0Ptr+2) == 0xD2 && *(flMap0Ptr+3) == 0xE5)) 
+	{
+		printf("\nBitfield order check (descriptorDummy.flMaps.flMaps0) with junk/dummy data:");
+		printf("\nShould be: a2 e2 d2 e5 ");
+		printf("\nAnd it is: ");
 
-	for (i = 0; i < 4; i++) {
-		printf("%02x ", *(flMap0Ptr + i));	
-	}
-	printf("\n");
-	
-	if (!(*flMap0Ptr == 0xA2 && *(flMap0Ptr+1) == 0xE2 && *(flMap0Ptr+2) == 0xD2 && *(flMap0Ptr+3) == 0xE5)) {
-		printf("Incorrect order.\n");
+		for (i = 0; i < 4; i++) {
+			printf("%02x ", *(flMap0Ptr + i));	
+		}
+		printf("\nIncorrect order.\n");
+		
 		return 1;
 	}
 	
-	printf("Correct order.\n");
 	return 0;
 }
 
