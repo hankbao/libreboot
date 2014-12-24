@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
 
 	fclose(fileStream);
 
-	printf("\ndeblobbed descriptor successfully created: deblobbed_descriptor.bin \n");
+	printf("\ndeblobbed descriptor plus gbe successfully created: deblobbed_descriptor.bin \n");
 
 	// -------------------------------------------------------------------------------------
 
