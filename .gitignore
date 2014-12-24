@@ -16,3 +16,4 @@
 /resources/utilities/ich9deblob/ich9deblob
 /resources/utilities/coreboot-libre/tocheck
 /resources/utilities/ich9deblob/*.o
+/resources/utilities/ich9deblob/*/*.o

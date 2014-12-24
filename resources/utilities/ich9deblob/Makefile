@@ -18,10 +18,24 @@
 #
 
 CC=gcc
-CFLAGS=-I.
+CFLAGS=-I. -Wall -g
 
-ich9deblob: ich9deblob.c descriptor/descriptor.h gbe/gbe.h
-	$(CC) $(CFLAGS) ich9deblob.c descriptor/descriptor.h gbe/gbe.h -o ich9deblob
+all: ich9deblob
+
+ich9deblob: main.o descriptor/descriptor.o gbe/gbe.o x86compatibility.o
+	$(CC) $(CFLAGS) main.o descriptor/descriptor.o gbe/gbe.o x86compatibility.o -o ich9deblob
+
+main.o: main.c
+	$(CC) $(CFLAGS) -c main.c -o main.o
+
+descriptor/descriptor.o: descriptor/descriptor.c
+	$(CC) $(CFLAGS) -c descriptor/descriptor.c -o descriptor/descriptor.o
+
+gbe/gbe.o: gbe/gbe.c
+	$(CC) $(CFLAGS) -c gbe/gbe.c -o gbe/gbe.o
+
+x86compatibility.o: x86compatibility.c
+	$(CC) $(CFLAGS) -c x86compatibility.c -o x86compatibility.o
 	
 clean:
-	rm -f ich9deblob *.o
+	rm -f ich9deblob *.o */*.o

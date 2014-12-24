@@ -1,5 +1,5 @@
 /*
- *  ich9deblob.c
+ *  main.c
  *  This file is part of the ich9deblob utility from the libreboot project
  * 
  * Purpose: disable and remove the ME from ich9m/gm45 machines in coreboot.
@@ -47,8 +47,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "descriptor/descriptor.h" /* structs describing what's in the descriptor region */
-#include "gbe/gbe.h"               /* structs describing what's in the gbe region, plus functions that use them */
-#include "x86compatibility.c"      /* compatibility checks. this utility is not portable yet. */
+#include "gbe/gbe.h"               /* structs describing what's in the gbe region */
+#include "x86compatibility.h"      /* system/compiler compatibility checks. This code is not portable. */
 
 int main(int argc, char *argv[])
 {
