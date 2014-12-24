@@ -43,6 +43,13 @@
  */
 #define GBEREGIONSIZE_4K 0x1000
 
+/* 
+ * When adding up the first 0x3F 16-bit words
+ * in a 4KiB GBE region, it should be equal
+ * to 0xBABA
+ */
+#define GBECHECKSUMTOTAL 0xBABA
+
 /*
  * These will have a modified descriptor+gbe based on what's in the factory.rom
  * These will be joined into a single 12KiB buffer (descriptor, then gbe) and saved to a file
@@ -59,7 +66,7 @@
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6]; /* 0x03 words, or 0x06 bytes */
 	unsigned char otherStuff[120];  /* 0x3c words, or 0x7E bytes */
-	unsigned short checkSum; /* when added to the sum of all words above, this should be 0xBABA */
+	unsigned short checkSum; /* when added to the sum of all words above, this should match GBECHECKSUMTOTAL */
 	unsigned char padding1[3968];
 };
 

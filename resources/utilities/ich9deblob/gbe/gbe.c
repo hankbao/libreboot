@@ -86,7 +86,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE_8K);
 	
-	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, 0xBABA);
+	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, GBECHECKSUMTOTAL);
 	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_4K);
 	
 	return deblobbedGbeStruct8k;
@@ -108,7 +108,7 @@ void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, cha
 		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", 
 		romName,
 		regionName,
-		gbeGetChecksumFrom4kStruct(gbeStruct4k, 0xBABA), 
+		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL), 
 		gbeStruct4k.checkSum
 	);
 }
