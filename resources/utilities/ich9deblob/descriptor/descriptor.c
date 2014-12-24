@@ -113,16 +113,53 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 * deblobbedDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1;
 	 */
 	
-	/* debugging */
-	printf("\nOriginal (factory.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", factoryDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) BIOS start block: %08x ; BIOS end block: %08x\n", factoryDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) ME start block: %08x ; ME end block: %08x\n", factoryDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
-	printf("Original (factory.rom) GBe start block: %08x ; GBe end block: %08x\n", factoryDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT, factoryDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
-	
-	printf("\nRelocated (libreboot.rom) Descriptor start block: %08x ; Descriptor end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) BIOS start block: %08x ; BIOS end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) ME start block: %08x ; ME end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT);
-	printf("Relocated (libreboot.rom) GBe start block: %08x ; GBe end block: %08x\n", deblobbedDescriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT, deblobbedDescriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT);
-	
 	return deblobbedDescriptorStruct;
+}
+
+/*
+ * ---------------------------------------------------------------------
+ * Debugging functions:
+ * ---------------------------------------------------------------------
+ */
+
+/*
+ * show debugging info: descriptor region boundaries, in a 4KB struct.
+ */
+void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName)
+{
+	printf("\n");
+	
+	/* Descriptor region */
+	printf(
+		"%s: Descriptor start block: %08x ; Descriptor end block: %08x\n",
+		romName,
+		descriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT,
+		descriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT
+	);
+	
+	/* BIOS region */
+	printf(
+		"%s: BIOS start block: %08x ; BIOS end block: %08x\n", 
+		romName,
+		descriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, 
+		descriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT
+	);
+	
+	/* ME region */
+	printf(
+		"%s: ME start block: %08x ; ME end block: %08x\n", 
+		romName,
+		descriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, 
+		descriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT
+	);
+	
+	/* GBe region */
+	printf(
+		"%s: GBe start block: %08x ; GBe end block: %08x\n",
+		romName,
+		descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT,
+		descriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT
+	);
+	
+	return;
 }

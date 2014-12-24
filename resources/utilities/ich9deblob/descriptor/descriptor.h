@@ -257,5 +257,6 @@ struct DESCRIPTORREGIONRECORD {
  */
  
 struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize);
+void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);
 
 #endif

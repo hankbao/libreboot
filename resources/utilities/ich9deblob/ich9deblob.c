@@ -195,6 +195,12 @@ int main(int argc, char *argv[])
 	 * Also, extend the BIOS region to fill the ROM image (after descriptor+gbe).
 	 */
 	deblobbedDescriptorStruct = deblobbedDescriptorStructFromFactory(factoryDescriptorStruct, factoryRomSize);
+	/*
+	 * Debugging: show region locations in the 
+	 * original descriptor and the modified one
+	 */
+	printDescriptorRegionLocations(factoryDescriptorStruct, "Original");
+	printDescriptorRegionLocations(deblobbedDescriptorStruct, "Modified");
 
 	/*
 	 * Modify the Gbe region (see function for details)
