@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
 	// -------------------------------------------------------------------------------------
 
 	printf("\nNow do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc");
-	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n");
+	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n\n");
 
 	return 0;
 }

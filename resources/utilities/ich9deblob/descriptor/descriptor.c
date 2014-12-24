@@ -161,5 +161,13 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 		descriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT
 	);
 	
+	/* Platform region */
+	printf(
+		"%s: Platform start block: %08x ; GBe end block: %08x\n",
+		romName,
+		descriptorStruct.regionSection.flReg4.BASE << FLREGIONBITSHIFT,
+		descriptorStruct.regionSection.flReg4.LIMIT << FLREGIONBITSHIFT
+	);
+	
 	return;
 }
