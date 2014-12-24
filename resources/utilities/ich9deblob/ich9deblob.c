@@ -1,5 +1,5 @@
 /*
- *  main.c
+ *  ich9deblob.c
  *  This file is part of the ich9deblob utility from the libreboot project
  * 
  * Purpose: disable and remove the ME from ich9m/gm45 machines in coreboot.
