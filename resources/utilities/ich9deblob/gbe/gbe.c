@@ -98,7 +98,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
  */
 
 /*
- * show debugging info: show calculated (correct) cbe checksum and what
+ * show debugging info: show calculated (correct) gbe checksum and what
  * is actually stored, in a 4K gbe struct. Only for a single region.
  */
 void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName)
