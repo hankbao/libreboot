@@ -42,8 +42,7 @@ unsigned short gbeGetRegionWordFrom8kBuffer(int index, char* regionData)
 }
 
 /* 
- * checksum calculation for 8k gbe region (algorithm based on datasheet)
- * also works for 4k buffers, so long as isBackup remains false
+ * gbe checksum calculation (algorithm based on datasheet)
  */
 unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, int byteOffset)
 {
@@ -102,7 +101,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
  * show debugging info: show calculated (correct) cbe checksum and what
  * is actually stored, in a 4K gbe struct. Only for a single region.
  */
-void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char *romName, char* regionName)
+void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName)
 {
 	printf(
 		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", 
