@@ -24,6 +24,9 @@
 #ifndef X86COMPATIBILITY_H
 #define X86COMPATIBILITY_H
 
+#include "descriptor/descriptor.h" /* structs describing what's in the descriptor region */
+#include "gbe/gbe.h"               /* structs describing what's in the gbe region */
+
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
 int systemIsBigEndian();
 int structMembersWrongOrder();
