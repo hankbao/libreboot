@@ -1,8 +1,8 @@
 /*
- *  common.h
+ *  gbe_descriptor.h
  *  This file is part of the ich9deblob utility from the libreboot project
  * 
- * Purpose: header file for common.c
+ * Purpose: header file for descriptor_gbe.c
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Francis Rowe <info@gluglug.org.uk>
@@ -21,8 +21,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#ifndef COMMON_H
-#define COMMON_H
+#ifndef COMMON_DESCRIPTOR_GBE_H
+#define COMMON_DESCRIPTOR_GBE_H
 
 #include <stdio.h>
 #include <string.h>

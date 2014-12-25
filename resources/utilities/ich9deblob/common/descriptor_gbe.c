@@ -1,8 +1,8 @@
 /*
- *  common.c
+ *  descriptor_gbe.c
  *  This file is part of the ich9deblob utility from the libreboot project
  * 
- * Purpose: common functions/methods used by ich9deblob
+ * Purpose: common descriptor/gbe functions used by ich9deblob
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Francis Rowe <info@gluglug.org.uk>
@@ -23,7 +23,7 @@
  
 #include <stdio.h>
 #include <string.h>
-#include "common.h"
+#include "descriptor_gbe.h"
 
 /* 
  * create 12KiB file with descriptor, and then gbe immediately after.

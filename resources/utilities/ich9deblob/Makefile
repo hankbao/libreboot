@@ -22,11 +22,14 @@ CFLAGS=-I. -Wall -g
 
 all: ich9deblob
 
-ich9deblob: ich9deblob.o common/common.o descriptor/descriptor.o gbe/gbe.o x86compatibility.o
-	$(CC) $(CFLAGS) ich9deblob.o common/common.o descriptor/descriptor.o gbe/gbe.o x86compatibility.o -o ich9deblob
+ich9deblob: ich9deblob.o common/descriptor_gbe.o descriptor/descriptor.o \
+		gbe/gbe.o x86compatibility.o
+		
+	$(CC) $(CFLAGS) ich9deblob.o common/descriptor_gbe.o \
+		descriptor/descriptor.o gbe/gbe.o x86compatibility.o -o ich9deblob
 
-common/common.o: common/common.c
-	$(CC) $(CFLAGS) -c common/common.c -o common/common.o
+common/descriptor_gbe.o: common/descriptor_gbe.c
+	$(CC) $(CFLAGS) -c common/descriptor_gbe.c -o common/descriptor_gbe.o
 
 ich9deblob.o: ich9deblob.c
 	$(CC) $(CFLAGS) -c ich9deblob.c -o ich9deblob.o
