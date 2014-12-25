@@ -371,6 +371,12 @@ rm -f libreboot_src/getmt86
 rm -f libreboot_src/getseabios
 rm -f libreboot_src/DEBLOB
 
+# ich9deblob: there are certain files in there
+# that the user most likely does not want to share
+rm -f libreboot_src/resources/utilities/ich9deblob/deblobbed_descriptor.bin
+rm -f libreboot_src/resources/utilities/ich9deblob/factory.rom
+rm -f libreboot_src/resources/utilities/ich9deblob/libreboot.rom
+
 echo "Creating compressed libreboot_src release archive"
 
 # create lzma compressed src archive
