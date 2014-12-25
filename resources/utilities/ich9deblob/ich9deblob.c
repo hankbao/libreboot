@@ -46,6 +46,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "common/common.h"         /* common functions used by ich9deblob */
 #include "descriptor/descriptor.h" /* structs describing what's in the descriptor region */
 #include "gbe/gbe.h"               /* structs describing what's in the gbe region */
 #include "x86compatibility.h"      /* system/compiler compatibility checks. This code is not portable. */
@@ -58,7 +59,6 @@ int main(int argc, char *argv[])
 	 */
 	char factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
-	char deblobbedDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	
 	/* 
@@ -67,7 +67,6 @@ int main(int argc, char *argv[])
 	 */
 	char factoryGbeBuffer8k[GBEREGIONSIZE_8K];
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
-	char deblobbedGbeBuffer8k[GBEREGIONSIZE_8K];
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	
 	/*
@@ -220,42 +219,10 @@ int main(int argc, char *argv[])
 	 * ------------------------------------------------------------------
 	 */
 
-	/*
-	 * Convert the deblobbed descriptor and gbe back to byte arrays, so that they
-	 * can more easily be written to files:
-	 * deblobbed descriptor region
-	 */
-	memcpy(&deblobbedDescriptorBuffer, &deblobbedDescriptorStruct, DESCRIPTORREGIONSIZE); /* descriptor */
-	memcpy(&deblobbedGbeBuffer8k, &deblobbedGbeStruct8k, GBEREGIONSIZE_8K);                  /* gbe */
-
-	/* delete old file before continuing */
-	remove(deblobbedDescriptorFilename);
-	
-	/* open new file for writing the deblobbed descriptor+gbe */
-	fileStream = fopen(deblobbedDescriptorFilename, "ab");
-
-	/* write the descriptor region into the first part */
-	if (DESCRIPTORREGIONSIZE != fwrite(deblobbedDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fileStream))
-	{
-		printf("\nerror: writing descriptor region failed\n");
+	printf("\n");
+	if (notCreatedDescriptorGbeFile(deblobbedDescriptorStruct, deblobbedGbeStruct8k, deblobbedDescriptorFilename)) {
 		return 1;
 	}
-
-	/* add gbe to the end of the file */
-	if (GBEREGIONSIZE_8K != fwrite(deblobbedGbeBuffer8k, sizeof(char), GBEREGIONSIZE_8K, fileStream))
-	{
-		printf("\nerror: writing GBe region failed\n");
-		return 1;
-	}
-
-	fclose(fileStream);
-
-	printf("\ndeblobbed descriptor plus gbe successfully created: deblobbed_descriptor.bin \n");
-
-	// -------------------------------------------------------------------------------------
-
-	printf("\nNow do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc");
-	printf("\n(in other words, add the modified descriptor+gbe to your ROM image)\n\n");
 
 	return 0;
 }
