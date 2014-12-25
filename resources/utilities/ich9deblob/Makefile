@@ -19,29 +19,31 @@
 
 CC=gcc
 CFLAGS=-I. -Wall -g
+NOLINKER=-c
 
 all: ich9deblob
 
-ich9deblob: ich9deblob.o common/descriptor_gbe.o descriptor/descriptor.o \
-		gbe/gbe.o common/x86compatibility.o
+ich9deblob: obj/ich9deblob.o obj/common/descriptor_gbe.o \
+		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
 		
-	$(CC) $(CFLAGS) ich9deblob.o common/descriptor_gbe.o common/x86compatibility.o \
-		descriptor/descriptor.o gbe/gbe.o -o ich9deblob
+	$(CC) $(CFLAGS) obj/ich9deblob.o obj/common/descriptor_gbe.o \
+		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
+		 -o ich9deblob
 
-ich9deblob.o: ich9deblob.c
-	$(CC) $(CFLAGS) -c ich9deblob.c -o ich9deblob.o
+obj/ich9deblob.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/ich9deblob.c -o obj/ich9deblob.o
 	
-common/descriptor_gbe.o: common/descriptor_gbe.c
-	$(CC) $(CFLAGS) -c common/descriptor_gbe.c -o common/descriptor_gbe.o
+obj/common/descriptor_gbe.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/common/descriptor_gbe.c -o obj/common/descriptor_gbe.o
 	
-common/x86compatibility.o: common/x86compatibility.c
-	$(CC) $(CFLAGS) -c common/x86compatibility.c -o common/x86compatibility.o
+obj/common/x86compatibility.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/common/x86compatibility.c -o obj/common/x86compatibility.o
 
-descriptor/descriptor.o: descriptor/descriptor.c
-	$(CC) $(CFLAGS) -c descriptor/descriptor.c -o descriptor/descriptor.o
+obj/descriptor/descriptor.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/descriptor/descriptor.c -o obj/descriptor/descriptor.o
 
-gbe/gbe.o: gbe/gbe.c
-	$(CC) $(CFLAGS) -c gbe/gbe.c -o gbe/gbe.o
+obj/gbe/gbe.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/gbe/gbe.c -o obj/gbe/gbe.o
 	
 clean:
-	rm -f ich9deblob *.o */*.o
+	rm -rf ich9deblob obj/*.o obj/*/*.o
