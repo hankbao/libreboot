@@ -56,7 +56,8 @@ git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cher
 # lenovo/t60: Enable legacy brightness controls (native graphics)
 git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
 
-# Note: macbook21 already has backlight control.
+# Enable cstates 1 and 2 on macbook21. This reduces heat / power usage when the system is idle
+git fetch http://review.coreboot.org/coreboot refs/changes/23/7923/2 && git cherry-pick FETCH_HEAD
 
 # ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan
 git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cherry-pick FETCH_HEAD
