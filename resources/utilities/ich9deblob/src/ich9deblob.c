@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
 	if (NULL == fileStream)
 	{
 		printf("\nerror: could not open factory.rom\n");
+		fclose(fileStream);
 		return 1;
 	}
 	printf("\nfactory.rom opened successfully\n");
@@ -111,6 +112,7 @@ int main(int argc, char *argv[])
 	if (DESCRIPTORREGIONSIZE != bufferLength) // 
 	{
 		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", bufferLength);
+		fclose(fileStream);
 		return 1;
 	}
 	printf("\ndescriptor region read successfully\n");
@@ -150,6 +152,7 @@ int main(int argc, char *argv[])
 	if (GBEREGIONSIZE_8K != bufferLength)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", bufferLength);
+		fclose(fileStream);
 		return 1;
 	}
 	printf("\ngbe (8KiB) region read successfully\n");
