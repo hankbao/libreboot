@@ -14,5 +14,6 @@
 /resources/utilities/ich9deblob/deblobbed_descriptor.bin
 /resources/utilities/ich9deblob/libreboot.rom
 /resources/utilities/ich9deblob/ich9deblob
+/resources/utilities/ich9deblob/obj/*.o
+/resources/utilities/ich9deblob/obj/*/*.o
 /resources/utilities/coreboot-libre/tocheck
-/resources/utilities/ich9deblob/obj/
