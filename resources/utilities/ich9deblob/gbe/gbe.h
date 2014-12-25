@@ -33,6 +33,9 @@
 #ifndef GBESTRUCT_H
 #define GBESTRUCT_H
 
+#include <stdio.h>
+#include <string.h>
+
 /* Size of the full gbe region in bytes */
 #define GBEREGIONSIZE_8K 0x2000
 /*

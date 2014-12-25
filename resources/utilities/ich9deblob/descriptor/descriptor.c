@@ -23,9 +23,6 @@
  * Provide descriptor related functions.
  */
 
-#include <stdio.h>
-#include <string.h>
-
 /* structs describing the data in descriptor region */
 #include "descriptor.h"
 

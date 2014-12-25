@@ -23,9 +23,6 @@
  * Provide gbe related functions.
  */
 
-#include <stdio.h>
-#include <string.h>
-
 /* structs describing the data from gbe region */
 #include "gbe.h"
 

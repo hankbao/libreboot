@@ -24,6 +24,9 @@
 #ifndef X86COMPATIBILITY_H
 #define X86COMPATIBILITY_H
 
+#include <stdio.h>
+#include <string.h>
+
 #include "../descriptor/descriptor.h" /* structs describing what's in the descriptor region */
 #include "../gbe/gbe.h"               /* structs describing what's in the gbe region */
 

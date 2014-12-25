@@ -31,6 +31,9 @@
 #ifndef DESCRIPTORSTRUCT_H
 #define DESCRIPTORSTRUCT_H
 
+#include <stdio.h>
+#include <string.h>
+
 /* size of the descriptor in bytes */
 #define DESCRIPTORREGIONSIZE 0x1000
 
