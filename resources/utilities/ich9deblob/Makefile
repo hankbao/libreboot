@@ -23,25 +23,25 @@ CFLAGS=-I. -Wall -g
 all: ich9deblob
 
 ich9deblob: ich9deblob.o common/descriptor_gbe.o descriptor/descriptor.o \
-		gbe/gbe.o x86compatibility.o
+		gbe/gbe.o common/x86compatibility.o
 		
-	$(CC) $(CFLAGS) ich9deblob.o common/descriptor_gbe.o \
-		descriptor/descriptor.o gbe/gbe.o x86compatibility.o -o ich9deblob
-
-common/descriptor_gbe.o: common/descriptor_gbe.c
-	$(CC) $(CFLAGS) -c common/descriptor_gbe.c -o common/descriptor_gbe.o
+	$(CC) $(CFLAGS) ich9deblob.o common/descriptor_gbe.o common/x86compatibility.o \
+		descriptor/descriptor.o gbe/gbe.o -o ich9deblob
 
 ich9deblob.o: ich9deblob.c
 	$(CC) $(CFLAGS) -c ich9deblob.c -o ich9deblob.o
+	
+common/descriptor_gbe.o: common/descriptor_gbe.c
+	$(CC) $(CFLAGS) -c common/descriptor_gbe.c -o common/descriptor_gbe.o
+	
+common/x86compatibility.o: common/x86compatibility.c
+	$(CC) $(CFLAGS) -c common/x86compatibility.c -o common/x86compatibility.o
 
 descriptor/descriptor.o: descriptor/descriptor.c
 	$(CC) $(CFLAGS) -c descriptor/descriptor.c -o descriptor/descriptor.o
 
 gbe/gbe.o: gbe/gbe.c
 	$(CC) $(CFLAGS) -c gbe/gbe.c -o gbe/gbe.o
-
-x86compatibility.o: x86compatibility.c
-	$(CC) $(CFLAGS) -c x86compatibility.c -o x86compatibility.o
 	
 clean:
 	rm -f ich9deblob *.o */*.o
