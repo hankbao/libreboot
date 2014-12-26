@@ -288,7 +288,7 @@ struct GBEREGIONRECORD_4K {
 	struct LED_CTL_1 ledCtl1;                                /* Word 17: LED 1 Configuration and Power Management */
 	struct LED_CTL_02 ledCtl02;                              /* Word 18: LED 0 and 2 Configuration Defaults */
 	unsigned short reservedWord19h;                          /* Word 19: Reserved. Default is 0x2B00 according to datasheet, but in deblobbed_descriptor.bin it is 0x2B40 */
-	unsigned short reserved9;
+	unsigned short reservedWord1Ah;                          /* Word 1A: Reserved. Default is 0x0043 according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reserved10;
 	unsigned short reserved11;
 	unsigned short reserved12;
