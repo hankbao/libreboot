@@ -135,7 +135,23 @@ struct GBEREGIONRECORD_4K {
 	 */
 	unsigned short subsystemVendorId; /* Set this to 0x17AA */
 	
-	unsigned short deviceId;
+	/* 
+	 * Word 0D: device ID
+	 * 
+	 * If load vendor/device ID in word 0A (pci init control word) is 1
+	 * (it is) then this word is used to init device id using word 21h,
+	 * 1Eh or 1Fh. In my case, deviceId is 0x10F5. Word 21h is set to
+	 * 0x10CB, word 1Eh is 0x10F5 and 1Fh is 0x10BF
+	 * 
+	 * The datasheet says that 10F5 is for Intel 82567LM gigabit ethernet
+	 * controller; 10BF is for Intel 82567LF and 10CB is for Intel 82567V.
+	 * 
+	 * Based on this, the X200 is shown to have the Intel 82567LM ethernet
+	 * controller.
+	 */
+	unsigned short deviceId; /* Set this to 0x10F5. */
+	/* It is important that this is correct, for the linux kernel driver */
+	
 	unsigned short vendorId;
 	unsigned short deviceRevId;
 	unsigned short lanPowerConsumption;
