@@ -119,11 +119,19 @@ struct GBE_SHARED_INITIALIZATION_CONTROL_WORD {
 /* Word 14h */
 struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_1 {
 	/* least significant bits */
-	unsigned short extendedConfigurationPointer:12; /* dword: base address of extended configuration area in NVM. should not be zero. Default is 020h according to datasheet and deblobbed_descriptor.bin */
-	unsigned char oemWriteEnable               :1;  /* 1=enable. if set, loads oem bits from phy_ctrl register to the 82567. loaded to EXTCNF_CTRL register. default is 1 according to datasheet and deblobbed_descriptor.bin */
-	unsigned char reserved1                    :1;  /* Reserved. default value 1 according to datasheet and deblobed_descriptor.bin */
-	unsigned char reserved2                    :1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
-	unsigned char reserved3                    :1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned short extendedConfigurationPointer: 12; /* dword: base address of extended configuration area in NVM. should not be zero. Default is 020h according to datasheet and deblobbed_descriptor.bin */
+	unsigned char oemWriteEnable               : 1;  /* 1=enable. if set, loads oem bits from phy_ctrl register to the 82567. loaded to EXTCNF_CTRL register. default is 1 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved1                    : 1;  /* Reserved. default value 1 according to datasheet and deblobed_descriptor.bin */
+	unsigned char reserved2                    : 1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved3                    : 1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
+	/* most significant bits */
+};
+
+/* Word 15h */
+struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 {
+	/* least significant bits */
+	unsigned char reserved                     : 8;  /* Reserved. Should be 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char extendedPhyLength            : 8;  /* dword: size of extended phy configuration area. most be 0 if phy config area is disabled. default is 0000101 (binary) or 05 (hex) according to datasheet, but 0 according to deblobbed_descriptor.bin */
 	/* most significant bits */
 };
 
@@ -213,7 +221,9 @@ struct GBEREGIONRECORD_4K {
 	/* Word 14: Extended Configuration Control Word 1 */
 	struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_1 extendedConfigurationControlWord1;
 	
-	unsigned short extendedConfigurationControlWord2;
+	/* Word 15: Extended Configuration Control Word 2 */
+	struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 extendedConfigurationControlWord2;
+	
 	unsigned short extendedConfigurationControlWord3;
 	unsigned short ledCtl1;
 	unsigned short ledCtl02;
