@@ -76,11 +76,28 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	/*
 	 * Correct the main gbe region. By default, the X200 (as shipped from Lenovo) comes
 	 * with a broken main gbe region, where the backup gbe region is used instead. Modify
-	 * it so that the main region is usable.
+	 * the backup as desired and then copy it to the main region.
 	 */
+	 
+	int i;
 	
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE_8K);
+	
+	/*
+	 * Word 40h to 53h of Gbe had this in the old deblobbed_descriptor.bin:
+	 * 20 60 1F 00 02 00 13 00 00 80 1D 00 FF 00 16 00 DD CC 18 00 11 20 17 00 DD DD 18 00 12 20 17 00 00 80 1D 00 00 00 1F 00
+	 * 
+	 * The same data was observed on others (created from other factory.rom dumps). 
+	 * 
+	 * The datasheets don't mention it for Intel 82576LM ethernet controller (what X200 uses) but later ones
+	 * (for later chipsets) do. Maybe these are "reserved". Or maybe they are just junk.
+	 * 
+	 * We really don't know. Blanking them with 0xFF seems harmless, though (nothing important seems broken).
+	 */
+	for(i = 0; i < sizeof(deblobbedGbeStruct8k.backup.padding); i++) {
+		deblobbedGbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
+	}
 	
 	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, GBECHECKSUMTOTAL);
 	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_4K);

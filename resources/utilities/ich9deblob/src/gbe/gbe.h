@@ -399,7 +399,9 @@ struct GBEREGIONRECORD_4K {
 	unsigned short reservedWords24to2Fh[12];                 /* Words 24-2F: Reserved. These should all be 0x0000 according to datasheet and deblobbed_descriptor.bin */
 	struct GBE_PXE_SOFTWARE_REGION pxeSoftwareRegion;        /* Words 30-3E: PXE Software Region */
 	unsigned short checkSum; /* when added to the sum of all words above, this should match GBECHECKSUMTOTAL */
-	unsigned char padding1[3968];
+	
+	/* set all bytes in here to 0xFF */
+	unsigned char padding[3968];
 };
 
 /*  main and backup region in gbe */ 
