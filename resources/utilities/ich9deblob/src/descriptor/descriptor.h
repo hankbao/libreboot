@@ -152,13 +152,13 @@ struct FLMSTR {
 	unsigned char meRegionReadAccess        : 1;
 	unsigned char gbeRegionReadAccess       : 1;
 	unsigned char pdRegionReadAccess        : 1;
-	unsigned char reserved1                 : 3;
+	unsigned char reserved1                 : 3; /* Must be zero, according to datasheet */
 	unsigned char fdRegionWriteAccess       : 1;
 	unsigned char biosRegionWriteAccess     : 1;
 	unsigned char meRegionWriteAccess       : 1;
 	unsigned char gbeRegionWriteAccess      : 1;
 	unsigned char pdRegionWriteAccess       : 1;
-	unsigned char reserved2                 : 3;
+	unsigned char reserved2                 : 3; /* Must be zero, according to datasheet */
 };
 
 
