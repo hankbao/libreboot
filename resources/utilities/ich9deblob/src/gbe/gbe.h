@@ -116,6 +116,17 @@ struct GBE_SHARED_INITIALIZATION_CONTROL_WORD {
 	/* most significant bits */
 };
 
+/* Word 14h */
+struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_1 {
+	/* least significant bits */
+	unsigned short extendedConfigurationPointer:12; /* dword: base address of extended configuration area in NVM. should not be zero. Default is 020h according to datasheet and deblobbed_descriptor.bin */
+	unsigned char oemWriteEnable               :1;  /* 1=enable. if set, loads oem bits from phy_ctrl register to the 82567. loaded to EXTCNF_CTRL register. default is 1 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved1                    :1;  /* Reserved. default value 1 according to datasheet and deblobed_descriptor.bin */
+	unsigned char reserved2                    :1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved3                    :1;  /* Reserved. default value 0 according to datasheet and deblobbed_descriptor.bin */
+	/* most significant bits */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -199,7 +210,9 @@ struct GBEREGIONRECORD_4K {
 	/* Word 13: Shared Initialization Control Word */
 	struct GBE_SHARED_INITIALIZATION_CONTROL_WORD sharedInitializationControlWord;
 	
-	unsigned short extendedConfigurationControlWord1;
+	/* Word 14: Extended Configuration Control Word 1 */
+	struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_1 extendedConfigurationControlWord1;
+	
 	unsigned short extendedConfigurationControlWord2;
 	unsigned short extendedConfigurationControlWord3;
 	unsigned short ledCtl1;
