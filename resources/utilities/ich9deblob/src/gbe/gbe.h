@@ -298,7 +298,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short _82567vDeviceId;                          /* Word 21: Device ID for Intel 82567V gigabit ethernet controller. Should be 0x10CB according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWord22h;                          /* Word 22: Reserved. Should be 0xBAAD according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWord23h;                          /* Word 23: Reserved. Should be 0xBAAD according to datasheet and deblobbed_descriptor.bin */
-	unsigned short reserved16[12];
+	unsigned short reservedWords24to2Fh[12];                 /* Words 24-2F: Reserved. These should all be 0x0000 according to datasheet and deblobbed_descriptor.bin */
 	unsigned short pxeSoftwareRegion[15];
 	unsigned short checkSum; /* when added to the sum of all words above, this should match GBECHECKSUMTOTAL */
 	unsigned char padding1[3968];
