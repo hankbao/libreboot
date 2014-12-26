@@ -290,7 +290,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short reservedWord19h;                          /* Word 19: Reserved. Default is 0x2B00 according to datasheet, but in deblobbed_descriptor.bin it is 0x2B40 */
 	unsigned short reservedWord1Ah;                          /* Word 1A: Reserved. Default is 0x0043 according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWord1Bh;                          /* Word 1B: Reserved. Should be 0x0000 according to datasheet and deblobbed_descriptor.bin */
-	unsigned short reserved11;
+	unsigned short reservedWord1Ch;                          /* Word 1C: Reserved. Should be 0x10F5 according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reserved12;
 	unsigned short _82567lmDeviceId;
 	unsigned short _82567lfDeviceId;
