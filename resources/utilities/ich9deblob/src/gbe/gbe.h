@@ -175,8 +175,7 @@ struct GBEREGIONRECORD_4K {
 	
 	unsigned short deviceRevId;                              /* Word 0F: reserved bits. Set all bits to 0. */
 	struct GBE_LAN_POWER_CONSUMPTION lanPowerConsumption;    /* Word 10: LAN Power Consumption (see struct definition) */
-	unsigned short reserved6;
-	unsigned short reserved7;
+	unsigned short reservedWords11h12h[2];							/* Words 11-12: Reserved. Set both of them to 0x0000 (according to datasheet). */
 	unsigned short sharedInitializationControlWord;
 	unsigned short extendedConfigurationControlWord1;
 	unsigned short extendedConfigurationControlWord2;
