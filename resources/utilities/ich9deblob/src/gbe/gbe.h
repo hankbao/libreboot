@@ -29,6 +29,14 @@
  * bit fields used, corresponding to datasheet. See links to datasheets
  * and documentation in ich9deblob.c
  */
+ 
+ /*
+ * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
+ * 
+ * Info about Gbe region (read whole datasheet):
+ * http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf
+ * https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums
+ */
 
 #ifndef GBESTRUCT_H
 #define GBESTRUCT_H
