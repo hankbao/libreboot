@@ -125,7 +125,16 @@ struct GBEREGIONRECORD_4K {
 	 */
 	unsigned short subsystemId; /* Set this to 0x20EE */
 	
-	unsigned short subsystemVendorId;
+	/*
+	 * Word 0C; subsystem vendor ID
+	 * 
+	 * If load subsystem vendor ID bit of word 0A (pci init control word)
+	 * is set to 1 (read: it is. in my deblobbed_descriptor.bin), store
+	 * the subsystem vendor id here. Datasheet says that the default 
+	 * value is 8086h, but you should set this to 17AAh (lendian: AA 17).
+	 */
+	unsigned short subsystemVendorId; /* Set this to 0x17AA */
+	
 	unsigned short deviceId;
 	unsigned short vendorId;
 	unsigned short deviceRevId;
