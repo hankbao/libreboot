@@ -131,7 +131,7 @@ struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_1 {
 struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 {
 	/* least significant bits */
 	unsigned char reserved                     : 8;  /* Reserved. Should be 0 according to datasheet and deblobbed_descriptor.bin */
-	unsigned char extendedPhyLength            : 8;  /* dword: size of extended phy configuration area. most be 0 if phy config area is disabled. default is 0000101 (binary) or 05 (hex) according to datasheet, but 0 according to deblobbed_descriptor.bin */
+	unsigned char extendedPhyLength            : 8;  /* dword: size of extended phy configuration area. most be 0 if phy config area is disabled. default is 0000101 (binary) or 05 (hex) according to datasheet, but 00001010 (0A) according to deblobbed_descriptor.bin. Is 0000101 (in the datasheet) a typo that actually means 00001010? */
 	/* most significant bits */
 };
 
@@ -224,7 +224,10 @@ struct GBEREGIONRECORD_4K {
 	/* Word 15: Extended Configuration Control Word 2 */
 	struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 extendedConfigurationControlWord2;
 	
+	/* Word 16: Extended Configuration Control Word 3 */
+	/* All bits reserved. Datasheet and deblobbed_descriptor.bin say to set it to zero */
 	unsigned short extendedConfigurationControlWord3;
+	
 	unsigned short ledCtl1;
 	unsigned short ledCtl02;
 	unsigned short reserved8;
