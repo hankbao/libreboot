@@ -109,13 +109,22 @@ struct GBEREGIONRECORD_4K {
 	 * 
 	 * Setting it to FF FF FF FF should be fine, according to the datasheet.
 	 */
-	unsigned short pbaLow;												/* Word 08 */
-	unsigned short pbaHigh;												/* Word 09 */
+	unsigned short pbaLow;												/* Word 08. Set it to 0x1008. */
+	unsigned short pbaHigh;												/* Word 09. Set it to 0xFFFF. */
 	
 	/* Word 0A */
 	struct PCI_INITIALIZATION_CONTROL_WORD pciInitializationControlWord;
 	
-	unsigned short subsystemId;
+	/* 
+	 * Word 0B; subsystem ID
+	 * 
+	 * If load subsystem ID bit of word 0A (pci init control word) is
+	 * set to 1 (read: it is. in my deblobbed_descriptor.bin), store
+	 * the subsystem id here. Datasheet says that the default value is
+	 * 0000h, but you should set this to 20EEh (little endian: EE 20)
+	 */
+	unsigned short subsystemId; /* Set this to 0x20EE */
+	
 	unsigned short subsystemVendorId;
 	unsigned short deviceId;
 	unsigned short vendorId;
