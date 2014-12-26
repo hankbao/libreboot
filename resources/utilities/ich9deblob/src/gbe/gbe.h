@@ -143,7 +143,7 @@ struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 {
  * parameters loaded to the PHY_CTRL register.
  */
 struct LED_CTL_1 {
-	/* least significant bytes */
+	/* least significant bits */
 	
 	/* See page 16 in the datasheet to show the different modes. deblobbed_descriptor.bin has "ACTIVITY" mode set */
 	unsigned char led1Mode                     : 4;  /* Default value 0111 (bin) 7 (hex) says datasheet. 1011 (bin) B (hex) according to deblobbed_descriptor.bin */
@@ -162,7 +162,34 @@ struct LED_CTL_1 {
 	unsigned char reserved3                    : 2;  /* Reserved. Datasheet says both bits should be 0 (confirmed in deblobbed_descriptor.bin) */
 	unsigned char gbeDisable                   : 1;  /* When 1, gigabit speeds are disabled in all power states including D0a. Default is 0 according to datasheet and deblobbed_descriptor.bin */
 	unsigned char reserved4                    : 1;  /* Reserved. Should be 1, according to datasheet and deblobbed_descriptor.bin */
-	/* most significant bytes */
+	/* most significant bits */
+};
+
+/* 
+ * Word 18: LED 0 and 2 Configuration Defaults
+ * 
+ * Hardware defaults for LEDCTL register fields controlling LED0 (LINK/ACTIVITY)
+ * and LED2 (LINK_100) output behaviours.
+ */
+struct LED_CTL_02 {
+	/* least significant bits */
+	
+	/* see page 16 in datasheet to show the different modes. deblobbed_descriptor has "LINK-UP" mode set */
+	unsigned char led0Mode                     : 4;  /* default value 0100 (bin) or 4 (hex) according to datasheet. It's 0010 (bin) or 2 (hex) according to deblobbed_descriptor.bin */
+	
+	unsigned char reserved1                    : 1;  /* Reserved. Should be set to 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led0BlinkMode                : 1;  /* This should be the same as led1BlinkMode (see word 17h). Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led0Invert                   : 1;  /* initial value of LED0_IVRT field. 0 = led0 has active low output, 1 is high active output. Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led0Blink                    : 1;  /* LED0_BLINK field. Should be 0 according to datasheet and deblobbed_descriptor.bin */
+	
+	/* see page 16 in datasheet to shew the different modes. deblobbed_descriptor has "LINK_100" mode set */
+	unsigned char led2Mode                     : 4;  /* default value 0110 (bin) or 6 (hex) according to datasheet and deblobbed_descriptor.bin */
+	
+	unsigned char reserved2                    : 1;  /* Reserved. Should be 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led2BlinkMode                : 1;  /* 0 = slow blink. 1 = fast. default 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led2Invert                   : 1;  /* LED2_IVRT field. Should be 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led2Blink                    : 1;  /* LED2_BLINK field. should be 0 according to datasheet and deblobbed_descriptor.bin */
+	/* most significant bits */
 };
 
 struct GBEREGIONRECORD_4K {
@@ -259,7 +286,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short extendedConfigurationControlWord3;
 	
 	struct LED_CTL_1 ledCtl1;                                /* Word 17: LED 1 Configuration and Power Management */
-	unsigned short ledCtl02;
+	struct LED_CTL_02 ledCtl02;                              /* Word 18: LED 0 and 2 Configuration Defaults */
 	unsigned short reserved8;
 	unsigned short reserved9;
 	unsigned short reserved10;
