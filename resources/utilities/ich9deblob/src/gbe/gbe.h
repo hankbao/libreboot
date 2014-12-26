@@ -79,8 +79,25 @@ struct GBEREGIONRECORD_4K {
 	unsigned short reservedWord04h;                          /* Reserved word 04: set it to 0xFFFF (according to datasheet) */
 	unsigned short reservedWord05h;                          /* Reserved word 05: 83 10 (little endian) in my deblobbed_descriptor.bin. Set this to 0x1083 (in C, assuming little endian byte order). "cannot be changed" according to datasheet */
 	unsigned short reservedWords06h07h[2];                   /* Reserved words 06-07: set both to 0xFFFF (according to datasheet) */
-	unsigned short pbaLow;
-	unsigned short pbaHigh;
+
+	/*
+	 * Word 08 and 09 (pba low and pba high):
+	 * 
+	 * Both of these should be set to 0xFFFF by default, according to the datasheet.
+	 * "nine digit printed board assembly (PBA) number" for intel cards to be stored
+	 * in a 4 byte (read: 2 word) field. 
+	 * 
+	 * Example: if pba number is 123456-003, then word 08 should be 1234h and word 09 becomes 5603.
+	 * Note: 1234 and 5603 above are big endian. In the image it would actually be 34 12 and 0356
+	 * 
+	 * Example: in mine it was (in the image): 08 10 FF FF. That becomes 1008h and FFFFh, or
+	 * basically: 1008FF-0FF. The same was observed in another.
+	 * 
+	 * Setting it to FF FF FF FF should be fine, according to the datasheet.
+	 */
+	unsigned short pbaLow;												/* Word 08 */
+	unsigned short pbaHigh;												/* Word 09 */
+	
 	unsigned short pciInitializationControlWord;
 	unsigned short subsystemId;
 	unsigned short subsystemVendorId;
