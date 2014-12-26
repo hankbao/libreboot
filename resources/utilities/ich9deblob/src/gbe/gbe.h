@@ -76,7 +76,7 @@ struct GBE_RESERVED_WORD_03H {
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
-	unsigned short reserved2;
+	unsigned short reservedWord04h;									/* Reserved word 04: set it to 0xFFFF (according to datasheet) */
 	unsigned short reserved3;
 	unsigned short reserved4;
 	unsigned short reserved5;
