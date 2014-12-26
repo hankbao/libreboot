@@ -74,7 +74,8 @@ struct GBE_RESERVED_WORD_03H {
 	/* most significant bits */
 };
 
-struct PCI_INITIALIZATION_CONTROL_WORD {
+/* Word 0A */
+struct GBE_PCI_INITIALIZATION_CONTROL_WORD {
 	/* least significant bits */
 	unsigned char loadVendorDeviceId           : 1;  /* 1 = load from NVM. 0 = load from MAC fuses. It's 1 in my deblobbed_descriptor.bin */
 	unsigned char loadSubsystemId              : 1;  /* 1 = load from NVM. 0 = load from MAC fuses. It's 1 in my deblobbed_descriptor.bin */
@@ -113,7 +114,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short pbaHigh;												/* Word 09. Set it to 0xFFFF. */
 	
 	/* Word 0A */
-	struct PCI_INITIALIZATION_CONTROL_WORD pciInitializationControlWord;
+	struct GBE_PCI_INITIALIZATION_CONTROL_WORD pciInitializationControlWord;
 	
 	/* 
 	 * Word 0B; subsystem ID
