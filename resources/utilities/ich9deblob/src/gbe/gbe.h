@@ -73,6 +73,20 @@ struct GBE_RESERVED_WORD_03H {
 	unsigned char reserved2 		             : 4;  /* bits should all be set to zero */
 	/* most significant bits */
 };
+
+struct PCI_INITIALIZATION_CONTROL_WORD {
+	/* least significant bits */
+	unsigned char loadVendorDeviceId           : 1;  /* 1 = load from NVM. 0 = load from MAC fuses. It's 1 in my deblobbed_descriptor.bin */
+	unsigned char loadSubsystemId              : 1;  /* 1 = load from NVM. 0 = load from MAC fuses. It's 1 in my deblobbed_descriptor.bin */
+	unsigned char reserved1                    : 1;  /* Reserved. Set to 0 (according to datasheet). 0 in my deblobbed_descriptor.bin */
+	unsigned char reserved2                    : 3;  /* Reserved. Set them to 0 (according to datasheet). 0 in my deblobbed_descriptor.bin */
+	unsigned char pmEnable                     : 1;  /* Power Management Enable. 1=Enable. It's 1 in my deblobbed_descriptor.bin */
+	unsigned char auxPwr                       : 1;  /* Auxiliary Power Indication. See datasheet. it's 1 in my deblobbed_descriptor.bin */
+	unsigned char reserved3                    : 4;  /* Reserved. Set to 0000 (according to datasheet). */
+	unsigned char reserved4                    : 4;  /* Reserved. Set to 0001 (according to datasheet). */
+	/* most significant bits */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -98,7 +112,9 @@ struct GBEREGIONRECORD_4K {
 	unsigned short pbaLow;												/* Word 08 */
 	unsigned short pbaHigh;												/* Word 09 */
 	
-	unsigned short pciInitializationControlWord;
+	/* Word 0A */
+	struct PCI_INITIALIZATION_CONTROL_WORD pciInitializationControlWord;
+	
 	unsigned short subsystemId;
 	unsigned short subsystemVendorId;
 	unsigned short deviceId;
