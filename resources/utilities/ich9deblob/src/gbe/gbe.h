@@ -76,7 +76,7 @@
 
 struct GBE_RESERVED_WORD_03H {
 	/* least significant bits */
-	unsigned char reserved1_0                 : 8; /* bits should all be set to zero */
+	unsigned char reserved1_0                  : 8; /* bits should all be set to zero */
 	unsigned char reserved1_1                  : 3;  /* ^ part of above. Separated so that the bitfields align */
 	unsigned char ibaLom                       : 1;  /* set to 1 for intel boot agent to work (i.e. set it to 0) */
 	unsigned char reserved2 		             : 4;  /* bits should all be set to zero */
@@ -200,6 +200,96 @@ struct LED_CTL_02 {
 	/* most significant bits */
 };
 
+/* Word 30h */
+struct GBE_PXE_BOOT_AGENT_MAIN_SETUP_OPTIONS {
+	/* least significant bits */
+	unsigned char protocolSelect               : 2;  /* Default 00 binary (PXE) according to datasheet. 01 is reserved. 10/11 are undefined. deblobbed_descriptor.bin says 00 */
+	unsigned char reserved1                    : 1;  /* Reserved. deblobbed_descriptor.bin says 0 */
+	unsigned char defaultBootSelection         : 2;  /* deblobbed_descriptor.bin says 00 (binary). 00 is network boot, then local. 01 is local boot, then network. 10 is network boot only. 11 is local boot only */
+	unsigned char reserved2                    : 1;  /* Reserved. deblobbed_descriptor.bin says 0. */
+	unsigned char promptTime                   : 2;  /* deblobbed_descriptor.bin says 00. delay for how long "press ctrl-s" setup prompt message appears. 00 = 2 secs, 01 is 3 secs, 10 is 5 secs, 11 is 0 secs. */
+	unsigned char displaySetupMessage          : 1;  /* default 1 says datasheet. deblobbed_descriptor.bin says 1. if 1, "ctrl-s" setup prompt message appears after the title message. */
+	unsigned char reserved3                    : 1;  /* Datasheet says to set 0. deblobbed_descriptor.bin says 0. */
+	unsigned char forceSpeed                   : 2;  /* deblobbed_descriptor.bin says 00. 00 = auto-negotiate, 01 = 10Mbps, 10 = 100Mbps, 11 = "not allowed" */
+	unsigned char forceFullDuplex              : 1;  /* deblobbed_descriptor.bin says 0. Only relevant when bits 10/11 are set; if so, then: 0 = half duplex, 1 = full duplex */
+	unsigned char reserved4                    : 1;  /* Reserved. deblobbed_descriptor.bin says 0. datasheet recommends 0. */
+	unsigned char efiPresence                  : 1;  /* 1 means that an EFI image is present (0 means not present). deblobbed_descriptor.bin says 0. if 1, eeprom word 33h (efi version) becomes valid. if pxePresent is 1, that means EFI and PXE are both present.*/
+	unsigned char pxePresence                  : 1;  /* 0 means that a PXE image is present. 1 means to pxe present. deblobbed_descriptor.bin says 0. if 0, then word 32h (PXE version) in eeprom becomes valid */
+	/* most significant bits */
+	
+	/* This whole data structure is pointless, since libreboot doesn't (read: won't)
+	 * include the proprietary intel boot agent. Struct exists here simply for documentations sake. */
+};
+/* Word 31h */
+struct GBE_PXE_BOOT_AGENT_CONFIGURATION_CUSTOMIZATION_OPTIONS_31H {
+	/* least significant bits */
+	unsigned char disableSetupMenu             : 1;  /* 1 means invoking setup menu with ctrl-s won't work. deblobbed_descriptor.bin says 0 (as is default, per datasheet) */
+	unsigned char disableTitleMessage          : 1;  /* 1 means that title in boot agent screen is suppressed, as is ctrl-s message. default is 0, and deblobbed_descriptor.bin says 0 */
+	unsigned char disableProtocolSelect        : 1;  /* 1 means no changes to boot protocol are allowed. default is 0, and deblobbed_descriptor.bin says 0 */
+	unsigned char disableBootSelection         : 1;  /* 1 means no changes in boot order option menu are allowed. default is 0, and deblobbed_descriptor.bin says 0 */
+	unsigned char disableLegacyWakeupSupport   : 1;  /* 1 means no changes in legacy wakeup support menu is allowed. default is 0, and deblobbed_descriptor.bin says 0 */
+	unsigned char disableFlashUpdate           : 1;  /* 1 means no changes to flash image using PROset is allowed. default is 0, and deblobbed_descriptor.bin says 0 */
+	unsigned char reserved1                    : 2;  /* Reserved. Datasheet says these must be 0, and deblobbed_descriptor.bin sets them to 0. */
+	
+	/*
+	 * deblobbed_descriptor says 000
+	 * 000 = normal behaviour
+	 * see datasheet (page 21) for other modes.
+	 */
+	unsigned char ibaBootOrderSetupMode        : 3;
+	
+	unsigned char reserved2                    : 3;  /* Reserved. Datasheet says these must be set to 0, and deblobbed_descriptor.bin sets them to 0. */
+	unsigned char signature                    : 2;  /* Must be set to 01 to indicate that this whole word has been configured by the agent or other software. deblobbed_descriptor.bin says 01. */
+	/* most significant bits */
+	
+	/* This whole data structure is pointless, since libreboot doesn't (read: won't)
+	 * include the proprietary intel boot agent. Struct exists here simply for documentations sake. */
+};
+/* Word 32h */
+struct GBE_PXE_BOOT_AGENT_CONFIGURATION_CUSTOMIZATION_OPTIONS_32H {
+	/* least significant bits */
+	unsigned char buildNumber                  : 8;  /* PXE boot agent build number. default is 28 (hex). deblobbed_descriptor.bin says 18 (hex) */
+	unsigned char minorVersionNumber           : 4;  /* PXE boot agent minor number. default is 2 (hex). deblobbed_descriptor.bin says 3 (hex) */
+	unsigned char majorVersionNumber           : 4;  /* PXE boot agent makor number. default is F (hex). deblobbed_descriptor.bin says 1 (hex) */
+	/* most significant bits */
+	
+	/* This whole data structure is pointless, since libreboot doesn't (read: won't)
+	 * include the proprietary intel boot agent. Struct exists here simply for documentations sake. */
+};
+/* Word 33h */
+struct GBE_PXE_IBA_CAPABILITIES {
+	/* least significant bits */
+	unsigned char baseCodePresent              : 1;  /* 0 means PXE base code is indicated as being present. 1 (default) means not. deblobbed_descriptor.bin says 1 */
+	unsigned char undiCapabilityPresent        : 1;  /* 1 (default) means pxe/undi capability is indicated present. 0 means not present. deblobbed_descriptor.bin says 1 */
+	unsigned char reserved1                    : 1;  /* Reserved. Must be 1. deblobbed_descriptor.bin says 1 */
+	unsigned char efiUndiCapabilityPresent     : 1;  /* EFI UNDI capability present: 0 (default) means not present. 1 means present. deblobbed_descriptor.bin says 0 */
+	unsigned char reserved2_0                  : 4;  /* reserved. all bits must be 0. deblobbed_descriptor.bin sets them to 0. */
+	unsigned char reserved2_1                  : 6;  /* ^ part of reserved2_0. split this way so that the bitfields align */
+	unsigned char signature                    : 2;  /* must be 01 to indicate that the word is configured by the agent or other software. deblobbed_descriptor.bin says 01 */
+	/* most significant bits */
+	
+	/* This whole data structure is pointless, since libreboot doesn't (read: won't)
+	 * include the proprietary intel boot agent. Struct exists here simply for documentations sake. */
+};
+/* Words 30h to 3Eh */
+struct GBE_PXE_SOFTWARE_REGION {
+	struct GBE_PXE_BOOT_AGENT_MAIN_SETUP_OPTIONS bootAgentMainSetupOptions;                                          /* Word 30h */
+	struct GBE_PXE_BOOT_AGENT_CONFIGURATION_CUSTOMIZATION_OPTIONS_31H bootAgentConfigurationCustomizationOptions31h; /* Word 31h */
+	struct GBE_PXE_BOOT_AGENT_CONFIGURATION_CUSTOMIZATION_OPTIONS_32H bootAgentConfigurationCustomizationOptions32h; /* Word 32h */
+	struct GBE_PXE_IBA_CAPABILITIES ibaCapabilities;                                                                 /* Word 33h */
+	
+	/* Words 34h to 3Eh (padding). Set these to 0xFFFF (according to deblobbed_descriptor.bin) */
+	unsigned short paddingWords34hTo3Eh[11];
+	
+	/*
+	 * the pxe software region  is practically useless in libreboot, since
+	 * libreboot does not include the intel boot agent (it's proprietary software). 
+	 * 
+	 * Having this struct in place is simply for documentations sake. It is completely
+	 * irrelevant what you put here. filling it with 0xFFFF would probably be fine.
+	 */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -307,7 +397,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short reservedWord22h;                          /* Word 22: Reserved. Should be 0xBAAD according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWord23h;                          /* Word 23: Reserved. Should be 0xBAAD according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWords24to2Fh[12];                 /* Words 24-2F: Reserved. These should all be 0x0000 according to datasheet and deblobbed_descriptor.bin */
-	unsigned short pxeSoftwareRegion[15];
+	struct GBE_PXE_SOFTWARE_REGION pxeSoftwareRegion;        /* Words 30-3E: PXE Software Region */
 	unsigned short checkSum; /* when added to the sum of all words above, this should match GBECHECKSUMTOTAL */
 	unsigned char padding1[3968];
 };
