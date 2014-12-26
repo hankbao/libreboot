@@ -293,7 +293,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short reservedWord1Ch;                          /* Word 1C: Reserved. Should be 0x10F5 according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reservedWord1Dh;                          /* Word 1D: Reserved. Should be 0xBAAD according to datasheet and deblobbed_descriptor.bin */
 	unsigned short _82567lmDeviceId;                         /* Word 1E: Device ID for Intel 82567LM gigabit ethernet controller (note: X200 uses this). Should be 0x10F5 according to datasheet and deblobbed_descriptor.bin*/
-	unsigned short _82567lfDeviceId;
+	unsigned short _82567lfDeviceId;                         /* Word 1F: Device ID for Intel 82567LF gigabit ethernet controller. Should be 0x10BF according to datasheet and deblobbed_descriptor.bin */
 	unsigned short reserved13;
 	unsigned short _82567vDeviceId;
 	unsigned short reserved14;
