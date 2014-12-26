@@ -68,7 +68,8 @@
 
 struct GBE_RESERVED_WORD_03H {
 	/* least significant bits */
-	unsigned short reserved1                   : 11; /* bits should all be set to zero */
+	unsigned char reserved1_0                 : 8; /* bits should all be set to zero */
+	unsigned char reserved1_1                  : 3;  /* ^ part of above. Separated so that the bitfields align */
 	unsigned char ibaLom                       : 1;  /* set to 1 for intel boot agent to work (i.e. set it to 0) */
 	unsigned char reserved2 		             : 4;  /* bits should all be set to zero */
 	/* most significant bits */
