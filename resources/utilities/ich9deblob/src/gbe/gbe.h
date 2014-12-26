@@ -163,7 +163,7 @@ struct GBEREGIONRECORD_4K {
 	 */
 	unsigned short vendorId;
 	
-	unsigned short deviceRevId;
+	unsigned short deviceRevId;                              /* Word 0F: reserved bits. Set all bits to 0. */
 	unsigned short lanPowerConsumption;
 	unsigned short reserved6;
 	unsigned short reserved7;
