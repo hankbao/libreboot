@@ -152,7 +152,17 @@ struct GBEREGIONRECORD_4K {
 	unsigned short deviceId; /* Set this to 0x10F5. */
 	/* It is important that this is correct, for the linux kernel driver */
 	
+	/* 
+	 * Word 0E: vendor ID
+	 * 
+	 * If load vendor/device ID in word 0A (pci init control) is 1 (it is),
+	 * then this word used read to initialize the PCI vendor ID. Default
+	 * value is 8086 according to datasheets, and deblobbed_descriptor.bin. 
+	 * 
+	 * Intel is often 8086 as a PCI vendor ID. Because 8086. As in the CPU architecture.
+	 */
 	unsigned short vendorId;
+	
 	unsigned short deviceRevId;
 	unsigned short lanPowerConsumption;
 	unsigned short reserved6;
