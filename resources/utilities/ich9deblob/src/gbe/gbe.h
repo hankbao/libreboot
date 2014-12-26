@@ -66,9 +66,16 @@
  * ---------------------------------------------------------------------
  */ 
 
+struct GBE_RESERVED_WORD_03H {
+	/* least significant bits */
+	unsigned short reserved1                   : 11; /* bits should all be set to zero */
+	unsigned char ibaLom                       : 1;  /* set to 1 for intel boot agent to work (i.e. set it to 0) */
+	unsigned char reserved2 		             : 4;  /* bits should all be set to zero */
+	/* most significant bits */
+};
 struct GBEREGIONRECORD_4K {
-	unsigned char macAddress[6]; /* 0x03 words, or 0x06 bytes */
-	unsigned short reserved1;
+	unsigned char macAddress[6];                             /* Word 00 to 02 */
+	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
 	unsigned short reserved2;
 	unsigned short reserved3;
 	unsigned short reserved4;
