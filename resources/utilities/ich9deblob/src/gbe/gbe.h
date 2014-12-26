@@ -68,7 +68,41 @@
 
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6]; /* 0x03 words, or 0x06 bytes */
-	unsigned char otherStuff[120];  /* 0x3c words, or 0x7E bytes */
+	unsigned short reserved1;
+	unsigned short reserved2;
+	unsigned short reserved3;
+	unsigned short reserved4;
+	unsigned short reserved5;
+	unsigned short pbaLow;
+	unsigned short pbaHigh;
+	unsigned short pciInitializationControlWord;
+	unsigned short subsystemId;
+	unsigned short subsystemVendorId;
+	unsigned short deviceId;
+	unsigned short vendorId;
+	unsigned short deviceRevId;
+	unsigned short lanPowerConsumption;
+	unsigned short reserved6;
+	unsigned short reserved7;
+	unsigned short sharedInitializationControlWord;
+	unsigned short extendedConfigurationControlWord1;
+	unsigned short extendedConfigurationControlWord2;
+	unsigned short extendedConfigurationControlWord3;
+	unsigned short ledCtl1;
+	unsigned short ledCtl02;
+	unsigned short reserved8;
+	unsigned short reserved9;
+	unsigned short reserved10;
+	unsigned short reserved11;
+	unsigned short reserved12;
+	unsigned short _82567lmDeviceId;
+	unsigned short _82567lfDeviceId;
+	unsigned short reserved13;
+	unsigned short _82567vDeviceId;
+	unsigned short reserved14;
+	unsigned short reserved15;
+	unsigned short reserved16[12];
+	unsigned short pxeSoftwareRegion[15];
 	unsigned short checkSum; /* when added to the sum of all words above, this should match GBECHECKSUMTOTAL */
 	unsigned char padding1[3968];
 };
