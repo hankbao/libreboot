@@ -88,6 +88,15 @@ struct GBE_PCI_INITIALIZATION_CONTROL_WORD {
 	/* most significant bits */
 };
 
+/* Word 10h. */
+struct GBE_LAN_POWER_CONSUMPTION {
+	/* least significant bits */
+	unsigned char lanD3Power                   : 5;  /* It's 00001b (0x1) in deblobbed_descriptor.bin */
+	unsigned char reserved                     : 3;  /* Reserved. These bits should all be 0. confirmed from deblobbed_descriptor.bin */
+	unsigned char lanD0Power                   : 8;  /* default value: 0x0D (according to datasheet). confirmed from deblobbed_descriptor.bin */
+	/* most significant bits */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -165,7 +174,7 @@ struct GBEREGIONRECORD_4K {
 	unsigned short vendorId;
 	
 	unsigned short deviceRevId;                              /* Word 0F: reserved bits. Set all bits to 0. */
-	unsigned short lanPowerConsumption;
+	struct GBE_LAN_POWER_CONSUMPTION lanPowerConsumption;    /* Word 10: LAN Power Consumption (see struct definition) */
 	unsigned short reserved6;
 	unsigned short reserved7;
 	unsigned short sharedInitializationControlWord;
