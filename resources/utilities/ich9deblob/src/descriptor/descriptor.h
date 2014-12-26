@@ -27,6 +27,13 @@
  * bit fields used, corresponding to datasheet. See links to datasheets
  * and documentation in ich9deblob.c
  */
+ 
+/*
+ * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
+ * 
+ * Info about flash descriptor (read page 850 onwards):
+ * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
+ */
 
 #ifndef DESCRIPTORSTRUCT_H
 #define DESCRIPTORSTRUCT_H
