@@ -135,6 +135,36 @@ struct GBE_EXTENDED_CONFIGURATION_CONTROL_WORD_2 {
 	/* most significant bits */
 };
 
+/*
+ * Word 17h: LED 1 Configuration and Power Management
+ * 
+ * Default values for LEDCTL register fields controlling LED1 (LINK_1000)
+ * output behaviours and OEM fields that define PHY power management
+ * parameters loaded to the PHY_CTRL register.
+ */
+struct LED_CTL_1 {
+	/* least significant bytes */
+	
+	/* See page 16 in the datasheet to show the different modes. deblobbed_descriptor.bin has "ACTIVITY" mode set */
+	unsigned char led1Mode                     : 4;  /* Default value 0111 (bin) 7 (hex) says datasheet. 1011 (bin) B (hex) according to deblobbed_descriptor.bin */
+	
+	unsigned char reserved1                    : 1;  /* Reserved. Should be 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led1BlinkMode                : 1;  /* 0 = slow blink, 1 = fast blink. should be identical to led0 blink mode. Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	/* By setting this and led0 blink mode (see word 18h) to 1, you could enable a faster blinking on the LED's where the ethernet cable goes
+	 * on the gigabit ethernet port. Not really useful. Slow blink is fine, and probably better (the LED will probably last longer) */
+
+	unsigned char led1Invert                   : 1;  /* initial value of LED1_IVRT field. 0 = led1 has active low output, 1 is high active output. Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char led1Blink                    : 1;  /* 1 = led1 blinks, 0 = it does not. default 0 according to datasheet, but it's 1 in deblobbed_descriptor.bin */
+	unsigned char reserved2                    : 1;  /* Reserved. should be 1 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char lpluEnable                   : 1;  /* Low Power Link Up. Enable links at lowest supported speed by both link partners in all power states. 1=enabled(all power states), 0=disabled. Default is 0 according to datasheet and 1 according to deblobbed_descriptor.bin */
+	unsigned char lpluEnableNonD0a             : 1;  /* Low Power Link up (non-D0a states). Same as above but only for non-D0a states. default is 1 according to datasheet but 0 in deblobbed_descriptor.bin */
+	unsigned char gbeDisableNonD0a             : 1;  /* If set to 1, disable gigabit speeds in non-D0a power states. Must be 1 (according to datasheet) because GbE is not supported in Sx mode. It's also set to 1 in deblobbed_descriptor.bin */
+	unsigned char reserved3                    : 2;  /* Reserved. Datasheet says both bits should be 0 (confirmed in deblobbed_descriptor.bin) */
+	unsigned char gbeDisable                   : 1;  /* When 1, gigabit speeds are disabled in all power states including D0a. Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved4                    : 1;  /* Reserved. Should be 1, according to datasheet and deblobbed_descriptor.bin */
+	/* most significant bytes */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -228,7 +258,7 @@ struct GBEREGIONRECORD_4K {
 	/* All bits reserved. Datasheet and deblobbed_descriptor.bin say to set it to zero */
 	unsigned short extendedConfigurationControlWord3;
 	
-	unsigned short ledCtl1;
+	struct LED_CTL_1 ledCtl1;                                /* Word 17: LED 1 Configuration and Power Management */
 	unsigned short ledCtl02;
 	unsigned short reserved8;
 	unsigned short reserved9;
