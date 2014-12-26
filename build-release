@@ -232,8 +232,8 @@ cd ../../
 cd resources/utilities/
 cp -r ich9deblob ich9deblob_
 cd ich9deblob/
-rm -f ich9deblob
-gcc -static -o ich9deblob ich9deblob.c ich9desc.c -I.
+make clean
+make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/ich9deblob
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
 	then
@@ -246,7 +246,8 @@ elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
 		mkdir ../../../libreboot_bin/ich9deblob/x86_64
 		mv ich9deblob ../../../libreboot_bin/ich9deblob/x86_64/
 		# Now build 32-bit binaries
-		gcc -static -m32 -o ich9deblob ich9deblob.c ich9desc.c -I.
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
 		mkdir ../../../libreboot_bin/ich9deblob/i686
 		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
 fi

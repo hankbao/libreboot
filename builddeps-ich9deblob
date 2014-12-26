@@ -29,10 +29,10 @@ set -u -e -v
 cd resources/utilities/ich9deblob
 
 # clean it first
-rm -f ich9deblob
+make clean
 
 # build ich9deblob
-gcc -o ich9deblob ich9deblob.c ich9desc.c -I.
+make
 
 # done. go back to main directory
 cd ../../../

@@ -125,7 +125,9 @@ rm -f resources/utilities/i945-pwm/i945-pwm
 # clean ich9deblob utility
 # --------------------------------------------------------------------
 
-rm -f resources/utilities/ich9deblob/ich9deblob
+cd resources/utilities/ich9deblob/
+make clean
+cd ../../../
 
 # a few more things to do last
 # --------------------------------------------------------
