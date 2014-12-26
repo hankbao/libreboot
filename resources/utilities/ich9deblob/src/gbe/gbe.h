@@ -76,10 +76,9 @@ struct GBE_RESERVED_WORD_03H {
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
-	unsigned short reservedWord04h;									/* Reserved word 04: set it to 0xFFFF (according to datasheet) */
-	unsigned short reservedWord05h;									/* Reserved word 05: 83 10 (little endian) in my deblobbed_descriptor.bin. Set this to 0x1083 (in C, assuming little endian byte order). "cannot be changed" according to datasheet */
-	unsigned short reserved4;
-	unsigned short reserved5;
+	unsigned short reservedWord04h;                          /* Reserved word 04: set it to 0xFFFF (according to datasheet) */
+	unsigned short reservedWord05h;                          /* Reserved word 05: 83 10 (little endian) in my deblobbed_descriptor.bin. Set this to 0x1083 (in C, assuming little endian byte order). "cannot be changed" according to datasheet */
+	unsigned short reservedWords06h07h[2];                   /* Reserved words 06-07: set both to 0xFFFF (according to datasheet) */
 	unsigned short pbaLow;
 	unsigned short pbaHigh;
 	unsigned short pciInitializationControlWord;
