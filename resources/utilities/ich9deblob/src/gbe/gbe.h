@@ -97,6 +97,24 @@ struct GBE_LAN_POWER_CONSUMPTION {
 	/* most significant bits */
 };
 
+/* Word 13h */
+struct GBE_SHARED_INITIALIZATION_CONTROL_WORD {
+	/* least significant bits */
+	unsigned char reserved1                    : 3;  /* Reserved. These bits should be set to 101 (0x5) in binary (according to datasheet and deblobbed_descriptor.bin) */
+	unsigned char forceDuplex                  : 1;  /* Hardware default is 0 according to datasheet and deblobbed_descriptor.bin. Presumably to set whether the chipset is to operate at full- or half-duplex */
+	unsigned char forceSpeedEnable             : 1;  /* Hardware default is 0. Presumably to limited speed eg 10, 10/100, 10/100/1000 */
+	unsigned char reserved2_0                  : 3;  /* Reserved. All bits should be set to 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved2_1                  : 1;  /* ^ part of above. separated so that bitfields align */
+	unsigned char phyPowerDownEnable           : 1;  /* PHY Power Down in D3/Dr (if WoL is disabled), 1 means Enable power down. deblobbed_descriptor.bin says 1 */
+	unsigned char reserved3                    : 1;  /* Reserved. Should be set to 1 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char reserved4                    : 3;  /* Reserved. These bits should all be 0 according to datasheet and deblobbed_descriptor.bin */
+	/* ^ reserved4: indicates whether a valid NVM is present. If invalid, MAC does not read NVM and uses default values. */
+	/* 00 = invalid NVM, 01 = invalid NVM, 10 = valid NVM present, 11 = invalid NVM */
+	/* Default should be 10 (binary) according to datasheet and deblobbed_descriptor.bin */
+	unsigned char sign                         : 2;  /* Make sure to set this to 0x2 (10 in binary) */
+	/* most significant bits */
+};
+
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
@@ -176,7 +194,10 @@ struct GBEREGIONRECORD_4K {
 	unsigned short deviceRevId;                              /* Word 0F: reserved bits. Set all bits to 0. */
 	struct GBE_LAN_POWER_CONSUMPTION lanPowerConsumption;    /* Word 10: LAN Power Consumption (see struct definition) */
 	unsigned short reservedWords11h12h[2];							/* Words 11-12: Reserved. Set both of them to 0x0000 (according to datasheet). */
-	unsigned short sharedInitializationControlWord;
+	
+	/* Word 13: Shared Initialization Control Word */
+	struct GBE_SHARED_INITIALIZATION_CONTROL_WORD sharedInitializationControlWord;
+	
 	unsigned short extendedConfigurationControlWord1;
 	unsigned short extendedConfigurationControlWord2;
 	unsigned short extendedConfigurationControlWord3;
