@@ -164,8 +164,8 @@ struct LED_CTL_1 {
 	unsigned char led1Invert                   : 1;  /* initial value of LED1_IVRT field. 0 = led1 has active low output, 1 is high active output. Default is 0 according to datasheet and deblobbed_descriptor.bin */
 	unsigned char led1Blink                    : 1;  /* 1 = led1 blinks, 0 = it does not. default 0 according to datasheet, but it's 1 in deblobbed_descriptor.bin */
 	unsigned char reserved2                    : 1;  /* Reserved. should be 1 according to datasheet and deblobbed_descriptor.bin */
-	unsigned char lpluEnable                   : 1;  /* Low Power Link Up. Enable links at lowest supported speed by both link partners in all power states. 1=enabled(all power states), 0=disabled. Default is 0 according to datasheet and 1 according to deblobbed_descriptor.bin */
-	unsigned char lpluEnableNonD0a             : 1;  /* Low Power Link up (non-D0a states). Same as above but only for non-D0a states. default is 1 according to datasheet but 0 in deblobbed_descriptor.bin */
+	unsigned char lpluEnable                   : 1;  /* Low Power Link Up. Enable links at lowest supported speed by both link partners in all power states. 1=enabled(all power states), 0=disabled. Default is 0 according to datasheet and deblobbed_descriptor.bin */
+	unsigned char lpluEnableNonD0a             : 1;  /* Low Power Link up (non-D0a states). Same as above but only for non-D0a states. default is 1 according to and deblobbed_descriptor.bin */
 	unsigned char gbeDisableNonD0a             : 1;  /* If set to 1, disable gigabit speeds in non-D0a power states. Must be 1 (according to datasheet) because GbE is not supported in Sx mode. It's also set to 1 in deblobbed_descriptor.bin */
 	unsigned char reserved3                    : 2;  /* Reserved. Datasheet says both bits should be 0 (confirmed in deblobbed_descriptor.bin) */
 	unsigned char gbeDisable                   : 1;  /* When 1, gigabit speeds are disabled in all power states including D0a. Default is 0 according to datasheet and deblobbed_descriptor.bin */
@@ -250,7 +250,7 @@ struct GBE_PXE_BOOT_AGENT_CONFIGURATION_CUSTOMIZATION_OPTIONS_32H {
 	/* least significant bits */
 	unsigned char buildNumber                  : 8;  /* PXE boot agent build number. default is 28 (hex). deblobbed_descriptor.bin says 18 (hex) */
 	unsigned char minorVersionNumber           : 4;  /* PXE boot agent minor number. default is 2 (hex). deblobbed_descriptor.bin says 3 (hex) */
-	unsigned char majorVersionNumber           : 4;  /* PXE boot agent makor number. default is F (hex). deblobbed_descriptor.bin says 1 (hex) */
+	unsigned char majorVersionNumber           : 4;  /* PXE boot agent major number. default is F (hex). deblobbed_descriptor.bin says 1 (hex) */
 	/* most significant bits */
 	
 	/* This whole data structure is pointless, since libreboot doesn't (read: won't)
@@ -293,9 +293,9 @@ struct GBE_PXE_SOFTWARE_REGION {
 struct GBEREGIONRECORD_4K {
 	unsigned char macAddress[6];                             /* Word 00 to 02 */
 	struct GBE_RESERVED_WORD_03H reservedWord03h;            /* Reserved word 03. */
-	unsigned short reservedWord04h;                          /* Reserved word 04: set it to 0xFFFF (according to datasheet) */
+	unsigned short reservedWord04h;                          /* Reserved word 04: set it to 0xFFFF (according to datasheet and deblobbed_descriptor.bin) */
 	unsigned short imageVersionInformation;                  /* Reserved word 05: 83 10 (little endian) in my deblobbed_descriptor.bin. Set this to 0x1083 (in C, assuming little endian byte order). "cannot be changed" according to datasheet */
-	unsigned short reservedWords06h07h[2];                   /* Reserved words 06-07: set both to 0xFFFF (according to datasheet) */
+	unsigned short reservedWords06h07h[2];                   /* Reserved words 06-07: set both to 0xFFFF (according to datasheet and deblobbed_descriptor.bin) */
 
 	/*
 	 * Word 08 and 09 (pba low and pba high):
@@ -312,8 +312,8 @@ struct GBEREGIONRECORD_4K {
 	 * 
 	 * Setting it to FF FF FF FF should be fine, according to the datasheet.
 	 */
-	unsigned short pbaLow;												/* Word 08. Set it to 0x1008. */
-	unsigned short pbaHigh;												/* Word 09. Set it to 0xFFFF. */
+	unsigned short pbaLow;												/* Word 08. Set it to 0x1008 (according to deblobbed_descriptor.bin). */
+	unsigned short pbaHigh;												/* Word 09. Set it to 0xFFFF (according to deblobbed_descriptor.bin). */
 	
 	/* Word 0A */
 	struct GBE_PCI_INITIALIZATION_CONTROL_WORD pciInitializationControlWord;
@@ -426,6 +426,8 @@ unsigned short gbeGetRegionWordFrom8kBuffer(int index, char* regionData);
 unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, int byteOffset);
 unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue);
 struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k);
+int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName);
+int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* outFileName, char* headerFileName);
 void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName);
 void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, char* romName);
 

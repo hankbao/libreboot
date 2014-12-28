@@ -61,7 +61,7 @@ int notCreatedDescriptorGbeFile(struct DESCRIPTORREGIONRECORD descriptorStruct, 
 	fclose(fileStream);
 	
 	printf("descriptor and gbe successfully written to the file: %s\n", fileName);
-	printf("Now do: dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc\n");
+	printf("Now do: dd if=%s of=libreboot.rom bs=1 count=12k conv=notrunc\n", fileName);
 	printf("(in other words, add the modified descriptor+gbe to your ROM image)\n\n");
 	
 	return 0;

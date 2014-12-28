@@ -31,7 +31,7 @@
 /*
  * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
  * 
- * Info about flash descriptor (read page 850 onwards):
+ * Info about flash descriptor (read page 845 onwards):
  * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
  */
 
@@ -58,52 +58,51 @@
  * ---------------------------------------------------------------------
  */
 
+/* Flash Valid Signature Register */
 struct FLVALSIG
 {
-	unsigned int signature;
+	/*
+	 * 4 bytes. 
+	 * descriptor mode = 0FF0A55A (hex, big endian). Note: stored in ROM in little endian order.
+	 * Anything else is considered invalid and will put the machine in non-descriptor mode.
+	 */
+	unsigned int signature; /* Put 0x0FF0A55A here. confirmed in deblobbed_descriptor.bin */
 };
 
-struct FLMAP0 
+/*  */
+struct FLMAP0
 {
 	/* least signicant bits */
 	unsigned char FCBA                      : 8;
 	unsigned char NC                        : 2;
 	unsigned char reserved1                 : 6;
-	/*
-	 * ^^^^ unnamed members like these represent unused bits (per datasheet). 
-	 * the same applies for all structs in this file.
-	 */
 	unsigned char FRBA                      : 8;
 	unsigned char NR                        : 3;
 	unsigned char reserved2                 : 5;
 	/* most significant bits. */
-	
-	/*
-	 * the datasheet lists msb's first and lsb's last, in each table.
-	 * meanwhile, x86 gcc treats the members at the top of the struct as lsb's
-	 * and at the bottom of the struct, the members there are msb's. The same
-	 * fact applies to all the other structs below.
-	 * 
-	 * non-x86 (and/or non-gcc) is untested. little endian assumed.
-	 */
 };
 
 struct FLMAP1 
 {
+	/* least significant bits */
 	unsigned char FMBA                      : 8;
 	unsigned char NM                        : 3;
 	unsigned char reserved                  : 5;
 	unsigned char FISBA                     : 8;
 	unsigned char ISL                       : 8;
+	/* most significant bits */
 };
 
 struct FLMAP2 
 {
+	/* least significant bits */
 	unsigned char FMSBA                     : 8;
 	unsigned char MSL                       : 8;
 	unsigned short reserved                 : 16;
+	/* most significant bits */
 };
 
+/* Flash Map Registers */
 struct FLMAPS 
 {
 	struct FLMAP0 flMap0;
@@ -111,8 +110,10 @@ struct FLMAPS
 	struct FLMAP2 flMap2;
 };
 
+/* Flash Components Register */
 struct FLCOMP 
 {
+	/* least significant bits */
 	unsigned char component1Density         : 3;
 	unsigned char component2Density         : 3;
 	unsigned char reserved1                 : 2;
@@ -124,6 +125,7 @@ struct FLCOMP
 	unsigned char writeEraseClockFrequency  : 3;
 	unsigned char readStatusClockFrequency  : 3;
 	unsigned char reserved4                 : 2;
+	/* most significant bits */
 };
 
 struct COMPONENTSECTIONRECORD 
@@ -136,12 +138,19 @@ struct COMPONENTSECTIONRECORD
 
 struct FLREG 
 {
+	/* least significant bits */
 	unsigned short BASE                     : 13;
 	unsigned short reserved1                : 3;
 	unsigned short LIMIT                    : 13;
 	unsigned short reserved2                : 3;
+	/* most significant bits */
 };
 
+/* Flash Descriptor Region Section */
+/*
+ * Defines where all the regions begin/end.
+ * This is very important for disabling ME/AMT
+ */
 struct REGIONSECTIONRECORD 
 {
 	struct FLREG flReg0;                         /*  Descriptor */
@@ -152,8 +161,10 @@ struct REGIONSECTIONRECORD
 	unsigned char padding[12];
 };
 
-struct FLMSTR {
-    unsigned short requesterId             : 16;
+struct FLMSTR 
+{
+	/* least significant bits */
+   unsigned short requesterId              : 16;
 	unsigned char fdRegionReadAccess        : 1;
 	unsigned char biosRegionReadAccess      : 1;
 	unsigned char meRegionReadAccess        : 1;
@@ -166,17 +177,21 @@ struct FLMSTR {
 	unsigned char gbeRegionWriteAccess      : 1;
 	unsigned char pdRegionWriteAccess       : 1;
 	unsigned char reserved2                 : 3; /* Must be zero, according to datasheet */
+	/* most significant bits */
 };
 
-
-struct MASTERACCESSSECTIONRECORD {
-	struct FLMSTR flMstr1;
-	struct FLMSTR flMstr2;
-	struct FLMSTR flMstr3;
+/* Master Access Section */
+struct MASTERACCESSSECTIONRECORD
+{
+	struct FLMSTR flMstr1;                       /* Flash Master 1 (Host CPU / BIOS) */
+	struct FLMSTR flMstr2;                       /* Flash Master 2 (ME) */
+	struct FLMSTR flMstr3;                       /* Flash Master 3 (Gbe) */
 	unsigned char padding[148];
 };
 
-struct ICHSTRAP0 {
+struct ICHSTRAP0 
+{
+	/* least significant bits */
 	                                             /* todo: add MeSmBus2Sel (boring setting) */
 	unsigned char meDisable                 : 1; /* If true, ME is disabled. */
 	unsigned char reserved1                 : 6;
@@ -190,9 +205,12 @@ struct ICHSTRAP0 {
 	unsigned char reserved3                 : 3;
 	unsigned char dmiRequesterId            : 1; /* DMI requestor ID security check disable: The primary purpose of this strap is to support server environments with multiple CPUs that each have a different RequesterID that can access the Flash. */
 	unsigned char smBus2Address             : 7; /* The ME SmBus 2 7-bit address. */
+	/* most significant bits */
 };
 
-struct ICHSTRAP1 {
+struct ICHSTRAP1 
+{
+	/* least significant bits */
 	unsigned char northMlink                : 1;  /* North MLink Dynamic Clock Gate Disable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
 	unsigned char southMlink                : 1;  /* South MLink Dynamic Clock Gate Enable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
 	unsigned char meSmbus                   : 1;  /* ME SmBus Dynamic Clock Gate Enable : Sets the default value for the ME SMBus Dynamic Clock Gate Enable for both the ME SmBus controllers. */
@@ -201,16 +219,20 @@ struct ICHSTRAP1 {
 	unsigned char northMlink2               : 1;  /* North MLink 2 Non-Posted Enable : 'true':North MLink supports two downstream non-posted requests. 'false':North MLink supports one downstream non-posted requests. */
 	unsigned char reserved2                 : 7;
 	unsigned short reserved3                : 16;
+	/* most significant bits */
 };
 
-
-struct ICHSTRAPSRECORD {
+/* ICH straps */
+struct ICHSTRAPSRECORD 
+{
 	struct ICHSTRAP0 ichStrap0;
 	struct ICHSTRAP1 ichStrap1;
 	unsigned char padding[248];
 };
 
-struct MCHSTRAP0 {
+struct MCHSTRAP0 
+{
+	/* least significant bits */
 	unsigned char meDisable                 : 1;  /* If true, ME is disabled. */
 	unsigned char meBootFromFlash           : 1;  /* ME boot from Flash - guessed location */
 	unsigned char tpmDisable                : 1;  /* iTPM Disable : When set true, iTPM Host Interface is disabled. When set false (default), iTPM is enabled. */
@@ -219,14 +241,19 @@ struct MCHSTRAP0 {
 	unsigned char meAlternateDisable        : 1;  /* ME Alternate Disable: Setting this bit allows ME to perform critical chipset functions but prevents loading of any ME FW applications. */
 	unsigned char reserved2                 : 8;
 	unsigned short reserved3                : 16;
+	/* most significant bits */
 };
 
-struct MCHSTRAPSRECORD {
+/* MCH straps */
+struct MCHSTRAPSRECORD 
+{
 	struct MCHSTRAP0 mchStrap0;
 	unsigned char padding[3292];
 };
 
-struct MEVSCCTABLERECORD {
+/* ME VSCC Table */
+struct MEVSCCTABLERECORD 
+{
 	unsigned int jid0;
 	unsigned int vscc0;
 	unsigned int jid1;
@@ -236,28 +263,36 @@ struct MEVSCCTABLERECORD {
 	unsigned char padding[4];
 };
 
-struct DESCRIPTORMAP2RECORD {
+/* Descriptor Map 2 Record */
+struct DESCRIPTORMAP2RECORD
+{
+	/* least significant bits */
 	unsigned char meVsccTableBaseAddress    : 8;
 	unsigned char meVsccTableLength         : 8;
 	unsigned short reserved                 : 16;
+	/* most significant bits */
 };
 
-struct OEMSECTIONRECORD {
+/* OEM section */
+struct OEMSECTIONRECORD 
+{
 	unsigned char magicString[8];
 	unsigned char padding[248];
 };
 
-struct DESCRIPTORREGIONRECORD {
-	struct FLVALSIG flValSig;
-	struct FLMAPS flMaps;
-	struct COMPONENTSECTIONRECORD componentSection;
-	struct REGIONSECTIONRECORD regionSection;
-	struct MASTERACCESSSECTIONRECORD masterAccessSection;
-	struct ICHSTRAPSRECORD ichStraps;
-	struct MCHSTRAPSRECORD mchStraps;
-	struct MEVSCCTABLERECORD meVsccTable;
-	struct DESCRIPTORMAP2RECORD descriptor2Map;
-	struct OEMSECTIONRECORD oemSection;
+/* 4KiB descriptor region, goes at the beginning of the ROM image */
+struct DESCRIPTORREGIONRECORD 
+{
+	struct FLVALSIG flValSig;                                   /* Flash Valid Signature Register */
+	struct FLMAPS flMaps;                                       /* Flash Map Registers */
+	struct COMPONENTSECTIONRECORD componentSection;             /* Component Section Record */
+	struct REGIONSECTIONRECORD regionSection;                   /* Flash Descriptor Region Section */
+	struct MASTERACCESSSECTIONRECORD masterAccessSection;       /* Master Access Section */
+	struct ICHSTRAPSRECORD ichStraps;                           /* ICH straps */
+	struct MCHSTRAPSRECORD mchStraps;                           /* MCH straps */
+	struct MEVSCCTABLERECORD meVsccTable;                       /* ME VSCC Table */
+	struct DESCRIPTORMAP2RECORD descriptor2Map;                 /* Descriptor Map 2 Record */
+	struct OEMSECTIONRECORD oemSection;                         /* OEM section */
 };
 
 /*
@@ -267,6 +302,8 @@ struct DESCRIPTORREGIONRECORD {
  */
  
 struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize);
+int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
+int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);
 
 #endif

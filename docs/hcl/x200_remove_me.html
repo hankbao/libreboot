@@ -30,6 +30,49 @@
 
 <hr/>
 
+	<h1 id="ich9gen">ICH9 gen utility</h1>
+	
+		<p>
+			It is no longer necessary to use <a href="#ich9deblob">ich9deblob</a> to generate
+			a deblobbed descriptor+gme image for the X200. ich9gen is a small utility within
+			ich9deblob that can generate them from scratch, without a factory.bin dump.
+		</p>
+		
+		<p>
+			Run:<br/>
+			$ <b>./ich9gen</b>
+		</p>
+		
+		<p>
+			Two new files will be created:
+		</p>
+			<ul>
+				<li>ich9fdgbe_4m.bin: this is for X200 laptops with the 4MB flash chip.</li>
+				<li>ich9fdgbe_8m.bin: this is for X200 laptops with the 8MB flash chip.</li>
+			</ul>
+			
+		<p>
+			ich9gen executables can be found under ./ich9gen/ statically compiled in
+			libreboot_bin. If you are using src or git, build ich9gen from source with:<br/>
+			$ <b>./builddeps-ich9deblob</b><br/>
+			The executable will appear under resources/utilities/ich9deblob/
+		</p>
+		
+		<p>
+			Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
+			the file to where <b>libreboot.rom</b> is located
+			and then run, for instance:<br/>
+			$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
+			or:<br/>
+			$ <b>dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
+		</p>
+		
+		<p>
+			Your X200 libreboot.rom image is now ready to be flashed on the machine.
+		</p>
+
+<hr/>
+
 	<h1 id="ich9deblob">ICH9 deblob utility</h1>
 	
 		<p>
@@ -64,6 +107,22 @@
 			the <b>deblobbed_descriptor.bin</b> file to where <b>libreboot.rom</b> is located
 			and then run:<br/>
 			$ <b>dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
+		</p>
+		
+		<p>
+			The utility will also generate 4 additional files:
+		</p>
+			<ul>
+				<li>mkdescriptor.c</li>
+				<li>mkdescriptor.h</li>
+				<li>mkgbe.c</li>
+				<li>mkgbe.h</li>
+			</ul>
+		<p>
+			These are C source files that can re-generate the very same Gbe and Descriptor structs
+			(from ich9deblob/ich9gen). To use these, place them in src/ich9gen/ in ich9deblob, then re-build. 
+			The newly built <b>ich9gen</b> executable will be able to re-create the very same 12KiB file from scratch,
+			based on the C structs, this time <b>without</b> the need for a factory.rom dump!
 		</p>
 		
 		<p>

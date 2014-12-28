@@ -36,7 +36,7 @@
 /*
  * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
  * 
- * Info about flash descriptor (read page 850 onwards):
+ * Info about flash descriptor (read page 845 onwards):
  * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
  * 
  * Info about Gbe region (read whole datasheet):
@@ -221,6 +221,33 @@ int main(int argc, char *argv[])
 	if (notCreatedDescriptorGbeFile(deblobbedDescriptorStruct, deblobbedGbeStruct8k, deblobbedDescriptorFilename)) {
 		return 1;
 	}
+	
+	/*
+	 * ------------------------------------------------------------------
+	 * Generate ich9gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
+	 * ------------------------------------------------------------------
+	 */
+	 
+	/* Code for generating the Gbe struct */
+	/* mkgbe.h */
+	if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
+		return 1;
+	} /* and now mkgbe.c */
+	if (notCreatedCFileFromGbeStruct4k(deblobbedGbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
+		return 1;
+	}
+	
+	/* Code for generating the Descriptor struct */
+	/* mkdescriptor.h */
+	if (notCreatedHFileForDescriptorCFile("mkdescriptor.h", "mkdescriptor.c")) {
+		return 1;
+	} /* and now mkdescriptor.c */
+	if (notCreatedCFileFromDescriptorStruct(deblobbedDescriptorStruct, "mkdescriptor.c", "mkdescriptor.h")) {
+		return 1;
+	}
+	
+	printf("The modified descriptor and gbe regions have also been dumped as src files: mkgbe.c, mkgbe.h, mkdescriptor.c, mkdescriptor.h\n");
+	printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
 
 	return 0;
 }
