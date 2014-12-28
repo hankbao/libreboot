@@ -81,10 +81,6 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	deblobbedDescriptorStruct.ichStraps.ichStrap0.meDisable = 1; /* Disable the ME in ICHSTRAP0 */
 	deblobbedDescriptorStruct.mchStraps.mchStrap0.meDisable = 1; /* Disable the ME in MCHSTRAP0 */
 	deblobbedDescriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; /* Disable the TPM in MCHSTRAP0 */
-	
-	/* Disable the ME, apart from chipset bugfixes. This is useless for libreboot, but might be interesting for others. */
-	/* The concept is similar to CPU microcode updates in coreboot. */
-	/* deblobbedDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1; */
 	 
 	/*
 	 * Removing the ME and Platform regions lets us do cool things, like:
