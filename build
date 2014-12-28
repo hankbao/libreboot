@@ -71,6 +71,22 @@ do
 	cd ../../
 done
 
+# Build the deblobbed descriptor+gbe images for X200.
+# Then put them in the ROM images.
+cd resources/utilities/ich9deblob/
+./ich9gen
+cd ../../../bin/x200_4mb/
+for rom in $(ls)
+do
+	dd if=../../resources/utilities/ich9deblob/ich9fdgbe_4m.bin of="$rom" bs=1 count=12k conv=notrunc
+done
+cd ../x200_8mb/
+for rom in $(ls)
+do
+	dd if=../../resources/utilities/ich9deblob/ich9fdgbe_8m.bin of="$rom" bs=1 count=12k conv=notrunc
+done
+cd ../../
+
 # The GRUB payloads are no longer needed
 rm -f coreboot/grub_vesafb.elf
 rm -f coreboot/grub_txtmode.elf
