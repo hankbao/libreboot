@@ -415,9 +415,7 @@
 		</p>
 		
 		<p>
-			Software flashing instructions: the guide from <a href="#flashrom">#flashrom</a> ought to work,
-			but do make sure that the ROM you flash has a flash descriptor and gbe region dd'd into it, 
-			based on the instructions at <a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a>.
+			Software flashing instructions: the guide from <a href="#flashrom">#flashrom</a> ought to work.
 		</p>
 		
 		<p>
@@ -425,6 +423,11 @@
 			There are two possible solutions: add a whitelist for X200 (and others) to flashrom, use use
 			<b>-p internal:laptop=force_I_want_a_brick</b> instead of <b>-p internal</b> as an argument when
 			running flashrom. 
+		</p>
+		
+		<p>
+			Notes about how the ME was removed (and disabled) for libreboot can be found at 
+			<a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a>.
 		</p>
 		
 		<p>

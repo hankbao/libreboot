@@ -25,6 +25,11 @@
 			get X200 support in libreboot (the machine can also work without the microcode blobs). 
 		</p>
 		<p>
+			The ME is removed and disabled in libreboot by modifying the descriptor. More info about
+			this can be found in the ich9deblob/ich9gen source code in resources/utilities/ich9deblob/
+			in libreboot, or more generally on this page.
+		</p>
+		<p>
 			Or <a href="x200.html">back to main X200 compatibility page (x200.html)</a>.
 		</p>
 
@@ -39,7 +44,7 @@
 	
 		<p>
 			It is no longer necessary to use <a href="#ich9deblob">ich9deblob</a> to generate
-			a deblobbed descriptor+gme image for the X200. ich9gen is a small utility within
+			a deblobbed descriptor+gbe image for the X200. ich9gen is a small utility within
 			ich9deblob that can generate them from scratch, without a factory.bin dump.
 		</p>
 		
@@ -52,8 +57,8 @@
 			Two new files will be created:
 		</p>
 			<ul>
-				<li>ich9fdgbe_4m.bin: this is for X200 laptops with the 4MB flash chip.</li>
-				<li>ich9fdgbe_8m.bin: this is for X200 laptops with the 8MB flash chip.</li>
+				<li><b>ich9fdgbe_4m.bin</b>: this is for X200 laptops with the 4MB flash chip.</li>
+				<li><b>ich9fdgbe_8m.bin</b>: this is for X200 laptops with the 8MB flash chip.</li>
 			</ul>
 			
 		<p>
@@ -73,7 +78,9 @@
 		</p>
 		
 		<p>
-			Your X200 libreboot.rom image is now ready to be flashed on the machine.
+			Your X200 libreboot.rom image is now ready to be flashed on the machine. Refer back to 
+			<a href="../install/index.html#flashrom_x200">../install/index.html#flashrom_x200</a>
+			for how to flash it.
 		</p>
 
 <hr/>
@@ -83,6 +90,11 @@
 		<p>
 			<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
 			contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
+		</p>
+		
+		<p>
+			This was the tool originally used to disable the ME on X200. <a href="#ich9gen">ich9gen</a> now supersedes it;
+			ich9gen is better because it does not rely on dumping the factory.rom image (whereas, ich9deblob does).
 		</p>
 	
 		<p>

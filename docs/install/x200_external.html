@@ -159,8 +159,9 @@ Please specify which chip definition to use with the -c &lt;chipname&gt; option.
 			<p>
 				Information about the descriptor and gbe can be found in the notes linked at
 				<a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a> - also shows how to modify them to disable and remove the ME/AMT blob.
-				<span style="font-size:1.5em; background:#ccc;"><b><u><i>MAKE SURE TO FOLLOW THE GUIDE IN THIS LINK, BEFORE CONTINUING.
-				FAILURE TO DO SO WILL RESULT IN A BRICKED MACHINE.</i></u></b></span>
+				<span style="font-size:1.5em; background:#ccc;"><s><b><u><i>MAKE SURE TO FOLLOW THE GUIDE IN THIS LINK, BEFORE CONTINUING.
+				FAILURE TO DO SO WILL RESULT IN A BRICKED MACHINE.</i></u></b></s> - libreboot ROM images now include
+				the 12KiB descriptor+gbe by default, generated from <a href="../hcl/x200_remove_me.html#ich9gen">ich9gen</a></span>
 			</p>
 			<p>
 				Assuming that your libreboot ROM image is properly setup (modified descriptor plus gbe region included in the ROM),
