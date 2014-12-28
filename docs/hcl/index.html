@@ -393,8 +393,7 @@ EndSection
 
 		<p>
 			No method is yet known for flashing in GNU/Linux while the Apple firmware is running. You will need to disassemble the machine and flash externally.
-			Reading from flash seems to work. Bus Pirate recommended for external flashing (there are others) and needed tools: clip (eg Pomona 5250), mini usb cable,
-			bus pirate cable (for connecting Pomona to the bus pirate). 
+			Reading from flash seems to work. For external flashing, refer to <a href="../install/bbb_setup.html">../install/bbb_setup.html</a>.
 		</p>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
@@ -483,8 +482,7 @@ EndSection
 		</p>
 
 		<p>
-			Bus Pirate recommended for external flashing (there are others) and needed tools: clip (eg Pomona 5250), mini usb cable,
-			bus pirate cable (for connecting Pomona to the bus pirate). 
+			For external flashing, refer to <a href="../install/bbb_setup.html">../install/bbb_setup.html</a>.
 		</p>
 
 		<p>
@@ -502,24 +500,9 @@ EndSection
 		</p>
 
 		<p>
-			The macbook21 gets extremely hot under GNU/Linux and libreboot; Macfanctld (mac fan control daemon) I'm told is a programme (GPLv3 license) that can help with this.
-		</p>
-
-		<p>
-			Debugging the heating issues (initial work):<br/>
-			Distro: Trisquel 7. kernel(linux-libre): 3.13.0-32<br/>
-			<b>CPU temperatures:</b><br/>
-			52C(idle)/81C(stress) on factory.bin<br/>
-			70C(idle)/80C(stress) on coreboot(with microcode updates). libreboot results (without microcode updates) were the same.<br/>
-			(libreboot and coreboot rom's were both built from the same code, just with or without microcode included in the rom)<br/>
-			battery life was higher on original firmware, lower on coreboot/libreboot.<br/>
-			microcode patches included [y/n] makes no difference.<br/>
-			libreboot: 1hr18min left on idle (99% battery), 42mins left on stress (82% battery)<br/>
-			factory.bin: 2 hours left on idle (99% battery), 48mins left on stress (82% battery)
-		</p>
-		<p>
-			Todo: see what the non-free firmware has in it's ACPI tables using acpidump and iasl -d. Try to implement cstate support in coreboot
-			(this will allow for lower temperatures).
+			The machine does get a bit hotter compared to when running the original firmware. It is certainly hotter
+			than an X60/T60. The heat issues have been partially fixed by the following patch (now merged in libreboot):
+			<a href="http://review.coreboot.org/#/c/7923/">http://review.coreboot.org/#/c/7923/</a>.
 		</p>
 
 		<p>
