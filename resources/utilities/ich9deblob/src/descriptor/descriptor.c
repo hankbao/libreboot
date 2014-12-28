@@ -35,80 +35,78 @@
 /* 
  * Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
  * Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills factoryRomSize-12k) are left.
- * Tested on ThinkPad X200 and X200S. X200T and other GM45 targets may also work.
+ * Tested on ThinkPad X200 and X200S. X200T and other GM45/GS45 targets may also work.
  * Also described in docs/hcl/x200_remove_me.html
+ */
+ 
+/*
+ * Remove the ME/AMT blobs. This is needed for the ICH9 machines (eg X200)
+ * to be compatible in libreboot.
+ * 
+ * Disable the ME/Platform regions, re-locate Descriptor+Gbe+BIOS like so:
+ * Descriptor(4K), then Gbe (8K), then the remainder of the image is the BIOS region.
  */
 struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize)
 {
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
 
+	/*
+	 * Remove all those nasty blobs:
+	 * -----------------------------
+	 */
+
 	/* 
 	 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 	 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
 	 */
 	deblobbedDescriptorStruct.flMaps.flMap0.NR = 2;
-
-	/* 
-	 * make descriptor writable from OS. This is that the user can run:
-	 * sudo ./flashrom -p internal:laptop=force_I_want_a_brick 
-	 * from the OS, without relying an an external SPI flasher, while
-	 * being able to write to the descriptor region (locked by default,
-	 * until making the change below):
-	 */
-	deblobbedDescriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 1;
-
-	/* relocate BIOS region and increase size to fill image */
-	deblobbedDescriptorStruct.regionSection.flReg1.BASE = 3; // 3<<FLREGIONBITSHIFT is 12KiB, which is where BIOS region is to begin (after descriptor and gbe)
-	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = ((factoryRomSize >> FLREGIONBITSHIFT) - 1);
-	/*
-	 * ^ for example, 8MB ROM, that's 8388608 bytes.
-	 * ^ 8388608>>FLREGIONBITSHIFT (or 8388608/4096) = 2048 bytes
-	 * 2048 - 1 = 2047 bytes. 
-	 * This defines where the final 0x1000 (4KiB) page starts in the flash chip, because the hardware does:
-	 * 2047<<FLREGIONBITSHIFT (or 2047*4096) = 8384512 bytes, or 7FF000 bytes
-	 * (it can't be 0x7FFFFF because of limited number of bits)
-	 */
-
-	/* set ME region size to 0 - the ME is a blob, we don't want it in libreboot */
-	deblobbedDescriptorStruct.regionSection.flReg2.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<FLREGIONBITSHIFT is outside of the ROM image (8MB) size?
-	/* ^ datasheet says to set this to 1FFF, but FFF was previously used and also worked. */
-	deblobbedDescriptorStruct.regionSection.flReg2.LIMIT = 0;
-	/*
-	 * ^ 0<<FLREGIONBITSHIFT=0, so basically, the size is 0,
-	 * ^ and the base (1FFF>>FLREGIONBITSHIFT) is well outside the higher 8MB range. 
-	 */
 	
-	/* relocate Gbe region to begin at 4KiB (immediately after the flash descriptor) */
-	deblobbedDescriptorStruct.regionSection.flReg3.BASE = 1; // 1<<FLREGIONBITSHIFT is 4096, which is where the Gbe region is to begin (after the descriptor)
-	deblobbedDescriptorStruct.regionSection.flReg3.LIMIT = 2;
 	/*
-	 * ^ 2<<FLREGIONBITSHIFT=8192 bytes. So we are set it to size 8KiB after the first 4KiB in the flash chip.
+	 * There are 5 regions. Since we set the number now to 3, that means
+	 * we need to disable 2 regions. ME and Platform will be disabled!
+	 * 
+	 * To disable a region, set the BASE to 1FFF. Shifted by FLREGIONBITSHIFT,
+	 * this puts the beginning of that region well outside the ROM image. 
+	 * Also set the LIMIT (size) to 0.
 	 */
-
-	/* set Platform region size to 0 - another blob that we don't want */
-	deblobbedDescriptorStruct.regionSection.flReg4.BASE = 0x1FFF; // setting 1FFF means setting size to 0. 1FFF<<FLREGIONBITSHIFT is outside of the ROM image (8MB) size?
-	/* ^ datasheet says to set this to 1FFF, but FFF was previously used and also worked. */
+	/* Disable (delete) the ME region */
+	deblobbedDescriptorStruct.regionSection.flReg2.BASE = 0x1FFF;
+	deblobbedDescriptorStruct.regionSection.flReg2.LIMIT = 0;
+	/* Disable (delete) the Platform region */
+	deblobbedDescriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
 	deblobbedDescriptorStruct.regionSection.flReg4.LIMIT = 0;
+	 
+	/* Other steps needed for the deblobbing: */
+	deblobbedDescriptorStruct.ichStraps.ichStrap0.meDisable = 1; /* Disable the ME in ICHSTRAP0 */
+	deblobbedDescriptorStruct.mchStraps.mchStrap0.meDisable = 1; /* Disable the ME in MCHSTRAP0 */
+	deblobbedDescriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; /* Disable the TPM in MCHSTRAP0 */
+	
+	/* Disable the ME, apart from chipset bugfixes. This is useless for libreboot, but might be interesting for others. */
+	/* The concept is similar to CPU microcode updates in coreboot. */
+	/* deblobbedDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1; */
+	 
 	/*
-	 * ^ 0<<FLREGIONBITSHIFT=0, so basically, the size is 0, 
-	 * and the base (1FFF>>FLREGIONBITSHIFT) is well outside the higher 8MB range.
+	 * Removing the ME and Platform regions lets us do cool things, like:
+	 * ------------------------------------------------------------------
 	 */
+	 
+	/* Relocate the Gbe region to begin at 4KiB (immediately after the flash descriptor) */
+	deblobbedDescriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
+	deblobbedDescriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
 
-	/* disable ME in ICHSTRAP0 - the ME is a blob, we don't want it in libreboot */
-	deblobbedDescriptorStruct.ichStraps.ichStrap0.meDisable = 1;
-
-	/* disable ME and TPM in MCHSTRAP0 */
-	deblobbedDescriptorStruct.mchStraps.mchStrap0.meDisable = 1; // ME is a blob. not wanted in libreboot.
-	deblobbedDescriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; // not wanted in libreboot
-
-	/* 
-	 * disable ME, apart from chipset bugfixes (ME region should first be re-enabled above)
-	 * This is sort of like the CPU microcode updates, but for the chipset
-	 * (commented out below here, since blobs go against libreboot's purpose,
-	 * but may be interesting for others)
-	 * deblobbedDescriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 1;
+	/* BIOS region (where coreboot/libreboot goes) can now fill the entire ROM image,
+	 * after the first 12KiB where the Descriptor+Gbe are. */
+	deblobbedDescriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
+	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = (factoryRomSize >> FLREGIONBITSHIFT) - 1;
+	 
+	/*
+	 * Other things:
+	 * -------------
 	 */
+	 
+	/* Make the flash descriptor region writeable from Host CPU / BIOS: */
+	deblobbedDescriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 1;
 	
 	return deblobbedDescriptorStruct;
 }

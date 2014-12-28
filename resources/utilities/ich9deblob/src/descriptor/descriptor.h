@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "../gbe/gbe.h" /* Needed for GBEREGIONSIZE_4K/8K define */
 
 /* size of the descriptor in bytes */
 #define DESCRIPTORREGIONSIZE 0x1000
