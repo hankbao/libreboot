@@ -195,7 +195,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NC = 0x%01x;\n", descriptorStruct.flMaps.flMap0.NC);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.reserved1 = 0x%02x;\n", descriptorStruct.flMaps.flMap0.reserved1);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.FRBA = 0x%02x;\n", descriptorStruct.flMaps.flMap0.FRBA);
-	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NR = 0x%01x;\n", descriptorStruct.flMaps.flMap0.NR);
+	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NR = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.flMaps.flMap0.NR);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.reserved2 = 0x%02x;\n", descriptorStruct.flMaps.flMap0.reserved2);
 	fprintf(fp, "    /* FLMAP1 */\n");
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.FMBA = 0x%02x;\n", descriptorStruct.flMaps.flMap1.FMBA);
@@ -249,24 +249,24 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg0.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg0.reserved2);
 	fprintf(fp, "    /* FLREG1 (BIOS) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = 0x%04x;\n", descriptorStruct.regionSection.flReg1.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg1.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved1);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1);\n");
+	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved2);
 	fprintf(fp, "    /* FLREG2 (ME) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg2.BASE = 0x%04x; /* 0x1FFF to disable */\n", descriptorStruct.regionSection.flReg2.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg2.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg2.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg2.reserved1);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg2.LIMIT = 0x%04x; /* 0x0000 to disable */\n", descriptorStruct.regionSection.flReg2.LIMIT);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg2.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg2.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg2.reserved2);
 	fprintf(fp, "    /* FLREG3 (Gbe) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = 0x%04x;\n", descriptorStruct.regionSection.flReg3.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg3.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved1);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg3.LIMIT);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg3.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved2);
 	fprintf(fp, "    /* FLREG4 (Platform) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg4.BASE = 0x%04x; /* 0x1FFF to disable */\n", descriptorStruct.regionSection.flReg4.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg4.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg4.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg4.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg4.reserved1);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg4.LIMIT = 0x%04x; /* 0x0000 to disable */\n", descriptorStruct.regionSection.flReg4.LIMIT);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg4.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg4.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg4.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg4.reserved2);
 	fprintf(fp, "    /* Padding */\n");
 	for (i = 0; i < 12; i++) {
@@ -293,7 +293,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.reserved1 = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.reserved1);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess);
@@ -345,7 +345,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	/* ICH straps */
 	fprintf(fp, "    /* ICH straps */\n");
 	fprintf(fp, "    /* ICHSTRAP0 */\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.meDisable = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.meDisable);
+	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.meDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.ichStraps.ichStrap0.meDisable);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved1 = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.reserved1);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.tcoMode = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.tcoMode);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.smBusAddress = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.smBusAddress);
@@ -384,9 +384,9 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	/* MCH straps */
 	fprintf(fp, "    /* MCH straps */\n");
 	fprintf(fp, "    /* MCHSTRAP0 */\n");
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meDisable = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.meDisable);
+	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.mchStraps.mchStrap0.meDisable);
 	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meBootFromFlash = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.meBootFromFlash);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.tpmDisable = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.tpmDisable);
+	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.tpmDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.mchStraps.mchStrap0.tpmDisable);
 	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.reserved1 = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.reserved1);
 	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.spiFingerprint = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.spiFingerprint);
 	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.meAlternateDisable);

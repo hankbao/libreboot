@@ -34,7 +34,7 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.flMaps.flMap0.NC = 0x0;
     descriptorStruct.flMaps.flMap0.reserved1 = 0x00;
     descriptorStruct.flMaps.flMap0.FRBA = 0x04;
-    descriptorStruct.flMaps.flMap0.NR = 0x2;
+    descriptorStruct.flMaps.flMap0.NR = 0x2; /* see ../descriptor/descriptor.c */
     descriptorStruct.flMaps.flMap0.reserved2 = 0x00;
     /* FLMAP1 */
     descriptorStruct.flMaps.flMap1.FMBA = 0x06;
@@ -76,24 +76,24 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.regionSection.flReg0.LIMIT = 0x0000;
     descriptorStruct.regionSection.flReg0.reserved2 = 0x0;
     /* FLREG1 (BIOS) */
-    descriptorStruct.regionSection.flReg1.BASE = 0x0003;
+    descriptorStruct.regionSection.flReg1.BASE = 0x0003; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved1 = 0x0;
-    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1);
+    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved2 = 0x0;
     /* FLREG2 (ME) */
-    descriptorStruct.regionSection.flReg2.BASE = 0x1fff; /* 0x1FFF to disable */
+    descriptorStruct.regionSection.flReg2.BASE = 0x1fff; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg2.reserved1 = 0x0;
-    descriptorStruct.regionSection.flReg2.LIMIT = 0x0000; /* 0x0000 to disable */
+    descriptorStruct.regionSection.flReg2.LIMIT = 0x0000; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg2.reserved2 = 0x0;
     /* FLREG3 (Gbe) */
-    descriptorStruct.regionSection.flReg3.BASE = 0x0001;
+    descriptorStruct.regionSection.flReg3.BASE = 0x0001; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg3.reserved1 = 0x0;
-    descriptorStruct.regionSection.flReg3.LIMIT = 0x0002;
+    descriptorStruct.regionSection.flReg3.LIMIT = 0x0002; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg3.reserved2 = 0x0;
     /* FLREG4 (Platform) */
-    descriptorStruct.regionSection.flReg4.BASE = 0x1fff; /* 0x1FFF to disable */
+    descriptorStruct.regionSection.flReg4.BASE = 0x1fff; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg4.reserved1 = 0x0;
-    descriptorStruct.regionSection.flReg4.LIMIT = 0x0000; /* 0x0000 to disable */
+    descriptorStruct.regionSection.flReg4.LIMIT = 0x0000; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg4.reserved2 = 0x0;
     /* Padding */
     for (i = 0; i < 12; i++) {
@@ -109,7 +109,7 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x1;
     descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x1;
     descriptorStruct.masterAccessSection.flMstr1.reserved1 = 0x0;
-    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1;
     descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x0;
     descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
@@ -150,7 +150,7 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
 
     /* ICH straps */
     /* ICHSTRAP0 */
-    descriptorStruct.ichStraps.ichStrap0.meDisable = 0x1;
+    descriptorStruct.ichStraps.ichStrap0.meDisable = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.ichStraps.ichStrap0.reserved1 = 0x04;
     descriptorStruct.ichStraps.ichStrap0.tcoMode = 0x1;
     descriptorStruct.ichStraps.ichStrap0.smBusAddress = 0x64;
@@ -178,9 +178,9 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
 
     /* MCH straps */
     /* MCHSTRAP0 */
-    descriptorStruct.mchStraps.mchStrap0.meDisable = 0x1;
+    descriptorStruct.mchStraps.mchStrap0.meDisable = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.mchStraps.mchStrap0.meBootFromFlash = 0x0;
-    descriptorStruct.mchStraps.mchStrap0.tpmDisable = 0x1;
+    descriptorStruct.mchStraps.mchStrap0.tpmDisable = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.mchStraps.mchStrap0.reserved1 = 0x7;
     descriptorStruct.mchStraps.mchStrap0.spiFingerprint = 0x1;
     descriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 0x0;
