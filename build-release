@@ -373,7 +373,6 @@ rm -f libreboot_src/getgrub
 rm -f libreboot_src/getgrubinvaders
 rm -f libreboot_src/getmt86
 rm -f libreboot_src/getseabios
-rm -f libreboot_src/DEBLOB
 
 # ich9deblob: there are certain files in there
 # that the user most likely does not want to share
