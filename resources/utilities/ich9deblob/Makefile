@@ -72,5 +72,7 @@ obj/descriptor/descriptor.o:
 obj/gbe/gbe.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/gbe/gbe.c -o obj/gbe/gbe.o
 	
+# make clean
+# ----------------------------------------------------------------------
 clean:
-	rm -rf ich9deblob obj/*.o obj/*/*.o
+	rm -rf ich9deblob ich9gen obj/*.o obj/*/*.o
