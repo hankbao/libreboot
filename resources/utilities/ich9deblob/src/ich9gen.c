@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
 			}
 			for(i=2; i<14; i+=3) {
 				if(argv[2][i]!=':') {
-					printf("ich9gen: invalid mac address format (non-color characters used as spacing)\n");
+					printf("ich9gen: invalid mac address format (non-colon characters used as spacing)\n");
 					return 1;
 				}
 			}
@@ -98,7 +98,9 @@ int main(int argc, char *argv[])
 				return 1;
 			}
 			
-			printf("The modified gbe regions has also been dumped as src files: mkgbe.c, mkgbe.h\n");
+			printf("You selected to change the MAC address in the Gbe section. This has been done.\n\n");
+			
+			printf("The modified gbe region has also been dumped as src files: mkgbe.c, mkgbe.h\n");
 			printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
 		}
 		
