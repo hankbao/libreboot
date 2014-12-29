@@ -227,7 +227,6 @@ int main(int argc, char *argv[])
 	 * Generate ich9gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
 	 * ------------------------------------------------------------------
 	 */
-	 
 	/* Code for generating the Gbe struct */
 	/* mkgbe.h */
 	if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
@@ -236,7 +235,6 @@ int main(int argc, char *argv[])
 	if (notCreatedCFileFromGbeStruct4k(deblobbedGbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
 		return 1;
 	}
-	
 	/* Code for generating the Descriptor struct */
 	/* mkdescriptor.h */
 	if (notCreatedHFileForDescriptorCFile("mkdescriptor.h", "mkdescriptor.c")) {
@@ -245,7 +243,6 @@ int main(int argc, char *argv[])
 	if (notCreatedCFileFromDescriptorStruct(deblobbedDescriptorStruct, "mkdescriptor.c", "mkdescriptor.h")) {
 		return 1;
 	}
-	
 	printf("The modified descriptor and gbe regions have also been dumped as src files: mkgbe.c, mkgbe.h, mkdescriptor.c, mkdescriptor.h\n");
 	printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
 

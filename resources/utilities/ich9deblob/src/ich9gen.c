@@ -87,6 +87,19 @@ int main(int argc, char *argv[])
 			memcpy(&gbeStruct8k.main.macAddress, &customMacAddress, 6); /* Update MAC address in main Gbe */
 			gbeStruct8k.main.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.main, GBECHECKSUMTOTAL); /* Fix the checksum */
 			memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K); /* Copy to the backup */
+			
+			/* Generate ich9gen data (C code for Gbe region): */
+
+			/* mkgbe.h */
+			if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
+				return 1;
+			} /* and now mkgbe.c */
+			if (notCreatedCFileFromGbeStruct4k(gbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
+				return 1;
+			}
+			
+			printf("The modified gbe regions has also been dumped as src files: mkgbe.c, mkgbe.h\n");
+			printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
 		}
 		
 	}
