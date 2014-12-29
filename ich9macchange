@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#  ich9macchange script: uses ich9gen to change the MAC address on GM45/GS45 machines.
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -u -e -v
+
+# These are the tested platforms
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		echo "Running on i686. ok."
+		sleep 2
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		echo "Running on x86_64. ok."
+		sleep 2
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
+fi
+
+if (( $# != 1 )); then
+	echo "Usage: ./ich9macchange XX:XX:XX:XX:XX:XX"
+	echo "(XX replaced with hex from your desired MAC address)"
+	exit 1
+fi
+
+if [ -f "DEBLOB" ]; then
+	# Means we are in src archive or git
+	cd resources/utilities/ich9deblob/
+	./ich9gen --macaddress $1
+	cp ich9fdgbe*.bin ../../../bin/
+	cd ../../../bin/
+elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+	then
+		# Means we are in bin archive and on an i686 host
+		cd ich9deblob/i686/
+		./ich9gen --macaddress $1
+		cp ich9fdgbe*.bin ../../bin/
+		cd ../../bin/
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+	then
+		# Means we are in bin archive and on an x86_64 host
+		cd ich9deblob/x86_64/
+		./ich9gen --macaddress $1
+		cp ich9fdgbe*.bin ../../bin/
+		cd ../../bin/
+fi
+
+cd x200_4mb/
+for rom in $(ls)
+do
+	dd if=../ich9fdgbe_4m.bin of="$rom" bs=1 count=12k conv=notrunc
+done
+cd ../x200_8mb/
+for rom in $(ls)
+do
+	dd if=../ich9fdgbe_8m.bin of="$rom" bs=1 count=12k conv=notrunc
+done
+cd ../
+rm -f ich9fdgbe_4m.bin
+rm -f ich9fdgbe_8m.bin
+cd ../
