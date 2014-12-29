@@ -417,17 +417,24 @@
 		<p>
 			Software flashing instructions: the guide from <a href="#flashrom">#flashrom</a> ought to work.
 		</p>
+		<p>
+			Notes about how the ME was removed (and disabled) for libreboot can be found at 
+			<a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a>.
+		</p>
+		<p>
+			On the X200, the Gbe region in the flash chip contains your MAC address. 
+			Libreboot ROM images already contain a descriptor and gbe in them, but
+			with the same MAC address, which probably isn't the one you want. You can change it. 
+			Read the notes about <a href="../hcl/x200_remove_me.html#ich9gen">ich9gen</a> to
+			know how to change the MAC address inside your ROM image before flashing it to your
+			machine.
+		</p>
 		
 		<p>
 			Flashrom supports the flash chips in the X200, but might complain that the laptop isn't whitelisted. 
 			There are two possible solutions: add a whitelist for X200 (and others) to flashrom, use use
 			<b>-p internal:laptop=force_I_want_a_brick</b> instead of <b>-p internal</b> as an argument when
 			running flashrom. 
-		</p>
-		
-		<p>
-			Notes about how the ME was removed (and disabled) for libreboot can be found at 
-			<a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a>.
 		</p>
 		
 		<p>

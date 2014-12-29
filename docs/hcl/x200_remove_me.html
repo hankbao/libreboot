@@ -54,6 +54,27 @@
 		</p>
 		
 		<p>
+			It is also possible to generate a descriptor+gbe image with your own MAC address
+			inside (with the Gbe checksum updated to match). Run:<br/>
+			$ <b>./ich9gen --macaddress XX:XX:XX:XX:XX:XX</b><br/>
+			(replace the XX chars with the hexadecimal chars in the MAC address that you want)
+		</p>
+		
+		<p>
+			You can find out your MAC address from <b>ip addr</b> or <b>ifconfig</b> in GNU/Linux. 
+			Alternatively, if you are running libreboot already (with the correct MAC address in your
+			ROM), dump it (flashrom -r) and read the first 6 bytes from position 0x1000 (or 0x2000) in a hex editor
+			(or, rename it to factory.rom and run it in ich9deblob: in the newly created mkgbe.c
+			will be the individual bytes of your MAC address). If you are currently running the stock firmware
+			and haven't installed libreboot yet, you can also run that through ich9deblob to get the mac address.
+		</p>
+		
+		<p>
+			An even simpler way to get the MAC address would be to read what's on the little sticker on
+			the underside. (on the X200, this would be near the VGA port).
+		</p>
+		
+		<p>
 			Two new files will be created:
 		</p>
 			<ul>
