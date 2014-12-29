@@ -35,8 +35,11 @@ rm -rf flashrom
 # download it using subversion
 svn co -r 1858 svn://flashrom.org/flashrom/trunk flashrom
 
-# there are no permanent patches needed to be applied here:
-# the patches are applied selectively at build time (when running "builddeps-flashrom")
+# apply patches
+cd flashrom/
+# Add whitelist for X200:
+patch board_enable.c < ../resources/flashrom/patch/x200whitelist.diff
+cd ../
 
 echo "FINISHED DOWNLOADING FLASHROM"
 
