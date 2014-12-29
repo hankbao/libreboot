@@ -78,6 +78,7 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     /* FLREG1 (BIOS) */
     descriptorStruct.regionSection.flReg1.BASE = 0x0003; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved1 = 0x0;
+    /* descriptorStruct.regionSection.flReg1.LIMIT = 0x07ff; */
     descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved2 = 0x0;
     /* FLREG2 (ME) */

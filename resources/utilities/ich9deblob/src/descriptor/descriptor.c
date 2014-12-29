@@ -251,6 +251,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    /* FLREG1 (BIOS) */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg1.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved1);
+	fprintf(fp, "    /* descriptorStruct.regionSection.flReg1.LIMIT = 0x%04x; */\n", descriptorStruct.regionSection.flReg1.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved2);
 	fprintf(fp, "    /* FLREG2 (ME) */\n");
