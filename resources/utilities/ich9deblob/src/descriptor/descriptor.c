@@ -249,7 +249,8 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg0.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg0.reserved2);
 	fprintf(fp, "    /* FLREG1 (BIOS) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg1.BASE);
+	fprintf(fp, "    /* descriptorStruct.regionSection.flReg1.BASE = 0x%04x; */\n", descriptorStruct.regionSection.flReg1.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved1);
 	fprintf(fp, "    /* descriptorStruct.regionSection.flReg1.LIMIT = 0x%04x; */\n", descriptorStruct.regionSection.flReg1.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */\n");
@@ -260,9 +261,11 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg2.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg2.reserved2);
 	fprintf(fp, "    /* FLREG3 (Gbe) */\n");
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg3.BASE);
+	fprintf(fp, "    /* descriptorStruct.regionSection.flReg3.BASE = 0x%04x; */\n", descriptorStruct.regionSection.flReg3.BASE);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved1);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg3.LIMIT);
+	fprintf(fp, "    /* descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x; */\n", descriptorStruct.regionSection.flReg3.LIMIT);
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved2);
 	fprintf(fp, "    /* FLREG4 (Platform) */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg4.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg4.BASE);
