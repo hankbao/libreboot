@@ -120,6 +120,7 @@
 			Changes for this release (latest changes first, earliest changes last)
 		</h2>
 			<ul>
+				<li>X200: fixed uneven backlight (at low levels)</li>
 				<li>ich9deblob: added new utility <b>ich9gen</b>: this can generate a descriptor+gbe image without a factory.rom dump present.</li>
 				<li>Modified ich9deblob to use a struct for Gbe, documenting everything.</li>
 				<li>Massively updated the ich9deblob utility: re-factored everything completely.</li>
@@ -250,9 +251,6 @@
 						X200: only framebuffer graphics work. This is fine, since it's what most people use,
 						but text-mode graphics initialization is currently broken, which means that
 						memtest86+ will require serial output or ehci debugging.
-					</li>
-					<li>
-						X200: at very low brightness levels, the backlight is uneven. Fix that.
 					</li>
 					<li>
 						Fix remaining incompatible LCD panels in native graphics on T60. 

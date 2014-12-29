@@ -67,6 +67,8 @@ git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cher
 
 # northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)
 git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cherry-pick FETCH_HEAD
+# fix uneven backlight on X200 (when setting brightness low)
+git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cherry-pick FETCH_HEAD
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
