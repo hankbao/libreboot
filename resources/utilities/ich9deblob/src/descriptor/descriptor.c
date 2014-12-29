@@ -32,12 +32,41 @@
  * ---------------------------------------------------------------------
  */
 
-/* 
- * Modify the flash descriptor, to remove the ME/AMT, and disable all other regions
- * Only Flash Descriptor, Gbe and BIOS regions (BIOS region fills factoryRomSize-12k) are left.
- * Tested on ThinkPad X200 and X200S. X200T and other GM45/GS45 targets may also work.
- * Also described in docs/hcl/x200_remove_me.html
- */
+/* Set the Host CPU / BIOS region to have read-write access on all regions */ 
+struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{	
+   /* FLMSTR1 (Host CPU / BIOS) */
+   descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
+   
+   return descriptorStruct;
+}
+
+/* Set the ME to have *no* read-write access on any region */
+struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{	
+   /* FLMSTR2 (ME) */
+   descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess = 0x0;
+   
+   return descriptorStruct;
+}
  
 /*
  * Remove the ME/AMT blobs. This is needed for the ICH9 machines (eg X200)
@@ -97,12 +126,15 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = (factoryRomSize >> FLREGIONBITSHIFT) - 1;
 	 
 	/*
-	 * Other things:
+	 * Set region read/write access
 	 * -------------
 	 */
 	 
-	/* Make the flash descriptor region writeable from Host CPU / BIOS: */
-	deblobbedDescriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 1;
+	/* Host/CPU is allowed to read/write all regions. */
+	deblobbedDescriptorStruct = descriptorHostRegionsUnlocked(deblobbedDescriptorStruct);
+	/* The ME is disallowed read-write access to all regions
+	 * (this is probably redundant, since the ME is already removed from libreboot) */
+	deblobbedDescriptorStruct = descriptorMeRegionsForbidden(deblobbedDescriptorStruct);
 	
 	return deblobbedDescriptorStruct;
 }
@@ -291,31 +323,31 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    /* Master Access Section */\n");
 	fprintf(fp, "    /* FLMSTR1 (Host CPU / BIOS) */\n");
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.requesterId = 0x%04x;\n", descriptorStruct.masterAccessSection.flMstr1.requesterId);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.reserved1 = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.reserved1);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr1.reserved2 = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr1.reserved2);
 	fprintf(fp, "    /* FLMSTR2 (ME) */\n");
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.requesterId = 0x%04x;\n", descriptorStruct.masterAccessSection.flMstr2.requesterId);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.reserved1 = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.reserved1);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess);
-	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess);
+	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess);
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr2.reserved2 = 0x%01x;\n", descriptorStruct.masterAccessSection.flMstr2.reserved2);
 	fprintf(fp, "    /* FLMSTR3 (Gbe) */\n");
 	fprintf(fp, "    descriptorStruct.masterAccessSection.flMstr3.requesterId = 0x%04x;\n", descriptorStruct.masterAccessSection.flMstr3.requesterId);

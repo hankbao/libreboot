@@ -107,31 +107,31 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     /* Master Access Section */
     /* FLMSTR1 (Host CPU / BIOS) */
     descriptorStruct.masterAccessSection.flMstr1.requesterId = 0x0000;
-    descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x0;
-    descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.masterAccessSection.flMstr1.reserved1 = 0x0;
     descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
-    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x0;
-    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.masterAccessSection.flMstr1.reserved2 = 0x0;
     /* FLMSTR2 (ME) */
     descriptorStruct.masterAccessSection.flMstr2.requesterId = 0x0000;
-    descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess = 0x0;
-    descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess = 0x0;
+    descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess = 0x0; /* see ../descriptor/descriptor.c */
     descriptorStruct.masterAccessSection.flMstr2.reserved1 = 0x0;
-    descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess = 0x0;
-    descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess = 0x0;
-    descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess = 0x1;
-    descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess = 0x0;
+    descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess = 0x0; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess = 0x0; /* see ../descriptor/descriptor.c */
     descriptorStruct.masterAccessSection.flMstr2.reserved2 = 0x0;
     /* FLMSTR3 (Gbe) */
     descriptorStruct.masterAccessSection.flMstr3.requesterId = 0x0218;
