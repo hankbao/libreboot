@@ -69,6 +69,8 @@ int main(int argc, char *argv[])
 				}
 			}
 			for(i=0; i<6; i++) {
+				customMacAddress[i] = 0;
+				
 				/* Go through each nibble of the byte */
 				for(j=0; j<2; j++) {
 					if(argv[2][(i*3)+j]>='a' && argv[2][(i*3)+j]<='f')
