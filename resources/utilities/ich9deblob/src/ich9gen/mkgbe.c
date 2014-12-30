@@ -26,12 +26,13 @@ struct GBEREGIONRECORD_4K generatedGbeStruct4k()
     struct GBEREGIONRECORD_4K gbeStruct4k;
 
     /* MAC address (words 00h to 02h) */
+    /* see ../gbe/gbe.c */
     gbeStruct4k.macAddress[0] = 0x00;
-    gbeStruct4k.macAddress[1] = 0x1f;
-    gbeStruct4k.macAddress[2] = 0x16;
-    gbeStruct4k.macAddress[3] = 0x32;
-    gbeStruct4k.macAddress[4] = 0x50;
-    gbeStruct4k.macAddress[5] = 0xe5;
+    gbeStruct4k.macAddress[1] = 0xf5;
+    gbeStruct4k.macAddress[2] = 0xf0;
+    gbeStruct4k.macAddress[3] = 0x40;
+    gbeStruct4k.macAddress[4] = 0x71;
+    gbeStruct4k.macAddress[5] = 0xfe;
 
     /* Word 03h (Reserved) */
     gbeStruct4k.reservedWord03h.reserved1_0 = 0x00;
@@ -236,7 +237,7 @@ struct GBEREGIONRECORD_4K generatedGbeStruct4k()
     gbeStruct4k.pxeSoftwareRegion.paddingWords34hTo3Eh[10] = 0xffff;
 
     /* Word 3Fh (Checksum) */
-    gbeStruct4k.checkSum = 0x3285;
+    gbeStruct4k.checkSum = 0x348a;
 
     /* The rest of Gbe (word 40h or byte 80h onwards) is just padding (0xFF) */
     for (i = 0; i < 3968; i++) {

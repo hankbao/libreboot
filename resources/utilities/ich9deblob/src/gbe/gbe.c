@@ -104,9 +104,17 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 		deblobbedGbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
 	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
 	
+	/* Set the default MAC address */
+	deblobbedGbeStruct8k.backup.macAddress[0] = 0x00;
+	deblobbedGbeStruct8k.backup.macAddress[1] = 0xF5;
+	deblobbedGbeStruct8k.backup.macAddress[2] = 0xF0;
+	deblobbedGbeStruct8k.backup.macAddress[3] = 0x40;
+	deblobbedGbeStruct8k.backup.macAddress[4] = 0x71;
+	deblobbedGbeStruct8k.backup.macAddress[5] = 0xFE;
+	
 	/* Fix the checksum */
 	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, GBECHECKSUMTOTAL);
-	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of Gbe/Backup */
+	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of the backup */
 	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_4K);
 	
 	return deblobbedGbeStruct8k;
@@ -190,6 +198,7 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	fprintf(fp, "\n");
 	/* Words 00h to 02h: MAC Address */
 	fprintf(fp, "    /* MAC address (words 00h to 02h) */\n");
+	fprintf(fp, "    /* see ../gbe/gbe.c */\n");
 	for (i = 0; i < 6; i++) {
 		fprintf(fp, "    gbeStruct4k.macAddress[%d] = 0x%02x;\n", i, gbeStruct4k.macAddress[i]);
 	}
