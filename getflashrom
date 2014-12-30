@@ -36,9 +36,17 @@ rm -rf flashrom
 svn co -r 1858 svn://flashrom.org/flashrom/trunk flashrom
 
 # apply patches
+
 cd flashrom/
+
 # Add whitelist for X200:
 patch board_enable.c < ../resources/flashrom/patch/x200whitelist.diff
+
+# Remove redundant definitions for the flash chips that
+# supported libreboot machines use. This removes the need
+# for the user to run with the "-c" argument on these machines
+patch flashchips.c < ../resources/flashrom/patch/purged_chips.diff
+
 cd ../
 
 echo "FINISHED DOWNLOADING FLASHROM"
