@@ -22,32 +22,13 @@
 # set -u -e -v
 set -v
 
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		echo "Running on i686. ok."
-		sleep 5
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		echo "Running on x86_64. ok."
-		sleep 5
-else
-	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
-	exit 1
-fi
-
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
-
-# USE ROOT OR SUDO WHEN EXECUTING THIS
-
-# for T60 or X60 owners with Lenovo BIOS
-# does the 1st part of the flash before shut down
-
 if (( $# != 1 )); then
-	echo "Usage: ./lenovobios_firstflash yourrom.rom"
-	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
+	echo "Usage: ./lenovobios_secondflash yourrom.rom"
+	echo "usage: ./lenovobios_secondflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
 	exit 1
 fi
@@ -56,19 +37,26 @@ if [ ! -f $1 ]; then
 	exit 1
 fi
 
-# Flash it a 2nd time, to write upper 64K block
+# boardmismatch=force is for people upgrading from libreboot 5th release, where the new ROM's are "ThinkPad X60 / X60s / X60t"
+# and the old ones are "ThinkPad X60 / X60s" and flashrom complains otherwise
+
+bucts="unknown"
+flashrom="unknown"
 if [ -f "DEBLOB" ]; then
-	# Means we are in src archive or git
-	./flashrom/flashrom -p internal -w $1
-elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		# Means we are in bin archive and on an i686 host
-		./flashrom/i686/flashrom -p internal -w $1
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		# Means we are in bin archive and on an x86_64 host
-		./flashrom/x86_64/flashrom -p internal -w $1
+	bucts="./bucts/bucts"
+	flashrom="./flashrom/flashrom"
+elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+	bucts="./bucts/i686/bucts"
+	flashrom="./flashrom/i686/flashrom"
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
+	bucts="./bucts/x86_64/bucts"
+	flashrom="./flashrom/x86_64/flashrom"
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
 fi
+
+$(echo $flashrom) -p internal -w $1
 
 # Reset bucts back to zero
 $errOut = " \
@@ -76,31 +64,10 @@ $errOut = " \
 			A dd'd image (like libreboot's images) flashed with bucts=1 is ok. If the image is not dd'd and bucts=1, \
 			then you should run ./bucts 0 now, or remove the yellow cmos/nvram battery for a minute. \
 			"
-if [ ! -f "DEBLOB" ]
-	then
-		# this means we are working in bin
-		if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-			then
-				# i686
-				if [ ! -f "bucts/i686/bucts" ]; then
-					echo "$errOut"
-					exit 1
-				fi
-				./bucts/i686/bucts 0
-		else
-			# x86_64
-			if [ ! -f "bucts/x86_64/bucts" ]; then
-				echo "$errOut"
-				exit 1
-			fi
-			./bucts/x86_64/bucts 0
-		fi
-else
-	# this means we are working in src
-	if [ ! -f "bucts/bucts" ]; then
-		echo "$errOut"
-		exit 1
-	fi
-	./bucts/bucts 0
+# this means we are working in src
+if [ ! -f "$bucts" ]; then
+	echo "$errOut"
+	exit 1
 fi
 
+$(echo $bucts) 0

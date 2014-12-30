@@ -403,5 +403,7 @@ rm -rf libreboot_src
 rm -rf libreboot_bin
 
 echo "DONE. See libreboot_src.tar.xz and libreboot_bin.tar.xz"
+echo "NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom"
+echo "NOTE FOR FCHMMR: don't forget to add i386 binaries for flashrom/bucts"
 
 # ------------------- DONE ----------------------

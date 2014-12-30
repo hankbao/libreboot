@@ -22,42 +22,10 @@
 # set -u -e -v
 set -v
 
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		echo "Running on i686. ok."
-		sleep 5
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		echo "Running on x86_64. ok."
-		sleep 5
-else
-	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
-	exit 1
-fi
-
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
-
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		echo "Running on i686. ok."
-		sleep 5
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		echo "Running on x86_64"
-		sleep 5
-else
-	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
-	exit 1
-fi
-
-# USE ROOT OR SUDO WHEN EXECUTING THIS
-
-# for T60 or X60 owners with Lenovo BIOS
-# does the 1st part of the flash before shut down
-
 if (( $# != 1 )); then
 	echo "Usage: ./lenovobios_firstflash yourrom.rom"
 	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
@@ -69,56 +37,40 @@ if [ ! -f $1 ]; then
 	exit 1
 fi
 
+bucts="unknown"
+flashromsst="unknown"
+flashrommacronix="unknown"
+if [ -f "DEBLOB" ]; then
+	bucts="./bucts/bucts"
+	flashromsst="./flashrom/flashrom_lenovobios_sst"
+	flashrommacronix="./flashrom/flashrom_lenovobios_macronix"
+elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+	bucts="./bucts/i686/bucts"
+	flashromsst="./flashrom/i686/flashrom_lenovobios_sst"
+	flashrommacronix="./flashrom/i686/flashrom_lenovobios_macronix"
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
+	bucts="./bucts/x86_64/bucts"
+	flashromsst="./flashrom/x86_64/flashrom_lenovobios_sst"
+	flashrommacronix="./flashrom/x86_64/flashrom_lenovobios_macronix"
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
+fi
+
+# Set mucts
 $errOut = " \
 			BUCTS failed. Make sure BUC.TS is 1, or else you will brick your machine. \
 			ABORTING so as to protect against bricking the machine. \
 			"
-if [ ! -f "DEBLOB" ]
-	then
-		# this means we are working in bin
-		if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-			then
-				# i686
-				# needed for first flashing, otherwise machine will be bricked
-				if [ ! -f "bucts/i686/bucts" ]; then
-					echo "$errOut"
-					exit 1
-				fi
-				./bucts/i686/bucts 1
-		else
-			# x86_64
-			# needed for first flashing, otherwise machine will be bricked
-			if [ ! -f "bucts/x86_64/bucts" ]; then
-				echo "$errOut"
-				exit 1
-			fi
-			./bucts/x86_64/bucts 1
-		fi
-else
-	# this means we are working in src
-	# needed for first flashing, otherwise machine will be bricked
-	if [ ! -f "bucts/bucts" ]; then
-		echo "$errOut"
-		exit 1
-	fi
-	./bucts/bucts 1
+# this means we are working in src
+if [ ! -f "$bucts" ]; then
+	echo "$errOut"
+	exit 1
 fi
 
-# run both. one will fail (and be harmless), the other will succeed. 
+$(echo $bucts) 1
 
-if [ -f "DEBLOB" ]; then
-	# Means we are in src archive or git
-	./flashrom/flashrom_lenovobios_sst -p internal -w $1
-	./flashrom/flashrom_lenovobios_macronix -p internal -w $1
-elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		# Means we are in bin archive and on an i686 host
-		./flashrom/i686/flashrom_lenovobios_sst -p internal -w $1
-		./flashrom/i686/flashrom_lenovobios_macronix -p internal -w $1
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		# Means we are in bin archive and on an x86_64 host
-		./flashrom/x86_64/flashrom_lenovobios_sst -p internal -w $1
-		./flashrom/x86_64/flashrom_lenovobios_macronix -p internal -w $1
-fi
+$(echo $flashromsst) -p internal -w $1
+$(echo $flashrommacronix) -p internal -w $1
+
 

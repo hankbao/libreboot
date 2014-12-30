@@ -22,50 +22,31 @@
 # set -u -e -v
 set -v
 
-# These are the tested platforms
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		echo "Running on i686. ok."
-		sleep 5
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		echo "Running on x86_64. ok."
-		sleep 5
-else
-	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
-	exit 1
-fi
-
-# the user must be root to use flashrom
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
-
-# check that the user supplied a path to a ROM image:
 if (( $# != 1 )); then
-	echo "Usage: ./lenovobios_firstflash yourrom.rom"
-	echo "usage: ./lenovobios_firstflash path/to/yourrom.rom"
+	echo "Usage: ./flash yourrom.rom"
+	echo "usage: ./flash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
 	exit 1
 fi
-# if the user did supply a path, check that it exists:
 if [ ! -f $1 ]; then
 	echo "File not found!"
 	exit 1
 fi
 
-# Use flashrom to flash the ROM image:
-
+path="unknown"
 if [ -f "DEBLOB" ]; then
-	# Means we are in src archive or git
-	./flashrom/flashrom -p internal -w $1
-elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		# Means we are in bin archive and on an i686 host
-		./flashrom/i686/flashrom -p internal -w $1
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		# Means we are in bin archive and on an x86_64 host
-		./flashrom/x86_64/flashrom -p internal -w $1
+	path="./flashrom/flashrom"
+elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+	path="./flashrom/i686/flashrom"
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
+	path="./flashrom/x86_64/flashrom"
+else
+	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	exit 1
 fi
+
+$(echo $path) -p internal -w $1
