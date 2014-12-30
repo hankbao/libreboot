@@ -29,8 +29,7 @@
 				<li><a href="#rom">Recommended ROM's to flash</a></li>
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
-				<li><a href="#flashrom">X60/X60S/X60T/T60/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
-				<li><a href="#flashrom_x200">X200: Flashing libreboot (hardware or software)</a></li>
+				<li><a href="#flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
 			</ul>
 
 		<h2>Installing libreboot (hardware)</h2>
@@ -38,6 +37,7 @@
 				<li><a href="x60_unbrick.html">ThinkPad X60/X60S: How to unbrick</a></li>
 				<li><a href="x60tablet_unbrick.html">ThinkPad X60 Tablet: How to unbrick</a></li>
 				<li><a href="t60_unbrick.html">ThinkPad T60: How to unbrick</a></li>
+				<li><a href="x200_external.html">ThinkPad X200: How to unbrick</a> (also the initial installation guide for this machine)</li>
 			</ul>
 
 <hr/>
@@ -321,7 +321,7 @@
 
 <hr/>
 
-	<h1 id="flashrom">X60/X60S/X60T/T60/macbook21: How to flash the ROM's onto your machine (if running libreboot or coreboot already)</h1>
+	<h1 id="flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash the ROM's onto your machine (if running libreboot or coreboot already)</h1>
 
 		<p>
 			<b>
@@ -340,12 +340,31 @@
 		</p>
 		<p>
 			<b>
+				If you have Lenovo BIOS running (X200), go to <a href="x200_external.html">x200_external.html</a> instead.
+			</b>
+		</p>
+		<p>
+			<b>
 				If you have Apple EFI firmware running (macbook21), go to <a href="#flashrom_macbook21">#flashrom_macbook21</a> instead.
 			</b>
 		</p>
 		<p>
 			<b>
 				If you are flashing a Lenovo ThinkPad T60, be sure to read <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>.
+			</b>
+		</p>
+		<p>
+			<b>
+				If you have an X200 with libreboot or coreboot already running, note that
+				the Gbe in the boot flash contains your MAC address. You will need to change the default
+				MAC address inside the ROM images before flashing a new libreboot image. See 
+				<a href="../hcl/x200_remove_me.html#ich9gen">ich9gen</a> for details.
+				
+				Another important note about the X200: even if you do already have libreboot or coreboot,
+				it is possible for the user to write-protect regions in the flash chip, by modifying
+				the flash descriptor. If you have locked regions, you will need an external flasher
+				(see <a href="x200_external.html">x200_external.html</a>) to re-flash those regions. By default,
+				the X200 ROM images in libreboot contain a descriptor+gbe with all regions unlocked.
 			</b>
 		</p>
 		<p>
@@ -391,7 +410,7 @@
 
 			<p>
 				<b>
-					If you boot and you see nothing, try turning up the backlight (Fn+Home for X60/X60S/X60T/T60, F2 for macbook21). 
+					If you boot and you see nothing, try turning up the backlight (Fn+Home for X60/X60S/X60T/T60/X200, F2 for macbook21). 
 				</b>
 			</p>
 
@@ -404,42 +423,6 @@
 		</p>
 
 		<p><a href="#pagetop">Back to top of page</a></p>
-		
-<hr/>
-
-	<h1 id="flashrom_x200">X200: Flashing libreboot (hardware or software)</h1>
-
-		<p>
-			If your X200 is running the original firmware (Lenovo BIOS), follow the instructions at
-			<a href="x200_external.html">x200_external.html</a> first.
-		</p>
-		
-		<p>
-			Software flashing instructions: the guide from <a href="#flashrom">#flashrom</a> ought to work.
-		</p>
-		<p>
-			Notes about how the ME was removed (and disabled) for libreboot can be found at 
-			<a href="../hcl/x200_remove_me.html">../hcl/x200_remove_me.html</a>.
-		</p>
-		<p>
-			On the X200, the Gbe region in the flash chip contains your MAC address. 
-			Libreboot ROM images already contain a descriptor and gbe in them, but
-			with the same MAC address, which probably isn't the one you want. You can change it. 
-			Read the notes about <a href="../hcl/x200_remove_me.html#ich9gen">ich9gen</a> to
-			know how to change the MAC address inside your ROM image before flashing it to your
-			machine.
-		</p>
-		
-		<p>
-			Flashrom supports the flash chips in the X200, but might complain that the laptop isn't whitelisted. 
-			There are two possible solutions: add a whitelist for X200 (and others) to flashrom, use use
-			<b>-p internal:laptop=force_I_want_a_brick</b> instead of <b>-p internal</b> as an argument when
-			running flashrom. 
-		</p>
-		
-		<p>
-			<a href="#pagetop">Back to top of page.</a>
-		</p>
 
 <hr/>
 
