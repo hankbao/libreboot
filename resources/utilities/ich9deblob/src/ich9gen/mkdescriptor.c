@@ -213,15 +213,16 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.descriptor2Map.reserved = 0x0000;
 
     /* OEM section */
+    /* see ../descriptor/descriptor.c */
     /* Magic String (ascii characters) */
-    descriptorStruct.oemSection.magicString[0] = 0x37;
-    descriptorStruct.oemSection.magicString[1] = 0x55;
-    descriptorStruct.oemSection.magicString[2] = 0x52;
-    descriptorStruct.oemSection.magicString[3] = 0x35;
-    descriptorStruct.oemSection.magicString[4] = 0x31;
-    descriptorStruct.oemSection.magicString[5] = 0x32;
-    descriptorStruct.oemSection.magicString[6] = 0x57;
-    descriptorStruct.oemSection.magicString[7] = 0x57;
+    descriptorStruct.oemSection.magicString[0] = 0x4c;
+    descriptorStruct.oemSection.magicString[1] = 0x49;
+    descriptorStruct.oemSection.magicString[2] = 0x42;
+    descriptorStruct.oemSection.magicString[3] = 0x45;
+    descriptorStruct.oemSection.magicString[4] = 0x52;
+    descriptorStruct.oemSection.magicString[5] = 0x41;
+    descriptorStruct.oemSection.magicString[6] = 0x54;
+    descriptorStruct.oemSection.magicString[7] = 0x45;
     /* Padding */
     for (i = 0; i < 248; i++) {
         descriptorStruct.oemSection.padding[i] = 0xFF;

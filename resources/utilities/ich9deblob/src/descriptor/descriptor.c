@@ -97,7 +97,7 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 * 
 	 * To disable a region, set the BASE to 1FFF. Shifted by FLREGIONBITSHIFT,
 	 * this puts the beginning of that region well outside the ROM image. 
-	 * Also set the LIMIT (size) to 0.
+	 * Also set the LIMIT to 0.
 	 */
 	/* Disable (delete) the ME region */
 	deblobbedDescriptorStruct.regionSection.flReg2.BASE = 0x1FFF;
@@ -135,6 +135,21 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	/* The ME is disallowed read-write access to all regions
 	 * (this is probably redundant, since the ME is already removed from libreboot) */
 	deblobbedDescriptorStruct = descriptorMeRegionsForbidden(deblobbedDescriptorStruct);
+	
+	/*
+	 * Miscellaneous
+	 * -------------
+	 */
+	
+	/* Set OEM string to "LIBERATE" */
+	deblobbedDescriptorStruct.oemSection.magicString[0] = 0x4C;
+	deblobbedDescriptorStruct.oemSection.magicString[1] = 0x49;
+	deblobbedDescriptorStruct.oemSection.magicString[2] = 0x42;
+	deblobbedDescriptorStruct.oemSection.magicString[3] = 0x45;
+	deblobbedDescriptorStruct.oemSection.magicString[4] = 0x52;
+	deblobbedDescriptorStruct.oemSection.magicString[5] = 0x41;
+	deblobbedDescriptorStruct.oemSection.magicString[6] = 0x54;
+	deblobbedDescriptorStruct.oemSection.magicString[7] = 0x45;
 	
 	return deblobbedDescriptorStruct;
 }
@@ -474,6 +489,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "\n");
 	/* OEM section */
 	fprintf(fp, "    /* OEM section */\n");
+	fprintf(fp, "    /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    /* Magic String (ascii characters) */\n");
 	for(i = 0; i < 8; i++) {
 		fprintf(fp, "    descriptorStruct.oemSection.magicString[%d] = 0x%02x;\n", i, descriptorStruct.oemSection.magicString[i]);
