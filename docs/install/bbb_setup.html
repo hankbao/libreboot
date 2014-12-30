@@ -114,6 +114,19 @@
 				are done while SSH'd into a BBB.
 			</p>
 			<p>
+				You can also use a serial FTDI debug board, with GNU Screen (example):<br/>
+				# <b>screen /dev/ttyUSB0 115200</b><br/>
+				<a href="images/x200/ftdi.jpg">images/x200/ftdi.jpg</a> and 
+				<a href="images/x200/ftdi_port.jpg">images/x200/ftdi_port.jpg</a>
+				show an FTDI debug board in use. With screen you can then login as root, like you would using SSH.<br/>
+				Using this, you can also see text output (from kernel, etc) when booting the machine.
+			</p>
+			<p>
+				You can also simply connect the USB cable from the BBB to another computer and a new network interface will appear,
+				with it's own IP address: this is the BBB. You can SSH into that. Or, you can (example):<br/>
+				# <b>screen /dev/ttyACM0 115200</b>
+			</p>
+			<p>
 				Since it's a bare board (no case) and you are also touching inside your X200, you should be earthed/grounded. 
 				<a href="images/x200/strap.jpg">images/x200/strap.jpg</a> shows how I earthed myself. This is to prevent you 
 				from causing any ESD damage. The surface that you place components on should also be earthed/grounded.
