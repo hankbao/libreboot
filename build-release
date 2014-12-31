@@ -203,6 +203,13 @@ if [ "$arch" = "x86_64" ]
 		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
 fi
 
+# cross-compile for ARM
+make clean
+make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
+mkdir ../../../libreboot_bin/cbfstool/armv7l
+mv cbfstool ../../../libreboot_bin/cbfstool/armv7l/
+mv rmodtool ../../../libreboot_bin/cbfstool/armv7l/
+
 cd ../
 rm -rf cbfstool
 mv cbfstool_ cbfstool
