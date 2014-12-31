@@ -20,15 +20,11 @@
 
 set -u -e -v
 
-# These are the tested platforms
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		echo "Running on i686. ok."
-		sleep 2
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		echo "Running on x86_64. ok."
-		sleep 2
+arch="unknown"
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+	arch="i686"
+elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
+	arch="x86_64"
 else
 	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
 	exit 1
@@ -40,39 +36,27 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
+path="unknown"
 if [ -f "DEBLOB" ]; then
-	# Means we are in src archive or git
-	cd resources/utilities/ich9deblob/
-	./ich9gen --macaddress $1
-	cp ich9fdgbe*.bin ../../../bin/
-	cd ../../../bin/
-elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		# Means we are in bin archive and on an i686 host
-		cd ich9deblob/i686/
-		./ich9gen --macaddress $1
-		cp ich9fdgbe*.bin ../../bin/
-		cd ../../bin/
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		# Means we are in bin archive and on an x86_64 host
-		cd ich9deblob/x86_64/
-		./ich9gen --macaddress $1
-		cp ich9fdgbe*.bin ../../bin/
-		cd ../../bin/
+	path="./resources/utilities/ich9deblob/ich9gen"
+else
+	path="./ich9deblob/$arch/ich9gen"
 fi
 
-cd x200_4mb/
-for rom in $(ls)
+$(echo $path) --macaddress $1
+
+for size in "8m" "4m"
 do
-	dd if=../ich9fdgbe_4m.bin of="$rom" bs=1 count=12k conv=notrunc
+	cd bin/x200_"$size"b/
+	for rom in $(ls)
+	do
+		dd if=../../ich9fdgbe_"$size".bin of="$rom" bs=1 count=12k conv=notrunc
+	done
+	cd ../../
 done
-cd ../x200_8mb/
-for rom in $(ls)
-do
-	dd if=../ich9fdgbe_8m.bin of="$rom" bs=1 count=12k conv=notrunc
-done
-cd ../
+
 rm -f ich9fdgbe_4m.bin
 rm -f ich9fdgbe_8m.bin
+rm -f mkgbe.c
+rm -f mkgbe.h
 cd ../

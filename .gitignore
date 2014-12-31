@@ -24,3 +24,5 @@
 /resources/utilities/ich9deblob/ich9fdgbe_4m.bin
 /resources/utilities/ich9deblob/ich9fdgbe_8m.bin
 /resources/utilities/coreboot-libre/tocheck
+/mkgbe.c
+/mkgbe.h
