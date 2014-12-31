@@ -42,6 +42,9 @@ apt-get -y install subversion git
 
 apt-get -y install build-essential
 
+# for cross-compiling ARM binaries
+apt-get -y install gcc-arm-linux-gnueabi
+
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
