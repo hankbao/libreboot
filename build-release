@@ -21,14 +21,17 @@
 
 set -u -e -v
 
+arch="unknown"
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
 	then
+		arch="i686"
 		echo "Running on i686. ok."
-		sleep 5
+		sleep 2
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
+		arch="x86_64"
 		echo "Running on x86_64. ok."
-		sleep 5
+		sleep 2
 else
 	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
 	exit 1
@@ -152,15 +155,8 @@ cp -r bucts bucts_
 # make it statically compile
 ./builddeps-bucts static
 mkdir libreboot_bin/bucts
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		mkdir libreboot_bin/bucts/i686
-		mv bucts/bucts libreboot_bin/bucts/i686
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		mkdir libreboot_bin/bucts/x86_64
-		mv bucts/bucts libreboot_bin/bucts/x86_64
-fi
+mkdir libreboot_bin/bucts/"$arch"
+mv bucts/bucts libreboot_bin/bucts/"$arch"
 rm -rf bucts
 mv bucts_ bucts
 
@@ -174,19 +170,10 @@ cp -r flashrom flashrom_
 ./builddeps-flashrom static
 mkdir libreboot_bin/flashrom
 cd flashrom/
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
-	then
-		mkdir ../libreboot_bin/flashrom/i686
-		mv flashrom ../libreboot_bin/flashrom/i686
-		mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/i686
-		mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/i686
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		mkdir ../libreboot_bin/flashrom/x86_64
-		mv flashrom ../libreboot_bin/flashrom/x86_64
-		mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/x86_64
-		mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/x86_64
-fi
+mkdir ../libreboot_bin/flashrom/"$arch"
+mv flashrom ../libreboot_bin/flashrom/"$arch"
+mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/"$arch"
+mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/"$arch"
 cd ../
 rm -rf flashrom
 mv flashrom_ flashrom
@@ -201,18 +188,13 @@ cd cbfstool/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/cbfstool
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+
+mkdir ../../../libreboot_bin/cbfstool/"$arch"
+mv cbfstool ../../../libreboot_bin/cbfstool/"$arch"/
+mv rmodtool ../../../libreboot_bin/cbfstool/"$arch"/
+
+if [ "$arch" = "x86_64" ]
 	then
-		# User is building on 32-bit host. Build only 32-bit binaries
-		mkdir ../../../libreboot_bin/cbfstool/i686
-		mv cbfstool ../../../libreboot_bin/cbfstool/i686/
-		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
-elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
-	then
-		# Build the 64-bit binaries
-		mkdir ../../../libreboot_bin/cbfstool/x86_64
-		mv cbfstool ../../../libreboot_bin/cbfstool/x86_64/
-		mv rmodtool ../../../libreboot_bin/cbfstool/x86_64/
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
@@ -220,6 +202,7 @@ elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
 		mv cbfstool ../../../libreboot_bin/cbfstool/i686/
 		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
 fi
+
 cd ../
 rm -rf cbfstool
 mv cbfstool_ cbfstool
@@ -235,18 +218,13 @@ cd ich9deblob/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/ich9deblob
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+
+mkdir ../../../libreboot_bin/ich9deblob/"$arch"
+mv ich9deblob ../../../libreboot_bin/ich9deblob/"$arch"/
+mv ich9gen ../../../libreboot_bin/ich9deblob/"$arch"/
+
+if [ "$arch" = "x86_64" ]
 	then
-		# User is building on 32-bit host. Build only 32-bit binaries
-		mkdir ../../../libreboot_bin/ich9deblob/i686
-		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
-		mv ich9gen ../../../libreboot_bin/ich9deblob/i686/
-elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
-	then
-		# Build the 64-bit binaries
-		mkdir ../../../libreboot_bin/ich9deblob/x86_64
-		mv ich9deblob ../../../libreboot_bin/ich9deblob/x86_64/
-		mv ich9gen ../../../libreboot_bin/ich9deblob/x86_64/
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
@@ -254,6 +232,7 @@ elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
 		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
 		mv ich9gen ../../../libreboot_bin/ich9deblob/i686/
 fi
+
 cd ../
 rm -rf ich9deblob
 mv ich9deblob_ ich9deblob
@@ -269,22 +248,19 @@ cd nvramtool/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/nvramtool
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+
+mkdir ../../../libreboot_bin/nvramtool/"$arch"
+mv nvramtool ../../../libreboot_bin/nvramtool/"$arch"/
+
+if [ "$arch" = "x86_64" ]
 	then
-		# User is building on 32-bit host. Build only 32-bit binaries
-		mkdir ../../../libreboot_bin/nvramtool/i686
-		mv nvramtool ../../../libreboot_bin/nvramtool/i686/
-elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
-	then
-		# Build the 64-bit binaries
-		mkdir ../../../libreboot_bin/nvramtool/x86_64
-		mv nvramtool ../../../libreboot_bin/nvramtool/x86_64/
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
 		mkdir ../../../libreboot_bin/nvramtool/i686
 		mv nvramtool ../../../libreboot_bin/nvramtool/i686/
 fi
+
 cd ../
 rm -rf nvramtool
 mv nvramtool_ nvramtool
@@ -300,16 +276,12 @@ cd cbmem/
 make clean
 make SHARED=0 CC='gcc -static'
 mkdir ../../../libreboot_bin/cbmem
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+
+mkdir ../../../libreboot_bin/cbmem/"$arch"
+mv cbmem ../../../libreboot_bin/cbmem/"$arch"/
+
+if [ "$arch" = "x86_64" ]
 	then
-		# User is building on 32-bit host. Build only 32-bit binaries
-		mkdir ../../../libreboot_bin/cbmem/i686
-		mv cbmem ../../../libreboot_bin/cbmem/i686/
-elif [ $(uname -i) = "x86_64" ] || $(uname -m) = "x86_64"
-	then
-		# Build the 64-bit binaries
-		mkdir ../../../libreboot_bin/cbmem/x86_64
-		mv cbmem ../../../libreboot_bin/cbmem/x86_64/
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
