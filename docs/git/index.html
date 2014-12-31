@@ -518,6 +518,19 @@
 				$ <b>./builddeps-flashrom static</b><br/>
 				$ <b>./builddeps-bucts static</b>
 			</p>
+			
+			<p>
+				The same as above applies for ARM (except, building bucts on ARM is pointless, and for flashrom
+				you only need the normal executable since the lenovobios_sst and _macronix executables are meant
+				to run on an X60/T60 while lenovo bios is present, working around the security restrictions).
+			</p>
+			
+			<p>
+				The script <b>mkextbuild</b> will generate a small source tarball called <b>tobuild.tar.xz</b> that
+				contains everything you need (including source) with which to build flashrom/bucts on these hosts.
+				The <b>build-release</b> script will have already executed this script for you, so the archive should
+				already exist.
+			</p>
 
 			<p>
 				You'll find that the files libreboot_bin.tar.xz and libreboot_src.tar.xz have been created.

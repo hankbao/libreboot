@@ -28,3 +28,5 @@
 /mkgbe.h
 /ich9fdgbe_8m.bin
 /ich9fdgbe_4m.bin
+/tobuild/
+/tobuild.tar.xz

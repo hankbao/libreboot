@@ -1,0 +1,61 @@
+#!/bin/bash
+
+#  mkextbuild script: prepare a small source archive for those utils
+#  that don't easily cross-compile. Then the tarball can be extracted
+#  on those machines with the target architecture, and compiled.
+#
+#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+set -u -e -v
+
+# delete the old data
+rm -rf tobuild
+rm -f tobuild.tar.xz
+
+# this is where they will go
+mkdir tobuild
+
+# for reference (build dependencies)
+cp deps-trisquel tobuild/
+
+# flashrom
+cp -r flashrom tobuild/
+cd tobuild/flashrom/
+rm -f flashrom_lenovobios_sst flashrom_lenovobios_macronix
+make clean
+cd ../../
+mkdir tobuild/resources
+mkdir tobuild/resources/flashrom
+mkdir tobuild/resources/flashrom/patch
+cp -r resources/flashrom/patch/* tobuild/resources/flashrom/patch/
+cp builddeps-flashrom tobuild/
+
+# bucts
+cp -r bucts tobuild/
+cd tobuild/bucts/
+make clean
+cd ../../
+mkdir tobuild/resources/bucts
+mkdir tobuild/resources/bucts/patch
+cp -r resources/bucts/patch/* tobuild/resources/bucts/patch
+cp -r builddeps-bucts tobuild/
+
+# that is all. now tar it up
+tar cfJ tobuild.tar.xz tobuild
+
+# and delete the directory
+rm -rf tobuild/
