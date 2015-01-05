@@ -22,6 +22,7 @@
  */
  
 /* Initially based on proof of concept by Steve Shenton. */
+/* Original utility can be found at https://gitorious.org/ich9descriptortool */
  
 /*
  * Read a factory.rom dump (ich9m/gm45 machines) and 
