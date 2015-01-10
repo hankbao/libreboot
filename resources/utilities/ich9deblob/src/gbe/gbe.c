@@ -33,15 +33,15 @@
  */
 
 /* Read a 16-bit unsigned int from a supplied region buffer */
-unsigned short gbeGetRegionWordFrom8kBuffer(int index, char* regionData)
+uint16_t gbeGetRegionWordFrom8kBuffer(int index, uint8_t* regionData)
 {
-	return *((unsigned short*)(regionData + (index * 2)));
+	return *((uint16_t*)(regionData + (index * 2)));
 }
 
 /* 
  * gbe checksum calculation (algorithm based on datasheet)
  */
-unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desiredValue, int byteOffset)
+uint16_t gbeGetChecksumFrom8kBuffer(uint8_t* regionData, uint16_t desiredValue, int byteOffset)
 {
 	int i;
 	
@@ -51,8 +51,8 @@ unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desir
 	 */
 	int wordOffset = byteOffset >> 1;
 	
-	unsigned short regionWord; /* store words here for adding to checksum */
-	unsigned short checksum = 0; /* this gbe's checksum */
+	uint16_t regionWord; /* store words here for adding to checksum */
+	uint16_t checksum = 0; /* this gbe's checksum */
 
 	for (i = 0; i < 0x3F; i++) {
 		regionWord = gbeGetRegionWordFrom8kBuffer(i+wordOffset, regionData);
@@ -63,9 +63,9 @@ unsigned short gbeGetChecksumFrom8kBuffer(char* regionData, unsigned short desir
 }
 
 /* checksum calculation for 4k gbe struct (algorithm based on datasheet) */
-unsigned short gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, unsigned short desiredValue)
+uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint16_t desiredValue)
 {
-	char gbeBuffer4k[GBEREGIONSIZE_4K];
+	uint8_t gbeBuffer4k[GBEREGIONSIZE_4K];
 	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE_4K);
 	return gbeGetChecksumFrom8kBuffer(gbeBuffer4k, desiredValue, 0);
 }
@@ -79,7 +79,7 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	 * the backup as desired and then copy it to the main region.
 	 */
 	 
-	int i;
+	unsigned int i;
 	
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE_8K);

@@ -40,6 +40,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "../gbe/gbe.h" /* Needed for GBEREGIONSIZE_4K/8K define */
 
 /* size of the descriptor in bytes */
@@ -67,39 +68,39 @@ struct FLVALSIG
 	 * descriptor mode = 0FF0A55A (hex, big endian). Note: stored in ROM in little endian order.
 	 * Anything else is considered invalid and will put the machine in non-descriptor mode.
 	 */
-	unsigned int signature; /* Put 0x0FF0A55A here. confirmed in deblobbed_descriptor.bin */
+	uint32_t signature; /* Put 0x0FF0A55A here. confirmed in deblobbed_descriptor.bin */
 };
 
 /*  */
 struct FLMAP0
 {
 	/* least signicant bits */
-	unsigned char FCBA                      : 8;
-	unsigned char NC                        : 2;
-	unsigned char reserved1                 : 6;
-	unsigned char FRBA                      : 8;
-	unsigned char NR                        : 3;
-	unsigned char reserved2                 : 5;
+	uint8_t FCBA                      : 8;
+	uint8_t NC                        : 2;
+	uint8_t reserved1                 : 6;
+	uint8_t FRBA                      : 8;
+	uint8_t NR                        : 3;
+	uint8_t reserved2                 : 5;
 	/* most significant bits. */
 };
 
 struct FLMAP1 
 {
 	/* least significant bits */
-	unsigned char FMBA                      : 8;
-	unsigned char NM                        : 3;
-	unsigned char reserved                  : 5;
-	unsigned char FISBA                     : 8;
-	unsigned char ISL                       : 8;
+	uint8_t FMBA                      : 8;
+	uint8_t NM                        : 3;
+	uint8_t reserved                  : 5;
+	uint8_t FISBA                     : 8;
+	uint8_t ISL                       : 8;
 	/* most significant bits */
 };
 
 struct FLMAP2 
 {
 	/* least significant bits */
-	unsigned char FMSBA                     : 8;
-	unsigned char MSL                       : 8;
-	unsigned short reserved                 : 16;
+	uint8_t FMSBA                     : 8;
+	uint8_t MSL                       : 8;
+	uint16_t reserved                 : 16;
 	/* most significant bits */
 };
 
@@ -115,35 +116,35 @@ struct FLMAPS
 struct FLCOMP 
 {
 	/* least significant bits */
-	unsigned char component1Density         : 3;
-	unsigned char component2Density         : 3;
-	unsigned char reserved1                 : 2;
-	unsigned char reserved2                 : 8;
-	unsigned char reserved3                 : 1;
-	unsigned char readClockFrequency        : 3;
-	unsigned char fastReadSupport           : 1;
-	unsigned char fastreadClockFrequency    : 3;
-	unsigned char writeEraseClockFrequency  : 3;
-	unsigned char readStatusClockFrequency  : 3;
-	unsigned char reserved4                 : 2;
+	uint8_t component1Density         : 3;
+	uint8_t component2Density         : 3;
+	uint8_t reserved1                 : 2;
+	uint8_t reserved2                 : 8;
+	uint8_t reserved3                 : 1;
+	uint8_t readClockFrequency        : 3;
+	uint8_t fastReadSupport           : 1;
+	uint8_t fastreadClockFrequency    : 3;
+	uint8_t writeEraseClockFrequency  : 3;
+	uint8_t readStatusClockFrequency  : 3;
+	uint8_t reserved4                 : 2;
 	/* most significant bits */
 };
 
 struct COMPONENTSECTIONRECORD 
 {
 	struct FLCOMP flcomp;
-	unsigned int flill;
-	unsigned int flpb;
-	unsigned char padding[36];
+	uint32_t flill;
+	uint32_t flpb;
+	uint8_t padding[36];
 };
 
 struct FLREG 
 {
 	/* least significant bits */
-	unsigned short BASE                     : 13;
-	unsigned short reserved1                : 3;
-	unsigned short LIMIT                    : 13;
-	unsigned short reserved2                : 3;
+	uint16_t BASE                     : 13;
+	uint16_t reserved1                : 3;
+	uint16_t LIMIT                    : 13;
+	uint16_t reserved2                : 3;
 	/* most significant bits */
 };
 
@@ -159,25 +160,25 @@ struct REGIONSECTIONRECORD
 	struct FLREG flReg2;                         /*  ME         */
 	struct FLREG flReg3;                         /*  Gbe        */
 	struct FLREG flReg4;                         /*  Platform   */
-	unsigned char padding[12];
+	uint8_t padding[12];
 };
 
 struct FLMSTR 
 {
 	/* least significant bits */
-   unsigned short requesterId              : 16;
-	unsigned char fdRegionReadAccess        : 1;
-	unsigned char biosRegionReadAccess      : 1;
-	unsigned char meRegionReadAccess        : 1;
-	unsigned char gbeRegionReadAccess       : 1;
-	unsigned char pdRegionReadAccess        : 1;
-	unsigned char reserved1                 : 3; /* Must be zero, according to datasheet */
-	unsigned char fdRegionWriteAccess       : 1;
-	unsigned char biosRegionWriteAccess     : 1;
-	unsigned char meRegionWriteAccess       : 1;
-	unsigned char gbeRegionWriteAccess      : 1;
-	unsigned char pdRegionWriteAccess       : 1;
-	unsigned char reserved2                 : 3; /* Must be zero, according to datasheet */
+   uint16_t requesterId              : 16;
+	uint8_t fdRegionReadAccess        : 1;
+	uint8_t biosRegionReadAccess      : 1;
+	uint8_t meRegionReadAccess        : 1;
+	uint8_t gbeRegionReadAccess       : 1;
+	uint8_t pdRegionReadAccess        : 1;
+	uint8_t reserved1                 : 3; /* Must be zero, according to datasheet */
+	uint8_t fdRegionWriteAccess       : 1;
+	uint8_t biosRegionWriteAccess     : 1;
+	uint8_t meRegionWriteAccess       : 1;
+	uint8_t gbeRegionWriteAccess      : 1;
+	uint8_t pdRegionWriteAccess       : 1;
+	uint8_t reserved2                 : 3; /* Must be zero, according to datasheet */
 	/* most significant bits */
 };
 
@@ -187,39 +188,39 @@ struct MASTERACCESSSECTIONRECORD
 	struct FLMSTR flMstr1;                       /* Flash Master 1 (Host CPU / BIOS) */
 	struct FLMSTR flMstr2;                       /* Flash Master 2 (ME) */
 	struct FLMSTR flMstr3;                       /* Flash Master 3 (Gbe) */
-	unsigned char padding[148];
+	uint8_t padding[148];
 };
 
 struct ICHSTRAP0 
 {
 	/* least significant bits */
 	                                             /* todo: add MeSmBus2Sel (boring setting) */
-	unsigned char meDisable                 : 1; /* If true, ME is disabled. */
-	unsigned char reserved1                 : 6;
-	unsigned char tcoMode                   : 1; /* TCO Mode: (Legacy,TCO Mode) The TCO Mode, along with the BMCMODE strap, determines the behavior of the IAMT SmBus controller. */
-	unsigned char smBusAddress              : 7; /* The ME SmBus 7-bit address. */
-	unsigned char bmcMode                   : 1; /* BMC mode: If true, device is in BMC mode.  If Intel(R) AMT or ASF using Intel integrated LAN then this should be false. */
-	unsigned char tripPointSelect           : 1; /* Trip Point Select: false the NJCLK input buffer is matched to 3.3v signal from the external PHY device, true is matched to 1.8v. */
-	unsigned char reserved2                 : 2;
-	unsigned char integratedGbe             : 1; /* Integrated GbE or PCI Express select: (PCI Express,,Integrated GbE) Defines what PCIe Port 6 is used for. */
-	unsigned char lanPhy                    : 1; /* LANPHYPC_GP12_SEL: Set to 0 for GP12 to be used as GPIO (General Purpose Input/Output), or 1 for GP12 to be used for native mode as LAN_PHYPC for 82566 LCD device */
-	unsigned char reserved3                 : 3;
-	unsigned char dmiRequesterId            : 1; /* DMI requestor ID security check disable: The primary purpose of this strap is to support server environments with multiple CPUs that each have a different RequesterID that can access the Flash. */
-	unsigned char smBus2Address             : 7; /* The ME SmBus 2 7-bit address. */
+	uint8_t meDisable                 : 1; /* If true, ME is disabled. */
+	uint8_t reserved1                 : 6;
+	uint8_t tcoMode                   : 1; /* TCO Mode: (Legacy,TCO Mode) The TCO Mode, along with the BMCMODE strap, determines the behavior of the IAMT SmBus controller. */
+	uint8_t smBusAddress              : 7; /* The ME SmBus 7-bit address. */
+	uint8_t bmcMode                   : 1; /* BMC mode: If true, device is in BMC mode.  If Intel(R) AMT or ASF using Intel integrated LAN then this should be false. */
+	uint8_t tripPointSelect           : 1; /* Trip Point Select: false the NJCLK input buffer is matched to 3.3v signal from the external PHY device, true is matched to 1.8v. */
+	uint8_t reserved2                 : 2;
+	uint8_t integratedGbe             : 1; /* Integrated GbE or PCI Express select: (PCI Express,,Integrated GbE) Defines what PCIe Port 6 is used for. */
+	uint8_t lanPhy                    : 1; /* LANPHYPC_GP12_SEL: Set to 0 for GP12 to be used as GPIO (General Purpose Input/Output), or 1 for GP12 to be used for native mode as LAN_PHYPC for 82566 LCD device */
+	uint8_t reserved3                 : 3;
+	uint8_t dmiRequesterId            : 1; /* DMI requestor ID security check disable: The primary purpose of this strap is to support server environments with multiple CPUs that each have a different RequesterID that can access the Flash. */
+	uint8_t smBus2Address             : 7; /* The ME SmBus 2 7-bit address. */
 	/* most significant bits */
 };
 
 struct ICHSTRAP1 
 {
 	/* least significant bits */
-	unsigned char northMlink                : 1;  /* North MLink Dynamic Clock Gate Disable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
-	unsigned char southMlink                : 1;  /* South MLink Dynamic Clock Gate Enable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
-	unsigned char meSmbus                   : 1;  /* ME SmBus Dynamic Clock Gate Enable : Sets the default value for the ME SMBus Dynamic Clock Gate Enable for both the ME SmBus controllers. */
-	unsigned char sstDynamic                : 1;  /* SST Dynamic Clock Gate Enable : Sets the default value for the SST Clock Gate Enable registers. */
-	unsigned char reserved1                 : 4;
-	unsigned char northMlink2               : 1;  /* North MLink 2 Non-Posted Enable : 'true':North MLink supports two downstream non-posted requests. 'false':North MLink supports one downstream non-posted requests. */
-	unsigned char reserved2                 : 7;
-	unsigned short reserved3                : 16;
+	uint8_t northMlink                : 1;  /* North MLink Dynamic Clock Gate Disable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
+	uint8_t southMlink                : 1;  /* South MLink Dynamic Clock Gate Enable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
+	uint8_t meSmbus                   : 1;  /* ME SmBus Dynamic Clock Gate Enable : Sets the default value for the ME SMBus Dynamic Clock Gate Enable for both the ME SmBus controllers. */
+	uint8_t sstDynamic                : 1;  /* SST Dynamic Clock Gate Enable : Sets the default value for the SST Clock Gate Enable registers. */
+	uint8_t reserved1                 : 4;
+	uint8_t northMlink2               : 1;  /* North MLink 2 Non-Posted Enable : 'true':North MLink supports two downstream non-posted requests. 'false':North MLink supports one downstream non-posted requests. */
+	uint8_t reserved2                 : 7;
+	uint16_t reserved3                : 16;
 	/* most significant bits */
 };
 
@@ -228,20 +229,20 @@ struct ICHSTRAPSRECORD
 {
 	struct ICHSTRAP0 ichStrap0;
 	struct ICHSTRAP1 ichStrap1;
-	unsigned char padding[248];
+	uint8_t padding[248];
 };
 
 struct MCHSTRAP0 
 {
 	/* least significant bits */
-	unsigned char meDisable                 : 1;  /* If true, ME is disabled. */
-	unsigned char meBootFromFlash           : 1;  /* ME boot from Flash - guessed location */
-	unsigned char tpmDisable                : 1;  /* iTPM Disable : When set true, iTPM Host Interface is disabled. When set false (default), iTPM is enabled. */
-	unsigned char reserved1                 : 3;
-	unsigned char spiFingerprint            : 1;  /* SPI Fingerprint Sensor Present: Indicates if an SPI Fingerprint sensor is present at CS#1. */
-	unsigned char meAlternateDisable        : 1;  /* ME Alternate Disable: Setting this bit allows ME to perform critical chipset functions but prevents loading of any ME FW applications. */
-	unsigned char reserved2                 : 8;
-	unsigned short reserved3                : 16;
+	uint8_t meDisable                 : 1;  /* If true, ME is disabled. */
+	uint8_t meBootFromFlash           : 1;  /* ME boot from Flash - guessed location */
+	uint8_t tpmDisable                : 1;  /* iTPM Disable : When set true, iTPM Host Interface is disabled. When set false (default), iTPM is enabled. */
+	uint8_t reserved1                 : 3;
+	uint8_t spiFingerprint            : 1;  /* SPI Fingerprint Sensor Present: Indicates if an SPI Fingerprint sensor is present at CS#1. */
+	uint8_t meAlternateDisable        : 1;  /* ME Alternate Disable: Setting this bit allows ME to perform critical chipset functions but prevents loading of any ME FW applications. */
+	uint8_t reserved2                 : 8;
+	uint16_t reserved3                : 16;
 	/* most significant bits */
 };
 
@@ -249,36 +250,36 @@ struct MCHSTRAP0
 struct MCHSTRAPSRECORD 
 {
 	struct MCHSTRAP0 mchStrap0;
-	unsigned char padding[3292];
+	uint8_t padding[3292];
 };
 
 /* ME VSCC Table */
 struct MEVSCCTABLERECORD 
 {
-	unsigned int jid0;
-	unsigned int vscc0;
-	unsigned int jid1;
-	unsigned int vscc1;
-	unsigned int jid2;
-	unsigned int vscc2;
-	unsigned char padding[4];
+	uint32_t jid0;
+	uint32_t vscc0;
+	uint32_t jid1;
+	uint32_t vscc1;
+	uint32_t jid2;
+	uint32_t vscc2;
+	uint8_t padding[4];
 };
 
 /* Descriptor Map 2 Record */
 struct DESCRIPTORMAP2RECORD
 {
 	/* least significant bits */
-	unsigned char meVsccTableBaseAddress    : 8;
-	unsigned char meVsccTableLength         : 8;
-	unsigned short reserved                 : 16;
+	uint8_t meVsccTableBaseAddress    : 8;
+	uint8_t meVsccTableLength         : 8;
+	uint16_t reserved                 : 16;
 	/* most significant bits */
 };
 
 /* OEM section */
 struct OEMSECTIONRECORD 
 {
-	unsigned char magicString[8];
-	unsigned char padding[248];
+	uint8_t magicString[8];
+	uint8_t padding[248];
 };
 
 /* 4KiB descriptor region, goes at the beginning of the ROM image */

@@ -22,6 +22,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "ich9gen/mkdescriptor.h"
 #include "ich9gen/mkgbe.h"

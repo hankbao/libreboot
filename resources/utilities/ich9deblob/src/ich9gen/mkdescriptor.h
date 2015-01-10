@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include "../descriptor/descriptor.h"
 
 /* ROM image sizes in bytes */

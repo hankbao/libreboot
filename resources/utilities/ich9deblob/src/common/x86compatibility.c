@@ -51,10 +51,10 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 /* endianness check. big endian forced to fail */
 int systemIsBigEndian() 
 {
-	unsigned short steak = 0xBEEF;
-	unsigned char *grill = (unsigned char*)&steak;
+	uint16_t steak = 0xBEEF;
+	uint8_t *grill = (uint8_t*)&steak;
 	
-	if (*grill==0xBE) {
+	if (*grill!=0xEF) {
 		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
 		return 1;
 	}
@@ -66,7 +66,7 @@ int structMembersWrongOrder()
 {
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
-	unsigned char *meVsccTablePtr = (unsigned char*)&descriptorDummy.meVsccTable;
+	uint8_t *meVsccTablePtr = (uint8_t*)&descriptorDummy.meVsccTable;
 	
 	/* These do not use bitfields.  */
 	descriptorDummy.meVsccTable.jid0 = 0x01020304;  /* unsigned int 32-bit */
@@ -124,7 +124,7 @@ int structBitfieldWrongOrder()
 {
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
-	unsigned char *flMap0Ptr = (unsigned char*)&descriptorDummy.flMaps.flMap0;
+	uint8_t *flMap0Ptr = (uint8_t*)&descriptorDummy.flMaps.flMap0;
 	
 	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      /* :8 --> 10100010 */
 	descriptorDummy.flMaps.flMap0.NC = 0x02;        /* :2 --> 10       */

@@ -23,7 +23,7 @@
 int main(int argc, char *argv[]) 
 {
 	int i, j;
-	unsigned char customMacAddress[6]; /* Only set/used if the user wants to */
+	uint8_t customMacAddress[6]; /* Only set/used if the user wants to */
 	
 	struct GBEREGIONRECORD_8K gbeStruct8k = generatedGbeStruct8k();
 	struct DESCRIPTORREGIONRECORD descriptorStruct4M = generatedDescriptorStructRom4M();
@@ -74,11 +74,11 @@ int main(int argc, char *argv[])
 				/* Go through each nibble of the byte */
 				for(j=0; j<2; j++) {
 					if(argv[2][(i*3)+j]>='a' && argv[2][(i*3)+j]<='f')
-						customMacAddress[i] |= (argv[2][(i*3)+j] - 87) << ((j^1) << 2);
+						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 87) << ((j^1) << 2));
 					else if(argv[2][(i*3)+j]>='A' && argv[2][(i*3)+j]<='F')
-						customMacAddress[i] |= (argv[2][(i*3)+j] - 55) << ((j^1) << 2);
+						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 55) << ((j^1) << 2));
 					else if(argv[2][(i*3)+j]>='0' && argv[2][(i*3)+j]<='9')
-						customMacAddress[i] |= (argv[2][(i*3)+j] - 48) << ((j^1) << 2);
+						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 48) << ((j^1) << 2));
 					else {
 						printf("ich9gen: invalid mac address format (non-hex characters)\n");
 						return 1;

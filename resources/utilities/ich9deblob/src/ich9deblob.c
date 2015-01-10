@@ -47,13 +47,13 @@
 
 #include "ich9deblob.h"
 
-int main(int argc, char *argv[])
+int main()
 {
 	/*
 	 * descriptor region. Will have an actual descriptor struct mapped to it (from the factory.rom dump)
 	 * and then it will be modified (deblobbed) to remove the ME/AMT
 	 */
-	char factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
+	uint8_t factoryDescriptorBuffer[DESCRIPTORREGIONSIZE];
 	struct DESCRIPTORREGIONRECORD factoryDescriptorStruct;
 	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
 	
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
 	 * gbe region. Well have actual gbe buffer mapped to it (from the factory.rom dump)
 	 * and then it will be modified to correct the main region
 	 */
-	char factoryGbeBuffer8k[GBEREGIONSIZE_8K];
+	uint8_t factoryGbeBuffer8k[GBEREGIONSIZE_8K];
 	struct GBEREGIONRECORD_8K factoryGbeStruct8k;
 	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
 	
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
 	 * Used to store the location of the Gbe
 	 * region inside the factory.rom image.
 	 */
-	unsigned int factoryGbeRegionStart;
+	uint32_t factoryGbeRegionStart;
 	
 	/* names of the files that this utility will handle */
 	char* factoryRomFilename = "factory.rom";                       /* user-supplied factory.bin dump (original firmware) */
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
 	 * Get the descriptor region dump from the factory.rom
 	 * (goes in factoryDescriptorBuffer variable)
 	 */
-	bufferLength = fread(factoryDescriptorBuffer, sizeof(char), DESCRIPTORREGIONSIZE, fileStream);
+	bufferLength = fread(factoryDescriptorBuffer, 1, DESCRIPTORREGIONSIZE, fileStream);
 	if (DESCRIPTORREGIONSIZE != bufferLength) // 
 	{
 		printf("\nerror: could not read descriptor from factory.rom (%i) bytes read\n", bufferLength);
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
 	 */
 	fseek(fileStream, factoryGbeRegionStart, SEEK_SET);
 	/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
-	bufferLength = fread(factoryGbeBuffer8k, sizeof(char), GBEREGIONSIZE_8K, fileStream);
+	bufferLength = fread(factoryGbeBuffer8k, 1, GBEREGIONSIZE_8K, fileStream);
 	if (GBEREGIONSIZE_8K != bufferLength)
 	{
 		printf("\nerror: could not read GBe region from factory.rom (%i) bytes read\n", bufferLength);

@@ -18,7 +18,8 @@
 #
 
 CC=gcc
-CFLAGS=-I. -Wall -g
+FORCEC99=-std=c99
+CFLAGS=-I. -Wall -Wextra -g $(FORCEC99)
 NOLINKER=-c
 
 all: ich9deblob ich9gen

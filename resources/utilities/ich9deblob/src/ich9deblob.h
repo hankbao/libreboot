@@ -26,12 +26,13 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 #include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by ich9deblob */
 #include "common/x86compatibility.h" /* system/compiler compatibility checks. This code is not portable. */
 #include "descriptor/descriptor.h"   /* structs describing what's in the descriptor region */
 #include "gbe/gbe.h"                 /* structs describing what's in the gbe region */
 
-int main(int argc, char *argv[]);
+int main();
 
 #endif
