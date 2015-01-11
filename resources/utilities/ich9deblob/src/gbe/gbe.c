@@ -33,13 +33,13 @@
  */
 
 /* gbe checksum calculation (algorithm based on datasheet) */
-uint16_t gbeGetChecksumFrom4kBuffer(uint16_t* regionData, uint16_t desiredValue, int gbeRegionBase)
+uint16_t gbeGetChecksumFrom4kBuffer(uint16_t* gbeWord, uint16_t desiredValue, int gbeRegionBase)
 {
 	int wordOffset;
 	uint16_t total = 0;
 
 	for (wordOffset = 0; wordOffset < 0x3F; wordOffset++)
-		total += regionData[wordOffset + (gbeRegionBase>>1)];
+		total += gbeWord[wordOffset + (gbeRegionBase>>1)];
 	
 	return desiredValue - total;
 }
