@@ -33,9 +33,9 @@
  */
 
 /* Read a 16-bit unsigned int from a supplied region buffer */
-uint16_t gbeGetRegionWordFrom8kBuffer(int index, uint8_t* regionData)
+uint16_t gbeGetRegionWordFrom8kBuffer(int wordOffset, uint8_t* regionData)
 {
-	return *((uint16_t*)(regionData + (index << 1)));
+	return *((uint16_t*)(regionData + (wordOffset << 1)));
 }
 
 /* 
