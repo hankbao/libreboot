@@ -56,27 +56,13 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	unsigned int i;
 	
 	/*
-	 * Word 40h to 53h of Gbe had this in the old deblobbed_descriptor.bin:
-	 * 20 60 1F 00 02 00 13 00 00 80 1D 00 FF 00 16 00 DD CC 18 00 11 20 17 00 DD DD 18 00 12 20 17 00 00 80 1D 00 00 00 1F 00
-	 * 
-	 * We really don't know. Blanking them with 0xFF seems harmless, though (nothing important seems broken).
-	 * 
 	 * http://www.intel.co.uk/content/dam/doc/application-note/82573-nvm-map-appl-note.pdf
 	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT. 
-	 * Since libreboot disables and removes ME/AMT, it makes sense that blanking out words 40h to 53h 
-	 * has no effect on functionality, since ME/AMT is already removed (assuming that 40-53 is really for AMT).
+	 * Writing over it doesn't seem to cause any harm, since the ME/AMT is already removed in libreboot.
 	 */
 	for(i = 0; i < sizeof(gbeStruct8k.backup.padding); i++) {
 		gbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
 	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
-	
-	/* Set the default MAC address */
-	gbeStruct8k.backup.macAddress[0] = 0x00;
-	gbeStruct8k.backup.macAddress[1] = 0xF5;
-	gbeStruct8k.backup.macAddress[2] = 0xF0;
-	gbeStruct8k.backup.macAddress[3] = 0x40;
-	gbeStruct8k.backup.macAddress[4] = 0x71;
-	gbeStruct8k.backup.macAddress[5] = 0xFE;
 	
 	/* Fix the checksum */
 	gbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.backup, GBECHECKSUMTOTAL);
