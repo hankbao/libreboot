@@ -51,27 +51,13 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 }
 
 /* modify the gbe region extracted from a factory.rom dump */
-struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k) 
+struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k) 
 {	
-	/*
-	 * Correct the main gbe region. By default, the X200 (as shipped from Lenovo) comes
-	 * with a broken main gbe region, where the backup gbe region is used instead. Modify
-	 * the backup as desired and then copy it to the main region.
-	 */
-	 
 	unsigned int i;
-	
-	struct GBEREGIONRECORD_8K deblobbedGbeStruct8k;
-	memcpy(&deblobbedGbeStruct8k, &factoryGbeStruct8k, GBEREGIONSIZE_8K);
 	
 	/*
 	 * Word 40h to 53h of Gbe had this in the old deblobbed_descriptor.bin:
 	 * 20 60 1F 00 02 00 13 00 00 80 1D 00 FF 00 16 00 DD CC 18 00 11 20 17 00 DD DD 18 00 12 20 17 00 00 80 1D 00 00 00 1F 00
-	 * 
-	 * The same data was observed on others (created from other factory.rom dumps). 
-	 * 
-	 * The datasheets don't mention it for Intel 82576LM ethernet controller (what X200 uses) but later ones
-	 * (for later chipsets) do. Maybe these are "reserved". Or maybe they are just junk.
 	 * 
 	 * We really don't know. Blanking them with 0xFF seems harmless, though (nothing important seems broken).
 	 * 
@@ -80,24 +66,25 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 	 * Since libreboot disables and removes ME/AMT, it makes sense that blanking out words 40h to 53h 
 	 * has no effect on functionality, since ME/AMT is already removed (assuming that 40-53 is really for AMT).
 	 */
-	for(i = 0; i < sizeof(deblobbedGbeStruct8k.backup.padding); i++) {
-		deblobbedGbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
+	for(i = 0; i < sizeof(gbeStruct8k.backup.padding); i++) {
+		gbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
 	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
 	
 	/* Set the default MAC address */
-	deblobbedGbeStruct8k.backup.macAddress[0] = 0x00;
-	deblobbedGbeStruct8k.backup.macAddress[1] = 0xF5;
-	deblobbedGbeStruct8k.backup.macAddress[2] = 0xF0;
-	deblobbedGbeStruct8k.backup.macAddress[3] = 0x40;
-	deblobbedGbeStruct8k.backup.macAddress[4] = 0x71;
-	deblobbedGbeStruct8k.backup.macAddress[5] = 0xFE;
+	gbeStruct8k.backup.macAddress[0] = 0x00;
+	gbeStruct8k.backup.macAddress[1] = 0xF5;
+	gbeStruct8k.backup.macAddress[2] = 0xF0;
+	gbeStruct8k.backup.macAddress[3] = 0x40;
+	gbeStruct8k.backup.macAddress[4] = 0x71;
+	gbeStruct8k.backup.macAddress[5] = 0xFE;
 	
 	/* Fix the checksum */
-	deblobbedGbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(deblobbedGbeStruct8k.backup, GBECHECKSUMTOTAL);
-	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of the backup */
-	memcpy(&deblobbedGbeStruct8k.main, &deblobbedGbeStruct8k.backup, GBEREGIONSIZE_4K);
+	gbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.backup, GBECHECKSUMTOTAL);
 	
-	return deblobbedGbeStruct8k;
+	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of the backup */
+	memcpy(&gbeStruct8k.main, &gbeStruct8k.backup, GBEREGIONSIZE_4K);
+	
+	return gbeStruct8k;
 }
 
 /*
