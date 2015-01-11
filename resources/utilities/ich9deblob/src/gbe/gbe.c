@@ -33,7 +33,7 @@
  */
 
 /* gbe checksum calculation (algorithm based on datasheet) */
-uint16_t gbeGetChecksumFrom8kBuffer(uint16_t* regionData, uint16_t desiredValue, int gbeRegionBase)
+uint16_t gbeGetChecksumFrom4kBuffer(uint16_t* regionData, uint16_t desiredValue, int gbeRegionBase)
 {
 	int wordOffset;
 	uint16_t total = 0;
@@ -47,7 +47,7 @@ uint16_t gbeGetChecksumFrom8kBuffer(uint16_t* regionData, uint16_t desiredValue,
 /* checksum calculation for 4k gbe struct (algorithm based on datasheet) */
 uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint16_t desiredValue)
 {
-	return gbeGetChecksumFrom8kBuffer((uint16_t*)&gbeStruct4k, desiredValue, 0);
+	return gbeGetChecksumFrom4kBuffer((uint16_t*)&gbeStruct4k, desiredValue, 0);
 }
 
 /* modify the gbe region extracted from a factory.rom dump */
