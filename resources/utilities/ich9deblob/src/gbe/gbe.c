@@ -35,20 +35,18 @@
 /* Read a 16-bit unsigned int from a supplied region buffer */
 uint16_t gbeGetRegionWordFrom8kBuffer(int wordOffset, uint8_t* regionData)
 {
-	return *((uint16_t*)(regionData + (wordOffset << 1)));
+	int byteOffset = wordOffset << 1;
+	
+	uint16_t* regionDataWordAddress = (uint16_t*)(regionData+byteOffset);
+	uint16_t regionWord = *regionDataWordAddress;
+	
+	return regionWord;
 }
 
-/* 
- * gbe checksum calculation (algorithm based on datasheet)
- */
+/* gbe checksum calculation (algorithm based on datasheet) */
 uint16_t gbeGetChecksumFrom8kBuffer(uint8_t* regionData, uint16_t desiredValue, int byteOffset)
 {
 	int i;
-	
-	/* 
-	 * byteOffset defines the byte address where the gbe begins in the buffer "regionData".
-	 * However, this function works with 16-bit words. Shift the byte offset to the right for the word (16-bit) offset.
-	 */
 	int wordOffset = byteOffset >> 1;
 	
 	uint16_t regionWord; /* store words here for adding to checksum */
@@ -59,6 +57,7 @@ uint16_t gbeGetChecksumFrom8kBuffer(uint8_t* regionData, uint16_t desiredValue, 
 		checksum += regionWord;
 	}
 	checksum = desiredValue - checksum;
+	
 	return checksum;
 }
 
@@ -67,6 +66,7 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 {
 	uint8_t gbeBuffer4k[GBEREGIONSIZE_4K];
 	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE_4K);
+	
 	return gbeGetChecksumFrom8kBuffer(gbeBuffer4k, desiredValue, 0);
 }
 
