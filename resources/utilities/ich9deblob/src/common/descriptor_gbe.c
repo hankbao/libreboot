@@ -30,14 +30,6 @@ int notCreatedDescriptorGbeFile(struct DESCRIPTORREGIONRECORD descriptorStruct, 
 {
 	FILE* fileStream = NULL;
 	
-	/* These will have the structs copied to them */
-	uint8_t descriptorBuffer[DESCRIPTORREGIONSIZE];
-	uint8_t gbeBuffer8k[GBEREGIONSIZE_8K];
-	
-	/* Copy the structs to buffers, to make writing them as files easier */
-	memcpy(&descriptorBuffer, &descriptorStruct, DESCRIPTORREGIONSIZE); /* descriptor */
-	memcpy(&gbeBuffer8k, &gbeStruct8k, GBEREGIONSIZE_8K);               /* gbe */
-	
 	/* delete old file before continuing */
 	remove(fileName);
 	
@@ -45,14 +37,14 @@ int notCreatedDescriptorGbeFile(struct DESCRIPTORREGIONRECORD descriptorStruct, 
 	fileStream = fopen(fileName, "ab");
 	
 	/* write the descriptor region into the first part */
-	if (DESCRIPTORREGIONSIZE != fwrite(descriptorBuffer, 1, DESCRIPTORREGIONSIZE, fileStream))
+	if (DESCRIPTORREGIONSIZE != fwrite((uint8_t*)&descriptorStruct, 1, sizeof(descriptorStruct), fileStream))
 	{
 		printf("\nerror: writing descriptor region failed\n");
 		return 1;
 	}
 	
 	/* add gbe to the end of the file */
-	if (GBEREGIONSIZE_8K != fwrite(gbeBuffer8k, 1, GBEREGIONSIZE_8K, fileStream))
+	if (GBEREGIONSIZE_8K != fwrite((uint8_t*)&gbeStruct8k, 1, sizeof(gbeStruct8k), fileStream))
 	{
 		printf("\nerror: writing GBe region failed\n");
 		return 1;
