@@ -424,8 +424,7 @@ struct GBEREGIONRECORD_8K {
  * ---------------------------------------------------------------------
  */
  
-uint16_t gbeGetRegionWordFrom8kBuffer(int wordOffset, uint8_t* regionData);
-uint16_t gbeGetChecksumFrom8kBuffer(uint8_t* regionData, uint16_t desiredValue, int byteOffset);
+uint16_t gbeGetChecksumFrom8kBuffer(uint16_t* regionData, uint16_t desiredValue, int gbeRegionBase);
 uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint16_t desiredValue);
 struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k);
 int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName);

@@ -32,42 +32,22 @@
  * ---------------------------------------------------------------------
  */
 
-/* Read a 16-bit unsigned int from a supplied region buffer */
-uint16_t gbeGetRegionWordFrom8kBuffer(int wordOffset, uint8_t* regionData)
-{
-	int byteOffset = wordOffset << 1;
-	
-	uint16_t* regionDataWordAddress = (uint16_t*)(regionData+byteOffset);
-	uint16_t regionWord = *regionDataWordAddress;
-	
-	return regionWord;
-}
-
 /* gbe checksum calculation (algorithm based on datasheet) */
-uint16_t gbeGetChecksumFrom8kBuffer(uint8_t* regionData, uint16_t desiredValue, int byteOffset)
+uint16_t gbeGetChecksumFrom8kBuffer(uint16_t* regionData, uint16_t desiredValue, int gbeRegionBase)
 {
-	int i;
-	int wordOffset = byteOffset >> 1;
-	
-	uint16_t regionWord; /* store words here for adding to checksum */
-	uint16_t checksum = 0; /* this gbe's checksum */
+	int wordOffset;
+	uint16_t total = 0;
 
-	for (i = 0; i < 0x3F; i++) {
-		regionWord = gbeGetRegionWordFrom8kBuffer(i+wordOffset, regionData);
-		checksum += regionWord;
-	}
-	checksum = desiredValue - checksum;
+	for (wordOffset = 0; wordOffset < 0x3F; wordOffset++)
+		total += regionData[wordOffset + (gbeRegionBase>>1)];
 	
-	return checksum;
+	return desiredValue - total;
 }
 
 /* checksum calculation for 4k gbe struct (algorithm based on datasheet) */
 uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint16_t desiredValue)
 {
-	uint8_t gbeBuffer4k[GBEREGIONSIZE_4K];
-	memcpy(&gbeBuffer4k, &gbeStruct4k, GBEREGIONSIZE_4K);
-	
-	return gbeGetChecksumFrom8kBuffer(gbeBuffer4k, desiredValue, 0);
+	return gbeGetChecksumFrom8kBuffer((uint16_t*)&gbeStruct4k, desiredValue, 0);
 }
 
 /* modify the gbe region extracted from a factory.rom dump */
