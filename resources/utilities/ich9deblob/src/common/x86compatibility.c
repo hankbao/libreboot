@@ -48,19 +48,6 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 	return 0;
 }
 
-/* endianness check. big endian forced to fail */
-int systemIsBigEndian() 
-{
-	uint16_t steak = 0xBEEF;
-	uint8_t *grill = (uint8_t*)&steak;
-	
-	if (*grill!=0xEF) {
-		printf("\nunsigned short 0xBEEF: first byte should be EF, but it's BE. Your system is big endian, and unsupported (only little endian is tested)\n");
-		return 1;
-	}
-	return 0; /* you got the good half of the steak */
-}
-
 /* fail if members are presented in the wrong order */
 int structMembersWrongOrder()
 {
@@ -164,7 +151,10 @@ int structBitfieldWrongOrder()
 int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k) 
 {
 	if (structSizesIncorrect(descriptorStruct, gbeStruct8k)) return 1;
-	if (systemIsBigEndian()) return 1;
+	if (IS_BIG_ENDIAN) {
+		printf("big endian not supported\n");
+		return 1;
+	}
 	if (structBitfieldWrongOrder()) return 1;
 	if (structMembersWrongOrder()) return 1; 
 	return 0;

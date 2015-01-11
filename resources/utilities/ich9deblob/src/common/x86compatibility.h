@@ -28,11 +28,13 @@
 #include <string.h>
 #include <stdint.h>
 
+/* http://esr.ibiblio.org/?p=5095 */
+#define IS_BIG_ENDIAN (*(uint16_t *)"\0\xff" < 0x100)
+
 #include "../descriptor/descriptor.h" /* structs describing what's in the descriptor region */
 #include "../gbe/gbe.h"               /* structs describing what's in the gbe region */
 
 int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy);
-int systemIsBigEndian();
 int structMembersWrongOrder();
 int structBitfieldWrongOrder();
 int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k);
