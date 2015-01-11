@@ -23,7 +23,6 @@
 int main(int argc, char *argv[]) 
 {
 	int i, j;
-	uint8_t customMacAddress[6]; /* Only set/used if the user wants to */
 	
 	struct GBEREGIONRECORD_8K gbeStruct8k = generatedGbeStruct8k();
 	struct DESCRIPTORREGIONRECORD descriptorStruct4M = generatedDescriptorStructRom4M();
@@ -69,24 +68,23 @@ int main(int argc, char *argv[])
 				}
 			}
 			for(i=0; i<6; i++) {
-				customMacAddress[i] = 0;
+				gbeStruct8k.main.macAddress[i] = 0;
 				
 				/* Go through each nibble of the byte */
 				for(j=0; j<2; j++) {
 					if(argv[2][(i*3)+j]>='a' && argv[2][(i*3)+j]<='f')
-						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 87) << ((j^1) << 2));
+						gbeStruct8k.main.macAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 87) << ((j^1) << 2));
 					else if(argv[2][(i*3)+j]>='A' && argv[2][(i*3)+j]<='F')
-						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 55) << ((j^1) << 2));
+						gbeStruct8k.main.macAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 55) << ((j^1) << 2));
 					else if(argv[2][(i*3)+j]>='0' && argv[2][(i*3)+j]<='9')
-						customMacAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 48) << ((j^1) << 2));
+						gbeStruct8k.main.macAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 48) << ((j^1) << 2));
 					else {
 						printf("ich9gen: invalid mac address format (non-hex characters)\n");
 						return 1;
 					}
 				}
 			}
-			/* Now that the new MAC address is verified, use it */
-			memcpy(&gbeStruct8k.main.macAddress, &customMacAddress, 6); /* Update MAC address in main Gbe */
+
 			gbeStruct8k.main.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.main, GBECHECKSUMTOTAL); /* Fix the checksum */
 			memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K); /* Copy to the backup */
 			
