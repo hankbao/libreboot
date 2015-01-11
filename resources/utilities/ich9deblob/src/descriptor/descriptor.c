@@ -75,11 +75,8 @@ struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGI
  * Disable the ME/Platform regions, re-locate Descriptor+Gbe+BIOS like so:
  * Descriptor(4K), then Gbe (8K), then the remainder of the image is the BIOS region.
  */
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD factoryDescriptorStruct, unsigned int factoryRomSize)
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
 {
-	struct DESCRIPTORREGIONRECORD deblobbedDescriptorStruct;
-	memcpy(&deblobbedDescriptorStruct, &factoryDescriptorStruct, DESCRIPTORREGIONSIZE);
-
 	/*
 	 * Remove all those nasty blobs:
 	 * -----------------------------
@@ -89,7 +86,7 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 	 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
 	 */
-	deblobbedDescriptorStruct.flMaps.flMap0.NR = 2;
+	descriptorStruct.flMaps.flMap0.NR = 2;
 	
 	/*
 	 * There are 5 regions. Since we set the number now to 3, that means
@@ -100,16 +97,16 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 * Also set the LIMIT to 0.
 	 */
 	/* Disable (delete) the ME region */
-	deblobbedDescriptorStruct.regionSection.flReg2.BASE = 0x1FFF;
-	deblobbedDescriptorStruct.regionSection.flReg2.LIMIT = 0;
+	descriptorStruct.regionSection.flReg2.BASE = 0x1FFF;
+	descriptorStruct.regionSection.flReg2.LIMIT = 0;
 	/* Disable (delete) the Platform region */
-	deblobbedDescriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
-	deblobbedDescriptorStruct.regionSection.flReg4.LIMIT = 0;
+	descriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
+	descriptorStruct.regionSection.flReg4.LIMIT = 0;
 	 
 	/* Other steps needed for the deblobbing: */
-	deblobbedDescriptorStruct.ichStraps.ichStrap0.meDisable = 1; /* Disable the ME in ICHSTRAP0 */
-	deblobbedDescriptorStruct.mchStraps.mchStrap0.meDisable = 1; /* Disable the ME in MCHSTRAP0 */
-	deblobbedDescriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; /* Disable the TPM in MCHSTRAP0 */
+	descriptorStruct.ichStraps.ichStrap0.meDisable = 1; /* Disable the ME in ICHSTRAP0 */
+	descriptorStruct.mchStraps.mchStrap0.meDisable = 1; /* Disable the ME in MCHSTRAP0 */
+	descriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; /* Disable the TPM in MCHSTRAP0 */
 	 
 	/*
 	 * Removing the ME and Platform regions lets us do cool things, like:
@@ -117,13 +114,13 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 */
 	 
 	/* Relocate the Gbe region to begin at 4KiB (immediately after the flash descriptor) */
-	deblobbedDescriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
-	deblobbedDescriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
+	descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
+	descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
 
 	/* BIOS region (where coreboot/libreboot goes) can now fill the entire ROM image,
 	 * after the first 12KiB where the Descriptor+Gbe are. */
-	deblobbedDescriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
-	deblobbedDescriptorStruct.regionSection.flReg1.LIMIT = (factoryRomSize >> FLREGIONBITSHIFT) - 1;
+	descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
+	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
 	 
 	/*
 	 * Set region read/write access
@@ -131,10 +128,10 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 */
 	 
 	/* Host/CPU is allowed to read/write all regions. */
-	deblobbedDescriptorStruct = descriptorHostRegionsUnlocked(deblobbedDescriptorStruct);
+	descriptorStruct = descriptorHostRegionsUnlocked(descriptorStruct);
 	/* The ME is disallowed read-write access to all regions
 	 * (this is probably redundant, since the ME is already removed from libreboot) */
-	deblobbedDescriptorStruct = descriptorMeRegionsForbidden(deblobbedDescriptorStruct);
+	descriptorStruct = descriptorMeRegionsForbidden(descriptorStruct);
 	
 	/*
 	 * Miscellaneous
@@ -142,16 +139,16 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	 */
 	
 	/* Set OEM string to "LIBERATE" */
-	deblobbedDescriptorStruct.oemSection.magicString[0] = 0x4C;
-	deblobbedDescriptorStruct.oemSection.magicString[1] = 0x49;
-	deblobbedDescriptorStruct.oemSection.magicString[2] = 0x42;
-	deblobbedDescriptorStruct.oemSection.magicString[3] = 0x45;
-	deblobbedDescriptorStruct.oemSection.magicString[4] = 0x52;
-	deblobbedDescriptorStruct.oemSection.magicString[5] = 0x41;
-	deblobbedDescriptorStruct.oemSection.magicString[6] = 0x54;
-	deblobbedDescriptorStruct.oemSection.magicString[7] = 0x45;
+	descriptorStruct.oemSection.magicString[0] = 0x4C;
+	descriptorStruct.oemSection.magicString[1] = 0x49;
+	descriptorStruct.oemSection.magicString[2] = 0x42;
+	descriptorStruct.oemSection.magicString[3] = 0x45;
+	descriptorStruct.oemSection.magicString[4] = 0x52;
+	descriptorStruct.oemSection.magicString[5] = 0x41;
+	descriptorStruct.oemSection.magicString[6] = 0x54;
+	descriptorStruct.oemSection.magicString[7] = 0x45;
 	
-	return deblobbedDescriptorStruct;
+	return descriptorStruct;
 }
 
 /*
