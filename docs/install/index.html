@@ -26,7 +26,7 @@
 			</ul>
 		<h2>Installing libreboot (software)</h2>
 			<ul>
-				<li><a href="#rom">Recommended ROM's to flash</a></li>
+				<li><a href="#rom">Recommended ROMs to flash</a></li>
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
 				<li><a href="#flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
@@ -42,7 +42,7 @@
 
 <hr/>
 
-	<h1 id="rom">Recommended ROM's to flash</h1>
+	<h1 id="rom">Recommended ROMs to flash</h1>
 
 		<p>
 			List of directories corresponding to each board:
@@ -53,7 +53,7 @@
 				<li>ThinkPad T60: <b>bin/t60/</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
 				<li>ThinkPad X200: <b>bin/x200_8mb/</b> (8MiB flash chip) or <b>bin/x200_4mb</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
 				<li>Apple MacBook2,1: <b>bin/macbook21/</b></li>
-				<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROM's work)</li>
+				<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROMs work)</li>
 			</ul>
 
 		<p>These images use coreboot text-mode graphics:</p>
@@ -100,7 +100,7 @@
 
 <hr/>
 
-	<h1 id="flashrom_lenovobios">X60/X60S/X60T/T60: How to flash the ROM's onto your machine (if running Lenovo BIOS firmware).</h1>
+	<h1 id="flashrom_lenovobios">X60/X60S/X60T/T60: How to flash the ROMs onto your machine (if running Lenovo BIOS firmware).</h1>
 
 		<div class="important">
 
@@ -126,7 +126,7 @@
 				<b>$ dd if=libreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s libreboot.rom) - 0x10000] count=64k</b><br/>
 				<b>$ dd if=libreboot.rom of=lower64k.bin bs=1 skip=$[$(stat -c %s libreboot.rom) - 0x20000] count=64k</b><br/>
 				<b>$ sha512sum lower64k.bin top64k.bin</b><br/>
-				Make *sure* that they match before you continue. The ROM's included pre-compiled in libreboot should already match.
+				Make *sure* that they match before you continue. The ROMs included pre-compiled in libreboot should already match.
 				If they don't match, then do this (based on those instructions from <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">coreboot wiki</a>):<br/>
 				<b>$ dd if=top64k.bin of=libreboot.rom bs=1 seek=$[$(stat -c %s libreboot.rom) - 0x20000] count=64k conv=notrunc</b><br/>
 				After this, the ROM will be safe to flash. Explanation is provided in <a href="../git/index.html#build_bucts">../git/index.html#build_bucts</a>.
@@ -321,7 +321,7 @@
 
 <hr/>
 
-	<h1 id="flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash the ROM's onto your machine (if running libreboot or coreboot already)</h1>
+	<h1 id="flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash the ROMs onto your machine (if running libreboot or coreboot already)</h1>
 
 		<p>
 			<b>

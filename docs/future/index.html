@@ -79,7 +79,7 @@
 	<h1 id="t60_cpu_microcode">T60 cpu microcode</h1>
 
 		<p>
-			TODO: T60: find (for rare buggy CPU's that are unstable without microcode updates) if there is a workaround (patched kernel, special parameter, etc) So far, only 1 processor has been found to have issues. See microcode errata sheets http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf and http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf and then look at the debugging results collected in <a href="../t7200q">t7200q</a> directory (q means quirk). 
+			TODO: T60: find (for rare buggy CPUs that are unstable without microcode updates) if there is a workaround (patched kernel, special parameter, etc) So far, only 1 processor has been found to have issues. See microcode errata sheets http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf and http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf and then look at the debugging results collected in <a href="../t7200q">t7200q</a> directory (q means quirk). 
 		</p>
 
 		<p>
@@ -93,8 +93,8 @@
 	<h1 id="i945_vram_size">i945 VRAM size</h1>
 
 		<p>
-			Apparently, only 8MB VRAM is available on i945 GPU's (though it could do 64MB):<br/>
-			phcoder: No. Hardware default is 8 MiB. When I wanted to make it configurable, I saw that docs mention only one other alternative: 1MiB. Later isn't event enough for 1024x768 at 24bpp without any acceleration or double buffering. It's possible there are undocumented values. Which options do you have in vendor BIOS?
+			Apparently, only 8MB VRAM is available on i945 GPUs (though it could do 64MB):<br/>
+			phcoder: No. Hardware default is 8 MiB. When I wanted to make it configurable, I saw that docs mention only one other alternative: 1MiB. Later isn't event enough for 1024x768 at 24bpp without any acceleration or double buffering. It's possible that there are undocumented values. Which options do you have in vendor BIOS?
 			How to find out how much vram you have:<br/>
 			phcoder: TOM - BSM<br/>
 			phcoder: check what vendor BIOS offers as options<br/>
@@ -286,10 +286,10 @@
 
 <hr/>
 
-	<h1 id="intelvbttool_results">intelvbttool test results (VGA ROM's)</h1>
+	<h1 id="intelvbttool_results">intelvbttool test results (VGA ROM dumps)</h1>
 		<p>
 			The VBIOS on i945 (intel gpu) platforms is self-modifying; that is,
-			it's contents change when you run it. intelvbttool takes a dump of 
+			its contents change when you run it. intelvbttool takes a dump of 
 			the currently running vbios, and parses it.
 		</p>
 
@@ -307,7 +307,7 @@
 		</p>
 
 		<p>
-			T60 has DVI on it's dock, make sure that the dock is attached when getting this output.
+			T60 has DVI on its dock, make sure that the dock is attached when getting this output.
 		</p>
 
 		<p>

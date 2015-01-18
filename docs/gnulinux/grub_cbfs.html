@@ -31,7 +31,7 @@
 		filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
 		allows you to change the contents of the ROM image. In this case, libreboot is configured 
 		such that the 'grub.cfg' and 'grubtest.cfg' files exists directly inside CBFS instead of 
-		inside the GRUB payload's 'memdisk' (which is itself stored in CBFS).
+		inside the GRUB payload 'memdisk' (which is itself stored in CBFS).
 	</p>
 
 	<p>
@@ -102,7 +102,7 @@
 	<h2 id="which_rom">Which ROM image should I use?</h2>
 
 		<p>
-			You can work directly with one of the ROM's already included in the libreboot ROM archives. For the purpose of 
+			You can work directly with one of the ROM images already included in the libreboot ROM archives. For the purpose of 
 			this tutorial it is assumed that your ROM is named <i>libreboot.rom</i> so please make sure to adapt.
 		</p>
 
@@ -120,7 +120,7 @@
 
 		<p>
 			If you currently have flashed a ROM image from an older version, it is recommended to update first: 
-			basically, modify one of the latest ROM's and then flash it.
+			basically, modify one of the latest ROM images and then flash it.
 		</p>
 
 		<p>
@@ -191,8 +191,8 @@
 					Yours might be different. In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending 
 					on whether I am using MBR or GPT partitioning. Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or 
 					(ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
-					'msdos' is GRUB's name simply because this partitioning type is traditionally used by MS-DOS. 
-					It doesn't mean you have a proprietary OS.
+					'msdos' is a GRUB name simply because this partitioning type is traditionally used by MS-DOS. 
+					It doesn't mean that you have a proprietary OS.
 				</p>
 
 				<p>
@@ -209,14 +209,14 @@
 				</p>
 
 				<p>
-					For the GRUB payload's grubtest.cfg (in the 'Load Operating System' menu entry), we therefore have (in this example):<br/>
+					For the GRUB payload grubtest.cfg (in the 'Load Operating System' menu entry), we therefore have (in this example):<br/>
 					<b>set root='ahci0,msdos1'</b><br/>
 					<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951</b><br/>
 					<b>initrd /initrd.img</b>
 				</p>
 
 				<p>
-					Optionally, you can convert the UUID to it's real device name, for example /dev/sda1 in this case.
+					Optionally, you can convert the UUID to its real device name, for example /dev/sda1 in this case.
 					sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
 				</p>
 

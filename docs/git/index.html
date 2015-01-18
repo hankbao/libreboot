@@ -37,8 +37,8 @@
 					<li><a href="#config_macbook21">MacBook2,1</a></li>
 				</ul>
 			</li>
-			<li><a href="#build">How to build your ROM's</a></li>
-			<li><a href="#build_addseabios">Add SeaBIOS to your ROM's</a></li>
+			<li><a href="#build">How to build the ROM images</a></li>
+			<li><a href="#build_addseabios">Add SeaBIOS to the ROM images</a></li>
 		</ul>
 
 <hr/>
@@ -89,7 +89,7 @@
 		</p>
 
 		<p>
-			To build the ROM's, see <a href="#build">#build</a>.
+			To build the ROM images, see <a href="#build">#build</a>.
 		</p>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
@@ -148,7 +148,7 @@
 	<h1 id="build_flashrom">How to build &quot;flashrom&quot;</h1>
 
 		<p>
-			Flashrom is the utility for flashing/dumping ROM's. This is what you will use to install libreboot.
+			Flashrom is the utility for flashing/dumping ROM images. This is what you will use to install libreboot.
 		</p>
 
 		<p>
@@ -358,8 +358,8 @@
 				scripts for this machine.
 			</p>	
 			<p>
-				It is believed that the motherboards on 14.1&quot; and 15.1&quot; T60's are the same, so the same configuration is used
-				on both the 14.1&quot; and 15.1&quot; T60's.
+				It is believed that the motherboards on 14.1&quot; and 15.1&quot; T60s are the same, so the same configuration is used
+				on both the 14.1&quot; and 15.1&quot; T60s.
 			</p>
 			
 		<h2 id="config_x200">
@@ -392,7 +392,7 @@
 				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
 			</ul>
 			<p>
-				Go back and disable option ROM's:
+				Go back and disable option ROMs:
 			</p>
 			<ul>
 				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
@@ -435,7 +435,7 @@
 				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
 			</ul>
 			<p>
-				Go back and disable option ROM's:
+				Go back and disable option ROMs:
 			</p>
 			<ul>
 				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
@@ -450,7 +450,7 @@
 
 <hr/>
 
-	<h1 id="build">How to build the ROM's!</h1>
+	<h1 id="build">How to build the ROM images!</h1>
 
 		<p>You don't need to do much, as there are scripts already written for you that can build everything automatically.</p>
 
@@ -474,7 +474,7 @@
 		<b>$ ./builddeps</b></p>
 
 		<p>If you've already run ./builddeps and/or ./buildall before, you don't need to run them again.
-		Just run that from now on to build your ROM's:<br/>
+		Just run that from now on to build the ROM images:<br/>
 		<b>$ ./build</b></p>
 
 		<p>To un-build (clean) the build dependencies that you built before, do the following:<br/>
@@ -540,7 +540,7 @@
 
 <hr/>
 
-	<h1 id="build_addseabios">How to add SeaBIOS to your ROM's</h1>
+	<h1 id="build_addseabios">How to add SeaBIOS to the ROM images</h1>
 
 		<p>
 			SeaBIOS isn't really needed since libreboot uses the GRUB payload which

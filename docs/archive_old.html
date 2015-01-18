@@ -91,16 +91,16 @@
 					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 					<ul>
 						<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
-						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+						<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 					</ul>
 				</li>
 				<li>
 					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 					<ul>
 						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
-						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
+						<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
 						<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
-						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+						<li>T60P (and T60s with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
 					</ul>
 				</li>
 				<li>
@@ -127,7 +127,7 @@
 				<li>Updated GRUB (git commit 9a67e1ac8e92cd0b7521c75a734fcaf2e58523ad), the latest at the time of writing.</li>
 				<li>Cleaned up the documentation, removed unneeded files.</li>
 				<li>ec/lenovo/h8 (x60/x60s/x60t/t60): Enable wifi/bluetooth/wwan/touchpad/trackpoint by default.</li>
-				<li>Documentation: Updated list of T60 LCD's (Samsung LTN150XG 15&quot; XGA listed as non-working).</li>
+				<li>Documentation: Updated list of T60 LCDs (Samsung LTN150XG 15&quot; XGA listed as non-working).</li>
 				<li>builddeps-coreboot: Don't build libpayload (not needed. This was leftover by mistake, when trying out the TINT payload).</li>
 				<li>Replaced most diff files (patches) for coreboot with gerrit checkouts (cherry-pick).</li>
 				<li>Documentation: x60_security.html and t60_security.html: added links to info about the ethernet controller (Intel 82573).</li>
@@ -186,15 +186,15 @@
 					<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 					<ul>
 						<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
-						<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+						<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 					</ul>
 				</li>
 				<li>
 					<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)
 					<ul>
 						<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
-						<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
-						<li>T60p (and T60's with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+						<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
+						<li>T60P (and T60s with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
 					</ul>
 				</li>
 				<li>
@@ -284,7 +284,7 @@
 				<li>Updated getcb script and DEBLOB script.</li>
 				<li>Updated configuration files under resources/libreboot/config/ to accomodate new coreboot version.</li>
 				<li>
-					Removed grub_serial*.cfg and libreboot_serial*.rom, all configs/rom's are now unified (containing same configuration as serial rom's from before).
+					Removed grub_serial*.cfg and libreboot_serial*.rom, all configs/rom files are now unified (containing same configuration as serial rom files from before).
 					<ul>
 						<li>Documentation: updated index.html#rom to reflect the above.</li>
 					</ul>
@@ -349,11 +349,11 @@
 				<li>Documentation: emphasized more strongly on the documentation, the need to re-build bucts and/or flashrom before flashing a ROM image.</li>
 				<li>build-release: flashrom, nvramtool, cbfstool and bucts are no longer provided pre-compiled in binary archives, and are now in source form only. (to maximize distro compatibility).</li>
 				<li>Documentation: added gnulinux/encrypted_trisquel.html showing how to setup a fully encrypted Trisquel installation (including /boot) and boot it from the GRUB payload.</li>
-				<li>'build' script: replaced grub.elf assembly instructons, it's now handled by a utility added under resources/utilities/grub-assemble</li>
+				<li>'build' script: replaced grub.elf assembly instructons, it is now handled by a utility added under resources/utilities/grub-assemble</li>
 				<li>Moved resources/grub/keymap to resources/utilities/grub-assemble/keymap, and updated that utility to use it</li>
 				<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
 				<li>Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory</li>
-				<li>'buildrom-withgrub' script: updated it to create 2 sets of ROM's for each machine: one with text-mode, one with coreboot framebuffer.</li>
+				<li>'buildrom-withgrub' script: updated it to create 2 sets of ROMs for each machine: one with text-mode, one with coreboot framebuffer.</li>
 				<li>Documentation: updated index.html#rom to reflect the above</li>
 				<li>Deleted unused README and COPYING file from main directory</li>
 				<li>Removed some rm -rf .git* instructions from the get* scripts and moved them to build-release script</li>
@@ -415,10 +415,10 @@
 				<li>Documentation: added preliminary information about preventing/mitigating cold-boot attack in x60_security.html and t60_security.html</li>
 				<li>Documentation: added info to index.html#macbook21 warning about issues with macbook21</li>
 		 		<li>
-					Documentation: X60/T60: added information about checking custom ROM's using dd to see whether or not the top 64K 
+					Documentation: X60/T60: added information about checking custom ROMs using dd to see whether or not the top 64K 
 					region is duplicated below top or not. Advise caution about this in the tutorial that deals with flashing on top 
 					of Lenovo BIOS, citing the correct dd commands necessary if it is confirmed that the ROM has not been applied with
-					dd yet. (in the case that the user compiled their own ROM's from libreboot, without using the build scripts, or if they forgot to use dd, etc).
+					dd yet. (in the case that the user compiled their own ROMs from libreboot, without using the build scripts, or if they forgot to use dd, etc).
 				</li>
 				<li>
 					Split resources/libreboot/patch/gitdiff into separate patch files (getcb script updated to accomodate this change).
@@ -454,7 +454,7 @@
 					</ul>
 				</li>
 				<li>
-					Added ROM's with Qwerty (Italian) layout in GRUB (libreboot*itqwerty.rom)
+					Added ROMs with Qwerty (Italian) layout in GRUB (libreboot*itqwerty.rom)
 				</li>
 				<li>
 					Added resources/utilities/i945gpu/intel-regs.py for debugging issues related to LCD panel compatibility on X60 Tablet and T60. (courtesy of <a href="http://mtjm.eu">Michał Masłowski</a>)
@@ -469,7 +469,7 @@
 					Fixed typo that existed in 2nd beta where the release date of the 2nd beta was listed as being in year 2016, when in actual fact it was 2014.
 				</li>
 				<li>
-					Documentation: added (preliminary) details about (rare) buggy CPU's on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
+					Documentation: added (preliminary) details about (rare) buggy CPUs on the ThinkPad T60 that were found to fail (instability, kernel panics, etc)
 					without the microcode updates. 
 				</li>
 				<li>Documentation: added docs/hardware/x60_heatsink.html for showing how to change the heatsink on the Thinkpad X60</li>
@@ -534,15 +534,15 @@
 					<ul>
 						<li>Documentation: added information linking to correct page and talking about which models are supported.</li>
 						<li>Added resources/libreboot/config/macbook21config</li>
-						<li>macbook21: Added 'build-macbook21' script and linked to it in 'build' (ROM's included under bin/macbook21/)</li>
+						<li>macbook21: Added 'build-macbook21' script and linked to it in 'build' (ROMs included under bin/macbook21/)</li>
 						<li>macbook21: Removed dd instructions from build-macbook21 script (macbook21 does not need bucts when flashing libreboot while Apple EFI firmware is running)</li>
-						<li>Documentation: Added macbook21 ROM's to the list of ROM's in docs/index.html#rom</li>
+						<li>Documentation: Added macbook21 ROMs to the list of ROMs in docs/index.html#rom</li>
 						<li>Documentation: Write documentation linking to Mono Moosbart's macbook21 and parabola page (and include a copy)</li>
 					</ul>
 				</li>
 				<li>Documentation: added a copy of Mono's Parabola install guide (for macbook21 with Apple EFI firmware) and linked in in main index.</li>
 				<li>Documentation: added a copy of Mono's Coreboot page (for macbook21) and linked it in main index.</li>
-				<li>T60: Copy CD option from the grub.cfg's for T60 *serial*.rom images into the grub configs for non-serial images. (T60's have CD/DVD drive on main laptop)</li>
+				<li>T60: Copy CD option from the grub.cfg files for T60 *serial*.rom images into the grub configs for non-serial images. (T60s have CD/DVD drive on main laptop)</li>
 				<li>macbook21: remove options in build-macbook21 for *serial*.rom (there is no dock or serial port available for macbook21)</li>
 				<li>
 					Added patches for backlight controls on X60 and T60 with help from Denis Carikli (see ./resources/libreboot/patch/gitdiff and ./getcb and docs/i945_backlight.html)
@@ -553,7 +553,7 @@
 				<li>
 					Documentation: Added info about getting LCD panel name based on EDID data.
 					<ul>
-						<li>Documentation: Added a link to this from the list of supported T60's and LCD panels for T60 (so that the user can check what LCD panel they have).</li>
+						<li>Documentation: Added a link to this from the list of supported T60s and LCD panels for T60 (so that the user can check what LCD panel they have).</li>
 					</ul>
 				</li>
 				<li>
@@ -583,7 +583,7 @@
 						<li>Added 'build-x60t' script</li>
 						<li>Updated 'build' script to use 'build-x60t'</li>
 						<li>Documentation: added to #config section the section #config_x60t (libreboot configuration and dmidecode info)</li>
-						<li>Documentation: added x60t ROM's to the list of ROM's</li>
+						<li>Documentation: added x60t ROMs to the list of ROMs</li>
 					</ul>
 				</li>
 				<li>Tidied up the 'builddeps' script (easier to read)</li>
@@ -681,7 +681,7 @@
 						<li>Documentation: In fact, document how the 'config' files in resources/libreboot/config/ were created</li>
 					</ul>
 				</li>
-				<li>Documentation: Added information about which ThinkPad T60's are supported, and which are not.</li>
+				<li>Documentation: Added information about which ThinkPad T60s are supported, and which are not.</li>
 				<li>
 					Documentation: added information about LCD inverters (for upgrading the LCD panel on a T60 14.1' XGA or 15.1' XGA)
 					<ul>
@@ -924,7 +924,7 @@
 			<p>
 				The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB,
 				and automatically converts it to a grub config and switches to the boot menu of that distro.
-				This makes booting ISO's *much* easier than before.
+				This makes booting ISOs *much* easier than before.
 			</p>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>

@@ -39,7 +39,7 @@
 			In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
 			<img src="../images/x60t_unbrick/0008.JPG" alt="" /><br/><br/>
 
-			*Those dd commands should be applied to all newly compiled X60 ROM's (the ROM's in libreboot binary archives already have this applied!):<br/>
+			*Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):<br/>
 			dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
 			dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
 			dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
@@ -96,7 +96,7 @@
 		</p>
 
 		<p>
-			Some X60T's you have to unroute those too:<br/>
+			For some X60T laptops, you have to unroute those too:<br/>
 			<img src="../images/x60t_unbrick/0010.JPG" alt="" />
 		</p>
 
