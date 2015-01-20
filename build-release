@@ -402,9 +402,9 @@ rm -rf libreboot_bin
 # For those utilities that have to be built on the target
 ./mkextbuild
 
-echo "DONE. See libreboot_src.tar.xz and libreboot_bin.tar.xz"
-echo "NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom"
-echo "NOTE FOR FCHMMR: don't forget to add i386 binaries for flashrom/bucts"
-echo "The tarball tobuild.tar.xz has been created with everything needed to build these utilities"
+# DONE. See libreboot_src.tar.xz and libreboot_bin.tar.xz
+# NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom
+# NOTE FOR FCHMMR: don't forget to add i386 binaries for flashrom/bucts
+# The tarball tobuild.tar.xz has been created with everything needed to build these utilities
 
 # ------------------- DONE ----------------------
