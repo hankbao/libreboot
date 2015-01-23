@@ -34,7 +34,7 @@
 			Releases are now named from the date of release.
 		</p>
 		<p>
-			See <a href="archive_old.html">archive_old.html</a> for releases prior to this change.
+			See <a href="archive_old.html">archive_old.html</a> for older libreboot releases.
 		</p>
 
 		<div class="important">
@@ -119,6 +119,11 @@
 			Changes for this release (latest changes first, earliest changes last)
 		</h2>
 			<ul>
+				<li>Documentation: added information about how to boot Guix GNU/Linux.</li>
+				<li>grub.cfg: Added (usb0) and (usb0,*) to the list of devices in the <i>Search for GRUB</i> menuentry (this is needed for Guix GNU/Linux)</li>
+				<li>grub.cfg: Added (ahci1) to list of devices for ISOLINUX parser (CD/DVD) (this is needed for the X200 docking station).</li>
+				<li>grub.cfg: ISOLINUX parsing is now done on all USB partitions.</li>
+				<li>grub.cfg: Automatically switched to /boot/grub/libreboot_grub.cfg on a partition, if it exists.</li>
 				<li>libreboot_bin: added static ARM binaries for flashrom, cbfstool, ich9gen and 
 				ich9deblob (tested on beaglebone black).</li>
 				<li>Flashrom: removed redundant Macronix flashchip definitions (for X200 owners).</li>
@@ -126,7 +131,7 @@
 				<li>X200: fixed uneven backlight (at low levels)</li>
 				<li>ich9macchange (new script, uses ich9gen): for changing the default MAC address on X200 ROM images.</li>
 				<li>ich9gen: added capability to change the default MAC address (and update the checksum)</li>
-				<li>ich9deblob: added new utility <b>ich9gen</b>: this can generate a descriptor+gbe image without a factory.rom dump present.</li>
+				<li>ich9deblob: added new utility ich9gen: this can generate a descriptor+gbe image without a factory.rom dump present.</li>
 				<li>Modified ich9deblob to use a struct for Gbe, documenting everything.</li>
 				<li>Massively updated the ich9deblob utility: re-factored everything completely.</li>
 				<li>Enabled cstates 1 and 2 on macbook21. This reduces idle heat / power consumption.</li>
