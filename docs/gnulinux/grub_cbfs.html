@@ -33,6 +33,11 @@
 		such that the 'grub.cfg' and 'grubtest.cfg' files exists directly inside CBFS instead of 
 		inside the GRUB payload 'memdisk' (which is itself stored in CBFS).
 	</p>
+	<p>
+		You can either modify
+		the GRUB configuration stored in the flash chip, or you can modify a GRUB configuration
+		file on the main storage which the libreboot GRUB payload will automatically search for.
+	</p>
 
 	<p>
 		Here is an excellent writeup about CBFS (coreboot filesystem): 
@@ -45,6 +50,7 @@
 
 		<ul>
 			<li><a href="#getting_started">Getting started</a></li>
+			<li><a href="#libreboot_grub_config_ondisk">Don't want to flash a new ROM image?</a></li>
 			<li><a href="#build_cbfstool">Build 'cbfstool' from source</a></li>
 			<li><a href="#which_rom">Which ROM image should I use?</a></li>
 			<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
@@ -81,6 +87,56 @@
 		</p>
 
 <hr/>
+		
+	<h2 id="libreboot_grub_config_ondisk">Don't want to flash a new ROM image?</h2>
+
+		<p>
+			There are several advantages to modifying the GRUB configuration stored in CBFS, but
+			this also means that you have to flash a new libreboot ROM image on your machine (some users
+			feel intimidated by this, to say the least).
+			Doing so can be risky if not handled correctly, because it can result in a bricked
+			machine (recovery is easy if you have the <a href="../install/bbb_setup.html">equipment</a>
+			for it, but most people don't). If you aren't up to that then don't worry; it is possible
+			to use a custom GRUB menu without flashing a new image, by loading a GRUB configuration
+			from a partition on the main storage instead.
+		</p>
+
+		<p>
+			By default, GRUB in libreboot is configured to scan all partitions on the main storage
+			for /boot/grub/libreboot_grub.cfg or /grub/libreboot_grub.cfg(for systems where /boot
+			is on a dedicated partition), and then use it automatically.
+		</p>
+		<p>
+			Simply create your custom GRUB configuration and save it to <b>/boot/grub/libreboot_grub.cfg</b>
+			on the running system. The next time you boot, GRUB (in libreboot) will automatically switch to
+			this configuration file. <b>This means that you do not have to re-flash, recompile or otherwise
+			modify libreboot at all!</b>
+		</p>
+
+		<p>
+			Ideally, your distribution should automatically generate a libreboot_grub.cfg file that is written
+			specifically under the assumption that it will be read and used on a libreboot system that uses
+			GRUB as a payload. If your distribution does not do this, then you can try to add that feature
+			yourself or politely ask someone involved with or otherwise knowledgeable about the distribution
+			to do it for you. The libreboot_grub.cfg could either contain the full configuration, or it could
+			chainload another GRUB ELF executable (built to be used as a coreboot payload) that is located in
+			a partition on the main storage.
+		</p>
+		
+		<p>
+			If you want to adapt a copy of the existing <i>libreboot</i> GRUB configuration and use that for the libreboot_grub.cfg file, then
+			follow <a href="#build_cbfstool">#build_cbfstool</a>, <a href="#which_rom">#which_rom</a> and
+			<a href="#extract_grubtest">#extract_grubtest</a> to get the <b><i>grubtest.cfg</i></b>. 
+			Rename <b><i>grubtest.cfg</i></b> to <b><i>libreboot_grub.cfg</i></b> and save it to <b><i>/boot/grub/</i></b>
+			on the running system where it is intended to be used. Modify the file at that location however you see fit, 
+			and then stop reading this guide (the rest of this page is irrelevant to you).
+		</p>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+<hr/>
 
 	<h2 id="build_cbfstool">Build 'cbfstool' from source</h2>
 
@@ -103,7 +159,7 @@
 
 		<p>
 			You can work directly with one of the ROM images already included in the libreboot ROM archives. For the purpose of 
-			this tutorial it is assumed that your ROM is named <i>libreboot.rom</i> so please make sure to adapt.
+			this tutorial it is assumed that your ROM image file is named <i>libreboot.rom</i>, so please make sure to adapt.
 		</p>
 
 		<p>
