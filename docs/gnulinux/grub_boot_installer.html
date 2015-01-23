@@ -38,8 +38,19 @@
 			<b>$ sudo dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b><br/>
 			<b># dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b>
 		</p>
+		
+	<h2>Guix GNU/Linux?</h2>
 
-	<h2>Booting the USB drive (in GRUB)</h2>
+		<p>
+			Guix USB installers use the GRUB bootloader, unlike most GNU/Linux installers which will likely use ISOLINUX.
+		</p>
+		<p>
+			To boot the Guix live USB install, select <b><i>Search for GRUB configuration (grub.cfg) outside of CBFS</i></b> from
+			the GRUB payload menu. After you have done that, a near menuentry will appear at the very bottom with text like
+			<b><i>Load Config from (usb0)</i></b>; select that, and it should boot.
+		</p>
+
+	<h2>Booting ISOLINUX images (in GRUB)</h2>
 
 		<p>
 			Boot it in GRUB using the <i>Parse ISOLINUX config (USB)</i> option (it's in default libreboot grub.cfg, at least).
@@ -49,7 +60,7 @@
 		</p>
 
 		<p>
-			If the ISOLINUX parser won't work, then press C to get to GRUB command line.<br/>
+			If the ISOLINUX parser or <i>Search for GRUB configuration</i> options won't work, then press C to get to GRUB command line.<br/>
 				grub&gt; <b>ls</b><br/>
 
 			Get the device from above output, eg (usb0). Example:<br/>
