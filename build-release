@@ -372,6 +372,8 @@ rm -f libreboot_src/resources/utilities/ich9deblob/mkdescriptor.c
 rm -f libreboot_src/resources/utilities/ich9deblob/mkdescriptor.h
 rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.c
 rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.h
+rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_4m.bin
+rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_8m.bin
 rm -f libreboot_src/mkgbe.c
 rm -f libreboot_src/mkgbe.h
 rm -f libreboot_src/ich9fdgbe_8m.bin
