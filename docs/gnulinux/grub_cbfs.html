@@ -129,7 +129,8 @@
 			<a href="#extract_grubtest">#extract_grubtest</a> to get the <b><i>grubtest.cfg</i></b>. 
 			Rename <b><i>grubtest.cfg</i></b> to <b><i>libreboot_grub.cfg</i></b> and save it to <b><i>/boot/grub/</i></b>
 			on the running system where it is intended to be used. Modify the file at that location however you see fit, 
-			and then stop reading this guide (the rest of this page is irrelevant to you).
+			and then stop reading this guide (the rest of this page is irrelevant to you); <b>in libreboot_grub.cfg on disk,
+			if you are adapting it based on grub.cfg from CBFS then remove the check for libreboot_grub.cfg otherwise it will loop.</b>.
 		</p>
 
 		<p>
