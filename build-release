@@ -393,6 +393,9 @@ echo "Creating compressed libreboot_bin release archive"
 # create lzma compressed bin archive
 tar cfJ libreboot_bin.tar.xz libreboot_bin
 
+# create file showing the commit ID from git for this archive.
+cat .git/refs/heads/master > commitid
+
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
 
