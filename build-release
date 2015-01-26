@@ -383,6 +383,9 @@ rm -f libreboot_src/ich9fdgbe_4m.bin
 rm -rf libreboot_src/tobuild/
 rm -f libreboot_src/tobuild.tar.xz
 
+# delete the "commitid" file (releases are tagged in git)
+rm -f libreboot_src/commitid
+
 echo "Creating compressed libreboot_src release archive"
 
 # create lzma compressed src archive
