@@ -45,21 +45,21 @@
 
 <hr/>
 
-	<h1 id="release20150124">Release 20150124</h1>
+	<h1 id="release20150126">Release 20150126</h1>
 	
 		<p>
-			Release date: January 24th, 2015.
+			Release date: January 26th, 2015.
 		</p>
 
 		<h2>Binaries (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/20150124/libreboot_bin.tar.xz">http://libreboot.org/release/20150124/libreboot_bin.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/20150124/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20150124/libreboot_bin.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/20150126/libreboot_bin.tar.xz">http://libreboot.org/release/20150126/libreboot_bin.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20150126/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20150126/libreboot_bin.tar.xz.sig</a></li>
 			</ul>
 		<h2>Source code (right-click save as, or use wget)</h2>
 			<ul>
-				<li><a href="http://libreboot.org/release/20150124/libreboot_src.tar.xz">http://libreboot.org/release/20150124/libreboot_src.tar.xz</a></li>
-				<li><a href="http://libreboot.org/release/20150124/libreboot_src.tar.xz.sig">http://libreboot.org/release/20150124/libreboot_src.tar.xz.sig</a></li>
+				<li><a href="http://libreboot.org/release/20150126/libreboot_src.tar.xz">http://libreboot.org/release/20150126/libreboot_src.tar.xz</a></li>
+				<li><a href="http://libreboot.org/release/20150126/libreboot_src.tar.xz.sig">http://libreboot.org/release/20150126/libreboot_src.tar.xz.sig</a></li>
 			</ul>
 
 			<p>
@@ -115,6 +115,29 @@
 				</li>
 			</ul>
 
+		<h2>
+			Updates (relative to r20150124)
+		</h2>
+			<p>
+				This is a bug fix release based on r20150124 from two days ago. It contains a few small changes:
+			</p>
+			<ul>
+				<li>grub.cfg: hardcode the list of partitions to search (speeds up booting considerably. GRUB regexp isn't very well optimized)</li>
+				<li>Docs (x200.html hcl): Remove incorrect information</li>
+				<li>Documentation (bbb_setup.html): Fix typos</li>
+				<li>
+					build-release: delete ich9fdgbe_{4m,8m}.bin files from ich9gen
+					<ul>
+						<li>
+							These were accidentically included in the r20150124 release. They
+							are generated from ich9gen so it's ok, but they don't need to be
+							in the archive.
+						</li>
+					</ul>
+				</li>
+				<li>Documentation (grub_cbfs.html): Looping in libreboot_grub.cfg (Add notes about it if the user copied from grub.cfg in CBFS.)</li>
+				<li>Documentation: refer to Guix as GNU Guix System Distribution or GNU GSD per advice from the Guix project.</li>
+			</ul>
 		<h2>
 			Changes for this release (latest changes first, earliest changes last)
 		</h2>
