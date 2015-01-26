@@ -26,7 +26,16 @@
 			<b>Download the key</b>: <a href="libreboot.asc">libreboot.asc</a>.
 		</p>
 		<p>
+			Import the key as follows:<br/>
+			$ <b>gpg --import &lt; libreboot.asc</b>
+		</p>
+		<p>
 			You should also be able to find it on a key server. Note: the above key is not for email. It is only for verifying the release archives.
+		</p>
+		<p>
+			You can verify the downloaded archives as follows:<br/>
+			$ <b>gpg --verify libreboot_src.tar.xz.sig</b><br/>
+			$ <b>gpg --verify libreboot_bin.tar.xz.sig</b>
 		</p>
 
 	<h2>Old Releases</h2>
