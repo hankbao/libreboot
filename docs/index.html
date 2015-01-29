@@ -105,7 +105,8 @@
 		<p>
 			Libreboot is a <a href="http://coreboot.org/">coreboot</a> distribution (distro) with proprietary software removed,
 			intended to be a <a href="https://www.fsf.org/about/what-is-free-software">free</a>
-			(libre) 'BIOS' replacement for your computer.
+			(libre) 'BIOS' replacement for your computer. The project is aimed at users, attempting to make
+			coreboot as easy to use as possible. <a href="docs/index.html#why">More about libreboot</a>.
 		</p>
 
 		<p>
@@ -113,17 +114,42 @@
 		</p>
 
 		<h2>
-			Project goals (and differences versus coreboot):
+			The libreboot project has two main goals:
 		</h2>
 			<ul>
 				<li>
-					Coreboot contains blobs (proprietary data/code) and libreboot does not (it intentionally removes them).
+					<i><u>Recommend and distribute and only <b>free software</b></u></i>. The coreboot project distributes proprietary code/blobs on some computers;
+					this can include things like CPU microcode updates, memory initialization code and so on. The project also actively
+					recommends that the user install additional blobs in some cases (such as the video BIOS or VBIOS, Intel ME and so on).
+					While this can be necessary from the coreboot project's point of view, Libreboot is an attempt to support as many
+					computers from coreboot as possible, without distributing any blobs and without having the user install additional
+					proprietary software. This is not to say that the coreboot project is bad; a lot of extremely dedicated and talented
+					individuals in coreboot work night and day to reverse engineer and free those blobs that still remain in coreboot. 
+					<b>Any system from coreboot that can run without blobs is a viable libreboot candidate!</b>
 				</li>
 				<li>
-					Coreboot is hacker-friendly and focuses on software developers, libreboot is user-focused and attempts to 
-					turn coreboot into a distribution, sort of like a GNU/Linux distribution (same concept, different software). For example, libreboot 
-					distributes GRUB/memtest86+/bucts/flashrom (and more) and comes with user-focused documentation and build scripts; libreboot 
-					is therefore made more 'user-friendly'.
+					<i><u>Make coreboot easy to use</u></i>. The main problem that many users have with coreboot is that it is extremely difficult to 
+					understand, learn about, install and use. This is understandable; coreboot is a low-level peice of software and has many
+					talented individuals working on it, but the project's resources are limited and so the developers focus their efforts on the code. 
+					Coreboot offers wonderful support for other coreboot developers and those who wish to climb up
+					that steep curve to learn everything that they can.<br/><br/>
+					
+					At the same time, those who simply want to use coreboot (for any number
+					of reasons) are often left feeling intimidated and many of them give up in frustration. Libreboot attempts to bridge this gap;
+					its documentation is entirely focussed on users, with detailed steps showing exactly how to install and use it and the issues
+					that they may come across (and how to work around them).<br/><br/>
+					
+					Almost everything in libreboot is completely automated, with
+					scripts for downloading, building and installing the various components used in libreboot. Pre-compiled ROM images built
+					from the libreboot source code are provided, along with the utilities (statically compiled, from libreboot sources) that the user will need for installing them.<br/><br/>
+					
+					Libreboot is similar in concept to a GNU/Linux or GNU/Linux-libre distribution; it is composed of not just coreboot (deblobbed), 
+					but everything else that the user will need such and GRUB, flashrom, and so on. These are all fully integrated, in a way where
+					most of the detailed steps otherwise required of the user (if they used coreboot, the upstream provider) are completely eliminated.<br/><br/>
+					
+					In much the same way as you can simply download an ISO image for your favourite GNU/Linux-libre distribution, and install it, 
+					you can download pre-compiled libreboot ROM images (built from the sources) along with installation scripts and documentation
+					that make libreboot as easy to use as possible.
 				</li>
 			</ul>
 
@@ -142,9 +168,8 @@
 			</p>
 			
 			<p>
-				<i>Libreboot</i> as a whole is the distribution distributed deblobbed. However, the core part is coreboot:
-				libreboot's deblobbed coreboot tree is named <i>coreboot-libre</i> to distinguish it as a component of <i>libreboot</i>.
-				(if that makes sense).
+				<i>Libreboot</i> as a whole is the distribution consisting of everything surrounding coreboot. However, the main component is coreboot:
+				libreboot's deblobbed coreboot tree is sometimes referred to as <i>coreboot-libre</i> to distinguish it as a component of <i>libreboot</i>.
 			</p>
 
 		<h2>
@@ -177,7 +202,7 @@
 <hr/>
 
 	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		Copyright &copy; 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
 		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 		A copy of the license can be found at <a href="license.txt">license.txt</a>.
 	</p>
