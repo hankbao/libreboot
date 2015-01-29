@@ -43,7 +43,7 @@
 	</p>
 
 	<p>
-		Parabola is much more flexible than Trisquel, but also more involved to setup.
+		Parabola is much more flexible than Trisquel, but also more involved to set up.
 	</p>
 
 	<p>
@@ -78,7 +78,7 @@
 		If your drive was already LUKS encrypted (maybe you are re-installing your distro) then
 		it is already 'wiped'. You should just wipe the LUKS header.
 		<a href="https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/">https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/</a>
-		showed me how to do this. It recommends to do the first 3MiB. Now, that guide is recommending putting zero there. I'm doing to use urandom. Do this:<br/>
+		showed me how to do this. It recommends doing the first 3MiB. Now, that guide is recommending putting zero there. I'm doing to use urandom. Do this:<br/>
 		# <b>head -c 3145728 /dev/urandom &gt; /dev/sda; sync</b><br/>
 		(wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
 	</p>
@@ -139,13 +139,12 @@
 			# <b>cryptsetup benchmark</b> (for making sure the list below is populated)<br/>
 			Then:<br/>
 			# <b>cat /proc/crypto</b><br/>
-			This gives me crypto options that I can use. It also provides a representation of the best way to setup LUKS (in this case, security is a priority; speed, a distant second).
+			This gives me crypto options that I can use. It also provides a representation of the best way to set up LUKS (in this case, security is a priority; speed, a distant second).
 			To gain a better understanding, I am also reading:<br/>
 			# <b>man cryptsetup</b>
 		</p>
 		<p>
-			Following that page, based on my requirements, I do the following based on
-			based on <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode">https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode</a>.
+			Following that page, based on my requirements, I do the following based on <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode">https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode</a>.
 			Reading through, it seems like Serpent (encryption) and Whirlpool (hash) is the best option.
 		</p>
 		<p>
@@ -184,7 +183,7 @@
 			# <b>lvcreate -L 2G matrix -n swapvol</b> (2G swap partition, named <u>swapvol</u>)<br/>
 			# <b>lvcreate -l +100%FREE matrix -n rootvol</b> (single large partition in the rest of the space, named <u>rootvol</u>)<br/>
 			You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example,
-			if you will be running a web/mail server then you want /var in it's own partition (so that if it fills up with logs, it won't crash your system).
+			if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system).
 			For a home/laptop system (typical use case), a root and a swap will do (really).
 		</p>
 		<p>
@@ -213,7 +212,7 @@
 		</p>
 		<p>
 			Now I am following the rest of <a href="https://wiki.parabolagnulinux.org/Installation_Guide">https://wiki.parabolagnulinux.org/Installation_Guide</a>.
-			I also also cross referencing <a href="https://wiki.archlinux.org/index.php/Installation_guide">https://wiki.archlinux.org/index.php/Installation_guide</a>.
+			I also cross referenced <a href="https://wiki.archlinux.org/index.php/Installation_guide">https://wiki.archlinux.org/index.php/Installation_guide</a>.
 		</p>
 		<p>
 			Create /home and /boot on rootvol mountpoint:<br/>
@@ -244,7 +243,7 @@
 				&nbsp;&nbsp;&nbsp;Check there first to see if steps differ by now.<br/>
 				&nbsp;&nbsp;&nbsp;Now you have to update the default Parabola keyring. This is used for signing and verifying packages:<br/>
 				&nbsp;&nbsp;&nbsp;# <b>pacman -Sy parabola-keyring</b><br/>
-				&nbsp;&nbsp;&nbsp;It says that you you get GPG errors, it's probably an expired key so do:<br/>
+				&nbsp;&nbsp;&nbsp;It says that if you get GPG errors, then it's probably an expired key and, therefore, you should do:<br/>
 				&nbsp;&nbsp;&nbsp;# <b>pacman-key --populate parabola</b><br/>
 				&nbsp;&nbsp;&nbsp;# <b>pacman-key --refresh-keys</b><br/>
 				&nbsp;&nbsp;&nbsp;# <b>pacman -Sy parabola-keyring</b><br/>
@@ -352,7 +351,7 @@
 					</ul>
 				</li>
 				<li>
-					Now using mkinitcpio, you can create the kernel and ramdisk for booting with (note, this is different than Arch, specifying linux-libre instead of linux):<br/>
+					Now using mkinitcpio, you can create the kernel and ramdisk for booting with (this is different from Arch, specifying linux-libre instead of linux):<br/>
 					# <b>mkinitcpio -p linux-libre</b><br/>
 					Also do it for linux-libre-lts:<br/>
 					# <b>mkinitcpio -p linux-libre-lts</b><br/>
