@@ -36,7 +36,7 @@ cd coreboot
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
 
-if [ "$1" = "qemu_i440fx_piix4" ]
+if [ "$1" = "qemu_i440fx_piix4" ] || [ "$1" = "qemu_q35_ich9" ]
 then
 	# assume that the default config enable framebuffer mode, duplicate and patch for text-mode
 	# necessary, otherwise it will ask you to enter the Y/X resolution of the framebuffer at build time

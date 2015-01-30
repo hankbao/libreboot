@@ -47,7 +47,8 @@
 	
 		<p>
 			You don't really do anything here, just run (example):<br/>
-			$ <b>qemu-system-i386 -m 512 -bios qemu_i440fx_piix4_ukdvorak_vesafb.rom</b>
+			$ <b>qemu-system-i386 -M pc -m 512 -bios bin/qemu_i440fx_piix4/qemu_i440fx_piix4_ukdvorak_vesafb.rom -serial stdio</b><br/>
+			$ <b>qemu-system-i386 -M q35 -m 512 -bios bin/qemu_q35_ich9/qemu_q35_ich9_ukdvorak_vesafb.rom -serial stdio</b>
 		</p>
 
 <hr/>
@@ -437,7 +438,7 @@
 <hr/>
 
 	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
 		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 	</p>
