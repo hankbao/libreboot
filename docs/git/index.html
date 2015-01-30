@@ -35,6 +35,7 @@
 					<li><a href="#config_t60">ThinkPad T60</a></li>
 					<li><a href="#config_x200">ThinkPad X200</a></li>
 					<li><a href="#config_macbook21">MacBook2,1</a></li>
+					<li><a href="#config_qemu_i440fx_piix4">QEMU (x86 i440fx/piix4)</a></li>
 				</ul>
 			</li>
 			<li><a href="#build">How to build the ROM images</a></li>
@@ -445,6 +446,38 @@
 				The resulting .config file was saved as resources/libreboot/config/<b>macbook21/config</b> and is used by the build
 				scripts for this machine. <b>This config is also used for the MacBook1,1</b>.
 			</p>
+			
+		<h2 id="config_qemu_i440fx_piix4">
+			QEMU (x86 i440fx/piix4) configuration (file: resources/libreboot/config/qemu_i440fx_piix4/config)
+		</h2>
+			<ul>
+				<li>General / Expert mode = <i>enable</i></li>
+				<li>Mainboard / Mainboard vendor = <i>Emulation</i></li>
+				<li>Mainboard / Mainboard model = <i>QEMU x86 i440fx/piix4 (aka qemu -M pc)</i></li>
+				<li>Mainboard / ROM chip size = <i>8192 KB (8 MB)</i></li>
+				<li>Devices / Use native graphics initialization = <i>enable</i> (should already be enabled)</li>
+				<li>
+					Display / Keep VESA framebuffer = <i>enable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+					<ul>
+						<li>Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time
+						to enable coreboot text-mode for a separate set of ROM images, in each machine.</li>
+					</ul>
+				</li>
+				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
+				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+				<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+			</ul>
+			<p>
+				Go back and disable option ROMs:
+			</p>
+			<ul>
+				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+			</ul>
+			<p>
+				The resulting .config file was saved as resources/libreboot/config/<b>macbook21/config</b> and is used by the build
+				scripts for this machine. <b>This config is also used for the MacBook1,1</b>.
+			</p>
 
 		<p><a href="#pagetop">Back to top of page.</a></p>
 
@@ -579,7 +612,7 @@
 <hr/>
 
 	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+		Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
 		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 	</p>

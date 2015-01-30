@@ -26,6 +26,7 @@
 			</ul>
 		<h2>Installing libreboot (software)</h2>
 			<ul>
+				<li><a href="#qemu">QEMU</a></li>
 				<li><a href="#rom">Recommended ROMs to flash</a></li>
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
@@ -39,6 +40,15 @@
 				<li><a href="t60_unbrick.html">ThinkPad T60: How to unbrick</a></li>
 				<li><a href="x200_external.html">ThinkPad X200: How to unbrick</a> (also the initial installation guide for this machine)</li>
 			</ul>
+			
+<hr/>
+
+	<h1 id="qemu">QEMU</h1>
+	
+		<p>
+			You don't really do anything here, just run (example):<br/>
+			$ <b>qemu-system-i386 -m 512 -bios qemu_i440fx_piix4_ukdvorak_vesafb.rom</b>
+		</p>
 
 <hr/>
 
