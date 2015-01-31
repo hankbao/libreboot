@@ -78,6 +78,24 @@
 		<p>
 			First, <a href="#build_dependencies">install the build dependencies</a>.
 		</p>
+		
+		<p>
+			Since libreboot makes extensive use of git, you need to setup git properly. If you haven't setup
+			git yet, the minimum requirement is:<br/>
+			$ <b>git config --global user.name "Your Name"</b><br/>
+			$ <b>git config --global user.email your@emailaddress.com</b><br/>
+			This is what will also appear in git logs if you ever commit your own changes to a given repository. For
+			more information, see <a href="http://git-scm.com/doc">http://git-scm.com/doc</a>.
+		</p>
+		
+		<p>
+			Another nice config for you (optional, but recommended):<br/>
+			$ <b>git config --global core.editor nano</b><br/>
+			$ <b>git config --global color.status auto</b><br/>
+			$ <b>git config --global color.branch auto</b><br/>
+			$ <b>git config --global color.interactive auto</b><br/>
+			$ <b>git config --global color.diff auto</b>
+		</p>
 
 		<p>
 			After that, run the get script:<br/>
