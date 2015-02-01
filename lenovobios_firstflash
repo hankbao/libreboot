@@ -57,14 +57,10 @@ else
 	exit 1
 fi
 
-# Set mucts
-$errOut = " \
-			BUCTS failed. Make sure BUC.TS is 1, or else you will brick your machine. \
-			ABORTING so as to protect against bricking the machine. \
-			"
+# Set bucts
 # this means we are working in src
 if [ ! -f "$bucts" ]; then
-	echo "$errOut"
+	echo "BUCTS failed. Make sure BUC.TS is 1, or else you will brick your machine. ABORTING so as to protect against bricking the machine."
 	exit 1
 fi
 
