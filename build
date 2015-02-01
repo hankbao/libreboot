@@ -54,7 +54,6 @@ cd ../
 # Build ROM images for supported boards
 for board in $(ls resources/libreboot/config/)
 do
-	break
 	./buildrom-withgrub $board
 done
 
