@@ -383,8 +383,15 @@ rm -f libreboot_src/ich9fdgbe_4m.bin
 rm -rf libreboot_src/tobuild/
 rm -f libreboot_src/tobuild.tar.xz
 
-# delete the "commitid" file (releases are tagged in git)
+# delete the old commitid file
+rm -f commitid
 rm -f libreboot_src/commitid
+
+# create file showing the commit ID from git for this archive.
+cat .git/refs/heads/master > commitid
+# include it in the release archives
+cp commitid libreboot_src/
+cp commitid libreboot_bin/
 
 echo "Creating compressed libreboot_src release archive"
 
@@ -395,9 +402,6 @@ echo "Creating compressed libreboot_bin release archive"
 
 # create lzma compressed bin archive
 tar cfJ libreboot_bin.tar.xz libreboot_bin
-
-# create file showing the commit ID from git for this archive.
-cat .git/refs/heads/master > commitid
 
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
