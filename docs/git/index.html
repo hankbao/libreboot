@@ -30,8 +30,7 @@
 				<a href="#config">Configuring libreboot</a>
 				<ul>
 					<li><a href="#config_dmidecode">dmidecode</a></li>
-					<li><a href="#config_x60">ThinkPad X60</a></li>
-					<li><a href="#config_x60t">ThinkPad X60 Tablet</a></li>
+					<li><a href="#config_x60">ThinkPad X60, X60S and X60 Tablet</a></li>
 					<li><a href="#config_t60">ThinkPad T60</a></li>
 					<li><a href="#config_x200">ThinkPad X200</a></li>
 					<li><a href="#config_macbook21">MacBook2,1</a></li>
@@ -228,7 +227,8 @@
 		<p>
 			Before building a ROM in libreboot (or coreboot, for that matter), you need to configure it.
 			This is done using the following inside the source tree:<br/>
-			<b>$ make menuconfig</b>
+			$ <b>cd coreboot/</b><br/>
+			$ <b>make menuconfig</b>
 		</p>
 
 		<p>
@@ -265,18 +265,13 @@
 			</p>
 
 		<h2 id="config_x60">
-			ThinkPad X60 configuration (file: resources/libreboot/config/x60/config)
+			ThinkPad X60, X60S and X60 Tablet configuration (file: resources/libreboot/config/x60/config)
 		</h2>
 			<ul>
 				<li>General setup / Expert mode = <i>enable</i></li>
-				<li>General setup / Local version string = <i>7BETC7WW (2.08 )</i></li>
 				<li>Mainboard / Mainboard vendor = <i>Lenovo</i></li>
 				<li>Mainboard / Mainboard model = <i>ThinkPad X60 / X60s / X60t</i></li>
 				<li>Mainboard / ROM chip size = <i>2048 KB (2 MB)</i></li>
-				<li>System tables / SMBIOS Serial Number = <i>L3BH242</i></li>
-				<li>System tables / SMBIOS Version Number = <i>ThinkPad X60s</i></li>
-				<li>System tables / SMBIOS Manufacturer = <i>LENOVO</i></li>
-				<li>System tables / SMBIOS Product name = <i>1702L8G</i></li>
 				<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
 				<li>Devices / Use native graphics initialization = <i>enable</i></li>
 				<li>
@@ -290,6 +285,7 @@
 				<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
 				<li>Generic Drivers / Enable early (pre-RAM) usbdebug = <i>Enable</i></li>
 				<li>Generic Drivers / Type of dongle = <i>BeagleBone Black</i></li>
+				<li>Generic Drivers / Digitizer = <i>Present</i></li>
 				<li>Console / Send console output to a CBMEM buffer = <i>enable</i></li>
 				<li>Console / USB dongle log output = <i>enable</i></li>
 				<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
@@ -307,33 +303,7 @@
 				scripts for this machine.
 			</p>
 			<p>
-				SMBIOS Version Number is ThinkPad X60 on the X60, but it is believed that the X60 and X60s both have identical
-				motherboards where the only difference is the CPU. This same configuration is used on the X60 and X60s.
-			</p>
-
-		<h2 id="config_x60t">
-			ThinkPad X60 Tablet configuration (file: resources/libreboot/config/x60t/config)
-		</h2>
-			<p>
-				Identical to the X60/X60S except for the following:
-			</p>
-			<ul>
-				<li>General setup / Local version string = <i>7JET23WW (1.08 )</i></li>
-				<li>System tables / SMBIOS Serial Number = <i>L3B8281</i></li>
-				<li>System tables / SMBIOS Version Number = <i>ThinkPad X60 Tablet</i></li>
-				<li>System tables / SMBIOS Product name = <i>6364WJ1</i></li>
-				<li>Generic Drivers / Digitizer = <i>Present</i></li>
-			</ul>
-			<p>
-				Now go back into Devices:
-			</p>
-			<ul>
-				<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
-				<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
-			</ul>
-			<p>
-				The resulting .config file was saved as resources/libreboot/config/<b>x60t/config</b> and is used by the build
-				scripts for this machine.
+				This configuration is used on all variants: X60, X60S and X60 Tablet.
 			</p>
 
 		<h2 id="config_t60">

@@ -59,7 +59,7 @@ done
 
 # Needed on i945 systems for the bucts/dd trick (documented)
 # This enables the ROM to be flashed over the lenovo bios firmware
-for i945board in x60 x60t t60
+for i945board in x60 t60
 do
 	cd bin/"$i945board"/
 	for i945rom in $(ls)
