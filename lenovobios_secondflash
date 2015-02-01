@@ -59,14 +59,9 @@ fi
 $(echo $flashrom) -p internal -w $1
 
 # Reset bucts back to zero
-$errOut = " \
-			WARNING: bucts not found, but if the image was flashed then it's probably safe \
-			A dd'd image (like libreboot's images) flashed with bucts=1 is ok. If the image is not dd'd and bucts=1, \
-			then you should run ./bucts 0 now, or remove the yellow cmos/nvram battery for a minute. \
-			"
 # this means we are working in src
 if [ ! -f "$bucts" ]; then
-	echo "$errOut"
+	echo "WARNING: bucts not found, but if the image was flashed then it's probably safe. A dd'd image (like libreboot's images) flashed with bucts=1 is ok. If the image is not dd'd and bucts=1, then you should run ./bucts 0 now, or remove the yellow cmos/nvram battery for a minute."
 	exit 1
 fi
 
