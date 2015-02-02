@@ -114,21 +114,27 @@
 		</p>
 
 		<h2>
-			The libreboot project has two main goals:
+			The libreboot project has three main goals:
 		</h2>
 			<ul>
 				<li>
-					<i><u>Recommend and distribute only <b>free software</b></u></i>. The coreboot project distributes proprietary code/blobs on some computers;
+					<i><u><b>Recommend and distribute only free software</b></u></i>. The coreboot project distributes proprietary code/blobs on some computers;
 					this can include things like CPU microcode updates, memory initialization code and so on. The project also actively
 					recommends that the user install additional blobs in some cases (such as the video BIOS or Intel ME).
 					While this can be necessary from the coreboot project's point of view, Libreboot is an attempt to support as many
 					computers from coreboot as possible, without distributing any blobs and without having the user install additional
 					proprietary software. This is not to say that the coreboot project is bad; a lot of extremely dedicated and talented
 					individuals in coreboot work night and day to reverse engineer and free those blobs that still remain in coreboot. 
-					<b>Any system from coreboot that can run without blobs is a viable libreboot candidate!</b>
+					<i>Any system from coreboot that can run without blobs is a viable libreboot candidate!</i>
 				</li>
 				<li>
-					<i><u>Make coreboot easy to use</u></i>. The main problem that many users have with coreboot is that it is extremely difficult to 
+					<i><u><b>Support as much hardware as possible!</b></u></i> This goes without saying. The list of officially supported hardware
+					in libreboot is smaller than in upstream (coreboot), because some boards in coreboot require proprietary software which
+					libreboot does not and will not distribute. The main goal of the libreboot project is to spread free software at a low-level
+					(the boot firmware) to as many people as possible, so of course that means supporting as much hardware as possible.
+				</li>
+				<li>
+					<i><u><b>Make coreboot easy to use</b></u></i>. The main problem that many users have with coreboot is that it is extremely difficult to 
 					understand, learn about, install and use. This is understandable; coreboot is a low-level piece of software and has many
 					talented individuals working on it, but the project's resources are limited and so the developers focus their efforts on the code. 
 					Coreboot offers wonderful support for other coreboot developers and those who wish to climb up
