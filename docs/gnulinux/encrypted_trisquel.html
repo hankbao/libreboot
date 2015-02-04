@@ -12,280 +12,325 @@
 </head>
 
 <body>
-	<header>
+	<div class="section">
 		<h1>Installing Trisquel GNU/Linux with full disk encryption (including /boot)</h1>
-		<aside>Or <a href="index.html">back to main index</a></aside>
-	</header>
+			<p>
+				Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
+				by default, which means that the GRUB configuration file 
+				(where your GRUB menu comes from) is stored directly alongside libreboot
+				and its GRUB payload executable, inside
+				the flash chip. In context, this means that installing distributions and managing them 
+				is handled slightly differently compared to traditional BIOS systems.
+			</p>
 
-	<p>
-		Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
-		by default, which means that the GRUB configuration file 
-		(where your GRUB menu comes from) is stored directly alongside libreboot
-		and its GRUB payload executable, inside
-		the flash chip. In context, this means that installing distributions and managing them 
-		is handled slightly differently compared to traditional BIOS systems.
-	</p>
-
-	<p>
-		On most systems, the /boot partition has to be left unencrypted while the others are encrypted.
-		This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware
-		can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a 
-		payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical
-		access to the machine.
-	</p>
-
-	<p>
-		This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode). <a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
-	</p>
-
-	<p>
-		Set a strong user password (ideally above 40 characters, of lowercase/uppercase, numbers and symbols).
-	</p>
-
-	<p>
-		when the installer asks you to set up
-		encryption (ecryptfs) for your home directory, select 'Yes' if you want to: <b>LUKS is already secure and performs well. Having ecryptfs on top of it
-		will add noticeable performance penalty, for little security gain in most use cases. This is therefore optional, and not recommended.
-		Choose 'no'.</b>
-	</p>
-
-	<p>
-		<b>
-			Your user password should be different from the LUKS password which you will set later on.
-			Your LUKS password should, like the user password, be secure.
-		</b>
-	</p>
-
-	<h1>Partitioning</h1>
-
-		<p>Choose 'Manual' partitioning:</p>
-			<ul>
-				<li>Select drive and create new partition table</li>
-				<li>
-					Single large partition. The following are mostly defaults:
-					<ul>
-						<li>Use as: physical volume for encryption</li>
-						<li>Encryption: aes</li>
-						<li>key size: 256</li>
-						<li>IV algorithm: xts-plain64</li>
-						<li>Encryption key: passphrase</li>
-						<li>erase data: Yes (only choose 'No' if it's a new drive that doesn't contain your private data)</li>
-					</ul>
-				</li>
-				<li>
-					Select 'configure encrypted volumes'
-					<ul>
-						<li>Create encrypted volumes</li>
-						<li>Select your partition</li>
-						<li>Finish</li>
-						<li>Really erase: Yes</li>
-						<li>(erase will take a long time. be patient)</li>
-						<li>(if your old system was encrypted, just let this run for about a minute to
-						make sure that the LUKS header is wiped out)</li>
-					</ul>
-				</li>
-				<li>
-					Select encrypted space:
-					<ul>
-						<li>use as: physical volume for LVM</li>
-						<li>Choose 'done setting up the partition'</li>
-					</ul>
-				</li>
-				<li>
-					Configure the logical volume manager:
-					<ul>
-						<li>Keep settings: Yes</li>
-					</ul>
-				</li>
-				<li>
-					Create volume group:
-					<ul>
-						<li>Name: <b>grubcrypt</b> (you can use whatever you want here, this is just an example)</li>
-						<li>Select crypto partition</li>
-					</ul>
-				</li>
-				<li>
-					Create logical volume
-					<ul>
-						<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
-						<li>name: <b>trisquel</b> (you can use whatever you want here, this is just an example)</li>
-						<li>size: default, minus 2048 MB</li>
-					</ul>
-				</li>
-				<li>
-					Create logical volume
-					<ul>
-						<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
-						<li>name: <b>swap</b> (you can use whatever you want here, this is just an example)</li>
-						<li>size: press enter</li>
-					</ul>
-				</li>
-			</ul>
-
-	<h1>Further partitioning</h1>
-
+			<p>
+				On most systems, the /boot partition has to be left unencrypted while the others are encrypted.
+				This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware
+				can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a 
+				payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical
+				access to the machine.
+			</p>
+			<p>
+				This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode). 
+				<a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
+			</p>
+			<p><a href="index.html">Back to previous index</a></p>
+	</div>
+	
+	<div class="section">
+		
 		<p>
-			Now you are back at the main partitioning screen. You will simply set mountpoints and filesystems to use.
-		</p>
-			<ul>
-				<li>
-					LVM LV trisquel
-					<ul>
-						<li>use as: ext4</li>
-						<li>mount point: /</li>
-						<li>done setting up partition</li>
-					</ul>
-				</li>
-				<li>
-					LVM LV swap
-					<ul>
-						<li>use as: swap area</li>
-						<li>done setting up partition</li>
-					</ul>
-				</li>
-				<li>Now you select 'Finished partitioning and write changes to disk'.</li>
-			</ul>
-
-	<h1>Kernel</h1>
-
-		<p>
-			Installation will ask what kernel you want to use. linux-generic is fine.
-		</p>
-
-	<h1>Tasksel</h1>
-
-		<p>
-			Choose <i>&quot;Trisquel Desktop Environment&quot;</i> if you want GNOME, 
-			<i>&quot;Trisquel-mini Desktop Environment&quot;</i> if you
-			want LXDE or <i>&quot;Triskel Desktop Environment&quot;</i> if you want KDE. 
-			If you want to have no desktop (just a basic shell)
-			when you boot or if you want to create your own custom setup, then choose nothing here (don't select anything). 
-			You might also want to choose some of the other package groups; it's up to you.
-		</p>
-
-	<h1>Postfix configuration</h1>
-
-		<p>
-			If asked, choose <i>&quot;No Configuration&quot;</i> here (or maybe you want to select something else. It's up to you.)
-		</p>
-
-	<h1>Install the GRUB boot loader to the master boot record</h1>
-
-		<p>
-			Choose 'Yes'. It will fail, but don't worry. Then at the main menu, choose 'Continue without a bootloader'.
-			You could also choose 'No'. Choice is irrelevant here.
+			Set a strong user password (ideally above 40 characters, of lowercase/uppercase, numbers and symbols).
 		</p>
 
 		<p>
-			<i>You do not need to install GRUB at all, since in libreboot you are using the GRUB payload (for libreboot) to boot your system directly.</i>
-		</p>
-
-	<h1>Clock UTC</h1>
-
-		<p>
-			Just say 'Yes'.
-		</p>
-
-	<h1>
-		Booting your system
-	</h1>
-
-		<p>
-			At this point, you will have finished the installation. At your GRUB payload, press C to get to the command line.
+			when the installer asks you to set up
+			encryption (ecryptfs) for your home directory, select 'Yes' if you want to: <b>LUKS is already secure and performs well. Having ecryptfs on top of it
+			will add noticeable performance penalty, for little security gain in most use cases. This is therefore optional, and not recommended.
+			Choose 'no'.</b>
 		</p>
 
 		<p>
-			Do that:<br/>
-			grub&gt; <b>cryptomount -a (ahci0,msdos1)</b><br/>
-			grub&gt; <b>set root='lvm/grubcrypt-trisquel'</b><br/>
-			grub&gt; <b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
-			grub&gt; <b>initrd /initrd.img</b><br/>
-			grub&gt; <b>boot</b>
+			<b>
+				Your user password should be different from the LUKS password which you will set later on.
+				Your LUKS password should, like the user password, be secure.
+			</b>
 		</p>
+		
+	</div>
+	
+	<div class="section">
 
-	<h1>
-		ecryptfs
-	</h1>
+		<h1>Partitioning</h1>
 
-		<p>
-			If you didn't encrypt your home directory, then you can safely ignore this section.
-		</p>
+			<p>Choose 'Manual' partitioning:</p>
+				<ul>
+					<li>Select drive and create new partition table</li>
+					<li>
+						Single large partition. The following are mostly defaults:
+						<ul>
+							<li>Use as: physical volume for encryption</li>
+							<li>Encryption: aes</li>
+							<li>key size: 256</li>
+							<li>IV algorithm: xts-plain64</li>
+							<li>Encryption key: passphrase</li>
+							<li>erase data: Yes (only choose 'No' if it's a new drive that doesn't contain your private data)</li>
+						</ul>
+					</li>
+					<li>
+						Select 'configure encrypted volumes'
+						<ul>
+							<li>Create encrypted volumes</li>
+							<li>Select your partition</li>
+							<li>Finish</li>
+							<li>Really erase: Yes</li>
+							<li>(erase will take a long time. be patient)</li>
+							<li>(if your old system was encrypted, just let this run for about a minute to
+							make sure that the LUKS header is wiped out)</li>
+						</ul>
+					</li>
+					<li>
+						Select encrypted space:
+						<ul>
+							<li>use as: physical volume for LVM</li>
+							<li>Choose 'done setting up the partition'</li>
+						</ul>
+					</li>
+					<li>
+						Configure the logical volume manager:
+						<ul>
+							<li>Keep settings: Yes</li>
+						</ul>
+					</li>
+					<li>
+						Create volume group:
+						<ul>
+							<li>Name: <b>grubcrypt</b> (you can use whatever you want here, this is just an example)</li>
+							<li>Select crypto partition</li>
+						</ul>
+					</li>
+					<li>
+						Create logical volume
+						<ul>
+							<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
+							<li>name: <b>trisquel</b> (you can use whatever you want here, this is just an example)</li>
+							<li>size: default, minus 2048 MB</li>
+						</ul>
+					</li>
+					<li>
+						Create logical volume
+						<ul>
+							<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
+							<li>name: <b>swap</b> (you can use whatever you want here, this is just an example)</li>
+							<li>size: press enter</li>
+						</ul>
+					</li>
+				</ul>
+	
+	</div>
 
-		<p>
-			Immediately after logging in, do that:<br/>
-			$ <b>sudo ecryptfs-unwrap-passphrase</b>
-		</p>
+	<div class="section">
+		
+		<h1>Further partitioning</h1>
 
-		<p>
-			This will be needed in the future if you ever need to recover your home directory from another system, so write it down and keep the note
-			somewhere secret. Ideally, you should memorize it and then burn the note (or not even write it down, and memorize it still)>
-		</p>
+			<p>
+				Now you are back at the main partitioning screen. You will simply set mountpoints and filesystems to use.
+			</p>
+				<ul>
+					<li>
+						LVM LV trisquel
+						<ul>
+							<li>use as: ext4</li>
+							<li>mount point: /</li>
+							<li>done setting up partition</li>
+						</ul>
+					</li>
+					<li>
+						LVM LV swap
+						<ul>
+							<li>use as: swap area</li>
+							<li>done setting up partition</li>
+						</ul>
+					</li>
+					<li>Now you select 'Finished partitioning and write changes to disk'.</li>
+				</ul>
+	
+	</div>
 
-	<h1>
-		Modify grub.cfg (CBFS)
-	</h1>
+	<div class="section">
+		
+		<h1>Kernel</h1>
 
-		<p>
-			Now you need to set it up so that the system will automatically boot, without having to type a bunch of commands.
-		</p>
+			<p>
+				Installation will ask what kernel you want to use. linux-generic is fine.
+			</p>
+			
+	</div>
 
-		<p>
-			Modify your grub.cfg (in the firmware) <a href="grub_cbfs.html">using this tutorial</a>; 
-			just change the default menu entry 'Load Operating System' to say this inside:
-		</p>
+	<div class="section">
+		
+		<h1>Tasksel</h1>
 
-		<p>
-			<b>cryptomount -a (ahci0,msdos1)</b><br/>
-			<b>set root='lvm/grubcrypt-trisquel'</b><br/>
-			<b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
-			<b>initrd /initrd.img</b>
-		</p>
+			<p>
+				Choose <i>&quot;Trisquel Desktop Environment&quot;</i> if you want GNOME, 
+				<i>&quot;Trisquel-mini Desktop Environment&quot;</i> if you
+				want LXDE or <i>&quot;Triskel Desktop Environment&quot;</i> if you want KDE. 
+				If you want to have no desktop (just a basic shell)
+				when you boot or if you want to create your own custom setup, then choose nothing here (don't select anything). 
+				You might also want to choose some of the other package groups; it's up to you.
+			</p>
+			
+	</div>
 
-		<p>
-			Additionally, you should set a GRUB password. This is not your LUKS password, but it's a password that you have to enter to see
-			GRUB. This protects your system from an attacker simply booting a live USB and re-flashing your firmware. <b>This should be different than your LUKS passphrase and user password.</b>
-		</p>
+	<div class="section">
+		
+		<h1>Postfix configuration</h1>
 
-		<p>
-			The GRUB utility can be used like so:<br/>
-			$ <b>grub-mkpasswd-pbkdf2</b>
-		</p>
+			<p>
+				If asked, choose <i>&quot;No Configuration&quot;</i> here (or maybe you want to select something else. It's up to you.)
+			</p>
+		
+	</div>
 
-		<p>
-			Give it a password (remember, it has to be secure) and it'll output something like:<br/>
-			<b>grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
-		</p>
+	<div class="section">
+		
+		<h1>Install the GRUB boot loader to the master boot record</h1>
 
-		<p>
-			Put that in the grub.cfg (the one for CBFS inside the ROM) before the 'Load Operating System' menu entry like so (example):<br/>
-		</p>
-		<pre>
+			<p>
+				Choose 'Yes'. It will fail, but don't worry. Then at the main menu, choose 'Continue without a bootloader'.
+				You could also choose 'No'. Choice is irrelevant here.
+			</p>
+
+			<p>
+				<i>You do not need to install GRUB at all, since in libreboot you are using the GRUB payload (for libreboot) to boot your system directly.</i>
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>Clock UTC</h1>
+
+			<p>
+				Just say 'Yes'.
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>
+			Booting your system
+		</h1>
+
+			<p>
+				At this point, you will have finished the installation. At your GRUB payload, press C to get to the command line.
+			</p>
+
+			<p>
+				Do that:<br/>
+				grub&gt; <b>cryptomount -a (ahci0,msdos1)</b><br/>
+				grub&gt; <b>set root='lvm/grubcrypt-trisquel'</b><br/>
+				grub&gt; <b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
+				grub&gt; <b>initrd /initrd.img</b><br/>
+				grub&gt; <b>boot</b>
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>
+			ecryptfs
+		</h1>
+
+			<p>
+				If you didn't encrypt your home directory, then you can safely ignore this section.
+			</p>
+
+			<p>
+				Immediately after logging in, do that:<br/>
+				$ <b>sudo ecryptfs-unwrap-passphrase</b>
+			</p>
+
+			<p>
+				This will be needed in the future if you ever need to recover your home directory from another system, so write it down and keep the note
+				somewhere secret. Ideally, you should memorize it and then burn the note (or not even write it down, and memorize it still)>
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1>
+			Modify grub.cfg (CBFS)
+		</h1>
+
+			<p>
+				Now you need to set it up so that the system will automatically boot, without having to type a bunch of commands.
+			</p>
+
+			<p>
+				Modify your grub.cfg (in the firmware) <a href="grub_cbfs.html">using this tutorial</a>; 
+				just change the default menu entry 'Load Operating System' to say this inside:
+			</p>
+
+			<p>
+				<b>cryptomount -a (ahci0,msdos1)</b><br/>
+				<b>set root='lvm/grubcrypt-trisquel'</b><br/>
+				<b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
+				<b>initrd /initrd.img</b>
+			</p>
+
+			<p>
+				Additionally, you should set a GRUB password. This is not your LUKS password, but it's a password that you have to enter to see
+				GRUB. This protects your system from an attacker simply booting a live USB and re-flashing your firmware. <b>This should be different than your LUKS passphrase and user password.</b>
+			</p>
+
+			<p>
+				The GRUB utility can be used like so:<br/>
+				$ <b>grub-mkpasswd-pbkdf2</b>
+			</p>
+
+			<p>
+				Give it a password (remember, it has to be secure) and it'll output something like:<br/>
+				<b>grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
+			</p>
+
+			<p>
+				Put that in the grub.cfg (the one for CBFS inside the ROM) before the 'Load Operating System' menu entry like so (example):<br/>
+			</p>
+			<pre>
 <b>set superusers=&quot;root&quot;</b>
 <b>password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
-		</pre>
+			</pre>
+
+			<p>
+				Obviously, replace it with the correct hash that you actually got for the password that you entered. Meaning, not the hash that you see above!
+			</p>
+
+			<p>
+				After this, you will have a modified ROM with the menu entry for cryptomount, and the entry before that for the GRUB password. Flash the modified ROM 
+				using <a href="../install/index.html#flashrom">this tutorial</a>.
+			</p>
+			
+	</div>
+
+	<div class="section">
 
 		<p>
-			Obviously, replace it with the correct hash that you actually got for the password that you entered. Meaning, not the hash that you see above!
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
 
 		<p>
-			After this, you will have a modified ROM with the menu entry for cryptomount, and the entry before that for the GRUB password. Flash the modified ROM 
-			using <a href="../install/index.html#flashrom">this tutorial</a>.
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 		</p>
-
-<hr/>
-
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
-
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+		
+	</div>
 
 </body>
 </html>

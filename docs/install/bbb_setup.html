@@ -13,70 +13,69 @@
 
 <body>
 
-	<header>
+	<div class="section">
 		<h1 id="pagetop">Setup the BeagleBone Black as an SPI flashrom programmer</h1>
-		<aside>How to use the BBB as an external flashrom programmer, for reading/writing an SPI flash chip.</aside>
-	</header>
+			<p>How to use the BBB as an external flashrom programmer, for reading/writing an SPI flash chip.</p>
+			<p><a href="index.html">Back to previous index</a></p>
+	</div>
 
-	<p>Or go <a href="index.html">back to main index</a></p>
+	<div class="section">
 
-<hr/>
-
-	<h1 id="hardware_requirements">Hardware requirements</h1>
-	
-		<p>
-			Shopping list (pictures of this hardware is shown later):
-		</p>
-			<ul>
-				<li>
-					External SPI programmer: <b>BeagleBone Black</b> (rev. C)
-					is highly recommended. Sometimes referred to as 'BBB'.
-				</li>
-				<li>
-					Clip for connecting to the flash chip: <b>Pomona 5250</b>
-					(SOIC-8) or <b>Pomona 5252</b> (SOIC-16) is recommended
-					(<b>X200S and X200 Tablet users will need a soldering iron
-					instead</b>, because of the type of package the flash chip is
-					in on those machines).
-				</li>
-				<li>
-					<b>External 3.3V DC power supply</b>. The one used by this
-					author has the label HF100W-SF-3.3 on it, but any decent
-					supply will be fine. Some people use the 3.3V from an ATX
-					PSU for instance (the kind that you get on a typical
-					Intel/AMD desktop computer. 6A supply should be fine,
-					the one used by this author is 20A (it won't actually use
-					that, it's just what the PSU is capable of).
-				</li>
-				<li>
-					Dupont <b>jumper cables</b> (2.54mm / 0.1&quot; headers)
-					You should get male-male, male-female and female-female
-					cables in 10cm and 20cm sizes. Just get a load of them.
-				</li>
-				<li>
-					<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
-					with one.)
-				</li>
-				<li>
-					<b>FTDI serial board</b>, for unbricking the BeagleBone if
-					necessary.
-				</li>
-				<li>
-					<b>5V DC power supply</b> (from wall outlet to the BeagleBone).
-					The BeagleBone can have power supplied via USB, but a
-					dedicated power supply is recommended. 
-				</li>
-			</ul>
-	
-		<p>
-			<a href="#pagetop">Back to top of page.</a>
-		</p>
+		<h1 id="hardware_requirements">Hardware requirements</h1>
 		
-<hr/>
+			<p>
+				Shopping list (pictures of this hardware is shown later):
+			</p>
+				<ul>
+					<li>
+						External SPI programmer: <b>BeagleBone Black</b> (rev. C)
+						is highly recommended. Sometimes referred to as 'BBB'.
+					</li>
+					<li>
+						Clip for connecting to the flash chip: <b>Pomona 5250</b>
+						(SOIC-8) or <b>Pomona 5252</b> (SOIC-16) is recommended
+						(<b>X200S and X200 Tablet users will need a soldering iron
+						instead</b>, because of the type of package the flash chip is
+						in on those machines).
+					</li>
+					<li>
+						<b>External 3.3V DC power supply</b>. The one used by this
+						author has the label HF100W-SF-3.3 on it, but any decent
+						supply will be fine. Some people use the 3.3V from an ATX
+						PSU for instance (the kind that you get on a typical
+						Intel/AMD desktop computer. 6A supply should be fine,
+						the one used by this author is 20A (it won't actually use
+						that, it's just what the PSU is capable of).
+					</li>
+					<li>
+						Dupont <b>jumper cables</b> (2.54mm / 0.1&quot; headers)
+						You should get male-male, male-female and female-female
+						cables in 10cm and 20cm sizes. Just get a load of them.
+					</li>
+					<li>
+						<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
+						with one.)
+					</li>
+					<li>
+						<b>FTDI serial board</b>, for unbricking the BeagleBone if
+						necessary.
+					</li>
+					<li>
+						<b>5V DC power supply</b> (from wall outlet to the BeagleBone).
+						The BeagleBone can have power supplied via USB, but a
+						dedicated power supply is recommended. 
+					</li>
+				</ul>
+		
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+		
+	<div class="section">
 
-	<h1 id="configure_bbb">Configuring the BeagleBone Black</h1>
-	
-		<h2>Setting up the 3.3V DC PSU</h2>
+		<h1>Setting up the 3.3V DC PSU</h1>
 			<p>
 				With my PSU, first I had wire up the mains power cable. Any clover or kettle lead will do. Cut the end off (not the one
 				that goes in the wall, but the kettle/clover connector).
@@ -107,7 +106,12 @@
 				If you are using a different PSU, then the steps will change from those above. Anyway, once you are satisfied,
 				continue reading...
 			</p>
-		<h2>Setting up the BBB</h2>
+			
+	</div>
+	
+	<div class="section">
+		
+		<h1>Setting up the BBB</h1>
 			<p>
 				Your BBB will have an sshd with no password on root. Find it's IP address
 				(it will use DHCP by default) and set a root password. The steps below
@@ -265,9 +269,14 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 				This means that it's working (the clip isn't connected to any flash chip,
 				so the error is fine).
 			</p>
-		<h2>
+			
+	</div>
+	
+	<div class="section">
+			
+		<h1>
 			Connecting the Pomona 5250/5252
-		</h2>
+		</h1>
 			<p>
 				Use this image for reference when connecting the pomona to the BBB:
 				<a href="http://beagleboard.org/Support/bone101#headers">http://beagleboard.org/Support/bone101#headers</a>
@@ -326,20 +335,24 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 		<p>
 			<a href="#pagetop">Back to top of page.</a>
 		</p>
+		
+	</div>
 
-<hr/>
+	<div class="section">
 
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
+		<p>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
 
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
 
 </body>
 </html>

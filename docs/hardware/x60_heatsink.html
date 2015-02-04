@@ -13,132 +13,141 @@
 
 <body>
 
-	<header>
+	<div class="section">
 		<h1>Changing the fan/heatsink on the ThinkPad X60</h1>
-		<aside>This guide will teach you how to replace the fan and heatsink on your ThinkPad X60.</aside>
-	</header>
+			<p>
+				This guide will teach you how to replace the fan and heatsink on your ThinkPad X60.
+			</p>
+			<p><a href="index.html">Back to main index</a></p>
+	</div>
 
-	<p>Or go <a href="index.html">back to main index</a></p>
+	<div class="section">
+		<h1>Table of Contents</h1>
+			<ul>
+				<li><a href="#hardware_requirements">Hardware Requirements</a></li>
+				<li><a href="#software_requirements">Software Requirements</a></li>
+				<li><a href="#procedure">Disassembly</a></li>
+			</ul>
+	</div>
 
-	<h2>Table of Contents</h2>
-		<ul>
-			<li><a href="#hardware_requirements">Hardware Requirements</a></li>
-			<li><a href="#software_requirements">Software Requirements</a></li>
-			<li><a href="#procedure">The procedure</a></li>
-		</ul>
+	<div class="section">
+		<h1 id="hardware_requirements">Hardware requirements</h1>
+			<ul>
+				<li>isopropyl alcohol (sometimes called rubbing alcohol)</li>
+				<li>your new fan and/or heatsink</li>
+				<li>CPU thermal compound (some say Arctic Silver 5 or IC Diamond 7 are good, others are also 'ok')</li>
+				<li>Something to spread the paste with</li>
+			</ul>
+	</div>
 
-	<h1 id="hardware_requirements">Hardware requirements</h1>
-		<ul>
-			<li>isopropyl alcohol (sometimes called rubbing alcohol)</li>
-			<li>your new fan and/or heatsink</li>
-			<li>CPU thermal compound (some say Arctic Silver 5 or IC Diamond 7 are good, others are also 'ok')</li>
-			<li>Something to spread the paste with</li>
-		</ul>
+	<div class="section">
+		<h1 id="software_requirements">Software requirements (for CPU stress testing)</h1>
+			<ul>
+				<li>xsensors utility</li>
+				<li>stress utility</li>
+			</ul>
+	</div>
 
-	<h1 id="software_requirements">Software requirements (for CPU stress testing)</h1>
-		<ul>
-			<li>xsensors utility</li>
-			<li>stress utility</li>
-		</ul>
+	<div class="section">
+		<h1 id="procedure">Disassembly</h1>
+			<p>
+				Remove those screws:<br/>
+				<img src="../images/x60_heatsink/0000.jpg" alt="" />
+			</p>
+			<p>
+				Push the keyboard forward (carefully):<br/>
+				<img src="../images/x60_heatsink/0001.jpg" alt="" />
+			</p>
+			<p>
+				Lift the keyboard up and disconnect it from the board:<br/>
+				<img src="../images/x60_heatsink/0002.jpg" alt="" />
+			</p>
+			<p>
+				Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:<br/>
+				<img src="../images/x60_heatsink/0003.jpg" alt="" />
+			</p>
+			<p>
+				You should now have this:<br/>
+				<img src="../images/x60_heatsink/0004.jpg" alt="" />
+			</p>
+			<p>
+				Disconnect the wifi antenna cables, the modem cable and the speaker:<br/>
+				<img src="../images/x60_heatsink/0005.jpg" alt="" />
+			</p>
+			<p>
+				Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem
+				cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand
+				side:<br/>
+				<img src="../images/x60_heatsink/0006.jpg" alt="" />
+			</p>
+			<p>
+				Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape
+				that holds it into place:<br/>
+				<img src="../images/x60_heatsink/0008.jpg" alt="" />
+			</p>
+			<p>
+				Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:<br/>
+				<img src="../images/x60_heatsink/0009.jpg" alt="" />
+			</p>
+			<p>
+				Remove those screws:<br/>
+				<img src="../images/x60_heatsink/0011.jpg" alt="" />
+			</p>
+			<p>
+				Remove those screws:<br/>
+				<img src="../images/x60_heatsink/0012.jpg" alt="" />
+			</p>
+			<p>
+				Carefully remove the plate, like so:<br/>
+				<img src="../images/x60_heatsink/0013.jpg" alt="" />
+			</p>
+			<p>
+				Remove the SATA connector:<br/>
+				<img src="../images/x60_heatsink/0014.jpg" alt="" />
+			</p>
+			<p>
+				Now remove the motherboard (gently) and cast the lcd/chassis aside:<br/>
+				<img src="../images/x60_heatsink/0015.jpg" alt="" />
+			</p>
+			<p>
+				Look at that black tape above the heatsink, remove it:<br/>
+				<img src="../images/x60_heatsink/0016.jpg" alt="" />
+			</p>
+			<p>
+				Now you have removed it:<br/>
+				<img src="../images/x60_heatsink/0017.jpg" alt="" />
+			</p>
 
-	<h1 id="procedure">Disassembly</h1>
+			<p>
+				Disconnect the fan and remove all the screws, heatsink will easily come off:<br/>
+				<img src="../images/x60_heatsink/0018.jpg" alt="" />
+			</p>
+
+			<p>
+				Remove the old paste with a cloth (from the CPU and heatsink) and then clean both of them with the alcohol (to remove remaining residue of the paste).
+				Apply a pea-sized amount of paste to the both chipsets that the heatsink covered and spread it evenly (uniformally).
+				Finally reinstall the heatsink, reversing previous steps.
+			</p>
+
+			<p>
+				<b>stress -c 2</b> command can be used to push the CPU to 100%, and <b>xsensors</b> (or <b>watch sensors</b> command) can be used to monitor heat. 
+				Below 90C is ok.
+			</p>
+	</div>
+
+	<div class="section">
 		<p>
-			Remove those screws:<br/>
-			<img src="../images/x60_heatsink/0000.jpg" alt="" />
-		</p>
-		<p>
-			Push the keyboard forward (carefully):<br/>
-			<img src="../images/x60_heatsink/0001.jpg" alt="" />
-		</p>
-		<p>
-			Lift the keyboard up and disconnect it from the board:<br/>
-			<img src="../images/x60_heatsink/0002.jpg" alt="" />
-		</p>
-		<p>
-			Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:<br/>
-			<img src="../images/x60_heatsink/0003.jpg" alt="" />
-		</p>
-		<p>
-			You should now have this:<br/>
-			<img src="../images/x60_heatsink/0004.jpg" alt="" />
-		</p>
-		<p>
-			Disconnect the wifi antenna cables, the modem cable and the speaker:<br/>
-			<img src="../images/x60_heatsink/0005.jpg" alt="" />
-		</p>
-		<p>
-			Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem
-			cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand
-			side:<br/>
-			<img src="../images/x60_heatsink/0006.jpg" alt="" />
-		</p>
-		<p>
-			Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape
-			that holds it into place:<br/>
-			<img src="../images/x60_heatsink/0008.jpg" alt="" />
-		</p>
-		<p>
-			Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:<br/>
-			<img src="../images/x60_heatsink/0009.jpg" alt="" />
-		</p>
-		<p>
-			Remove those screws:<br/>
-			<img src="../images/x60_heatsink/0011.jpg" alt="" />
-		</p>
-		<p>
-			Remove those screws:<br/>
-			<img src="../images/x60_heatsink/0012.jpg" alt="" />
-		</p>
-		<p>
-			Carefully remove the plate, like so:<br/>
-			<img src="../images/x60_heatsink/0013.jpg" alt="" />
-		</p>
-		<p>
-			Remove the SATA connector:<br/>
-			<img src="../images/x60_heatsink/0014.jpg" alt="" />
-		</p>
-		<p>
-			Now remove the motherboard (gently) and cast the lcd/chassis aside:<br/>
-			<img src="../images/x60_heatsink/0015.jpg" alt="" />
-		</p>
-		<p>
-			Look at that black tape above the heatsink, remove it:<br/>
-			<img src="../images/x60_heatsink/0016.jpg" alt="" />
-		</p>
-		<p>
-			Now you have removed it:<br/>
-			<img src="../images/x60_heatsink/0017.jpg" alt="" />
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
 
 		<p>
-			Disconnect the fan and remove all the screws, heatsink will easily come off:<br/>
-			<img src="../images/x60_heatsink/0018.jpg" alt="" />
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 		</p>
-
-		<p>
-			Remove the old paste with a cloth (from the CPU and heatsink) and then clean both of them with the alcohol (to remove remaining residue of the paste).
-			Apply a pea-sized amount of paste to the both chipsets that the heatsink covered and spread it evenly (uniformally).
-			Finally reinstall the heatsink, reversing previous steps.
-		</p>
-
-		<p>
-			<b>stress -c 2</b> command can be used to push the CPU to 100%, and <b>xsensors</b> (or <b>watch sensors</b> command) can be used to monitor heat. 
-			Below 90C is ok.
-		</p>
-
-<hr/>
-
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
-
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+	</div>
 
 </body>
 </html>

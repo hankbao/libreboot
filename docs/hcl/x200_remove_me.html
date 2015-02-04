@@ -13,181 +13,189 @@
 
 <body>
 
-	<h1 id="pagetop">ThinkPad X200: remove the ME (manageability engine)</h1>
-		<p>
-			This sections relates to disabling and removing the ME (Intel <b>M</b>anagement <b>E</b>ngine)
-			on the ThinkPad X200.
-		</p>
-		<p>
-			The ME is a blob that typically must be left inside the flash chip (in the ME region, as outlined
-			by the default descriptor). On the X200, it is possible to remove it without any ill effects. All
-			other parts of coreboot on the X200 can be blob-free, so removing the ME was the last obstacle to
-			get X200 support in libreboot (the machine can also work without the microcode blobs). 
-		</p>
-		<p>
-			The ME is removed and disabled in libreboot by modifying the descriptor. More info about
-			this can be found in the ich9deblob/ich9gen source code in resources/utilities/ich9deblob/
-			in libreboot, or more generally on this page.
-		</p>
-		<p>
-			Or <a href="x200.html">back to main X200 compatibility page (x200.html)</a>.
-		</p>
-
-<hr/>
-
-	<h1 id="ich9gen">ICH9 gen utility</h1>
-	
-		<p>
-			<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
-			contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
-		</p>
-	
-		<p>
-			It is no longer necessary to use <a href="#ich9deblob">ich9deblob</a> to generate
-			a deblobbed descriptor+gbe image for the X200. ich9gen is a small utility within
-			ich9deblob that can generate them from scratch, without a factory.bin dump.
-		</p>
+	<div class="section">
 		
-		<p>
-			Run:<br/>
-			$ <b>./ich9gen</b>
-		</p>
-		
-		<p>
-			It is also possible to generate a descriptor+gbe image with your own MAC address
-			inside (with the Gbe checksum updated to match). Run:<br/>
-			$ <b>./ich9gen --macaddress XX:XX:XX:XX:XX:XX</b><br/>
-			(replace the XX chars with the hexadecimal chars in the MAC address that you want)
-		</p>
-		
-		<p>
-			You can find out your MAC address from <b>ip addr</b> or <b>ifconfig</b> in GNU/Linux. 
-			Alternatively, if you are running libreboot already (with the correct MAC address in your
-			ROM), dump it (flashrom -r) and read the first 6 bytes from position 0x1000 (or 0x2000) in a hex editor
-			(or, rename it to factory.rom and run it in ich9deblob: in the newly created mkgbe.c
-			will be the individual bytes of your MAC address). If you are currently running the stock firmware
-			and haven't installed libreboot yet, you can also run that through ich9deblob to get the mac address.
-		</p>
-		
-		<p>
-			An even simpler way to get the MAC address would be to read what's on the little sticker on
-			the underside. (on the X200, this would be near the VGA port).
-		</p>
-		
-		<p>
-			A bash script is also included in libreboot which will change the mac address (using ich9gen)
-			on all X200 ROM images. For instance:<br/>
-			$ <b>./ich9macchange XX:XX:XX:XX:XX:XX</b>
-		</p>
-		
-		<p>
-			Two new files will be created:
-		</p>
-			<ul>
-				<li><b>ich9fdgbe_4m.bin</b>: this is for X200 laptops with the 4MB flash chip.</li>
-				<li><b>ich9fdgbe_8m.bin</b>: this is for X200 laptops with the 8MB flash chip.</li>
-			</ul>
+		<h1 id="pagetop">ThinkPad X200: remove the ME (manageability engine)</h1>
+			<p>
+				This sections relates to disabling and removing the ME (Intel <b>M</b>anagement <b>E</b>ngine)
+				on the ThinkPad X200.
+			</p>
+			<p>
+				The ME is a blob that typically must be left inside the flash chip (in the ME region, as outlined
+				by the default descriptor). On the X200, it is possible to remove it without any ill effects. All
+				other parts of coreboot on the X200 can be blob-free, so removing the ME was the last obstacle to
+				get X200 support in libreboot (the machine can also work without the microcode blobs). 
+			</p>
+			<p>
+				The ME is removed and disabled in libreboot by modifying the descriptor. More info about
+				this can be found in the ich9deblob/ich9gen source code in resources/utilities/ich9deblob/
+				in libreboot, or more generally on this page.
+			</p>
+			<p>
+				<a href="x200.html">Back to main X200 compatibility page (x200.html)</a>.
+			</p>
 			
-		<p>
-			ich9gen executables can be found under ./ich9deblob/ statically compiled in
-			libreboot_bin. If you are using src or git, build ich9gen from source with:<br/>
-			$ <b>./builddeps-ich9deblob</b><br/>
-			The executable will appear under resources/utilities/ich9deblob/
-		</p>
-		
-		<p>
-			Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
-			the file to where <b>libreboot.rom</b> is located
-			and then run, for instance:<br/>
-			$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
-			or:<br/>
-			$ <b>dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
-		</p>
-		
-		<p>
-			Your X200 libreboot.rom image is now ready to be flashed on the machine. Refer back to 
-			<a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
-			for how to flash it.
-		</p>
+	</div>
 
-<hr/>
+	<div class="section">
 
-	<h1 id="ich9deblob">ICH9 deblob utility</h1>
-	
-		<p>
-			<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
-			contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
-		</p>
+		<h1 id="ich9gen">ICH9 gen utility</h1>
 		
-		<p>
-			This was the tool originally used to disable the ME on X200. <a href="#ich9gen">ich9gen</a> now supersedes it;
-			ich9gen is better because it does not rely on dumping the factory.rom image (whereas, ich9deblob does).
-		</p>
-	
-		<p>
-			This is what you will use to generate the deblobbed descriptor+gbe regions for your libreboot ROM image.
-		</p>
-		<p>
-			If you are working with libreboot_src (or git), you can find the source under resources/utilities/ich9deblob/
-			and will already be compiled if you ran ./builddeps or ./builddeps-ich9deblob from the main directory (./), 
-			otherwise you can build it like so:<br/>
-			$ <b>./builddeps-ich9deblob</b><br/>
-			An executable file named <b>ich9deblob</b> will now appear under resources/utilities/ich9deblob/
-		</p>
-		<p>
-			If you are working with libreboot_bin release archive, you can find the utility included, statically compiled
-			(for i686 and x86_64 on GNU/Linux) under ./ich9deblob/.
-		</p>
+			<p>
+				<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
+				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
+			</p>
 		
-		<p>
-			Place the factory.rom from your X200 
-			(can be obtained using the guide at <a href="../install/x200_external.html">../install/x200_external.html</a>) in
-			the directory where you have your ich9deblob executable, then run the tool:<br/>
-			$ <b>./ich9deblob</b>
-		</p>
-		<p>
-			A 12kiB file named <b>deblobbed_descriptor.bin</b> will now appear. <b>Keep this and the factory.rom stored in a safe location!</b>
-			The first 4KiB contains the descriptor data region for your machine, and the next 8KiB contains the gbe region (config data for your
-			gigabit NIC). These 2 regions could actually be separate files, but they are joined into 1 file in this case.
-		</p>
+			<p>
+				It is no longer necessary to use <a href="#ich9deblob">ich9deblob</a> to generate
+				a deblobbed descriptor+gbe image for the X200. ich9gen is a small utility within
+				ich9deblob that can generate them from scratch, without a factory.bin dump.
+			</p>
+			
+			<p>
+				Run:<br/>
+				$ <b>./ich9gen</b>
+			</p>
+			
+			<p>
+				It is also possible to generate a descriptor+gbe image with your own MAC address
+				inside (with the Gbe checksum updated to match). Run:<br/>
+				$ <b>./ich9gen --macaddress XX:XX:XX:XX:XX:XX</b><br/>
+				(replace the XX chars with the hexadecimal chars in the MAC address that you want)
+			</p>
+			
+			<p>
+				You can find out your MAC address from <b>ip addr</b> or <b>ifconfig</b> in GNU/Linux. 
+				Alternatively, if you are running libreboot already (with the correct MAC address in your
+				ROM), dump it (flashrom -r) and read the first 6 bytes from position 0x1000 (or 0x2000) in a hex editor
+				(or, rename it to factory.rom and run it in ich9deblob: in the newly created mkgbe.c
+				will be the individual bytes of your MAC address). If you are currently running the stock firmware
+				and haven't installed libreboot yet, you can also run that through ich9deblob to get the mac address.
+			</p>
+			
+			<p>
+				An even simpler way to get the MAC address would be to read what's on the little sticker on
+				the underside. (on the X200, this would be near the VGA port).
+			</p>
+			
+			<p>
+				A bash script is also included in libreboot which will change the mac address (using ich9gen)
+				on all X200 ROM images. For instance:<br/>
+				$ <b>./ich9macchange XX:XX:XX:XX:XX:XX</b>
+			</p>
+			
+			<p>
+				Two new files will be created:
+			</p>
+				<ul>
+					<li><b>ich9fdgbe_4m.bin</b>: this is for X200 laptops with the 4MB flash chip.</li>
+					<li><b>ich9fdgbe_8m.bin</b>: this is for X200 laptops with the 8MB flash chip.</li>
+				</ul>
+				
+			<p>
+				ich9gen executables can be found under ./ich9deblob/ statically compiled in
+				libreboot_bin. If you are using src or git, build ich9gen from source with:<br/>
+				$ <b>./builddeps-ich9deblob</b><br/>
+				The executable will appear under resources/utilities/ich9deblob/
+			</p>
+			
+			<p>
+				Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
+				the file to where <b>libreboot.rom</b> is located
+				and then run, for instance:<br/>
+				$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
+				or:<br/>
+				$ <b>dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
+			</p>
+			
+			<p>
+				Your X200 libreboot.rom image is now ready to be flashed on the machine. Refer back to 
+				<a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+				for how to flash it.
+			</p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="ich9deblob">ICH9 deblob utility</h1>
 		
-		<p>
-			Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
-			the <b>deblobbed_descriptor.bin</b> file to where <b>libreboot.rom</b> is located
-			and then run:<br/>
-			$ <b>dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
-		</p>
+			<p>
+				<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
+				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
+			</p>
+			
+			<p>
+				This was the tool originally used to disable the ME on X200. <a href="#ich9gen">ich9gen</a> now supersedes it;
+				ich9gen is better because it does not rely on dumping the factory.rom image (whereas, ich9deblob does).
+			</p>
 		
-		<p>
-			The utility will also generate 4 additional files:
-		</p>
-			<ul>
-				<li>mkdescriptor.c</li>
-				<li>mkdescriptor.h</li>
-				<li>mkgbe.c</li>
-				<li>mkgbe.h</li>
-			</ul>
-		<p>
-			These are C source files that can re-generate the very same Gbe and Descriptor structs
-			(from ich9deblob/ich9gen). To use these, place them in src/ich9gen/ in ich9deblob, then re-build. 
-			The newly built <b>ich9gen</b> executable will be able to re-create the very same 12KiB file from scratch,
-			based on the C structs, this time <b>without</b> the need for a factory.rom dump!
-		</p>
+			<p>
+				This is what you will use to generate the deblobbed descriptor+gbe regions for your libreboot ROM image.
+			</p>
+			<p>
+				If you are working with libreboot_src (or git), you can find the source under resources/utilities/ich9deblob/
+				and will already be compiled if you ran ./builddeps or ./builddeps-ich9deblob from the main directory (./), 
+				otherwise you can build it like so:<br/>
+				$ <b>./builddeps-ich9deblob</b><br/>
+				An executable file named <b>ich9deblob</b> will now appear under resources/utilities/ich9deblob/
+			</p>
+			<p>
+				If you are working with libreboot_bin release archive, you can find the utility included, statically compiled
+				(for i686 and x86_64 on GNU/Linux) under ./ich9deblob/.
+			</p>
+			
+			<p>
+				Place the factory.rom from your X200 
+				(can be obtained using the guide at <a href="../install/x200_external.html">../install/x200_external.html</a>) in
+				the directory where you have your ich9deblob executable, then run the tool:<br/>
+				$ <b>./ich9deblob</b>
+			</p>
+			<p>
+				A 12kiB file named <b>deblobbed_descriptor.bin</b> will now appear. <b>Keep this and the factory.rom stored in a safe location!</b>
+				The first 4KiB contains the descriptor data region for your machine, and the next 8KiB contains the gbe region (config data for your
+				gigabit NIC). These 2 regions could actually be separate files, but they are joined into 1 file in this case.
+			</p>
+			
+			<p>
+				Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
+				the <b>deblobbed_descriptor.bin</b> file to where <b>libreboot.rom</b> is located
+				and then run:<br/>
+				$ <b>dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
+			</p>
+			
+			<p>
+				The utility will also generate 4 additional files:
+			</p>
+				<ul>
+					<li>mkdescriptor.c</li>
+					<li>mkdescriptor.h</li>
+					<li>mkgbe.c</li>
+					<li>mkgbe.h</li>
+				</ul>
+			<p>
+				These are C source files that can re-generate the very same Gbe and Descriptor structs
+				(from ich9deblob/ich9gen). To use these, place them in src/ich9gen/ in ich9deblob, then re-build. 
+				The newly built <b>ich9gen</b> executable will be able to re-create the very same 12KiB file from scratch,
+				based on the C structs, this time <b>without</b> the need for a factory.rom dump!
+			</p>
+			
+			<p>
+				You should now have a <b>libreboot.rom</b> image containing the correct 4K descriptor and 8K gbe regions, which
+				will then be safe to flash. Refer back to <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+				for how to flash it.
+			</p>
+			
+	</div>
 		
-		<p>
-			You should now have a <b>libreboot.rom</b> image containing the correct 4K descriptor and 8K gbe regions, which
-			will then be safe to flash. Refer back to <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
-			for how to flash it.
-		</p>
-		
-<hr/>
+	<div class="section">
 		
 		<p>
 			The sections below are adapted from (mostly) IRC logs related to early development getting the ME removed on the X200.
 			They are useful for background information. This could not have been done without sgsit's help.
 		</p>
 		
-		<div class="section">
+		<div class="subsection">
 			
 			<h2 id="early_notes">Early notes</h2>
 		
@@ -216,9 +224,11 @@
 		
 		</div>
 		
-<hr/>
+	</div>
+		
+	<div class="section">
 
-		<div class="section">
+		<div class="subsection">
 
 			<h2 id="flashchips">Flash chips</h2>
 			
@@ -243,11 +253,11 @@
 		
 		</div>
 		
-<hr/>
+	</div>
 		
-		<div class="section">
+	<div class="section">
 		
-			<h2 id="early_development_notes">Early development notes</h2>
+		<h2 id="early_development_notes">Early development notes</h2>
 				
 <pre>
 <i>
@@ -312,35 +322,33 @@ Flash Erase Size = 0x1000
 </i>
 </pre>
 
-				<p>
-					It's a utility called 'Flash Image Tool' for ME 4.x that was used for this. You drag a complete
-					image into in and the utility decomposes the various components, allowing you to set soft straps.
-				</p>
-				<p>
-					This tool is proprietary, for Windows only, but was used to deblob the X200. End justified means, and
-					the utility is no longer needed since the ich9deblob utility (documented on this page) can now be
-					used to create deblobbed descriptors.
-				</p>
+			<p>
+				It's a utility called 'Flash Image Tool' for ME 4.x that was used for this. You drag a complete
+				image into in and the utility decomposes the various components, allowing you to set soft straps.
+			</p>
+			<p>
+				This tool is proprietary, for Windows only, but was used to deblob the X200. End justified means, and
+				the utility is no longer needed since the ich9deblob utility (documented on this page) can now be
+				used to create deblobbed descriptors.
+			</p>
 
-		</div>
+	</div>
 
-<hr/>
-
-		<div class="section">
+	<div class="section">
 		
-			<h2 id="gbe_region">
-				GBE (gigabit ethernet) region in SPI flash
-			</h2>
+		<h2 id="gbe_region">
+			GBE (gigabit ethernet) region in SPI flash
+		</h2>
 
-				<p>
-					Of the 8K, about 95% is 0xFF. 
-					The data is the gbe region is fully documented in this public datasheet:
-					<a href="http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf">http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf</a>
-				</p>
+			<p>
+				Of the 8K, about 95% is 0xFF. 
+				The data is the gbe region is fully documented in this public datasheet:
+				<a href="http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf">http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf</a>
+			</p>
 
-				<p>
-					The only actual content found was:
-				</p>
+			<p>
+				The only actual content found was:
+			</p>
 
 <pre>
 <i>
@@ -358,17 +366,19 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 </i>
 </pre>
 
-			<p>
-				The first part is the MAC address set to all 0x1F. It's repeated haly way through
-				the 8K area, and the rest is all 0xFF. This is all documented in the datasheet.
-			</p>
+		<p>
+			The first part is the MAC address set to all 0x1F. It's repeated haly way through
+			the 8K area, and the rest is all 0xFF. This is all documented in the datasheet.
+		</p>
 		
-			<p>
-				The GBe region starts at 0x20A000 bytes from the *end* of a factory image and is 0x2000 bytes long.
-				In libreboot (deblobbed) the descriptor is set to put gbe directly after the initial 4K flash descriptor. 
-				So the first 4K of the ROM is the descriptor, and then the next 8K is the gbe region.
-			</p>
+		<p>
+			The GBe region starts at 0x20A000 bytes from the *end* of a factory image and is 0x2000 bytes long.
+			In libreboot (deblobbed) the descriptor is set to put gbe directly after the initial 4K flash descriptor. 
+			So the first 4K of the ROM is the descriptor, and then the next 8K is the gbe region.
+		</p>
 
+		<div class="subsection">
+			
 			<h3 id="gbe_region_changemacaddress">GBE region: change MAC address</h3>
 
 				<p>
@@ -399,116 +409,117 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 						and that has to add up to 0xBABA. In other words, the checksum is 0xBABA minus the total of the first
 						0x3E 16bit numbers (unsigned), ignoring any overflow.</li>
 					</ul>
-		
-		</div>
-		
-<hr/>
-
-		<div class="section">
-		
-			<h2 id="flash_descriptor_region">Flash descriptor region</h2>
-			
-				<p>
-					<a href="http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf">http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf</a>
-					from page 850 onwards. This explains everything that is in the flash descriptor, which can be used to understand what libreboot
-					is doing about modifying it.
-				</p>
-				
-				<p>
-					How to deblob:
-				</p>
-					<ul>
-						<li>patch the number of regions present in the descriptor from 5 - 3</li>
-						<li>originally descriptor + bios + me + gbe + platform</li>
-						<li>modified = descriptor + bios + gbe</li>
-						<li>the next stage is to patch the part of the descriptor which defines the start and end point of each section</li>
-						<li>then cut out the gbe region and insert it just after the region</li>
-						<li>all this can be substantiated with public docs (ICH9 datasheet)</li>
-						<li>the final part is flipping 2 bits. Halting the ME via 1 MCH soft strap and 1 ICH soft strap</li>
-						<li>the part of the descriptor described there gives the base address and length of each region (bits 12:24 of each address)</li>
-						<li>to disable a region, you set the base address to 0xFFF and the length to 0</li>
-						<li>and you change the number of regions from 4 (zero based) to 2</li>
-					</ul>
-				
-				<p>
-					There's an interesting parameter called 'ME Alternate disable', which allows the ME to only handle hardware errata in the southbridge,
-					but disables any other functionality. This is similar to the 'ignition' in the 5 series and higher but using the standard firmware
-					instead of a small 128K version. Useless for libreboot, though.
-				</p>
-				
-				<p>
-					To deblob the x200, you chop out the platform and ME regions and correct the addresses in flReg1-4.
-					Then you set meDisable to 1 in ICHSTRAP0 and MCHSTRAP0.
-				</p>
-				
-				<p>How to patch the descriptor from the factory.rom dump</p>
-					<ul>
-						<li>map the first 4k into the struct (minus the gbe region)</li>
-						<li>set NR in FLMAP0 to 2 (from 4)</li>
-						<li>adjust BASE and LIMIT in flReg1,2,3,4 to reflect the new location of each region (or remove them in the case of Platform and ME)</li>
-						<li>set meDisable to 1/true in ICHSTRAP0 and MCHSTRAP0</li>
-						<li>extract the 8k GBe region and append that to the end of the 4k descriptor</li>
-						<li>output the 12k concatenated chunk</li>
-						<li>Then it can be dd'd into the first 12K part of a coreboot image.</li>
-						<li>the GBe region always starts 0x20A000 bytes from the end of the ROM</li>
-					</ul>
 					
-				<p>
-					This means that libreboot's descriptor region will simply define the following regions:
-				</p>
-					<ul>
-						<li>descriptor (4K)</li>
-						<li>gbe (8K)</li>
-						<li>bios (rest of flash chip. CBFS also set to occupy this whole size)</li>
-					</ul>
+		</div>
+		
+	</div>
 
-				<p>
-					The data in the descriptor region is little endian, and it represents bits 24:12 of the address
-					(bits 12-24, written this way since bit 24 is nearer to left than bit 12 in the binary representation).
-				</p>
-				<p>
-					So, <i>x &lt;&lt; 12 = address</i>
-				</p>
-				<p>
-					If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
-				</p>
+	<div class="section">
+		
+		<h2 id="flash_descriptor_region">Flash descriptor region</h2>
+			
+			<p>
+				<a href="http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf">http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf</a>
+				from page 850 onwards. This explains everything that is in the flash descriptor, which can be used to understand what libreboot
+				is doing about modifying it.
+			</p>
 				
-		</div>
+			<p>
+				How to deblob:
+			</p>
+				<ul>
+					<li>patch the number of regions present in the descriptor from 5 - 3</li>
+					<li>originally descriptor + bios + me + gbe + platform</li>
+					<li>modified = descriptor + bios + gbe</li>
+					<li>the next stage is to patch the part of the descriptor which defines the start and end point of each section</li>
+					<li>then cut out the gbe region and insert it just after the region</li>
+					<li>all this can be substantiated with public docs (ICH9 datasheet)</li>
+					<li>the final part is flipping 2 bits. Halting the ME via 1 MCH soft strap and 1 ICH soft strap</li>
+					<li>the part of the descriptor described there gives the base address and length of each region (bits 12:24 of each address)</li>
+					<li>to disable a region, you set the base address to 0xFFF and the length to 0</li>
+					<li>and you change the number of regions from 4 (zero based) to 2</li>
+				</ul>
+				
+			<p>
+				There's an interesting parameter called 'ME Alternate disable', which allows the ME to only handle hardware errata in the southbridge,
+				but disables any other functionality. This is similar to the 'ignition' in the 5 series and higher but using the standard firmware
+				instead of a small 128K version. Useless for libreboot, though.
+			</p>
+				
+			<p>
+				To deblob the x200, you chop out the platform and ME regions and correct the addresses in flReg1-4.
+				Then you set meDisable to 1 in ICHSTRAP0 and MCHSTRAP0.
+			</p>
+				
+			<p>How to patch the descriptor from the factory.rom dump</p>
+				<ul>
+					<li>map the first 4k into the struct (minus the gbe region)</li>
+					<li>set NR in FLMAP0 to 2 (from 4)</li>
+					<li>adjust BASE and LIMIT in flReg1,2,3,4 to reflect the new location of each region (or remove them in the case of Platform and ME)</li>
+					<li>set meDisable to 1/true in ICHSTRAP0 and MCHSTRAP0</li>
+					<li>extract the 8k GBe region and append that to the end of the 4k descriptor</li>
+					<li>output the 12k concatenated chunk</li>
+					<li>Then it can be dd'd into the first 12K part of a coreboot image.</li>
+					<li>the GBe region always starts 0x20A000 bytes from the end of the ROM</li>
+				</ul>
+					
+			<p>
+				This means that libreboot's descriptor region will simply define the following regions:
+			</p>
+				<ul>
+					<li>descriptor (4K)</li>
+					<li>gbe (8K)</li>
+					<li>bios (rest of flash chip. CBFS also set to occupy this whole size)</li>
+				</ul>
+
+			<p>
+				The data in the descriptor region is little endian, and it represents bits 24:12 of the address
+				(bits 12-24, written this way since bit 24 is nearer to left than bit 12 in the binary representation).
+			</p>
+			<p>
+				So, <i>x &lt;&lt; 12 = address</i>
+			</p>
+			<p>
+				If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
+			</p>
+				
+	</div>
 		
-<hr/>
 		
-		<div class="section">
+	<div class="section">
 		
-			<h2 id="platform_data_region">platform data partition in boot flash (factory.rom / lenovo bios)</h2>
+		<h2 id="platform_data_region">platform data partition in boot flash (factory.rom / lenovo bios)</h2>
 			
-				<p>
-					Basically useless for libreboot, since it appears to be a blob.
-					Removing it didn't cause any issues in libreboot.
-				</p>
-				<p>
-					This is a 32K region from the factory image. It could be data
-					(non-functional) that the original Lenovo BIOS used, but we don't know.
-				</p>
-			
-				<p>
-					It has only a 448 byte fragment different from 0x00 or 0xFF.
-				</p>
+			<p>
+				Basically useless for libreboot, since it appears to be a blob.
+				Removing it didn't cause any issues in libreboot.
+			</p>
+			<p>
+				This is a 32K region from the factory image. It could be data
+				(non-functional) that the original Lenovo BIOS used, but we don't know.
+			</p>
 		
-		</div>
+			<p>
+				It has only a 448 byte fragment different from 0x00 or 0xFF.
+			</p>
+		
+	</div>
 
-<hr/>
+	<div class="section">
 
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
+		<p>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
 
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../../license.txt</a> for more information.
-	</p>
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../../license.txt</a> for more information.
+		</p>
+		
+	</div>
 
 </body>
 </html>

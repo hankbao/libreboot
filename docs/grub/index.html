@@ -13,111 +13,127 @@
 
 <body>
 
-	<h1 id="pagetop">GRUB payload</h1>
-		<p>
-			This section relates to the GRUB payload used in libreboot.
-		</p>
-		<p>
-			Or <a href="../index.html">Back to main index</a>.
-		</p>
-		<ul>
-			<li><a href="#grub_font">Setting font in GRUB</a></li>
-			<li><a href="#grub_keyboard">GRUB keyboard layouts</a>
-				<ul>
-					<li><a href="#grub_custom_keyboard">Custom keyboard layout in GRUB</a></li>
-					<li><a href="#grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB</a></li>
-				</ul>
-			</li>
-		</ul>
-
-<hr/>
-
-	<h1 id="grub_font">Setting font in GRUB (for reference)</h1>
-
-		<p>You don't need to do this unless you would like to change the default font yourself.
-		(this is just for reference. It has already been done for you)</p>
-
-		<p>The old font used was Unifont, and this had some missing characters: for instance, the border showed ??? characters instead of lines.</p>
-
-		<p>I tried DeJavu Sans Mono from this website:
-		<a href="http://dejavu-fonts.org/wiki/Download">dejavu-fonts.org</a></p>
-
-		<p>Specifically, the version that I chose was the latest at the time of writing (Saturday 21 June 2014):
-		<a href="http://sourceforge.net/projects/dejavu/files/dejavu/2.34/dejavu-fonts-ttf-2.34.tar.bz2">this one</a></p>
-
-		<p>This is a free font that is also contained in GNU/Linux distributions like Trisquel or Parabola.</p>
-
-		<p><b>$ cd libreboot_src/grub</b><br/>
-		compile grub ('build' script has the info on how to do this)<br/>
-		come back out into libreboot_src/resources/grub:<br/>
-		<b>$ cd ../libreboot_src/resources/grub/font</b></p>
-
-		<p>I took Dejavu Sans Mono from dejavu (included in this version of libreboot) and did:<br/>
-		<b>$ ../../../grub/grub-mkfont -o dejavusansmono.pf2 ../../../dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf</b></p>
-
-		<p>I then added the instructions to 'build' script to include resources/grub/dejavusansmono.pf2 in all of the ROM images in root of cbfs.<br/>
-		I then added that instructions to the grub.cfg files (to load the font):<br/>
-		<b>loadfont (cbfsdisk)/dejavusansmono.pf2</b></p>
-
-		<p><a href="#pagetop">Back to top of page</a></p>
-
-<hr/>
-
-	<h1 id="grub_keyboard">GRUB keyboard layouts (for reference)</h1>
-
-		<h2 id="grub_custom_keyboard">Custom keyboard layout in GRUB (for reference)</h2>
-
+	<div class="section">
+		<h1 id="pagetop">GRUB payload</h1>
 			<p>
-				Keymaps are stored in resources/utilities/grub-assemble/keymap/.
+				This section relates to the GRUB payload used in libreboot.
 			</p>
-
 			<p>
-				Example (French Azerty):<br/>
-				<b>$ ckbcomp fr &gt; frazerty</b><br/><br/>
-				Go in grub directory:<br/>
-				<b>cat frazerty | ./grub/grub-mklayout -o frazerty.gkb</b>
+				Or <a href="../index.html">Back to main index</a>.
 			</p>
+			<ul>
+				<li><a href="#grub_font">Setting font in GRUB</a></li>
+				<li><a href="#grub_keyboard">GRUB keyboard layouts</a>
+					<ul>
+						<li><a href="#grub_custom_keyboard">Custom keyboard layout in GRUB</a></li>
+						<li><a href="#grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB</a></li>
+					</ul>
+				</li>
+			</ul>
+	</div>
 
-			<p>
-				You must make sure that the files are named keymap and keymap.gkb (where 'keymap' can be whatever you want).
-			</p>
+	<div class="section">
 
-			<p>
-				Then from the above example, you would put <b>frazerty</b> in <b>resources/utilities/grub-assemble/keymap/original/</b> and
-				the <b>frazerty.gkb</b> file goes under <b>resources/utilities/grub-assemble/keymap/</b>
-			</p>
+		<h1 id="grub_font">Setting font in GRUB (for reference)</h1>
 
-			<p>
-				The scripts <b>build</b> and <b>buildrom-withgrub</b> will automatically see this, and automatically build
-				ROM images with your custom layout (given the name) and include them under bin. Example: <b>libreboot_frazerty.rom</b>.
-			</p>
+			<p>You don't need to do this unless you would like to change the default font yourself.
+			(this is just for reference. It has already been done for you)</p>
+
+			<p>The old font used was Unifont, and this had some missing characters: for instance, the border showed ??? characters instead of lines.</p>
+
+			<p>I tried DeJavu Sans Mono from this website:
+			<a href="http://dejavu-fonts.org/wiki/Download">dejavu-fonts.org</a></p>
+
+			<p>Specifically, the version that I chose was the latest at the time of writing (Saturday 21 June 2014):
+			<a href="http://sourceforge.net/projects/dejavu/files/dejavu/2.34/dejavu-fonts-ttf-2.34.tar.bz2">this one</a></p>
+
+			<p>This is a free font that is also contained in GNU/Linux distributions like Trisquel or Parabola.</p>
+
+			<p><b>$ cd libreboot_src/grub</b><br/>
+			compile grub ('build' script has the info on how to do this)<br/>
+			come back out into libreboot_src/resources/grub:<br/>
+			<b>$ cd ../libreboot_src/resources/grub/font</b></p>
+
+			<p>I took Dejavu Sans Mono from dejavu (included in this version of libreboot) and did:<br/>
+			<b>$ ../../../grub/grub-mkfont -o dejavusansmono.pf2 ../../../dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf</b></p>
+
+			<p>I then added the instructions to 'build' script to include resources/grub/dejavusansmono.pf2 in all of the ROM images in root of cbfs.<br/>
+			I then added that instructions to the grub.cfg files (to load the font):<br/>
+			<b>loadfont (cbfsdisk)/dejavusansmono.pf2</b></p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
+		
+		</div>
+		
+	<div class="section">
 
-		<h2 id="grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB (for reference)</h2>
+		<h1 id="grub_keyboard">GRUB keyboard layouts (for reference)</h1>
 
-			<p>
-				ukdvorak had to be created manually, based on usdvorak. diff them (under resources/utilities/grub-assemble/keymap/original)
-				to see how ukdvorak file was created
-			</p>
+			<div class="subsection">
+				
+				<h2 id="grub_custom_keyboard">Custom keyboard layout in GRUB (for reference)</h2>
 
-			<p><b>$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb</b></p>
+					<p>
+						Keymaps are stored in resources/utilities/grub-assemble/keymap/.
+					</p>
 
-		<p><a href="#pagetop">Back to top of page</a></p>
+					<p>
+						Example (French Azerty):<br/>
+						<b>$ ckbcomp fr &gt; frazerty</b><br/><br/>
+						Go in grub directory:<br/>
+						<b>cat frazerty | ./grub/grub-mklayout -o frazerty.gkb</b>
+					</p>
 
-<hr/>
+					<p>
+						You must make sure that the files are named keymap and keymap.gkb (where 'keymap' can be whatever you want).
+					</p>
 
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
+					<p>
+						Then from the above example, you would put <b>frazerty</b> in <b>resources/utilities/grub-assemble/keymap/original/</b> and
+						the <b>frazerty.gkb</b> file goes under <b>resources/utilities/grub-assemble/keymap/</b>
+					</p>
 
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+					<p>
+						The scripts <b>build</b> and <b>buildrom-withgrub</b> will automatically see this, and automatically build
+						ROM images with your custom layout (given the name) and include them under bin. Example: <b>libreboot_frazerty.rom</b>.
+					</p>
+
+					<p><a href="#pagetop">Back to top of page</a></p>
+					
+			</div>
+			
+			<div class="subsection">
+
+				<h2 id="grub_ukdvorak_keyboard">UK Dvorak keyboard layout in GRUB (for reference)</h2>
+
+					<p>
+						ukdvorak had to be created manually, based on usdvorak. diff them (under resources/utilities/grub-assemble/keymap/original)
+						to see how ukdvorak file was created
+					</p>
+
+					<p><b>$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb</b></p>
+
+					<p><a href="#pagetop">Back to top of page</a></p>
+					
+			</div>
+			
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
 
 </body>
 </html>

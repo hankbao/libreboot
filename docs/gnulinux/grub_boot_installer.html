@@ -12,144 +12,168 @@
 </head>
 
 <body>
-	<header>
+	<div class="section">
 		<h1>Boot a GNU/Linux installer on USB</h1>
-		<aside>Or <a href="index.html">back to main index</a></aside>
-	</header>
+			<p>
+				<a href="index.html">Back to previous index</a>
+			</p>
+	</div>
 
-	<h2>Prepare the USB drive (in GNU/Linux)</h2>
+	<div class="section">
+		
+		<h2>Prepare the USB drive (in GNU/Linux)</h2>
+
+			<p>
+				Connect the USB drive. Check dmesg:<br/>
+				<b>$ dmesg</b><br/>
+
+				Check lsblk to confirm which drive it is:<br/>
+				<b>$ lsblk</b>
+			</p>
+
+			<p>
+				Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
+				<b>$ sudo umount /dev/sdb*</b><br/>
+				<b># umount /dev/sdb*</b>
+			</p>
+
+			<p>
+				dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:<br/>
+				<b>$ sudo dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b><br/>
+				<b># dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b>
+			</p>
+			
+	</div>
+		
+	<div class="section">
+		
+		<h2>GNU Guix System Distribution?</h2>
+
+			<p>
+				Guix USB installers use the GRUB bootloader, unlike most GNU/Linux installers which will likely use ISOLINUX.
+			</p>
+			<p>
+				To boot the Guix live USB install, select <b><i>Search for GRUB configuration (grub.cfg) outside of CBFS</i></b> from
+				the GRUB payload menu. After you have done that, a new menuentry will appear at the very bottom with text like
+				<b><i>Load Config from (usb0)</i></b>; select that, and it should boot.
+			</p>
+			<p>
+				Once you have installed Guix onto the main storage device, check
+				<a href="grub_cbfs.html#libreboot_grub_config_ondisk">grub_cbfs.html#libreboot_grub_config_ondisk</a> for hints on how
+				to boot it.
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h2>Booting ISOLINUX images</h2>
+
+			<p>
+				Boot it in GRUB using the <i>Parse ISOLINUX config (USB)</i> option.
+
+				A new menu should appear in GRUB, showing the boot options for that distro; this is a GRUB menu, converted from the usual
+				ISOLINUX menu provided by that distro.
+			</p>
+			
+	</div>
+		
+	<div class="section">
+		
+		<h2>Booting manually</h2>
+
+			<p>
+				If the ISOLINUX parser or <i>Search for GRUB configuration</i> options won't work, then press C to get to the GRUB command line.<br/>
+					grub&gt; <b>ls</b><br/>
+
+				Get the device from above output, eg (usb0). Example:<br/>
+					grub&gt; <b>cat (usb0)/isolinux/isolinux.cfg</b><br/>
+
+				Either this will show the ISOLINUX menuentries for that ISO, or link to other .cfg files, for example /isolinux/foo.cfg.<br/>
+
+				If it did that, then you do:<br/>
+					grub&gt; <b>cat (usb0)/isolinux/foo.cfg</b><br/>
+
+				And so on, until you find the correct menuentries for ISOLINUX.
+			</p>
+
+			<p>
+				Now look at the ISOLINUX menuentry. It'll look like:<br/>
+				<b>
+					kernel /path/to/kernel<br/>
+					append PARAMETERS initrd=/path/to/initrd MAYBE_MORE_PARAMETERS<br/>
+				</b>
+
+				GRUB works the same way, but in it's own way. Example GRUB commands:<br/>
+					grub&gt; <b>linux (usb0)/path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS</b><br/>
+					grub&gt; <b>initrd (usb0)/path/to/initrd</b><br/>
+					grub&gt; <b>boot</b><br/>
+
+				Of course this will vary from distro to distro. If you did all that correctly, it should now be booting the ISO
+				the way you specified.
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1>Troubleshooting</h1>
+
+			<p>
+				Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer.
+				This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU/Linux distributions
+				it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
+			</p>
+
+			<p>
+				In most cases, you should use the vesafb ROM's. Example filename: libreboot_ukdvorak_vesafb.rom.
+			</p>
+
+			<h2>parabola won't boot in text-mode</h2>
+
+				<p>
+					Use one of the ROM images with vesafb in the filename (uses coreboot framebuffer instead of text-mode).
+				</p>
+
+			<h2>debian-installer (trisquel net install) graphical corruption in text-mode</h2>
+				<p>
+					When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
+					booting the Trisquel net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
+					exist. Use that kernel parameter on the 'linux' line when booting it:<br/>
+					<b>vga=normal fb=false</b>
+				</p>
+
+				<p>
+					Tested in Trisquel 6 (and 7). This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
+				</p>
+
+				<p>
+					If selecting text-mode from a GRUB menu created using the ISOLINUX parser, you can press E on the menu entry to add this.
+					Or, if you are booting manually (from GRUB terminal) then just add the parameters.
+				</p>
+
+				<p>
+					This workaround was found on the page: <a href="https://www.debian.org/releases/stable/i386/ch05s04.html">https://www.debian.org/releases/stable/i386/ch05s04.html</a>.
+					It should also work for gNewSense, Debian and any other apt-get distro that provides debian-installer (text mode) net install method.
+				</p>
+				
+	</div>
+
+	<div class="section">
 
 		<p>
-			Connect the USB drive. Check dmesg:<br/>
-			<b>$ dmesg</b><br/>
-
-			Check lsblk to confirm which drive it is:<br/>
-			<b>$ lsblk</b>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
 
 		<p>
-			Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
-			<b>$ sudo umount /dev/sdb*</b><br/>
-			<b># umount /dev/sdb*</b>
-		</p>
-
-		<p>
-			dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:<br/>
-			<b>$ sudo dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b><br/>
-			<b># dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 		</p>
 		
-	<h2>GNU Guix System Distribution?</h2>
-
-		<p>
-			Guix USB installers use the GRUB bootloader, unlike most GNU/Linux installers which will likely use ISOLINUX.
-		</p>
-		<p>
-			To boot the Guix live USB install, select <b><i>Search for GRUB configuration (grub.cfg) outside of CBFS</i></b> from
-			the GRUB payload menu. After you have done that, a new menuentry will appear at the very bottom with text like
-			<b><i>Load Config from (usb0)</i></b>; select that, and it should boot.
-		</p>
-		<p>
-			Once you have installed Guix onto the main storage device, check
-			<a href="grub_cbfs.html#libreboot_grub_config_ondisk">grub_cbfs.html#libreboot_grub_config_ondisk</a> for hints on how
-			to boot it.
-		</p>
-
-	<h2>Booting ISOLINUX images</h2>
-
-		<p>
-			Boot it in GRUB using the <i>Parse ISOLINUX config (USB)</i> option.
-
-			A new menu should appear in GRUB, showing the boot options for that distro; this is a GRUB menu, converted from the usual
-			ISOLINUX menu provided by that distro.
-		</p>
-		
-	<h2>Booting manually</h2>
-
-		<p>
-			If the ISOLINUX parser or <i>Search for GRUB configuration</i> options won't work, then press C to get to the GRUB command line.<br/>
-				grub&gt; <b>ls</b><br/>
-
-			Get the device from above output, eg (usb0). Example:<br/>
-				grub&gt; <b>cat (usb0)/isolinux/isolinux.cfg</b><br/>
-
-			Either this will show the ISOLINUX menuentries for that ISO, or link to other .cfg files, for example /isolinux/foo.cfg.<br/>
-
-			If it did that, then you do:<br/>
-				grub&gt; <b>cat (usb0)/isolinux/foo.cfg</b><br/>
-
-			And so on, until you find the correct menuentries for ISOLINUX.
-		</p>
-
-		<p>
-			Now look at the ISOLINUX menuentry. It'll look like:<br/>
-			<b>
-				kernel /path/to/kernel<br/>
-				append PARAMETERS initrd=/path/to/initrd MAYBE_MORE_PARAMETERS<br/>
-			</b>
-
-			GRUB works the same way, but in it's own way. Example GRUB commands:<br/>
-				grub&gt; <b>linux (usb0)/path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS</b><br/>
-				grub&gt; <b>initrd (usb0)/path/to/initrd</b><br/>
-				grub&gt; <b>boot</b><br/>
-
-			Of course this will vary from distro to distro. If you did all that correctly, it should now be booting the ISO
-			the way you specified.
-		</p>
-
-	<h1>Troubleshooting</h1>
-
-		<p>
-			Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer.
-			This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU/Linux distributions
-			it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
-		</p>
-
-		<p>
-			In most cases, you should use the vesafb ROM's. Example filename: libreboot_ukdvorak_vesafb.rom.
-		</p>
-
-		<h2>parabola won't boot in text-mode</h2>
-
-			<p>
-				Use one of the ROM images with vesafb in the filename (uses coreboot framebuffer instead of text-mode).
-			</p>
-
-		<h2>debian-installer (trisquel net install) graphical corruption in text-mode</h2>
-			<p>
-				When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
-				booting the Trisquel net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
-				exist. Use that kernel parameter on the 'linux' line when booting it:<br/>
-				<b>vga=normal fb=false</b>
-			</p>
-
-			<p>
-				Tested in Trisquel 6 (and 7). This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
-			</p>
-
-			<p>
-				If selecting text-mode from a GRUB menu created using the ISOLINUX parser, you can press E on the menu entry to add this.
-				Or, if you are booting manually (from GRUB terminal) then just add the parameters.
-			</p>
-
-			<p>
-				This workaround was found on the page: <a href="https://www.debian.org/releases/stable/i386/ch05s04.html">https://www.debian.org/releases/stable/i386/ch05s04.html</a>.
-				It should also work for gNewSense, Debian and any other apt-get distro that provides debian-installer (text mode) net install method.
-			</p>
-
-<hr/>
-
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
-
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+	</div>
 
 </body>
 </html>

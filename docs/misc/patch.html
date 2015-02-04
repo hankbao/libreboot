@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style type="text/css">
-		@import url('css/main.css');
+		@import url('../css/main.css');
 	</style>
 
 	<title>
@@ -17,147 +17,170 @@
 
 <body>
 
-	<header>
+	<div class="section">
 		<h1 id="pagetop">Diff and patch</h1>
-		<aside>This is just a quick guide for reference, use 'man' to know more.</aside>
-	</header>
+			<p>This is just a quick guide for reference, use 'man' to know more.</p>
+			<p>
+				<a href="index.html">Back to index</a>
+			</p>
+	</div>
 
-	<p>
-		<a href="index.html">back to index</a>
-	</p>
+	<div class="section">
 
-<hr/>
+		<h1>
+			Apply a patch
+		</h1>
 
-	<h1>
-		Apply a patch
-	</h1>
+			<p class="important">
+				To apply a patch to a single file, do that in it's directory:<br/>
+				<b>$ patch &lt; foo.patch</b>
+			</p>
 
-	<p class="important">
-		To apply a patch to a single file, do that in it's directory:<br/>
-		<b>$ patch &lt; foo.patch</b>
-	</p>
+			<p>
+				Assuming that the patch is distributed in unified format identifying
+				the file the patch should be applied to, the above will work. Otherwise:<br/>
+				<b>$ patch foo.txt &lt; bar.patch</b>
+			</p>
 
-	<p>
-		Assuming that the patch is distributed in unified format identifying
-		the file the patch should be applied to, the above will work. Otherwise:<br/>
-		<b>$ patch foo.txt &lt; bar.patch</b>
-	</p>
+			<p>
+				You can apply a patch to an entire directory, but note the &quot;p level&quot;.
+				What this means is that inside patch files will be the files that you
+				intend to patch, identified by path names that might be different
+				when the files ane located on your own computer instead of on the computer
+				where the patch was created. 'p' level instructs the 'patch' utility to
+				ignore parts of the path name to identify the files correctly. Usually a
+				p level of 1 will work, so you would use:<br/>
+				<b>$ patch -p1 &lt; baz.patch</b>
+			</p>
 
-	<p>
-		You can apply a patch to an entire directory, but note the &quot;p level&quot;.
-		What this means is that inside patch files will be the files that you
-		intend to patch, identified by path names that might be different
-		when the files ane located on your own computer instead of on the computer
-		where the patch was created. 'p' level instructs the 'patch' utility to
-		ignore parts of the path name to identify the files correctly. Usually a
-		p level of 1 will work, so you would use:<br/>
-		<b>$ patch -p1 &lt; baz.patch</b>
-	</p>
+			<p>
+				Change to the top level directory before running this. If a patch level
+				of 1 cannot identify the files to patch, then inspect the patch file for file names.
+				For example:<br/>
+				<b>/home/user/do/not/panic/yet.c</b>
+			</p>
 
-	<p>
-		Change to the top level directory before running this. If a patch level
-		of 1 cannot identify the files to patch, then inspect the patch file for file names.
-		For example:<br/>
-		<b>/home/user/do/not/panic/yet.c</b>
-	</p>
+			<p>
+				and you are working in a directory that contains panic/yet.c, use:<br/>
+				<b>$ patch -p5 &lt; baz.patch</b>
+			</p>
 
-	<p>
-		and you are working in a directory that contains panic/yet.c, use:<br/>
-		<b>$ patch -p5 &lt; baz.patch</b>
-	</p>
+			<p>
+				You usually count one up for each path separator (forward slash)
+				removed from the beginning of the path, until you are left with a path
+				that exists in the current working directory. The count is the p level.
+			</p>
 
-	<p>
-		You usually count one up for each path separator (forward slash)
-		removed from the beginning of the path, until you are left with a path
-		that exists in the current working directory. The count is the p level.
-	</p>
+			<p>
+				Removing a patch using the -R flag<br/>
+				<b>$ patch -p5 -R &lt; baz.patch</b>
+			</p>
 
-	<p>
-		Removing a patch using the -R flag<br/>
-		<b>$ patch -p5 -R &lt; baz.patch</b>
-	</p>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
 
-	<p><a href="#pagetop">Back to top of page.</a></p>
+	<div class="section">
 
-<hr/>
+		<h1>
+			Create a patch with diff
+		</h1>
 
-	<h1>
-		Create a patch with diff
-	</h1>
+			<p>
+				Diff can create a patch for a single file:<br/>
+				<b>$ diff -u original.c new.c &gt; original.patch</b>
+			</p>
 
-	<p>
-		Diff can create a patch for a single file:<br/>
-		<b>$ diff -u original.c new.c &gt; original.patch</b>
-	</p>
+			<p>
+				For diff'ing a source tree:<br/>
+				<b>$ cp -R original new</b>
+			</p>
 
-	<p>
-		For diff'ing a source tree:<br/>
-		<b>$ cp -R original new</b>
-	</p>
+			<p>
+				Do whatever you want in new/ and then diff it:<br/>
+				<b>$ diff -rupN original/ new/ &gt; original.patch</b>
+			</p>
 
-	<p>
-		Do whatever you want in new/ and then diff it:<br/>
-		<b>$ diff -rupN original/ new/ &gt; original.patch</b>
-	</p>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
 
-	<p><a href="#pagetop">Back to top of page.</a></p>
+	<div class="section">
 
-<hr/>
+		<h1>
+			git diff
+		</h1>
 
-	<h1>
-		git diff
-	</h1>
+			<p>
+				git is something special.
+			</p>
+			<p>
+				Note: this won't show new files created.
+			</p>
 
-	<p>
-		git is something special.
-	</p>
+			<p>
+				Just make whatever changes you want to a git clone and then:<br/>
+				<b>$ git diff &gt; patch.git</b>
+			</p>
 
-	<p>
-		Just make whatever changes you want to a git clone and then:<br/>
-		<b>$ git diff &gt; patch.git</b>
-	</p>
+			<p>
+				Note the git revision that you did this with:<br/>
+				<b>$ git log</b>
+			</p>
+			
+			<p>
+				Alternatively (better yet), commit your changes and then use:<br/>
+				$ <b>git format-patch -N</b><br/>
+				Replace N with the number of commits that you want to show.
+			</p>
 
-	<p>
-		Note the git revision that you did this with:<br/>
-		<b>$ git log</b>
-	</p>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
 
-	<p><a href="#pagetop">Back to top of page.</a></p>
+	<div class="section">
 
-<hr/>
+		<h1>
+			git apply
+		</h1>
 
-	<h1>
-		git apply
-	</h1>
+			<p>it really is.</p>
 
-	<p>it really is.</p>
+			<p>
+				Now to apply that patch in the future, just git clone it again and do
+				with the git revision you found from above:<br/>
+				<b>$ git reset --hard REVISIONNUMBER</b>
+			</p>
 
-	<p>
-		Now to apply that patch in the future, just git clone it again and do
-		with the git revision you found from above:<br/>
-		<b>$ git reset --hard REVISIONNUMBER</b>
-	</p>
+			<p>
+				Now put patch.git in the git clone directory and do:<br/>
+				<b>$ git apply patch.git</b>
+			</p>
+			
+			<p>
+				If you use a patch from git format-patch, then use <b>git am patch.git</b> instead of <b>git apply patch.git</b>. git-am
+				will re-create the commits aswell, instead of just applying the patch.
+			</p>
 
-	<p>
-		Now put patch.git in the git clone directory and do:<br/>
-		<b>$ git apply patch.git</b>
-	</p>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
 
-	<p><a href="#pagetop">Back to top of page.</a></p>
+	<div class="section">
 
-<hr/>
+		<p>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
 
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
-
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
 
 </body>
 </html>

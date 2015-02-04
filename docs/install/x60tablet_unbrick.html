@@ -8,120 +8,125 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Libreboot documentation: Unbricking the ThinkPad X60 Tablet</title>
+	<title>Unbricking the ThinkPad X60 Tablet</title>
 </head>
 
 <body>
 
-	<header>
-		<h1>Unbricking the ThinkPad X60</h1>
-		<aside>This guide will show you how to recover from a bad flash that prevents your ThinkPad X60 Tablet from booting.</aside>
-	</header>
+	<div class="section">
+		<h1>Unbricking the ThinkPad X60 Tablet</h1>
+			<p>This guide will show you how to recover from a bad flash that prevents your ThinkPad X60 Tablet from booting.</p>
+			<p><a href="index.html">Back to previous index</a></p>
+	</div>
 
-	<p>Or go <a href="index.html">back to main index</a></p>
+	<div class="section">
+		<h2>Table of Contents</h2>
+			<ul>
+				<li>
+					Types of brick:
+					<ul>
+						<li><a href="#bucts_brick">Brick type 1: bucts not reset</a></li>
+						<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
+					</ul>
+				</li>
+			</ul>
+	</div>
 
-	<h2>Table of Contents</h2>
-		<ul>
-			<li>
-				Types of brick:
-				<ul>
-					<li><a href="#bucts_brick">Brick type 1: bucts not reset</a></li>
-					<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
-				</ul>
-			</li>
-		</ul>
+	<div class="section">
+		<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
+			<p>
+				You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and
+				the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.<br/><br/>
 
-	<h1 id="bucts_brick">Brick type 1: bucts not reset.</h1>
-		<p>
-			You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and
-			the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.<br/><br/>
+				In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
+				<img src="../images/x60t_unbrick/0008.JPG" alt="" /><br/><br/>
 
-			In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:<br/>
-			<img src="../images/x60t_unbrick/0008.JPG" alt="" /><br/><br/>
+				*Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):<br/>
+				dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
+				dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
+				dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
+				(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
+				using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
+			</p>
+	</div>
 
-			*Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):<br/>
-			dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
-			dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
-			dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
-			(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
-			using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
-		</p>
+	<div class="section">
 
-	<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
-		<p>
-			In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your machine from
-			booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your machine is bricked and will not boot at all.
-		</p>
-		<p>
-			&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the machine, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
-		</p>
+		<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
+			<p>
+				In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your machine from
+				booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your machine is bricked and will not boot at all.
+			</p>
+			<p>
+				&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the machine, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
+			</p>
 
-		<p>
-			<img src="../images/x60t_unbrick/0000.JPG" alt="" />
-		</p>
+			<p>
+				<img src="../images/x60t_unbrick/0000.JPG" alt="" />
+			</p>
 
-		<p>
-			Remove those screws:<br/>
-			<img src="../images/x60t_unbrick/0001.JPG" alt="" />
-		</p>
+			<p>
+				Remove those screws:<br/>
+				<img src="../images/x60t_unbrick/0001.JPG" alt="" />
+			</p>
 
-		<p>
-			Remove the HDD:<br/>
-			<img src="../images/x60t_unbrick/0002.JPG" alt="" />
-		</p>
+			<p>
+				Remove the HDD:<br/>
+				<img src="../images/x60t_unbrick/0002.JPG" alt="" />
+			</p>
 
-		<p>
-			Push keyboard forward to loosen it:<br/>
-			<img src="../images/x60t_unbrick/0003.JPG" alt="" />
-		</p>
+			<p>
+				Push keyboard forward to loosen it:<br/>
+				<img src="../images/x60t_unbrick/0003.JPG" alt="" />
+			</p>
 
-		<p>
-			Lift:<br/>
-			<img src="../images/x60t_unbrick/0004.JPG" alt="" />
-		</p>
+			<p>
+				Lift:<br/>
+				<img src="../images/x60t_unbrick/0004.JPG" alt="" />
+			</p>
 
-		<p>
-			Remove those:<br/>
-			<img src="../images/x60t_unbrick/0005.JPG" alt="" />
-		</p>
+			<p>
+				Remove those:<br/>
+				<img src="../images/x60t_unbrick/0005.JPG" alt="" />
+			</p>
 
-		<p>
+			<p>
+				
+				<img src="../images/x60t_unbrick/0006.JPG" alt="" />
+			</p>
+
+			<p>
+				Also remove that (marked) and unroute the antenna cables:<br/>
+				<img src="../images/x60t_unbrick/0007.JPG" alt="" />
+			</p>
+
+			<p>
+				For some X60T laptops, you have to unroute those too:<br/>
+				<img src="../images/x60t_unbrick/0010.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove the LCD extend board screws. Also remove those screws (see blue marks) and remove/unroute the cables and remove the metal plate:<br/>
+				<img src="../images/x60t_unbrick/0008.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove that screw and then remove the board:<br/>
+				<img src="../images/x60t_unbrick/0009.JPG" alt="" />
+			</p>
 			
-			<img src="../images/x60t_unbrick/0006.JPG" alt="" />
-		</p>
-
-		<p>
-			Also remove that (marked) and unroute the antenna cables:<br/>
-			<img src="../images/x60t_unbrick/0007.JPG" alt="" />
-		</p>
-
-		<p>
-			For some X60T laptops, you have to unroute those too:<br/>
-			<img src="../images/x60t_unbrick/0010.JPG" alt="" />
-		</p>
-
-		<p>
-			Remove the LCD extend board screws. Also remove those screws (see blue marks) and remove/unroute the cables and remove the metal plate:<br/>
-			<img src="../images/x60t_unbrick/0008.JPG" alt="" />
-		</p>
-
-		<p>
-			Remove that screw and then remove the board:<br/>
-			<img src="../images/x60t_unbrick/0009.JPG" alt="" />
-		</p>
-		
-		<p>
-			Now wire up the BBB and the Pomona with your PSU.<br/>
-			Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to setup
-			the BBB for flashing.<br/>
-			<b>Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet:
-			if you don't have or don't want to use an external PSU, then make
-			sure not to connect the red/black 3.3v leads mentioned in the guide;
-			instead, connect the AC adapter (the one that normally charges your
-			battery) so that the board has power (but don't boot it up)</b>
-			<img src="../images/x60t_unbrick/0011.JPG" alt="" /><br/>
-			Correlate the following with the BBB guide linked above:
-		</p>
+			<p>
+				Now wire up the BBB and the Pomona with your PSU.<br/>
+				Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to setup
+				the BBB for flashing.<br/>
+				<b>Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet:
+				if you don't have or don't want to use an external PSU, then make
+				sure not to connect the red/black 3.3v leads mentioned in the guide;
+				instead, connect the AC adapter (the one that normally charges your
+				battery) so that the board has power (but don't boot it up)</b>
+				<img src="../images/x60t_unbrick/0011.JPG" alt="" /><br/>
+				Correlate the following with the BBB guide linked above:
+			</p>
 <pre>
 POMONA 5250:
 ===  golden finger and wifi switch ====
@@ -133,37 +138,41 @@ POMONA 5250:
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 </pre>
 
+			<p>
+				Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):<br/>
+				<img src="images/x60/th_bbb_flashing.jpg" alt="" />
+			</p>
+
+			<p>
+				SSH'd into the BBB:<br/>
+				# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom</b>
+			</p>
+			<p>
+				It should be <b>Verifying flash... VERIFIED</b> at the end. If flashrom complains about multiple flash chip
+				definitions detected, then choose one of them following the instructions in the output.
+			</p>
+
+			<p>
+				Reverse the steps to re-assemble your machine.
+			</p>
+			
+	</div>
+
+	<div class="section">
+
 		<p>
-			Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):<br/>
-			<img src="images/x60/th_bbb_flashing.jpg" alt="" />
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
 
 		<p>
-			SSH'd into the BBB:<br/>
-			# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom</b>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 		</p>
-		<p>
-			It should be <b>Verifying flash... VERIFIED</b> at the end. If flashrom complains about multiple flash chip
-			definitions detected, then choose one of them following the instructions in the output.
-		</p>
-
-		<p>
-			Reverse the steps to re-assemble your machine.
-		</p>
-
-<hr/>
-
-	<p>
-		Copyright &copy; 2014 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-		This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-		A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
-	</p>
-
-	<p>
-		This document is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
-	</p>
+		
+	</div>
 
 </body>
 </html>
