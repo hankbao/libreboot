@@ -72,7 +72,12 @@ do
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
-		./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ]
+		then
+			./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/gnulove.jpg -n background.jpg -t raw
+		else
+			./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+		fi
 	fi
 
 	# Add the correct GRUB configuration file for this image.
