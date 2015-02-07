@@ -342,6 +342,9 @@ cp macbook21_firstflash libreboot_bin/
 # ich9macchange script (change MAC address on X200 ROMs, using ich9gen)
 cp ich9macchange libreboot_bin/
 
+# for changing the GRUB background
+cp grub-background libreboot_bin/
+
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
