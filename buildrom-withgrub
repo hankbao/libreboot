@@ -68,6 +68,12 @@ do
 	mv build/coreboot.rom "$1"_"$romtype".rom
 	# .config no longer needed
 	rm -f .config
+	
+	# Add the background image
+	if [ "$romtype" = "vesafb" ]
+	then
+		./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/background.jpg -n background.jpg -t raw
+	fi
 
 	# Add the correct GRUB configuration file for this image.
 	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)

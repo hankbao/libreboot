@@ -31,7 +31,6 @@ then
 	  --modules="$grub_modules" \
 	  --install-modules="$grub_install_modules" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
-	  /background.jpg="../../../resources/grub/background/background.jpg" \
 	  /dejavusansmono.pf2="../../../resources/grub/font/dejavusansmono.pf2" \
 	  $(./grub_memdisk_keymap)
 elif [ "$1" = "txtmode" ]
