@@ -32,7 +32,7 @@ cd coreboot/
 for romtype in txtmode vesafb
 do
 	cd ../resources/utilities/grub-assemble
-	./gen."$romtype".sh
+	./gen.sh "$romtype"
 	rm -f ../../../coreboot/grub_"$romtype".elf
 	mv grub_"$romtype".elf ../../../coreboot/
 	cd ../../../coreboot
