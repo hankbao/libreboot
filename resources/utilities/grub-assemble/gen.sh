@@ -4,6 +4,9 @@
 # notice and this notice are preserved.  This file is offered as-is,
 # without any warranty.
 
+# The original grub-assemble that this tool is based on:
+# https://gitorious.org/gnutoo-for-coreboot/grub-assemble
+
 set -u -e -v
 
 if (( $# != 1 )); then
