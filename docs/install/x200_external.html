@@ -94,6 +94,8 @@ POMONA 5250 (correlate with the BBB guide)
  3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip. in front of it is the screen.
 ===  right side of the X200 (where the audio jacks are) ===
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
+Here is a photo of the SOIC-8 flash chip: <a href="images/x200/soic8.jpg" alt="freenode IRC #libreboot 01:42 UK/London timezone February 8th 2015: pehjota: fchmmr: Here are two photos in the camera's configured resolution; resize them as you wish: http://www.pehjota.net/~pj/x200/soic-8/.  License: CC BY-SA 3.0 or later.  If you want other angles or anything, let me know.">images/x200/soic8.jpg</a>
+(image copyright 2015 Patrick P.J. McDermott &lt;pj@pehjota.net&gt;, CC BY-SA 3.0 or later)
 </pre>
 			<p>
 				<b>On the X200S the flash chip is underneath the board, in a WSON package. 
@@ -101,6 +103,11 @@ POMONA 5250 (correlate with the BBB guide)
 				<a href="images/x200/wson_soldered.jpg">images/x200/wson_soldered.jpg</a> (image copyright (C) 2014 <a href="mailto:sgsit@libreboot.org">Steve Shenton</a> under CC-BY-SA 4.0
 				or higher, same license that this document uses) shows it wired (soldered) and
 				connected to a BBB.</b>
+				<br/>
+				In this image, a pin header was soldered onto the WSON. Another solution might be to de-solder the WSON-8 chip and put a SOIC-8 there instead.
+				Check the list of SOIC-8 flash chips at <a href="../hcl/x200_remove_me.html#flashchips">../hcl/x200_remove_me.html#flashchips</a> but
+				do note that these are only 4MiB (32Mb) chips. The only X200 SPI chips with 8MiB capacity are SOIC-8. For 8MiB capacity in this case,
+				the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
 			</p>
 
 			<h2>

@@ -331,8 +331,8 @@ cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_bin/macbook21cmo
 # FLASHING SCRIPTS
 # Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
 cp flash libreboot_bin/
-# For those upgrading from libreboot 5th release (or lower) to latest, on the X60
-cp x60flashfrom5 libreboot_bin/
+# Brick-prone flashing script (for mismatching board names, when they change)
+cp forceflash libreboot_bin/
 # X60/T60: so that the user can use libreboot_bin to overwrite lenovo bios with libreboot
 cp lenovobios_firstflash libreboot_bin/
 cp lenovobios_secondflash libreboot_bin/

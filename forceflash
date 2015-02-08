@@ -1,8 +1,10 @@
 #!/bin/bash
 
-#  x60flashfrom5 script: for X60 owners upgrading from 5th release
+#  forceflash script - be very careful when using this, because it can flash
+#			the wrong ROM image on the wrong machine if you tell it to. YOU HAVE BEEN WARNED.
+#			This script is for re-flashing a new image for the same machine when the board name was changed
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -27,8 +29,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 if (( $# != 1 )); then
-	echo "Usage: ./x60flashfrom5 yourrom.rom"
-	echo "usage: ./x60flashfrom5 path/to/yourrom.rom"
+	echo "Usage: ./forceflash yourrom.rom"
+	echo "usage: ./forceflash path/to/yourrom.rom"
 	echo "You need to specify exactly 1 file"
 	exit 1
 fi
@@ -36,9 +38,6 @@ if [ ! -f $1 ]; then
 	echo "File not found!"
 	exit 1
 fi
-
-# boardmismatch=force is for people upgrading from libreboot 5th release, where the new ROM's are "ThinkPad X60 / X60s / X60t"
-# and the old ones are "ThinkPad X60 / X60s" and flashrom complains otherwise
 
 path="unknown"
 if [ -f "DEBLOB" ]; then

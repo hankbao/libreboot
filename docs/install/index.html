@@ -394,9 +394,11 @@
 				<b>$ sudo ./flash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 			<p>
-				If you are flashing a ThinkPad X60 that is currently running libreboot 5th release or lower 
-				(anything on or before June 22nd 2014), then use this to upgrade:<br/>
-				<b>$ sudo ./x60flashfrom5 bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+				If you are sure that you are flashing the correct image but you get the error
+				<b>This coreboot image (LENOVO:ThinkPad X60) does not appear to be correct for the detected mainboard (Lenovo:ThinkPad X60 / X60s / X60t) or
+				similar (if it's a different board), then do</b>:
+				<br/>
+				<b>$ sudo ./forceflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 
 			<div class="important">
