@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  build-release script: generates libreboot_bin and libreboot_src release archives
+#  build-release script: generates libreboot_util and libreboot_src release archives
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -45,8 +45,7 @@ fi
 
 echo "Deleting old release archives"
 
-rm -f libreboot_src.tar.xz
-rm -f libreboot_bin.tar.xz
+rm -f libreboot_*.tar.xz
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
@@ -123,28 +122,28 @@ cd ../
 
 cd ../
 
-# ### Prepare libreboot_bin archive ready for release
+# ### Prepare libreboot_util archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
-echo "Preparing libreboot_bin release archive"
+echo "Preparing libreboot_util release archive"
 
-mkdir libreboot_bin
+mkdir libreboot_util
 
 # ---------------------------------------
 # Include the ROM's in the binary archive
 # ---------------------------------------
-cp -r bin libreboot_bin/
+cp -r bin libreboot_util/
 
 # ---------------
 # SeaBIOS related
 # ---------------
 # Include SeaBIOS and SeaVGABIOS option ROM in the binary archive
-cp seabios/out/vgabios.bin libreboot_bin/
-cp seabios/out/bios.bin.elf libreboot_bin/
+cp seabios/out/vgabios.bin libreboot_util/
+cp seabios/out/bios.bin.elf libreboot_util/
 # Add the script for it
-cp addseabios libreboot_bin/
+cp addseabios libreboot_util/
 # Menu entry to be added to grub configs
-cp resources/grub/config/seabios.cfg libreboot_bin/
+cp resources/grub/config/seabios.cfg libreboot_util/
 
 # --------------
 # BUC.TS related
@@ -154,9 +153,9 @@ cp resources/grub/config/seabios.cfg libreboot_bin/
 cp -r bucts bucts_
 # make it statically compile
 ./builddeps-bucts static
-mkdir libreboot_bin/bucts
-mkdir libreboot_bin/bucts/"$arch"
-mv bucts/bucts libreboot_bin/bucts/"$arch"
+mkdir libreboot_util/bucts
+mkdir libreboot_util/bucts/"$arch"
+mv bucts/bucts libreboot_util/bucts/"$arch"
 rm -rf bucts
 mv bucts_ bucts
 
@@ -168,12 +167,12 @@ mv bucts_ bucts
 cp -r flashrom flashrom_
 # make it statically compile
 ./builddeps-flashrom static
-mkdir libreboot_bin/flashrom
+mkdir libreboot_util/flashrom
 cd flashrom/
-mkdir ../libreboot_bin/flashrom/"$arch"
-mv flashrom ../libreboot_bin/flashrom/"$arch"
-mv flashrom_lenovobios_sst ../libreboot_bin/flashrom/"$arch"
-mv flashrom_lenovobios_macronix ../libreboot_bin/flashrom/"$arch"
+mkdir ../libreboot_util/flashrom/"$arch"
+mv flashrom ../libreboot_util/flashrom/"$arch"
+mv flashrom_lenovobios_sst ../libreboot_util/flashrom/"$arch"
+mv flashrom_lenovobios_macronix ../libreboot_util/flashrom/"$arch"
 cd ../
 rm -rf flashrom
 mv flashrom_ flashrom
@@ -187,28 +186,28 @@ cp -r cbfstool cbfstool_
 cd cbfstool/
 make clean
 make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_bin/cbfstool
+mkdir ../../../libreboot_util/cbfstool
 
-mkdir ../../../libreboot_bin/cbfstool/"$arch"
-mv cbfstool ../../../libreboot_bin/cbfstool/"$arch"/
-mv rmodtool ../../../libreboot_bin/cbfstool/"$arch"/
+mkdir ../../../libreboot_util/cbfstool/"$arch"
+mv cbfstool ../../../libreboot_util/cbfstool/"$arch"/
+mv rmodtool ../../../libreboot_util/cbfstool/"$arch"/
 
 if [ "$arch" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_bin/cbfstool/i686
-		mv cbfstool ../../../libreboot_bin/cbfstool/i686/
-		mv rmodtool ../../../libreboot_bin/cbfstool/i686/
+		mkdir ../../../libreboot_util/cbfstool/i686
+		mv cbfstool ../../../libreboot_util/cbfstool/i686/
+		mv rmodtool ../../../libreboot_util/cbfstool/i686/
 fi
 
 # cross-compile for ARM
 make clean
 make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
-mkdir ../../../libreboot_bin/cbfstool/armv7l
-mv cbfstool ../../../libreboot_bin/cbfstool/armv7l/
-mv rmodtool ../../../libreboot_bin/cbfstool/armv7l/
+mkdir ../../../libreboot_util/cbfstool/armv7l
+mv cbfstool ../../../libreboot_util/cbfstool/armv7l/
+mv rmodtool ../../../libreboot_util/cbfstool/armv7l/
 
 cd ../
 rm -rf cbfstool
@@ -224,28 +223,28 @@ cp -r ich9deblob ich9deblob_
 cd ich9deblob/
 make clean
 make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_bin/ich9deblob
+mkdir ../../../libreboot_util/ich9deblob
 
-mkdir ../../../libreboot_bin/ich9deblob/"$arch"
-mv ich9deblob ../../../libreboot_bin/ich9deblob/"$arch"/
-mv ich9gen ../../../libreboot_bin/ich9deblob/"$arch"/
+mkdir ../../../libreboot_util/ich9deblob/"$arch"
+mv ich9deblob ../../../libreboot_util/ich9deblob/"$arch"/
+mv ich9gen ../../../libreboot_util/ich9deblob/"$arch"/
 
 if [ "$arch" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_bin/ich9deblob/i686
-		mv ich9deblob ../../../libreboot_bin/ich9deblob/i686/
-		mv ich9gen ../../../libreboot_bin/ich9deblob/i686/
+		mkdir ../../../libreboot_util/ich9deblob/i686
+		mv ich9deblob ../../../libreboot_util/ich9deblob/i686/
+		mv ich9gen ../../../libreboot_util/ich9deblob/i686/
 fi
 
 # cross-compile for ARM
 make clean
 make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
-mkdir ../../../libreboot_bin/ich9deblob/armv7l
-mv ich9deblob ../../../libreboot_bin/ich9deblob/armv7l/
-mv ich9gen ../../../libreboot_bin/ich9deblob/armv7l/
+mkdir ../../../libreboot_util/ich9deblob/armv7l
+mv ich9deblob ../../../libreboot_util/ich9deblob/armv7l/
+mv ich9gen ../../../libreboot_util/ich9deblob/armv7l/
 
 cd ../
 rm -rf ich9deblob
@@ -261,18 +260,18 @@ cp -r nvramtool nvramtool_
 cd nvramtool/
 make clean
 make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_bin/nvramtool
+mkdir ../../../libreboot_util/nvramtool
 
-mkdir ../../../libreboot_bin/nvramtool/"$arch"
-mv nvramtool ../../../libreboot_bin/nvramtool/"$arch"/
+mkdir ../../../libreboot_util/nvramtool/"$arch"
+mv nvramtool ../../../libreboot_util/nvramtool/"$arch"/
 
 if [ "$arch" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_bin/nvramtool/i686
-		mv nvramtool ../../../libreboot_bin/nvramtool/i686/
+		mkdir ../../../libreboot_util/nvramtool/i686
+		mv nvramtool ../../../libreboot_util/nvramtool/i686/
 fi
 
 cd ../
@@ -289,18 +288,18 @@ cp -r cbmem cbmem_
 cd cbmem/
 make clean
 make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_bin/cbmem
+mkdir ../../../libreboot_util/cbmem
 
-mkdir ../../../libreboot_bin/cbmem/"$arch"
-mv cbmem ../../../libreboot_bin/cbmem/"$arch"/
+mkdir ../../../libreboot_util/cbmem/"$arch"
+mv cbmem ../../../libreboot_util/cbmem/"$arch"/
 
 if [ "$arch" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
 		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_bin/cbmem/i686
-		mv cbmem ../../../libreboot_bin/cbmem/i686/
+		mkdir ../../../libreboot_util/cbmem/i686
+		mv cbmem ../../../libreboot_util/cbmem/i686/
 fi
 cd ../
 rm -rf cbmem
@@ -310,47 +309,47 @@ cd ../../
 # ---------------------
 # Include documentation
 # ---------------------
-cp -r docs libreboot_bin/
+cp -r docs libreboot_util/
 
 # -----------------------------------------------------------------------
 # X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
 # -----------------------------------------------------------------------
-cp powertop.trisquel6 libreboot_bin/
-cp powertop.trisquel6.init libreboot_bin/
-cp powertop.trisquel7 libreboot_bin/
-cp powertop.trisquel7.init libreboot_bin/
+cp powertop.trisquel6 libreboot_util/
+cp powertop.trisquel6.init libreboot_util/
+cp powertop.trisquel7 libreboot_util/
+cp powertop.trisquel7.init libreboot_util/
 
 # -------------
 # Miscellaneous
 # -------------
 # include X60 cmos.layout file
-cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_bin/x60cmos.layout
-cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_bin/t60cmos.layout
-cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_bin/macbook21cmos.layout
+cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_util/x60cmos.layout
+cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_util/t60cmos.layout
+cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_util/macbook21cmos.layout
 
 # FLASHING SCRIPTS
 # Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
-cp flash libreboot_bin/
+cp flash libreboot_util/
 # Brick-prone flashing script (for mismatching board names, when they change)
-cp forceflash libreboot_bin/
-# X60/T60: so that the user can use libreboot_bin to overwrite lenovo bios with libreboot
-cp lenovobios_firstflash libreboot_bin/
-cp lenovobios_secondflash libreboot_bin/
+cp forceflash libreboot_util/
+# X60/T60: so that the user can use libreboot_util to overwrite lenovo bios with libreboot
+cp lenovobios_firstflash libreboot_util/
+cp lenovobios_secondflash libreboot_util/
 # For initial flashing on macbook21/11
-cp macbook21_firstflash libreboot_bin/
+cp macbook21_firstflash libreboot_util/
 
 # ich9macchange script (change MAC address on X200 ROMs, using ich9gen)
-cp ich9macchange libreboot_bin/
+cp ich9macchange libreboot_util/
 
 # for changing the GRUB background
-cp grub-background libreboot_bin/
+cp grub-background libreboot_util/
 
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # Also delete the manifest
 rm -f libreboot_src/releasefilelist
-rm -f libreboot_bin/releasefilelist
+rm -f libreboot_util/releasefilelist
 rm -f releasefilelist
 
 # We don't want to encourage development
@@ -394,17 +393,17 @@ rm -f libreboot_src/commitid
 cat .git/refs/heads/master > commitid
 # include it in the release archives
 cp commitid libreboot_src/
-cp commitid libreboot_bin/
+cp commitid libreboot_util/
 
 echo "Creating compressed libreboot_src release archive"
 
 # create lzma compressed src archive
 tar cfJ libreboot_src.tar.xz libreboot_src
 
-echo "Creating compressed libreboot_bin release archive"
+echo "Creating compressed libreboot_util release archive"
 
 # create lzma compressed bin archive
-tar cfJ libreboot_bin.tar.xz libreboot_bin
+tar cfJ libreboot_util.tar.xz libreboot_util
 
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -412,12 +411,12 @@ tar cfJ libreboot_bin.tar.xz libreboot_bin
 echo "Deleted the uncompressed release archives"
 
 rm -rf libreboot_src
-rm -rf libreboot_bin
+rm -rf libreboot_util
 
 # For those utilities that have to be built on the target
 ./mkextbuild
 
-# DONE. See libreboot_src.tar.xz and libreboot_bin.tar.xz
+# DONE. See libreboot_src.tar.xz and libreboot_util.tar.xz
 # NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom
 # NOTE FOR FCHMMR: don't forget to add i386 binaries for flashrom/bucts
 # The tarball tobuild.tar.xz has been created with everything needed to build these utilities
