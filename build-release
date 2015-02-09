@@ -46,6 +46,7 @@ fi
 echo "Deleting old release archives"
 
 rm -f libreboot_*.tar.xz
+rm -f tobuild.tar.xz
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
@@ -122,17 +123,23 @@ cd ../
 
 cd ../
 
+# ### Prepare ROM archives ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+cd bin/
+for board in $(ls)
+do
+	# create lzma compressed src archive
+	tar cfJ ../libreboot_"$board".tar.xz "$board"
+done
+cd ../
+
 # ### Prepare libreboot_util archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
 echo "Preparing libreboot_util release archive"
 
 mkdir libreboot_util
-
-# ---------------------------------------
-# Include the ROM's in the binary archive
-# ---------------------------------------
-cp -r bin libreboot_util/
 
 # ---------------
 # SeaBIOS related
