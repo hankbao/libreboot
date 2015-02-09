@@ -1,0 +1,105 @@
+From 845d9d2575184b503b35fddd5f0ea95e1d592d39 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Micha=C5=82=20Mas=C5=82owski?= <mtjm@mtjm.eu>
+Date: Tue, 3 Feb 2015 23:26:05 +0100
+Subject: [PATCH] lenovo/r400: new mainboard (x200 clone)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Existing X200 port works without changes on R400.  Vendor BIOS
+provides different hda_verb (since the connectors are on front, not
+right), but this doesn't provide enough benefit to justify having
+different source files.
+
+Change-Id: I1dadddd7250ab80a4c40c2435865d72e3e5d99c9
+Signed-off-by: Michał Masłowski <mtjm@mtjm.eu>
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+
+Conflicts:
+	src/mainboard/lenovo/x200/Kconfig
+---
+ src/mainboard/lenovo/Kconfig             | 6 ++++++
+ src/mainboard/lenovo/r400/Kconfig        | 7 +++++++
+ src/mainboard/lenovo/r400/board_info.txt | 6 ++++++
+ src/mainboard/lenovo/x200/Kconfig        | 6 +++++-
+ 4 files changed, 24 insertions(+), 1 deletion(-)
+ create mode 100644 src/mainboard/lenovo/r400/Kconfig
+ create mode 100644 src/mainboard/lenovo/r400/board_info.txt
+
+diff --git a/src/mainboard/lenovo/Kconfig b/src/mainboard/lenovo/Kconfig
+index 95f7cfd..2a7fa33 100644
+--- a/src/mainboard/lenovo/Kconfig
++++ b/src/mainboard/lenovo/Kconfig
+@@ -65,6 +65,11 @@ config BOARD_LENOVO_G505S
+ 	help
+ 	  Lenovo G505s
+ 
++config BOARD_LENOVO_R400
++	bool "ThinkPad R400"
++	help
++	  Lenovo R400 laptop. Consult wiki for details.
++
+ endchoice
+ 
+ source "src/mainboard/lenovo/x60/Kconfig"
+@@ -78,6 +83,7 @@ source "src/mainboard/lenovo/t520/Kconfig"
+ source "src/mainboard/lenovo/t530/Kconfig"
+ source "src/mainboard/lenovo/t60/Kconfig"
+ source "src/mainboard/lenovo/g505s/Kconfig"
++source "src/mainboard/lenovo/r400/Kconfig"
+ 
+ config MAINBOARD_VENDOR
+ 	string
+diff --git a/src/mainboard/lenovo/r400/Kconfig b/src/mainboard/lenovo/r400/Kconfig
+new file mode 100644
+index 0000000..0966bf1
+--- /dev/null
++++ b/src/mainboard/lenovo/r400/Kconfig
+@@ -0,0 +1,7 @@
++if BOARD_LENOVO_R400
++
++config MAINBOARD_PART_NUMBER
++	string
++	default "ThinkPad R400"
++
++endif
+diff --git a/src/mainboard/lenovo/r400/board_info.txt b/src/mainboard/lenovo/r400/board_info.txt
+new file mode 100644
+index 0000000..8791abf
+--- /dev/null
++++ b/src/mainboard/lenovo/r400/board_info.txt
+@@ -0,0 +1,6 @@
++Category: laptop
++ROM package: SOIC-16 or SOIC-8
++ROM protocol: SPI
++ROM socketed: n
++Flashrom support: n
++Clone of: lenovo/x200
+diff --git a/src/mainboard/lenovo/x200/Kconfig b/src/mainboard/lenovo/x200/Kconfig
+index 67fc388..51c1ad7 100644
+--- a/src/mainboard/lenovo/x200/Kconfig
++++ b/src/mainboard/lenovo/x200/Kconfig
+@@ -1,4 +1,4 @@
+-if BOARD_LENOVO_X200
++if BOARD_LENOVO_X200 || BOARD_LENOVO_R400
+ 
+ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	def_bool y
+@@ -26,10 +26,14 @@ config MAINBOARD_DIR
+ 	string
+ 	default lenovo/x200
+ 
++if BOARD_LENOVO_X200
++
+ config MAINBOARD_PART_NUMBER
+ 	string
+ 	default "ThinkPad X200"
+ 
++endif
++
+ config MMCONF_BASE_ADDRESS
+ 	hex
+ 	default 0xf0000000
+-- 
+1.9.1
+

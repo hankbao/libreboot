@@ -8,23 +8,25 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>ThinkPad X200: remove the ME (manageability engine)</title>
+	<title>GM45 chipsets: remove the ME (manageability engine)</title>
 </head>
 
 <body>
 
 	<div class="section">
 		
-		<h1 id="pagetop">ThinkPad X200: remove the ME (manageability engine)</h1>
+		<h1 id="pagetop">GM45 chipsets: remove the ME (manageability engine)</h1>
 			<p>
-				This sections relates to disabling and removing the ME (Intel <b>M</b>anagement <b>E</b>ngine)
-				on the ThinkPad X200.
+				This sections relates to disabling and removing the ME (Intel <b>M</b>anagement <b>E</b>ngine) on
+				GM45. This was originally done on the ThinkPad X200, and later adapted for the ThinkPad R400. It can
+				in principle be done on any GM45 or GS45 machine.
 			</p>
 			<p>
 				The ME is a blob that typically must be left inside the flash chip (in the ME region, as outlined
-				by the default descriptor). On the X200, it is possible to remove it without any ill effects. All
-				other parts of coreboot on the X200 can be blob-free, so removing the ME was the last obstacle to
-				get X200 support in libreboot (the machine can also work without the microcode blobs). 
+				by the default descriptor). On GM45, it is possible to remove it without any ill effects. All
+				other parts of coreboot on GM45 machines (provided GMA MHD4500 / Intel graphics) can be blob-free,
+				so removing the ME was the last obstacle to
+				make GM45 a feasible target in libreboot (the machines can also work without the microcode blobs). 
 			</p>
 			<p>
 				The ME is removed and disabled in libreboot by modifying the descriptor. More info about
@@ -32,7 +34,7 @@
 				in libreboot, or more generally on this page.
 			</p>
 			<p>
-				<a href="x200.html">Back to main X200 compatibility page (x200.html)</a>.
+				<a href="index.html">Back to previous index</a>.
 			</p>
 			
 	</div>
@@ -42,7 +44,7 @@
 		<h1 id="ich9gen">ICH9 gen utility</h1>
 		
 			<p>
-				<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
+				<b>This is no longer strictly necessary. Libreboot ROM images for GM45 now
 				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
 			</p>
 		
@@ -80,7 +82,7 @@
 			
 			<p>
 				A bash script is also included in libreboot which will change the mac address (using ich9gen)
-				on all X200 ROM images. For instance:<br/>
+				on all GM45 ROM images. For instance:<br/>
 				$ <b>./ich9macchange XX:XX:XX:XX:XX:XX</b>
 			</p>
 			
@@ -88,8 +90,8 @@
 				Two new files will be created:
 			</p>
 				<ul>
-					<li><b>ich9fdgbe_4m.bin</b>: this is for X200 laptops with the 4MB flash chip.</li>
-					<li><b>ich9fdgbe_8m.bin</b>: this is for X200 laptops with the 8MB flash chip.</li>
+					<li><b>ich9fdgbe_4m.bin</b>: this is for GM45 laptops with the 4MB flash chip.</li>
+					<li><b>ich9fdgbe_8m.bin</b>: this is for GM45 laptops with the 8MB flash chip.</li>
 				</ul>
 				
 			<p>
@@ -100,7 +102,7 @@
 			</p>
 			
 			<p>
-				Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
+				Assuming that your libreboot image is named <b>libreboot.rom</b>, copy
 				the file to where <b>libreboot.rom</b> is located
 				and then run, for instance:<br/>
 				$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
@@ -109,7 +111,7 @@
 			</p>
 			
 			<p>
-				Your X200 libreboot.rom image is now ready to be flashed on the machine. Refer back to 
+				Your libreboot.rom image is now ready to be flashed on the machine. Refer back to 
 				<a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
 				for how to flash it.
 			</p>
@@ -121,12 +123,13 @@
 		<h1 id="ich9deblob">ICH9 deblob utility</h1>
 		
 			<p>
-				<b>This is no longer strictly necessary. Libreboot ROM images for X200 now
+				<b>This is no longer strictly necessary. Libreboot ROM images for GM45 machines now
 				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
 			</p>
 			
 			<p>
-				This was the tool originally used to disable the ME on X200. <a href="#ich9gen">ich9gen</a> now supersedes it;
+				This was the tool originally used to disable the ME on X200 (later adapted for other machines that use the
+				GM45 chipset). <a href="#ich9gen">ich9gen</a> now supersedes it;
 				ich9gen is better because it does not rely on dumping the factory.rom image (whereas, ich9deblob does).
 			</p>
 		
@@ -146,8 +149,8 @@
 			</p>
 			
 			<p>
-				Place the factory.rom from your X200 
-				(can be obtained using the guide at <a href="../install/x200_external.html">../install/x200_external.html</a>) in
+				Place the factory.rom from your machine 
+				(can be obtained using the external flashing guides for GM45 targets linked <a href="../install/index.html">../install/index.html</a>) in
 				the directory where you have your ich9deblob executable, then run the tool:<br/>
 				$ <b>./ich9deblob</b>
 			</p>
@@ -158,7 +161,7 @@
 			</p>
 			
 			<p>
-				Assuming that your X200 libreboot image is named <b>libreboot.rom</b>, copy
+				Assuming that your libreboot image is named <b>libreboot.rom</b>, copy
 				the <b>deblobbed_descriptor.bin</b> file to where <b>libreboot.rom</b> is located
 				and then run:<br/>
 				$ <b>dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
@@ -191,7 +194,7 @@
 	<div class="section">
 		
 		<p>
-			The sections below are adapted from (mostly) IRC logs related to early development getting the ME removed on the X200.
+			The sections below are adapted from (mostly) IRC logs related to early development getting the ME removed on GM45.
 			They are useful for background information. This could not have been done without sgsit's help.
 		</p>
 		
@@ -447,7 +450,7 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 			</p>
 				
 			<p>
-				To deblob the x200, you chop out the platform and ME regions and correct the addresses in flReg1-4.
+				To deblob GM45, you chop out the platform and ME regions and correct the addresses in flReg1-4.
 				Then you set meDisable to 1 in ICHSTRAP0 and MCHSTRAP0.
 			</p>
 				

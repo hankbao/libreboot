@@ -50,11 +50,11 @@ fi
 
 for romtype in txtmode vesafb
 do
-	if [ "$1" = "x200_8mb" ] || [ "$1" = "x200_4mb" ]
+	if [ "$1" = "x200_8mb" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "r400_8mb" ] || [ "$1" = "r400_4mb" ]
 		then
 			if [ "$romtype" = "txtmode" ]
 				then
-					echo "Text mode graphics is currently broken on X200. Only framebuffer mode works."
+					echo "Text mode graphics is currently broken on X200 and R400. Only framebuffer mode works."
 					continue
 			fi
 	fi
@@ -72,7 +72,7 @@ do
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
-		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ]
+		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ]
 		then
 			./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/gnulove.jpg -n background.jpg -t raw
 		else

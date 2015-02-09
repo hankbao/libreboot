@@ -34,7 +34,7 @@
 			
 			<p>
 				<b>The X200 laptops come with the ME (and sometimes AMT in addition) before flashing libreboot. Libreboot disables and removes it
-				by using a modified descriptor: see <a href="x200_remove_me.html">x200_remove_me.html</a></b> (contains notes, plus
+				by using a modified descriptor: see <a href="gm45_remove_me.html">gm45_remove_me.html</a></b> (contains notes, plus
 				instructions)
 			</p>
 
@@ -287,7 +287,7 @@
 		<h2 id="new_targets">New targets</h2>
 
 			<p>
-				ThinkPad R400/R500/T400/T400S/T500/W500. These all use either the GM45 or GS45
+				ThinkPad R500/T400/T400S/T500/W500. These all use either the GM45 or GS45
 				chipset, and should be easy-ish to port to coreboot (based on the X200 port and
 				the GM45 code), then adapted for use in libreboot.
 			</p>
@@ -296,12 +296,6 @@
 				There may be issues (most likely to do with raminit) on some of them, and
 				some of them might sometimse come with ATI graphics (to be avoided) instead
 				of Intel.
-			</p>
-
-			<p>
-				For example, the R400 currently has issues with raminit (not yet ported to coreboot)
-				where it's DDR3 memory reported as DDR2, as shown in
-				<a href="text/r400/r400_dmidecode.txt">text/r400/r400_dmidecode.txt</a>
 			</p>
 
 	</div>

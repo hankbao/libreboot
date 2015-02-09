@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ThinkPad R400</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">ThinkPad R400</h1>
+			
+			<p</p>
+			
+			<p>
+				It is believed that all R400 laptops are compatible. 
+			</p>
+			
+			<p>
+				There are two possible flash chip sizes for the R400: 4MiB (32Mbit) or 8MiB (64Mbit). 
+				This can be identified by the type of flash chip below the palmrest: 4MiB is SOIC-8, 8MiB
+				is SOIC-16.
+			</p>
+			
+			<p>
+				<b>The R400 laptops come with the ME (and sometimes AMT in addition) before flashing libreboot. Libreboot disables and removes it
+				by using a modified descriptor: see <a href="gm45_remove_me.html">gm45_remove_me.html</a></b> (contains notes, plus
+				instructions)
+			</p>
+
+			<p>
+				Flashing instructions can be found at <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+			</p>
+			
+			<p>
+				<a href="index.html">Back to previous index</a>.
+			</p>
+	</div>
+
+	<div class="section">
+
+		<h2 id="compatibility_noblobs">Compatibility (without blobs)</h2>
+
+			<p>
+				Usual limitations apply for native graphics initialization
+				(no VBT and/or INT10H and only GRUB works so no BIOS, so no DOS/Windows support
+				- who cares? There is no system but GNU, and Linux is one of it's kernels).
+			</p>
+
+			<p>
+				When connecting the AC adapter while system is powered off, system will then power on.
+				This probably happens in coreboot aswell (with or without blobs).
+				It's a minor annoyance, but it should be fixed (if it's not already fixed by now).
+			</p>
+
+			<p>
+				This method of disabling the ME leaves the flash descriptor and gbe in place (non-functional data, fully documented)
+				and disables the ME using soft straps. This means that the gigabit ethernet will still work (putting the machine in
+				non-descriptor mode would wipe it out).
+			</p>
+
+			<div class="subsection">
+				<h3 id="hwvirt">Hardware virtualization (vt-x)</h3>
+					<p>
+						The R400, when run without CPU microcode updates in coreboot, currently kernel panics
+						if running QEMU with vt-x enabled on 2 cores for the guest. With a single core enabled
+						for the guest, the guest panics (but the host is fine). Working around this in QEMU
+						might be possible; if not, software virtualization should work fine (it's just slower).
+					</p>
+					<p>
+						The following errata datasheet from Intel might help with investigation:
+						<a href="http://download.intel.com/design/mobile/specupdt/320121.pdf">http://download.intel.com/design/mobile/specupdt/320121.pdf</a>
+					</p>
+			</div>
+
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>

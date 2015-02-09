@@ -38,7 +38,7 @@
 				<li><a href="#rom">Recommended ROMs to flash</a></li>
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
-				<li><a href="#flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
+				<li><a href="#flashrom">X60/X60S/X60T/T60/X200/R400/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
 			</ul>
 
 		<h2>Installing libreboot (hardware)</h2>
@@ -47,6 +47,7 @@
 				<li><a href="x60tablet_unbrick.html">ThinkPad X60 Tablet: How to unbrick</a></li>
 				<li><a href="t60_unbrick.html">ThinkPad T60: How to unbrick</a></li>
 				<li><a href="x200_external.html">ThinkPad X200: How to unbrick</a> (also the initial installation guide for this machine)</li>
+				<li><a href="r400_external.html">ThinkPad R400: How to unbrick</a> (also the initial installation guide for this machine)</li>
 			</ul>
 			
 	</div>
@@ -77,6 +78,7 @@
 					<li>ThinkPad X60, X60s and X60 Tablet: <b>bin/x60/</b></li>
 					<li>ThinkPad T60: <b>bin/t60/</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
 					<li>ThinkPad X200: <b>bin/x200_8mb/</b> (8MiB flash chip) or <b>bin/x200_4mb</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
+					<li>ThinkPad R400: <b>bin/r400_8mb/</b> (8MiB flash chip) or <b>bin/r400_4mb</b> (4MiB flash chip) (see <a href="../hcl/r400.html">../hcl/r400.html</a>)</li>
 					<li>Apple MacBook2,1: <b>bin/macbook21/</b></li>
 					<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROMs work)</li>
 				</ul>
@@ -329,7 +331,7 @@
 
 	<div class="section">
 
-		<h1 id="flashrom">X60/X60S/X60T/T60/X200/macbook21: How to flash the ROMs onto your machine (if running libreboot or coreboot already)</h1>
+		<h1 id="flashrom">X60/X60S/X60T/T60/X200/R400/macbook21: How to flash the ROMs onto your machine (if running libreboot or coreboot already)</h1>
 
 			<p>
 				<b>
@@ -353,6 +355,11 @@
 			</p>
 			<p>
 				<b>
+					If you have Lenovo BIOS running (R400), go to <a href="r400_external.html">r400_external.html</a> instead.
+				</b>
+			</p>
+			<p>
+				<b>
 					If you have Apple EFI firmware running (macbook21), go to <a href="#flashrom_macbook21">#flashrom_macbook21</a> instead.
 				</b>
 			</p>
@@ -363,16 +370,17 @@
 			</p>
 			<p>
 				<b>
-					If you have an X200 with libreboot or coreboot already running, note that
+					If you have an X200 or R400 with libreboot or coreboot already running, note that
 					the Gbe in the boot flash contains your MAC address. You will need to change the default
 					MAC address inside the ROM images before flashing a new libreboot image. See 
-					<a href="../hcl/x200_remove_me.html#ich9gen">ich9gen</a> for details.
+					<a href="../hcl/gm45_remove_me.html#ich9gen">ich9gen</a> for details.
 					
-					Another important note about the X200: even if you do already have libreboot or coreboot,
+					Another important note about the X200/R400: even if you do already have libreboot or coreboot,
 					it is possible for the user to write-protect regions in the flash chip, by modifying
 					the flash descriptor. If you have locked regions, you will need an external flasher
-					(see <a href="x200_external.html">x200_external.html</a>) to re-flash those regions. By default,
-					the X200 ROM images in libreboot contain a descriptor+gbe with all regions unlocked.
+					(see <a href="x200_external.html">x200_external.html</a> or <a href="x200_external.html">x200_external.html</a>)
+					to re-flash those regions. By default,
+					the X200 and R400 ROM images in libreboot contain a descriptor+gbe with all regions unlocked.
 				</b>
 			</p>
 			<p>

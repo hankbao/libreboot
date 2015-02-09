@@ -70,6 +70,11 @@ git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cher
 # fix uneven backlight on X200 (when setting brightness low)
 git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cherry-pick FETCH_HEAD
 
+# ThinkPad R400 support. Based on http://review.coreboot.org/#/c/8393/
+# This diff will be deleted later, and instead the patch will be fetched from coreboot gerrit
+# (and later, it won't even do that, once the R400 support is merged in coreboot)
+git am ../resources/libreboot/patch/r400.diff
+
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 
