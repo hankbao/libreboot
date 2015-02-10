@@ -47,14 +47,17 @@ fi
 
 $(echo $path) --macaddress $1
 
-for size in "8m" "4m"
+for board in "x200" "r400"
 do
-	cd bin/x200_"$size"b/
-	for rom in $(ls)
+	for size in "8m" "4m"
 	do
-		dd if=../../ich9fdgbe_"$size".bin of="$rom" bs=1 count=12k conv=notrunc
+		cd bin/"$board"_"$size"b/
+		for rom in $(ls)
+		do
+			dd if=../../ich9fdgbe_"$size".bin of="$rom" bs=1 count=12k conv=notrunc
+		done
+		cd ../../
 	done
-	cd ../../
 done
 
 rm -f ich9fdgbe_4m.bin
