@@ -25,6 +25,7 @@ set -u -e -v
 
 cd resources/utilities/i945-pwm/
 
+make clean
 # build it
 make
 
