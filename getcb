@@ -75,6 +75,9 @@ git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cher
 # (and later, it won't even do that, once the R400 support is merged in coreboot)
 git am ../resources/libreboot/patch/r400.diff
 
+# Fix build issue when building coreboot without .git
+git fetch http://review.coreboot.org/coreboot refs/changes/23/8423/1 && git cherry-pick FETCH_HEAD
+
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 
