@@ -111,6 +111,9 @@ chip on those pins?
 				Check the list of SOIC-8 flash chips at <a href="../hcl/gm45_remove_me.html#flashchips">../hcl/gm45_remove_me.html#flashchips</a> but
 				do note that these are only 4MiB (32Mb) chips. The only X200 SPI chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
 				the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
+				<br/>
+				Another possible solution: ground GPIO33 and boot up in non-descriptor mode. This might make software flashing possible, if
+				it's possible to circumvent any flashing protections that might exist.
 			</p>
 
 			<h2>
