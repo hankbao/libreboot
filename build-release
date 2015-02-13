@@ -130,7 +130,7 @@ cd bin/
 for board in $(ls)
 do
 	# create lzma compressed src archive
-	tar cfJ ../libreboot_"$board".tar.xz "$board"
+	tar -c "$board" | xz -9e >../libreboot_"$board".tar.xz
 done
 cd ../
 
@@ -408,12 +408,12 @@ cp commitid libreboot_util/
 echo "Creating compressed libreboot_src release archive"
 
 # create lzma compressed src archive
-tar cfJ libreboot_src.tar.xz libreboot_src
+tar -c libreboot_src | xz -9e >libreboot_src.tar.xz
 
 echo "Creating compressed libreboot_util release archive"
 
 # create lzma compressed util archive
-tar cfJ libreboot_util.tar.xz libreboot_util
+tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
