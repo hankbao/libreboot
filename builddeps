@@ -20,6 +20,11 @@
 
 set -u -e -v
 
+if [ ! -d "bin" ]
+then
+	mkdir bin/
+fi
+
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 
