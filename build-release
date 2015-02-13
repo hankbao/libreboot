@@ -351,6 +351,9 @@ cp ich9macchange libreboot_util/
 # for changing the GRUB background
 cp grub-background libreboot_util/
 
+# remove the bin/ directory from libreboot_util
+rm -rf libreboot_util/bin/
+
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
