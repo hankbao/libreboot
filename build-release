@@ -412,7 +412,7 @@ tar cfJ libreboot_src.tar.xz libreboot_src
 
 echo "Creating compressed libreboot_util release archive"
 
-# create lzma compressed bin archive
+# create lzma compressed util archive
 tar cfJ libreboot_util.tar.xz libreboot_util
 
 # ### Delete the uncompressed release directories
