@@ -4,7 +4,7 @@
 /flashrom/
 /grub/
 /memtest86+-5.01/
-/bin/*
+/bin/
 /grubinvaders/
 /seabios/
 /powertop/
