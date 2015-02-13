@@ -41,7 +41,6 @@
 					</ul>
 				</li>
 				<li><a href="#build">How to build the ROM images</a></li>
-				<li><a href="#build_addseabios">Add SeaBIOS to the ROM images</a></li>
 			</ul>
 	</div>
 
@@ -668,46 +667,6 @@
 					</p>
 			
 			</div>
-
-			<p><a href="#pagetop">Back to top of page</a></p>
-			
-	</div>
-
-	<div class="section">
-
-		<h1 id="build_addseabios">How to add SeaBIOS to the ROM images</h1>
-
-			<p>
-				SeaBIOS isn't really needed since libreboot uses the GRUB payload which
-				is much better (for several reasons), so it is no longer included in the ROM
-				images by default. Instead, you can add it afterwards.
-			</p>
-
-			<p>
-				In the supplied binary archives, or in your own (if you did 'build-release') you can add SeaBIOS
-				to the ROM images, along with SeaVGABIOS which is a free/libre Video BIOS implementation that wraps
-				around the 'native graphics initializitation' code in coreboot, for boards that have support for it.
-			</p>
-
-			<p>
-				First, <a href="#build_dependencies">install the build dependencies</a>.
-			</p>
-
-			<p>
-				Binaries for cbfstool are provided (built from libreboot_src) statically linked under cbfstool/ and the <b>addseabios</b>
-				script (see below) will try to automatically select the right one to use.
-			</p>
-
-			<p>
-				Now:<br/>
-				$ <b>./addseabios</b>
-			</p>
-
-			<p>
-				SeaBIOS and SeaVGABIOS (which the build scripts created, and the build-release script put - compiled - 
-				inside the binary archive) have now been added to all of the ROM images under ./bin/. A GRUB menuentry will show
-				up when you boot your machine, allowing you to use SeaBIOS.
-			</p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
 			

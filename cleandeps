@@ -99,15 +99,6 @@ rm -f flashrom_lenovobios_macronix
 # done. go back to main directory
 cd ../
 
-# clean seabios
-# --------------------------------------------------------
-
-cd seabios/
-
-make clean
-
-cd ../
-
 # clean grubinvaders
 # ----------------------------------------------------------
 

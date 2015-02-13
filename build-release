@@ -115,12 +115,6 @@ rm -rf .git
 rm -f .gitignore
 cd ../
 
-# SeaBIOS:
-cd seabios/
-rm -rf .git
-rm -f .gitignore
-cd ../
-
 cd ../
 
 # ### Prepare ROM archives ready for release
@@ -140,17 +134,6 @@ cd ../
 echo "Preparing libreboot_util release archive"
 
 mkdir libreboot_util
-
-# ---------------
-# SeaBIOS related
-# ---------------
-# Include SeaBIOS and SeaVGABIOS option ROM in the binary archive
-cp seabios/out/vgabios.bin libreboot_util/
-cp seabios/out/bios.bin.elf libreboot_util/
-# Add the script for it
-cp addseabios libreboot_util/
-# Menu entry to be added to grub configs
-cp resources/grub/config/seabios.cfg libreboot_util/
 
 # --------------
 # BUC.TS related
@@ -373,7 +356,6 @@ rm -f libreboot_src/getflashrom
 rm -f libreboot_src/getgrub
 rm -f libreboot_src/getgrubinvaders
 rm -f libreboot_src/getmt86
-rm -f libreboot_src/getseabios
 
 # ich9deblob: there are certain files in there
 # that the user most likely does not want to share

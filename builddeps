@@ -50,11 +50,6 @@ fi
 
 ./builddeps-flashrom
 
-# Build SeaBIOS (legacy X86 BIOS payload for coreboot)
-# --------------------------------------------------------------------
-
-./builddeps-seabios
-
 # Build GRUB Invaders
 # --------------------------------------------------------------------
 
