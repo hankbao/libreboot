@@ -39,6 +39,7 @@ else
 	patch Makefile < ../resources/bucts/patch/staticlink.diff
 	# build it statically linked
 	make
+	patch Makefile -R < ../resources/bucts/patch/staticlink.diff
 fi
 
 # done. go back to main directory
