@@ -8,14 +8,14 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Unbricking the ThinkPad X60 Tablet</title>
+	<title>ThinkPad X60 Tablet: Recovery guide</title>
 </head>
 
 <body>
 
 	<div class="section">
-		<h1>Unbricking the ThinkPad X60 Tablet</h1>
-			<p>This guide will show you how to recover from a bad flash that prevents your ThinkPad X60 Tablet from booting.</p>
+		<h1>ThinkPad X60 Tablet: Recovery guide</h1>
+			<p>This section documents how to recover from a bad flash that prevents your ThinkPad X60 Tablet from booting.</p>
 			<p><a href="index.html">Back to previous index</a></p>
 	</div>
 
@@ -142,7 +142,12 @@ POMONA 5250:
 				Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):<br/>
 				<img src="images/x60/th_bbb_flashing.jpg" alt="" />
 			</p>
-
+			
+			<p>
+				Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively,
+				libreboot also distributes flashrom source code which can be built.
+			</p>
+			
 			<p>
 				SSH'd into the BBB:<br/>
 				# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom</b>

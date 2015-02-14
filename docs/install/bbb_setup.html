@@ -8,14 +8,14 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Setup the BeagleBone Black as an SPI flashrom programmer</title>
+	<title>How to programme an SPI flash chip with the BeagleBone Black</title>
 </head>
 
 <body>
 
 	<div class="section">
-		<h1 id="pagetop">Setup the BeagleBone Black as an SPI flashrom programmer</h1>
-			<p>How to use the BBB as an external flashrom programmer, for reading/writing an SPI flash chip.</p>
+		<h1 id="pagetop">How to programme an SPI flash chip with the BeagleBone Black</h1>
+			<p>This section documents how to use the BBB as an external flashrom programmer, for reading and writing an SPI flash chip.</p>
 			<p><a href="index.html">Back to previous index</a></p>
 	</div>
 
@@ -247,8 +247,8 @@ crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 				entry already exists.
 			</p>
 			<p>
-				Get flashrom from libreboot_bin release archive, or build it from libreboot_src/git if you need to.
-				An ARM binary (statically compiled) for flashrom exists in libreboot_bin releases.
+				Get flashrom from libreboot_util release archive, or build it from libreboot_src/git if you need to.
+				An ARM binary (statically compiled) for flashrom exists in libreboot_util releases.
 			</p>
 			
 			<p>
@@ -326,7 +326,7 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 			</p>
 			
 		<p>
-			That's basically it. Now refer back to the documentation for how to use this on your board.
+			That's basically it. Now refer back to the <a href="index.html">installation</a> page for how to use this on your board.
 		</p>
 			
 		<p>

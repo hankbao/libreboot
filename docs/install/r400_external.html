@@ -105,6 +105,10 @@ POMONA 5250 (correlate with the BBB guide)
 					Then connect the 3.3v PSU wire (red one) and make sure that everything else is connected.
 				</p>
 				<p>
+					Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively,
+					libreboot also distributes flashrom source code which can be built.
+				</p>
+				<p>
 					I did (SSH'd into the BBB):<br/>
 					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
 					In my case, the output was:
