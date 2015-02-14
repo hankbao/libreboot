@@ -19,12 +19,7 @@
 				Or <a href="../index.html">Back to main index</a>.
 			</p>
 			<ul>
-				<li><a href="#high_pitch_trisquel">High Pitched Whining Noise on Idle (how to remove in Trisquel)</a>
-					<ul>
-						<li><a href="#howtouse_powertop">Powertop - how to use</a></li>
-						<li><a href="#powertop_autostart">Powertop - Start automatically at boot time</a></li>
-					</ul>
-				</li>
+				<li><a href="#trisquel7_powertop">High Pitched Whining Noise on Idle (how to remove in Trisquel 7)</a></li>
 				<li><a href="#high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</a></li>
 				<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
 				<li><a href="patch.html">Using diff and patch</a></li>
@@ -34,33 +29,19 @@
 
 	<div class="section">
 
-		<h1 id="high_pitch_trisquel">High Pitched Whining Noise on Idle (how to remove in Trisquel)</h1>
+		<h1 id="trisquel7_powertop">High Pitched Whining Noise on Idle (how to remove in Trisquel)</h1>
 
 			<p>
-				Tested in Trisquel 6 and 7.
+				Tested in Trisquel 7.
 			</p>
 
 			<div class="subsection">
-				<h2 id="howtouse_powertop">Powertop - how to use</h2>
+				<h2 id="trisquel7_powertop_autostart">Powertop - Start automatically at boot time (Trisquel 7)</h2>
 
-					<p>Now you can use this command to kill that noise:<br/>
-					<b>$ sudo powertop --auto-tune</b></p>
-
-					<p>You can also run it without parameters and then go into 'Tunables' and set everything to 'Good'</p>
-
-					<p>Note: On Trisquel 6, you will need to use a later powertop version from git. The one in the repositories is too old. See below:</p>
-			</div>
-
-			<div class="subsection">
-				<h2 id="powertop_autostart">Powertop - Start automatically at boot time (Trisquel 6)</h2>
-
-					<p>Included with libreboot is a script called 'powertop.trisquel6'. Run this and it will setup powertop to run with --auto-tune 
+					<p>Included with libreboot is a script called 'powertop.trisquel7'. Run this as root and it will setup powertop to run with --auto-tune 
 					at boot time. Load the file in your text editor to see how it does that.</p>
 
-					<p><b>$ ./powertop.trisquel6</b></p>
-
-					<p>For Trisquel 7 users:</p>
-					<p><b>$ ./powertop.trisquel7</b></p>
+					<p>$ <b>sudo ./powertop.trisquel7</b></p>
 			</div>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
