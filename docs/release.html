@@ -340,6 +340,11 @@
 			</h2>
 				<ul>
 					<li>
+						Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
+						little-endian; for instance, mapping a little endian file directly to a struct, instead
+						of serializing/deserializing. Re-factor both utilities and make them fully portable.
+					</li>
+					<li>
 						X60: <b>ACPI PCC Probe Failed</b> message on linux-libre 3.19 and higher. Fix it.
 						<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
 					</li>
