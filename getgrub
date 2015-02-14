@@ -41,16 +41,13 @@ cd grub
 # Reset to the last commit that was tested
 # --------------------------------------------------------------------------------
 
-git reset --hard bac5d1a64ab4191058a8fd4c05f6b3b339e249e7
+git reset --hard 32cd33bd19348afb77ab849846e0b6d6157ea308
 
 # Apply patches
 # --------------------------------------------------------------------------------
 
-# See resources/grub/patch/gitdiff 
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
-
-# copy it from resources
-git apply ../resources/grub/patch/gitdiff
+git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
 
 cd ../
 echo "FINISHED DOWNLOADING GRUB"
