@@ -1,4 +1,0 @@
-6c6
-< CFLAGS="-fno-builtin -nostdinc -O2 -I. -Wall -Werror"
----
-> CFLAGS="-fno-builtin -nostdinc -O2 -I. -Wall -Werror -fno-stack-protector"

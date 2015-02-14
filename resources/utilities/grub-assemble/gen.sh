@@ -49,7 +49,6 @@ then
 	  --install-modules="$grub_install_modules" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
 	  /memtest="../../../memtest86+-5.01/memtest" \
-	  /invaders.exec="../../../grubinvaders/invaders.exec" \
 	  $(./grub_memdisk_keymap)
 else
 	echo "grub-assemble gen.sh: invalid mode '$1'"

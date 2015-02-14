@@ -99,15 +99,6 @@ rm -f flashrom_lenovobios_macronix
 # done. go back to main directory
 cd ../
 
-# clean grubinvaders
-# ----------------------------------------------------------
-
-cd grubinvaders/
-
-./clean.sh
-
-cd ../
-
 # clean i945-pwm utility
 # --------------------------------------------------------------------
 

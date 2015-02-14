@@ -354,7 +354,6 @@ rm -f libreboot_src/getbucts
 rm -f libreboot_src/getcb
 rm -f libreboot_src/getflashrom
 rm -f libreboot_src/getgrub
-rm -f libreboot_src/getgrubinvaders
 rm -f libreboot_src/getmt86
 
 # ich9deblob: there are certain files in there

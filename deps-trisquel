@@ -59,11 +59,6 @@ fi
 
 apt-get -y install build-essential
 
-# GRUB Invaders build dependencies
-# ------------------------------------------------------------
-
-apt-get -y install build-essential
-
 # i945-pwm build dependencies
 # ------------------------------------------------------------
 
