@@ -34,8 +34,7 @@
 			
 		<h2>Installing libreboot (software)</h2>
 			<ul>
-				<li><a href="#qemu">QEMU</a></li>
-				<li><a href="#rom">Recommended ROMs to flash</a></li>
+				<li><a href="#rom">List of ROM images in libreboot</a></li>
 				<li><a href="#flashrom_lenovobios">X60/X60S/X60T/T60: How to flash your ROM (if running Lenovo BIOS firmware)</a></li>
 				<li><a href="#flashrom_macbook21">macbook21: How to flash your ROM (if running Apple EFI firmware)</a></li>
 				<li><a href="#flashrom">X60/X60S/X60T/T60/X200/R400/macbook21: How to flash your ROM (if running libreboot or coreboot already)</a></li>
@@ -51,79 +50,68 @@
 			</ul>
 			
 	</div>
-		
-	<div class="section">
-
-		<h1 id="qemu">QEMU</h1>
-		
-			<p>
-				You don't really do anything here, just run (example):<br/>
-				$ <b>qemu-system-i386 -M pc -m 512 -bios bin/qemu_i440fx_piix4/qemu_i440fx_piix4_ukdvorak_vesafb.rom -serial stdio</b><br/>
-				$ <b>qemu-system-i386 -M q35 -m 512 -bios bin/qemu_q35_ich9/qemu_q35_ich9_ukdvorak_vesafb.rom -serial stdio</b>
-			</p>
-			<p>
-				<a href="#pagetop">Back to top of page</a>.
-			</p>
-			
-	</div>
 
 	<div class="section">
 
-		<h1 id="rom">Recommended ROMs to flash</h1>
+		<h1 id="rom">List of ROM images in libreboot</h1>
 
 			<p>
-				List of directories corresponding to each board:
+				Use the list of archives below to know which archive is correct
+				for your device:
 			</p>
 				<ul>
-					<li>ThinkPad X60, X60s and X60 Tablet: <b>bin/x60/</b></li>
-					<li>ThinkPad T60: <b>bin/t60/</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
-					<li>ThinkPad X200: <b>bin/x200_8mb/</b> (8MiB flash chip) or <b>bin/x200_4mb</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
-					<li>ThinkPad R400: <b>bin/r400_8mb/</b> (8MiB flash chip) or <b>bin/r400_4mb</b> (4MiB flash chip) (see <a href="../hcl/r400.html">../hcl/r400.html</a>)</li>
-					<li>Apple MacBook2,1: <b>bin/macbook21/</b></li>
-					<li>Apple MacBook1,1: <b>bin/macbook21/</b> (it's not a typo; the same ROMs work)</li>
-				</ul>
-
-			<p>These images use coreboot text-mode graphics:</p>
-				<ul>
-					<li>US Qwerty keyboard: <b><i>boardname</i>_usqwerty_txtmode.rom</b></li>
-					<li>UK Qwerty keyboard: <b><i>boardname</i>_ukqwerty_txtmode.rom</b></li>
-					<li>US Dvorak keyboard: <b><i>boardname</i>_usdvorak_txtmode.rom</b></li>
-					<li>UK Dvorak keyboard: <b><i>boardname</i>_ukdvorak_txtmode.rom</b></li>
-					<li>French Azerty keyboard: <b><i>boardname</i>_frazerty_txtmode.rom</b></li>
-					<li>French Dvorak (BEPO): <b><i>boardname</i>_frdvbepo_txtmode.rom</b></li>
-					<li>Italian Qwerty keyboard: <b><i>boardname</i>_itqwerty_txtmode.rom</b></li>
-					<li>Swedish Qwerty keyboard: <b><i>boardname</i>_svenska_txtmode.rom</b></li>
-				</ul>
-			<p>These images use coreboot framebuffer graphics:</p>
-				<ul>
-					<li>US Qwerty keyboard: <b><i>boardname</i>_usqwerty_vesafb.rom</b></li>
-					<li>UK Qwerty keyboard: <b><i>boardname</i>_ukqwerty_vesafb.rom</b></li>
-					<li>US Dvorak keyboard: <b><i>boardname</i>_usdvorak_vesafb.rom</b></li>
-					<li>UK Dvorak keyboard: <b><i>boardname</i>_ukdvorak_vesafb.rom</b></li>
-					<li>French Azerty keyboard: <b><i>boardname</i>_frazerty_vesafb.rom</b></li>
-					<li>French Dvorak (BEPO): <b><i>boardname</i>_frdvbepo_vesafb.rom</b></li>
-					<li>Italian Qwerty keyboard: <b><i>boardname</i>_itqwerty_vesafb.rom</b></li>
-					<li>Swedish Qwerty keyboard: <b><i>boardname</i>_svenska_vesafb.rom</b></li>
+					<li>ThinkPad X60, X60s and X60 Tablet: <b>libreboot_x60.tar.xz</b></li>
+					<li>ThinkPad T60: <b>libreboot_t60.tar.xz</b> (note, see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
+					<li>ThinkPad X200: <b>libreboot_x200_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_x200_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
+					<li>ThinkPad R400: <b>libreboot_r400_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_r400_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/r400.html">../hcl/r400.html</a>)</li>
+					<li>Apple MacBook1,1 and MacBook2,1: <b>libreboot_macbook21.tar.xz</b></li>
 				</ul>
 				
 			<p>
-				The boards for <i>boardname</i> in the examples above can be found by the names of the directories
-				in <b>./bin/</b> or <b>./resources/libreboot/config/</b>.
+				The ROM images in each archive use the following naming convention: <b>boardname_keymap_mode.rom</b>
 			</p>
+			<p>
+				Available <i>modes</i>: <b>vesafb</b> or <b>txtmode</b>. The <i>vesafb</i> ROM images are recommended, in most cases;
+				<i>txtmode</i> ROM images come with MemTest86+, which requires text-mode instead of the usual framebuffer used
+				by coreboot native graphics initialization.
+			</p>
+			<p>
+				Keymaps are named appropriate according to each keyboard layout
+				support in GRUB. To learn how these keymaps are created, see
+				<a href="../grub/index.html#grub_keyboard">../grub/index.html#grub_keyboard</a>
+			</p>
+			
+			<h2 id="qemu">QEMU</h2>
+			
+				<p>
+					Coreboot supports <a href="http://www.coreboot.org/QEMU">QEMU</a>. QEMU is useful for testing purposes. Libreboot
+					comes with ROM images built for QEMU, by default.
+				</p>
+				<p>
+					The following ROM image archives are available in libreboot:
+				</p>
+					<ul>
+						<li>libreboot_qemu_q35_ich9.tar.xz</li>
+						<li>libreboot_qemu_i440fx_piix4.tar.xz</li>
+					</ul>
+				<p>
+					Examples of how to use libreboot in QEMU:
+				</p>
+					<ul>
+						<li>$ <b>qemu-system-i386 -M q35 -m 512 -bios qemu_q35_ich9_keymap_mode.rom</b></li>
+						<li>$ <b>qemu-system-i386 -M pc -m 512 -bios qemu_i440fx_piix4_keymap_mode.rom</b></li>
+					</ul>
+				<p>
+					You can optionally specify the <b>-serial stdio</b> argument, so that QEMU will emulate
+					a serial terminal on the standard input/output (most likely your terminal emulator or TTY).
+				</p>
+				<p>
+					Other arguments are available for QEMU. The manual will contain more information.
+				</p>
 
 			<p>
-				_txtmode images come with MemTest86+.
-				_vesafb images are recommended in most cases.
+				<a href="#pagetop">Back to top of page.</a>
 			</p>
-
-			<p>
-				This will give you your native keyboard layout inside GRUB. The preferences in your OS are not affected, it just makes using
-				the GRUB command line easier (if you ever need to do that).
-				<a href="../grub/index.html#grub_keyboard">../grub/index.html#grub_keyboard</a> shows you how this was done. If your native keyboard layout
-				differs, you can adapt those notes and hack the 'build' script for your needs.
-			</p>
-
-			<p><a href="#pagetop">Back to top of page.</a></p>
 			
 	</div>
 
