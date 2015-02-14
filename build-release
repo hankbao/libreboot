@@ -88,15 +88,10 @@ cd libreboot_src/
 # remove .git for libreboot project itself
 rm -rf .git*
 
-# # bucts needs .git to stay, otherwise it won't compile
-# # We don't need .git* (please submit all upstreamable changes directly to bucts upstream)
-# # removing them, to reduce the size of the archive
-# cd bucts
-# rm -rf .git
-# rm -rf .gitignore
-# cd ../
-# # it was found to cause issues when deleting:
-# # GIT_DISCOVERY_ACROSS_FILESYSTEM not set
+# remove .git for bucts
+cd bucts/
+rm -rf .git*
+cd ../
 
 # coreboot:
 # the instructions for coreboot remain in getgb script

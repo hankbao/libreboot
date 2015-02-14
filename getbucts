@@ -42,6 +42,7 @@ cd bucts
 # -----------------------------------------------------------
 
 git reset --hard dc27919d7a66a6e8685ce07c71aefa4f03ef7c07
+git am "../resources/bucts/patch/0001-Makefile-don-t-use-git.patch"
 
 # we're done
 cd ../
