@@ -21,7 +21,12 @@
 
 set -u -e -v
 
-# Build the ROM's
+# Build the ROM images
+
+if [ ! -d "bin" ]
+then
+	mkdir bin/
+fi
 
 # MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
 # BEFORE RUNNING THIS!
