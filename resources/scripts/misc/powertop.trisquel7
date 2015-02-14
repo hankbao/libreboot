@@ -35,7 +35,8 @@ update-rc.d powertop remove
 rm  -rf /etc/init.d/powertop
 
 # write the correct commands there:
-cp powertop.trisquel7.init /etc/init.d/powertop
+echo "#!/bin/sh" > /etc/init.d/powertop
+echo "/usr/sbin/powertop --auto-tune" >> /etc/init.d/powertop
 
 # make it executable:
 chmod +x /etc/init.d/powertop
