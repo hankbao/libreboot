@@ -55,11 +55,12 @@
 			<b>$ cd ../libreboot_src/resources/grub/font</b></p>
 
 			<p>I took Dejavu Sans Mono from dejavu (included in this version of libreboot) and did:<br/>
-			<b>$ ../../../grub/grub-mkfont -o dejavusansmono.pf2 ../../../dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf</b></p>
+			<b>$ ../../../grub/grub-mkfont -o dejavusansmono.pf2 dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf</b></p>
 
-			<p>I then added the instructions to 'build' script to include resources/grub/dejavusansmono.pf2 in all of the ROM images in root of cbfs.<br/>
+			<p>I then added the instructions to 'gen.sh' script in grub-assemble to include resources/grub/dejavusansmono.pf2
+			in all of the ROM images, at the root of the GRUB memdisk.<br/>
 			I then added that instructions to the grub.cfg files (to load the font):<br/>
-			<b>loadfont (cbfsdisk)/dejavusansmono.pf2</b></p>
+			<b>loadfont (memdisk)/dejavusansmono.pf2</b></p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
 		
