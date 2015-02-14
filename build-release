@@ -296,14 +296,6 @@ cd ../../
 # ---------------------
 cp -r docs libreboot_util/
 
-# -----------------------------------------------------------------------
-# X60/X60T/T60: Script for setting up powertop (kills high pitched noise)
-# -----------------------------------------------------------------------
-cp powertop.trisquel6 libreboot_util/
-cp powertop.trisquel6.init libreboot_util/
-cp powertop.trisquel7 libreboot_util/
-cp powertop.trisquel7.init libreboot_util/
-
 # -------------
 # Miscellaneous
 # -------------
