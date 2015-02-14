@@ -21,7 +21,7 @@
 
 set -u -e -v
 
-download=./resources/scripts/helpers/fetch
+download=./resources/scripts/helpers/download
 programme="unknown"
 
 usage="./download programme"
