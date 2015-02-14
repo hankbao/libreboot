@@ -179,7 +179,7 @@
 
 			<p>
 				Run the script:<br/>
-				<b>$ sudo ./lenovobios_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a>.</b>
+				<b>$ sudo ./flash i945lenovo_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a>.</b>
 			</p>
 
 			<div class="important">
@@ -214,7 +214,7 @@
 
 			<p>
 				When you have booted up again:<br/>
-				<b>$ sudo ./lenovobios_secondflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+				<b>$ sudo ./flash i945lenovo_secondflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 
 			<div class="important">
@@ -296,13 +296,8 @@
 			</p>
 
 			<p>
-				Flashing is actually easy (compared to X60/T60).<br/>
-				<b>$ sudo flashrom -p internal:laptop=force_I_want_a_brick -w bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
-			</p>
-
-			<p>
-				Alternatively, a script is provided which does the same thing:<br/>
-				<b>$ sudo ./macbook21_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+				Use this flashing script, to install libreboot:<br/>
+				<b>$ sudo ./flash i945apple_firstflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 
 			<div class="important">
@@ -399,14 +394,14 @@
 			</p>
 			<p>
 				Flash the ROM:<br/>
-				<b>$ sudo ./flash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+				<b>$ sudo ./flash update bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 			<p>
 				If you are sure that you are flashing the correct image but you get the error
 				<b>This coreboot image (LENOVO:ThinkPad X60) does not appear to be correct for the detected mainboard (Lenovo:ThinkPad X60 / X60s / X60t) or
 				similar (if it's a different board), then do</b>:
 				<br/>
-				<b>$ sudo ./forceflash bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
+				<b>$ sudo ./flash forceupdate bin/<a href="#rom">YOURBOARD/YOURROM</a></b>
 			</p>
 
 			<div class="important">

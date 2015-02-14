@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  flash script: uses flashrom to flash a new libreboot ROM image onto your machine
+#  flash script: uses flashrom to flash a libreboot ROM image
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,33 +20,112 @@
 
 ## Don't add here. errors are expected.
 # set -u -e -v
-set -v
 
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 
    exit 1
 fi
-if (( $# != 1 )); then
-	echo "Usage: ./flash yourrom.rom"
-	echo "usage: ./flash path/to/yourrom.rom"
-	echo "You need to specify exactly 1 file"
-	exit 1
-fi
-if [ ! -f $1 ]; then
-	echo "File not found!"
-	exit 1
-fi
 
-path="unknown"
-if [ -f "DEBLOB" ]; then
-	path="./flashrom/flashrom"
-elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
-	path="./flashrom/i686/flashrom"
+arch="unknown"
+if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+	arch="i686"
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
-	path="./flashrom/x86_64/flashrom"
+	arch="x86_64"
 else
 	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
 	exit 1
 fi
 
-$(echo $path) -p internal -w $1
+usage="usage: ./flash mode path/to/yourrom.rom"
+availablemodes="update, forceupdate, i945lenovo_firstflash, i945lenovo_secondflash, i945apple_firstflash"
+
+mode="unknown"
+rompath="unknown"
+
+# User specified no or too few/many parameters
+if (( $# != 2 )); then
+	echo "$usage"
+	echo "You need to specify exactly one mode, and one file"
+	echo "$availablemodes"
+	exit 1
+fi
+
+# User specified an invalid mode of operation
+if [ "$1" = "update" ] || [ "$1" = "forceupdate" ] || [ "$1" = "i945lenovo_firstflash" ] || [ "$1" != "i945lenovo_secondflash" ] || [ "$1" != "i945apple_firstflash" ]; then
+	echo "Mode selected: $1"
+else
+	echo "$usage"
+	echo "Invalid mode. Modes available: $availablemodes"
+	exit 1
+fi
+
+# The specified file does not exist
+if [ ! -f "$2" ]; then
+	echo "File not found!"
+	exit 1
+fi
+
+# For easy of readability
+mode=$1
+rompath=$2
+
+flashrom="unknown"
+if [ -f "DEBLOB" ]; then
+	# git or libreboot_src
+	flashrom="./flashrom/flashrom"
+else
+	# libreboot_util
+	flashrom="./flashrom/$arch/flashrom"
+fi
+if [ 1 -f "$flashrom" ]; then
+	echo "flashrom binary not present"
+	exit 1
+fi
+
+# i945 lenovobios
+bucts="unknown"
+flashrom_lenovobios_sst="unknown"
+flashrom_lenovobios_macronix="unknown"
+if [ "$mode" = "i945lenovo_firstflash" ] || [ "$mode" = "i945lenovo_secondflash" ]; then
+	if [ -f "DEBLOB" ]; then
+		# git or libreboot_src
+		bucts="./bucts/bucts"
+		flashrom_lenovobios_sst="./flashrom/flashrom_lenovobios_sst"
+		flashrom_lenovobios_macronix="./flashrom/flashrom_lenovobios_sst"
+	else
+		# libreboot_util
+		bucts="./bucts/$arch/bucts"
+		flashrom_lenovobios_sst="./flashrom/$arch/flashrom_lenovobios_sst"
+		flashrom_lenovobios_macronix="./flashrom/$arch/flashrom_lenovobios_sst"
+	fi
+	
+	# anti-bricking precaution
+	if [ ! -f "$bucts" ]; then
+		echo "bucts binary not present. ABORTING so as to protect against bricking the machine."
+		exit 1
+	fi
+	
+	# fail if flashrom is not present
+	if [ ! -f "$flashrom_lenovobios_sst" ] || [ ! -f "$flashrom_lenovobios_macronix" ]; then
+		echo "Flashrom binaries not present."
+		exit 1
+	fi
+fi
+
+if [ "$mode" = "update" ]; then
+	$flashrom -p internal -w "$rompath"
+elif [ "$mode" = "forceupdate" ]; then
+	$flashrom -p internal:boardmismatch=force -w "$rompath"
+elif [ "$mode" = "i945apple_firstflash" ]; then
+	$flashrom -p internal:laptop=force_I_want_a_brick -w "$rompath"
+elif [ "$mode" = "i945lenovo_firstflash" ]; then
+	$bucts 1 # needed to prevent bricks.
+	# One will fail (this is harmless), and the other will succeed.
+	$flashrom_lenovobios_sst -p internal -w "$rompath"
+	$flashrom_lenovobios_macronix -p internal -w "$rompath"
+elif [ "$mode" = "i945lenovo_secondflash" ]; then
+	$flashrom -p internal -w "$rompath"
+	$bucts 0
+fi
+
+
