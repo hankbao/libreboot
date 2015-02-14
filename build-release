@@ -94,7 +94,7 @@ rm -rf .git*
 cd ../
 
 # coreboot:
-# the instructions for coreboot remain in getgb script
+# the instructions for coreboot remain in the download script
 # they need to stay there, because otherwise "git diff"
 # will show the blobs that were deleted (which means,
 # that libreboot would be distributing blobs)
@@ -334,14 +334,12 @@ rm -f releasefilelist
 
 # We don't want to encourage development
 # to happen on the release archives. 
-# Development goes in git.
+# Development goes in git. These scripts are
+# not needed in libreboot_src, because
+# the files that they download are already included
 rm -f libreboot_src/build-release
-rm -f libreboot_src/getall
-rm -f libreboot_src/getbucts
-rm -f libreboot_src/getcb
-rm -f libreboot_src/getflashrom
-rm -f libreboot_src/getgrub
-rm -f libreboot_src/getmt86
+rm -f libreboot_src/download
+rm -rf libreboot_src/resources/scripts/helpers/fetch/
 
 # ich9deblob: there are certain files in there
 # that the user most likely does not want to share

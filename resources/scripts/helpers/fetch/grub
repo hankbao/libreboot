@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  getgrub script: Downloads GRUB and patches it.
+#  helper script: Downloads GRUB and patches it.
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -17,6 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+# This script assumes that the working directory is the
+# root of libreboot_src or libreboot git.
 
 set -u -e -v
 
