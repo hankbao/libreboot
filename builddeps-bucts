@@ -36,7 +36,7 @@ if (( $# != 1 )); then
 	# build it dynamically linked
 	make
 else
-	git apply ../resources/bucts/patch/staticlink.diff
+	patch Makefile < ../resources/bucts/patch/staticlink.diff
 	# build it statically linked
 	make
 fi
