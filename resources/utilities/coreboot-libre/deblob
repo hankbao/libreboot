@@ -2,7 +2,7 @@
 
 #  DEBLOB script: deblobs the version of coreboot used for this release.
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -17,6 +17,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+# This script assumes that the current working directory is the root
+# of the libreboot_src/ or git clone.
 
 set -u -e -v
 

@@ -98,7 +98,7 @@ rm -f .gitignore
 cd ../
 
 # Deblob coreboot
-./DEBLOB
+./resources/utilities/coreboot-libre/deblob
 
 # ------------------- DONE ----------------------
 

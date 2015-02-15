@@ -339,11 +339,11 @@ rm -f libreboot_src/releasefilelist
 rm -f libreboot_util/releasefilelist
 rm -f releasefilelist
 
-# Delete the DEBLOB file from libreboot_src
+# Delete the deblob scripts from libreboot_src
 # Since _src doesn't distribute the download scripts,
 # and already comes with a deblobbed coreboot, the
-# deblobbing script isn't needed at all
-rm -f libreboot_src/DEBLOB
+# deblobbing scripts aren't needed at all
+rm -rf libreboot_src/resources/utilities/coreboot-libre/
 
 # We don't want to encourage development
 # to happen on the release archives. 
