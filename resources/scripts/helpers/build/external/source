@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  mkextbuild script: prepare a small source archive for those utils
+#  helper: prepare a small source archive for those utils
 #  that don't easily cross-compile. Then the tarball can be extracted
 #  on those machines with the target architecture, and compiled.
 #
@@ -29,33 +29,26 @@ rm -f tobuild.tar.xz
 # this is where they will go
 mkdir tobuild
 
-# for reference (build dependencies)
-cp deps-trisquel tobuild/
+cp -r resources/ tobuild/
 
 # flashrom
-cp -r flashrom tobuild/
+cp -r flashrom/ tobuild/
 cd tobuild/flashrom/
 rm -f flashrom_lenovobios_sst flashrom_lenovobios_macronix
 make clean
 cd ../../
-mkdir tobuild/resources
-mkdir tobuild/resources/flashrom
-mkdir tobuild/resources/flashrom/patch
-cp -r resources/flashrom/patch/* tobuild/resources/flashrom/patch/
-cp builddeps-flashrom tobuild/
 
 # bucts
 cp -r bucts tobuild/
 cd tobuild/bucts/
 make clean
 cd ../../
-mkdir tobuild/resources/bucts
-mkdir tobuild/resources/bucts/patch
-cp -r resources/bucts/patch/* tobuild/resources/bucts/patch
-cp -r builddeps-bucts tobuild/
+
+# the build script will be needed
+cp build tobuild/
 
 # that is all. now tar it up
-tar cfJ tobuild.tar.xz tobuild
+tar -c tobuild | xz -9e >tobuild.tar.xz
 
 # and delete the directory
 rm -rf tobuild/

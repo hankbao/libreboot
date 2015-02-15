@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#
-#  build script: builds the ROM images with GRUB payloads and puts them in ./bin/
+#  generic build script, for building libreboot (all of it)
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -21,86 +20,53 @@
 
 set -u -e -v
 
-# Build the ROM images
+build=./resources/scripts/helpers/build
+mode="unknown"
+option="unknown"
+extraoption=""
 
-if [ ! -d "bin" ]
-then
-	mkdir bin/
+usage="./build mode option"
+availablemodes="$(ls $build/)"
+availableoptions="unknown" # unknown until the mode is determined
+
+# User specified no or too few/many parameters
+if (( $# != 2 )); then
+	if (( $# != 3 )); then
+		printf "$usage\n\n"
+		printf "possible values for 'mode':\n$availablemodes\n\n"
+		printf "Example: ./build module all\n"
+		printf "Example: ./build module flashrom\n"
+		printf "Example: ./build roms withgrub\n"
+		printf "Example: ./build release archives\n"
+		printf "Example: ./build clean all\n"
+		printf "Example (extra option) ./build module bucts static\n"
+		printf "Refer to the libreboot documentation for more info\n\n"
+		exit 1
+	else
+		extraoption=$3
+	fi
 fi
+mode=$1
+option=$2
 
-# MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
-# BEFORE RUNNING THIS!
-
-# Put GRUB payloads and config files
-# in the coreboot directory, ready for next step
-cd coreboot/
-for romtype in txtmode vesafb
-do
-	cd ../resources/utilities/grub-assemble
-	./gen.sh "$romtype"
-	rm -f ../../../coreboot/grub_"$romtype".elf
-	mv grub_"$romtype".elf ../../../coreboot/
-	cd ../../../coreboot
-
-	# GRUB configuration files
-	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
-	do
-		cat ../resources/grub/config/extra/common.cfg > grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/extra/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
-		echo "keymap $keymap" >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/common.cfg >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
-		# grubtest.cfg should be able to switch back to grub.cfg
-		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
-	done
-done
-cd ../
-
-# Build ROM images for supported boards
-for board in $(ls resources/libreboot/config/)
-do
-	./buildrom-withgrub $board
-done
-
-# Needed on i945 systems for the bucts/dd trick (documented)
-# This enables the ROM to be flashed over the lenovo bios firmware
-for i945board in x60 t60
-do
-	cd bin/"$i945board"/
-	for i945rom in $(ls)
-	do
-		dd if="$i945rom" of=top64k.bin bs=1 skip=$[$(stat -c %s "$i945rom") - 0x10000] count=64k
-		dd if=top64k.bin of="$i945rom" bs=1 seek=$[$(stat -c %s "$i945rom") - 0x20000] count=64k conv=notrunc
-		rm -f top64k.bin
-	done
-	cd ../../
-done
-
-# Build the deblobbed descriptor+gbe regions for GM45/ICH9M targets.
-# Then put them in the ROM images.
-cd bin/
-../resources/utilities/ich9deblob/ich9gen
-for board in "x200" "r400"
-do
-	for romsize in "4m" "8m"
-	do
-		cd "$board"_"$romsize"b/
-		for rom in $(ls)
-		do
-			dd if=../ich9fdgbe_"$romsize".bin of="$rom" bs=1 count=12k conv=notrunc
+if [ -d "$build/$mode" ]; then
+	availableoptions="$(ls $build/$mode/)"
+	if [ "$option" = "list" ]; then
+		printf "Available options for '$mode' are:\nall\n$availableoptions\n\n"
+	elif [ -f "$build/$mode/$option" ]; then
+		$build/$mode/$option $extraoption
+	elif [ "$option" = "all" ]; then
+		for option in $availableoptions; do
+			$build/$mode/$option $extraoption
 		done
-		cd ../
-	done
-done
-rm -f ich9fdgbe_4m.bin
-rm -f ich9fdgbe_8m.bin
-cd ../
-
-# The GRUB payloads are no longer needed
-rm -f coreboot/grub_vesafb.elf
-rm -f coreboot/grub_txtmode.elf
-# The GRUB configs are no longer needed
-rm -f coreboot/grub*cfg
+	else
+		printf "Invalid option for '$mode'. Available options are:\nall\n$availableoptions\n\n"
+		exit 1
+	fi
+else
+	printf "Invalid mode. Available modes are:\n$availablemodes\n\n"
+	exit 1
+fi
 
 # ------------------- DONE ----------------------
 

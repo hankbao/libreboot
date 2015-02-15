@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  builddeps-memtest86 script: builds memtest86+ source code
+#  helper script: clean the dependencies that were built in i945pwm
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,23 +18,16 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# This script assumes that the current working directory is the root
+# of libreboot_src or libreboot git
+
 set -u -e -v
 
-# This script is used by the main "builddeps" script in libreboot src/meta archives.
-# The reason it is seperated here is so that MemTest86+ can be built separately aswell.
-
-# Build MemTest86+ payload (for GRUB)
+# clean i945-pwm utility
 # --------------------------------------------------------------------
 
-cd "memtest86+-5.01"/
-
-# clean it first
+cd resources/utilities/i945-pwm
 make clean
-
-# build memtest86+
-make
-
-# done. go back to main directory
-cd ../
+cd ../../../
 
 # ------------------- DONE ----------------------

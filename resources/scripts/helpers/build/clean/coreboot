@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  cleandeps script: cleans everything (make clean)
+#  helper script: clean the dependencies that were built in coreboot
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,9 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -u -e -v
+# This script assumes that the current working directory is the root
+# of libreboot_src or libreboot git
 
-# Clean all previous builds.
+set -u -e -v
 
 # clean coreboot utilities (dependencies for 'build'):
 # -------------------------------------------------------
@@ -57,68 +58,4 @@ make crossgcc-clean
 # done. go back to main directory
 cd ../
 
-# clean grub
-# --------------------------------------------------------
-
-cd grub/
-
-[[ -f Makefile ]] && make clean
-
-# done. go back to main directoy
-cd ../
-
-# clean memtest86+
-# --------------------------------------------------------
-
-cd "memtest86+-5.01"/
-
-make clean
-
-# done. go back to main directory
-cd ..
-
-# clean bucts
-# --------------------------------------------------------
-
-cd bucts/
-make clean
-
-# done. go back to main directory.
-cd ../
-
-# clean flashrom
-# --------------------------------------------------------
-
-cd flashrom/
-
-make clean
-# remove patched binaries
-rm -f flashrom_lenovobios_sst
-rm -f flashrom_lenovobios_macronix
-
-# done. go back to main directory
-cd ../
-
-# clean i945-pwm utility
-# --------------------------------------------------------------------
-
-rm -f resources/utilities/i945-pwm/i945-pwm
-
-# clean ich9deblob utility
-# --------------------------------------------------------------------
-
-cd resources/utilities/ich9deblob/
-make clean
-cd ../../../
-
-# a few more things to do last
-# --------------------------------------------------------
-
-# remove powertop directory (included if the user is on Trisquel 6 and ran "powertop.trisquel6" script
-rm -rf powertop
-
-# delete the bin/ directory
-rm -rf bin/
-
 # ------------------- DONE ----------------------
-

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  builddeps-ich9deblob: builds ich9deblob source code
+#  helper script: builds i945-pwm source code
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,20 +18,18 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# This script is used by the main "builddeps" script in libreboot src/meta archives.
-# The reason it is seperated here is so that ich9deblob can be built separately aswell.
+# This script assumes that the working directory is the root
+# of libreboot_src or git
 
 set -u -e -v
 
-# Build ich9deblob utility
+# Build i945-pwm utility
 # --------------------------------------------------------------------
 
-cd resources/utilities/ich9deblob
+cd resources/utilities/i945-pwm/
 
-# clean it first
 make clean
-
-# build ich9deblob
+# build it
 make
 
 # done. go back to main directory

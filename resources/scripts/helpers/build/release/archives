@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  build-release script: generates libreboot_util and libreboot_src release archives
+#  helper script: generate the release archives
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -18,6 +18,9 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
+# This script assumes that the current working directory when running
+# it is the root directory of the libreboot git repository clone.
 
 set -u -e -v
 
@@ -37,9 +40,6 @@ else
 	exit 1
 fi
 
-# MAKE SURE THAT YOU RAN "buildall" OR "builddeps" *AT LEAST ONCE*
-# You should also run the 'build' script before running this 
-
 # ### Delete old archives before continuing
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -54,8 +54,6 @@ find -maxdepth 1 > releasefilelist
 # ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
-echo "Preparing libreboot_src release archive"
-
 mkdir libreboot_src
 
 for resource in $(cat releasefilelist)
@@ -69,7 +67,7 @@ done
 cd libreboot_src/
 
 # clean everything
-./cleandeps
+./build clean all
 
 # back to main checkout directory
 cd ../
@@ -112,21 +110,31 @@ cd ../
 
 cd ../
 
+# ### Version information for this release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# create file showing the commit ID from git for this archive.
+cat .git/refs/heads/master > commitid
+
 # ### Prepare ROM archives ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
 cd bin/
 for board in $(ls)
 do
+	# show the libreboot commit ID in the archive
+	cat ../commitid > "$board"/commitid
+	
 	# create lzma compressed src archive
 	tar -c "$board" | xz -9e >../libreboot_"$board".tar.xz
+	
+	# delete. no longer needed
+	rm -f "$board"/commitid
 done
 cd ../
 
 # ### Prepare libreboot_util archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
-
-echo "Preparing libreboot_util release archive"
 
 mkdir libreboot_util
 
@@ -137,12 +145,12 @@ mkdir libreboot_util
 # Include it statically compiled
 cp -r bucts bucts_
 # make it statically compile
-./builddeps-bucts static
-mkdir libreboot_util/bucts
-mkdir libreboot_util/bucts/"$arch"
-mv bucts/bucts libreboot_util/bucts/"$arch"
-rm -rf bucts
-mv bucts_ bucts
+./build module bucts static
+mkdir libreboot_util/bucts/
+mkdir libreboot_util/bucts/"$arch"/
+mv bucts/bucts libreboot_util/bucts/"$arch"/
+rm -rf bucts/
+mv bucts_/ bucts/
 
 # ----------------
 # Flashrom related
@@ -151,7 +159,7 @@ mv bucts_ bucts
 # Include it statically compiled
 cp -r flashrom flashrom_
 # make it statically compile
-./builddeps-flashrom static
+./build module flashrom static
 mkdir libreboot_util/flashrom
 cd flashrom/
 mkdir ../libreboot_util/flashrom/"$arch"
@@ -294,35 +302,26 @@ cd ../../
 # ---------------------
 # Include documentation
 # ---------------------
-cp -r docs libreboot_util/
+cp -r docs/ libreboot_util/
 
 # -------------
 # Miscellaneous
 # -------------
 # include X60 cmos.layout file
-cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_util/x60cmos.layout
-cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_util/t60cmos.layout
-cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_util/macbook21cmos.layout
+mkdir libreboot_util/cmoslayouts/
+cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_util/cmoslayouts/macbook21cmos.layout
+cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_util/cmoslayouts/x60cmos.layout
+cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_util/cmoslayouts/t60cmos.layout
+cp coreboot/src/mainboard/lenovo/x200/cmos.layout libreboot_util/cmoslayouts/x200cmos.layout
 
-# FLASHING SCRIPTS
-# Flashrom script (makes flashing easier: ./flash path/to/libreboot.rom)
+# Flashing script
 cp flash libreboot_util/
-# Brick-prone flashing script (for mismatching board names, when they change)
-cp forceflash libreboot_util/
-# X60/T60: so that the user can use libreboot_util to overwrite lenovo bios with libreboot
-cp lenovobios_firstflash libreboot_util/
-cp lenovobios_secondflash libreboot_util/
-# For initial flashing on macbook21/11
-cp macbook21_firstflash libreboot_util/
 
 # ich9macchange script (change MAC address on X200 ROMs, using ich9gen)
 cp ich9macchange libreboot_util/
 
 # for changing the GRUB background
 cp grub-background libreboot_util/
-
-# remove the bin/ directory from libreboot_util
-rm -rf libreboot_util/bin/
 
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -337,9 +336,9 @@ rm -f releasefilelist
 # Development goes in git. These scripts are
 # not needed in libreboot_src, because
 # the files that they download are already included
-rm -f libreboot_src/build-release
+rm -rf libreboot_src/resources/scripts/helpers/build/release
 rm -f libreboot_src/download
-rm -rf libreboot_src/resources/scripts/helpers/fetch/
+rm -rf libreboot_src/resources/scripts/helpers/download/
 
 # ich9deblob: there are certain files in there
 # that the user most likely does not want to share
@@ -361,22 +360,12 @@ rm -f libreboot_src/ich9fdgbe_4m.bin
 rm -rf libreboot_src/tobuild/
 rm -f libreboot_src/tobuild.tar.xz
 
-# delete the old commitid file
-rm -f commitid
-rm -f libreboot_src/commitid
-
-# create file showing the commit ID from git for this archive.
-cat .git/refs/heads/master > commitid
-# include it in the release archives
-cp commitid libreboot_src/
-cp commitid libreboot_util/
-
-echo "Creating compressed libreboot_src release archive"
+# mention the commit ID (libreboot, git) in the release archives
+cat commitid > libreboot_src/commitid
+cat commitid > libreboot_util/commitid
 
 # create lzma compressed src archive
 tar -c libreboot_src | xz -9e >libreboot_src.tar.xz
-
-echo "Creating compressed libreboot_util release archive"
 
 # create lzma compressed util archive
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
@@ -384,13 +373,12 @@ tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
 
-echo "Deleted the uncompressed release archives"
-
+# The uncompressed archives are no longer needed
 rm -rf libreboot_src
 rm -rf libreboot_util
 
 # For those utilities that have to be built on the target
-./mkextbuild
+./build external source
 
 # DONE. See libreboot_src.tar.xz and libreboot_util.tar.xz
 # NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  builddeps-flashrom: builds flashrom source code
+#  helper script: builds flashrom source code
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# To build flashrom, you will need the dependencies (see docs).
+# This script assumes that the working directory is the root
+# of libreboot_src or git
 
 set -u -e -v
 
@@ -27,14 +28,15 @@ set -u -e -v
 
 cd flashrom/
 
-# build regular flashrom (redundant flash chip definitions removed)
 make clean
 if (( $# != 1 )); then
-	# build it dynamically linked
 	make
 else
-	# build it statically linked
-	make SHARED=0 CC='gcc -static'
+	if [ "$1" = "static" ]; then
+		make SHARED=0 CC='gcc -static'
+	else
+		make
+	fi
 fi
 
 mv flashrom flashrom_normal
@@ -45,7 +47,6 @@ mv flashrom flashrom_normal
 for patchname in "lenovobios_macronix" "lenovobios_sst"
 do
 	# first remove the existing build
-	make clean
 	rm -f flashrom_"$patchname"
 	
 	# backup the unpatched flashchips.c (it will be patched)
@@ -53,12 +54,15 @@ do
 	# patch flashchips.c
 	patch flashchips.c < ../resources/flashrom/patch/"$patchname".diff
 	
+	make clean
 	if (( $# != 1 )); then
-		# build it dynamically linked
 		make
 	else
-		# build it statically linked
-		make SHARED=0 CC='gcc -static'
+		if [ "$1" = "static" ]; then
+			make SHARED=0 CC='gcc -static'
+		else
+			make
+		fi
 	fi
 	
 	# Rename the binary based on the patch name

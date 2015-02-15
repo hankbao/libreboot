@@ -51,15 +51,19 @@
 			<p>
 				Before doing anything, you need the dependencies first. This is true if
 				you want to build libreboot from source, with either libreboot_src.tar.xz or git.
-				<b>If you are using libreboot_bin.tar.xz (binary archive) then you can ignore this, because
+				<b>If you are using libreboot_util.tar.xz (binary archive) then you can ignore this, because
 				ROM images and statically compiled executables for the utilities are included.</b>
 			</p>
-				<ul>
-					<li><b>deps-trisquel</b> script installs dependencies for Trisquel 6 (also tested in Trisquel 7).</li>
-				</ul>
+
+			<div class="important">
+				<p>
+					For Trisquel 7, you can run the following command:<br/>
+					$ <b>sudo ./resources/scripts/dependencies/trisquel7dependencies</b>
+				</p>
+			</div>
 
 			<p>
-				For all other GNU/Linux distributions, you may have to adapt these scripts. By all means send patches!
+				For other GNU/Linux distributions, you can adapt the Trisquel 7 script for your needs.
 			</p>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
@@ -105,7 +109,7 @@
 
 			<p>
 				After that, run the script:<br/>
-				<b>$ ./download everything</b>
+				$ <b>./download everything</b>
 			</p>
 
 			<p>
@@ -143,7 +147,7 @@
 			</p>
 
 			<p>
-				BUC.TS utility is included in libreboot_src.tar.xz and libreboot_bin.tar.xz.<br/>
+				BUC.TS utility is included in libreboot_src.tar.xz and libreboot_util.tar.xz.<br/>
 				<b>If you downloaded from git, follow <a href="#build_meta">#build_meta</a> before you proceed.</b>
 			</p>
 
@@ -162,7 +166,12 @@
 
 			<p>
 				To build bucts, do this in the main directory:<br/>
-				<b>$ ./builddeps-bucts</b>
+				$ <b>./build module bucts</b>
+			</p>
+			
+			<p>
+				To statically compile it, do this:<br/>
+				$ <b>./build module bucts static</b>
 			</p>
 
 			<p>
@@ -182,7 +191,7 @@
 			</p>
 
 			<p>
-				Flashrom source code is included in libreboot_src.tar.gz and libreboot_bin.tar.gz.<br/>
+				Flashrom source code is included in libreboot_src.tar.xz and libreboot_util.tar.xz.<br/>
 				<b>If you downloaded from git, follow <a href="#build_meta">#build_meta</a> before you proceed.</b>
 			</p>
 			
@@ -197,8 +206,13 @@
 			</p>
 
 			<p>
-				To build it, do that in the main directory:<br/>
-				<b>$ ./builddeps-flashrom</b>
+				To build it, do the following in the main directory:<br/>
+				$ <b>./build module flashrom</b>
+			</p>
+			
+			<p>
+				To statically compile it, do the following in the main directory:<br/>
+				$ <b>./build module flashrom static</b>
 			</p>
 
 			<p>
@@ -577,7 +591,7 @@
 
 	<div class="section">
 
-		<h1 id="build">How to build the ROM images!</h1>
+		<h1 id="build">How to build the ROM images</h1>
 
 			<p>You don't need to do much, as there are scripts already written for you that can build everything automatically.</p>
 
@@ -596,45 +610,50 @@
 				If you downloaded libreboot from git, refer to <a href="#build_meta">#build_meta</a>.
 			</p>
 
-			<p>If running for the first time, run this:<br/>
-			<b>$ ./buildall</b> (also performs the "./build" step below)<br/>
-			Or if you only want to build dependencies (crossgcc, grub and so on):<br/>
-			<b>$ ./builddeps</b></p>
+			<p>
+				Build all of the components used in libreboot:<br/>
+				$ <b>./build module all</b>
+			</p>
 
-			<p>If you've already run ./builddeps and/or ./buildall before, you don't need to run them again.
-			Just run that from now on to build the ROM images:<br/>
-			<b>$ ./build</b></p>
+			<p>
+				After that, build the ROM images:<br/>
+				$ <b>./build roms withgrub</b>
+			</p>
 
-			<p>To un-build (clean) the build dependencies that you built before, do the following:<br/>
-			This also deletes the ROM images under ./bin/:<br/>
-			<b>$ ./cleandeps</b></p>
+			<p>
+				To clean (reverse) everything, do the following:<br/>
+				$ <b>./build clean all</b>
+			</p>
 
-			<p>Note: after running 'cleandeps', you will need to run 'builddeps' or 'buildall' again before you can use 'build'.</p>
-
-			<p>After 'build' or 'buildall' has finished, you'll find the ROM images for each machine under ./bin/</p>
+			<p>
+				The ROM images will be stored under <b>bin/</b>.
+			</p>
 
 			<div class="subsection">
 
 				<h2>Preparing release archives (optional)</h2>
 
 					<p>
-						Run that script:<br/>
-						<b>$ ./build-release</b>
+						Do the following:<br/>
+						$ <b>./build release archives</b>
 					</p>
 
 					<p>
-						If you are building on an i686 host, this will include statically linked 32-bit binaries in the binary release archive that you created,
+						If you are building on an i686 host, this will include statically linked 32-bit binaries in 
+						the binary release archive that you created,
 						for: <b>nvramtool, cbfstool, bucts, flashrom, ich9deblob, cbmem</b>.
 					</p>
 
 					<p>
-						If you are building on an x86_64 host, this will include statically linked 32- and 64-bit binaries for <b>cbmem</b>, <b>ich9deblob</b>, <b>cbfstool</b> and <b>nvramtool</b>, while <b>flashrom</b>
-						and <b>bucts</b> will be included only as 64-bit statically linked binaries. <b>To include a statically linked flashrom and bucts for i686, you
-						will need to build them on a chroot, a virtual machine or a real 32-bit system. You can find the build dependencies for these packages listed in deps-*</b>
+						If you are building on an x86_64 host, this will include statically linked 32- and 64-bit binaries for 
+						<b>cbmem</b>, <b>ich9deblob</b>, <b>cbfstool</b> and <b>nvramtool</b>, while <b>flashrom</b>
+						and <b>bucts</b> will be included only as 64-bit statically linked binaries. <b>To include a statically 
+						linked flashrom and bucts for i686, you will need to build them on a chroot, a virtual machine or a real
+						32-bit system. You can find the build dependencies for these packages listed in deps-*</b>
 					</p>
 					
 					<p>
-						armv7l binaries (tested on a BeagleBone Black) are also included in libreboot_bin, for:
+						armv7l binaries (tested on a BeagleBone Black) are also included in libreboot_util, for:
 					</p>
 						<ul>
 							<li>cbfstool</li>
@@ -645,25 +664,25 @@
 
 					<p>
 						If you are building 32-bit binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:<br/>
-						$ <b>./builddeps-flashrom static</b><br/>
-						$ <b>./builddeps-bucts static</b>
+						$ <b>./build module flashrom static</b><br/>
+						$ <b>./build module bucts static</b>
 					</p>
 					
 					<p>
-						The same as above applies for ARM (except, building bucts on ARM is pointless, and for flashrom
+						The same conditions as above apply for ARM (except, building bucts on ARM is pointless, and for flashrom
 						you only need the normal executable since the lenovobios_sst and _macronix executables are meant
 						to run on an X60/T60 while lenovo bios is present, working around the security restrictions).
 					</p>
 					
 					<p>
-						The script <b>mkextbuild</b> will generate a small source tarball called <b>tobuild.tar.xz</b> that
-						contains everything you need (including source) with which to build flashrom/bucts on these hosts.
-						The <b>build-release</b> script will have already executed this script for you, so the archive should
-						already exist.
+						The command that you used for generating the release archives will also run the following command:<br/>
+						$ <b>./build external source</b><br/>
+						The archive <b>tobuild.tar.xz</b> will have been created, containing bucts, flashrom and all other required
+						resources for building them.
 					</p>
 
 					<p>
-						You'll find that the files libreboot_bin.tar.xz and libreboot_src.tar.xz have been created.
+						You'll find that the files libreboot_util.tar.xz and libreboot_src.tar.xz have been created.
 					</p>
 			
 			</div>

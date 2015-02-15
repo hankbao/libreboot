@@ -36,8 +36,7 @@
 			</p>
 			<p>
 				You can verify the downloaded archives as follows:<br/>
-				$ <b>gpg --verify libreboot_src.tar.xz.sig</b><br/>
-				$ <b>gpg --verify libreboot_bin.tar.xz.sig</b>
+				$ <b>for signature in $(ls libreboot*.tar.xz.sig); do gpg --verify $signature; done</b>
 			</p>
 			
 	</div>

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#  buildall script: Builds (absolutely) everything.
+#  helper script: clean the dependencies that were built in flashrom
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,19 +18,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# This script assumes that the current working directory is the root
+# of libreboot_src or libreboot git
+
 set -u -e -v
 
-# Clean old builds first:
-# ------------------------------------------------------
-./cleandeps
+# clean flashrom
+# --------------------------------------------------------
 
-# Build the dependencies needed for building ROM's:
-# ------------------------------------------------------
-./builddeps
+cd flashrom/
 
-# Build the ROM's:
-# ------------------------------------------------------
-./build
+make clean
+# remove patched binaries
+rm -f flashrom_lenovobios_sst
+rm -f flashrom_lenovobios_macronix
+
+# done. go back to main directory
+cd ../
 
 # ------------------- DONE ----------------------
-

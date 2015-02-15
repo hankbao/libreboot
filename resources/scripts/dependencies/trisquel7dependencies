@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  deps-trisquel script: installs build dependencies for Trisquel 6 and 7
+# for_trisquel7 script: installs build dependencies for Trisquel 7
 #
 #	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
 #

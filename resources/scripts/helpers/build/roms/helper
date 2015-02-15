@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#  buildrom-withgrub script: this generically builds the ROM images.
-#  The ROM images built by this script will use the GRUB payload.
+#  helper script: create ROM images for a given system, with GRUB
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -19,10 +18,10 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -u -e -v
+# This script assumes that the working directory is the root
+# of libreboot_src or git
 
-# DO NOT RUN THIS DIRECTLY!
-# Use "build"
+set -u -e -v
 
 if (( $# != 1 )); then
 	echo "Usage: ./buildrom-withgrub boardname"
