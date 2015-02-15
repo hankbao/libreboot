@@ -40,6 +40,12 @@ else
 	exit 1
 fi
 
+# ### Version information for this release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# create file showing the commit ID from git for this archive.
+cat .git/refs/heads/master > commitid
+
 # ### Delete old archives before continuing
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -56,6 +62,24 @@ mkdir release/rom/
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
 
+# ### Prepare libreboot_docs archive ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+cd release/
+
+mkdir libreboot_docs/
+
+cp -r ../docs/ libreboot_docs/
+cat ../commitid > libreboot_docs/commitid
+
+# create lzma compressed docs archive
+tar -c libreboot_docs | xz -9e >../libreboot_docs.tar.xz
+
+# the directory is no longer needed
+rm -rf libreboot_docs/
+
+cd ../
+
 # ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -63,9 +87,8 @@ mkdir libreboot_src
 
 for resource in $(cat releasefilelist)
 do
-	if [ "$resource" != "." ]
-		then
-			cp -r $resource libreboot_src
+	if [ "$resource" != "." ] && [ "$resource" != "./docs" ]; then
+		cp -r $resource libreboot_src
 	fi
 done
 
@@ -114,12 +137,6 @@ rm -f .gitignore
 cd ../
 
 cd ../
-
-# ### Version information for this release
-# ----------------------------------------------------------------------------------------------------------------------------
-
-# create file showing the commit ID from git for this archive.
-cat .git/refs/heads/master > commitid
 
 # ### Prepare ROM archives ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -306,11 +323,6 @@ cd ../
 rm -rf cbmem
 mv cbmem_ cbmem
 cd ../../
-
-# ---------------------
-# Include documentation
-# ---------------------
-cp -r docs/ libreboot_util/
 
 # -------------
 # Miscellaneous

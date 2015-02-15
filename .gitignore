@@ -7,6 +7,7 @@
 /bin/
 /libreboot_src.tar.xz
 /libreboot_util.tar.xz
+/libreboot_docs.tar.xz
 /libreboot_macbook21.tar.xz
 /libreboot_qemu_i440fx_piix4.tar.xz
 /libreboot_qemu_q35_ich9.tar.xz
@@ -18,6 +19,7 @@
 /libreboot_x60.tar.xz
 /libreboot_util/
 /libreboot_src/
+/libreboot_docs/
 /release/
 /resources/utilities/ich9deblob/factory.rom
 /resources/utilities/ich9deblob/deblobbed_descriptor.bin
