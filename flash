@@ -77,7 +77,7 @@ else
 	# libreboot_util
 	flashrom="./flashrom/$arch/flashrom"
 fi
-if [ 1 -f "$flashrom" ]; then
+if [ ! -f "$flashrom" ]; then
 	echo "flashrom binary not present"
 	exit 1
 fi
