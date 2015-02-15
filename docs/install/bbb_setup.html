@@ -77,30 +77,36 @@
 
 		<h1>Setting up the 3.3V DC PSU</h1>
 			<p>
+				This section is probably useless to you. For example, you might be using an ATX PSU instead. If so, set that up
+				for 3.3V power and ignore this section.
+			</p>
+			<p>
 				With my PSU, first I had wire up the mains power cable. Any clover or kettle lead will do. Cut the end off (not the one
 				that goes in the wall, but the kettle/clover connector).
 				Strip the protection away by a decent length, then strip the wires inside so that a decent amount of
 				copper is shown. Then wire up earth/live/neutral. This will vary according to what country you live in
 				and/or the colour codes that your cable uses inside. <b>Make sure to get this right, as a botched job
-				could result in extreme damage to you and your surroundings. Here's what mine looks like after wiring up
-				the power cable: <a href="images/x200/psu_power.jpg">images/x200/psu_power.jpg</a> - also, make sure
-				that the plug (for the wall) has the correct fuse. In my case I had a 240V wall socket, and the device
+				could result in extreme damage to you and your surroundings. Here's what mine looks like:<br/>
+				<img src="images/x200/psu_power.jpg" alt="" />
+			<p>
+				Make sure that the plug (for the wall) has the correct fuse. In my case I had a 240V wall socket, and the device
 				says that it accepts 1.5A at that voltage, so I used the smallest fuse available (3A). For 110-120V the device
 				says it needs 2.8A.</b> Also, if yours looks like in the image linked above, make sure to wrap electrical tape (lots)
-				around it for safety. (otherwise, don't touch the terminals while the PSU is plugged in).
+				around the terminals, for safety. (otherwise, don't touch the terminals while the PSU is plugged in).
 			</p>
 			<p>
 				Now take a red and black 20cm female-female jumper lead, and cut one of the ends off. Strip away the bare copper by about 1 or
-				1.5cm so you get this: <a href="images/x200/stripped_jumper_lead.jpg">images/x200/stripped_jumper_lead.jpg</a>. 
+				1.5cm so you get this:<br/>
+				<img src="images/x200/stripped_jumper_lead.jpg" alt="" />. 
 			</p>
 			<p>
-				Black goes on 0V, red goes on +V. In my case, I removed those screws from my PSU like this:
-				<a href="images/x200/psu_screws_removed.jpg">images/x200/psu_screws_removed.jpg</a>. Then,
+				Black goes on 0V, red goes on +V. In my case, I removed those screws from my PSU like this:<br/>
+				<img src="images/x200/psu_screws_removed.jpg" alt="" />.
 			</p>
 			<p>
 				Then I twisted the exposed copper on the jumper leads (so that they don't fray), and wrapped each to one of the
-				screws each, around it near the head. I then screwed them in:
-				<a href="images/x200/psu_jumper_leads.jpg">images/x200/psu_jumper_leads.jpg</a>.
+				screws each, around it near the head. I then screwed them in:<br/>
+				<img src="images/x200/psu_jumper_leads.jpg" alt="" />
 			</p>
 			<p>
 				If you are using a different PSU, then the steps will change from those above. Anyway, once you are satisfied,
@@ -120,8 +126,8 @@
 			<p>
 				You can also use a serial FTDI debug board, with GNU Screen (example):<br/>
 				# <b>screen /dev/ttyUSB0 115200</b><br/>
-				<a href="images/x200/ftdi.jpg">images/x200/ftdi.jpg</a> and 
-				<a href="images/x200/ftdi_port.jpg">images/x200/ftdi_port.jpg</a>
+				<img src="images/x200/ftdi.jpg" alt="" />
+				<img src="images/x200/ftdi_port.jpg" alt="" /><br/>
 				show an FTDI debug board in use. With screen you can then login as root, like you would using SSH.<br/>
 				Using this, you can also see text output (from kernel, etc) when booting the machine.
 			</p>
@@ -310,9 +316,9 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 			</p>
 			
 			<p>
-				<a href="images/x200/5252_bbb0.jpg">images/x200/5252_bbb0.jpg</a> and
-				<a href="images/x200/5252_bbb1.jpg">images/x200/5252_bbb1.jpg</a> shows a properly wired up BBB with Pomona
-				5252 before being connected to the flash chip on the X200.
+				You should now have something that looks like this:<br/>
+				<img src="images/x200/5252_bbb0.jpg" alt="" />
+				<img src="images/x200/5252_bbb1.jpg" alt="" />
 			</p>
 			
 		<p>
