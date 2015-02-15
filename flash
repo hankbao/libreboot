@@ -70,7 +70,7 @@ mode=$1
 rompath=$2
 
 flashrom="unknown"
-if [ -f "DEBLOB" ]; then
+if [ -f "build" ]; then
 	# git or libreboot_src
 	flashrom="./flashrom/flashrom"
 else
@@ -87,7 +87,7 @@ bucts="unknown"
 flashrom_lenovobios_sst="unknown"
 flashrom_lenovobios_macronix="unknown"
 if [ "$mode" = "i945lenovo_firstflash" ] || [ "$mode" = "i945lenovo_secondflash" ]; then
-	if [ -f "DEBLOB" ]; then
+	if [ -f "build" ]; then
 		# git or libreboot_src
 		bucts="./bucts/bucts"
 		flashrom_lenovobios_sst="./flashrom/flashrom_lenovobios_sst"
