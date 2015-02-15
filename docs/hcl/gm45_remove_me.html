@@ -67,6 +67,14 @@
 			</p>
 			
 			<p>
+				Two new files will be created:
+			</p>
+				<ul>
+					<li><b>ich9fdgbe_4m.bin</b>: this is for GM45 laptops with the 4MB flash chip.</li>
+					<li><b>ich9fdgbe_8m.bin</b>: this is for GM45 laptops with the 8MB flash chip.</li>
+				</ul>
+			
+			<p>
 				You can find out your MAC address from <b>ip addr</b> or <b>ifconfig</b> in GNU/Linux. 
 				Alternatively, if you are running libreboot already (with the correct MAC address in your
 				ROM), dump it (flashrom -r) and read the first 6 bytes from position 0x1000 (or 0x2000) in a hex editor
@@ -81,18 +89,11 @@
 			</p>
 			
 			<p>
-				A bash script is also included in libreboot which will change the mac address (using ich9gen)
+				A bash script is also included in libreboot_util which will change the mac address (using ich9gen)
 				on all GM45 ROM images. For instance:<br/>
-				$ <b>./ich9macchange XX:XX:XX:XX:XX:XX</b>
+				$ <b>./ich9macchange path/to/libreboot.rom XX:XX:XX:XX:XX:XX romsize</b><br/>
+				<b>romsize</b> should be 4 or 8, depending on whether the ROM image is for a 4MiB or 8MiB flash chip.
 			</p>
-			
-			<p>
-				Two new files will be created:
-			</p>
-				<ul>
-					<li><b>ich9fdgbe_4m.bin</b>: this is for GM45 laptops with the 4MB flash chip.</li>
-					<li><b>ich9fdgbe_8m.bin</b>: this is for GM45 laptops with the 8MB flash chip.</li>
-				</ul>
 				
 			<p>
 				ich9gen executables can be found under ./ich9deblob/ statically compiled in
