@@ -16,14 +16,15 @@
 		
 		<h1 id="pagetop">Libreboot release information (old)</h1>
 			<p>
-				Current release information can be found at <a href="release.html">release.html</a>.
+				Information for this release can be found at <a href="release.html">release.html</a>.
+				Updated versions of libreboot can be found at <a href="http://libreboot.org/">libreboot.org</a>.
 			</p>
 			
-		<div class="important">
-			<p>
-				<b>This page is *obsolete*, provided for historical purposes.</b>
-			</p>
-		</div>
+			<div class="important">
+				<p>
+					<b>This page is *obsolete*, provided for historical purposes.</b>
+				</p>
+			</div>
 			
 	</div>
 	
@@ -73,41 +74,10 @@
 	<div class="section">
 
 		<h1 id="release20150124">Release 20150124 and 20150126</h1>
-
-			<p>
-				Release date: January 26th, 2015.
-			</p>
-
-			<h2>Binaries (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20150126/libreboot_bin.tar.xz">http://libreboot.org/release/20150126/libreboot_bin.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20150126/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20150126/libreboot_bin.tar.xz.sig</a></li>
-				</ul>
-			<h2>Source code (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20150126/libreboot_src.tar.xz">http://libreboot.org/release/20150126/libreboot_src.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20150126/libreboot_src.tar.xz.sig">http://libreboot.org/release/20150126/libreboot_src.tar.xz.sig</a></li>
-				</ul>
 		
 			<p>
 				Release date: January 24th, 2015.
 			</p>
-
-			<h2>Binaries (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20150124/libreboot_bin.tar.xz">http://libreboot.org/release/20150124/libreboot_bin.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20150124/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20150124/libreboot_bin.tar.xz.sig</a></li>
-				</ul>
-			<h2>Source code (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20150124/libreboot_src.tar.xz">http://libreboot.org/release/20150124/libreboot_src.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20150124/libreboot_src.tar.xz.sig">http://libreboot.org/release/20150124/libreboot_src.tar.xz.sig</a></li>
-				</ul>
-
-				<p>
-					Installation instructions can be found at <a href="install/index.html#flashrom">install/index.html#flashrom</a>. 
-					Building instructions (for source code) can be found at <a href="git/index.html#build">git/index.html#build</a>.
-				</p>
 
 			<h2>Machines supported in this release:</h2>
 				<ul>
@@ -123,36 +93,36 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issuesinstall/x200_external.html; see below):
 						<ul>
-							<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
-							<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
-							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+							<li>See <b>future/index.html#t60_cpu_microcode</b>.</li>
+							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad X200</b>
 						<ul>
-							<li>X200S and X200 Tablet are also supported, conditionally; see <a href="hcl/x200.html">hcl/x200.html#x200s</a></li>
-							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
+							<li>X200S and X200 Tablet are also supported, conditionally; see <b>hcl/x200.html#x200s</b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b>hcl/gm45_remove_me.html</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
+							<li>See <b>hcl/index.html#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
+							<li>See <b>hcl/index.html#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -320,22 +290,6 @@
 
 		<h1 id="release20141015">Release 20141015</h1>
 
-			<h2>Binaries (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz">http://libreboot.org/release/20141015/libreboot_bin.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_bin.tar.xz.sig</a></li>
-				</ul>
-			<h2>Source code (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz">http://libreboot.org/release/20141015/libreboot_src.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig">http://libreboot.org/release/20141015/libreboot_src.tar.xz.sig</a></li>
-				</ul>
-
-				<p>
-					Installation instructions can be found at <a href="install/index.html#flashrom">install/index.html#flashrom</a>. 
-					Building instructions (for source code) can be found at <a href="git/index.html#build">git/index.html#build</a>.
-				</p>
-
 			<h2>Machines supported in this release:</h2>
 				<ul>
 					<li>
@@ -350,29 +304,29 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 						<ul>
-							<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
-							<li>See <a href="future/index.html#t60_cpu_microcode">future/index.html#t60_cpu_microcode</a>.</li>
-							<li>T60P (and T60s with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+							<li>See <b>future/index.html#t60_cpu_microcode</b>.</li>
+							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
+							<li>See <b>hcl/index.html#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
+							<li>See <b>hcl/index.html#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -421,17 +375,6 @@
 				<li>Revised (pre-release, 7th beta) 2014 September 11th</li>
 			</ul>
 
-			<h2>Binaries (for flashing) (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz">http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta7/libreboot_bin.tar.xz.sig</a></li>
-				</ul>
-			<h2>Source code (for hacking) (right-click save as, or use wget)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz">http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz</a></li>
-					<li><a href="http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz.sig">http://libreboot.org/release/5/prerelease_beta7/libreboot_src.tar.xz.sig</a></li>
-				</ul>
-
 			<h2>Machines still supported (compared to previous release):</h2>
 				<ul>
 					<li>
@@ -448,28 +391,28 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
+							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)
 						<ul>
-							<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
-							<li>T60P (and T60s with ATI GPU) will likely never be supported: <a href="hcl/index.html#t60_ati_intel">hcl/index.html#t60_ati_intel</a></li>
+							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a>.</li>
+							<li>See <b>hcl/index.html#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <a href="hcl/index.html#macbook21">hcl/index.html#macbook21</a>.</li>
+							<li>See <b>hcl/index.html#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -505,7 +448,7 @@
 					<li>Added modified builddeb* scripts for Parabola GNU/Linux-libre: buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah Vesely)</li>
 					<li>Documentation: updated all relevant areas to mention use of buildpac* scripts for Parabola users.</li>
 					<li>Documentation: added information showing how to enable or disable bluetooth on the X60</li>
-					<li>MacBook1,1 tested! See <a href="hcl/index.html#macbook11">hcl/index.html#macbook11</a></li>
+					<li>MacBook1,1 tested! See <b>hcl/index.html#macbook11</b></li>
 					<li>Documentation: fixed typo in index.html#get_edid_panelname (get-edit changed to get-edid)</li>
 					<li>Documentation: added images/x60_lcd_change/ (pics only for now)</li>
 					<li>Added gcry_serpent and gcry_whirlpool to the GRUB module list in the 'build' script (for luks users)</li>
@@ -667,11 +610,11 @@
 					<li>build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the list of modules for grub.elf</li>
 					<li>Documentation: added pics showing T60 unbricking (still need to write a tutorial)</li>
 					<li>build: include cmos.layout (coreboot/src/mainboard/manufacturer/model/cmos.layout) files in libreboot_bin</li>
-					<li>Documentation: added <a href="install/x60tablet_unbrick.html">install/x60tablet_unbrick.html</a></li>
-					<li>Documentation: added <a href="install/t60_unbrick.html">install/t60_unbrick.html</a></li>
-					<li>Documentation: added <a href="hardware/t60_lcd_15.html">install/t60_lcd_15.html</a></li>
-					<li>Documentation: added <a href="security/t60_security.html">install/t60_security.html</a></li>
-					<li>Documentation: added <a href="hardware/t60_heatsink.html">install/t60_heatsink.html</a></li>
+					<li>Documentation: added <b>install/x60tablet_unbrick.html</b></li>
+					<li>Documentation: added <b>install/t60_unbrick.html</b></li>
+					<li>Documentation: added <b>install/t60_lcd_15.html</b></li>
+					<li>Documentation: added <b>install/t60_security.html</b></li>
+					<li>Documentation: added <b>install/t60_heatsink.html</b></li>
 					<li>Documentation: Renamed RELEASE.html to release.html</li>
 					<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
 					<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
@@ -1007,22 +950,6 @@
 					<li>ThinkPad X60s</li>
 				</ul>
 
-			<h2>Binaries (for flashing)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/4/libreboot_bin.tar.gz">http://libreboot.org/release/4/libreboot_bin.tar.gz</a></li>
-					<li>sha512: 75aace225cb3f897cf4a64980c5b746727f9a64646a640692f475e7c37989c836f0fc071ec31c6e9a746133feda35b60b3df700a6331d600ecd65fe70646a124</li>
-				</ul>
-
-			<h2>Source code (for hacking)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/4/libreboot_src.tar.gz">http://libreboot.org/release/4/libreboot_src.tar.gz</a></li>
-					<li>sha512: a773462fd60b529f20e14a82281f962985579bd523c3e6c9ab8639f7a12da8f1ccb44a56c648b19de914a15d4490366222d0bbc80552e91419f2afecbddc10ae</li>
-				</ul>
-				<p>
-					(gluglug.org.uk/X60/release/4/X60_source.tar.gz and gluglug.org.uk/X60/release/4/X60_binary.tar.gz were the old links,
-					but they no longer exist)
-				</p>
-
 			<h2>Development notes</h2>
 				<ul>
 					<li>
@@ -1150,16 +1077,6 @@
 					<li>ThinkPad X60s</li>
 				</ul>
 
-			<h2>Binaries (for flashing)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/3/X60_binary.tar.gz">http://libreboot.org/release/ancient/3/X60_binary.tar.gz</a></li>
-				</ul>
-
-			<h2>Source code (for hacking)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/3/X60_source.tar.gz">http://libreboot.org/release/ancient/3/X60_source.tar.gz</a></li>
-				</ul>
-
 			<h2>Development notes</h2>
 				<ul>
 					<li>Removed SeaBIOS (redundant)</li>
@@ -1212,16 +1129,6 @@
 					<li>ThinkPad X60s</li>
 				</ul>
 
-			<h2>Binaries (for flashing)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/2/X60_binary.tar.gz">http://libreboot.org/release/ancient/2/X60_binary.tar.gz</a></li>
-				</ul>
-
-			<h2>Source code (for hacking)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/2/X60_source.tar.gz">http://libreboot.org/release/ancient/2/X60_source.tar.gz</a></li>
-				</ul>
-
 			<h2>Development notes</h2>
 				<ul>
 					<li>Added SeaBIOS payload to GRUB2 (for booting USB drives)</li>
@@ -1244,16 +1151,6 @@
 				<ul>
 					<li>ThinkPad X60</li>
 					<li>ThinkPad X60s</li>
-				</ul>
-
-			<h2>Binaries (for flashing)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/1/X60_binary.tar.gz">http://libreboot.org/release/ancient/1/X60_binary.tar.gz</a></li>
-				</ul>
-
-			<h2>Source code (for hacking)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/1/X60_source.tar.gz">http://libreboot.org/release/ancient/1/X60_source.tar.gz</a></li>
 				</ul>
 
 			<h2>Development notes</h2>
@@ -1280,16 +1177,6 @@
 				<ul>
 					<li>ThinkPad X60</li>
 					<li>ThinkPad X60s</li>
-				</ul>
-
-			<h2>Binaries (for flashing)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/0/X60_binary.tar.gz">http://libreboot.org/release/ancient/0/X60_binary.tar.gz</a></li>
-				</ul>
-
-			<h2>Source code (for hacking)</h2>
-				<ul>
-					<li><a href="http://libreboot.org/release/ancient/0/X60_source.tar.gz">http://libreboot.org/release/ancient/0/X60_source.tar.gz</a></li>
 				</ul>
 
 			<h2>Development notes</h2>
