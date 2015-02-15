@@ -36,19 +36,19 @@ fi
 rompath=$1
 jpegpath=$2
 
-path="unknown"
-if [ -f "DEBLOB" ]; then
-	path="./coreboot/util/cbfstool/cbfstool"
-elif [ $(uname -i) = "armv7l" ] || [ $(uname -m) = "armv7l" ]; then
-	path="./cbfstool/armv7l/cbfstool"
+arch="unknown"
+if [ $(uname -i) = "armv7l" ] || [ $(uname -m) = "armv7l" ]; then
+	arch="armv7l"
 elif [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
-	path="./cbfstool/i686/cbfstool"
+	arch="i686"
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
-	path="./cbfstool/x86_64/cbfstool"
+	arch="x86_64"
 else
-	echo "grub-background script: Unknown host."
+	echo "Unknown host architecture"
 	exit 1
 fi
 
-$path "$rompath" remove -n background.jpg
-$path "$rompath" add -f "$jpegpath" -n background.jpg -t raw
+cbfstool="./cbfstool/$arch/cbfstool"
+
+$cbfstool "$rompath" remove -n background.jpg
+$cbfstool "$rompath" add -f "$jpegpath" -n background.jpg -t raw
