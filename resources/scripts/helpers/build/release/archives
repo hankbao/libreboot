@@ -329,7 +329,7 @@ cp flash libreboot_util/
 cp ich9macchange libreboot_util/
 
 # for changing the GRUB background
-cp grub-background libreboot_util/
+cp resources/scripts/misc/grub-background libreboot_util/
 
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
