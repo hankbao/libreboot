@@ -18,6 +18,7 @@
 /libreboot_x60.tar.xz
 /libreboot_util/
 /libreboot_src/
+/release/
 /resources/utilities/ich9deblob/factory.rom
 /resources/utilities/ich9deblob/deblobbed_descriptor.bin
 /resources/utilities/ich9deblob/libreboot.rom

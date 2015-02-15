@@ -47,6 +47,11 @@ echo "Deleting old release archives"
 
 rm -f libreboot_*.tar.xz
 rm -f tobuild.tar.xz
+rm -rf release/
+
+# create directory for the release
+mkdir release/
+mkdir release/rom/
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
@@ -130,6 +135,9 @@ do
 	
 	# delete. no longer needed
 	rm -f "$board"/commitid
+	
+	# move the ROM images to the release/ directory
+	mv ../libreboot_"$board".tar.xz ../release/rom/
 done
 cd ../
 
@@ -370,6 +378,15 @@ tar -c libreboot_src | xz -9e >libreboot_src.tar.xz
 # create lzma compressed util archive
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
+# Move the archives to the release directory
+mv libreboot_src.tar.xz release/
+mv libreboot_util.tar.xz release/
+
+# Create a symlink to the commitid file, in release/
+cd release/
+ln -s ../commitid commitid
+cd ../
+
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -379,6 +396,9 @@ rm -rf libreboot_util
 
 # For those utilities that have to be built on the target
 ./build external source
+
+# Move the archive to the release directory
+mv tobuild.tar.xz release/
 
 # DONE. See libreboot_src.tar.xz and libreboot_util.tar.xz
 # NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom
