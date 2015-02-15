@@ -383,9 +383,7 @@ mv libreboot_src.tar.xz release/
 mv libreboot_util.tar.xz release/
 
 # Create a symlink to the commitid file, in release/
-cd release/
-ln -s ../commitid commitid
-cd ../
+cat commitid > release/commitid
 
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
