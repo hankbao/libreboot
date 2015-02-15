@@ -21,16 +21,20 @@
 
 set -u -e -v
 
-if (( $# != 1 )); then
-	echo "Usage: ./grub-background /path/to/image.jpg"
-	echo "You need to specify exactly 1 argument"
+if (( $# != 2 )); then
+	echo "Usage: ./grub-background /path/to/libreboot.rom /path/to/image.jpg"
 	exit 1
 fi
-
 if [ ! -f $1 ]; then
 	echo "File not found!"
 	exit 1
 fi
+if [ ! -f $2 ]; then
+	echo "File not found!"
+	exit 1
+fi
+rompath=$1
+jpegpath=$2
 
 path="unknown"
 if [ -f "DEBLOB" ]; then
@@ -46,16 +50,5 @@ else
 	exit 1
 fi
 
-cd bin/
-for board in $(ls)
-do
-	cd "$board"/
-	for file in $(ls *vesafb*)
-	do
-		cd ../../
-		$path bin/"$board"/"$file" remove -n background.jpg
-		$path bin/"$board"/"$file" add -f "$1" -n background.jpg -t raw
-		cd bin/"$board"/
-	done
-	cd ../
-done
+$path "$rompath" remove -n background.jpg
+$path "$rompath" add -f "$jpegpath" -n background.jpg -t raw
