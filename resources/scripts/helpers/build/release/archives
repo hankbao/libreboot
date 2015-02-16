@@ -54,6 +54,10 @@ echo "Deleting old release archives"
 rm -f libreboot_*.tar.xz
 rm -f tobuild.tar.xz
 rm -rf release/
+rm -rf tobuild/
+rm -rf libreboot_bin
+rm -rf libreboot_src
+rm -rf libreboot_doc
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
