@@ -55,30 +55,8 @@ rm -f libreboot_*.tar.xz
 rm -f tobuild.tar.xz
 rm -rf release/
 
-# create directory for the release
-mkdir release/
-mkdir release/rom/
-
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
-
-# ### Prepare libreboot_docs archive ready for release
-# ----------------------------------------------------------------------------------------------------------------------------
-
-cd release/
-
-mkdir libreboot_docs/
-
-cp -r ../docs/ libreboot_docs/
-cat ../commitid > libreboot_docs/commitid
-
-# create lzma compressed docs archive
-tar -c libreboot_docs | xz -9e >libreboot_docs.tar.xz
-
-# the directory is no longer needed
-rm -rf libreboot_docs/
-
-cd ../
 
 # ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -98,6 +76,31 @@ cd libreboot_src/
 ./build clean all
 
 # back to main checkout directory
+cd ../
+
+# ### Create the release/ directory where the archives will go
+# ----------------------------------------------------------------------------------------------------------------------------
+
+# create directory for the release
+mkdir release/
+mkdir release/rom/
+
+# ### Prepare libreboot_docs archive ready for release
+# ----------------------------------------------------------------------------------------------------------------------------
+
+cd release/
+
+mkdir libreboot_docs/
+
+cp -r ../docs/ libreboot_docs/
+cat ../commitid > libreboot_docs/commitid
+
+# create lzma compressed docs archive
+tar -c libreboot_docs | xz -9e >libreboot_docs.tar.xz
+
+# the directory is no longer needed
+rm -rf libreboot_docs/
+
 cd ../
 
 # ### Further work in libreboot_src: delete *.git and *.svn
