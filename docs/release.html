@@ -153,6 +153,11 @@
 			</h2>
 				<ul>
 					<li>
+						i945: fix linux (if possible). VBT. http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html
+						http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html
+						This is talking about without native init / oprom. Paul reported it, look into it.
+					</li>
+					<li>
 						Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
 						little-endian; for instance, mapping a little endian file directly to a struct, instead
 						of serializing/deserializing. Re-factor both utilities and make them fully portable.
