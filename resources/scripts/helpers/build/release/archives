@@ -73,7 +73,7 @@ cp -r ../docs/ libreboot_docs/
 cat ../commitid > libreboot_docs/commitid
 
 # create lzma compressed docs archive
-tar -c libreboot_docs | xz -9e >../libreboot_docs.tar.xz
+tar -c libreboot_docs | xz -9e >libreboot_docs.tar.xz
 
 # the directory is no longer needed
 rm -rf libreboot_docs/
