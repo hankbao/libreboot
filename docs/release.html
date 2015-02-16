@@ -31,11 +31,15 @@
 				<b>Download the key</b>: <a href="http://libreboot.org/libreboot.asc">http://libreboot.org/libreboot.asc</a>.
 			</p>
 			<p>
-				Import the key as follows:<br/>
-				$ <b>gpg --import &lt; http://libreboot.org/libreboot.asc</b>
+				Alternatively, download the key from your key server:<br/>
+				$ <b>gpg --recv-keys 0x656F212E</b>
 			</p>
 			<p>
-				You should also be able to find it on a key server. Note: the above key is not for email. It is only for verifying the release archives.
+				Import the key as follows (if you downloaded the key file manually):<br/>
+				$ <b>gpg --import &lt; libreboot.asc</b>
+			</p>
+			<p>
+				This key is not for email. It is only for verifying the release archives.
 			</p>
 			<p>
 				You can verify the downloaded archives as follows:<br/>
@@ -51,7 +55,7 @@
 				Releases are now named from the date of release.
 			</p>
 			<p>
-				See <a href="archive_old.html">archive_old.html</a> for older libreboot releases.
+				See <a href="archive_old.html">archive_old.html</a> for information about older libreboot releases.
 			</p>
 
 			<div class="important">
@@ -64,10 +68,10 @@
 
 	<div class="section">
 
-		<h1 id="release20150126">Release 20150208</h1>
+		<h1 id="releaseYYYYMMDD">Release YYYYMMDD</h1>
 		
 			<p>
-				Release date: February 8th, 2015.
+				Release date: Month Day(st,rd,th), Year.
 			</p>
 
 				<p>
@@ -94,7 +98,7 @@
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issuesinstall/x200_external.html; see below):
+						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 						<ul>
 							<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
@@ -105,7 +109,7 @@
 					<li>
 						<b>Lenovo ThinkPad X200</b>
 						<ul>
-							<li>X200S and X200 Tablet are also supported, conditionally; see <a href="hcl/x200.html">hcl/x200.html#x200s</a></li>
+							<li>X200S and X200 Tablet are also supported, conditionally; see <a href="hcl/x200.html#x200s">hcl/x200.html#x200s</a></li>
 							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
 						</ul>
 					</li>
@@ -129,196 +133,21 @@
 					</li>
 				</ul>
 
+
 			<h2>
-				Revisions for r20150208 (relative to r20150126)
+				Git. No changelog!
 			</h2>
 				<p>
-					This is a maintenance release (polishing) based on r20150126. Users who installed r20150126
-					don't really need to update to this release.
+					This version of libreboot is from git. It is not a stable release!
+					If you are using a snapshot (tarball), you can find a file included called <b>commitid</b>
+					which tells you what git revision it is from the libreboot git repository. If this is not
+					a snapshot, then you have cloned libreboot, so you can simply run <b>git log</b>.
 				</p>
 				<ul>
-					<li>buildrom-withgrub: use gnulove.jpg background on 16:10 laptops (MacBook2,1 and X200)</li>
-					<li>build-release: include grub-background script in libreboot_bin</li>
-					<li>grub-background (new): lets user change GRUB background image</li>
-					<li>grub-assemble: Add link to original utility.</li>
-					<li>buildrom-withgrub: Put background.jpg in CBFS, not GRUB memdisk</li>
-					<li>grub-assemble: merge scripts into a single script gen.sh</li>
-					<li>Documentation: implement theme, drastically improve readability</li>
-					<li>docs/hcl/index.html: update list of compatible T60 LCD panels</li>
-					<li>docs/index.html: more clarification of libreboot's stated purpose.</li>
-					<li>build-release: include the commitid file in the release archives</li>
-					<li>docs/index.html: Further emphasize the GNU/Linux requirement.</li>
-					<li>lenovobios_firstflash: fix BASH errors</li>
-					<li>lenovobios_secondflash: fix BASH errors</li>
-					<li>docs/install/x200_external.html: Tell user to switch MAC address.</li>
-					<li>docs/git/index.html: Add to the list of x86_64 compatible hosts.</li>
-					<li>docs/install/index.html: Remove old (obsolete) information.</li>
-					<li>docs/git/index.html: Say that the build dependencies are for src (and not nedeed for libreboot_bin)</li>
-					<li>build: re-factor the descriptor/gbe generating loop for GM45/ICH9M</li>
-					<li>X60, X60S and X60 Tablet now the same ROM images.</li>
-					<li>Add QEMU (q35/ich9) support to libreboot.</li>
-					<li>Add QEMU (i440fx/piix4) support to libreboot</li>
-					<li>docs/index.html: Re-write the description of what libreboot is.</li>
-					<li>docs/release.html: Add notes about how to use GPG.</li>
-					<li>build-release: delete the commitid file from release archives</li>
-					<li>build-release: create file named commitid after build-release</li>
+					<li>Did we forget to mention that this is from git?</li>
+					<li>This is from the libreboot git repository.</li>
 				</ul>
-			<h2>
-				Revisions for r20150126 (relative to r20150124)
-			</h2>
-				<p>
-					This is a bug fix release based on r20150124. It contains a few small changes:
-				</p>
-				<ul>
-					<li>grub.cfg: hardcode the list of partitions to search (speeds up booting considerably. GRUB regexp isn't very well optimized)</li>
-					<li>Docs (x200.html hcl): Remove incorrect information</li>
-					<li>Documentation (bbb_setup.html): Fix typos</li>
-					<li>
-						build-release: delete ich9fdgbe_{4m,8m}.bin files from ich9gen
-						<ul>
-							<li>
-								These were accidentically included in the r20150124 release. They
-								are generated from ich9gen so it's ok, but they don't need to be
-								in the archive.
-							</li>
-						</ul>
-					</li>
-					<li>Documentation (grub_cbfs.html): Looping in libreboot_grub.cfg (Add notes about it if the user copied from grub.cfg in CBFS.)</li>
-					<li>Documentation: refer to Guix as GNU Guix System Distribution or GNU GSD per advice from the Guix project.</li>
-				</ul>
-			<h2>
-				Changes for this release (latest changes first, earliest changes last)
-			</h2>
-				<ul>
-					<li>Documentation: added information about how to boot Guix GNU/Linux.</li>
-					<li>grub.cfg: Added (usb0) and (usb0,*) to the list of devices in the <i>Search for GRUB</i> menuentry (this is needed for Guix GNU/Linux)</li>
-					<li>grub.cfg: Added (ahci1) to list of devices for ISOLINUX parser (CD/DVD) (this is needed for the X200 docking station).</li>
-					<li>grub.cfg: ISOLINUX parsing is now done on all USB partitions.</li>
-					<li>grub.cfg: Automatically switched to /boot/grub/libreboot_grub.cfg on a partition, if it exists.</li>
-					<li>libreboot_bin: added static ARM binaries for flashrom, cbfstool, ich9gen and 
-					ich9deblob (tested on beaglebone black).</li>
-					<li>Flashrom: removed redundant Macronix flashchip definitions (for X200 owners).</li>
-					<li>Flashrom: added whitelist for ThinkPad X200.</li>
-					<li>X200: fixed uneven backlight (at low levels)</li>
-					<li>ich9macchange (new script, uses ich9gen): for changing the default MAC address on X200 ROM images.</li>
-					<li>ich9gen: added capability to change the default MAC address (and update the checksum)</li>
-					<li>ich9deblob: added new utility ich9gen: this can generate a descriptor+gbe image without a factory.rom dump present.</li>
-					<li>Modified ich9deblob to use a struct for Gbe, documenting everything.</li>
-					<li>Massively updated the ich9deblob utility: re-factored everything completely.</li>
-					<li>Enabled cstates 1 and 2 on macbook21. This reduces idle heat / power consumption.</li>
-					<li>buildrom-withgrub: disabled creation of *txtmode*.rom for X200 (only framebuffer graphics work)</li>
-					<li>Updated SeaBIOS (again)</li>
-					<li>docs/install/index.html#flashrom_x200: improve instructions</li>
-					<li>Updated flashrom (again) - patches updated</li>
-					<li>Updated GRUB (again)</li>
-					<li>Updated coreboot (again)</li>
-					<li>build-release: not all files were copied to libreboot_src. fix that.</li>
-					<li>build-release: include cbmem (statically compiled) in libreboot_bin</li>
-					<li>Documentation (X200): added software-based flashing instructions</li>
-					<li>Documentation: remove all references to the bus pirate (replaced with BBB flashing tutorials)</li>
-					<li><b>New board:</b> ThinkPad X200S and X200 Tablet support added to libreboot</li>
-					<li>build: automatically find board names (configs) to build for</li>
-					<li><b>New board:</b> ThinkPad X200 support added to libreboot</li>
-					<li>coreboot-libre config (all boards): enable USB dongle log output (for BeagleBone Black)</li>
-					<li>cleandeps: actually clean grubinvaders</li>
-					<li>.gitignore: add powertop directory</li>
-					<li>cleandeps: clean i945-pwm utility</li>
-					<li>scripts (all): fix typos</li>
-					<li>Documentation: general cleanup.</li>
-					<li>builddeps-flashrom: reduce build commands to a single for loop</li>
-					<li>scripts (all): replace unnecessary rm -rf with rm -f</li>
-					<li>powertop.trisquel7: remove sudo (script already checks if the user is root)</li>
-					<li>docs/release.html: add lenovo g505s to the list of candidates</li>
-					<li>.gitignore: add libreboot_bin.tar.xz and libreboot_src.tar.xz</li>
-					<li>
-						libreboot_bin.tar.xz: Include utils as statically linked binaries
-						<ul>
-							<li>This means that the user does not have to install build dependency
-							or build from source anymore.</li>
-						</ul>
-					</li>
-					<li>deps-trisquel: Add binutils-source</li>
-					<li>powertop.trisquel7 (new): Setup powertop on trisquel 7</li>
-					<li>deps-trisquel,flash,lenovobios_firstflash,lenovobios_secondflash,macbook21_firstflash
-					x60flashfrom5,powertop.trisquel6: check if user is root</li>
-					<li>deps-trisquel: Make GRUB build on in Trisquel 7 x86_64. (cross compile dependencies. fixes build error in GRUB)</li>
-					<li>deps-parabola (removed) Remove Parabola dependencies script. Will re-add later (properly tested)</li>
-					<li>grub.cfg: Add more path checks to isolinux parser (more ISOs should work now)</li>
-					<li>Update SeaBIOS</li>
-					<li>x60flashfrom5 (new), for X60 users upgrading from 5th/early release</li>
-					<li>Update flashrom</li>
-					<li>Update GRUB</li>
-					<li>
-						Updated coreboot-libre
-						<ul>
-							<li>i945: permanently set tft_brightness to 0xff (fixes bug on X60 where
-							turning up brightness at max would make it loop back to low brightness)</li>
-						</ul>
-					</li>
-					<li>
-						getcb: Revert X60/T60 to legacy backlight controls
-						<ul>
-							<li>The ACPI brightness patches were abandoned and obsolete.</li>
-						</ul>
-					</li>
-					<li>grub.cfg: Only load initrd.img if it exists. Add rw to linux line (for ProteanOS)</li>
-					<li>build: Only generate the GRUB configurations once (re-use on all images)</li>
-					<li>Only build 2 GRUB payload executables, re-use on all boards.</li>
-					<li>
-						resources/utilities/grub-assemble/gen.txtmode.sh: Use GNU BASH<br/>
-						resources/utilities/grub-assemble/gen.vesafb.sh: Use GNU BASH
-					</li>
-					<li>scripts (error handling): Replace exit with exit 1 (make debugging easier)</li>
-					<li>
-						Move most files in CBFS to GRUB memdisk, except grub.cfg and grubtest.cfg
-						<ul>
-							This reduces the space used in CBFS because coreboot compresses
-							its payloads with LZMA by default. grub.cfg is all that most users
-							will want to modify, which remains in CBFS.
-						</ul>
-					</li>
-					<li>docs/release.html Add DMP vortex86ex to list of candidates.</li>
-					<li>docs/release.html Add ThinkPad X201 to list of candidates.</li>
-					<li>New links added to docs/security/x60_security and docs/security/t60_security</li>
-					<li>lenovobios_secondflash: Warn if BUCTS is not present. (not a dealbreaker. Can just pull out nvram battery/coin).</li>
-					<li>lenovobios_firstflash: Fail if BUCTS fails. (anti-bricking precaution)</li>
-					<li>Removed obnoxious warnings from flashing scripts, improved documentation instead.</li>
-					<li>scripts (all): add proper error checking (fail fast, fail early. Do not continue if there are errors)</li>
-					<li>buildrom-withgrub: rename image to boardname_layout_romtype.rom</li>
-					<li>buildrom-withgrub: don't move cbfstool, execute directly</li>
-					<li>resources/utilities/grub-assemble: add French Dvorak (BEPO) keyboard layout.</li>
-					<li>Documentation: add docs/hardware/x60_keyboard.html (show how to replace keyboard on X60/X60T)</li>
-					<li>Documentation: major cleanup (better structure, easier to find things)</li>
-					<li>
-						docs/release.html: Remove Acer CB5 from list of future candidates.
-						<ul>
-							<li>
-								Too many issues. Chromebooks are crippled (soldered RAM/storage/wifi)
-								and have too many usability issues for the libreboot project.
-							</li>
-						</ul>
-					</li>
-					<li>docs/gnulinux/grub_cbfs.html Major cleanup. Usability improvements.</li>
-					<li>hocs/gnulinux/encrypted_trisquel.html: Fixed mistakes/typos. General improvements</li>
-					<li>
-						flash (flashrom script): remove boardmismatch=force
-						<ul>
-							<li>
-								 This was put there before for users upgrading from libreboot r5
-								 to r6, but also allows the user to flash the wrong image. For
-								 example, the user could flash a T60 image on an X60, thus
-								 bricking the machine. It's almost certain that most people
-								 have upgraded by now, so remove this potentially dangerous
-								 option.
-							</li>
-						</ul>
-					</li>
-					<li>Documentation: update compatibility list for X60T LCD panels.</li>
-					<li>docs/release.html: add note about X60 Tablet board in X60/X60s</li>
-					<li>docs/howtos/grub_boot_installer.html: small corrections</li>
-					<li>docs/howtos/grub_boot_installer.html: improved readability, fixed html errors</li>
-					<li>Documentation (macbook21 related): clean up</li>
-				</ul>
+
 				
 	</div>
 

@@ -73,7 +73,7 @@
 	
 	<div class="section">
 
-		<h1 id="release20150124">Release 20150124 and 20150126</h1>
+		<h1 id="release20150124">Release 20150124, 20150126 and 20150208</h1>
 		
 			<p>
 				Release date: January 24th, 2015.
@@ -114,6 +114,12 @@
 						</ul>
 					</li>
 					<li>
+						<b>Lenovo ThinkPad R400</b> (r20150208 and later, only)
+						<ul>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b>hcl/gm45_remove_me.html</b></li>
+						</ul>
+					</li>
+					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
 							<li>See <b>hcl/index.html#macbook11</b>.</li>
@@ -126,7 +132,41 @@
 						</ul>
 					</li>
 				</ul>
-				
+
+			<h2>
+				Revisions for r20150208 (relative to r20150126)
+			</h2>
+				<p>
+					This is a maintenance release (polishing) based on r20150126. Users who installed r20150126
+					don't really need to update to this release.
+				</p>
+				<ul>
+					<li>buildrom-withgrub: use gnulove.jpg background on 16:10 laptops (MacBook2,1 and X200)</li>
+					<li>build-release: include grub-background script in libreboot_bin</li>
+					<li>grub-background (new): lets user change GRUB background image</li>
+					<li>grub-assemble: Add link to original utility.</li>
+					<li>buildrom-withgrub: Put background.jpg in CBFS, not GRUB memdisk</li>
+					<li>grub-assemble: merge scripts into a single script gen.sh</li>
+					<li>Documentation: implement theme, drastically improve readability</li>
+					<li>docs/hcl/index.html: update list of compatible T60 LCD panels</li>
+					<li>docs/index.html: more clarification of libreboot's stated purpose.</li>
+					<li>build-release: include the commitid file in the release archives</li>
+					<li>docs/index.html: Further emphasize the GNU/Linux requirement.</li>
+					<li>lenovobios_firstflash: fix BASH errors</li>
+					<li>lenovobios_secondflash: fix BASH errors</li>
+					<li>docs/install/x200_external.html: Tell user to switch MAC address.</li>
+					<li>docs/git/index.html: Add to the list of x86_64 compatible hosts.</li>
+					<li>docs/install/index.html: Remove old (obsolete) information.</li>
+					<li>docs/git/index.html: Say that the build dependencies are for src (and not nedeed for libreboot_bin)</li>
+					<li>build: re-factor the descriptor/gbe generating loop for GM45/ICH9M</li>
+					<li>X60, X60S and X60 Tablet now the same ROM images.</li>
+					<li>Add QEMU (q35/ich9) support to libreboot.</li>
+					<li>Add QEMU (i440fx/piix4) support to libreboot</li>
+					<li>docs/index.html: Re-write the description of what libreboot is.</li>
+					<li>docs/release.html: Add notes about how to use GPG.</li>
+					<li>build-release: delete the commitid file from release archives</li>
+					<li>build-release: create file named commitid after build-release</li>
+				</ul>
 			<h2>
 				Revisions for r20150126 (relative to r20150124)
 			</h2>
