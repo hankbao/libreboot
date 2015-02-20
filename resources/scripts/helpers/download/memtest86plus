@@ -29,7 +29,7 @@ set -u -e
 # Remove the old version that may exist
 # ----------------------------------------------------------------------------------
 
-echo "DOWNLOADING MEMTEST86+"
+printf "Downloading MemTest86+\n"
 
 rm -rf "memtest86+-5.01"
 
@@ -64,7 +64,7 @@ cp ../resources/memtest86/patch/Makefile .
 # we're done
 cd ../
 
-echo "FINISHED DOWNLOADING MEMTEST86+"
+printf "\n\n"
 
 # ------------------- DONE ----------------------
 

@@ -27,8 +27,10 @@ set -u -e
 # clean ich9deblob utility
 # --------------------------------------------------------------------
 
+printf "Cleaning the previous build of ich9deblob\n"
 cd resources/utilities/ich9deblob/
 make clean
 cd ../../../
+printf "\n\n"
 
 # ------------------- DONE ----------------------

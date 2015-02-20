@@ -29,7 +29,7 @@ set -u -e
 # Remove the old version that may still exist:
 # ---------------------------------------------------------------------
 
-echo "DOWNLOADING FLASHROM"
+printf "Downloading flashrom\n"
 
 rm -rf flashrom
 
@@ -44,15 +44,17 @@ svn co -r 1858 svn://flashrom.org/flashrom/trunk flashrom
 cd flashrom/
 
 # Add whitelist for X200:
+printf "Patching board_enable.c for X200 whitelist\n"
 patch board_enable.c < ../resources/flashrom/patch/x200whitelist.diff
 
 # Remove redundant definitions for the flash chips that
 # supported libreboot machines use. This removes the need
 # for the user to run with the "-c" argument on these machines
+printf "Patching flashchips.c to remove the redundant entries\n"
 patch flashchips.c < ../resources/flashrom/patch/purged_chips.diff
 
 cd ../
 
-echo "FINISHED DOWNLOADING FLASHROM"
+printf "\n\n"
 
 # ------------------- DONE ----------------------

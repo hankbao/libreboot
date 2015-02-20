@@ -11,8 +11,7 @@ set -e -u
 # will replace this script later on. For now, 
 # this will have to do.
 
-echo "finding blobs in coreboot..."
-
+printf "Searching for blobs in coreboot\n"
 cp deblob-check ../../../coreboot
 cd ../../../coreboot/
 
@@ -37,5 +36,5 @@ mv tocheck ../resources/utilities/coreboot-libre
 
 cd ../resources/utilities/coreboot-libre
 
-echo "open resources/utilities/coreboot-libre/tocheck in an editor"
-echo "this will contain the names of the files that you must decide whether they are blobs or not"
+printf "Done! open resources/utilities/coreboot-libre/tocheck in an editor\n"
+printf "This will contain the names of the files that you must decide whether they are blobs or not\n\n"

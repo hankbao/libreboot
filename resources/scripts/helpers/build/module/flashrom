@@ -27,6 +27,8 @@ set -u -e
 # Build "flashrom" (utility for flashing/dumping ROM's)
 # --------------------------------------------------------------------
 
+printf "Building flashrom\n"
+
 cd flashrom/
 
 make clean
@@ -77,6 +79,8 @@ done
 mv flashrom_normal flashrom
 
 cd ../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------
 

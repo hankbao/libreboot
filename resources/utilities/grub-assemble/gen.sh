@@ -22,6 +22,7 @@ grubdir="../../../grub"
 
 source "modules.conf"
 
+printf "Creating GRUB ELF executable for configuration '$1'\n"
 if [ "$1" = "vesafb" ]
 then
 	# Generate the grub.elf (vesafb)
@@ -54,4 +55,5 @@ else
 	echo "grub-assemble gen.sh: invalid mode '$1'"
 	exit 1
 fi
+printf "\n\n"
 

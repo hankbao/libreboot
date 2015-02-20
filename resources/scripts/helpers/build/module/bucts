@@ -27,6 +27,8 @@ set -u -e
 # Build BUC.TS utility (needed for flashing ROM's on X60/T60 while Lenovo BIOS is running)
 # --------------------------------------------------------------------
 
+printf "Building bucts\n"
+
 cd bucts/
 
 buildtype="unknown"
@@ -49,5 +51,7 @@ fi
 
 # done. go back to main directory
 cd ../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

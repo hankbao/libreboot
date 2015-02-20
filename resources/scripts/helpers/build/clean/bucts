@@ -27,8 +27,12 @@ set -u -e
 # clean bucts
 # --------------------------------------------------------
 
+printf "Cleaning the previous build of bucts\n"
+
 cd bucts/
 make clean
+
+printf "\n\n"
 
 # done. go back to main directory.
 cd ../

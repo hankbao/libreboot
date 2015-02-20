@@ -27,6 +27,8 @@ set -u -e
 # Build ich9deblob utility
 # --------------------------------------------------------------------
 
+printf "Building ich9deblob\n"
+
 cd resources/utilities/ich9deblob
 
 # clean it first
@@ -37,5 +39,7 @@ make
 
 # done. go back to main directory
 cd ../../../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

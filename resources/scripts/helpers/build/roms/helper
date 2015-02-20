@@ -31,7 +31,9 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
-cd coreboot
+printf "Helper script: build ROM images for '$1'\n"
+
+cd coreboot/
 
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
@@ -112,4 +114,6 @@ mv "$1" ../bin
 
 # go back to main source directory
 cd ../
+
+printf "\n\n"
 

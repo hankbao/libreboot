@@ -29,7 +29,7 @@ set -u -e
 # Remove the old version that may still exist
 # -------------------------------------------------------------------------------
 
-echo "DOWNLOADING GRUB"
+printf "Downloading GRUB\n"
 
 rm -rf grub
 
@@ -72,7 +72,7 @@ git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-
 # git am "../resources/grub/patch/0003-syslinux_parse-keep-initrd-in-kernel-the-command-lin.patch"
 
 cd ../
-echo "FINISHED DOWNLOADING GRUB"
+printf "\n\n"
 
 # ------------------- DONE ----------------------
 

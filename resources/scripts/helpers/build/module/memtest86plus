@@ -27,6 +27,8 @@ set -u -e
 # Build MemTest86+ payload (for GRUB)
 # --------------------------------------------------------------------
 
+printf "Building MemTest86+\n"
+
 cd "memtest86+-5.01"/
 
 # clean it first
@@ -37,5 +39,7 @@ make
 
 # done. go back to main directory
 cd ../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

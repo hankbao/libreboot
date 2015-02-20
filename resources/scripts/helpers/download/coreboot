@@ -24,6 +24,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
+
 # This grabs current base used, and applies patches
 # This is also used to run the deblob scripts.
 
@@ -47,39 +49,39 @@ git reset --hard 6532676f9328ca3bd197b714db4f1de23544cbde
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
 
-# Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)
+printf "Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
 
-# lenovo/x60: Enable legacy brightness controls (native graphics)
+printf "lenovo/x60: Enable legacy brightness controls (native graphics)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/4 && git cherry-pick FETCH_HEAD
 
-# Enable T60 native graphics
+printf "Enable T60 native graphics\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/9 && git cherry-pick FETCH_HEAD
-# Enable text-mode graphics for T60
+printf "Enable text-mode graphics for T60\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cherry-pick FETCH_HEAD
-# lenovo/t60: Enable legacy brightness controls (native graphics)
+printf "lenovo/t60: Enable legacy brightness controls (native graphics)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
 
-# Enable cstates 1 and 2 on macbook21. This reduces heat / power usage when the system is idle
+printf "Enable cstates 1 and 2 on macbook21. This reduces heat / power usage when the system is idle\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/23/7923/2 && git cherry-pick FETCH_HEAD
 
-# ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan
+printf "ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cherry-pick FETCH_HEAD
 
-# i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and "scrolling" backlight
+printf "i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and 'scrolling' backlight\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
 
-# northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)
+printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cherry-pick FETCH_HEAD
-# fix uneven backlight on X200 (when setting brightness low)
+printf "fix uneven backlight on X200 (when setting brightness low)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cherry-pick FETCH_HEAD
 
-# ThinkPad R400 support. Based on http://review.coreboot.org/#/c/8393/
+printf "ThinkPad R400 support. Based on http://review.coreboot.org/#/c/8393/\n"
 # This diff will be deleted later, and instead the patch will be fetched from coreboot gerrit
 # (and later, it won't even do that, once the R400 support is merged in coreboot)
 git am ../resources/libreboot/patch/r400.diff
 
-# Fix build issue when building coreboot without .git
+printf "Fix build issue when building coreboot without .git\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/23/8423/1 && git cherry-pick FETCH_HEAD
 # TODO: delete the above line, test these commits:
 # http://review.coreboot.org/#/c/8427/
@@ -88,9 +90,7 @@ git fetch http://review.coreboot.org/coreboot refs/changes/23/8423/1 && git cher
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
 
-# The git history (git diff command) shows what blobs were deleted 
-# along with the contents of those blobs. This needs to be deleted
-# for libreboot's purposes.
+printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
 rm -rf .git
 rm -f .gitreview
 rm -f .gitmodules
@@ -98,8 +98,10 @@ rm -f .gitignore
 
 cd ../
 
-# Deblob coreboot
+printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------
 

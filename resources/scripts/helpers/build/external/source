@@ -23,6 +23,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+printf "Creating source archive for flashrom and bucts\n"
+
 # delete the old data
 rm -rf tobuild
 rm -f tobuild.tar.xz
@@ -67,3 +69,5 @@ tar -c tobuild | xz -9e >tobuild.tar.xz
 
 # and delete the directory
 rm -rf tobuild/
+
+printf "\n\n"

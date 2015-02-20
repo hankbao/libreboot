@@ -25,6 +25,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+printf "Generating the release archives\n"
+
 arch="unknown"
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
 	then
@@ -50,8 +52,7 @@ cat .git/refs/heads/master > commitid
 # ### Delete old archives before continuing
 # ----------------------------------------------------------------------------------------------------------------------------
 
-echo "Deleting old release archives"
-
+printf "Deleting the old release archives\n"
 rm -f libreboot_*.tar.xz
 rm -f tobuild.tar.xz
 rm -rf release/
@@ -63,9 +64,12 @@ rm -rf libreboot_doc
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
 
+printf "\n\n"
+
 # ### Prepare libreboot_src archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
+printf "Copying libreboot sources to libreboot_src/\n"
 mkdir libreboot_src
 
 for resource in $(cat releasefilelist)
@@ -83,6 +87,8 @@ cd libreboot_src/
 # back to main checkout directory
 cd ../
 
+printf "\n\n"
+
 # ### Create the release/ directory where the archives will go
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -92,6 +98,8 @@ mkdir release/rom/
 
 # ### Prepare libreboot_docs archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
+
+printf "Creating libreboot_docs.tar.xz\n"
 
 cd release/
 
@@ -108,10 +116,14 @@ rm -rf libreboot_docs/
 
 cd ../
 
+printf "\n\n"
+
 # ### Further work in libreboot_src: delete *.git and *.svn
 # ### To save space since they are not useful in the release archives
 # ### Changes to these projects should be submitted upstream
 # ----------------------------------------------------------------------------------------------------------------------------
+
+echo "Deleting .git* and .svn* in the modules of libreboot_src/\n"
 
 cd libreboot_src/
 
@@ -144,14 +156,20 @@ rm -rf .git
 rm -f .gitignore
 cd ../
 
+printf "\n\n"
+
 cd ../
 
 # ### Prepare ROM archives ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
 
+printf "Generating ROM image archives for...\n"
+
 cd bin/
 for board in $(ls)
 do
+	printf "...$board"
+	
 	# show the libreboot commit ID in the archive
 	cat ../commitid > "$board"/commitid
 	
@@ -163,11 +181,17 @@ do
 	
 	# move the ROM images to the release/ directory
 	mv ../libreboot_"$board".tar.xz ../release/rom/
+	
+	printf " OK\n"
 done
 cd ../
 
+printf "\n\n"
+
 # ### Prepare libreboot_util archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
+
+printf "Generating libreboot_util.tar.xz\n"
 
 mkdir libreboot_util
 
@@ -351,6 +375,8 @@ cp resources/scripts/misc/ich9macchange libreboot_util/
 # for changing the GRUB background
 cp resources/scripts/misc/grub-background libreboot_util/
 
+printf "\n\n"
+
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
@@ -399,8 +425,10 @@ cat commitid > libreboot_src/commitid
 cat commitid > libreboot_util/commitid
 
 # create lzma compressed src archive
+printf "Compressing libreboot_src/ into libreboot_src.tar.xz\n"
 tar -c libreboot_src | xz -9e >libreboot_src.tar.xz
 
+printf "Compressing libreboot_util/ into libreboot_util.tar.xz\n"
 # create lzma compressed util archive
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
@@ -410,6 +438,8 @@ mv libreboot_util.tar.xz release/
 
 # Create a symlink to the commitid file, in release/
 cat commitid > release/commitid
+
+printf "\n\n"
 
 # ### Delete the uncompressed release directories
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -424,9 +454,11 @@ rm -rf libreboot_util
 # Move the archive to the release directory
 mv tobuild.tar.xz release/
 
-# DONE. See libreboot_src.tar.xz and libreboot_util.tar.xz
-# NOTE FOR FCHMMR: don't forget to add ARM binaries for flashrom
-# NOTE FOR FCHMMR: don't forget to add i386 binaries for flashrom/bucts
-# The tarball tobuild.tar.xz has been created with everything needed to build these utilities
+printf "Tar archives are stored in release/.\n"
+printf "NOTE: don't forget to add ARM binaries for flashrom.\n"
+printf "NOTE: don't forget to add i386 binaries for flashrom/bucts.\n"
+printf "The archive tobuild.tar.xz has been created with everything needed to build these utilities.\n"
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

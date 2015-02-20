@@ -27,8 +27,10 @@ set -u -e
 # clean i945-pwm utility
 # --------------------------------------------------------------------
 
+printf "Cleaning the previous build of i945-pwm\n"
 cd resources/utilities/i945-pwm
 make clean
 cd ../../../
+printf "\n\n"
 
 # ------------------- DONE ----------------------

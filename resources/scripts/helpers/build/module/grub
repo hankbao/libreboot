@@ -27,6 +27,8 @@ set -u -e
 # Build utilies needed for building GRUB payloads
 # ---------------------------------------------------------------------
 
+printf "Building GRUB\n"
+
 cd grub/
 
 # clean it first
@@ -36,6 +38,8 @@ cd grub/
 ./autogen.sh
 ./configure --with-platform=coreboot
 make
+
+printf "\n\n"
 
 # done. go back to main directory
 cd ../

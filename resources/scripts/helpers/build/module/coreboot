@@ -27,6 +27,8 @@ set -u -e
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 
+printf "Building the utilities in coreboot\n"
+
 cd coreboot
 
 # -----------------------------------------
@@ -53,5 +55,7 @@ make crossgcc-i386
 
 # done. go back to main libreboot_src directory
 cd ../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

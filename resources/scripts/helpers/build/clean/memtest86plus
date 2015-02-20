@@ -27,11 +27,15 @@ set -u -e
 # clean memtest86+
 # --------------------------------------------------------
 
+printf "Cleaning the previous build of MemTest86+\n"
+
 cd "memtest86+-5.01"/
 
 make clean
 
 # done. go back to main directory
 cd ../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------

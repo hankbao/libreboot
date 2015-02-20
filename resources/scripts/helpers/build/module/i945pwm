@@ -27,6 +27,8 @@ set -u -e
 # Build i945-pwm utility
 # --------------------------------------------------------------------
 
+printf "Building i945-pwm\n"
+
 cd resources/utilities/i945-pwm/
 
 make clean
@@ -35,5 +37,7 @@ make
 
 # done. go back to main directory
 cd ../../../
+
+printf "\n\n"
 
 # ------------------- DONE ----------------------
