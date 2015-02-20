@@ -3,6 +3,7 @@
 #  generic build script, for building libreboot (all of it)
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#                      2015 Patrick "P. J." McDermott <pj@pehjota.net>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
