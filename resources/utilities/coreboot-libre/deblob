@@ -21,7 +21,8 @@
 # This script assumes that the current working directory is the root
 # of the libreboot_src/ or git clone.
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 cd coreboot/
 

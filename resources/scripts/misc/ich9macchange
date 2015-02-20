@@ -18,7 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 arch="unknown"
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then

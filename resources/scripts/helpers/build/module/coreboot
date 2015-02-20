@@ -21,7 +21,8 @@
 # This script assumes that the working directory is the root
 # of libreboot_src or git
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------

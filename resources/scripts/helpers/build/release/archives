@@ -22,7 +22,8 @@
 # This script assumes that the current working directory when running
 # it is the root directory of the libreboot git repository clone.
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 arch="unknown"
 if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]

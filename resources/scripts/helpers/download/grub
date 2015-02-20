@@ -21,7 +21,8 @@
 # This script assumes that the working directory is the
 # root of libreboot_src or libreboot git.
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 # Get GRUB, revert to commit last used and apply patches.
 

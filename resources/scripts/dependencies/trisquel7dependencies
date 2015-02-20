@@ -2,7 +2,7 @@
 
 # for_trisquel7 script: installs build dependencies for Trisquel 7
 #
-#	Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 if [[ $EUID -ne 0 ]]; then
    echo "This script must be run as root" 

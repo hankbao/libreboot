@@ -1,6 +1,7 @@
 #!/bin/bash
 
-set -e
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -e -u
 
 # This is used when updating the version of
 # coreboot that libreboot uses, to know what
