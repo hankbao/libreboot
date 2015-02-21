@@ -20,28 +20,6 @@
 	</div>
 
 	<div class="section">
-
-		<h2 id="rebootkey">GnuPG public key (signing key)</h2>
-
-			<p>
-				pub&nbsp; 4096R/656F212E 2014-07-04 Libreboot Releases (signing key) &lt;releases@libreboot.org&gt;<br/>
-				Fingerprint=C923 4BA3 200C F688 9CC0&nbsp; 764D 6E97 D575 656F 212E 
-			</p>
-			<p>
-				Download the key:<br/>
-				$ <b>gpg --recv-keys 0x656F212E</b>
-			</p>
-			<p>
-				This key is not for email. It is only for verifying the release archives.
-			</p>
-			<p>
-				You can verify the downloaded archives as follows:<br/>
-				$ <b>for signature in $(ls libreboot*.tar.xz.sig); do gpg --verify $signature; done</b>
-			</p>
-			
-	</div>
-
-	<div class="section">
 		
 		<h2>Old Releases</h2>
 			<p>
