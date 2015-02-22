@@ -178,15 +178,19 @@
 
 			<p>
 				About fixing remaining LCD panels on 5345:<br/>
-				'polarity' is mentioned in coreboot log (cbmem -c). compare output (with working and non-working panel). (and see the other notes in docs/future/index.html)</p>
-                        <p>There was a theory that working panels are
-			  6bpc (bits per colour) and nonworking are
-			  8bpc, but all EDIDs that we have here are
-			  for 6bpc panels.</p>
+				'polarity' is mentioned in coreboot log (cbmem -c). compare output (with working and non-working panel). (and see the other notes in docs/future/index.html)
+         </p>
+         <p>
+				There was a theory that working panels are
+			   6bpc (bits per colour) and nonworking are
+			   8bpc, but all EDIDs that we have here are
+			   for 6bpc panels.
+			</p>
                         <p>We should compare coreboot logs
                           (from <code>cbmem -c</code> from systems with
                           working and nonworking panels.</p>
                         <p>How to dump EDID:</p>
+         <p>
 				# <b>apt-get install i2c-tools</b><br/>
 				# <b>modprobe i2c-dev</b><br/>
 				Find out the correct ID to use:<br/>
