@@ -190,8 +190,33 @@
 				Example:<br/>
 				# <b>i2cdump -y 2 0x50</b>
 			</p>
+			
 			<p>
-				This is the EDID information for an unsupported panel (LTN141XA-L01) on a T60 dumped with i2c-tools:
+				Working panel: EDID dump from LG-Philips LP150E05-A2K1:
+			</p>
+<pre>
+No size specified (using byte-data access)
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: XX ff ff ff ff ff ff 00 30 ae 43 40 00 00 00 00    X.......0?C@....
+10: 00 0f 01 03 80 1e 17 78 ea af 00 99 58 53 8c 2a    .??????x??.?XS?*
+20: 25 50 54 21 08 00 81 80 01 01 01 01 01 01 01 01    %PT!?.??????????
+30: 01 01 01 01 01 01 30 2a 78 20 51 1a 10 40 30 70    ??????0*x Q??@0p
+40: 13 00 31 e4 10 00 00 18 28 23 78 20 51 1a 10 40    ?.1??..?(#x Q??@
+50: 30 70 13 00 31 e4 10 00 00 18 00 00 00 0f 00 90    0p?.1??..?...?.?
+60: 43 32 90 43 28 14 06 00 32 0c 00 00 00 00 00 fe    C2?C(??.2?.....?
+70: 00 4c 50 31 35 30 45 30 35 2d 41 32 0a 20 00 9b    .LP150E05-A2? .?
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+</pre>
+
+			<p>
+				<b>Non-</b>working panel: EDID dump from Samsung LTN141XA-L01:
 			</p>
 <pre>
       0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
@@ -212,20 +237,20 @@
  e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
  f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 </pre>
+
 			<p>
-				This is the EDID information for a supported panel (LG-Philips LP150E05-A2K1) on a T60 dumped with i2c-tools:
+				<b>Non-</b>working panel: EDID dump from Samsung LTN150XG-L08:
 			</p>
 <pre>
-No size specified (using byte-data access)
      0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
-00: XX ff ff ff ff ff ff 00 30 ae 43 40 00 00 00 00    X.......0?C@....
-10: 00 0f 01 03 80 1e 17 78 ea af 00 99 58 53 8c 2a    .??????x??.?XS?*
-20: 25 50 54 21 08 00 81 80 01 01 01 01 01 01 01 01    %PT!?.??????????
-30: 01 01 01 01 01 01 30 2a 78 20 51 1a 10 40 30 70    ??????0*x Q??@0p
-40: 13 00 31 e4 10 00 00 18 28 23 78 20 51 1a 10 40    ?.1??..?(#x Q??@
-50: 30 70 13 00 31 e4 10 00 00 18 00 00 00 0f 00 90    0p?.1??..?...?.?
-60: 43 32 90 43 28 14 06 00 32 0c 00 00 00 00 00 fe    C2?C(??.2?.....?
-70: 00 4c 50 31 35 30 45 30 35 2d 41 32 0a 20 00 9b    .LP150E05-A2? .?
+00: 00 ff ff ff ff ff ff 00 30 ae 40 40 00 00 00 00    ........0?@@....
+10: 00 0f 01 03 80 1f 17 78 ea 2d 05 97 57 51 8a 27    .??????x?-??WQ?'
+20: 23 50 54 21 08 00 01 01 01 01 01 01 01 01 01 01    #PT!?.??????????
+30: 01 01 01 01 01 01 64 19 00 40 41 00 26 30 18 88    ??????d?.@A.&amp;0??
+40: 36 00 30 e4 10 00 00 19 28 15 00 40 41 00 26 30    6.0??..?(?.@A.&amp;0
+50: 18 88 36 00 30 e4 10 00 00 19 00 00 00 0f 00 61    ??6.0??..?...?.a
+60: 43 32 61 43 28 14 01 00 4c a3 58 47 00 00 00 fe    C2aC(??.L?XG...?
+70: 00 4c 54 4e 31 35 30 58 47 2d 4c 30 38 0a 00 6d    .LTN150XG-L08?.m
 80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
