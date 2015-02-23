@@ -284,6 +284,45 @@
 
 	<div class="section">
 
+		<h2 id="regdumps">Hardware register dumps</h2>
+
+		<p>
+			The coreboot wiki <a href="http://www.coreboot.org/Motherboard_Porting_Guide">shows</a>
+			how to collect various logs useful in porting to new
+			boards.  Following are outputs from the X200:
+		</p>
+
+		<ul>
+			<li>
+				X200 with Atmel AT25DF321 (4-MiB SOIC-8) flash
+				chip and Lenovo BIOS 3.18 (EC firmware 1.06):
+				<ul>
+					<li>lspci <a href="../future/dumps/x200-at25df321-lenovobios3.18/lspci.log">output</a></li>
+					<li>lsusb <a href="../future/dumps/x200-at25df321-lenovobios3.18/lsusb.log">output</a></li>
+					<li>superiotool <a href="../future/dumps/x200-at25df321-lenovobios3.18/superiotool.log">output</a></li>
+					<li>inteltool <a href="../future/dumps/x200-at25df321-lenovobios3.18/inteltool.log">output</a></li>
+					<li>ectool <a href="../future/dumps/x200-at25df321-lenovobios3.18/ectool.log">output</a></li>
+					<li>msrtool <a href="../future/dumps/x200-at25df321-lenovobios3.18/msrtool.log">output</a>,
+						<a href="../future/dumps/x200-at25df321-lenovobios3.18/msrtool.err">errors</a></li>
+					<li>dmidecode <a href="../future/dumps/x200-at25df321-lenovobios3.18/dmidecode.log">output</a></li>
+					<li>biosdecode <a href="../future/dumps/x200-at25df321-lenovobios3.18/biosdecode.log">output</a></li>
+					<li>nvramtool <a href="../future/dumps/x200-at25df321-lenovobios3.18/nvramtool.log">output</a></li>
+					<li><a href="../future/dumps/x200-at25df321-lenovobios3.18/dmesg.log">dmesg</a></li>
+					<li>flashrom probe <a href="../future/dumps/x200-at25df321-lenovobios3.18/flashrom_info.log">output</a>,
+						<a href="../future/dumps/x200-at25df321-lenovobios3.18/flashrom_info.err">errors</a></li>
+					<li>flashrom read <a href="../future/dumps/x200-at25df321-lenovobios3.18/flashrom_read.log">output</a>,
+						<a href="../future/dumps/x200-at25df321-lenovobios3.18/flashrom_read.err">errors</a></li>
+					<li><a href="../future/dumps/x200-at25df321-lenovobios3.18/pin_hwC0D0">/sys/class/sound/card0/hwC0D0/init_pin_configs</a></li>
+					<li><a href="../future/dumps/x200-at25df321-lenovobios3.18/codec%230">/proc/asound/card0/codec#0</a></li>
+					<li><a href="../future/dumps/x200-at25df321-lenovobios3.18/cpuinfo.log">/proc/cpuinfo</a></li>
+				</ul>
+			</li>
+		</ul>
+
+	</div>
+
+	<div class="section">
+
 		<h2 id="unsorted">Unsorted notes</h2>
 
 <pre>
@@ -300,6 +339,7 @@
 
 		<p>
 			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt;<br/>
 			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
