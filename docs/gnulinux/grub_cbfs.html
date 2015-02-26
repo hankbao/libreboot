@@ -18,7 +18,7 @@
 				Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
 				(where your GRUB menu comes from) is stored directly alongside libreboot
-				and it's GRUB payload executable, inside
+				and its GRUB payload executable, inside
 				the flash chip. In context, this means that installing distributions and managing them 
 				is handled slightly differently compared to traditional BIOS systems.
 			</p>
@@ -26,7 +26,7 @@
 				A libreboot (or coreboot) ROM image is not simply &quot;flat&quot;; there is an actual 
 				filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' 
 				allows you to change the contents of the ROM image. In this case, libreboot is configured 
-				such that the 'grub.cfg' and 'grubtest.cfg' files exists directly inside CBFS instead of 
+				such that the 'grub.cfg' and 'grubtest.cfg' files exist directly inside CBFS instead of 
 				inside the GRUB payload 'memdisk' (which is itself stored in CBFS).
 			</p>
 			<p>
@@ -49,21 +49,32 @@
 
 			<ul>
 				<li><a href="#getting_started">Getting started</a></li>
-				<li><a href="#libreboot_grub_config_ondisk">Don't want to flash a new ROM image?</a></li>
-				<li><a href="#build_cbfstool">Build 'cbfstool' from source</a></li>
-				<li><a href="#which_rom">Which ROM image should I use?</a></li>
-				<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
-				<li>
-					<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
+				<li><a href="#libreboot_grub_config_ondisk">Option A: don't flash a new ROM</a></li>
+				<li><a href="#libreboot_grub_config_flash">Option B: flash a new ROM</a></li>
+				<ul>
+					<li><a href="#tools">Get the tools ready</a></li>
 					<ul>
-						<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
-						<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
+						<li><a href="#locate_tools">Locate the tools in the binary release</a></li>
+						<li><a href="#build_tools">Build the tools from source</a></li>
 					</ul>
-				</li>
-				<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
-				<li><a href="#test_it">Test it!</a>
-				<li><a href="#final_steps">Final steps</a></li>
-				<li><a href="#troubleshooting">Troubleshooting</a></li>
+					<li><a href="#which_rom">Which ROM image should I use?</a></li>
+					<ul>
+						<li><a href="#use_prebuilt_rom">Use one of the provided ROM images</a></li>
+						<li><a href="#re-use_rom">Re-use the currently flashed ROM image</a></li>
+					</ul>
+					<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
+					<li>
+						<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
+						<ul>
+							<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
+							<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
+						</ul>
+					</li>
+					<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
+					<li><a href="#test_it">Test it!</a>
+					<li><a href="#final_steps">Final steps</a></li>
+					<li><a href="#troubleshooting">Troubleshooting</a></li>
+				</ul>
 			</ul>
 			
 	</div>
@@ -82,12 +93,6 @@
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
 			</p>
-			
-	</div>
-
-	<div class="section">
-		
-		<h2 id="libreboot_grub_config_ondisk">Don't want to flash a new ROM image?</h2>
 
 			<p>
 				There are several advantages to modifying the GRUB configuration stored in CBFS, but
@@ -99,6 +104,13 @@
 				to use a custom GRUB menu without flashing a new image, by loading a GRUB configuration
 				from a partition on the main storage instead.
 			</p>
+
+			
+	</div>
+
+	<div class="section">
+		
+		<h2 id="libreboot_grub_config_ondisk">Option A: don't flash a new ROM</h2>
 
 			<p>
 				By default, GRUB in libreboot is configured to scan all partitions on the main storage
@@ -139,17 +151,58 @@
 	</div>
 
 	<div class="section">
+		
+		<h2 id="libreboot_grub_config_flash">Option B: flash a new ROM</h2>
 
-		<h2 id="build_cbfstool">Build 'cbfstool' from source</h2>
+			<p>
+				Alternatively to editing the GRUB configuration file on your disk, you can also change the configuration that is
+				stored in the CBFS on the flash chip.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+	<div class="section">
+		<h2 id="tools">Get the tools ready</h2>
+
+		<p>
+			You will need to use the <b><i>cbfstool</i></b>, <b><i>rmodtool</i></b> and <b><i>flashrom</i></b> tools.
+			You can either use the pre-compiled binaries provided by the binary release of libreboot, or build the tools
+			yourself from source from the libreboot source code.
+		</p>
+
+		<div class="subsection">
+			<h3 id="locate_tools">Locate the tools in the binary release</h3>
+
+			<p>
+				If you are working with the binary release libreboot_util, you will find the <b><i>cbfstool</i></b> and
+				<b><i>rmodtool</i></b> binaries under ./cbfstool/{architecture}/ , where {architecture} refers to your 
+				hardware name for which your current running kernel is compiled for. You can find it by running:
+				<br/>
+				<b>$ uname -m</b>
+			</p>
+			<p>
+				The <b><i>flashrom</i></b> binary is located under ./flashrom/{architecture}/
+			</p>
+			<p>
+				Whenever one of the tools is used in a command in this tutorial, it will be called as, e.g., ./cbfstool <br/>
+				Please adapt the paths accordingly (e.g.: cbfstool/i686/cbfstool).
+			</p>
+		</div class="subsection">
+
+		<div class="subsection">
+			<h3 id="build_tools">Build the tools from source</h3>
 
 			<p>
 				If you are working with libreboot_src, then you can run <b><i>make</i></b> command in 
 				libreboot_src/coreboot/util/cbfstool to build the <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
-				executable.
+				executables. See <a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a> for
+				instructions on how to build <b><i>flashrom</i></b>.
+
 			</p>
-			<p>
-				Alternatively if you are working with libreboot_util, you will find binaries under ./cbfstool/
-			</p>
+		</div class="subsection">
 
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
@@ -162,21 +215,36 @@
 		<h2 id="which_rom">Which ROM image should I use?</h2>
 
 			<p>
-				You can work directly with one of the ROM images already included in the libreboot ROM archives. For the purpose of 
-				this tutorial it is assumed that your ROM image file is named <i>libreboot.rom</i>, so please make sure to adapt.
+				You can either work directly with one of the ROM images already included in the libreboot ROM archives, or re-use the ROM that
+				you have currently flashed. For the purpose of this tutorial it is assumed that your ROM image file is named <i>libreboot.rom</i>,
+				so please make sure to adapt.
 			</p>
 
-			<p>
-				If you want to re-use the ROM that you currently have flashed (and running) then see 
-				<a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a>
-				and then run:<br/>
-				<b>$ sudo ./flashrom -p internal -r libreboot.rom</b><br/>
-				Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). 
-				This will create a dump (copy) of your current firmware and name it <b>libreboot.rom</b>. 
-				You need to take ownership of the file. For example:<br/>
-				<b>$ sudo chown yourusername:yourusername libreboot.rom</b><br/>
-				<b># chown yourusername:yourusername libreboot.rom</b>
-			</p>
+			<div class="subsection">
+				<h3 id="use_prebuilt_rom">Use one of the provided ROM images</h3>
+				<p>
+					All ROMs are located under ./bin/{computer_model}/ . Make a working copy of the ROM you want to use:
+					<br/>
+					<b>$ cp ./bin/{computer_model}/{computer_model}_{keyboard_layout}_{mode}.rom libreboot.rom</b>
+					<br/>
+					{keyboard_layout} defines the keyboard layout that will be available on the GRUB console. This might be important
+					if you protect GRUB with a password later on and want to insert non-ASCII characters.
+					{mode} can be <i>vesafb</i> or <i>txtmode</i> and starts GRUB with a background image or in text mode.
+				</p>
+			</div>
+
+			<div class="subsection">
+				<h3 id="re-use_rom">Re-use the currently flashed ROM image</h3>
+				<p>
+					If you want to re-use the ROM that you currently have flashed (and running)				and then run:<br/>
+					<b>$ sudo ./flashrom -p internal -r libreboot.rom</b><br/>
+					Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). 
+					This will create a dump (copy) of your current firmware and name it <b>libreboot.rom</b>. 
+					You need to take ownership of the file. For example:<br/>
+					<b>$ sudo chown yourusername:yourusername libreboot.rom</b><br/>
+					<b># chown yourusername:yourusername libreboot.rom</b>
+				</p>
+			</div>
 
 			<p>
 				If you currently have flashed a ROM image from an older version, it is recommended to update first: 
@@ -200,8 +268,8 @@
 
 			<p>
 				The libreboot.rom file contains your <i>grub.cfg</i> and <i>grubtest.cfg</i> files. 
-				You should extract, modify and re-insert the copy first. grub.cfg will load first, 
-				but it has a menu entry for switching to the copy (grubtest.cfg).
+				grub.cfg will load first, but it has a menu entry for switching to the copy (grubtest.cfg).
+				Thus, you should extract, modify and re-insert the grubtest.cfg first. 
 				This reduces your chance of making a mistake that could make your machine unbootable (or very hard to boot).
 			</p>
 
@@ -211,7 +279,12 @@
 			</p>
 
 			<p>
-				Now you have a grubtest.cfg in cbfstool directory. Edit it however you wish.
+				Make a copy of the original file, before you modify it:<br/>
+				<b>$ cp grubtest.cfg grubtest_vanilla.cfg</b>
+			</p>
+
+			<p>
+				Now you have a grubtest.cfg in the cbfstool directory. Edit it however you wish.
 			</p>
 
 			<p>
@@ -221,15 +294,14 @@
 	</div>
 
 	<div class="section">
+		<h2 id="example_modifications">Example modifications for <i>grubtest.cfg</i></h2>
+
+		<p>
+			These are some common examples of ways in which the grubtest.cfg file can be modified.
+		</p>
+
 
 		<div class="subsection">
-
-			<h2 id="example_modifications">Example modifications for <i>grubtest.cfg</i></h2>
-
-				<p>
-					These are some common examples of ways in which the grubtest.cfg file can be modified.
-				</p>
-
 				<h3 id="example_modifications_trisquel">Trisquel GNU/Linux-libre</h3>
 
 					<p>
@@ -310,13 +382,15 @@
 						There are lots of possible variations so please try to adapt.
 					</p>
 
-				<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h3>
+		</div>
 
-					<p>
-						You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
-						are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
-					</p>
+		<div class="subsection">
+			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h3>
 
+				<p>
+					You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
+					are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
+				</p>
 		</div>
 
 		<p>
@@ -458,6 +532,7 @@
 
 		<p>
 			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Copyright &copy; 2015 Julian Mehne &lt;juli@nmehne.de&gt;<br/>
 			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
 		</p>
