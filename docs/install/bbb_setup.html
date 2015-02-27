@@ -40,13 +40,8 @@
 						(they break easily).
 					</li>
 					<li>
-						<b>External 3.3V DC power supply</b>. The one used by this
-						author has the label HF100W-SF-3.3 on it, but any decent
-						supply will be fine. Some people use the 3.3V from an ATX
-						PSU for instance (the kind that you get on a typical
-						Intel/AMD desktop computer. 6A supply should be fine,
-						the one used by this author is 20A (it won't actually use
-						that, it's just what the PSU is capable of).
+						<b>External 3.3V DC power supply</b>. 
+						An ATX power supply / PSU (common on Intel/AMD desktop computers) will work for this.
 					</li>
 					<li>
 						<b>jumper cables</b> (2.54mm / 0.1&quot; headers)
@@ -77,41 +72,27 @@
 	<div class="section">
 
 		<h1>Setting up the 3.3V DC PSU</h1>
+
 			<p>
-				This section is probably useless to you. For example, you might be using an ATX PSU instead. If so, set that up
-				for 3.3V power and ignore this section.
+				ATX PSU pinouts are on <a href="https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diagrams">wikipedia</a>
 			</p>
 			<p>
-				With my PSU, first I had wire up the mains power cable. Any clover or kettle lead will do. Cut the end off (not the one
-				that goes in the wall, but the kettle/clover connector).
-				Strip the protection away by a decent length, then strip the wires inside so that a decent amount of
-				copper is shown. Then wire up earth/live/neutral. This will vary according to what country you live in
-				and/or the colour codes that your cable uses inside. <b>Make sure to get this right, as a botched job
-				could result in extreme damage to you and your surroundings. Here's what mine looks like:<br/>
-				<img src="images/x200/psu_power.jpg" alt="" />
-			<p>
-				Make sure that the plug (for the wall) has the correct fuse. In my case I had a 240V wall socket, and the device
-				says that it accepts 1.5A at that voltage, so I used the smallest fuse available (3A). For 110-120V the device
-				says it needs 2.8A.</b> Also, if yours looks like in the image linked above, make sure to wrap electrical tape (lots)
-				around the terminals, for safety. (otherwise, don't touch the terminals while the PSU is plugged in).
+				On 20-pin ATX PSUs, you can use pin 1 or 2 (orange) for 3.3V, and any of the ground/earth sources (black cables).
+				Short PS_ON / Power on (green) to a ground (black. there is one right next to it) using a wire/paperclip/jumper then
+				power on the PSU.
 			</p>
 			<p>
-				Now take a red and black 20cm female-female jumper lead, and cut one of the ends off. Strip away the bare copper by about 1 or
-				1.5cm so you get this:<br/>
-				<img src="images/x200/stripped_jumper_lead.jpg" alt="" />. 
+				On newer 24-pin ATX PSUs, there is an additional 3.3V (orange) on pin 12.
 			</p>
 			<p>
-				Black goes on 0V, red goes on +V. In my case, I removed those screws from my PSU like this:<br/>
-				<img src="images/x200/psu_screws_removed.jpg" alt="" />.
+				You only need one 3.3V supply and one ground for the flash chip, after grounding PS_ON to ground.
+				Multiple 3.3V supplies means that you could theoretically power multiple flash chips at once with the
+				same PSU.
 			</p>
+			
 			<p>
-				Then I twisted the exposed copper on the jumper leads (so that they don't fray), and wrapped each to one of the
-				screws each, around it near the head. I then screwed them in:<br/>
-				<img src="images/x200/psu_jumper_leads.jpg" alt="" />
-			</p>
-			<p>
-				If you are using a different PSU, then the steps will change from those above. Anyway, once you are satisfied,
-				continue reading...
+				Here is an example set up:<br/>
+				<img src="images/x200/psu33.jpg" alt="" title="Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt;" />
 			</p>
 			
 	</div>
