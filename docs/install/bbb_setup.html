@@ -15,13 +15,18 @@
 
 	<div class="section">
 		<h1 id="pagetop">How to programme an SPI flash chip with the BeagleBone Black</h1>
-			<p>This section documents how to use the BBB as an external flashrom programmer, for reading and writing an SPI flash chip.</p>
+			<p>
+				This document exists as a guide for reading from or writing to an SPI flash chip with the BeagleBone Black,
+				using the <a href="http://flashrom.org/Flashrom">flashrom</a> software. 
+				BeagleBone Black rev. C was used when creating this guide, but earlier revisions
+				may also work.
+			</p>
 			<p><a href="index.html">Back to previous index</a></p>
 	</div>
 
-	<div class="section">
+	<div class="section" id="hardware_requirements">
 
-		<h1 id="hardware_requirements">Hardware requirements</h1>
+		<h1>Hardware requirements</h1>
 		
 			<p>
 				Shopping list (pictures of this hardware is shown later):
@@ -30,6 +35,7 @@
 					<li>
 						External SPI programmer: <b>BeagleBone Black</b> (rev. C)
 						is highly recommended. Sometimes referred to as 'BBB'.
+						<a href="http://beagleboard.org/black">This page</a> contains a list of distributors.
 					</li>
 					<li>
 						Clip for connecting to the flash chip: if you have a SOIC-16
@@ -40,11 +46,16 @@
 						(they break easily).
 					</li>
 					<li>
-						<b>External 3.3V DC power supply</b>. 
+						<b>External 3.3V DC power supply</b>, for powering the flash chip.
 						An ATX power supply / PSU (common on Intel/AMD desktop computers) will work for this.
 					</li>
 					<li>
-						<b>jumper cables</b> (2.54mm / 0.1&quot; headers)
+						<b>External 5V DC power supply</b>, for powering the BBB.
+						The BeagleBone can have power supplied via USB, but a
+						dedicated power supply is recommended. 
+					</li>
+					<li>
+						<b>Pin header / jumper cables</b> (2.54mm / 0.1&quot; headers)
 						You should get male-male, male-female and female-female
 						cables in 10cm and 20cm sizes. Just get a load of them.
 					</li>
@@ -53,13 +64,9 @@
 						with one.)
 					</li>
 					<li>
-						<b>FTDI serial board</b>, for unbricking the BeagleBone if
-						necessary.
-					</li>
-					<li>
-						<b>5V DC power supply</b> (from wall outlet to the BeagleBone).
-						The BeagleBone can have power supplied via USB, but a
-						dedicated power supply is recommended. 
+						<b>FTDI TTL cable or debug board</b>, for accessing the serial console on your BBB.
+						<a href="http://elinux.org/Beagleboard:BeagleBone_Black_Serial">This page</a> contains
+						a list.
 					</li>
 				</ul>
 		
@@ -69,7 +76,7 @@
 			
 	</div>
 		
-	<div class="section">
+	<div class="section" id="psu33">
 
 		<h1>Setting up the 3.3V DC PSU</h1>
 
@@ -91,46 +98,63 @@
 			</p>
 			
 			<p>
+				The male end of a 0.1&quot; or 2.54mm header cable is not thick enough to remain permanently
+				connected to the ATX PSU on its own.
+				When connecting header cables to the connector on the ATX PSU, use a female end attached to
+				a thicker piece of wire (you could use a paper clip), or wedge the male end of the jumper cable
+				into the sides of the hole in the connector, instead of going through the centre.
+			</p>
+			
+			<p>
 				Here is an example set up:<br/>
 				<img src="images/x200/psu33.jpg" alt="" title="Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt; CC BY-SA 3.0 or later" />
 			</p>
 			
 	</div>
 	
-	<div class="section">
+	<div class="section" id="bbb_access">
 		
-		<h1>Setting up the BBB</h1>
+		<h1>Accessing the operating system on the BBB</h1>
 			<p>
-				Your BBB will have an sshd with no password on root. Find it's IP address
-				(it will use DHCP by default) and set a root password. The steps below
-				are done while SSH'd into a BBB.
+				The operating system on your BBB will probably have an SSH daemon
+				running where the root account has no password. Use SSH to access
+				the operating system and set a root password. By default, the OS
+				on your BBB will most likely use DHCP, so it should already have an IP
+				address.
 			</p>
 			<p>
-				You can also use a serial FTDI debug board, with GNU Screen (example):<br/>
-				# <b>screen /dev/ttyUSB0 115200</b><br/>
-				<img src="images/x200/ftdi.jpg" alt="" />
-				<img src="images/x200/ftdi_port.jpg" alt="" /><br/>
-				show an FTDI debug board in use. With screen you can then login as root, like you would using SSH.<br/>
-				Using this, you can also see text output (from kernel, etc) when booting the machine.
+				You will also be using the OS on your BBB for programming an SPI flash chip.
 			</p>
+			<h2>Alternatives to SSH (in case SSH fails)</h2>
+				<p>
+					You can also use a serial FTDI debug board with GNU Screen, to access the serial console.<br/>
+					# <b>screen /dev/ttyUSB0 115200</b><br/>
+					Here are some example photos:<br/>
+					<img src="images/x200/ftdi.jpg" alt="" />
+					<img src="images/x200/ftdi_port.jpg" alt="" /><br/>
+				</p>
+				<p>
+					You can also connect the USB cable from the BBB to another computer and a new network interface will appear,
+					with its own IP address. This is directly accessible from SSH, or screen:<br/>
+					# <b>screen /dev/ttyACM0 115200</b>
+				</p>
+				<p>
+					You can also access the uboot console, using the serial method
+					instead of SSH.
+				</p>
+			
+	</div>
+	
+	<div class="section" id="spidev">
+		
+		<h1>Setting up spidev on the BBB</h1>
+		
 			<p>
-				You can also simply connect the USB cable from the BBB to another computer and a new network interface will appear,
-				with it's own IP address: this is the BBB. You can SSH into that. Or, you can (example):<br/>
-				# <b>screen /dev/ttyACM0 115200</b>
+				Log on as root on the BBB, using either SSH or a serial console as defined in
+				<a href="#bbb_access">#bbb_access</a>. Make sure that you have internet access
+				on your BBB.
 			</p>
-			<p>
-				These instructions may or may not work for you. They are simply the steps that this author took.
-			</p>
-			<p>
-				setting up SPIDEV on the BBB: <a href="http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0">http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0</a>
-				- If you only setup SPI0, you don't have to disable the HDMI out. (you only need one).
-				That guide is for seting up the device overlay for SPIDEV, last part is to make it persist across reboots.
-				Needed to turn the BBB into an SPI flasher.
-			</p>
-			<p>
-				Don't bother modifying uEnv.txt. it won't work;
-				use the workaround here instead: <a href="http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#Loading_custom_capes">http://elinux.org/Beagleboard:BeagleBoneBlack_Debian#Loading_custom_capes</a>.
-			</p>
+		
 			<p>
 				Follow the instructions at <a href="http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0">http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0</a>
 				up to (and excluding) the point where it tells you to modify uEnv.txt
@@ -166,26 +190,9 @@ fi
 			</p>
 				Run <b>apt-get update</b> and <b>apt-get upgrade</b> then reboot the BBB, before continuing.
 			</p>
+
 			<p>
-				Run those commands:<br/>
-				# <b>echo BB-SPI0-01 &gt; /sys/devices/bone_capemgr.*/slots</b><br/>
-				Then I did:<br/>
-				# <b>ls -al /dev/spidev0.*</b><br/>
-				<i>ls: cannot access /dev/spidev0.*: No such file or directory</i><br/>
-				Then I rebooted and did:<br/>
-				# <b>cat /sys/devices/bone_capemgr.*/slots</b><br/>
-				Output:
-			</p>
-<pre>
- 0: 54:PF--- 
- 1: 55:PF--- 
- 2: 56:PF--- 
- 3: 57:PF--- 
- 4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
- 5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-</pre>
-			<p>
-				And then:<br/>
+				Check that the firmware exists:<br/>
 				# <b>ls /lib/firmware/BB-SPI0-01-00A0.*</b><br/>
 				Output:
 			</p>
@@ -207,16 +214,9 @@ fi
  5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
  7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 </pre>
+
 			<p>
-				Then check if the device exists:<br/>
-				# <b>ls -al /dev/spidev0.*</b><br/>
-				Output:
-			</p>
-<pre>
-ls: cannot access /dev/spidev0.*: No such file or directory
-</pre>
-			<p>
-				It didn't exist under that name, but I then did:<br/>
+				Verify that the spidev device now exists:<br/>
 				# <b>ls -al /dev/spid*</b><br/>
 				Output:
 			</p>
@@ -231,7 +231,7 @@ crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 				entry already exists.
 			</p>
 			<p>
-				Get flashrom from libreboot_util release archive, or build it from libreboot_src/git if you need to.
+				Get flashrom from the libreboot_util release archive, or build it from libreboot_src/git if you need to.
 				An ARM binary (statically compiled) for flashrom exists in libreboot_util releases.
 			</p>
 			
@@ -253,7 +253,7 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 			
 	</div>
 	
-	<div class="section">
+	<div class="section" id="clip">
 			
 		<h1>
 			Connecting the Pomona 5250/5252
@@ -308,10 +308,6 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 				<img src="images/x200/5252_bbb0.jpg" alt="" />
 				<img src="images/x200/5252_bbb1.jpg" alt="" />
 			</p>
-			
-		<p>
-			That's basically it. Now refer back to the <a href="index.html">installation</a> page for how to use this on your board.
-		</p>
 			
 		<p>
 			<a href="#pagetop">Back to top of page.</a>
