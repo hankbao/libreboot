@@ -616,8 +616,15 @@
 			</p>
 
 			<p>
-				After that, build the ROM images:<br/>
-				$ <b>./build roms withgrub</b>
+				After that, build the ROM images (for all boards):<br/>
+				$ <b>./build roms withgrub</b><br/>
+				Alternatively, you can build for a specific board or set of boards.
+				For example:<br/>
+				$ <b>./build roms withgrub x60</b><br/>
+				$ <b>./build roms withgrub x200_8mb</b><br/>
+				$ <b>./build roms withgrub x60 x200_8mb</b><br/>
+				The list of board options can be found by looking at the directory
+				names in <b>resources/libreboot/config/</b>.
 			</p>
 
 			<p>
