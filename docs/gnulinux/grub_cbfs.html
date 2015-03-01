@@ -136,7 +136,7 @@
 			
 			<p>
 				If you want to adapt a copy of the existing <i>libreboot</i> GRUB configuration and use that for the libreboot_grub.cfg file, then
-				follow <a href="#build_cbfstool">#build_cbfstool</a>, <a href="#which_rom">#which_rom</a> and
+				follow <a href="#tools">#tools</a>, <a href="#which_rom">#which_rom</a> and
 				<a href="#extract_grubtest">#extract_grubtest</a> to get the <b><i>grubtest.cfg</i></b>. 
 				Rename <b><i>grubtest.cfg</i></b> to <b><i>libreboot_grub.cfg</i></b> and save it to <b><i>/boot/grub/</i></b>
 				on the running system where it is intended to be used. Modify the file at that location however you see fit, 
@@ -223,7 +223,9 @@
 			<div class="subsection">
 				<h3 id="use_prebuilt_rom">Use one of the provided ROM images</h3>
 				<p>
-					All ROMs are located under ./bin/{computer_model}/ . Make a working copy of the ROM you want to use:
+					Libreboot ROM images are distributed in separate tar archives, named {computer_model}.tar.xz.
+					If you build from source without generated any release archives,
+					the ROM images will be in ./bin/{computer_model}/. Make a working copy of the ROM you want to use:
 					<br/>
 					<b>$ cp ./bin/{computer_model}/{computer_model}_{keyboard_layout}_{mode}.rom libreboot.rom</b>
 					<br/>
