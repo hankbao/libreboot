@@ -588,28 +588,30 @@
 	<div class="section">
 		<h2>Optional: Use Keyfile in Initramfs to unlock encrypted root</h2>
 		<p>
-			Using the above Installation method, you will have to unlock the encrypted Filesystems two times.
-			Once in Grub and once during the boot of Parabola. <br/>
-			In order to circumvent this, it is possible to inlcude a Keyfile into the Initramfs of Parabola and unlock it at boot.<br/>
-			As mkinitcpio in Parabola and Archlinux needs patching for this to work, it is currently more of a "dirty hack" until it gets merged.<br/>
-			Everytime the mkinitcpio Package gets updated, you need to reapply the patch, or add mkinitcpio to HoldPkg in /etc/pacman.conf, this way it won't get updated.<br/>
+			Using the above installation method, you will have to unlock the encrypted file system twice
+			once in GRUB, and again when booting Parabola).
+			To circumvent this, you can insert a keyfile into the initramfs. This is generally safe, because the /boot/ directory is encrypted.
+			You will need to apply a patch for this to work, until the patch is merged upstream.
+			Every time the mkinitcpio package is updated, you will need to re-apply the patch (recommended)
+			or add mkinitcpio to HoldPkg in /etc/pacman.conf (<b>not</b> recommended).
 			<br/>
-			Download the encrypt.patch for the hook from the Feature request that is open : <a href=https://bugs.archlinux.org/index.php?do=details&action=details.addvote&task_id=31877>FS#31877</a><br/>
+			Download the encrypt.patch file from this page:
+			<a href=https://bugs.archlinux.org/index.php?do=details&action=details.addvote&task_id=31877>FS#31877</a><br/>
 			Patch the encrypt hook:<br/>
 			# <b>patch /usr/lib/initcpio/hooks/encrypt /path/to/encrypt.patch</b><br/>
 			Create a Keyfile:<br/>
 			# <b>dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile iflag=fullblock</b><br/>
-			Add Keyfile to the Luks Device:<br/>
+			Add the keyfile to the Luks Device:<br/>
 			# <b>cryptsetup luksAddKey /dev/sdX /etc/mykeyfile</b><br/> 
-			Add Keyfile to the initramfs by adding it to FILES in /etc/mkinitcpio.conf, for example:<br/>
+			Add the keyfile to the initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:<br/>
 			# <b>FILES="/etc/mykeyfile"</b><br/>
-			Recreate the initramfs Image, replace linux-libre with whatever flavour of Kernel you are using.<br/>
+			Re-create the initramfs image:<br/>
 			# <b>mkinitcpio -p linux-libre</b><br/>
-			Reboot and add the following to the kernel command line in Grub:<br/>
+			Reboot and add the following to the kernel command line in GRUB:<br/>
 			# <b>cryptkey=initramfs:/etc/mykeyfile</b><br/>
 			<br/>
-			If everything works as expected you can permanently add the kernel parameter to the grub config inside your image and reflash it.
-			
+			If everything works as expected, permanently add the kernel parameter to the GRUB config using
+			the instructions at <a href="grub_cbfs.html">grub_cbfs.html</a>.
 		</p>
 	
 	</div>
