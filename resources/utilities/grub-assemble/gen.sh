@@ -7,7 +7,8 @@
 # The original grub-assemble that this tool is based on:
 # https://gitorious.org/gnutoo-for-coreboot/grub-assemble
 
-set -u -e -v
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
 
 if (( $# != 1 )); then
 	echo "Usage: ./gen.sh mode"
