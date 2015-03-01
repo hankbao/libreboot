@@ -95,23 +95,23 @@ done
 # Then put them in the ROM images.
 if [ -d bin/ ]; then
 	cd bin/
-	../resources/utilities/ich9deblob/ich9gen
 	for board in "x200" "r400"
 	do
 		for romsize in "4m" "8m"
 		do	
 			if [ -d "$board"_"$romsize"b/ ]; then
 				cd "$board"_"$romsize"b/
+				../../resources/utilities/ich9deblob/ich9gen
 				for rom in $(ls)
 				do
-					dd if=../ich9fdgbe_"$romsize".bin of="$rom" bs=1 count=12k conv=notrunc
+					dd if=ich9fdgbe_"$romsize".bin of="$rom" bs=1 count=12k conv=notrunc
 				done
+				rm -f ich9fdgbe_4m.bin
+				rm -f ich9fdgbe_8m.bin
 				cd ../
 			fi
 		done
 	done
-	rm -f ich9fdgbe_4m.bin
-	rm -f ich9fdgbe_8m.bin
 	cd ../
 fi
 
