@@ -28,7 +28,7 @@
 
 			<div class="important">
 				<h2>
-					See <a href="#critical_tasks">critical tasks</a> and <a href="#other_tasks">other tasks</a>.
+					See <a href="#critical_tasks">tasks</a> for the current TODO list.
 				</h2>
 			</div>
 			
@@ -123,10 +123,31 @@
 
 		<div class="subsection">
 
-			<h2 id="critical_tasks">
-				Critical tasks for future release
+			<h2 id="tasks">
+				Tasks for future release
 			</h2>
 				<ul>
+					<li>
+						Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
+						Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
+						that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
+						the build scripts know how to build things other than just coreboot/grub.
+						<ul>
+							<li>Allwinner A10 (ARM) SoCs</li>
+							<li>PMON?</li>
+							<li>barebox (u-boot derivative)</li>
+							<li>etc</li>
+						</ul>
+					</li>
+					<li>
+						GRUB: analyse how coreboot builds GRUB. Does it use it's own toolchain? Look into simplifying the building
+						of GRUB (and memtest86+) using coreboot's own toolchain (crossgcc) instead of distro toolchain.
+					</li>
+					<li>
+						.spd.hex files. These aren't blobs? Don't remove them? (in coreboot). See deblob script. 
+						Categorize blobs and non-blobs more clearly, explaining what they are for
+						and why they are (or are not) blobs.
+					</li>
 					<li>
 						i945: fix linux (if possible). VBT. http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html
 						http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html
@@ -193,15 +214,6 @@
 							</li>
 						</ul>
 					</li>
-				</ul>
-
-		</div>
-
-		<div class="subsection">
-			<h2 id="other_tasks">
-				other tasks
-			</h2>
-				<ul>
 					<li>add roda rk9 support (contact nico to ask for more details about hw). This is GM45 but these machines do not have a descriptor (no ME), should be easy</li>
 					<li>
 						port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).

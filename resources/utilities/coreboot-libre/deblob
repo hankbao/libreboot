@@ -253,6 +253,9 @@ rm -f \
 
 # --------------------------------------
 # Misunderstood (weird: purpose unknown)
+# According to mrnuke and Stepan in #coreboot, these aren't blobs. Todo: investigate
+# <ruik> fchmmr: lol, check JEDEC standard for SPD format
+# <mtjm> from my log of #libreboot: "11:56 < mtjm> re the deblobbing, you might like https://en.wikipedia.org/wiki/Serial_presence_detect" (Tue Aug 12 2014)
 # --------------------------------------
 rm -f \
 "src/mainboard/google/slippy/Micron_4KTF25664HZ.spd.hex" \
