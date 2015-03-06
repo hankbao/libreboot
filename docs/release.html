@@ -244,7 +244,13 @@
 					
 				<h3>Payloads</h3>
 					<ul>
-						<li>Add ProteanOS payload to machines with big enough flash chips. (eg X200/R400)</li>
+						<li>
+							Add ProteanOS payload to machines with big enough flash chips. (eg X200/R400).
+							This page (outdated, but still useful according to the maintainer) has some info:
+							<a href="http://www.proteanos.com/doc/plat/porting/">http://www.proteanos.com/doc/plat/porting/</a>.
+							pehjota says that once the port is done, prokit can be modified to generate the entire
+							distribution as a vmlinuz and initrd.img file.
+						</li>
 						<li>
 							Related to MemTest86+:
 							<ul>
@@ -348,6 +354,11 @@
 				<h3>Project (institutional) improvements</h3>
 					<ul>
 						<li>
+							Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
+							Consult with the openlunchbox project (and maybe others) on getting hardware manufactured
+							with libreboot support (out of the box, from the factory). <b>This is sorely needed in libreboot.</b>
+						</li>
+						<li>
 							Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
 							Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
 							that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
@@ -357,6 +368,10 @@
 								<li>PMON?</li>
 								<li>barebox (u-boot derivative)</li>
 								<li>etc</li>
+								<li>
+									<a href="http://zedboard.org/product/zedboard">http://zedboard.org/product/zedboard</a>
+									might be a candidate, according to the main developer of openlunchbox.
+								</li>
 							</ul>
 						</li>
 						<li>
@@ -365,6 +380,17 @@
 							and <a href="http://projects.mtjm.eu/work_packages/21">http://projects.mtjm.eu/work_packages/21</a>
 						</li>
 					</ul>
+					
+				<h3>EC firmware</h3>
+					<p>
+						<a href="http://www.coreboot.org/Embedded_controller">http://www.coreboot.org/Embedded_controller</a>
+						Replace this on all libreboot targets. Some laptops use an extra SPI flash chip for the EC, some
+						have EC in the main chip, some don't use SPI flash at all but have the firmware inside the EC chip itself.
+						If the EC has integrated flash then you need to be able to get to the pins on the chip or be able to program them over LPC or SPI (if they have that feature).
+						The lenovo laptops currently supported in libreboot all use H8 EC chips (contains flash inside the chip).
+						Read the datasheets on how to externally programme the EC. Chromebooks seem to have free EC
+						(<a href="https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/">https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/</a>).
+					</p>
 					
 		</div>
 
