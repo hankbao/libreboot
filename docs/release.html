@@ -128,6 +128,99 @@
 			</h2>
 				<ul>
 					<li>
+						Documentation improvements:
+						<ul>
+							<li>
+								Convert documentation to Sphinx/ReST
+								See <a href="http://projects.mtjm.eu/work_packages/5">http://projects.mtjm.eu/work_packages/5</a>
+								and <a href="http://projects.mtjm.eu/work_packages/12">http://projects.mtjm.eu/work_packages/12</a>
+							</li>
+							<li>
+								<b>
+									Maintainence manual. How to contribute to libreboot.
+									See <a href="http://projects.mtjm.eu/work_packages/11">http://projects.mtjm.eu/work_packages/11</a>
+								</b>
+							</li>
+						</ul>
+					</li>
+					<li>
+						Make libreboot (all of it!) build reproducibly. This is very important.
+						See <a href="http://projects.mtjm.eu/work_packages/16">http://projects.mtjm.eu/work_packages/16</a>.
+					</li>
+					<li>
+						Add information from hw registers on all boards. See
+						<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a>
+					</li>
+					<li>
+						Reduce the size of libreboot releases.
+						See <a href="http://projects.mtjm.eu/work_packages/19">http://projects.mtjm.eu/work_packages/19</a>
+						<ul>
+							<li>
+								Proposal: unify ROM images (don't duplicate).
+								See <a href="http://projects.mtjm.eu/work_packages/20">http://projects.mtjm.eu/work_packages/20</a>.
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="http://projects.mtjm.eu/work_packages/13">Port to as many GM45 laptops as possible</a>
+						<ul>
+							<li>
+								add roda rk9 support (contact nico to ask for more details about hw). 
+								This is GM45 but these machines do not have a descriptor (no ME), should be easy
+							</li>
+							<li>
+								ThinkPad T400: <a href="http://projects.mtjm.eu/work_packages/41">http://projects.mtjm.eu/work_packages/41</a>
+							</li>
+							<li>
+								ThinkPad T500: <a href="http://projects.mtjm.eu/work_packages/42">http://projects.mtjm.eu/work_packages/42</a>
+							</li>
+							<li>
+								ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
+							</li>
+							<li>
+								port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).
+								ME isn't an issue, because its GM45 so it could be removed (it looks like this machine might also be shipped in 
+								non-descriptor mode by default, like the roda rk9). 
+								Search <b>jv50 block diagram filetype:pdf</b> for schematics.
+								(jv50 is written on the board); noone seems to have found any documentation for the EC chip, but
+								maybe it could be sufficiently reverse engineered via serialice and ectool.
+							</li>
+							<li>
+								T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
+								is the main blocker there. They both probably use WSON-8 flash chips.
+							</li>
+							<li>
+								Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. (maybe other machines)
+								See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						Fix these issues on GM45/GS45 targets:
+						<ul>
+							<li>
+								X200: text-mode is broken. only framebuffer graphics work.
+							</li>
+						</ul>
+					</li>
+					<ul>
+						Related to MemTest86+:
+						<ul>
+							<li>Memtest86+ is currently broken in text-mode. investigate</li>
+							<li>
+								Todo: modify memtest86+ to work with libpayload (coreboot framebuffer) and delete all the text-mode ROM images.
+								See <a href="http://projects.mtjm.eu/work_packages/17">http://projects.mtjm.eu/work_packages/17</a>
+							</li>
+							<li>Make memtest86+ build using coreboot's own crossgcc toolchain.</li>
+						</ul>
+					</ul>
+					<ul>
+						Related to GRUB:
+						<ul>
+							<li>Make GRUB build using coreboot's own crossgcc toolchain</li>
+						</ul>
+					</ul>
+					<li>
 						Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
 						Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
 						that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
@@ -140,43 +233,57 @@
 						</ul>
 					</li>
 					<li>
-						GRUB: analyse how coreboot builds GRUB. Does it use it's own toolchain? Look into simplifying the building
-						of GRUB (and memtest86+) using coreboot's own toolchain (crossgcc) instead of distro toolchain.
+						Set up a routine (project-wise) for testing each machine with the latest kernel version.
+						See <a href="http://projects.mtjm.eu/work_packages/22">http://projects.mtjm.eu/work_packages/22</a>
+						and <a href="http://projects.mtjm.eu/work_packages/21">http://projects.mtjm.eu/work_packages/21</a>
 					</li>
 					<li>
-						.spd.hex files. These aren't blobs? Don't remove them? (in coreboot). See deblob script. 
-						Categorize blobs and non-blobs more clearly, explaining what they are for
-						and why they are (or are not) blobs.
+						Improve the deblobbing scripts (see <a href="http://projects.mtjm.eu/work_packages/40">http://projects.mtjm.eu/work_packages/40</a>)
+						<ul>
+							<li>
+								.spd.hex files. These aren't blobs? Don't remove them? (in coreboot). See deblob script. 
+								Categorize blobs and non-blobs more clearly, explaining what they are for
+								and why they are (or are not) blobs.
+							</li>
+						</ul>
 					</li>
 					<li>
 						i945: fix linux (if possible). VBT. http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html
 						http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html
 						This is talking about without native init / oprom. Paul reported it, look into it.
+						i945 currently lacks fake_vbt tables.
 					</li>
 					<li>
 						Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
 						little-endian; for instance, mapping a little endian file directly to a struct, instead
 						of serializing/deserializing. Re-factor both utilities and make them fully portable.
+						See <a href="http://projects.mtjm.eu/work_packages/18">http://projects.mtjm.eu/work_packages/18</a>
 					</li>
 					<li>
-						X60: <b>ACPI PCC Probe Failed</b> message on linux-libre 3.19 and higher. Fix it.
-						<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
-						-- the error message is probably not the issue, but something else. do a bisect of linux. 
-						Also, does the issue still occur on lenovobios? pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
-						patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive
-					</li>
-					<li>
-						X200: only framebuffer graphics work. This is fine, since it's what most people use,
-						but text-mode graphics initialization is currently broken, which means that
-						memtest86+ will require serial output or ehci debugging.
-					</li>
-					<li>
-						Fix remaining incompatible LCD panels in native graphics on T60. 
-						See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
-					</li>
-					<li>i945: fix VRAM size (currently 8MB. should be 64MB). See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.</li>
-					<li>
-						Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
+						Fix these issues on i945 targets (X60/T60/macbook21)
+						<ul>
+							<li>
+								linux 3.18 broke acpi brightness on i945 (X60/T60). Libreboot reverted to legacy brightness for now. Look into why it
+								broke on 3.18 (do a git bisect).
+							</li>
+							<li>
+								i945: fix VRAM size (currently 8MB. should be 64MB). 
+								See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
+							</li>
+							<li>
+								i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
+								<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
+								-- bogus. Based on earlier immature reports.
+								-- the error message is probably not the issue, but something else. do a bisect of linux. 
+								Also, does the issue still occur on lenovobios? (no, they don't, according to Paul Menzel)
+								pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
+								patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive
+							</li>
+							<li>
+								Fix remaining incompatible LCD panels in native graphics on T60. 
+								See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
+							</li>
+						</ul>
 					</li>
 					<li>
 						Look into those machines:
@@ -189,13 +296,6 @@
 								T410S is supported but not yet merged. This uses the same chipset as the X201. 
 								<a href="http://review.coreboot.org/#/c/7975/">http://review.coreboot.org/#/c/7975/</a>
 								has the patch. This should be tested by someone and should ideally be merged in coreboot. pecg has one. help him.
-							</li>
-							<li>
-								ThinkPad R400/R500/T400/T400S/T500.
-							</li>
-							<li>
-								T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
-								is the main blocker there. They both probably use WSON-8 flash chips.
 							</li>
 							<li>
 								This page contains a list of basically every thinkpad that would ever be a candidate for libreboot:
@@ -213,15 +313,6 @@
 								F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom. SMU firmware is a problem. XHCI firmware is a problem.
 							</li>
 						</ul>
-					</li>
-					<li>add roda rk9 support (contact nico to ask for more details about hw). This is GM45 but these machines do not have a descriptor (no ME), should be easy</li>
-					<li>
-						port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).
-						ME isn't an issue, because its GM45 so it could be removed (it looks like this machine might also be shipped in 
-						non-descriptor mode by default, like the roda rk9). 
-						Search <b>jv50 block diagram filetype:pdf</b> for schematics.
-						(jv50 is written on the board); noone seems to have found any documentation for the EC chip, but
-						maybe it could be sufficiently reverse engineered via serialice and ectool.
 					</li>
 					<li>
 						Commit 26ca08caf81ad2dcc9c8246a743d82ffb464c767 in coreboot, see the while (1) loop that
@@ -242,10 +333,10 @@
 					<li>Add cubieboard SPI flashing instructions to libreboot. 
 					<a href="https://github.com/mrnuke/coreboot/commits/cubie_mmc?author=mrnuke">mrnuke's github page with patches</a>. mrnuke in IRC knows
 					about the cubieboard</li>
-					<li>Memtest86+ is currently broken in text-mode. investigate</li>
-					<li>Todo: modify memtest86+ to work with libpayload (coreboot framebuffer) and delete all the text-mode ROM images.</li>
-					<li>linux 3.18 broke acpi brightness on i945. Libreboot reverted to legacy brightness for now. Look into why it
-					broke on 3.18 (do a git bisect).</li>
+					<li>
+						LUKS key in initramfs: Add Trisquel documentation for docs/gnulinux/encrypted_trisquel.html.
+						See <a href="http://projects.mtjm.eu/work_packages/39">http://projects.mtjm.eu/work_packages/39</a>
+					</li>
 					<li>Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed
 					using its own script, but updating it is still a bit too manual. linux-libre's deblob
 					scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.</li>
