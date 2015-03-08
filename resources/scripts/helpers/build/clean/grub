@@ -30,7 +30,7 @@ set -u -e
 cd grub/
 
 printf "Cleaning the previous build of GRUB\n"
-[[ -f Makefile ]] && make clean
+[[ -f Makefile ]] && make distclean
 
 # done. go back to main directoy
 cd ../
