@@ -215,13 +215,13 @@
 									See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
 								</li>
 								<li>
-									i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
+									HIGH PRIORITY! <b>i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
 									<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
 									-- bogus. Based on earlier immature reports.
 									-- the error message is probably not the issue, but something else. do a bisect of linux. 
 									Also, does the issue still occur on lenovobios? (no, they don't, according to Paul Menzel)
 									pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
-									patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive
+									patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive</b>
 								</li>
 								<li>
 									Fix remaining incompatible LCD panels in native graphics on T60. 
@@ -261,11 +261,11 @@
 							</ul>
 						</li>
 						<li>
-							GRUB currently says unsupported RAID level when trying to unlock a LUKS volume using cryptomount
+							HIGH PRIORITY! <b>GRUB currently says unsupported RAID level when trying to unlock a LUKS volume using cryptomount
 							(last tested on the latest GRUB from git at around the beginning of March / end of February 2015)
-							Bisect and fix it.
+							Bisect and fix it.</b>
 						</li>
-						<li>GRUB: Add vesamenu.c32 support to syslinux_configfile (for parsing isolinux menus). See notes in the GRUB download script.</li>
+						<li>HIGH PRIORITY! <b>GRUB: Add vesamenu.c32 support to syslinux_configfile (for parsing isolinux menus). See notes in the GRUB download script.</b></li>
 					</ul>
 
 				<h3>Build system</h3>
@@ -284,7 +284,8 @@
 								</li>
 							</ul>
 						</li>
-						<li>Make memtest86+ build using coreboot's own crossgcc toolchain.</li>
+						<li>HIGH PRIORITY! <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
+						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>Make GRUB build using coreboot's own crossgcc toolchain</li>
 						<li>
 							Delete all parts of coreboot that libreboot doesn't use.
@@ -332,8 +333,8 @@
 							</b>
 						</li>
 						<li>
-							Add information from hw registers on all boards. See
-							<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a>
+							HIGH PRIORITY! <b>Add information from hw registers on all boards. See
+							<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a></b>
 						</li>
 						<li>
 							Add cubieboard SPI flashing instructions to libreboot. 
@@ -360,9 +361,9 @@
 				<h3>Project (institutional) improvements</h3>
 					<ul>
 						<li>
-							Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
+							HIGH PRIORITY! <b>Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
 							Consult with the openlunchbox project (and maybe others) on getting hardware manufactured
-							with libreboot support (out of the box, from the factory). <b>This is sorely needed in libreboot.</b>
+							with libreboot support (out of the box, from the factory).</b>
 						</li>
 						<li>
 							Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
