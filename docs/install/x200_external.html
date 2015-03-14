@@ -257,11 +257,63 @@ Reading current flash chip contents... done. Looking for another erase function.
 Erase/write done.
 Verifying flash... VERIFIED.
 </pre>
+
+			<p>
+				<img src="images/x200/disassembly/0019.jpg" alt="" />
+			</p>
 				
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
 			</p>
 			
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="wifi">Wifi</h1>
+		
+			<p>
+				The X200 typically comes with an Intel wifi chipset, which does not
+				work without proprietary software. For a list of wifi chipsets that
+				work without proprietary software, see
+				<a href="../hcl/index.html#recommended_wifi">../hcl/index.html#recommended_wifi</a>.
+			</p>
+			
+			<p>
+				Some X200 laptops come with an Atheros chipset, but this is 802.11g only.
+			</p>
+			
+			<p>
+				It is recommended that you install a new wifi chipset. This can only
+				be done after installing libreboot, because tho original firmware has
+				a whitelist of approved chips, and it will refuse to boot if you
+				use an 'unauthorized' wifi card.
+			</p>
+			
+			<p>
+				The following photos show an Atheros AR5B95 being installed, to
+				replace the Intel chip that this X200 came with:<br/>
+				<img src="images/x200/disassembly/0016.jpg" alt="" />
+				<img src="images/x200/disassembly/0017.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="memory">Memory</h1>
+		
+			<p>
+				You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
+				(speed/size). Non-matching pairs won't work. You can also install a
+				single module (meaning, one of the slots will be empty) in slot 0.
+			</p>
+			
+			<p>
+				In this photo, 8GiB of RAM (2x4GiB) is installed:<br/>
+				<img src="images/x200/disassembly/0018.jpg" alt="" />
+			</p>
+	
 	</div>
 
 	<div class="section">
