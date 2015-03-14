@@ -237,7 +237,15 @@ crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 			</p>
 			<p>
 				Get flashrom from the libreboot_util release archive, or build it from libreboot_src/git if you need to.
-				An ARM binary (statically compiled) for flashrom exists in libreboot_util releases.
+				An ARM binary (statically compiled) for flashrom exists in libreboot_util releases. Put the flashrom binary
+				on your BBB.
+			</p>
+			<p>
+				You may also need ich9gen, if you will be flashing an ICH9-M laptop (such as the X200). Get it from libreboot_util,
+				or build it from libreboot_src, and put the ARM binary for it on your BBB.
+			</p>
+			<p>
+				Finally, get the ROM image that you would like to flash and put that on your BBB.
 			</p>
 			
 			<p>
