@@ -259,3 +259,6 @@
 ./src/mainboard/google/falco/Samsung_M471B5674QH0.spd.hex
 ./src/northbridge/intel/nehalem/raminit_tables.c
 ./src/northbridge/intel/sandybridge/raminit_patterns.h
+./src/southbridge/nvidia/mcp55/early_setup_ss.h
+./src/southbridge/nvidia/ck804/early_setup_ss.h
+./src/southbridge/sis/sis966/early_setup_ss.h

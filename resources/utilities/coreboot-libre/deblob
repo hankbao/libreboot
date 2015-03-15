@@ -262,14 +262,6 @@ rm -f \
 "src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFS1.h" \
 "src/northbridge/amd/agesa/family12/ssdt.asl"
 
-# -----------------------------------------------------------
-# southbridge nvidia/sis (unknown purpose, looks like a blob)
-# -----------------------------------------------------------
-rm -f \
-"src/southbridge/nvidia/mcp55/early_setup_ss.h" \
-"src/southbridge/nvidia/ck804/early_setup_ss.h" \
-"src/southbridge/sis/sis966/early_setup_ss.h"
-
 printf "\n\n"
 
 cd ../
