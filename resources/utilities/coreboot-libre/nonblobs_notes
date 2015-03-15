@@ -2,5 +2,9 @@
 see JEDEC standard or https://en.wikipedia.org/wiki/Serial_presence_detect
 These are added to the nonblobs file
 
+src/northbridge/intel/nehalem/raminit_tables.c"
+src/northbridge/intel/sandybridge/raminit_patterns.h
+These are used by native raminit for the relevant platforms, and are not blobs
+
 The text in this file is CC-BY-SA 4.0 or higher. All contributions to it must
 be made under the same license.

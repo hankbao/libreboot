@@ -257,3 +257,5 @@
 ./src/mainboard/google/samus/elpida_8Gb.spd.hex
 ./src/mainboard/google/samus/samsung_4Gb.spd.hex
 ./src/mainboard/google/falco/Samsung_M471B5674QH0.spd.hex
+./src/northbridge/intel/nehalem/raminit_tables.c
+./src/northbridge/intel/sandybridge/raminit_patterns.h
