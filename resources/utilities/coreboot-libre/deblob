@@ -251,38 +251,6 @@ rm -f \
 "src/soc/intel/broadwell/microcode/microcode-MC0306D4_0000000D.h" \
 "src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c"
 
-# --------------------------------------
-# Misunderstood (weird: purpose unknown)
-# According to mrnuke and Stepan in #coreboot, these aren't blobs. Todo: investigate
-# <ruik> fchmmr: lol, check JEDEC standard for SPD format
-# <mtjm> from my log of #libreboot: "11:56 < mtjm> re the deblobbing, you might like https://en.wikipedia.org/wiki/Serial_presence_detect" (Tue Aug 12 2014)
-# --------------------------------------
-rm -f \
-"src/mainboard/google/slippy/Micron_4KTF25664HZ.spd.hex" \
-"src/mainboard/google/falco/Micron_4KTF25664HZ.spd.hex" \
-"src/mainboard/google/peppy/Micron_4KTF25664HZ.spd.hex" \
-"src/mainboard/google/link/micron_4Gb_1600_1.35v_x16.spd.hex" \
-"src/mainboard/google/rambi/spd/micron_1GiB_dimm_MT41K128M16JT-125.spd.hex" \
-"src/mainboard/google/rambi/spd/micron_2GiB_dimm_MT41K256M16HA-125.spd.hex" \
-"src/mainboard/google/bolt/micron_4Gb_1600_1.35v_x16.spd.hex" \
-"src/mainboard/google/link/samsung_4Gb_1600_1.35v_x16.spd.hex" \
-"src/mainboard/google/link/elpida_4Gb_1600_x16.spd.hex" \
-"src/mainboard/google/slippy/Hynix_HMT425S6AFR6A.spd.hex" \
-"src/mainboard/google/falco/Hynix_HMT425S6AFR6A.spd.hex" \
-"src/mainboard/google/falco/Elpida_EDJ4216EFBG.spd.hex" \
-"src/mainboard/google/rambi/spd/hynix_1GiB_dimm_H5TC2G63FFR-PBA.spd.hex" \
-"src/mainboard/google/rambi/spd/hynix_2GiB_dimm_H5TC4G63AFR-PBA.spd.hex" \
-"src/mainboard/google/bolt/samsung_4Gb_1600_1.35v_x16.spd.hex" \
-"src/mainboard/google/bolt/elpida_4Gb_1600_x16.spd.hex" \
-"src/mainboard/google/peppy/Hynix_HMT425S6AFR6A.spd.hex" \
-"src/mainboard/google/peppy/Elpida_EDJ4216EFBG.spd.hex" \
-"src/mainboard/google/samus/samsung_8Gb.spd.hex" \
-"src/mainboard/google/samus/empty.spd.hex" \
-"src/mainboard/google/samus/elpida_4Gb.spd.hex" \
-"src/mainboard/google/samus/elpida_8Gb.spd.hex" \
-"src/mainboard/google/samus/samsung_4Gb.spd.hex" \
-"src/mainboard/google/falco/Samsung_M471B5674QH0.spd.hex"
-
 # -------------------------------------
 # DSDT/SSDT (pre-coreboot/compiled blobs)
 # -------------------------------------

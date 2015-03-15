@@ -1,0 +1,6 @@
+.spd.hex files - serial presence detect. These are not blobs
+see JEDEC standard or https://en.wikipedia.org/wiki/Serial_presence_detect
+These are added to the nonblobs file
+
+The text in this file is CC-BY-SA 4.0 or higher. All contributions to it must
+be made under the same license.
