@@ -245,7 +245,6 @@ rm -f \
 "src/cpu/amd/model_10xxx/mc_patch_010000b6.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000bf.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000c4.h" \
-"src/cpu/dmp/vortex86ex/dmp_kbd_fw_part1.inc" \
 "src/cpu/via/nano/nano_ucode_blob.c" \
 "src/soc/intel/baytrail/microcode/M0C3067_0000031E.h" \
 "src/cpu/intel/model_2065x/microcode-m1220652_0000000d.h" \
@@ -255,6 +254,13 @@ rm -f \
 "src/soc/intel/broadwell/microcode/microcode-MC0306D3_FFFF0010.h" \
 "src/soc/intel/broadwell/microcode/microcode-MC0306D4_0000000D.h" \
 "src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c"
+
+# -------------------------------------
+# keyboard controller firmware (8051 assembly)
+# for the DMP Vortex86ex SoC
+# -------------------------------------
+rm -f \
+"src/cpu/dmp/vortex86ex/dmp_kbd_fw_part1.inc"
 
 # -------------------------------------
 # DSDT/SSDT (pre-coreboot/compiled blobs)
