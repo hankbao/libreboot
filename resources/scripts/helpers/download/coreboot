@@ -44,7 +44,7 @@ git clone http://review.coreboot.org/coreboot
 cd coreboot/
 
 # reset to previously tested revision
-git reset --hard 6532676f9328ca3bd197b714db4f1de23544cbde
+git reset --hard 8e3da749ed912834ddf9b78bff956a2b7d269945
 
 # Get patches from review.coreboot.org
 # ----------------------------------------------------------------------------------
@@ -62,30 +62,22 @@ git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cher
 printf "lenovo/t60: Enable legacy brightness controls (native graphics)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
 
-printf "Enable cstates 1 and 2 on macbook21. This reduces heat / power usage when the system is idle\n"
-git fetch http://review.coreboot.org/coreboot refs/changes/23/7923/2 && git cherry-pick FETCH_HEAD
-
 printf "ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cherry-pick FETCH_HEAD
 
 printf "i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and 'scrolling' backlight\n"
-git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
+# git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
+# The patch was accidentally merged in coreboot. See 
+# http://review.coreboot.org/#/c/8697/ for the revert commit. rebase 7561 and re-include it in
+# libreboot, once 8697 is merged in coreboot.
 
 printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cherry-pick FETCH_HEAD
 printf "fix uneven backlight on X200 (when setting brightness low)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cherry-pick FETCH_HEAD
 
-printf "ThinkPad R400 support. Based on http://review.coreboot.org/#/c/8393/\n"
-# This diff will be deleted later, and instead the patch will be fetched from coreboot gerrit
-# (and later, it won't even do that, once the R400 support is merged in coreboot)
-git am ../resources/libreboot/patch/r400.diff
-
-printf "Fix build issue when building coreboot without .git\n"
-git fetch http://review.coreboot.org/coreboot refs/changes/23/8423/1 && git cherry-pick FETCH_HEAD
-# TODO: delete the above line, test these commits:
-# http://review.coreboot.org/#/c/8427/
-# http://review.coreboot.org/#/c/8428/
+printf "ThinkPad R400 support\n"
+git fetch http://review.coreboot.org/coreboot refs/changes/93/8393/2 && git cherry-pick FETCH_HEAD
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------
