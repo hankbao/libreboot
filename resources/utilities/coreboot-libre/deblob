@@ -30,6 +30,11 @@ cd coreboot/
 
 # ---------------------
 # CPU microcode updates
+# note: sed -r '/src\/cpu\intel\/.*\/microcode/d' -i resources/utilities/coreboot-libre/deblob
+# sed --in-english 'remove lines containing "src/cpu/intel/.*/microcode" from the file called resources/utilities/coreboot-libre/deblob"
+# src/cpu/intel/*/microcode*.h is removed from a later coreboot:
+# see --> http://review.coreboot.org/gitweb?p=coreboot.git;a=commit;h=5818da262dc0ce56bb1d5439b6d139bc08c25554&utm_source=anzwix
+# remove them from this script on the next coreboot update
 # ---------------------
 rm -f \
 "src/cpu/intel/model_68x/microcode-617-MU16860c.h" \
