@@ -366,7 +366,7 @@ cp coreboot/src/mainboard/lenovo/x200/cmos.layout libreboot_util/cmoslayouts/x20
 # Flashing script
 cp flash libreboot_util/
 
-# ich9macchange script (change MAC address on X200 ROMs, using ich9gen)
+# ich9macchange script, for changing the MAC address on GM45 targets
 cp resources/scripts/misc/ich9macchange libreboot_util/
 
 # for changing the GRUB background

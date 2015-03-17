@@ -47,6 +47,7 @@
 				<li><a href="t60_unbrick.html">ThinkPad T60: Recovery guide</a></li>
 				<li><a href="x200_external.html">ThinkPad X200: Initial installation guide</a> (also the recovery guide)</li>
 				<li><a href="r400_external.html">ThinkPad R400: Initial installation guide</a> (also the recovery guide)</li>
+				<li><a href="t400_external.html">ThinkPad T400: Initial installation guide</a> (also the recovery guide)</li>
 			</ul>
 			
 	</div>
@@ -64,6 +65,7 @@
 					<li>ThinkPad T60: download <b>libreboot_t60.tar.xz</b> (see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
 					<li>ThinkPad X200: download <b>libreboot_x200_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_x200_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
 					<li>ThinkPad R400: download <b>libreboot_r400_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_r400_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/r400.html">../hcl/r400.html</a>)</li>
+					<li>ThinkPad T400: download <b>libreboot_t400_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_t400_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/t400.html">../hcl/t400.html</a>)</li>
 				</ul>
 				
 			<p>
@@ -137,16 +139,18 @@
 				</b>
 			</p>
 			<p>
-				X200/R400 users running Lenovo BIOS should refer to <a href="x200_external.html">x200_external.html</a>
-				or <a href="r400_external.html">r400_external.html</a>. <b>These machines contain the hard coded
+				X200/R400/T400 users running Lenovo BIOS should refer to <a href="x200_external.html">x200_external.html</a>,
+				<a href="r400_external.html">r400_external.html</a> or
+				<a href="t400_external.html">t400_external.html</a>. <b>These machines contain the hard coded
 				MAC address for the onboard ethernet chipset, directly inside the SPI flash; 
 				<a href="../hcl/gm45_remove_me.html#ich9gen">ich9gen</a> shows how to change it (the default
 				libreboot ROM images for these machines contain a generic MAC address).</b>
 			</p>
 			<p>
-				X200/R400 users should also note, that it is possible for the user to write-protect whole regions
+				X200/R400/T400 users should also note, that it is possible for the user to write-protect whole regions
 				of the SPI flash by using a modified descriptor. Locked regions must be flashed externally;
-				see <a href="x200_external.html">x200_external.html</a> or <a href="r400_external.html">r400_external.html</a>.
+				see <a href="x200_external.html">x200_external.html</a>, <a href="r400_external.html">r400_external.html</a>
+				or <a href="t400_external.html">t400_external.html</a>.
 				<b>Libreboot unlocks all regions, by default.</b>
 			</p>
 			<div class="important">

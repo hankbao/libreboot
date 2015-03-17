@@ -78,6 +78,8 @@ git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cher
 
 printf "ThinkPad R400 support\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/93/8393/2 && git cherry-pick FETCH_HEAD
+printf "ThinkPad T400 (depends on R400 patch)\n"
+git fetch http://review.coreboot.org/coreboot refs/changes/14/8714/3 && git cherry-pick FETCH_HEAD
 
 # Run coreboot-libre deblob scripts
 # ---------------------------------------------------------------------------------

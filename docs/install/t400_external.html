@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ThinkPad T400: flashing tutorial (BeagleBone Black)</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">Flashing the T400 with a BeagleBone Black</h1>
+			<p>Initial flashing instructions for T400.</p>
+			<p>
+				This guide is for those who want libreboot on their ThinkPad T400
+				while they still have the original Lenovo BIOS present. This guide
+				can also be followed (adapted) if you brick your T400, to know how
+				to recover.
+			</p>
+
+
+			<p><a href="index.html">Back to main index</a></p>
+	</div>
+	
+	<div class="section">
+	
+		<h1>A note about GPUs</h1>
+		
+			<p>
+				This guide currently assumes that you have an Intel GPU (non-switchable).
+				Some T400 have switchable graphics (ATI), which means that you can choose between ATI or Intel
+				in the <i>BIOS setup</i>. When switching to Intel, is lenovobios not enabling ATI
+				(where ATI is disabled by default and the system uses the Intel chip), or are they
+				disabling it (where the system uses the ATI chip by default)?
+			</p>
+			
+			<h1>CPU paste required</h1>
+			
+				<p>
+					See <a href="#paste">#paste</a>.
+				</p>
+	
+	</div>
+
+	<div class="section">
+
+		<h1 id="flashchips">Flash chips</h1>
+		
+			<p>
+				The T400 will use an 8MiB or 64Mb SOIC-16 chip (rare models
+				will use a 4MiB or 32Mb SOIC-8 chip).
+			</p>
+		
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="macaddress">MAC address</h1>
+		
+			<p>
+				On the T400, the MAC address for the onboard
+				gigabit ethernet chipset is stored inside the flash chip,
+				along with other configuration data.
+			</p>
+			<p>
+				Keep a note of the MAC address before disassembly; this is
+				very important, because you will need to insert this into
+				the libreboot ROM image before flashing it.
+				It will be written in one of these locations:
+			</p>
+			
+			<p>
+				<img src="images/t400/macaddress0.jpg" alt="" />
+				<img src="images/t400/macaddress1.jpg" alt="" />
+				<img src="images/x200/disassembly/0001.jpg" alt="" />
+			</p>
+	
+	</div>
+		
+	<div class="section photos">
+
+		<h1>Initial BBB configuration</h1>
+		
+			<p>
+				Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to
+				configure the BBB for flashing.
+			</p>
+
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-16 (clip: Pomona 5252):
+			</p>
+<pre>
+POMONA 5252 (correlate with the BBB guide)
+===  ethernet jack and VGA port ====
+ NC              -       - 21
+ 1               -       - 17
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ 18              -       - 3.3V PSU RED
+ 22              -       - NC - this is pin 1 on the flash chip
+===  SATA port ===
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i><br/>
+<img src="images/t400/0065.jpg" alt="" />
+</pre>
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
+			</p>
+<pre>
+POMONA 5250 (correlate with the BBB guide)
+===  RAM slots ====
+ 18              -       - 1
+ 22              -       - NC
+ NC              -       - 21
+ 3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
+===  slot where the AC jack is connected ===<br/>
+<b>TODO: ADD PHOTO</b>
+</pre>
+	
+			<h2>
+				The procedure
+			</h2>
+					
+				<p>
+					Remove <i>all</i> screws, placing them in the order that you removed them:<br/>
+					<img src="images/t400/0001.jpg" alt="" />
+					<img src="images/t400/0002.jpg" alt="" />
+				</p>
+				<p>
+					Remove those three screws then remove the rear bezel:<br/>
+					<img src="images/t400/0003.jpg" alt="" />
+					<img src="images/t400/0004.jpg" alt="" />
+					<img src="images/t400/0005.jpg" alt="" />
+					<img src="images/t400/0006.jpg" alt="" />
+				</p>
+				<p>
+					Remove the speakers:<br/>
+					<img src="images/t400/0007.jpg" alt="" />
+					<img src="images/t400/0008.jpg" alt="" />
+					<img src="images/t400/0009.jpg" alt="" />
+					<img src="images/t400/0010.jpg" alt="" />
+					<img src="images/t400/0011.jpg" alt="" />
+				</p>
+				<p>
+					Remove the wifi:<br/>
+					<img src="images/t400/0012.jpg" alt="" />
+					<img src="images/t400/0013.jpg" alt="" />
+				</p>
+				<p>
+					Remove this cable:<br/>
+					<img src="images/t400/0014.jpg" alt="" />
+					<img src="images/t400/0015.jpg" alt="" />
+					<img src="images/t400/0016.jpg" alt="" />
+					<img src="images/t400/0017.jpg" alt="" />
+					<img src="images/t400/0018.jpg" alt="" />
+				</p>
+				<p>
+					Unroute those antenna wires:<br/>
+					<img src="images/t400/0019.jpg" alt="" />
+					<img src="images/t400/0020.jpg" alt="" />
+					<img src="images/t400/0021.jpg" alt="" />
+					<img src="images/t400/0022.jpg" alt="" />
+					<img src="images/t400/0023.jpg" alt="" />
+				</p>
+				<p>
+					Remove the LCD assembly:<br/>
+					<img src="images/t400/0024.jpg" alt="" />
+					<img src="images/t400/0025.jpg" alt="" />
+					<img src="images/t400/0026.jpg" alt="" />
+					<img src="images/t400/0027.jpg" alt="" />
+					<img src="images/t400/0028.jpg" alt="" />
+					<img src="images/t400/0029.jpg" alt="" />
+					<img src="images/t400/0030.jpg" alt="" />
+					<img src="images/t400/0031.jpg" alt="" />
+				</p>
+				<p>
+					Disconnect the NVRAM battery:<br/>
+					<img src="images/t400/0033.jpg" alt="" />
+				</p>
+				<p>
+					Disconnect the fan:<br/>
+					<img src="images/t400/0034.jpg" alt="" />
+				</p>
+				<p>
+					Unscrew these:<br/>
+					<img src="images/t400/0035.jpg" alt="" />
+					<img src="images/t400/0036.jpg" alt="" />
+					<img src="images/t400/0037.jpg" alt="" />
+					<img src="images/t400/0038.jpg" alt="" />
+				</p>
+				<p>
+					Unscrew the heatsink, then left it off:<br/>
+					<img src="images/t400/0039.jpg" alt="" />
+					<img src="images/t400/0040.jpg" alt="" />
+				</p>
+				<p>
+					Disconnect the power jack:<br/>
+					<img src="images/t400/0041.jpg" alt="" />
+					<img src="images/t400/0042.jpg" alt="" />
+				</p>
+				<p>
+					Loosen this:<br/>
+					<img src="images/t400/0043.jpg" alt="" />
+				</p>
+				<p>
+					Remove this:<br/>
+					<img src="images/t400/0044.jpg" alt="" />
+					<img src="images/t400/0045.jpg" alt="" />
+					<img src="images/t400/0046.jpg" alt="" />
+					<img src="images/t400/0047.jpg" alt="" />
+					<img src="images/t400/0048.jpg" alt="" />
+				</p>
+				<p>
+					Unscrew these:<br/>
+					<img src="images/t400/0049.jpg" alt="" />
+					<img src="images/t400/0050.jpg" alt="" />
+				</p>
+				<p>
+					Remove this:<br/>
+					<img src="images/t400/0051.jpg" alt="" />
+					<img src="images/t400/0052.jpg" alt="" />
+				</p>
+				<p>
+					Unscrew this:<br/>
+					<img src="images/t400/0053.jpg" alt="" />
+				</p>
+				<p>
+					Remove the motherboard (the cage is still attached) from
+					the right hand side, then lift it out:<br/>
+					<img src="images/t400/0054.jpg" alt="" />
+					<img src="images/t400/0055.jpg" alt="" />
+					<img src="images/t400/0056.jpg" alt="" />
+				</p>
+				<p>
+					Remove these screws, placing the screws in the same layout
+					and marking each screw hole (so that you know what ones
+					to put the screws back into later):
+					<img src="images/t400/0057.jpg" alt="" />
+					<img src="images/t400/0058.jpg" alt="" />
+					<img src="images/t400/0059.jpg" alt="" />
+					<img src="images/t400/0060.jpg" alt="" />
+					<img src="images/t400/0061.jpg" alt="" />
+					<img src="images/t400/0062.jpg" alt="" />
+				</p>
+				<p>
+					Separate the motherboard:<br/>
+					<img src="images/t400/0063.jpg" alt="" />
+					<img src="images/t400/0064.jpg" alt="" />
+				</p>
+				<p>
+					Connect your programmer, then connect GND and 3.3V<br/>
+					<img src="images/t400/0065.jpg" alt="" />
+					<img src="images/t400/0066.jpg" alt="" />
+					<img src="images/t400/0067.jpg" alt="" />
+					<img src="images/t400/0069.jpg" alt="" />
+					<img src="images/t400/0070.jpg" alt="" />
+					<img src="images/t400/0071.jpg" alt="" />
+				</p>
+				<p>
+					A dedicated 3.3V PSU was used to create this guide, but
+					at ATX PSU is also fine:<br/>
+					<img src="images/t400/0072.jpg" alt="" />
+				</p>
+				
+				<p>
+					Of course, make sure to turn on your PSU:<br/>
+					<img src="images/x200/disassembly/0013.jpg" alt="" />
+				</p>
+				
+				<p>
+					Now, you should be ready to install libreboot.
+				</p>
+		
+				<p>
+					Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively,
+					libreboot also distributes flashrom source code which can be built.
+				</p>
+				<p>
+					Log in as root on your BBB, using the instructions in <a href="bbb_setup.html#bbb_access">bbb_setup.html#bbb_access</a>. 
+				</p>
+				<p>
+					Test that flashrom works:<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
+					In this case, the output was:
+				</p>
+<pre>
+flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
+flashrom is free software, get the source code at http://www.flashrom.org
+Calibrating delay loop... OK.
+Found Macronix flash chip &quot;MX25L6405(D)&quot; (8192 kB, SPI) on linux_spi.
+Found Macronix flash chip &quot;MX25L6406E/MX25L6436E&quot; (8192 kB, SPI) on linux_spi.
+Found Macronix flash chip &quot;MX25L6445E/MX25L6473E&quot; (8192 kB, SPI) on linux_spi.
+Multiple flash chip definitions match the detected chip(s): &quot;MX25L6405(D)&quot;, &quot;MX25L6406E/MX25L6436E&quot;, &quot;MX25L6445E/MX25L6473E&quot;
+Please specify which chip definition to use with the -c &lt;chipname&gt; option.
+</pre>
+				<p>
+					How to backup factory.rom (change the -c option as neeed, for your flash chip):<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory1.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory2.rom</b><br/>
+					Note: the <b>-c</b> option is not required in libreboot's patched flashrom, because
+					the redundant flash chip definitions in <i>flashchips.c</i> have been removed.<br/>
+					Now compare the 3 images:<br/>
+					# <b>sha512sum factory*.rom</b><br/>
+					If the hashes match, then just copy one of them (the factory.rom) to a safe place (on a drive connected to another machine, not
+					the BBB). This is useful for reverse engineering work, if there is a desirable behaviour in the original firmware
+					that could be replicated in coreboot and libreboot.
+				</p>
+				<p>
+					Follow the instructions at <a href="../hcl/gm45_remove_me.html#ich9gen">../hcl/gm45_remove_me.html#ich9gen</a>
+					to change the MAC address inside the libreboot ROM image, before flashing it.
+					Although there is a default MAC address inside the ROM image, this is not what you want. <b>Make sure
+					to always change the MAC address to one that is correct for your system.</b>
+				</p>
+				<p>
+					Now flash it:<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V</b>
+				</p>
+				<p>
+					<img src="images/x200/disassembly/0015.jpg" alt="" />
+				</p>
+				<p>
+					You might see errors, but if it says <b>Verifying flash... VERIFIED</b> at the end, then it's flashed and should boot.
+					If you see errors, try again (and again, and again); the message <b>Chip content is identical to the requested image</b>
+					is also an indication of a successful installation.
+				</p>
+				<p>
+					Example output from running the command (see above):
+				</p>
+<pre>
+flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
+flashrom is free software, get the source code at http://www.flashrom.org
+Calibrating delay loop... OK.
+Found Macronix flash chip &quot;MX25L6405(D)&quot; (8192 kB, SPI) on linux_spi.
+Reading old flash chip contents... done.
+Erasing and writing flash chip... FAILED at 0x00001000! Expected=0xff, Found=0x00, failed byte count from 0x00000000-0x0000ffff: 0xd716
+ERASE FAILED!
+Reading current flash chip contents... done. Looking for another erase function.
+Erase/write done.
+Verifying flash... VERIFIED.
+</pre>
+
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+	
+	</div>
+	
+	<div class="section photos" id="paste">
+	
+		<h1>Thermal paste (IMPORTANT)</h1>
+	
+			<p>
+				Because part of this procedure involved removing the heatsink, you will need to apply new paste.
+				Arctic Silver 5 is ok. You will also need isopropyl alcohol and an anti-static cloth to clean with.
+			</p>
+			
+			<p>
+				When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth.
+				Then apply new paste. AS5 is also much better than the default paste used on these machines.
+			</p>
+			
+			<p>
+				<img src="images/t400/paste.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="wifi">Wifi</h1>
+		
+			<p>
+				The T400 typically comes with an Intel wifi chipset, which does not
+				work without proprietary software. For a list of wifi chipsets that
+				work without proprietary software, see
+				<a href="../hcl/index.html#recommended_wifi">../hcl/index.html#recommended_wifi</a>.
+			</p>
+			
+			<p>
+				Some T400 laptops might come with an Atheros chipset, but this is 802.11g only.
+			</p>
+			
+			<p>
+				It is recommended that you install a new wifi chipset. This can only
+				be done after installing libreboot, because the original firmware has
+				a whitelist of approved chips, and it will refuse to boot if you
+				use an 'unauthorized' wifi card.
+			</p>
+			
+			<p>
+				The following photos show an Atheros AR5B95 being installed, to
+				replace the Intel chip that this T400 came with:<br/>
+				<img src="images/t400/0012.jpg" alt="" />
+				<img src="images/t400/ar5b95.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="memory">Memory</h1>
+		
+			<p>
+				You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
+				(speed/size). Non-matching pairs won't work. You can also install a
+				single module (meaning, one of the slots will be empty) in slot 0.
+			</p>
+			
+			<p>
+				The following photo shows 8GiB (2x4GiB) of RAM installed:<br/>
+				<img src="images/t400/memory.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+			<h2>
+				Boot it!
+			</h2>
+			<p>
+				You should see something like this:
+			</p>
+			<p>
+				<img src="images/t400/boot0.jpg" alt="" />
+				<img src="images/t400/boot1.jpg" alt="" />
+			</p>
+			
+			<p>
+				Now <a href="../gnulinux/index.html">install GNU/Linux</a>.
+			</p>
+	
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>

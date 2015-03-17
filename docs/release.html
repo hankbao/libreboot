@@ -84,6 +84,14 @@
 					<li>
 						<b>Lenovo ThinkPad R400</b>
 						<ul>
+							<li>See <a href="hcl/r400.html">hcl/r400.html</a></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
+						</ul>
+					</li>
+					<li>
+						<b>Lenovo ThinkPad T400</b>
+						<ul>
+							<li>See <a href="hcl/t400.html">hcl/t400.html</a></li>
 							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
 						</ul>
 					</li>
@@ -134,9 +142,6 @@
 								<li>
 									add roda rk9 support (contact nico to ask for more details about hw). 
 									This is GM45 but these machines do not have a descriptor (no ME), should be easy
-								</li>
-								<li>
-									ThinkPad T400: <a href="http://projects.mtjm.eu/work_packages/41">http://projects.mtjm.eu/work_packages/41</a>
 								</li>
 								<li>
 									ThinkPad T500: <a href="http://projects.mtjm.eu/work_packages/42">http://projects.mtjm.eu/work_packages/42</a>
@@ -306,7 +311,7 @@
 							scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.
 						</li>
 						<li>
-							Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400
+							Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400 and T400
 						</li>
 						<li>
 							Improve the deblobbing scripts (see <a href="http://projects.mtjm.eu/work_packages/40">http://projects.mtjm.eu/work_packages/40</a>)
@@ -336,6 +341,21 @@
 						<li>
 							HIGH PRIORITY! <b>Add information from hw registers on all boards. See
 							<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a></b>
+							<ul>
+								<li>We currently have them for X200 (4MiB flash chip), T400 but not complete</li>
+								<li>
+									Get them for more boards:
+									<ul>
+										<li>X60</li>
+										<li>T60</li>
+										<li>macbook21</li>
+										<li>X200 with 8MiB flash chip</li>
+										<li>R400 with 4MiB flash chip</li>
+										<li>R400 with 8MiB flash chip</li>
+										<li>T400 (make sure to have it for both flash chip sizes)</li>
+									</ul>
+								</li>
+							</ul>
 						</li>
 						<li>
 							Add cubieboard SPI flashing instructions to libreboot. 

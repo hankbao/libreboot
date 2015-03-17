@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ThinkPad T400</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">ThinkPad T400</h1>
+			
+			<p</p>
+			
+			<p>
+				It is believed that all T400 laptops are compatible. 
+			</p>
+			
+			<p>
+				There are two possible flash chip sizes for the R400: 4MiB (32Mbit) or 8MiB (64Mbit). 
+				This can be identified by the type of flash chip below the palmrest: 4MiB is SOIC-8, 8MiB
+				is SOIC-16.
+			</p>
+			
+			<p>
+				<b>The T400 laptops come with the ME (and sometimes AMT in addition) before flashing libreboot. Libreboot disables and removes it
+				by using a modified descriptor: see <a href="gm45_remove_me.html">gm45_remove_me.html</a></b> (contains notes, plus
+				instructions)
+			</p>
+
+			<p>
+				Flashing instructions can be found at <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+			</p>
+			
+			<p>
+				<a href="index.html">Back to previous index</a>.
+			</p>
+	</div>
+
+	<div class="section">
+
+		<p>
+			Thi T400 is almost identical to the X200, code-wise. See <a href="x200.html">x200.html</a>.
+		</p>
+
+	</div>
+	
+	<div class="section">
+
+		<h2 id="regdumps">Hardware register dumps</h2>
+
+		<p>
+			The coreboot wiki <a href="http://www.coreboot.org/Motherboard_Porting_Guide">shows</a>
+			how to collect various logs useful in porting to new
+			boards.  Following are outputs from the T400:
+		</p>
+
+		<ul>
+			<li>
+				T400 with <b>Winbond W25X64</b> flash chip (8MiB, SOIC-16)
+				and Lenovo BIOS 2.02 (EC firmware 1.01):
+				<ul>
+					<li>lspci <a href="../future/dumps/logs-t400-bios2.02-ec1.01/lspci.log">output</a></li>
+					<li>lsusb <a href="../future/dumps/logs-t400-bios2.02-ec1.01/lsusb.log">output</a></li>
+					<li>superiotool <a href="../future/dumps/logs-t400-bios2.02-ec1.01/superiotool.log">output</a></li>
+					<li>inteltool <a href="../future/dumps/logs-t400-bios2.02-ec1.01/inteltool.log">output</a></li>
+					<li>ectool <a href="../future/dumps/logs-t400-bios2.02-ec1.01/ectool.log">output</a></li>
+					<li>msrtool <a href="../future/dumps/logs-t400-bios2.02-ec1.01/msrtool.log">output</a>,
+						<a href="../future/dumps/logs-t400-bios2.02-ec1.01/msrtool.err">errors</a></li>
+					<li>dmidecode <a href="../future/dumps/logs-t400-bios2.02-ec1.01/dmidecode.log">output</a></li>
+					<li>biosdecode <a href="../future/dumps/logs-t400-bios2.02-ec1.01/biosdecode.log">output</a></li>
+					<li>nvramtool <a href="../future/dumps/logs-t400-bios2.02-ec1.01/nvramtool.log">output</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/dmesg.log">dmesg</a></li>
+					<li>flashrom probe <a href="../future/dumps/logs-t400-bios2.02-ec1.01/flashrom_info.log">output</a>,
+						<a href="../future/dumps/logs-t400-bios2.02-ec1.01/flashrom_info.err">errors</a></li>
+					<li>flashrom read <a href="../future/dumps/logs-t400-bios2.02-ec1.01/flashrom_read.log">output</a>,
+						<a href="../future/dumps/logs-t400-bios2.02-ec1.01/flashrom_read.err">errors</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/pin_hwC0D0">/sys/class/sound/card0/hwC0D0/init_pin_configs</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/codec%230">/proc/asound/card0/codec#0</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/cpuinfo.log">/proc/cpuinfo</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/t400_flashrom_read_with_bbb.txt">t400_flashrom_read_with_bbb.txt</a></li>
+					<li><a href="../future/dumps/logs-t400-bios2.02-ec1.01/t400_flashrom_write_with_bbb.txt">t400_flashrom_read_with_bbb.txt</a></li>
+				</ul>
+			</li>
+			<li>
+				Version of flashrom used for the external flashing/reading logs is the one that libreboot git revision c164960 uses.
+			</li>
+		</ul>
+
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>
