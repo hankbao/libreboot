@@ -53,23 +53,10 @@ git reset --hard fa07d919d1ff868b18d8a42276d094b63a58e299
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
 
-## See these threads on grub-dev@gnu.org:
-## [bug #44238] Add support for menu.c32 and vesamenu.c32 in lib/syslinux_parse
-## [bug #44239] Behavior of syslinux_parse differs from SYSLINUX for initrd= option
-## These make vesamenu.c32 work (translation: Debian/Tails ISOLINUX) but they are
-## buggy at the moment; Trisquel ISOLINUX parsing fails with these patches, for instance:
-## "error: syntax error.", "error: Incorrect command."
-## The mailing list contains updated versions of the patches mentioned below
-## Work with Lunar^ on IRC on finishing the patch so that it fixes the issue
-## while not causing other regressions. Wait until this is merged in GRUB(upstream).
-# Add support for menu.c32 and vesamenu.c32 in lib/syslinux_parse
-# See https://savannah.gnu.org/bugs/index.php?44238
-# TODO: Remove this patch when it is upstreamed.
-# git am "../resources/grub/patch/0002-syslinux_parse-add-support-for-vesa-menu.c32.patch"
-# Behavior of syslinux_parse differs from SYSLINUX for initrd= option
-# See https://savannah.gnu.org/bugs/index.php?44239
-# TODO: Remove this patch when it is upstreamed.
-# git am "../resources/grub/patch/0003-syslinux_parse-keep-initrd-in-kernel-the-command-lin.patch"
+# See 0002-lib-syslinux_parse-add-support-for-vesa-menu.c32.patch
+# report back to Lunar^ if it works properly. The other patch was already merged in an improved version
+# https://people.torproject.org/~lunar/volatile/2015-03-17-e3Yp1d7FifQ/0001-lib-syslinux_parse-add-support-for-vesa-menu.c32.patch
+git am "../resources/grub/patch/0002-lib-syslinux_parse-add-support-for-vesa-menu.c32.patch"
 
 cd ../
 printf "\n\n"

@@ -1,17 +1,18 @@
-From c3b8bd878e97fe5c1b1d6409bcecf70f64e63669 Mon Sep 17 00:00:00 2001
+From 191aeee1b67ff30d6c868320a51cb9fb766874be Mon Sep 17 00:00:00 2001
 From: Lunar <lunar@torproject.org>
-Date: Sat, 14 Feb 2015 14:14:25 +0100
+Date: Fri, 13 Feb 2015 22:08:11 +0100
 Subject: [PATCH] lib/syslinux_parse: add support for (vesa)menu.c32
 
+Fixes Savannah bug #44238.
 ---
- grub-core/lib/syslinux_parse.c | 156 ++++++++++++++++++++++++++---------------
- 1 file changed, 98 insertions(+), 58 deletions(-)
+ grub-core/lib/syslinux_parse.c | 165 ++++++++++++++++++++++++++---------------
+ 1 file changed, 107 insertions(+), 58 deletions(-)
 
 diff --git a/grub-core/lib/syslinux_parse.c b/grub-core/lib/syslinux_parse.c
-index 2c874b1..1012f02 100644
+index 22389eb..153260b 100644
 --- a/grub-core/lib/syslinux_parse.c
 +++ b/grub-core/lib/syslinux_parse.c
-@@ -840,6 +840,74 @@ simplify_filename (char *str)
+@@ -840,6 +840,82 @@ simplify_filename (char *str)
  }
  
  static grub_err_t
@@ -19,23 +20,31 @@ index 2c874b1..1012f02 100644
 +	      struct syslinux_menu *menu,
 +              const char *filename, const char *basedir)
 +{
-+  grub_err_t err;
-+  char *new_cwd, *new_target_cwd;
++  struct syslinux_menu *menuptr;
++  grub_err_t err = GRUB_ERR_NONE;
++  char *new_cwd = NULL;
++  char *new_target_cwd = NULL;
++  char *newname = NULL;
++  int depth = 0;
 +
 +  new_cwd = get_read_filename (menu, basedir);
 +  if (!new_cwd)
-+    return grub_errno;
++    {
++      err = grub_errno;
++      goto out;
++    }
 +  new_target_cwd = get_target_filename (menu, basedir);
 +  if (!new_target_cwd)
-+    return grub_errno;
-+
-+  struct syslinux_menu *menuptr;
-+  char *newname;
-+  int depth = 0;
-+
++    {
++      err = grub_errno;
++      goto out;
++    }
 +  newname = get_read_filename (menu, filename);
 +  if (!newname)
-+    return grub_errno;
++    {
++      err = grub_errno;
++      goto out;
++    }
 +  simplify_filename (newname);
 +
 +  print_string ("#");
@@ -70,23 +79,23 @@ index 2c874b1..1012f02 100644
 +          print_string ("# File ");
 +          err = print (outbuf, newname, grub_strlen (newname));
 +          if (err)
-+            return err;
++            goto out;
 +          print_string (" not found\n");
 +        }
-+      if (err)
-+        return err;
 +    }
++
++ out:
 +  grub_free (newname);
 +  grub_free (new_cwd);
 +  grub_free (new_target_cwd);
-+  return GRUB_ERR_NONE;
++  return err;
 +}
 +
 +static grub_err_t
  write_entry (struct output_buffer *outbuf,
  	     struct syslinux_menu *menu,
  	     struct syslinux_menuentry *curentry)
-@@ -1240,6 +1308,35 @@ write_entry (struct output_buffer *outbuf,
+@@ -1227,6 +1303,36 @@ write_entry (struct output_buffer *outbuf,
  	    break;
  	  }
  
@@ -108,11 +117,12 @@ index 2c874b1..1012f02 100644
 +		  *end++ = '\0';
 +
 +		/* "~" is supposed to be current file, so let's skip it */
-+		if (grub_strcmp (ptr, "~") == 0)
-+		  continue;
-+		err = print_config (outbuf, menu, ptr, "");
-+		if (err != GRUB_ERR_NONE)
-+		  break;
++		if (grub_strcmp (ptr, "~") != 0)
++		  {
++		    err = print_config (outbuf, menu, ptr, "");
++		    if (err != GRUB_ERR_NONE)
++		      break;
++                  }
 +		for (ptr = end; *ptr && grub_isspace (*ptr); ptr++);
 +	      }
 +	    err = GRUB_ERR_NONE;
@@ -122,7 +132,7 @@ index 2c874b1..1012f02 100644
  	/* FIXME: gdb, GFXBoot, Hdt, Ifcpu, Ifplop, Kbdmap,
  	   FIXME: Linux, Lua, Meminfo, rosh, Sanbboot  */
  
-@@ -1252,70 +1349,13 @@ write_entry (struct output_buffer *outbuf,
+@@ -1239,70 +1345,13 @@ write_entry (struct output_buffer *outbuf,
        }
      case KERNEL_CONFIG:
        {
