@@ -31,6 +31,42 @@
 
 			<p><a href="index.html">Back to main index</a></p>
 	</div>
+	
+	<div class="section" id="cpu_compatibility">
+	
+		<h1>A note about CPUs</h1>
+			<p>
+				<a href="http://www.thinkwiki.org/wiki/Category:R400">ThinkWiki</a> has a list of CPUs
+				for this system. The Core 2 Duo P8400 and P8600 are believed to work in libreboot.
+				<b>The Core 2 Duo P9400/P9600/T5870/5670 and Celeron M 575/585 are untested!</b>
+			</p>
+	
+	</div>
+	
+	<div class="section" id="switchable_graphics">
+	
+		<h1>A note about GPUs</h1>
+		
+			<p>
+				This guide currently assumes that you have an Intel GPU (non-switchable).
+				Some T400 have switchable graphics (ATI), which means that you can choose between ATI or Intel
+				in the <i>BIOS setup</i>. When switching to Intel, is lenovobios not enabling ATI
+				(where ATI is disabled by default and the system uses the Intel chip), or are they
+				disabling it (where the system uses the ATI chip by default)?
+			</p>
+			
+			<p>
+				Basically, switchable graphics is untested, but it should be easy to get it working
+				(if it doesn't already work).
+			</p>
+			
+		<h1>CPU paste required</h1>
+			
+			<p>
+				See <a href="#paste">#paste</a>.
+			</p>
+	
+	</div>
 
 	<div class="section">
 
@@ -181,6 +217,74 @@ Verifying flash... VERIFIED.
 				<a href="#pagetop">Back to top of page.</a>
 			</p>
 			
+	</div>
+	
+	<div class="section photos" id="paste">
+	
+		<h1>Thermal paste (IMPORTANT)</h1>
+	
+			<p>
+				Because part of this procedure involved removing the heatsink, you will need to apply new paste.
+				Arctic Silver 5 is ok. You will also need isopropyl alcohol and an anti-static cloth to clean with.
+			</p>
+			
+			<p>
+				When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth.
+				Then apply new paste. AS5 is also much better than the default paste used on these machines.
+			</p>
+			
+			<p>
+				<img src="images/t400/paste.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="wifi">Wifi</h1>
+		
+			<p>
+				The T400 typically comes with an Intel wifi chipset, which does not
+				work without proprietary software. For a list of wifi chipsets that
+				work without proprietary software, see
+				<a href="../hcl/index.html#recommended_wifi">../hcl/index.html#recommended_wifi</a>.
+			</p>
+			
+			<p>
+				Some T400 laptops might come with an Atheros chipset, but this is 802.11g only.
+			</p>
+			
+			<p>
+				It is recommended that you install a new wifi chipset. This can only
+				be done after installing libreboot, because the original firmware has
+				a whitelist of approved chips, and it will refuse to boot if you
+				use an 'unauthorized' wifi card.
+			</p>
+			
+			<p>
+				The following photos show an Atheros AR5B95 being installed, to
+				replace the Intel chip that this T400 came with:<br/>
+				<img src="images/t400/0012.jpg" alt="" />
+				<img src="images/t400/ar5b95.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="memory">Memory</h1>
+		
+			<p>
+				You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
+				(speed/size). Non-matching pairs won't work. You can also install a
+				single module (meaning, one of the slots will be empty) in slot 0.
+			</p>
+			
+			<p>
+				The following photo shows 8GiB (2x4GiB) of RAM installed:<br/>
+				<img src="images/t400/memory.jpg" alt="" />
+			</p>
+	
 	</div>
 
 	<div class="section">
