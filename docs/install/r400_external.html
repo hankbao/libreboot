@@ -84,10 +84,34 @@
 			</p>
 			
 	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="macaddress">MAC address</h1>
 		
-	<div class="section">
+			<p>
+				On the R400, the MAC address for the onboard
+				gigabit ethernet chipset is stored inside the flash chip,
+				along with other configuration data.
+			</p>
+			<p>
+				Keep a note of the MAC address before disassembly; this is
+				very important, because you will need to insert this into
+				the libreboot ROM image before flashing it.
+				It will be written in one of these locations:
+			</p>
+			
+			<p>
+				<img src="images/t400/macaddress0.jpg" alt="" />
+				<img src="images/t400/macaddress1.jpg" alt="" />
+				<img src="images/x200/disassembly/0001.jpg" alt="" />
+			</p>
+	
+	</div>
+		
+	<div class="section photos">
 
-		<h1>Initial BBB setup</h1>
+		<h1>Initial BBB configuration</h1>
 		
 			<p>
 				Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to
@@ -124,29 +148,186 @@ POMONA 5250 (correlate with the BBB guide)
 ===  slot where the AC jack is connected ===
 </pre>
 
-			<h2>
-				Connect Pomona 5252/5250 to the R400 flash chip, and dump/flash
-			</h2>
+			<h2 id="disassembly">Disassembly</h2>
+			
 				<p>
-					The following photo shows an R400 flashed using the BBB:<br/>
-					<img src="images/r400/r400_pomona.jpg" alt="" />
+					Remove all screws:<br/>
+					<img src="images/r400/0000.jpg" alt="" /><br/>
+					Remove the HDD and optical drive:<br/>
+					<img src="images/r400/0001.jpg" alt="" /><br/>
+					Remove the hinge screws:<br/>
+					<img src="images/r400/0002.jpg" alt="" />
+					<img src="images/r400/0003.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove the palm rest and keyboard:<br/>
+					<img src="images/r400/0004.jpg" alt="" />
+					<img src="images/r400/0005.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove these screws, and then remove the bezel:<br/>
+					<img src="images/r400/0006.jpg" alt="" />
+					<img src="images/r400/0007.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove the speaker screws, but don't remove the speakers yet
+					(just set them loose):<br/>
+					<img src="images/r400/0008.jpg" alt="" />
+					<img src="images/r400/0009.jpg" alt="" />
+					<img src="images/r400/0010.jpg" alt="" />
+				</p>
+					
+				<p>
+					Remove these screws, and then remove the metal plate:<br/>
+					<img src="images/r400/0011.jpg" alt="" />
+					<img src="images/r400/0012.jpg" alt="" />
+					<img src="images/r400/0013.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove the antennas from the wifi card, and then
+					start unrouting them:<br/>
+					<img src="images/r400/0014.jpg" alt="" />
+					<img src="images/r400/0015.jpg" alt="" />
+					<img src="images/r400/0016.jpg" alt="" />
+					<img src="images/r400/0017.jpg" alt="" />
+					<img src="images/r400/0018.jpg" alt="" />
+					<img src="images/r400/0019.jpg" alt="" />
+				</p>
+					
+				<p>
+					Disconnect the LCD cable from the motherboard:<br/>
+					<img src="images/r400/0020.jpg" alt="" />
+					<img src="images/r400/0021.jpg" alt="" />
+					<img src="images/r400/0022.jpg" alt="" />
+					<img src="images/r400/0023.jpg" alt="" />
+				</p>
+					
+				<p>
+					Remove the hinge screws, and then remove the LCD panel:<br/>
+					<img src="images/r400/0024.jpg" alt="" />
+					<img src="images/r400/0025.jpg" alt="" />
+					<img src="images/r400/0026.jpg" alt="" />
+					<img src="images/r400/0027.jpg" alt="" />
+				</p>
+					
+				<p>
+					Remove this:<br/>
+					<img src="images/r400/0028.jpg" alt="" />
+					<img src="images/r400/0029.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove this long cable (there are 3 connections):<br/>
+					<img src="images/r400/0030.jpg" alt="" />
+					<img src="images/r400/0031.jpg" alt="" />
+					<img src="images/r400/0032.jpg" alt="" />
+					<img src="images/r400/0033.jpg" alt="" />
+				</p>
+				
+				<p>
+					Disconnect the speaker cable, and remove the speakers:<br/>
+					<img src="images/r400/0034.jpg" alt="" />
+				</p>
+					
+				<p>
+					Remove the heatsink screws, remove the fan
+					and then remove the heatsink/fan:<br/>
+					<img src="images/r400/0035.jpg" alt="" />
+					<img src="images/r400/0036.jpg" alt="" />
+					<img src="images/r400/0037.jpg" alt="" />
+					<img src="images/r400/0038.jpg" alt="" />
+				</p>
+					
+				<p>
+					Remove the NVRAM battery:<br/>
+					<img src="images/r400/0039.jpg" alt="" />
+					<img src="images/r400/0040.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove this screw:<br/>
+					<img src="images/r400/0041.jpg" alt="" />
+					<img src="images/r400/0042.jpg" alt="" />
+				</p>
+				
+				<p>
+					Disconnect the AC jack:<br/>
+					<img src="images/r400/0043.jpg" alt="" />
+					<img src="images/r400/0044.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove this screw and then remove what is under it:<br/>
+					<img src="images/r400/0045.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove this:<br/>
+					<img src="images/r400/0046.jpg" alt="" />
+				</p>
+				
+				<p>
+					Lift the motherboard (which is still inside the cage)
+					from the side on the right, removing it completely:<br/>
+					<img src="images/r400/0047.jpg" alt="" />
+					<img src="images/r400/0048.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove all screws, marking each hole so that you know
+					where to re-insert them. You should place the screws in
+					a layout corresponding to the order that they were in
+					before removal:
+					<img src="images/r400/0049.jpg" alt="" />
+					<img src="images/r400/0050.jpg" alt="" />
+				</p>
+				
+				<p>
+					Remove the motherboard from the cage, and the SPI flash
+					chip will be next to the memory slots:<br/>
+					<img src="images/r400/0051.jpg" alt="" />
+					<img src="images/r400/0052.jpg" alt="" />
+				</p>
+				
+				<p>
+					Connect your programmer, then connect GND and 3.3V<br/>
+					<img src="images/t400/0065.jpg" alt="" />
+					<img src="images/t400/0066.jpg" alt="" />
+					<img src="images/t400/0067.jpg" alt="" />
+					<img src="images/t400/0069.jpg" alt="" />
+					<img src="images/t400/0070.jpg" alt="" />
+					<img src="images/t400/0071.jpg" alt="" />
 				</p>
 				<p>
-					No disassembly instructions yet, unfortunately. Check videos online or
-					look at the Hardware Maintenance Manual from Lenovo for this machine.
-					You will need to completely disassemble the machine, removing the motherboard
-					from its metal shell.
-					Connect your 5252/5250 (make sure to get it the right way round). 
-					Then connect the 3.3v PSU wire (red one) and make sure that everything else is connected.
+					A dedicated 3.3V PSU was used to create this guide, but
+					at ATX PSU is also fine:<br/>
+					<img src="images/t400/0072.jpg" alt="" />
 				</p>
+				
+				<p>
+					Of course, make sure to turn on your PSU:<br/>
+					<img src="images/x200/disassembly/0013.jpg" alt="" />
+				</p>
+
+				<p>
+					Now, you should be ready to install libreboot.
+				</p>
+		
 				<p>
 					Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively,
 					libreboot also distributes flashrom source code which can be built.
 				</p>
 				<p>
-					I did (SSH'd into the BBB):<br/>
+					Log in as root on your BBB, using the instructions in <a href="bbb_setup.html#bbb_access">bbb_setup.html#bbb_access</a>. 
+				</p>
+				<p>
+					Test that flashrom works:<br/>
 					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
-					In my case, the output was:
+					In this case, the output was:
 				</p>
 <pre>
 flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -159,46 +340,38 @@ Multiple flash chip definitions match the detected chip(s): &quot;MX25L6405(D)&q
 Please specify which chip definition to use with the -c &lt;chipname&gt; option.
 </pre>
 				<p>
-					This is just to test that it's working. In my case, I had to define which chip to use, like so (in your case
-					it may be different, depending on what flash chip you have):<br/>
-					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -c &quot;MX25L6405(D)&quot;</b>
-				</p>
-				<p>
-					At this point, you need to create a copy of the original lenovo firmware that is currently flashed. 
-					This is so that you can extract the gbe (gigabit ethernet) and flash descriptor regions for use in libreboot. <b>These
-					are not blobs, they only contain non-functional data (configuration details, fully readable) which is fully documented in public datasheets.</b>
-					The descriptor will need to be modified
-					to disable the ME (also disable AMT) so that you can flash a ROM that excludes it. 
-				</p>
-				<p>
 					How to backup factory.rom (change the -c option as neeed, for your flash chip):<br/>
-					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -c &quot;MX25L6405(D)&quot; -r factory.rom</b><br/>
-					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -c &quot;MX25L6405(D)&quot; -r factory1.rom</b><br/>
-					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -c &quot;MX25L6405(D)&quot; -r factory2.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory1.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory2.rom</b><br/>
+					Note: the <b>-c</b> option is not required in libreboot's patched flashrom, because
+					the redundant flash chip definitions in <i>flashchips.c</i> have been removed.<br/>
 					Now compare the 3 images:<br/>
 					# <b>sha512sum factory*.rom</b><br/>
 					If the hashes match, then just copy one of them (the factory.rom) to a safe place (on a drive connected to another machine, not
-					the BBB). You will need it later for part of the deblobbing.
+					the BBB). This is useful for reverse engineering work, if there is a desirable behaviour in the original firmware
+					that could be replicated in coreboot and libreboot.
 				</p>
 				<p>
-					Information about the descriptor, gbe regions and how the ME was removed can be found in the notes linked at
-					<a href="../hcl/gm45_remove_me.html">../hcl/gm45_remove_me.html</a>. Libreboot ROM images now include
-					the 12KiB descriptor+gbe by default, generated using ich9gen;
-					<b>however, do note that the MAC address in the Gbe region is generic. Follow the instructions at 
-					<a href="../hcl/gm45_remove_me.html#ich9gen">../hcl/gm45_remove_me.html#ich9gen</a> and do what it says to change the MAC address
-					inside your R400 ROM image, before flashing it.</b>
+					Follow the instructions at <a href="../hcl/gm45_remove_me.html#ich9gen">../hcl/gm45_remove_me.html#ich9gen</a>
+					to change the MAC address inside the libreboot ROM image, before flashing it.
+					Although there is a default MAC address inside the ROM image, this is not what you want. <b>Make sure
+					to always change the MAC address to one that is correct for your system.</b>
 				</p>
 				<p>
-					Assuming that your libreboot ROM image is properly setup (modified descriptor plus gbe region included in the ROM),
-					then you can flash (assuming that the filename is <b>libreboot.rom</b>) for example I had to do:<br/>
-					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -c &quot;MX25L6405(D)&quot; -w libreboot.rom</b>
+					Now flash it:<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V</b>
+				</p>
+				<p>
+					<img src="images/x200/disassembly/0015.jpg" alt="" />
 				</p>
 				<p>
 					You might see errors, but if it says <b>Verifying flash... VERIFIED</b> at the end, then it's flashed and should boot.
-					Test it! (boot your R400)
+					If you see errors, try again (and again, and again); the message <b>Chip content is identical to the requested image</b>
+					is also an indication of a successful installation.
 				</p>
 				<p>
-					My output when running the command above:
+					Example output from running the command (see above):
 				</p>
 <pre>
 flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -212,6 +385,7 @@ Reading current flash chip contents... done. Looking for another erase function.
 Erase/write done.
 Verifying flash... VERIFIED.
 </pre>
+
 				
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
@@ -244,14 +418,14 @@ Verifying flash... VERIFIED.
 		<h1 id="wifi">Wifi</h1>
 		
 			<p>
-				The T400 typically comes with an Intel wifi chipset, which does not
+				The R400 typically comes with an Intel wifi chipset, which does not
 				work without proprietary software. For a list of wifi chipsets that
 				work without proprietary software, see
 				<a href="../hcl/index.html#recommended_wifi">../hcl/index.html#recommended_wifi</a>.
 			</p>
 			
 			<p>
-				Some T400 laptops might come with an Atheros chipset, but this is 802.11g only.
+				Some R400 laptops might come with an Atheros chipset, but this is 802.11g only.
 			</p>
 			
 			<p>
@@ -263,7 +437,7 @@ Verifying flash... VERIFIED.
 			
 			<p>
 				The following photos show an Atheros AR5B95 being installed, to
-				replace the Intel chip that this T400 came with:<br/>
+				replace the Intel chip that this R400 came with:<br/>
 				<img src="images/t400/0012.jpg" alt="" />
 				<img src="images/t400/ar5b95.jpg" alt="" />
 			</p>
@@ -283,6 +457,25 @@ Verifying flash... VERIFIED.
 			<p>
 				The following photo shows 8GiB (2x4GiB) of RAM installed:<br/>
 				<img src="images/t400/memory.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+			<h2>
+				Boot it!
+			</h2>
+			<p>
+				You should see something like this:
+			</p>
+			<p>
+				<img src="images/t400/boot0.jpg" alt="" />
+				<img src="images/t400/boot1.jpg" alt="" />
+			</p>
+			
+			<p>
+				Now <a href="../gnulinux/index.html">install GNU/Linux</a>.
 			</p>
 	
 	</div>
