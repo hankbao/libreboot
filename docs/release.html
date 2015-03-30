@@ -142,6 +142,10 @@
 								<li>
 									add roda rk9 support (contact nico to ask for more details about hw). 
 									This is GM45 but these machines do not have a descriptor (no ME), should be easy
+									<ul>
+										<li>This board lacks native graphics initialization (it should be easy to add in Kconfig files,
+										but it has to be tested beforehand)</li>
+									</ul>
 								</li>
 								<li>
 									ThinkPad T500: <a href="http://projects.mtjm.eu/work_packages/42">http://projects.mtjm.eu/work_packages/42</a>
@@ -185,14 +189,15 @@
 									take a look at <a href="http://www.lenovo.com/psref/pdf/ltwbook_2013.pdf">this PDF</a>.
 								</li>
 								<li>
-									Lenovo G505S - might need video bios and microcode updates. These would have to be removed and/or replaced to be in libreboot
-									<a href="https://github.com/alterapraxisptyltd/lenovo-g505s">https://github.com/alterapraxisptyltd/lenovo-g505s</a>.
-									It's AMD (not Intel) based on the same design as the HP Pavillion 1035DX. No ME/AMT to worry about!
-									<a href"http://www.coreboot.org/User_talk:MrNuke/LTS_Candidates">http://www.coreboot.org/User_talk:MrNuke/LTS_Candidates</a>
-									and <a href="http://www.coreboot.org/Board:hp/pavilion_m6_1035dx#Native_graphics_init">http://www.coreboot.org/Board:hp/pavilion_m6_1035dx#Native_graphics_init</a>
+									Lenovo G505S (works without microcode updates). Video BIOS is an issue (unfinished replacement: openatom), as
+									is the SMU firmware (ruik will know more). Other non-essential blobs may also still be present (but possible
+									to remove)
 								</li>
 								<li>
-									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom. SMU firmware is a problem. XHCI firmware is a problem.
+									HP Pavillion 1035DX (same chipset as G505S. See notes above)
+								</li>
+								<li>
+									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
 								</li>
 							</ul>
 						</li>
@@ -205,6 +210,8 @@
 							<ul>
 								<li>
 									X200: text-mode is broken. only framebuffer graphics work.
+									Commit bde6d309dfafe58732ec46314a2d4c08974b62d4 in coreboot is what
+									broke it. Investigate. 
 								</li>
 							</ul>
 						</li>
@@ -212,19 +219,8 @@
 							Fix these issues on i945 targets (X60/T60/macbook21)
 							<ul>
 								<li>
-									linux 3.18 broke acpi brightness on i945 (X60/T60). Libreboot reverted to legacy brightness for now. Look into why it
-									broke on 3.18 (do a git bisect).
-								</li>
-								<li>
-									i945: fix VRAM size (currently 8MB. should be 64MB). 
-									See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
-								</li>
-								<li>
 									HIGH PRIORITY! <b>i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
 									<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
-									-- bogus. Based on earlier immature reports.
-									-- the error message is probably not the issue, but something else. do a bisect of linux. 
-									Also, does the issue still occur on lenovobios? (no, they don't, according to Paul Menzel)
 									pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
 									patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive</b>
 									<ul>
@@ -233,14 +229,22 @@
 									</ul>
 								</li>
 								<li>
+									i945: fix VRAM size (currently 8MB. should be 64MB). 
+									See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
+								</li>
+								<li>
 									Fix remaining incompatible LCD panels in native graphics on T60. 
 									See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
 								</li>
 								<li>
-									i945: fix linux (if possible). VBT. http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html
-									http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html
-									This is talking about without native init / oprom. Paul reported it, look into it.
-									i945 currently lacks fake_vbt tables.
+									i945: the intel video driver used to initialize the display without native graphics initialization
+									and without the extracted video BIOS. It no longer does, so investigate why it does not, and fix
+									the regression (fix has to be done in the kernel, Linux).
+									See <a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html</a> and
+									<a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html</a>
+								</li>
+								<li>
+									Add fake_vbt tables on i945 machines (also GM45).
 								</li>
 								<li>
 									Commit 26ca08caf81ad2dcc9c8246a743d82ffb464c767 in coreboot, see the while (1) loop that
