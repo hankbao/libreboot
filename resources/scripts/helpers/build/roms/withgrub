@@ -95,7 +95,7 @@ done
 # Then put them in the ROM images.
 if [ -d bin/ ]; then
 	cd bin/
-	for board in "x200" "r400" "t400"
+	for board in "x200" "r400" "t400" "t500"
 	do
 		for romsize in "4m" "8m"
 		do	

@@ -50,7 +50,7 @@
 			<h2>Machines supported in this release:</h2>
 				<ul>
 					<li>
-						<b>Lenovo ThinkPad X60/X60s</b>
+						<b>ThinkPad X60/X60s</b>
 						<ul>
 							<li>
 								You can also remove the motherboard from an X61/X61s and replace it with an X60/X60s motherboard.
@@ -59,14 +59,14 @@
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
+						<b>ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
 							<li>See <a href="hcl/index.html#supported_x60t_list">hcl/index.html#supported_x60t_list</a> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
+						<b>ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 						<ul>
 							<li>See notes below for exceptions, and <a href="hcl/index.html#supported_t60_list">hcl/index.html#supported_t60_list</a> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
@@ -75,23 +75,30 @@
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad X200</b>
+						<b>ThinkPad X200</b>
 						<ul>
 							<li>X200S and X200 Tablet are also supported, conditionally; see <a href="hcl/x200.html#x200s">hcl/x200.html#x200s</a></li>
 							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad R400</b>
+						<b>ThinkPad R400</b>
 						<ul>
 							<li>See <a href="hcl/r400.html">hcl/r400.html</a></li>
 							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
 						</ul>
 					</li>
 					<li>
-						<b>Lenovo ThinkPad T400</b>
+						<b>ThinkPad T400</b>
 						<ul>
 							<li>See <a href="hcl/t400.html">hcl/t400.html</a></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T500</b>
+						<ul>
+							<li>See <a href="hcl/t500.html">hcl/t500.html</a></li>
 							<li><b>ME/AMT</b>: libreboot removes this, permanently. <a href="hcl/gm45_remove_me.html">hcl/gm45_remove_me.html</a></li>
 						</ul>
 					</li>
@@ -146,9 +153,6 @@
 										<li>This board lacks native graphics initialization (it should be easy to add in Kconfig files,
 										but it has to be tested beforehand)</li>
 									</ul>
-								</li>
-								<li>
-									ThinkPad T500: <a href="http://projects.mtjm.eu/work_packages/42">http://projects.mtjm.eu/work_packages/42</a>
 								</li>
 								<li>
 									ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
@@ -206,20 +210,27 @@
 				<h3>Platform-specific bugs</h3>
 					<ul>
 						<li>
-							Fix these issues on GM45/GS45 targets:
+							<b><u><i>HIGH PRIORITY!</i></u></b> Fix these issues on GM45/GS45 targets:
 							<ul>
 								<li>
 									X200: text-mode is broken. only framebuffer graphics work.
 									Commit bde6d309dfafe58732ec46314a2d4c08974b62d4 in coreboot is what
 									broke it. Investigate. 
 								</li>
+								<li>
+									Sound (internal speaker) worked on the T500, but stopped after all subsequent boots.
+									(might just be this machine). investigate. (external speaker works)
+								</li>
 							</ul>
+						</li>
+						<li>
+							<b>Finish all work listed in <a href="future/index.html">future/index.html</a></b>
 						</li>
 						<li>
 							Fix these issues on i945 targets (X60/T60/macbook21)
 							<ul>
 								<li>
-									HIGH PRIORITY! <b>i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
+									<b><u><i>HIGH PRIORITY!</i></u></b> <b>i945: Linux 3.19 doesn't boot. (probably affects T60/macbook21).
 									<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
 									pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
 									patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive</b>
@@ -277,6 +288,8 @@
 
 				<h3>Build system</h3>
 					<ul>
+						<li><b><u><i>HIGH PRIORITY!</i></u></b> <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
+						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>
 							Make libreboot (all of it!) build reproducibly. This is very important.
 							See <a href="http://projects.mtjm.eu/work_packages/16">http://projects.mtjm.eu/work_packages/16</a>.
@@ -291,8 +304,6 @@
 								</li>
 							</ul>
 						</li>
-						<li>HIGH PRIORITY! <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
-						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>Make GRUB build using coreboot's own crossgcc toolchain</li>
 						<li>
 							Delete all parts of coreboot that libreboot doesn't use.
@@ -332,18 +343,7 @@
 				<h3>Documentation improvements</h3>
 					<ul>
 						<li>
-							Convert documentation to Sphinx/ReST
-							See <a href="http://projects.mtjm.eu/work_packages/5">http://projects.mtjm.eu/work_packages/5</a>
-							and <a href="http://projects.mtjm.eu/work_packages/12">http://projects.mtjm.eu/work_packages/12</a>
-						</li>
-						<li>
-							<b>
-								Maintainence manual. How to contribute to libreboot.
-								See <a href="http://projects.mtjm.eu/work_packages/11">http://projects.mtjm.eu/work_packages/11</a>
-							</b>
-						</li>
-						<li>
-							HIGH PRIORITY! <b>Add information from hw registers on all boards. See
+							<b><u><i>HIGH PRIORITY!</i></u></b> <b>Add information from hw registers on all boards. See
 							<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a></b>
 							<ul>
 								<li>We currently have them for X200 (4MiB flash chip), T400 but not complete</li>
@@ -353,13 +353,30 @@
 										<li>X60</li>
 										<li>T60</li>
 										<li>macbook21</li>
-										<li>X200 with 8MiB flash chip</li>
-										<li>R400 with 4MiB flash chip</li>
-										<li>R400 with 8MiB flash chip</li>
+										<li>X200 (make sure to have it for both flash chip sizes)</li>
+										<li>R400 (make sure to have it for both flash chip sizes)</li>
 										<li>T400 (make sure to have it for both flash chip sizes)</li>
+										<li>T500 (make sure to have it for both flash chip sizes)</li>
 									</ul>
 								</li>
 							</ul>
+						</li>
+						<li>
+							Add guides for GM45 laptops in docs/security/
+						</li>
+						<li>
+							Add guides for GM45 laptops in docs/hardware/
+						</li>
+						<li>
+							Convert documentation to Sphinx/ReST
+							See <a href="http://projects.mtjm.eu/work_packages/5">http://projects.mtjm.eu/work_packages/5</a>
+							and <a href="http://projects.mtjm.eu/work_packages/12">http://projects.mtjm.eu/work_packages/12</a>
+						</li>
+						<li>
+							<b>
+								Maintainence manual. How to contribute to libreboot.
+								See <a href="http://projects.mtjm.eu/work_packages/11">http://projects.mtjm.eu/work_packages/11</a>
+							</b>
 						</li>
 						<li>
 							Add cubieboard SPI flashing instructions to libreboot. 
@@ -386,7 +403,7 @@
 				<h3>Project (institutional) improvements</h3>
 					<ul>
 						<li>
-							HIGH PRIORITY! <b>Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
+							<b><u><i>HIGH PRIORITY!</i></u></b> <b>Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
 							Consult with the openlunchbox project (and maybe others) on getting hardware manufactured
 							with libreboot support (out of the box, from the factory).</b>
 						</li>
