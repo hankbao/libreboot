@@ -48,6 +48,13 @@
 				a deblobbed descriptor+gbe image for GM45 targets. ich9gen is a small utility within
 				ich9deblob that can generate them from scratch, without a factory.bin dump.
 			</p>
+			
+			<p>
+				ich9gen executables can be found under ./ich9deblob/ statically compiled in
+				libreboot_util. If you are using src or git, build ich9gen from source with:<br/>
+				$ <b>./build module ich9deblob</b><br/>
+				The executable will appear under resources/utilities/ich9deblob/
+			</p>
 				
 			<p>
 				Run:<br/>
@@ -100,13 +107,6 @@
 				on all GM45 ROM images. For instance:<br/>
 				$ <b>./ich9macchange path/to/libreboot.rom XX:XX:XX:XX:XX:XX romsize</b><br/>
 				<b>romsize</b> should be 4 or 8, depending on whether the ROM image is for a 4MiB or 8MiB flash chip.
-			</p>
-				
-			<p>
-				ich9gen executables can be found under ./ich9deblob/ statically compiled in
-				libreboot_util. If you are using src or git, build ich9gen from source with:<br/>
-				$ <b>./build module ich9deblob</b><br/>
-				The executable will appear under resources/utilities/ich9deblob/
 			</p>
 			
 			<p>
