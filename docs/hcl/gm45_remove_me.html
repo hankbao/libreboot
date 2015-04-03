@@ -105,17 +105,10 @@
 			<p>
 				Assuming that your libreboot image is named <b>libreboot.rom</b>, copy
 				the file to where <b>libreboot.rom</b> is located
-				and then run, for instance:<br/>
+				and then insert the descriptor+gbe file into the ROM image. For 8MiB flash chips:<br/>
 				$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
-				or:<br/>
+				For 4MiB flash chips:<br/>
 				$ <b>dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b>
-			</p>
-			
-			<p>
-				A bash script is also included in libreboot_util which will change the mac address (using ich9gen)
-				on all GM45 ROM images. For instance:<br/>
-				$ <b>./ich9macchange path/to/libreboot.rom XX:XX:XX:XX:XX:XX romsize</b><br/>
-				<b>romsize</b> should be 4 or 8, depending on whether the ROM image is for a 4MiB or 8MiB flash chip.
 			</p>
 			
 			<p>
