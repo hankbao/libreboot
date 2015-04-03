@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #  helper script: installs build dependencies for Parabola
-# works on 32-bit. TODO: adapt for 64-bit
+
 # this script is based on the script for Trisquel 7
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
@@ -33,100 +33,69 @@ fi
 # This is so that they can moved to separate scripts.
 #
 
-# TODO: get everything building in parabola 64-bit
-# (this script was written for 32-bit parabola)
-
-pacman -S --noconfirm wget
+pacman -S wget
 
 # For downloading source code
 # ------------------------------------------------------------
 
-pacman -S --noconfirm subversion git
+pacman -S subversion git
 
 # For building source code:
 # ------------------------------------------------------------
 
-pacman -S --noconfirm base-devel
+pacman -S base-devel libstdc++5
 
-# THIS IS ONLY FOR "./build release archives"
-# TODO: ADAPT FOR PARABOLA
-# for cross-compiling ARM binaries
-apt-get -y install gcc-arm-linux-gnueabi # TODO: ADAPT IN PARABOLA
+pacman -S arm-none-eabi-gcc
+
+pacman -S pacman -S libpciaccess
+
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
-		apt-get -y install gcc-multilib libc6-i386 libc6-dev-i386 
-		apt-get -y install lib32stdc++6 g++-multilib dh-autoreconf
-		# recommended, but not sure what for:
-		apt-get -y install lib32tinfo-dev texi2html
+		pacman -S gcc-libs-multilib gcc-multilib lib32-fakeroot lib32-libltdl lib32-glibc lib32-libstdc++5 
+		pacman -S lib32-libpciaccess
 fi
 
 # Memtest86+ build dependencies
 # ------------------------------------------------------------
 
-# pacman -S --noconfirm base-devel
+# pacman -S base-devel
 
 # i945-pwm build dependencies
 # ------------------------------------------------------------
 
-# pacman -S --noconfirm base-devel
+# pacman -S base-devel
 
 # Coreboot build dependencies (also requires build-essential and git)
 # ------------------------------------------------------------
 
-pacman -S --noconfirm ncurses doxygen iasl gdb flex bison
-# pacman -S --noconfirm git base-devel
+pacman -S ncurses doxygen iasl gdb flex bison
+# pacman -S git base-devel
 
 # For cross-compiling i686 target on x86_64 host.
-TODO: ADAPT FOR PARABOLA (needed for "./build release archives")
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
-		apt-get -y install lib32ncurses5-dev 
+		pacman -S lib32-ncurses
 fi
 
 # GRUB build dependencies (also requires build-essential, bison and flex)
 # ------------------------------------------------------------
 
+# pacman -S base-devel bison flex
 
-# TODO: is bdf-unifont the equivalent to Trisquel's ttf-unifont? Or do you need ttf-unifont from AUR, eg:
-# https://aur.archlinux.org/packages/ttf-unifont/
-
-# TODO: what is the equivalent to libopts25?
-
-# TODO: what is the equivalent to libselinux1-dev?
-# Do you need it from AUR?
-# Is SELinux even needed at all?
-
-# TODO: what is the equivalent to autotools-dev?
-
-# TODO: what is the equivalent to libfont-freetype-perl? is it freetype2 (already in the list below)?
-
-# pacman -S --noconfirm base-devel bison flex
-
-pacman -S --noconfirm autogen m4 autoconf help2man freetype2 automake fuse fuse-exfat xz gawk device-mapper libtool python
-pacman -S --noconfirm bdf-unifont # trying this, otherwise there was an error. I'll try AUR if this won't work.
+pacman -S autogen m4 autoconf help2man freetype2 automake fuse fuse-exfat xz gawk device-mapper libtool python
+pacman -S bdf-unifont # trying this, otherwise there was an error. I'll try AUR if this won't work.
 
 # BucTS build dependencies (external script)
 # ------------------------------------------------------------
 
-# pacman -S --noconfirm base-devel
+# pacman -S base-devel
 
 # Flashrom build dependencies (also requires build-essential and subversion)
 # ------------------------------------------------------------
 
-# TODO: what is the equivalent to libpci-dev?
-
-# 
-
-pacman -S --noconfirm pciutils zlib libftdi libftdi-compat 
-# pacman -S --noconfirm base-devel subversion
-
-# For cross-compiling i686 target on x86_64 host.
-# TODO: ADAPT FOR PARABOLA (needed for "./build release archives"
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
-	then
-		apt-get -y install lib32z1-dev 
-fi
+pacman -S pciutils zlib libftdi libftdi-compat 
+# pacman -S base-devel subversion
 
 # ------------------- DONE ----------------------
 

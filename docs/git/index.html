@@ -68,6 +68,10 @@
 					or:<br/>
 					# <b>./build dependencies parabola</b>
 				</p>
+				<p>
+					If you are running Parabola 64-bit (x86_64), you should enable
+					the <b>multilib</b> and <b>libre-multilib</b> repositories.
+				</p>
 			</div>
 
 			<p>
@@ -737,22 +741,34 @@
 				<h2>Preparing release archives (optional)</h2>
 
 					<p>
+						<b>This is only confirmed to work (tested) in Trisquel 7. Parabola *fails* at this stage
+						(for now).</b>
+					</p>
+
+					<p>
 						Do the following:<br/>
 						$ <b>./build release archives</b>
 					</p>
 
 					<p>
-						If you are building on an i686 host, this will include statically linked 32-bit binaries in 
+						If you are building on an i686 host, this will build statically linked 32-bit binaries in 
 						the binary release archive that you created,
-						for: <b>nvramtool, cbfstool, bucts, flashrom, ich9deblob, cbmem</b>.
+						for: <b>nvramtool, cbfstool, ich9deblob, cbmem</b>.
 					</p>
 
 					<p>
-						If you are building on an x86_64 host, this will include statically linked 32- and 64-bit binaries for 
-						<b>cbmem</b>, <b>ich9deblob</b>, <b>cbfstool</b> and <b>nvramtool</b>, while <b>flashrom</b>
-						and <b>bucts</b> will be included only as 64-bit statically linked binaries. <b>To include a statically 
-						linked flashrom and bucts for i686, you will need to build them on a chroot, a virtual machine or a real
-						32-bit system. You can find the build dependencies for these packages listed in deps-*</b>
+						If you are building on an x86_64 host, this will build statically linked 32- *and* 64-bit binaries for 
+						<b>cbmem</b>, <b>ich9deblob</b>, <b>cbfstool</b> and <b>nvramtool</b>. 
+					</p>
+					<p>
+						<b>To include statically linked i686 and x86_64 binaries for bucts and flashrom,
+						you will need to build them on a chroot, a virtual machine or a real
+						system where the host uses each given architecture. These packages are difficult
+						to cross-compile, and the libreboot project is still figuring out how to deal
+						with them.</b>
+					</p>
+					<p>
+						The same applies if you want to include statically linked flashrom binaries for ARM.
 					</p>
 					
 					<p>
@@ -766,7 +782,7 @@
 						</ul>
 
 					<p>
-						If you are building 32-bit binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:<br/>
+						If you are building binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:<br/>
 						$ <b>./build module flashrom static</b><br/>
 						$ <b>./build module bucts static</b>
 					</p>
