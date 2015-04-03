@@ -44,11 +44,6 @@
 		<h1 id="ich9gen">ICH9 gen utility</h1>
 		
 			<p>
-				<b>This is no longer strictly necessary. Libreboot ROM images for GM45 now
-				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
-			</p>
-		
-			<p>
 				It is no longer necessary to use <a href="#ich9deblob">ich9deblob</a> to generate
 				a deblobbed descriptor+gbe image for GM45 targets. ich9gen is a small utility within
 				ich9deblob that can generate them from scratch, without a factory.bin dump.
@@ -60,7 +55,19 @@
 			</p>
 			
 			<p>
-				It is also possible to generate a descriptor+gbe image with your own MAC address
+				Running ich9gen this way (without any arguments) generates
+				a default descriptor+gbe image with a generic MAC address.
+				You probably don't want to use the generic one; the ROM images
+				in libreboot contain a descriptor+gbe image by default (already
+				inserted) just to prevent or mitigate the risk of bricking
+				your laptop, but with the generic MAC address (the libreboot
+				project does not know what your real MAC address is).
+			</p>
+			
+			<p>
+				On GM45 laptops that use flash descriptors, the MAC address
+				or the onboard ethernet chipset is flashed (inside the ROM image).
+				You should generate a descriptor+gbe image with your own MAC address
 				inside (with the Gbe checksum updated to match). Run:<br/>
 				$ <b>./ich9gen --macaddress XX:XX:XX:XX:XX:XX</b><br/>
 				(replace the XX chars with the hexadecimal chars in the MAC address that you want)
