@@ -327,6 +327,34 @@ Note: flashrom can never write if the flash chip isn't found automatically.
 		</p>
 		
 	</div>
+	
+	<div class="section">
+	
+		<h1>EHCI debugging</h1>
+		
+			<p>
+				Some libreboot systems lack serial ports, so you have to use the debug port (USB) instead.
+				The BeagleBone can be configured for this. It may involve compiling a patched kernel.
+			</p>
+			
+			<p>
+				Work is in progress to implement this, and document it in libreboot. These are just some preliminary notes.
+			</p>
+			
+			<p>
+				<a href="www.coreboot.org/EHCI_Debug_Port">www.coreboot.org/EHCI_Debug_Port</a>
+				<a href="www.coreboot.org/EHCI_Gadget_Debug">www.coreboot.org/EHCI_Gadget_Debug</a>
+			</p>
+			
+<pre>
+from #coreboot
+&lt;tty0_&gt; stefanct,  1) plug the the BBB to a running system first and make sure you see it as "Netchip" (with lsusb).  if that is correct (i.e you have BBB > ver1 ) , you have to rebuild coreboot/libreboot with Net20DB instead of BBB as debug dongle
+&lt;stefanct&gt; tty0_: the coreboot config is clear to me... it fails to show up in lsusb already
+&lt;tty0_&gt; on BBB, unload all the modules, then modprobe g_dbgp
+&lt;tty0_&gt; ... and when i siad lsusb, you do that on the target system, not on BBB
+</pre>
+	
+	</div>
 
 	<div class="section">
 
