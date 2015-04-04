@@ -352,6 +352,24 @@ from #coreboot
 &lt;stefanct&gt; tty0_: the coreboot config is clear to me... it fails to show up in lsusb already
 &lt;tty0_&gt; on BBB, unload all the modules, then modprobe g_dbgp
 &lt;tty0_&gt; ... and when i siad lsusb, you do that on the target system, not on BBB
+
+&lt;tty0_&gt; fchmmr, the kernel should be compiled with: CONFIG_EARLY_PRINTK_DBGP=y to output on EHCI debug: https://wiki.ubuntu.com/Kernel/Debugging/USBearlyprintk
+
+&lt;tty0_&gt; stefanct, carldani: Note that the script has small bug in the last for loop:  for dev in &quot;$debug_dmesg_devs&quot;; do ...
+&lt;stefanct&gt; tty0_: had ;)
+&lt;stefanct&gt; carldani: ok that's what i was expecting, thanks
+* ob-sed has quit (Ping timeout: 248 seconds)
+&lt;tty0_&gt; On the wiki there are links to two scripts, the updated one has bug
+&lt;tty0_&gt; $debug_dmesg_devs should not be quoted
+&lt;tty0_&gt; ... if there are multiple controllers with debug, $dev will be assgined &lt;controller1 controller2&gt; instead of iterating throug each of them
+&lt;stefanct&gt; i have seen your conversation with mtjm earlier
+&lt;stefanct&gt; that's the reason why i was working on usb debug today at all :)
+&lt;stefanct&gt; idwer: ping
+&lt;carldani&gt; tty0_: indeed, this was a bug.
+&lt;stefanct&gt; carldani: the most annoying thing about lsusb... the debug device is actually missing from lsusb -t as i have found out today
+&lt;tty0_&gt; It shows only ports that have something attached to them, because of that you have to go with usb stick through all the ports and run the script each time
+&lt;stefanct&gt; tty0_: lsusb without the -t shows the debug device... but doesnt print the port number
+
 </pre>
 	
 	</div>
