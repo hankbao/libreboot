@@ -346,6 +346,19 @@
 
 				<h3>Build system</h3>
 					<ul>
+						<li>
+							<b><u><i>HIGH PRIORITY!</i></u></b> All parts of libreboot that download 
+							non-intergrated parts (coreboot/grub/memtest/bucts/flashrom) rely on only a single
+							repository link, which means single-point-of-failure. Make them fall back on alternative
+							(backup) repositories if the main ones are down.
+							<ul>
+								<li>The coreboot one also cherry picks patches from review.coreboot.org (gerrit), but coreboot.org
+								is sometimes down. When that happens, libreboot cannot be built from git. 
+								The solution is to directly include those patches that are used, as patch/diff files
+								under <i>resources/libreboot/patch/, instead of cherry picking from gerrit
+								(but still include a commented-out link to the gerrit patch that the diff file came from)</i></li>
+							</ul>
+						</li>
 						<li><b><u><i>HIGH PRIORITY!</i></u></b> <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
 						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>
