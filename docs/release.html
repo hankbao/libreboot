@@ -147,6 +147,15 @@
 							<a href="http://projects.mtjm.eu/work_packages/13">Port to as many GM45 laptops as possible</a>
 							<ul>
 								<li>
+									<b><i><u>HIGH^2 PRIORITY!</u></i></b> Lenovo G505S (works without CPU microcode updates). Video BIOS is an issue (unfinished replacement: openatom), as
+									is the SMU firmware (ruik will know more). Other non-essential blobs may also still be present (but possible
+									to remove). <a href="http://projects.mtjm.eu/work_packages/44">http://projects.mtjm.eu/work_packages/44</a>
+									- It's AMD, so no ME either!
+								</li>
+								<li>
+									HP Pavillion 1035DX (same chipset as G505S. See notes above)
+								</li>
+								<li>
 									add roda rk9 support (contact nico to ask for more details about hw). 
 									This is GM45 but these machines do not have a descriptor (no ME), should be easy
 									<ul>
@@ -173,11 +182,6 @@
 									Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. (maybe other machines)
 									See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
 								</li>
-							</ul>
-						</li>
-						<li>
-							Look into those machines:
-							<ul>
 								<li>
 									ThinkPad X201 - ME ignition is an issue. Watchdog for ME is an issue. Might be possible to disable watchdog in the flash descriptor
 									(soft straps).
@@ -191,14 +195,6 @@
 									This page contains a list of basically every thinkpad that would ever be a candidate for libreboot:
 									<a href="http://psref.lenovo.com/WithdrawnBook">http://psref.lenovo.com/WithdrawnBook</a> - 
 									take a look at <a href="http://www.lenovo.com/psref/pdf/ltwbook_2013.pdf">this PDF</a>.
-								</li>
-								<li>
-									Lenovo G505S (works without microcode updates). Video BIOS is an issue (unfinished replacement: openatom), as
-									is the SMU firmware (ruik will know more). Other non-essential blobs may also still be present (but possible
-									to remove)
-								</li>
-								<li>
-									HP Pavillion 1035DX (same chipset as G505S. See notes above)
 								</li>
 								<li>
 									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
