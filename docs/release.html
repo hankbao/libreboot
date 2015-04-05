@@ -184,6 +184,16 @@
 									maybe it could be sufficiently reverse engineered via serialice and ectool.
 								</li>
 								<li>
+									Thinkpad E135 and Thinkpad E145 - port to coreboot. Apparently, the CPU used is based on the E350 (zacate)
+									CPU used is the ASrock E350M1 which is in coreboot, and already a libreboot candidate.
+									Blob situation is unknown, though it will probably rely on AGESA if ported and will probably need SMU firmware
+									or Video BIOS (which must be replaced). It is unknown what other blobs may exist when ported, and whether
+									or not this system will work reliably without the CPU microcode updates. 
+									<ul>
+										<li>Difficulty: unknown</li>
+									</ul>
+								</li>
+								<li>
 									T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
 									is the main blocker there. They both probably use WSON-8 flash chips.
 								</li>
