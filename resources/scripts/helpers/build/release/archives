@@ -106,6 +106,10 @@ cd release/
 mkdir libreboot_docs/
 
 cp -r ../docs/ libreboot_docs/
+
+# This file is only for the git repository
+rm -f libreboot_docs/docs/tasks.html
+
 cat ../commitid > libreboot_docs/commitid
 
 # create lzma compressed docs archive
