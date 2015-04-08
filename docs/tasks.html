@@ -48,6 +48,28 @@
 											HP Pavillion 1035DX (same chipset as G505S. See notes above)
 										</li>
 										<li>
+											Thinkpad E135 and Thinkpad E145 - port to coreboot. Apparently, the CPU used is based on the E350 (zacate)
+											CPU used is the ASrock E350M1 which is in coreboot, and already a libreboot candidate.
+											Blob situation is unknown, though it will probably rely on AGESA if ported and will probably need SMU firmware
+											or Video BIOS (which must be replaced). It is unknown what other blobs may exist when ported, and whether
+											or not this system will work reliably without the CPU microcode updates. 
+											<ul>
+												<li>Difficulty: unknown</li>
+											</ul>
+										</li>
+										<li>
+											F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
+										</li>
+										<li>
+											<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
+										</li>
+										<li><b>This list needs to expand!</b></li>
+									</ul>
+								</li>
+								<li>
+									That doesn't mean Intel is off the table just yet:
+									<ul>
+										<li>
 											add roda rk9 support (contact nico to ask for more details about hw). 
 											This is GM45 but these machines do not have a descriptor (no ME), should be easy
 											<ul>
@@ -56,59 +78,43 @@
 											</ul>
 										</li>
 										<li>
-											
+											ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
+										</li>
+										<li>
+											ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
+											needs to disable the ATI chip and use Intel (this isn't done yet)
+										</li>
+										<li>
+											port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).
+											ME isn't an issue, because its GM45 so it could be removed (it looks like this machine might also be shipped in 
+											non-descriptor mode by default, like the roda rk9). 
+											Search <b>jv50 block diagram filetype:pdf</b> for schematics.
+											(jv50 is written on the board); noone seems to have found any documentation for the EC chip, but
+											maybe it could be sufficiently reverse engineered via serialice and ectool.
+										</li>
+										<li>
+											T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
+											is the main blocker there. They both probably use WSON-8 flash chips.
+										</li>
+										<li>
+											Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. (maybe other machines)
+											See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
+										</li>
+										<li>
+											ThinkPad X201 - ME ignition is an issue. 30min reset watchdog for ME is an issue. Might be possible to disable watchdog in the flash descriptor
+											(soft straps) - sgsit in the libreboot or coreboot IRC channel is interested in this.
+										</li>
+										<li>
+											T410S is supported but not yet merged. This uses the same chipset as the X201. 
+											<a href="http://review.coreboot.org/#/c/7975/">http://review.coreboot.org/#/c/7975/</a>
+											has the patch. This should be tested by someone and should ideally be merged in coreboot. pecg has one. help him.
+										</li>
+										<li>
+											This page contains a list of basically every thinkpad that would ever be a candidate for libreboot:
+											<a href="http://psref.lenovo.com/WithdrawnBook">http://psref.lenovo.com/WithdrawnBook</a> - 
+											take a look at <a href="http://www.lenovo.com/psref/pdf/ltwbook_2013.pdf">this PDF</a>.
 										</li>
 									</ul>
-								</li>
-								<li>
-									ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
-								</li>
-								<li>
-									ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
-									needs to disable the ATI chip and use Intel (this isn't done yet)
-								</li>
-								<li>
-									port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).
-									ME isn't an issue, because its GM45 so it could be removed (it looks like this machine might also be shipped in 
-									non-descriptor mode by default, like the roda rk9). 
-									Search <b>jv50 block diagram filetype:pdf</b> for schematics.
-									(jv50 is written on the board); noone seems to have found any documentation for the EC chip, but
-									maybe it could be sufficiently reverse engineered via serialice and ectool.
-								</li>
-								<li>
-									Thinkpad E135 and Thinkpad E145 - port to coreboot. Apparently, the CPU used is based on the E350 (zacate)
-									CPU used is the ASrock E350M1 which is in coreboot, and already a libreboot candidate.
-									Blob situation is unknown, though it will probably rely on AGESA if ported and will probably need SMU firmware
-									or Video BIOS (which must be replaced). It is unknown what other blobs may exist when ported, and whether
-									or not this system will work reliably without the CPU microcode updates. 
-									<ul>
-										<li>Difficulty: unknown</li>
-									</ul>
-								</li>
-								<li>
-									T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
-									is the main blocker there. They both probably use WSON-8 flash chips.
-								</li>
-								<li>
-									Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. (maybe other machines)
-									See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
-								</li>
-								<li>
-									ThinkPad X201 - ME ignition is an issue. 30min reset watchdog for ME is an issue. Might be possible to disable watchdog in the flash descriptor
-									(soft straps) - sgsit in the libreboot or coreboot IRC channel is interested in this.
-								</li>
-								<li>
-									T410S is supported but not yet merged. This uses the same chipset as the X201. 
-									<a href="http://review.coreboot.org/#/c/7975/">http://review.coreboot.org/#/c/7975/</a>
-									has the patch. This should be tested by someone and should ideally be merged in coreboot. pecg has one. help him.
-								</li>
-								<li>
-									This page contains a list of basically every thinkpad that would ever be a candidate for libreboot:
-									<a href="http://psref.lenovo.com/WithdrawnBook">http://psref.lenovo.com/WithdrawnBook</a> - 
-									take a look at <a href="http://www.lenovo.com/psref/pdf/ltwbook_2013.pdf">this PDF</a>.
-								</li>
-								<li>
-									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
 								</li>
 							</ul>
 						</li>
