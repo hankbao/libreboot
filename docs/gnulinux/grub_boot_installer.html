@@ -33,14 +33,14 @@
 
 			<p>
 				Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
-				<b>$ sudo umount /dev/sdb*</b><br/>
-				<b># umount /dev/sdb*</b>
+				<b>$ sudo umount /dev/sdX*</b><br/>
+				<b># umount /dev/sdX*</b>
 			</p>
 
 			<p>
 				dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:<br/>
-				<b>$ sudo dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b><br/>
-				<b># dd if=gnulinux.iso of=/dev/sdb bs=8M; sync</b>
+				<b>$ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync</b><br/>
+				<b># dd if=gnulinux.iso of=/dev/sdX bs=8M; sync</b>
 			</p>
 			
 	</div>
