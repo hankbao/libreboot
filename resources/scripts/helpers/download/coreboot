@@ -30,12 +30,12 @@ printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 # This is also used to run the deblob scripts.
 
 # Remove the old version that may exist
-# ----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 rm -rf coreboot
 
 # Get latest coreboot:
-# ----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # download it using git
 git clone http://review.coreboot.org/coreboot
@@ -47,7 +47,7 @@ cd coreboot/
 git reset --hard 8e3da749ed912834ddf9b78bff956a2b7d269945
 
 # Get patches from review.coreboot.org
-# ----------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
@@ -84,7 +84,7 @@ printf "ThinkPad T500 (depends on T400 patch)\n"
 git fetch http://review.coreboot.org/coreboot refs/changes/81/9181/1 && git cherry-pick FETCH_HEAD
 
 # Run coreboot-libre deblob scripts
-# ---------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
 rm -rf .git
@@ -100,5 +100,4 @@ printf "Deblobbing coreboot\n"
 printf "\n\n"
 
 # ------------------- DONE ----------------------
-
 

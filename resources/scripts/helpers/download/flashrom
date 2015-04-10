@@ -27,14 +27,14 @@ set -u -e
 # Get flashrom at the last previously tested revision
 
 # Remove the old version that may still exist:
-# ---------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Downloading flashrom\n"
 
 rm -rf flashrom
 
 # Get flashrom
-# ---------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # download it using subversion
 svn co -r 1858 svn://flashrom.org/flashrom/trunk flashrom
@@ -58,3 +58,4 @@ cd ../
 printf "\n\n"
 
 # ------------------- DONE ----------------------
+

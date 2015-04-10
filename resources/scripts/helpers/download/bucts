@@ -27,14 +27,14 @@ set -u -e
 # Get bucts and checkout last revision used
 
 # Remove the old version that may exist
-# -----------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Downloading bucts\n"
 
 rm -rf bucts
 
 # Get bucts
-# -----------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # download it using git
 git clone git://git.stuge.se/bucts.git
@@ -43,7 +43,7 @@ git clone git://git.stuge.se/bucts.git
 cd bucts
 
 # Reset to the last commit that was tested
-# -----------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Patching bucts to not require git for building\n"
 git reset --hard dc27919d7a66a6e8685ce07c71aefa4f03ef7c07
@@ -55,3 +55,4 @@ cd ../
 printf "\n\n"
 
 # ------------------- DONE ----------------------
+

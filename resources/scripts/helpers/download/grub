@@ -27,14 +27,14 @@ set -u -e
 # Get GRUB, revert to commit last used and apply patches.
 
 # Remove the old version that may still exist
-# -------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 printf "Downloading GRUB\n"
 
 rm -rf grub
 
 # Get latest GRUB
-# -------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # download it using git
 git clone git://git.savannah.gnu.org/grub.git
@@ -43,12 +43,12 @@ git clone git://git.savannah.gnu.org/grub.git
 cd grub
 
 # Reset to the last commit that was tested
-# --------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 git reset --hard fa07d919d1ff868b18d8a42276d094b63a58e299
 
 # Apply patches
-# --------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------
 
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
@@ -62,5 +62,4 @@ cd ../
 printf "\n\n"
 
 # ------------------- DONE ----------------------
-
 
