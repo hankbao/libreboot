@@ -3,6 +3,7 @@
 #  helper script: Downloads MemTest86+ and patches it
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Joseph Michael Thompson <jmt@josepht.me>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -40,7 +41,7 @@ rm -rf "memtest86+-5.01"
 wget http://www.memtest.org/download/5.01/memtest86+-5.01.tar.gz
 
 # extract it
-tar -xf "memtest86+-5.01.tar.gz"
+tar -xzf "memtest86+-5.01.tar.gz"
 
 # delete the tar file (no longer needed)
 rm -f "memtest86+-5.01.tar.gz"
