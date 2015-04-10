@@ -85,12 +85,19 @@
 											needs to disable the ATI chip and use Intel (this isn't done yet)
 										</li>
 										<li>
-											port acer aspire 5738 to coreboot (gm45)? (and then libreboot). EC is the main blocker (no support in coreboot yet).
-											ME isn't an issue, because its GM45 so it could be removed (it looks like this machine might also be shipped in 
-											non-descriptor mode by default, like the roda rk9). 
-											Search <b>jv50 block diagram filetype:pdf</b> for schematics.
-											(jv50 is written on the board); noone seems to have found any documentation for the EC chip, but
-											maybe it could be sufficiently reverse engineered via serialice and ectool.
+											Non-lenovo GM45 laptops:
+											<ul>
+												<li>Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
+												NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
+												<li>Dell Latitude E5400 - quite a few of these as well. Uses DDR3 memory. EC needs porting.</li>
+												<li>
+													Acer Aspire 5739 - NOTE: EC. ALSO: EC
+													<ul>
+														<li>Search <b>jv50 block diagram filetype:pdf</b> for schematics (jv50 is written on the board).
+														no docs were found for the EC chip, but it might be good enough to RE via serialice and ectool</li>
+													</ul>
+												</li>
+											</ul>
 										</li>
 										<li>
 											T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
