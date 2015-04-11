@@ -286,6 +286,15 @@
 								(but still include a commented-out link to the gerrit patch that the diff file came from)</i></li>
 							</ul>
 						</li>
+						<li>
+							<b><u><i>HIGH PRIORITY!</i></u></b> 
+							When downloading coreboot/grub/memtest/etc using the download scripts, it currently does
+							not check the integrity of these sources at all. Libreboot releases are signed, but
+							what can be done to improve it is to check the sha512sums of all files downloaded
+							by these scripts (which are in the git repository, but not the release archives,
+							because the release archives already include these sources). Do this for all
+							non-integrated modules used in libreboot.
+						</li>
 						<li><b><u><i>HIGH PRIORITY!</i></u></b> <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
 						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>
