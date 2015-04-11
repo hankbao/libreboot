@@ -364,9 +364,44 @@
 							</ul>
 						</li>
 						<li>
-							Apparently, leaving HOLD# and WP# pins floating (unconnected) isn't a good idea.
+							Apparently, leaving HOLD and WP pins floating (unconnected) isn't a good idea.
 							Information online says that this needs to be connected along with 3.3V - look into this.
 							(it is specific to each flash chip, so read the datasheets).
+							<ul>
+								<li>
+									eg http://flashrom.org/FT2232SPI_Programmer - 
+									&quot; The WP# and HOLD# pins should be tied to VCC! If you leave them unconnected you'll likely experience strange issues.&quot;
+								</li>
+								<li>
+									&lt;pehjota&gt; stefanct: We've never had any &quot;strange issues&quot; with leaving WP# and HOLD# 
+									unconnected on the Macronix and Atmel SOIC-8 and SOIC-16 flash chips on the X200.  
+									IIRC, the datasheets don't say how those pins are wired internally or whether they can 
+									be left unconnected.  But I tested their voltages while flashing, and they float high 
+									on their own, so they seem to support it fine.
+								</li>
+								<li>
+									&lt;pehjota&gt; fchmmr: You would connect the WP# and HOLD# pins to 3.3 V (on an ATX PSU you'd 
+									hook up more cables to the other orange pins, with your PSU I guess you'd wrap more wires 
+									around the 3.3-V screw), just like you do VCC.  But as I said above, it doesn't seem to 
+									be necessary (WP# and HOLD# seem to be held high already).<br/>
+									&lt;pehjota&gt; I got a solid ~3.3 V (i.e. pulled high, not floating between high and low) 
+									from WP# and HOLD# with just VCC, GND, MOSI, MISO, CS#, and SCLK connected.  Plus, we haven't 
+									had any write protection issues as I'd expect from floating WP# and HOLD#, AFAIK.<br/>
+									&lt;pehjota&gt; fchmmr: These pins do nothing if they're held high.  The "#" (not) means they cause different behavior when held low.
+								</li>
+								<li>
+									&lt;stefanct&gt; fchmmr: pehjota: it may not be a problem if the chip is soldered to the x200, but it surely is when it isnt.
+								</li>
+								<li>
+									&lt;stefanct&gt; yes...
+									&lt;stefanct&gt; a small note noting that would be appreciated because there are enough people out there already that ignore those pins and get stuck
+									&gt;pehjota&gt; stefanct: You mean a note in the libreboot documentation explaining why we don't have to connect HOLD# and WP# to anything and how they would have to be tied to VCC on a chip not soldered to a board?
+									&lt;Kamilion&gt; How about a more useful note that explains the whole discussion you two had succinctly?
+									&lt;Kamilion&gt; Not everyone is going to be an EE to know about the # indicating the pin should be pulled low to be active.
+									&lt;Kamilion&gt; reminds me, I need to pull out my pomona and try to fix some intel NIC roms
+									&lt;stefanct&gt; pehjota: yes
+								</li>
+							</ul>
 						</li>
 						<li>
 							Adapt the notes at <a href="install/bbb_setup.html#stability">install/bbb_setup.html#stability</a>
