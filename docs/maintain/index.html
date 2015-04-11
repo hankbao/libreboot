@@ -261,6 +261,28 @@
 			</p>
 
 			<p>
+				Finally, build *all* ROM images using the instructions at
+				<a href="../git/index.html">../git/index.html</a>, to verify
+				that everything still builds.
+			</p>
+			
+			<p>
+				Once you've verified that building isn't broken, test *all*
+				boards (you don't need to test all ROM images, only one
+				vesafb and one txtmode image for each configuration). If you
+				do not have all systems supported in libreboot, then you will
+				need to get other testers for those boards.
+			</p>
+			
+			<p>
+				If you have established a build issue, or a board no longer
+				works (booting issues, bugs during/after boot, etc), you'll
+				need to fix it upstream:
+				<a href="http://www.coreboot.org/Git">http://www.coreboot.org/Git</a>
+				and then re-update coreboot (or apply patches from upstream).
+			</p>
+
+			<p>
 				<a href="#pagetop">Back to top of page</a>.
 			</p>
 
