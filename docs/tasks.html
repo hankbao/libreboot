@@ -136,6 +136,11 @@
 									X200: text-mode is broken. only framebuffer graphics work.
 									Commit bde6d309dfafe58732ec46314a2d4c08974b62d4 in coreboot is what
 									broke it. Investigate. 
+									<ul>
+										<li>It might not be that commit; it's only an educated guess, based on
+										running <i>git log</i> on src/northbridge/intel/gm45/gma.c - an actual
+										git bisect has not yet been done.</li>
+									</ul>
 								</li>
 								<li>
 									Sound (internal speaker) worked on the T500, but stopped after all subsequent boots.
