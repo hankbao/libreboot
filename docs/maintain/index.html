@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Maintaining libreboot</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">Maintaining libreboot</h1>
+			<p>
+				This section relates to maintaining libreboot. <b>Work-in-progress</b>
+			</p>
+			<p>
+				Do not follow anything here to the letter; is it only a guide
+				representing how libreboot is maintained (for reference). This
+				will be added to frequently from now on.
+			</p>
+			<p>
+				Or <a href="../index.html">Back to main index</a>.
+			</p>
+			<ul>
+				<li><a href="#updating_coreboot">Updating coreboot-libre</a></li>
+			</ul>
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="updating_coreboot">Updating coreboot-libre</h1>
+		
+			<p>
+				Coreboot-libre is the name of the deblobbed coreboot sources
+				used in libreboot. It is also the name of the collection
+				of scripts used for deblobbing coreboot, on each new update.
+			</p>
+			
+			<p>
+				This section shows an example of how to update (re-base) to
+				the latest version of coreboot, how to update the deblobbing
+				scripts, and so on. <b>This does not teach you how to
+				change what custom patches are used, nor does it tell
+				you how to add new boards to libreboot. It assumes that you
+				simply want to re-base to the latest version (for instance,
+				there could be bug fixes that you want). For those things
+				not listed in this section, you can refer to other sections
+				on this page instead.</b>
+			</p>
+		
+			<p>
+				Open these files in your editor (you will most likely be editing them):
+			</p>
+				<ul>
+					<li>resources/scripts/helpers/download/coreboot</li>
+					<li>resources/scripts/helpers/build/module/coreboot</li>
+					<li>resources/utilities/coreboot-libre/deblob</li>
+					<li>resources/utilities/coreboot-libre/nonblobs</li>
+					<li>resources/utilities/coreboot-libre/nonblobs_notes</li>
+					<li>resources/scripts/helpers/build/roms/helper</li>
+					<li>resources/scripts/helpers/build/roms/withgrub</li>
+				</ul>
+				
+			<p>
+				Firstly, download coreboot. Do <b>not</b> use <b>./download coreboot</b>
+				for this, just clone coreboot, as it does in that script, like so:<br/>
+				$ <b>git clone http://review.coreboot.org/coreboot</b>
+			</p>
+			
+			<p>
+				$ <b>cd coreboot/</b><br/>
+				Get the ID of the latest commit in this clone, by reading the commit ID using
+				e.g.:<br/>
+				$ <b>git log</b><br/>
+				In <i>resources/scripts/helpers/download/coreboot</i> you will
+				find a line that says <i><b>git reset --hard</b></i> and then
+				a commit ID next to it. Replace this with the commit ID of the latest
+				commit from the coreboot version that you just downloaded.
+			</p>
+			<p>
+				Delete the .git* resources. For example:<br/>
+				$ <b>rm -rf .git*</b><br/>
+				...this is to avoid the deblobbing script from picking up files
+				in there as blobs, which would be only false positives and
+				increase the amount of time taken. Now come out of coreboot:<br/>
+				$ <b>cd ../</b>
+			</p>
+				
+			<p>
+				Check all coreboot file names/paths in <i>deblob</i>; if any
+				of them no longer exist at that name/path in the coreboot tree that you downloaded, 
+				delete the reference(s) in <i>deblob</i>.
+			</p>
+			
+			<p>
+				Check all coreboot file names/paths in <i>nonblobs</i>; if
+				any of them no longer exist at that name/path in the coreboot tree that you downloaded,
+				delete the reference in <i>nonblobs</i>.
+			</p>
+			
+			<p>
+				Now, back in the main root directory of libreboot (git repository),
+				run the deblob script. This is to prevent the <i>findblobs</i>
+				scripts from finding the blobs that are already deleted
+				when running the <i>deblob</i> script. Like so:<br/>
+				$ <b>./resources/utilities/coreboot-libre/deblob</b>
+			</p>
+				
+			<p>
+				Now search for new blobs:<br/>
+				$ <b>cd resources/utilities/coreboot-libre/</b><br/>
+				$ <b>./findblobs</b><br/>
+				WARNING: this will take a <b>*long*</b> time. Be patient!
+				What this will do is look through the coreboot source directory,
+				looking for blobs. It will not find the blobs that you deleted
+				before (because they no longer exist), and it will ignore any
+				files listed in <i>nonblobs</i>.
+			</p>
+			
+			<p>
+				Once the <i>findblobs</i> script has finished, check the file
+				<i>tocheck</i> (from the root, this will be <i>resources/utilities/coreboot-libre/tocheck</i>).
+				These are the files detected as blobs; some might be blobs, some not.
+				The <i>findblobs</i> script doesn't know how to determine between blobs
+				and non-blobs, it only knows patterns. Distinguishing between blobs and
+				non-blobs must be performed by you, the human being.
+			</p>
+				<ul>
+					<li>
+						Files in <i>tocheck</i> that you identify as blobs,
+						should be added appropriately to <i>resources/utilities/coreboot-libre/deblob</i>
+					</li>
+					<li>
+						Files in <i>tocheck</i> that you identify as non-blobs,
+						should be added appropriately to <i>resources/utilities/coreboot-libre/nonblobs</i> -
+						also, if you feel it necessary, add an explanation of it in
+						<i>resources/utilities/coreboot-libre/nonblobs_notes</i>
+					</li>
+				</ul>
+			
+			<p>
+				Now come back to the main libreboot root directory (root
+				of the git clone). If you are still in resources/utilities/coreboot-libre/
+				for instance, you would do something like:<br/>
+				$ <b>cd ../../../</b>
+			</p>
+			
+			<p>
+				Now delete the coreboot directory:<br/>
+				$ <b>rm -rf coreboot/</b>
+			</p>
+			
+			<p>
+				Download coreboot again, only this time, using the download
+				script. The download script also applies custom patches
+				to coreboot (see resources/scripts/helpers/download/coreboot);
+				if they do not apply anymore, you will have to re-base them
+				and then update <i>resources/scripts/helpers/download/coreboot</i>
+				accordingly. Anyway, download coreboot like so:<br/>
+				$ <b>./download coreboot</b>
+			</p>
+			
+			<p>
+				If the custom patches no longer apply, and you have to re-base
+				(or replace?) some patches, please do this in coreboot upstream,
+				not in libreboot. Then re-include new patches from upstream,
+				into libreboot. Here is coreboot's guide for contributing
+				patches:<br/>
+				<a href="http://www.coreboot.org/Git">http://www.coreboot.org/Git</a>.
+			</p>
+			
+			<p>
+				Update all configs:<br/>
+				$ <b>./build config corebootupdate</b><br/>
+				This simply takes all of the coreboot <b>.config</b> files from
+				<i>resources/libreboot/config/</i> and does <b>make oldconfig</b>
+				on them. It usually works. If it doesn't, you'll need to recreate
+				those configs from scratch using <b>make menuconfig</b> in coreboot
+				(see <a href="../git/index.html#config">../git/index.html#config</a>)
+			</p>
+			
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+	
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../license.txt">../license.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>
