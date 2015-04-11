@@ -31,21 +31,21 @@ availableprogrammes="$(ls $download/)"
 # User specified no or too few/many parameters
 if (( $# != 1 )); then
 	printf "$usage\n\n"
-	printf "possible values for 'programme':\neverything:\n$availableprogrammes\n\n"
-	printf "Example (download everything): ./download everything\n"
+	printf "possible values for 'programme':\nall:\n$availableprogrammes\n\n"
+	printf "Example (download everything): ./download all\n"
 	printf "Example (download coreboot): ./download coreboot\n\n"
 	exit 1
 fi
 programme=$1
 
-if [ "$programme" = "everything" ]; then
+if [ "$programme" = "all" ]; then
 	for programme in $availableprogrammes; do
 		$download/$programme
 	done
 elif [ -f "$download/$programme" ]; then
 	$download/$programme
 else
-	printf "Invalid programme. Available programmes are:\neverything\n$availableprogrammes\n"
+	printf "Invalid programme. Available programmes are:\nall\n$availableprogrammes\n"
 	exit 1
 fi
 
