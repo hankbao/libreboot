@@ -14,7 +14,9 @@
 <body>
 
 	<div class="section">
+
 		<h1 id="pagetop">Maintaining libreboot</h1>
+
 			<p>
 				This section relates to maintaining libreboot. <b>Work-in-progress</b>
 			</p>
@@ -24,23 +26,91 @@
 				will be added to frequently from now on.
 			</p>
 			<p>
+				This section of the documentation applies mainly to the
+				development version of libreboot, which is hosted in a git
+				repository. It is not intended for the release versions of
+				libreboot.
+			</p>
+
+			<ul>
+				<li><a href="#overview">Overview</a></li>
+				<li>
+					<a href="#updating_coreboot">Updating coreboot-libre</a>
+					<ul>
+						<li><a href="#newboard_libreboot">Adding a new board to libreboot</a></li>
+						<li><a href="#newpatch_libreboot">Add/remove/modify patches in coreboot-libre</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#updating_grub">Updating GRUB</a>
+					<ul>
+						<li><a href="#newpatch_grub">Add/remove/modify patches in GRUB</a></li>
+						<li><a href="#altbuild_grub">Change how GRUB is built (utility: grub-assemble)</a></li>
+						<li><a href="#newconfig_grub">Modify the configuration used in GRUB</a></li>
+						<li><a href="../grub/index.html">Other maintenance-related tasks in GRUB</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#updating_flashrom">Updating flashrom</a>
+					<ul>
+						<li><a href="#newpatch_flashrom">Add/remove/modify patches in flashrom</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#updating_bucts">Updating bucts</a>
+					<ul>
+						<li><a href="#newpatch_bucts">Add/remove/modify patches in bucts</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="#updating_memtest86plus">Updating MemTest86+</a>
+					<ul>
+						<li><a href="#newpatch_memtest86plus">Add/remove/modify patches in MemTest86+</a></li>
+					</ul>
+				</li>
+			</ul>
+
+			<p>
 				Or <a href="../index.html">Back to main index</a>.
 			</p>
-			<ul>
-				<li><a href="#updating_coreboot">Updating coreboot-libre</a></li>
-			</ul>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="overview">Overview</h1>
+
+			<p>
+				The way the libreboot project is run is very similar to how
+				a GNU/Linux distribution project is run (but for the boot
+				firmware, not your operating system).
+			</p>
+			<p>
+				This page demonstrates on a high level how
+				libreboot is maintained, how the project is run, how everything
+				goes together, etc. For a more detailed guide, refer to each
+				subsection for the various components/modules used in libreboot.
+			</p>
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
 	</div>
 	
 	<div class="section">
-	
+
 		<h1 id="updating_coreboot">Updating coreboot-libre</h1>
-		
+
 			<p>
 				Coreboot-libre is the name of the deblobbed coreboot sources
 				used in libreboot. It is also the name of the collection
 				of scripts used for deblobbing coreboot, on each new update.
 			</p>
-			
+
 			<p>
 				This section shows an example of how to update (re-base) to
 				the latest version of coreboot, how to update the deblobbing
@@ -52,7 +122,7 @@
 				not listed in this section, you can refer to other sections
 				on this page instead.</b>
 			</p>
-		
+
 			<p>
 				Open these files in your editor (you will most likely be editing them):
 			</p>
@@ -65,19 +135,19 @@
 					<li>resources/scripts/helpers/build/roms/helper</li>
 					<li>resources/scripts/helpers/build/roms/withgrub</li>
 				</ul>
-				
+
 			<p>
 				If you already had a coreboot/ directory in your libreboot
 				tree, delete it:<br/>
 				$ <b>rm -rf coreboot/</b>
 			</p>
-				
+
 			<p>
 				Firstly, download coreboot. Do <b>not</b> use <b>./download coreboot</b>
 				for this, just clone coreboot, as it does in that script, like so:<br/>
 				$ <b>git clone http://review.coreboot.org/coreboot</b>
 			</p>
-			
+
 			<p>
 				$ <b>cd coreboot/</b><br/>
 				Get the ID of the latest commit in this clone, by reading the commit ID using
@@ -96,19 +166,19 @@
 				increase the amount of time taken. Now come out of coreboot:<br/>
 				$ <b>cd ../</b>
 			</p>
-				
+
 			<p>
 				Check all coreboot file names/paths in <i>deblob</i>; if any
 				of them no longer exist at that name/path in the coreboot tree that you downloaded, 
 				delete the reference(s) in <i>deblob</i>.
 			</p>
-			
+
 			<p>
 				Check all coreboot file names/paths in <i>nonblobs</i>; if
 				any of them no longer exist at that name/path in the coreboot tree that you downloaded,
 				delete the reference in <i>nonblobs</i>.
 			</p>
-			
+
 			<p>
 				Now, back in the main root directory of libreboot (git repository),
 				run the deblob script. This is to prevent the <i>findblobs</i>
@@ -116,7 +186,7 @@
 				when running the <i>deblob</i> script. Like so:<br/>
 				$ <b>./resources/utilities/coreboot-libre/deblob</b>
 			</p>
-				
+
 			<p>
 				Now search for new blobs:<br/>
 				$ <b>cd resources/utilities/coreboot-libre/</b><br/>
@@ -127,7 +197,7 @@
 				before (because they no longer exist), and it will ignore any
 				files listed in <i>nonblobs</i>.
 			</p>
-			
+
 			<p>
 				Once the <i>findblobs</i> script has finished, check the file
 				<i>tocheck</i> (from the root, this will be <i>resources/utilities/coreboot-libre/tocheck</i>).
@@ -148,19 +218,19 @@
 						<i>resources/utilities/coreboot-libre/nonblobs_notes</i>
 					</li>
 				</ul>
-			
+
 			<p>
 				Now come back to the main libreboot root directory (root
 				of the git clone). If you are still in resources/utilities/coreboot-libre/
 				for instance, you would do something like:<br/>
 				$ <b>cd ../../../</b>
 			</p>
-			
+
 			<p>
 				Now delete the coreboot directory:<br/>
 				$ <b>rm -rf coreboot/</b>
 			</p>
-			
+
 			<p>
 				Download coreboot again, only this time, using the download
 				script. The download script also applies custom patches
@@ -170,7 +240,7 @@
 				accordingly. Anyway, download coreboot like so:<br/>
 				$ <b>./download coreboot</b>
 			</p>
-			
+
 			<p>
 				If the custom patches no longer apply, and you have to re-base
 				(or replace?) some patches, please do this in coreboot upstream,
@@ -179,7 +249,7 @@
 				patches:<br/>
 				<a href="http://www.coreboot.org/Git">http://www.coreboot.org/Git</a>.
 			</p>
-			
+
 			<p>
 				Update all configs:<br/>
 				$ <b>./build config corebootupdate</b><br/>
@@ -189,11 +259,179 @@
 				those configs from scratch using <b>make menuconfig</b> in coreboot
 				(see <a href="../git/index.html#config">../git/index.html#config</a>)
 			</p>
-			
+
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
 			</p>
+
+	</div>
+
+	<div class="section">
 	
+		<h1 id="newboard_libreboot">Adding a new board to libreboot</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newpatch_libreboot">Add/remove/modify patches in coreboot-libre</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="updating_grub">Updating GRUB</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newpatch_grub">Add/remove/modify patches in GRUB</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="altbuild_grub">Change how GRUB is built (utility: grub-assemble)</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newconfig_grub">Modify the configuration used in GRUB</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="updating_flashrom">Updating flashrom</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newpatch_flashrom">Add/remove/modify patches in flashrom</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="updating_bucts">Updating bucts</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newpatch_bucts">Add/remove/modify patches in bucts</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="updating_memtest86plus">Updating MemTest86+</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div class="section">
+	
+		<h1 id="newpatch_memtest86plus">Add/remove/modify patches in MemTest86+</h1>
+
+			<p>
+				TODO: write this section
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
 	</div>
 
 	<div class="section">
@@ -209,7 +447,7 @@
 			but WITHOUT ANY WARRANTY; without even the implied warranty of
 			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../license.txt">../license.txt</a> for more information.
 		</p>
-		
+
 	</div>
 
 </body>
