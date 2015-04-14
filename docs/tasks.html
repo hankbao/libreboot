@@ -46,13 +46,16 @@
 											</ul>
 										</li>
 										<li>
-											HP Pavillion 1035DX (same chipset as G505S. See notes above)
-										</li>
-										<li>
-											ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
+											<b><i><u>HIGH PRIORITY!</u></i></b> ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
 											CPUs probably work without microcode updates, looks like this can already run blob-free.
 											NOTE: PLCC flash chip (see vultureprog. BBB might be possible, it has GPIO pins etc) - not sure
 											if software flashing is possible for initial install.
+										</li>
+										<li>
+											<b><i><u>HIGH PRIORITY!</u></i></b> F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
+										</li>
+										<li>
+											HP Pavillion 1035DX (same chipset as G505S. See notes above)
 										</li>
 										<li>
 											BioStar AM1ML - just recently ported to coreboot. blob situation unknown.
@@ -68,9 +71,6 @@
 											</ul>
 										</li>
 										<li>
-											F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
-										</li>
-										<li>
 											<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
 										</li>
 										<li><b>This list needs to expand!</b></li>
@@ -80,32 +80,33 @@
 									That doesn't mean Intel is off the table just yet:
 									<ul>
 										<li>
-											add roda rk9 support (contact nico to ask for more details about hw). 
-											This is GM45 but these machines do not have a descriptor (no ME), should be easy
-											<ul>
-												<li>This board lacks native graphics initialization (it should be easy to add in Kconfig files,
-												but it has to be tested beforehand)</li>
-											</ul>
+											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
 										</li>
 										<li>
-											ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
-										</li>
-										<li>
-											ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
+											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
 											needs to disable the ATI chip and use Intel (this isn't done yet)
 										</li>
 										<li>
 											Non-lenovo GM45 laptops:
 											<ul>
-												<li>Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
+												<li><b><u><i>HIGH PRIORITY!</i></u></b> Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
 												NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
 												<li>
 													Acer Aspire 5739 - NOTE: EC. ALSO: EC
 													<ul>
 														<li>Search <b>jv50 block diagram filetype:pdf</b> for schematics (jv50 is written on the board).
-														no docs were found for the EC chip, but it might be good enough to RE via serialice and ectool</li>
+														no docs were found for the EC chip, but it might be good enough to RE via serialice and ectool
+														- not a lot of these laptops available online, probably not worth it</li>
 													</ul>
 												</li>
+											</ul>
+										</li>
+										<li>
+											add roda rk9 support (contact nico to ask for more details about hw). 
+											This is GM45 but these machines do not have a descriptor (no ME), should be easy
+											<ul>
+												<li>This board lacks native graphics initialization (it should be easy to add in Kconfig files,
+												but it has to be tested beforehand)</li>
 											</ul>
 										</li>
 										<li>
