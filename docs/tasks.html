@@ -345,6 +345,12 @@
 				<h3>Improvements to the utilities</h3>
 					<ul>
 						<li>
+							Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to accept a list
+							of known flash chips, provided by a text file or naming them on the argument (eg --flashchips &quot;chip 1&quot; &quot;chip 2&quot;),
+							where flashrom would ignore any detected flash chips that are not on the list. Make
+							the flashing scripts use it, by default.
+						</li>
+						<li>
 							Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
 							little-endian; for instance, mapping a little endian file directly to a struct, instead
 							of serializing/deserializing. Re-factor both utilities and make them fully portable.
