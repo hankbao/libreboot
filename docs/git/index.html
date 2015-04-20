@@ -145,17 +145,33 @@
 			<p>
 				<b>This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and T60. If you have coreboot or libreboot running already, ignore this.</b>
 			</p>
+			
+			<p>
+				BUC.TS isn't really specific to these laptops, but is a bit inside the a register in the chipset on some Intel systems.
+			</p>
 
 			<p>
 				Bucts is needed when flashing in software the X60/X60S/X60T/T60 ROM while Lenovo BIOS is running;
 				external flashing will be safe regardless.
-				Each ROM contains identical data inside the two final 64K region in the file.
+				Each ROM contains identical data inside the two final 64K region in the file*.
 				This corresponds to the final two 64K regions in the flash chip. Lenovo BIOS will prevent you from writing the
 				final one, so running &quot;<b>bucts 1</b>&quot; will set the machine to boot from the other block instead (which
 				is writeable along with everything beneath it when using a patched flashrom. see <a href="#build_flashrom">#build_flashrom</a>). 
-				After shutting down and booting up after the first flash,
+				After shutting down and booting up after the first flash of libreboot,
 				the final 64K block is writeable so you flash the ROM again with an unpatched flashrom and run "<b>bucts 0</b>" to
 				make the machine boot from the normal (highest) block again.
+			</p>
+
+			<p>
+				*Libreboot ROM images have identical data in those two 64KiB regions because dd is used to do that, by the build system.
+				If you're building from upstream (coreboot), you have to do it manually.
+			</p>
+			
+			<p>
+				BUC.TS is backed up (powered) by the NVRAM battery (or CMOS battery, as some people call it). On thinkpads,
+				this is typically in a yellow plastic package with the battery inside, connected via power lines to the
+				mainboard. Removing that battery removes power to BUC.TS, resetting the bit back to 0 (if you previously set
+				it to 1).
 			</p>
 
 			<p>
