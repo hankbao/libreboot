@@ -310,6 +310,12 @@
 			</p>
 
 			<p>
+				You can change the menuentry to say this:<br/>
+				menuentry 'Load Operating System' --unrestricted<br/>
+				This will allow booting that menuentry without a password, but not allow changing it (according to a user report).
+			</p>
+
+			<p>
 				After this, you will have a modified ROM with the menu entry for cryptomount, and the entry before that for the GRUB password. Flash the modified ROM 
 				using <a href="../install/index.html#flashrom">this tutorial</a>.
 			</p>
