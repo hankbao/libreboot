@@ -48,8 +48,11 @@
 										<li>
 											<b><i><u>HIGH PRIORITY!</u></i></b> ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
 											CPUs probably work without microcode updates, looks like this can already run blob-free.
-											NOTE: PLCC flash chip (see vultureprog. BBB might be possible, it has GPIO pins etc) - not sure
-											if software flashing is possible for initial install.
+											NOTE: PLCC flash chip (see vultureprog. BBB might be possible, it has GPIO pins etc) - 
+											external flashing not required. Flashing internally from stock firmware works.
+											Recommendation: boot with proprietary firmware, dump it, hot-swap the chip and copy the dump to the new chip.
+											Do this a few times. Now you have a backup. Then flash coreboot/libreboot. No external programmer needed
+											(not even for brick recovery, since you backed it up onto spare flash chips).
 										</li>
 										<li>
 											<b><u><i>HIGH PRIORITY!</i></u></b> ASUS KGPE-D16 - ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
@@ -59,6 +62,8 @@
 											<b>Crowd funding will be necessary!</b>
 											See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">this thread</a>
 											on the coreboot mailing list.
+											- note: external flashing required for initial install (internal flashing works with coreboot/libreboot running).
+											It uses a DIP-8 (socket) SPI flash chip, so it's easy to flash.
 										</li>
 										<li>
 											<b><i><u>HIGH PRIORITY!</u></i></b> F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
