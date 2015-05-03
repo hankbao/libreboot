@@ -97,8 +97,7 @@ int main()
 	 * ------------------------------------------------------------------
 	 */
 
-	// Disable the ME/TPM and remove the ME/Platform regions:
-	descriptorStruct = descriptorMePlatformRegionsRemoved(descriptorStruct);
+	// Disable the ME/TPM:
 	descriptorStruct = descriptorDisableMeTpm(descriptorStruct);
 	
 	/* Host/CPU is allowed to read/write all regions. */
