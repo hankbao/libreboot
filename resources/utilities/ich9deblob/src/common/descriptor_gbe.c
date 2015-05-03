@@ -4,8 +4,8 @@
  * 
  * Purpose: common descriptor/gbe functions used by ich9deblob
  *
+ *  Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
