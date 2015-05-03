@@ -89,6 +89,14 @@
 
 		<h2 id="regdumps">Hardware register dumps</h2>
 
+
+
+	</div>
+	
+	<div class="section">
+
+		<h2 id="regdumps">Hardware register dumps</h2>
+
 		<p>
 			The coreboot wiki <a href="http://www.coreboot.org/Motherboard_Porting_Guide">shows</a>
 			how to collect various logs useful in porting to new
@@ -97,16 +105,54 @@
 
 		<ul>
 			<li>
-				T500 with <b>TODO: PUT FLASH CHIP HERE</b> flash chip (4MiB, SOIC-8)
-				and <b>TODO: PUT BIOS/EC VERSION HERE</b>:
+				T500 with <b>Macronix MX25L3205D</b> flash chip (4MiB, SOIC-8)
+				and Lenovo BIOS 3.13 7VET83WW (EC firmware 1.06):
 				<ul>
-					<li>TODO: put logs here</li>
+					<li>lspci <a href="../future/dumps/t500log/lspci.log">output</a></li>
+					<li>lsusb <a href="../future/dumps/t500log/lsusb.log">output</a></li>
+					<li>lspnp <a href="../future/dumps/t500log/lspnp.log">output</a></li>
+					<li>superiotool <a href="../future/dumps/t500log/superiotool.log">output</a></li>
+					<li>inteltool <a href="../future/dumps/t500log/inteltool.log">output</a></li>
+					<li>ectool <a href="../future/dumps/t500log/ectool.log">output</a></li>
+					<li>msrtool <a href="../future/dumps/t500log/msrtool.log">output</a></li>
+					<li>dmidecode <a href="../future/dumps/t500log/dmidecode.log">output</a></li>
+					<li>biosdecode <a href="../future/dumps/t500log/biosdecode.log">output</a></li>
+					<li>nvramtool <a href="../future/dumps/t500log/nvramtool.log">output</a></li>
+					<li><a href="../future/dumps/t500log/dmesg.log">dmesg</a></li>
+					<li>from stock firmware - flashrom probe <a href="../future/dumps/t500log/flashrom_info.log">output</a>,
+					<li>from stock firmware - flashrom read (failed): <a href="../future/dumps/t500log/flashrom_read.log">output</a>,
+					<li>from stock firmware - flashrom write (failed): <a href="../future/dumps/t500log/flashrom_write.log">flashrom_write.log</a></li>
+					<li><a href="../future/dumps/t500log/pin_hwC0D0">/sys/class/sound/card0/hwC0D0/init_pin_configs</a></li>
+					<li><a href="../future/dumps/t500log/codec%230">/proc/asound/card0/codec#0</a></li>
+					<li><a href="../future/dumps/t500log/cpuinfo.log">/proc/cpuinfo</a></li>
 				</ul>
 			</li>
-			<li>
-				Version of flashrom used for the external flashing/reading logs is the one that libreboot git revision c164960 uses.
-			</li>
 		</ul>
+		
+		<p>
+			This one had a screen (1920x1200) that is currently incompatible. Working to fix it. EDID:
+		</p>
+<pre>
+user@user-ThinkPad-T500:~/Desktop$ sudo i2cdump -y 2 0x50
+No size specified (using byte-data access)
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: XX ff ff ff ff ff ff 00 30 ae 55 40 00 00 00 00    X.......0?U@....
+10: 00 11 01 03 80 21 15 78 ea ba 70 98 59 52 8c 28    .????!?x??p?YR?(
+20: 25 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01    %PT...??????????
+30: 01 01 01 01 01 01 e7 3a 80 8c 70 b0 14 40 1e 50    ???????:??p??@?P
+40: 24 00 4b cf 10 00 00 19 16 31 80 8c 70 b0 14 40    $.K??..??1??p??@
+50: 1e 50 24 00 4b cf 10 00 00 19 00 00 00 0f 00 d1    ?P$.K??..?...?.?
+60: 0a 32 d1 0a 28 11 01 00 32 0c 00 00 00 00 00 fe    ?2??(??.2?.....?
+70: 00 4c 50 31 35 34 57 55 31 2d 54 4c 42 31 00 9a    .LP154WU1-TLB1.?
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+</pre>
 
 	</div>
 
