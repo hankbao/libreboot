@@ -58,3 +58,33 @@ int notCreatedDescriptorGbeFile(struct DESCRIPTORREGIONRECORD descriptorStruct, 
 	
 	return 0;
 }
+
+/* 
+ * create 4KiB file with descriptor
+ */
+int notCreated4kDescriptorFile(struct DESCRIPTORREGIONRECORD descriptorStruct, char* fileName)
+{
+	FILE* fileStream = NULL;
+	
+	/* delete old file before continuing */
+	remove(fileName);
+	
+	/* open new file for writing the descriptor+gbe */
+	fileStream = fopen(fileName, "ab");
+	
+	/* write the descriptor region into the first part */
+	if (DESCRIPTORREGIONSIZE != fwrite((uint8_t*)&descriptorStruct, 1, sizeof(descriptorStruct), fileStream))
+	{
+		printf("\nerror: writing descriptor region failed\n");
+		return 1;
+	}
+	
+	
+	fclose(fileStream);
+	
+	printf("descriptor successfully written to the file: %s\n", fileName);
+	printf("Now do: dd if=%s of=yourrom.rom bs=1 count=4k conv=notrunc\n", fileName);
+	printf("(in other words, add the modified descriptor to your ROM image)\n\n");
+	
+	return 0;
+}

@@ -32,5 +32,6 @@
 #include "../gbe/gbe.h"               /* structs describing what's in the gbe region */
 
 int notCreatedDescriptorGbeFile(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k, char* fileName);
+int notCreated4kDescriptorFile(struct DESCRIPTORREGIONRECORD descriptorStruct, char* fileName);
 
 #endif

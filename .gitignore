@@ -26,6 +26,7 @@
 /resources/utilities/ich9deblob/libreboot.rom
 /resources/utilities/ich9deblob/ich9deblob
 /resources/utilities/ich9deblob/ich9gen
+/resources/utilities/ich9deblob/demefactory
 /resources/utilities/ich9deblob/obj/*.o
 /resources/utilities/ich9deblob/obj/*/*.o
 /resources/utilities/ich9deblob/mkdescriptor.c

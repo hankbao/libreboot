@@ -22,7 +22,7 @@ FORCEC99=-std=c99
 CFLAGS=-I. -Wall -Wextra -g $(FORCEC99)
 NOLINKER=-c
 
-all: ich9deblob ich9gen
+all: ich9deblob ich9gen demefactory
 
 ich9deblob: obj/ich9deblob.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
@@ -39,6 +39,19 @@ ich9gen: obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
 	 obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
 		 -o ich9gen
+
+demefactory: obj/demefactory.o obj/common/descriptor_gbe.o \
+		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
+		
+	$(CC) $(CFLAGS) obj/demefactory.o obj/common/descriptor_gbe.o \
+		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
+		 -o demefactory
+
+# for demefactory
+# ----------------------------------------------------------------------
+
+obj/demefactory.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/demefactory.c -o obj/demefactory.o
 
 # for ich9deblob
 # ----------------------------------------------------------------------
@@ -76,4 +89,4 @@ obj/gbe/gbe.o:
 # make clean
 # ----------------------------------------------------------------------
 clean:
-	rm -rf ich9deblob ich9gen obj/*.o obj/*/*.o
+	rm -rf ich9deblob ich9gen demefactory obj/*.o obj/*/*.o
