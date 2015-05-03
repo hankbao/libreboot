@@ -305,6 +305,10 @@ struct DESCRIPTORREGIONRECORD
  
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorMePlatformRegionsRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorDisableMeTpm(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorMoveGbeToStart(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
 struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
 int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);

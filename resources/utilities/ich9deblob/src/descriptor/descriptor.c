@@ -1,9 +1,9 @@
 /*
  *  descriptor/descriptor.c
  *  This file is part of the ich9deblob utility from the libreboot project
- *
- *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Francis Rowe <info@gluglug.org.uk>
+ * 
+ *	 Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>   
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -68,20 +68,8 @@ struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGI
    return descriptorStruct;
 }
  
-/*
- * Remove the ME/AMT blobs. This is needed for the ICH9 machines (eg X200)
- * to be compatible in libreboot.
- * 
- * Disable the ME/Platform regions, re-locate Descriptor+Gbe+BIOS like so:
- * Descriptor(4K), then Gbe (8K), then the remainder of the image is the BIOS region.
- */
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
+struct DESCRIPTORREGIONRECORD descriptorMePlatformRegionsRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
-	/*
-	 * Remove all those nasty blobs:
-	 * -----------------------------
-	 */
-
 	/* 
 	 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 	 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
@@ -102,25 +90,48 @@ struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRI
 	/* Disable (delete) the Platform region */
 	descriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
 	descriptorStruct.regionSection.flReg4.LIMIT = 0;
-	 
-	/* Other steps needed for the deblobbing: */
+	
+	return descriptorStruct;
+}
+
+struct DESCRIPTORREGIONRECORD descriptorDisableMeTpm(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{
 	descriptorStruct.ichStraps.ichStrap0.meDisable = 1; /* Disable the ME in ICHSTRAP0 */
 	descriptorStruct.mchStraps.mchStrap0.meDisable = 1; /* Disable the ME in MCHSTRAP0 */
 	descriptorStruct.mchStraps.mchStrap0.tpmDisable = 1; /* Disable the TPM in MCHSTRAP0 */
-	 
-	/*
-	 * Removing the ME and Platform regions lets us do cool things, like:
-	 * ------------------------------------------------------------------
-	 */
-	 
+	
+	return descriptorStruct;
+}
+
+struct DESCRIPTORREGIONRECORD descriptorMoveGbeToStart(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{
 	/* Relocate the Gbe region to begin at 4KiB (immediately after the flash descriptor) */
 	descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
 	descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
+	
+	return descriptorStruct;
+}
 
-	/* BIOS region (where coreboot/libreboot goes) can now fill the entire ROM image,
-	 * after the first 12KiB where the Descriptor+Gbe are. */
+struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
+{
+	/* BIOS Region begin after descriptor+gbe at first 12KiB, fills the rest of the image */
 	descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
 	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
+	
+	return descriptorStruct;
+}
+ 
+struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
+{
+	// Disable the ME/TPM and remove the ME/Platform regions:
+	descriptorStruct = descriptorMePlatformRegionsRemoved(descriptorStruct);
+	descriptorStruct = descriptorDisableMeTpm(descriptorStruct);
+
+	// Move GbE region to the start of the image (after the descriptor)
+	descriptorStruct = descriptorMoveGbeToStart(descriptorStruct);
+
+	/* BIOS region fills the remaining space */
+	descriptorStruct = descriptorBiosRegionFillImageAfterGbe(descriptorStruct, romSize);
 	 
 	/*
 	 * Set region read/write access
