@@ -1,7 +1,7 @@
 # 
 # Makefile for ich9deblob utility from libreboot project
 #
-# Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+# Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -71,7 +71,7 @@ obj/ich9gen/mkdescriptor.o:
 obj/ich9gen/mkgbe.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen/mkgbe.c -o obj/ich9gen/mkgbe.o
 
-# for ich9deblob and ich9gen:
+# for demefactory, ich9deblob and ich9gen:
 # ----------------------------------------------------------------------
 
 obj/common/descriptor_gbe.o:
