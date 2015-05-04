@@ -81,16 +81,8 @@
 			
 			<p>
 				Libreboot is known to work on systems with only the Intel GPU, using native graphics initialization.
-				On systems with switchable graphics, it is believed that the ATI chip is used by default; coreboot
-				was tested with the native init and it didn't work, so the theory is that you have to disable
-				the ATI chip and make it use the Intel GPU instead (with native graphics), using the same method
-				as lenovobios. The other alternative is to implement native graphics initialization for the ATI chip
-				used on some models, but this is much harder (disabling the ATI chip in favour of Intel is likely much easier).
-			</p>
-			
-			<p>
-				For now (unless you want to help make systems with switchable graphics work, where a display
-				is initialized for the Intel GPU), you should avoid systems with switchable graphics.
+				On systems with switchable graphics, the Intel GPU is used and the ATI GPU is disabled, so
+				native graphics initialization works all the same.
 			</p>
 			
 		<h1>CPU paste required</h1>

@@ -167,12 +167,6 @@
 									(might just be this machine). investigate. (external speaker works)
 								</li>
 								<li>
-									<b><u><i>HIGH PRIORITY!</i></u></b> T400/T500/R400/R500: make switchable graphics work
-									(disable the ATI chip, enable the Intel GPU, make it work with the native graphics initialization
-									that already exists and works (on the systems that only have an Intel GPU))
-									<b>The patches are on gerrit. merge them in libreboot</b>
-								</li>
-								<li>
 									tty0_ in #libreboot got tablet functions on X200T to work. Wait for it to land in gerrit
 									(and master)? also test it first. For now, here is a paste:
 									<a href="https://paste.debian.net/plainh/65cd0a55">https://paste.debian.net/plainh/65cd0a55</a>
@@ -192,13 +186,6 @@
 							<ul>
 								<li>On another X200, this did not occur. It might be that old versions of the EC have this bug</li>
 							</ul>
-						</li>
-						<li>
-							X200/T400/T500/R400/R500: when system is powered down, connecting the AC adapter
-							automatically turns it on. This should be configurable, but disabled by default.
-							<i>power_on_after_fail</i> is the nvramtool option for this (should be disabled by default)
-							but no option for it exists on the X200 (it does on the X201). Add this option to cmos.layout/cmos.default
-							for these systems, and then disable it by default to fix it.
 						</li>
 						<li>
 							<b>Finish all work listed in <a href="future/index.html">future/index.html</a></b>
@@ -264,6 +251,10 @@
 								<li>
 									Fix remaining incompatible LCD panels in native graphics on T60. 
 									See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
+								</li>
+								<li>
+									Fix remaining incompatible LCD panels in native graphics on T500. 
+									See <a href="hcl/t500.html">hcl/t500.html</a>.
 								</li>
 								<li>
 									i945: the intel video driver used to initialize the display without native graphics initialization
@@ -337,11 +328,15 @@
 						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>
 							<b><u><i>HIGH PRIORITY</i></u></b> GRUB does not display any text at all when using EHCI debug. Investigate.
-						</li>
-						<li>
-							<b><u><i>HIGH PRIORITY</i></u></b> Confirm that the EHCI debug options enabled in coreboot menuconfig are correct
-							for the current versions of the BBB (rev. C or higher). Search <b>EHCI debug</b> on
-							<a href="install/bbb_setup.html">install/bbb_setup.html</a>
+							<ul>
+								<li>It has to do with the dongle used. Use the default one in menuconfig, not BBB.</li>
+								<li>
+									<b><u><i>HIGH PRIORITY</i></u></b> Confirm that the EHCI debug options enabled in coreboot menuconfig are correct
+									for the current versions of the BBB (rev. C or higher). Search <b>EHCI debug</b> on
+									<a href="install/bbb_setup.html">install/bbb_setup.html</a>
+								</li>
+
+							</ul>
 						</li>
 						<li>
 							Make libreboot (all of it!) build reproducibly. This is very important.

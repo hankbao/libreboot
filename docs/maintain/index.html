@@ -261,7 +261,8 @@
 				This simply takes all of the coreboot <b>.config</b> files from
 				<i>resources/libreboot/config/</i> and does <b>make oldconfig</b>
 				on them. It usually works. If it doesn't, you'll need to recreate
-				those configs from scratch using <b>make menuconfig</b> in coreboot
+				those configs from scratch using <b>./build config corebootreplace</b> (optionally
+				add a config name), or <b>./build config corebootmodify</b> (ditto)
 				(see <a href="../git/index.html#config">../git/index.html#config</a>)
 			</p>
 

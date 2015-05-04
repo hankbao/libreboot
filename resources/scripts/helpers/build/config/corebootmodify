@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #
-#  helper script: run "make oldconfig" on all coreboot config files
+#  helper script: run "make menuconfig" on config(s) to modify them
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #
@@ -39,7 +39,7 @@ for config in $configs; do
 	sleep 5
 	
 	mv ../resources/libreboot/config/$config/config .config
-	make oldconfig
+	make menuconfig
 	mv .config ../resources/libreboot/config/$config/config
 done
 
