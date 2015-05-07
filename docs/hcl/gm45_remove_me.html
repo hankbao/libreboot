@@ -228,6 +228,61 @@
 			</p>
 			
 	</div>
+	
+	<div class="section">
+
+		<h1 id="demefactory">demefactory utility</h1>
+
+			<p>
+				This takes a factory.rom dump and disables the ME/TPM, but leaves the region intact.
+				It also sets all regions read-write.
+			</p>
+			
+			<p>
+				The ME interferes with flash read/write in flashrom, and the default descriptor
+				locks some regions. The idea is that doing this will remove all of those restrictions.
+			</p>
+			
+			<p>
+				Simply run (with factory.rom in the same directory):<br/>
+				$ <b>./demefactory</b>
+			</p>
+			
+			<p>
+				It will generate a 4KiB descriptor file (only the descriptor, no GbE). Insert that into
+				a factory.rom image (NOTE: do this on a copy of it. Keep the original factory.rom stored
+				safely somewhere):<br/>
+				$ <b>dd if=demefactory_4kdescriptor.bin of=factory_nome.rom bs=1 count=4k conv=notrunc</b>
+			</p>
+			
+			<p>
+				TODO: test this.<br/>
+				TODO: lenovobios (GM45 thinkpads) still write-protects parts of the flash. Modify the assembly code
+				inside.
+				Note: the factory.rom (BIOS region) from lenovobios is in a compressed format, which you have to extract.
+				bios_extract upstream won't work, but the following was said in #coreboot on freenode IRC:
+			</p>
+<pre>
+&lt;roxfan&gt; fchmmr: try bios_extract with ffv patch <a href="http://patchwork.coreboot.org/patch/3444/">http://patchwork.coreboot.org/patch/3444/</a>
+&lt;roxfan&gt; or <a href="https://github.com/coreboot/bios_extract/blob/master/phoenix_extract.py">https://github.com/coreboot/bios_extract/blob/master/phoenix_extract.py</a>
+&lt;roxfan&gt; what are you looking for specifically, btw?
+
+0x74: 0x9fff03e0 PR0: Warning: 0x003e0000-0x01ffffff is read-only.
+0x84: 0x81ff81f8 PR4: Warning: 0x001f8000-0x001fffff is locked.
+</pre>
+
+			<p>
+				Use-case: a factory.rom image modified in this way would theoretically have no
+				flash protections whatsoever, making it easy to quickly switch between factory/libreboot
+				in software, without ever having to disassemble and re-flash externally unless you brick
+				the device.
+			</p>
+			
+			<p>
+				demefactory is part of the ich9deblob src, found at <i>resources/utilities/ich9deblob/</i>
+			</p>
+
+	</div>
 		
 	<div class="section">
 		
