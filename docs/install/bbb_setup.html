@@ -573,6 +573,12 @@ git apply ../usbdebug-gadget/v3.8-debug-gadget/0002-usb-serial-gadget-no-TTY-han
 make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- beaglebone_defconfig -j4@
 </pre>
 		<ul>
+			<li>
+				You should also apply the linux-libre <i>deblob</i> script to turn it into linux-libre
+				(deletes all the blobs from the linux kernel).
+				<a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">fsfla website</a>
+				- see <a href="http://www.fsfla.org/svn/fsfla/software/linux-libre/scripts/">scripts</a>.
+			</li>
 			<li>Get your current BBB kernel config (from: /boot/config-&lt;ver&gt;)
 				and copy it to your host as $work_dir/kernel/kernel/.config</li>
 <pre>
