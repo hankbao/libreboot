@@ -144,6 +144,168 @@ d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 </pre>
+		<p>
+			What happens: backlight turns on at boot, then turns off. At no point is there
+			a working visual display.
+		</p>
+
+		<p>
+			Another incompatible screen (EDID) 1680 x 1050 with the same issue:
+		</p>
+<pre>
+EDID:
+00 ff ff ff ff ff ff 00 30 ae 53 40 00 00 00 00 
+00 11 01 03 80 21 15 78 ea cd 75 91 55 4f 8b 26 
+21 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01 
+01 01 01 01 01 01 a8 2f 90 e0 60 1a 10 40 20 40 
+13 00 4b cf 10 00 00 19 b7 27 90 e0 60 1a 10 40 
+20 40 13 00 4b cf 10 00 00 19 00 00 00 0f 00 b3 
+0a 32 b3 0a 28 14 01 00 4c a3 50 33 00 00 00 fe 
+00 4c 54 4e 31 35 34 50 33 2d 4c 30 32 0a 00 7e 
+Extracted contents:
+header:          00 ff ff ff ff ff ff 00
+serial number:   30 ae 53 40 00 00 00 00 00 11
+version:         01 03
+basic params:    80 21 15 78 ea
+chroma info:     cd 75 91 55 4f 8b 26 21 50 54
+established:     00 00 00
+standard:        01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01
+descriptor 1:    a8 2f 90 e0 60 1a 10 40 20 40 13 00 4b cf 10 00 00 19
+descriptor 2:    b7 27 90 e0 60 1a 10 40 20 40 13 00 4b cf 10 00 00 19
+descriptor 3:    00 00 00 0f 00 b3 0a 32 b3 0a 28 14 01 00 4c a3 50 33
+descriptor 4:    00 00 00 fe 00 4c 54 4e 31 35 34 50 33 2d 4c 30 32 0a
+extensions:      00
+checksum:        7e
+
+Manufacturer: LEN Model 4053 Serial Number 0
+Made week 0 of 2007
+EDID version: 1.3
+Digital display
+Maximum image size: 33 cm x 21 cm
+Gamma: 220%
+Check DPMS levels
+DPMS levels: Standby Suspend Off
+Supported color formats: RGB 4:4:4, YCrCb 4:2:2
+First detailed timing is preferred timing
+Established timings supported:
+Standard timings supported:
+Detailed timings
+Hex of detail: a82f90e0601a1040204013004bcf10000019
+Did detailed timing
+Detailed mode (IN HEX): Clock 122000 KHz, 14b mm x cf mm
+               0690 06b0 06f0 0770 hborder 0
+               041a 041b 041e 042a vborder 0
+               -hsync -vsync 
+Hex of detail: b72790e0601a1040204013004bcf10000019
+Detailed mode (IN HEX): Clock 122000 KHz, 14b mm x cf mm
+               0690 06b0 06f0 0770 hborder 0
+               041a 041b 041e 042a vborder 0
+               -hsync -vsync 
+Hex of detail: 0000000f00b30a32b30a281401004ca35033
+Manufacturer-specified data, tag 15
+Hex of detail: 000000fe004c544e31353450332d4c30320a
+ASCII string: LTN154P3-L02
+Checksum
+Checksum: 0x7e (valid)
+WARNING: EDID block does NOT fully conform to EDID 1.3.
+        Missing name descriptor
+        Missing monitor ranges
+bringing up panel at resolution 1680 x 1050
+Borders 0 x 0
+Blank 224 x 16
+Sync 64 x 3
+Front porch 32 x 1
+Spread spectrum clock
+Single channel
+Polarities 1, 1
+Data M1=2132104, N1=8388608
+Link frequency 270000 kHz
+Link M1=236900, N1=524288
+Pixel N=9, M1=24, M2=8, P1=1
+Pixel clock 243809 kHz
+waiting for panel powerup
+panel powered up
+</pre>
+
+		<p>
+			For comparison, here is a working display (T400 screen, but was
+			connected to a T500. Some T500 displays also work, but no EDID
+			available on this page yet):
+		</p>
+<pre>
+EDID:
+00 ff ff ff ff ff ff 00 30 ae 31 40 00 00 00 00 
+00 12 01 03 80 1e 13 78 ea b3 85 95 58 53 8a 28 
+25 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01 
+01 01 01 01 01 01 26 1b 00 7d 50 20 16 30 30 20 
+36 00 30 be 10 00 00 18 8b 16 00 7d 50 20 16 30 
+30 20 36 00 30 be 10 00 00 18 00 00 00 0f 00 81 
+0a 32 81 0a 28 14 01 00 30 e4 28 01 00 00 00 fe 
+00 4c 50 31 34 31 57 58 33 2d 54 4c 52 31 00 d8 
+Extracted contents:
+header:          00 ff ff ff ff ff ff 00
+serial number:   30 ae 31 40 00 00 00 00 00 12
+version:         01 03
+basic params:    80 1e 13 78 ea
+chroma info:     b3 85 95 58 53 8a 28 25 50 54
+established:     00 00 00
+standard:        01 01 01 01 01 01 01 01 01 01 01 01 01 01 01 01
+descriptor 1:    26 1b 00 7d 50 20 16 30 30 20 36 00 30 be 10 00 00 18
+descriptor 2:    8b 16 00 7d 50 20 16 30 30 20 36 00 30 be 10 00 00 18
+descriptor 3:    00 00 00 0f 00 81 0a 32 81 0a 28 14 01 00 30 e4 28 01
+descriptor 4:    00 00 00 fe 00 4c 50 31 34 31 57 58 33 2d 54 4c 52 31
+extensions:      00
+checksum:        d8
+
+Manufacturer: LEN Model 4031 Serial Number 0
+Made week 0 of 2008
+EDID version: 1.3
+Digital display
+Maximum image size: 30 cm x 19 cm
+Gamma: 220%
+Check DPMS levels
+DPMS levels: Standby Suspend Off
+Supported color formats: RGB 4:4:4, YCrCb 4:2:2
+First detailed timing is preferred timing
+Established timings supported:
+Standard timings supported:
+Detailed timings
+Hex of detail: 261b007d502016303020360030be10000018
+Did detailed timing
+Detailed mode (IN HEX): Clock 69500 KHz, 130 mm x be mm
+               0500 0530 0550 057d hborder 0
+               0320 0323 0329 0336 vborder 0
+               -hsync -vsync 
+Hex of detail: 8b16007d502016303020360030be10000018
+Detailed mode (IN HEX): Clock 69500 KHz, 130 mm x be mm
+               0500 0530 0550 057d hborder 0
+               0320 0323 0329 0336 vborder 0
+               -hsync -vsync 
+Hex of detail: 0000000f00810a32810a2814010030e42801
+Manufacturer-specified data, tag 15
+Hex of detail: 000000fe004c503134315758332d544c5231
+ASCII string: LP141WX3-TLR1
+Checksum
+Checksum: 0xd8 (valid)
+WARNING: EDID block does NOT fully conform to EDID 1.3.
+        Missing name descriptor
+        Missing monitor ranges
+bringing up panel at resolution 1280 x 800
+Borders 0 x 0
+Blank 125 x 22
+Sync 32 x 6
+Front porch 48 x 3
+Spread spectrum clock
+Single channel
+Polarities 1, 1
+Data M1=1214600, N1=8388608
+Link frequency 270000 kHz
+Link M1=134955, N1=524288
+Pixel N=10, M1=14, M2=11, P1=1
+Pixel clock 138857 kHz
+waiting for panel powerup
+panel powered up
+</pre>
 
 	</div>
 
