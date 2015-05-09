@@ -386,6 +386,10 @@ rm -f libreboot_src/releasefilelist
 rm -f libreboot_util/releasefilelist
 rm -f releasefilelist
 
+# Useless files
+rm -rf libreboot_src/TODO/
+rm -f libreboot_src/push
+
 # Delete the deblob scripts from libreboot_src
 # Since _src doesn't distribute the download scripts,
 # and already comes with a deblobbed coreboot, the
@@ -412,6 +416,7 @@ rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.c
 rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.h
 rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_4m.bin
 rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_8m.bin
+rm -f libreboot_src/resources/utilities/ich9deblob/demefactory_4kdescriptor.bin
 rm -f libreboot_src/mkgbe.c
 rm -f libreboot_src/mkgbe.h
 rm -f libreboot_src/ich9fdgbe_8m.bin
