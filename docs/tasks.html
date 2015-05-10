@@ -260,18 +260,6 @@
 						<li><b><u><i>HIGH PRIORITY!</i></u></b> <b>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
 						memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</b></li>
 						<li>
-							<b><u><i>HIGH PRIORITY</i></u></b> GRUB does not display any text at all when using EHCI debug. Investigate.
-							<ul>
-								<li>It has to do with the dongle used. Use the default one in menuconfig, not BBB.</li>
-								<li>
-									<b><u><i>HIGH PRIORITY</i></u></b> Confirm that the EHCI debug options enabled in coreboot menuconfig are correct
-									for the current versions of the BBB (rev. C or higher). Search <b>EHCI debug</b> on
-									<a href="install/bbb_setup.html">install/bbb_setup.html</a>
-								</li>
-
-							</ul>
-						</li>
-						<li>
 							Make libreboot (all of it!) build reproducibly. This is very important.
 							See <a href="http://projects.mtjm.eu/work_packages/16">http://projects.mtjm.eu/work_packages/16</a>.
 						</li>
