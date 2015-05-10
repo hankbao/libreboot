@@ -34,38 +34,29 @@
 									Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
 									<ul>
 										<li>
-											<b><i><u>HIGH^2 PRIORITY!</u></i></b> Lenovo G505S (works without CPU microcode updates). Video BIOS is an issue (unfinished replacement: openatom), as
-											is the SMU firmware (ruik will know more). Other non-essential blobs may also still be present (but possible
-											to remove). <a href="http://projects.mtjm.eu/work_packages/44">http://projects.mtjm.eu/work_packages/44</a>
-											- It's AMD, so no ME either!
-											<ul>
-												<li>funfunctor (afaik) in the coreboot IRC channel is the person who ported this laptop,
-												he might be able to help</li>
-												<li>mrnuke in the coreboot IRC channel is the person responsible for openatom</li>
-												<li><b>Add this board to the <i>LTS Candidates</i> page on the coreboot wiki</b></li>
-											</ul>
+											<b><i><u>HIGH^2 PRIORITY!</u></i></b> Lenovo G505S (works without CPU microcode updates).
+											Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but
+											it can draw a bitmap in user space, using a special utility) - 
+											<a href="https://github.com/alterapraxisptyltd/openatom">openatom in github</a>.
+											SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
 										</li>
 										<li>
 											<b><i><u>HIGH PRIORITY!</u></i></b> ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
-											CPUs probably work without microcode updates, looks like this can already run blob-free.
-											NOTE: PLCC flash chip (see vultureprog. BBB might be possible, it has GPIO pins etc) - 
-											external flashing not required. Flashing internally from stock firmware works.
-											Recommendation: boot with proprietary firmware, dump it, hot-swap the chip and copy the dump to the new chip.
-											Do this a few times. Now you have a backup. Then flash coreboot/libreboot. No external programmer needed
-											(not even for brick recovery, since you backed it up onto spare flash chips).
+											fam10h, already in coreboot. Works without CPU microcode updates, has native graphics initialization
+											(text-mode and framebuffer mode). PLCC flash chip, but can be read/flashed from factory firmware
+											so just boot up, dump, hot-swap and flash the dump to make a backup, then check that the system
+											boots with the backup. Then flash the original chip with libreboot. <b>External PLCC flash programmer
+											not needed!</b>
 										</li>
 										<li>
-											<b><u><i>HIGH PRIORITY!</i></u></b> ASUS KGPE-D16 - ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
-											They use it internally, but have not yet released the code.
-											According to tpearson in #coreboot this will run completely blob-free with full functionality. They are
-											asking for $50,000* (USD) to pay for the work to upstream it (get it into coreboot master repository).
-											<b>Crowd funding will be necessary!</b>
-											See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">this thread</a>
-											on the coreboot mailing list.
-											- note: external flashing required for initial install (internal flashing works with coreboot/libreboot running).
-											It uses a DIP-8 (socket) SPI flash chip, so it's easy to flash.
-											* was 35K. the extra is for adding S3 support and full text-mode graphics initialization (bugs eliminated, etc).
-											A lot of work went into this port!
+											<b><u><i>HIGH PRIORITY!</i></u></b> ASUS KGPE-D16 - code not yet public,
+											ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
+											They are asking for 50K* USD to pay for the work to upstream the code (do code review, add more patches, 
+											get it merged in coreboot master repository - a lot of work!). Crowd funding will be necessary.
+											Crowd funding will be necessary.
+											See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">coreboot mailing list</a>.
+											This board uses DIP-8 (socket) SPI flash, so it's easy to flash (external flashing required for initial install).
+											* was 35K. The extra 15K is a stretch goal for S3 support and full text-mode graphics initialization (bugs eliminated).
 										</li>
 										<li>
 											<b><i><u>HIGH PRIORITY!</u></i></b> F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
@@ -83,9 +74,7 @@
 											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
 										</li>
 										<li>
-											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
-											needs to disable the ATI chip and use Intel (already done in libreboot on GM45 laptops with the same setup)
-											- NOTE: it's uncertain whether PM45 is compatible with GM45
+											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
 										</li>
 										<li>
 											Non-lenovo GM45 laptops:
@@ -106,29 +95,17 @@
 							<b><u><i>HIGH PRIORITY!</i></u></b> Fix these issues on GM45/GS45 targets:
 							<ul>
 								<li>
-									X200: text-mode is broken. only framebuffer graphics work.
-									Commit bde6d309dfafe58732ec46314a2d4c08974b62d4 in coreboot is what
-									broke it. Investigate. 
-									<ul>
-										<li>It might not be that commit; it's only an educated guess, based on
-										running <i>git log</i> on src/northbridge/intel/gm45/gma.c - an actual
-										git bisect has not yet been done.</li>
-									</ul>
+									X200: text-mode is broken. only framebuffer graphics work. Git-bisect is needed.
 								</li>
 								<li>
-									X200 and X60: problem observed on both laptops: battery will drain even when the system
-									is powered down, which means that it's not fully powered down and something is still using
-									power. This could alternatively just be dead/dying batteries, but it should be investigated
-									whether something can be done in coreboot.
+									X200/X60: battery drained even while system is "off" on some systems. investigate.
 								</li>
 								<li>
-									Sound (internal speaker) worked on the T500, but stopped after all subsequent boots.
-									(might just be this system). investigate. (external speaker works)
-									- probably because it uses a different hda_verb
+									Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work.
+									- probably a different hda_verb
 								</li>
 								<li>
-									tty0_ in #libreboot got tablet functions on X200T to work. Wait for it to land in gerrit
-									(and master)? also test it first. For now, here is a paste:
+									Test this patch for X200 Tablet digitizer support:
 									<a href="https://paste.debian.net/plainh/65cd0a55">https://paste.debian.net/plainh/65cd0a55</a>
 									- tty0_ wants to know whether it breaks the X200 (non-tablet version) or not. (It's probably fine)
 								</li>
@@ -266,23 +243,8 @@
 				<h3>Documentation improvements</h3>
 					<ul>
 						<li>
-							<b><u><i>HIGH PRIORITY!</i></u></b> <b>Add information from hw registers on all boards. See
-							<a href="http://projects.mtjm.eu/work_packages/15">http://projects.mtjm.eu/work_packages/15</a></b>
-							<ul>
-								<li>We currently have them for X200 (4MiB flash chip), T400 but not complete</li>
-								<li>
-									Get them for more boards:
-									<ul>
-										<li>X60</li>
-										<li>T60</li>
-										<li>macbook21</li>
-										<li>X200 (make sure to have it for both flash chip sizes)</li>
-										<li>R400 (make sure to have it for both flash chip sizes)</li>
-										<li>T400 (make sure to have it for both flash chip sizes)</li>
-										<li>T500 (make sure to have it for both flash chip sizes)</li>
-									</ul>
-								</li>
-							</ul>
+							<b><u><i>HIGH PRIORITY!</i></u></b> <b>Add information from hw registers on all boards.
+							Get them for the following remaining boards: X60, T60, macbook21, R400
 						</li>
 						<li>
 							Apparently, leaving HOLD and WP pins floating (unconnected) isn't a good idea.
