@@ -102,9 +102,6 @@
 											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
 											needs to disable the ATI chip and use Intel (this isn't done yet)
 											- NOTE: This uses the PM45 chipset, but it might be compatible with the existing coreboot src for GM45.
-											<ul>
-												<li>Compaq Presario CQ60 - same comment</li>
-											</ul>
 										</li>
 										<li>
 											Non-lenovo GM45 laptops:
@@ -112,27 +109,6 @@
 												<li><b><u><i>HIGH PRIORITY!</i></u></b> Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
 												NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
 											</ul>
-										</li>
-										<li>
-											add roda rk9 support (contact nico to ask for more details about hw). 
-											This is GM45 but these systems do not have a descriptor (no ME), should be easy
-											<ul>
-												<li>This board lacks native graphics initialization (it should be easy to add in Kconfig files,
-												but it has to be tested beforehand)</li>
-											</ul>
-										</li>
-										<li>
-											T400S and X301. These both seem to be GS45. X301 uses only the low-performance mode CPUs, so raminit
-											is the main blocker there. They both probably use WSON-8 flash chips.
-										</li>
-										<li>
-											Add proper GS45 raminit for enabling all X200S and X200 Tablets to work properly. (maybe other systems)
-											See <a href="hcl/x200.html#x200s_raminit">hcl/x200.html#x200s_raminit</a>
-										</li>
-										<li>
-											This page contains a list of basically every thinkpad that would ever be a candidate for libreboot:
-											<a href="http://psref.lenovo.com/WithdrawnBook">http://psref.lenovo.com/WithdrawnBook</a> - 
-											take a look at <a href="http://www.lenovo.com/psref/pdf/ltwbook_2013.pdf">this PDF</a>.
 										</li>
 									</ul>
 								</li>
