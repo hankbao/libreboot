@@ -163,7 +163,8 @@
 								</li>
 								<li>
 									Sound (internal speaker) worked on the T500, but stopped after all subsequent boots.
-									(might just be this machine). investigate. (external speaker works)
+									(might just be this system). investigate. (external speaker works)
+									- probably because it uses a different hda_verb
 								</li>
 								<li>
 									tty0_ in #libreboot got tablet functions on X200T to work. Wait for it to land in gerrit
@@ -230,15 +231,6 @@
 							pehjota says that once the port is done, prokit can be modified to generate the entire
 							distribution as a vmlinuz and initrd.img file.
 						</li>
-						<li>
-							Related to MemTest86+:
-							<ul>
-								<li>
-									Todo: modify memtest86+ to work with libpayload (coreboot framebuffer) and delete all the text-mode ROM images.
-									See <a href="http://projects.mtjm.eu/work_packages/17">http://projects.mtjm.eu/work_packages/17</a>
-								</li>
-							</ul>
-						</li>
 					</ul>
 
 				<h3>Build system</h3>
@@ -288,26 +280,14 @@
 							That script is buggy, and full of ugly hacks anyway, 
 							so re-write it and make it modular/portable this time.
 						</li>
-						<li>
-							Reduce the size of libreboot releases.
-							See <a href="http://projects.mtjm.eu/work_packages/19">http://projects.mtjm.eu/work_packages/19</a>
-							<ul>
-								<li>
-									Proposal: unify ROM images (don't duplicate).
-									See <a href="http://projects.mtjm.eu/work_packages/20">http://projects.mtjm.eu/work_packages/20</a>.
-								</li>
-							</ul>
-						</li>
-						<li>Make GRUB build using coreboot's own crossgcc toolchain</li>
 					</ul>
 					
 				<h3>Improvements to the utilities</h3>
 					<ul>
 						<li>
-							Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to accept a list
-							of known flash chips, provided by a text file or naming them on the argument (eg --flashchips &quot;chip 1&quot; &quot;chip 2&quot;),
-							where flashrom would ignore any detected flash chips that are not on the list. Make
-							the flashing scripts use it, by default.
+							Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to ignore
+							a list of chip definitions. This is a much cleaner solution. (add an option to override
+							the ignore).
 						</li>
 						<li>
 							Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
@@ -428,15 +408,11 @@
 							</b>
 						</li>
 						<li>
-							Add cubieboard SPI flashing instructions to libreboot. 
-							<a href="https://github.com/mrnuke/coreboot/commits/cubie_mmc?author=mrnuke">mrnuke's github page with patches</a>. mrnuke in IRC knows
-							about the cubieboard
-						</li>
-						<li>
 							LUKS key in initramfs: Add Trisquel documentation for docs/gnulinux/encrypted_trisquel.html.
 							See <a href="http://projects.mtjm.eu/work_packages/39">http://projects.mtjm.eu/work_packages/39</a>
 						</li>
 						<li>
+							PLCC flashing guide is needed:
 							<a href="http://blogs.coreboot.org/files/2013/07/vultureprog_shuttle_sbs.jpg">image</a>,
 							<a href="http://blogs.coreboot.org/files/2013/08/vultureprog_probing.jpg">image</a>,
 							<a href="http://blogs.coreboot.org/files/2013/06/superboosted2.jpg">image</a> - 
@@ -463,6 +439,7 @@
 							with libreboot support (out of the box, from the factory).</b>
 						</li>
 						<li>
+							PROPOSAL (only a proposal, for now):
 							Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
 							Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
 							that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
@@ -479,7 +456,7 @@
 							</ul>
 						</li>
 						<li>
-							Set up a routine (project-wise) for testing each machine with the latest kernel version.
+							Set up a routine (project-wise) for testing each system with the latest kernel version.
 							See <a href="http://projects.mtjm.eu/work_packages/22">http://projects.mtjm.eu/work_packages/22</a>
 							and <a href="http://projects.mtjm.eu/work_packages/21">http://projects.mtjm.eu/work_packages/21</a>
 						</li>
