@@ -71,22 +71,6 @@
 											<b><i><u>HIGH PRIORITY!</u></i></b> F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
 										</li>
 										<li>
-											HP Pavillion 1035DX (same chipset as G505S. See notes above)
-										</li>
-										<li>
-											BioStar AM1ML - just recently ported to coreboot. blob situation unknown.
-										</li>
-										<li>
-											Thinkpad E135 and Thinkpad E145 - port to coreboot. Apparently, the CPU used is based on the E350 (zacate)
-											CPU used is the ASrock E350M1 which is in coreboot, and already a libreboot candidate.
-											Blob situation is unknown, though it will probably rely on AGESA if ported and will probably need SMU firmware
-											or Video BIOS (which must be replaced). It is unknown what other blobs may exist when ported, and whether
-											or not this system will work reliably without the CPU microcode updates. 
-											<ul>
-												<li>Difficulty: unknown</li>
-											</ul>
-										</li>
-										<li>
 											<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
 										</li>
 										<li><b>This list needs to expand!</b></li>
@@ -100,8 +84,8 @@
 										</li>
 										<li>
 											<b><u><i>HIGH PRIORITY!</i></u></b> ThinkPad W500: they all use switchable graphics (ATI+Intel), the native init code in coreboot (for Intel)
-											needs to disable the ATI chip and use Intel (this isn't done yet)
-											- NOTE: This uses the PM45 chipset, but it might be compatible with the existing coreboot src for GM45.
+											needs to disable the ATI chip and use Intel (already done in libreboot on GM45 laptops with the same setup)
+											- NOTE: it's uncertain whether PM45 is compatible with GM45
 										</li>
 										<li>
 											Non-lenovo GM45 laptops:
