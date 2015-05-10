@@ -184,57 +184,6 @@
 									See <a href="hcl/t500.html">hcl/t500.html</a>.
 								</li>
 								<li>
-									<b><u><i>HIGH PRIORITY!</i></u></b> <b>i945: Linux 3.19 doesn't boot.
-									<b>UPDATE: Patch to fix it is on linux bug tracker (see below), we are waiting
-									for it to merge in linux upstream/mainline. For now, we are getting
-									this patch into the GNU/Linux distros typically used with libreboot.</b>
-									 (also affects T60/macbook21).
-									<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171">Preliminary bug report (kernel, linux)</a>
-									pstuge said <a href="http://biosbits.org/">http://biosbits.org/</a>
-									patricg says https://wiki.ubuntu.com/HardwareEnablementTeam/Documentation/FirmwareTestSuiteLive</b>
-									<ul>
-										<li>It's commit aaecdf61 (drm/i915: Stop gathering error states for CS error interrupts)
-										in linux that introduced the regression</li>
-										<li>
-											This patch linked on the bug report page above:
-											<a href="https://bugzilla.kernel.org/attachment.cgi?id=172941">https://bugzilla.kernel.org/attachment.cgi?id=172941</a>
-											- fixes the problem, and makes the i945 laptops boot up again.
-											<ul>
-												<li>
-													Parabola has temporarily merged it in a kernel update
-													- when it's merged upstream, let Emulatorman know (#parabola on IRC freenode)
-												</li>
-												<li>
-													So has Guix
-													- when it's merged upstream, let mark_weaver know (#guix on IRC freenode)
-												</li>
-												<li>
-													So has freesh (for Trisquel)
-													- when it's merged upstream, let jxself and lxo know (#linux-libre on IRC freeode)
-												</li>
-											</ul>
-										</li>
-										<li>
-											Since 3.19, there are still some warning messages now, after applying the patch.
-											See Mono's comments on the bug report page
-											- <a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171#c27">https://bugzilla.kernel.org/show_bug.cgi?id=93171#c27</a>
-											<ul>
-												<li>
-													<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171#c29">https://bugzilla.kernel.org/show_bug.cgi?id=93171#c29</a>
-													<a href="https://bugzilla.kernel.org/show_bug.cgi?id=93171#c30">https://bugzilla.kernel.org/show_bug.cgi?id=93171#c30</a>
-													- it seems that these warnings have been fixed, and will soon land in upstream.
-												</li>
-											</ul>
-										</li>
-										<li>
-											TODO: this fix in linux is a workaround, the real bug is in coreboot. (without the patch,
-											3.19/higher doesn't boot on coreboot/libreboot i945 with native graphics, but does boot
-											on lenovobios with 3.19/higher - it probably also boots with coreboot+vgarom, since
-											the bug is in the video init code.
-										</li>
-									</ul>
-								</li>
-								<li>
 									i945: fix VRAM size (currently 8MB. should be 64MB). 
 									See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
 								</li>
