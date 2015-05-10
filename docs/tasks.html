@@ -244,11 +244,6 @@
 				<h3>Build system</h3>
 					<ul>
 						<li>
-							PaulePanter reported in #coreboot that cbfstool currently fails to build on 32-bit x86 hosts.
-							This patch is supposed to fix it: 
-							<a href="http://review.coreboot.org/#/c/9995/">http://review.coreboot.org/#/c/9995/</a>
-						</li>
-						<li>
 							<b><u><i>HIGH PRIORITY!</i></u></b> All parts of libreboot that download 
 							non-intergrated parts (coreboot/grub/memtest/bucts/flashrom) rely on only a single
 							repository link, which means single-point-of-failure. Make them fall back on alternative
