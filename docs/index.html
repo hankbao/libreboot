@@ -67,98 +67,86 @@
 				from the flash chip (planned for a future release), and more.
 			</p>
 
-			<div class="subsection">
-				<h2>
-					The libreboot project has three main goals:
-				</h2>
-					<ul>
-						<li>
-							<i><u><b>Recommend and distribute only free software</b></u></i>. The coreboot project distributes proprietary code/blobs on some computers;
-							this can include things like CPU microcode updates, memory initialization code and so on. The project also actively
-							recommends that the user install additional blobs in some cases (such as the video BIOS or Intel ME).
-							While this can be necessary from the coreboot project's point of view, Libreboot is an attempt to support as many
-							computers from coreboot as possible, without distributing any blobs and without having the user install additional
-							proprietary software. This is not to say that the coreboot project is bad; a lot of extremely dedicated and talented
-							individuals in coreboot work night and day to reverse engineer and free those blobs that still remain in coreboot. 
-							<i>Any system from coreboot that can run without blobs is a viable libreboot candidate!</i>
-						</li>
-						<li>
-							<i><u><b>Support as much hardware as possible!</b></u></i> This goes without saying. The list of officially supported hardware
-							in libreboot is smaller than in upstream (coreboot), because some boards in coreboot require proprietary software which
-							libreboot does not and will not distribute. The main goal of the libreboot project is to spread free software at a low-level
-							(the boot firmware) to as many people as possible, so of course that means supporting as much hardware as possible (but without
-							compromising on the main goal).
-						</li>
-						<li>
-							<i><u><b>Make coreboot easy to use</b></u></i>. The main problem that many users have with coreboot is that it is extremely difficult to 
-							understand, learn about, install and use. This is understandable; coreboot is a low-level piece of software and has many
-							talented individuals working on it, but the project's resources are limited and so the developers focus their efforts on the code. 
-							Coreboot offers wonderful support for other coreboot developers and those who wish to climb up
-							that steep curve to learn everything that they can.<br/><br/>
-							
-							At the same time, those who simply want to use coreboot (for any number
-							of reasons) are often left feeling intimidated and many of them give up in frustration. Libreboot attempts to bridge this gap;
-							its documentation is entirely focussed on users, with detailed steps showing exactly how to install and use it and the issues
-							that they may come across (and how to work around them).<br/><br/>
-							
-							Almost everything in libreboot is completely automated, with
-							scripts for downloading, building and installing the various components used in libreboot. Pre-compiled ROM images built
-							from the libreboot source code are provided, along with the utilities (statically compiled, from libreboot sources) that the user will need for installing them.<br/><br/>
-							
-							Libreboot is similar in concept to a GNU/Linux or GNU/Linux-libre distribution; it is composed of not just coreboot (deblobbed), 
-							but everything else that the user will need, such as GRUB and flashrom. These are all fully integrated, in a way where
-							most of the detailed steps otherwise required of the user (if they used coreboot, the upstream provider) are completely eliminated.<br/><br/>
-							
-							In much the same way that you can simply download an ISO image for your favourite GNU/Linux-libre distribution, and install it, 
-							you can download pre-compiled libreboot ROM images (built from the sources) along with installation scripts and documentation
-							that make libreboot as easy to use as possible.
-						</li>
-					</ul>
-				</div>
-
-				<p>
-					Libreboot is <b>not</b> a fork of coreboot, despite misconceptions of this fact. Libreboot (downstream supplier) is a parallel effort 
-					which works closely with and re-bases on the latest coreboot (upstream supplier) every so often.
-				</p>
-
-				<p>
-					<b>
-						As such, all new coreboot development should be done in coreboot, not libreboot!
-						Libreboot is about deblobbing, and packaging coreboot in a user-friendly way, where most work is already done for the user!
-						If, for example you wanted to attempt porting a new motherboard then you should do that in coreboot. Libreboot will (as a downstream supplier)
-						receive your change at some point in the future, in a future release.
-					</b>
-				</p>
-				
-				<p>
-					<i>Libreboot</i> as a whole is the distribution consisting of everything surrounding coreboot. However, the main component is coreboot;
-					libreboot's deblobbed coreboot tree is sometimes referred to as <i>coreboot-libre</i> to distinguish it as a component of <i>libreboot</i>.
-				</p>
-
 			<h2>
-				Libreboot is a 'stable' coreboot
+				The libreboot project has three main goals:
 			</h2>
 				<ul>
 					<li>
-						Coreboot uses the <a href="https://en.wikipedia.org/wiki/Rolling_release">rolling release</a> model, which
-						is quite volatile; one day when you build coreboot, it may or may not work correctly on your machine.
+						<i><u><b>Recommend and distribute only free software</b></u></i>.
+						Coreboot distributes certain pieces of proprietary software which is needed on some systems.
+						Examples can include things like CPU microcode updates, memory initialization blobs and so on.
+						The coreboot project sometimes recommends adding more blobs which it does not distribute, such
+						as the Video BIOS or Intel's <i>Management Engine</i>. However, a lot of dedicated and talented
+						individuals in coreboot work hard to replace these blobs whenever possible.
 					</li>
 					<li>
-						Libreboot changes less often (as far as the release model is concerned), focusing instead on 'tested' releases for <i>specific machines</i>.
-						At any given time, it might also be possible to build ROM images for systems other than those officially supported. If you get your board to work
-						(without violating the <i>&quot;coreboot development goes in coreboot&quot;</i> rule), then others could benefit from it.
+						<i><u><b>Support as much hardware as possible!</b></u></i>
+						Libreboot supports less hardware than coreboot, because most systems from coreboot still require
+						certain proprietary software to work properly. Libreboot is an attempt to support as much
+						hardware as possible, without any proprietary software.
+					</li>
+					<li>
+						<i><u><b>Make coreboot easy to use</b></u></i>.
+						Coreboot is notoriously difficult to install, due to an overall lack of user-focussed 
+						documentation and support. Most people will simply give up before attempting to install coreboot.<br/><br/>
+						
+						Libreboot attempts to bridge this divide, making sure that everything from building
+						to installing coreboot is automated, as much as is feasibly possible. Secondly, the project
+						produces documentation aimed at non-technical users. Thirdly, the project attempts
+						to provide excellent user support via mailing lists and IRC.<br/><br/>
+						
+						Libreboot already comes with a payload (GRUB), flashrom and other needed parts. Everything
+						is fully integrated, in a way where most of the complicated steps that are otherwise required,
+						are instead done for the user in advance.<br/><br/>
+						
+						You can download ROM images for your libreboot system and install them, without having
+						to build anything from source. The build system is also fully automated, so building
+						from source is easy if you wanted to do that (for whatever reason).
 					</li>
 				</ul>
 
+			<h2>
+				Libreboot is a coreboot distribution, not a coreboot fork
+			</h2>
+
 				<p>
-					On the other hand, coreboot is also strict about what it accepts (merges) into the main git repository: 
-					most of the time, a lot of changes are under review at review.coreboot.org (as a way of encouraging as much further development
-					as possible before accepting the patch).
+					Libreboot is not a fork of coreboot. Every so often, the project re-based on the latest
+					version of coreboot, with the number of custom patches in use minimized.
 				</p>
 
 				<p>
-					Meanwhile, libreboot is a lot less strict in this area and freely merges specific patches that are desirable, sometimes before they are merged into coreboot's main repository.
+					All new coreboot development should be done in coreboot (upstream), not libreboot!
+					Libreboot is about deblobbing and packaging coreboot in a user-friendly way, where most work
+					is already done for the user.
 				</p>
+				
+				<p>
+					For example, if you wanted to add a new board to libreboot, you should add it to coreboot first.
+					Libreboot will automatically receive your code at a later date, when it updates itself.
+				</p>
+				
+				<p>
+					The deblobbed coreboot tree used in libreboot is referred to as <i>coreboot-libre</i>,
+					to distinguish it as a component of <i>libreboot</i>.
+				</p>
+
+			<h2>
+				Libreboot is a 'stable' version of coreboot
+			</h2>
+				<ul>
+					<li>
+						Coreboot uses the <a href="https://en.wikipedia.org/wiki/Rolling_release">rolling release</a> model,
+						which means that it is not guaranteed to be stable, or to even work at all on a given day.
+						Coreboot does have a strict code review process, but being such a large project with so many contributors, regressions
+						are always possible.
+					</li>
+					<li>
+						Libreboot freezes on a particular revision of coreboot, making sure that everything works properly,
+						making fixes on top of that and repeating this during each subsequent update to a later version
+						of coreboot. By doing this, it provides a stronger guarantee to the user that the firmware
+						will be reliable, and not break their system.
+					</li>
+				</ul>
 
 			<p><a href="#pagetop">Back to top of page.</a></p>
 
