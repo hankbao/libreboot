@@ -11,322 +11,351 @@
 	<title>Libreboot task list</title>
 </head>
 <body>
-	<div class="section">
-		<h1 id="pagetop">Libreboot task list</h1>
+	<div class="section" id="pagetop">
+		<h1>Libreboot task list</h1>
 			<p>
 				Back to <a href="index.html">index.html</a>.
 			</p>
 	</div>
 
 	<div class="section">
-
-		<h2 id="tasks">
+		<h1 id="tasks">
 			Important tasks for the libreboot project
-		</h2>
+		</h1>
 			<p>
 				This page is part of the git repository, so feel free to submit patches
 				adding or removing to this list.
 			</p>
-			<h3 id="board_ports">Board ports</h3>
-				<ul>
-					<li>
-						Current candidates (new boards) for libreboot:
-						<ul>
-							<li>
-								Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
-								<ul>
-									<li>
-										Lenovo G505S (works without CPU microcode updates).
-										Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but
-										it can draw a bitmap in user space, using a special utility) - 
-										<a href="https://github.com/alterapraxisptyltd/openatom">openatom in github</a>.
-										SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
-									</li>
-									<li>
-										ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
-										fam10h, already in coreboot. Works without CPU microcode updates, has native graphics initialization
-										(text-mode and framebuffer mode). PLCC flash chip, but can be read/flashed from factory firmware
-										so just boot up, dump, hot-swap and flash the dump to make a backup, then check that the system
-										boots with the backup. Then flash the original chip with libreboot. <b>External PLCC flash programmer
-										not needed!</b>
-									</li>
-									<li>
-										ASUS KGPE-D16 - code not yet public,
-										ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
-										They are asking for 50K* USD to pay for the work to upstream the code (do code review, add more patches, 
-										get it merged in coreboot master repository - a lot of work!). Crowd funding will be necessary.
-										Crowd funding will be necessary.
-										See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">coreboot mailing list</a>.
-										This board uses DIP-8 (socket) SPI flash, so it's easy to flash (external flashing required for initial install).
-										* was 35K. The extra 15K is a stretch goal for S3 support and full text-mode graphics initialization (bugs eliminated).
-									</li>
-									<li>
-										F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
-									</li>
-									<li>
-										<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
-									</li>
-									<li><b>This list needs to expand!</b></li>
-								</ul>
-							</li>
-							<li>
-								That doesn't mean Intel is off the table just yet:
-								<ul>
-									<li>
-										ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
-									</li>
-									<li>
-										ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
-									</li>
-									<li>
-										Non-lenovo GM45 laptops:
-										<ul>
-											Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
-											NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
-										</ul>
-									</li>
-									<li>
-										<b>Desktop</b> system: Dell Optiplex 755. There are <b>lots</b> of these available online.
-										ICH9. DDR2 RAM (needs work in coreboot). No EC (it's a desktop). It will require
-										quite a bit of work in coreboot, but this is a very good candidate.
-										The ME can probably be removed and disabled, using ich9gen without any modifications
-										(or with few modifications). Where are the datasheets? Schematics?
-									</li>
-								</ul>
-							</li>
-						</ul>
-					</li>
-				</ul>
-				
-			<h3>Platform-specific bugs</h3>
-				<ul>
-					<li>
-						Fix these issues on GM45/GS45 targets:
-						<ul>
-							<li>
-								X200: text-mode is broken. only framebuffer graphics work. Git-bisect is needed.
-							</li>
-							<li>
-								X200/X60: battery drained even while system is "off" on some systems. investigate.
-							</li>
-							<li>
-								Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work.
-								- probably a different hda_verb
-							</li>
-							<li>
-								Test this patch for X200 Tablet digitizer support:
-								<a href="https://paste.debian.net/plainh/65cd0a55">https://paste.debian.net/plainh/65cd0a55</a>
-								- tty0_ wants to know whether it breaks the X200 (non-tablet version) or not. (It's probably fine)
-							</li>
-						</ul>
-					</li>
-					<li>
-						<b>Finish all work listed in <a href="future/index.html">future/index.html</a></b>
-					</li>
-					<li>
-						Fix these issues on i945 targets (X60/T60/macbook21)
-						<ul>
-							<li>
-								Fix remaining incompatible LCD panels in native graphics on T500. 
-								See <a href="hcl/t500.html">hcl/t500.html</a>.
-							</li>
-							<li>
-								i945: fix VRAM size (currently 8MB. should be 64MB). 
-								See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
-							</li>
-							<li>
-								Fix remaining incompatible LCD panels in native graphics on T60. 
-								See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
-							</li>
-							<li>
-								i945: the intel video driver used to initialize the display without native graphics initialization
-								and without the extracted video BIOS. It no longer does, so investigate why it does not, and fix
-								the regression (fix has to be done in the kernel, Linux).
-								See <a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html</a> and
-								<a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html</a>
-							</li>
-							<li>
-								Add fake_vbt tables on i945 systems (also GM45).
-							</li>
-							<li>
-								Commit 26ca08caf81ad2dcc9c8246a743d82ffb464c767 in coreboot, see the while (1) loop that
-								waits for the panel to power up on i945. This is an infinite loop if the panel doesn't power up.
-								Fix it. Also, are there panels that don't power up? Test this, and fix it.
-							</li>
-						</ul>
-					</li>
-				</ul>
-				
-			<h3>
-				Flashing from lenovobios to libreboot (and vice versa)
-			</h3>
-				<ul>
-					<li>
-						Implement everything outlined in
-						<a href="hcl/gm45_remove_me.html#demefactory">hcl/gm45_remove_me.html#demefactory</a>
-						and test it.
-					</li>
-				</ul>
-				
-			<h3>Payloads</h3>
-				<ul>
-					<li>
-						Add ProteanOS payload to systems with big enough flash chips. (eg X200/R400).
-						This page (outdated, but still useful according to the maintainer) has some info:
-						<a href="http://www.proteanos.com/doc/plat/porting/">http://www.proteanos.com/doc/plat/porting/</a>.
-						pehjota says that once the port is done, prokit can be modified to generate the entire
-						distribution as a vmlinuz and initrd.img file.
-					</li>
-				</ul>
-		
-			<h3>Build system</h3>
-				<ul>
-					<li>
-						When downloading coreboot/grub/memtest/etc using the download scripts, it currently does
-						not check the integrity of these sources at all. Libreboot releases are signed, but
-						what can be done to improve it is to check the sha512sums of all files downloaded
-						by these scripts (which are in the git repository, but not the release archives,
-						because the release archives already include these sources). Do this for all
-						non-integrated modules used in libreboot.
-					</li>
-					<li>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
-					memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
-					<li>
-						Make libreboot (all of it!) build reproducibly. This is very important.
-						See <a href="http://projects.mtjm.eu/work_packages/16">http://projects.mtjm.eu/work_packages/16</a>.
-					</li>
-					<li>
-						build/release/archives currently fails on Parabola (it only works well in Trisquel).
-						That script is buggy, and full of ugly hacks anyway, 
-						so re-write it and make it modular/portable this time.
-					</li>
-				</ul>
-				
-			<h3>Improvements to the utilities</h3>
-				<ul>
-					<li>
-						Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to ignore
-						a list of chip definitions. This is a much cleaner solution. (add an option to override
-						the ignore).
-					</li>
-					<li>
-						Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
-						little-endian; for instance, mapping a little endian file directly to a struct, instead
-						of serializing/deserializing. Re-factor both utilities and make them fully portable.
-						See <a href="http://projects.mtjm.eu/work_packages/18">http://projects.mtjm.eu/work_packages/18</a>
-					</li>
-					<li>
-						Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed
-						using its own script, but updating it is still a bit too manual. linux-libre's deblob
-						scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.
-					</li>
-					<li>
-						Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400 and T400
-					</li>
-				</ul>
-				
-			<h3>
-				BeagleBone Black
-			</h3>
-				<ul>
-					<li>Get libre distros ported to it. Eg proteanos, trisquel, parabola, librecmc and so on.</li>
-					<li>See <a href="https://coreboot.org/BBB_screwdriver">BBB screwdriver</a> - from the coreboot
-					project, this is an openwrt-based image for the BBB that comes with EHCI enabled out of the box.
-					Look into re-basing that on librecmc (librecmc is a deblobbed version of openwrt).</li>
-				</ul>
-			
-			<h3>Documentation improvements</h3>
-				<ul>
-					<li>
-						Add information from hw registers on all boards.
-						Get them for the following remaining boards: X60, T60, macbook21, R400
-					</li>
-					<li>
-						There are no instructions for how to use the GRUB terminal to find
-						a grub.cfg manually, or how to boot an installed GNU/Linux manually, 
-						so some users get stuck after the initial installation of libreboot
-						not knowing how to boot the GNU/Linux system that they had before installing.
-						Fix that. (also, promote the FSF-endorsed distros while you do it)
-					</li>
-					<li>
-						Add guides for GM45 laptops in docs/security/
-					</li>
-					<li>
-						Add guides for GM45 laptops in docs/hardware/
-					</li>
-					<li>
-						Convert documentation to Sphinx/ReST
-						See <a href="http://projects.mtjm.eu/work_packages/5">http://projects.mtjm.eu/work_packages/5</a>
-						and <a href="http://projects.mtjm.eu/work_packages/12">http://projects.mtjm.eu/work_packages/12</a>
-					</li>
-					<li>
-						LUKS key in initramfs: Add Trisquel documentation for docs/gnulinux/encrypted_trisquel.html.
-						See <a href="http://projects.mtjm.eu/work_packages/39">http://projects.mtjm.eu/work_packages/39</a>
-					</li>
-					<li>
-						PLCC flashing guide is needed:
-						<a href="http://blogs.coreboot.org/files/2013/07/vultureprog_shuttle_sbs.jpg">image</a>,
-						<a href="http://blogs.coreboot.org/files/2013/08/vultureprog_probing.jpg">image</a>,
-						<a href="http://blogs.coreboot.org/files/2013/06/superboosted2.jpg">image</a> - 
-						work with mrnuke on getting info about vultureprog PLCC flashing into libreboot. Libreboot needs
-						server boards. <a href="https://github.com/mrnuke/vultureprog">https://github.com/mrnuke/vultureprog</a>,
-						<a href="https://github.com/mrnuke/qiprog">https://github.com/mrnuke/qiprog</a>,
-						<a href="https://github.com/mrnuke/vultureprog-hardware">https://github.com/mrnuke/vultureprog-hardware</a>.
-						He also uses the sigrok logic analyzer (free/libre):
-						<a href="http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945">http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945</a>
-					</li>
-				</ul>
-				
-			<h3>Project (institutional) improvements</h3>
-				<ul>
-					<li>
-						Add proper guidelines for contributions,
-						like <i>Development Guidelines</i> on the coreboot wiki. For instance, require
-						<i>Sign-off-by</i> in all commits for libreboot. Consulting with the FSF about this
-						(licensing@fsf.org).
-					</li>
-					<li>
-						<b>Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
-						Consult with the openlunchbox project (and maybe others) on getting hardware manufactured
-						with libreboot support (out of the box, from the factory).</b>
-					</li>
-					<li>
-						PROPOSAL (only a proposal, for now):
-						Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
-						Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
-						that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
-						the build scripts know how to build things other than just coreboot/grub.
-						<ul>
-							<li>Allwinner A10 (ARM) SoCs</li>
-							<li>PMON?</li>
-							<li>barebox (u-boot derivative)</li>
-							<li>etc</li>
-							<li>
-								<a href="http://zedboard.org/product/zedboard">http://zedboard.org/product/zedboard</a>
-								might be a candidate, according to the main developer of openlunchbox.
-							</li>
-						</ul>
-					</li>
-					<li>
-						Set up a routine (project-wise) for testing each system with the latest kernel version.
-						See <a href="http://projects.mtjm.eu/work_packages/22">http://projects.mtjm.eu/work_packages/22</a>
-						and <a href="http://projects.mtjm.eu/work_packages/21">http://projects.mtjm.eu/work_packages/21</a>
-					</li>
-				</ul>
-				
-			<h3>EC firmware</h3>
-				<p>
-					<a href="http://www.coreboot.org/Embedded_controller">http://www.coreboot.org/Embedded_controller</a>
-					Replace this on all libreboot targets. Some laptops use an extra SPI flash chip for the EC, some
-					have EC in the main chip, some don't use SPI flash at all but have the firmware inside the EC chip itself.
-					If the EC has integrated flash then you need to be able to get to the pins on the chip or be able to program them over LPC or SPI (if they have that feature).
-					The lenovo laptops currently supported in libreboot all use H8 EC chips (contains flash inside the chip).
-					Read the datasheets on how to externally programme the EC. Chromebooks seem to have free EC
-					(<a href="https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/">https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/</a>).
-				</p>
-				
+	</div>
+
+	<div class="section">
+
+		<h1 id="board_ports">Board ports</h1>
+			<ul>
+				<li>
+					Current candidates (new boards) for libreboot:
+					<ul>
+						<li>
+							Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
+							<ul>
+								<li>
+									Lenovo G505S (works without CPU microcode updates).
+									Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but
+									it can draw a bitmap in user space, using a special utility) - 
+									<a href="https://github.com/alterapraxisptyltd/openatom">openatom in github</a>.
+									SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
+								</li>
+								<li>
+									ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
+									fam10h, already in coreboot. Works without CPU microcode updates, has native graphics initialization
+									(text-mode and framebuffer mode). PLCC flash chip, but can be read/flashed from factory firmware
+									so just boot up, dump, hot-swap and flash the dump to make a backup, then check that the system
+									boots with the backup. Then flash the original chip with libreboot. <b>External PLCC flash programmer
+									not needed!</b>
+								</li>
+								<li>
+									ASUS KGPE-D16 - code not yet public,
+									ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
+									They are asking for 50K* USD to pay for the work to upstream the code (do code review, add more patches, 
+									get it merged in coreboot master repository - a lot of work!). Crowd funding will be necessary.
+									Crowd funding will be necessary.
+									See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">coreboot mailing list</a>.
+									This board uses DIP-8 (socket) SPI flash, so it's easy to flash (external flashing required for initial install).
+									* was 35K. The extra 15K is a stretch goal for S3 support and full text-mode graphics initialization (bugs eliminated).
+								</li>
+								<li>
+									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
+								</li>
+								<li>
+									<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
+								</li>
+								<li><b>This list needs to expand!</b></li>
+							</ul>
+						</li>
+						<li>
+							That doesn't mean Intel is off the table just yet:
+							<ul>
+								<li>
+									ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
+								</li>
+								<li>
+									ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
+								</li>
+								<li>
+									Non-lenovo GM45 laptops:
+									<ul>
+										Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
+										NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
+									</ul>
+								</li>
+								<li>
+									<b>Desktop</b> system: Dell Optiplex 755. There are <b>lots</b> of these available online.
+									ICH9. DDR2 RAM (needs work in coreboot). No EC (it's a desktop). It will require
+									quite a bit of work in coreboot, but this is a very good candidate.
+									The ME can probably be removed and disabled, using ich9gen without any modifications
+									(or with few modifications). Where are the datasheets? Schematics?
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
 			<p><a href="#pagetop">Back to top of page.</a></p>
-		
+	</div>
+	
+	<div class="section">
+		<h1>Platform-specific bugs</h1>
+			<ul>
+				<li>
+					Fix these issues on GM45/GS45 targets:
+					<ul>
+						<li>
+							X200: text-mode is broken. only framebuffer graphics work. Git-bisect is needed.
+						</li>
+						<li>
+							X200/X60: battery drained even while system is "off" on some systems. investigate.
+						</li>
+						<li>
+							Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work.
+							- probably a different hda_verb
+						</li>
+						<li>
+							Test this patch for X200 Tablet digitizer support:
+							<a href="https://paste.debian.net/plainh/65cd0a55">https://paste.debian.net/plainh/65cd0a55</a>
+							- tty0_ wants to know whether it breaks the X200 (non-tablet version) or not. (It's probably fine)
+						</li>
+						<li>
+							Fix remaining incompatible LCD panels in native graphics on T500. 
+							See <a href="hcl/t500.html">hcl/t500.html</a>.
+						</li>
+					</ul>
+				</li>
+				<li>
+					<b>Finish all work listed in <a href="future/index.html">future/index.html</a></b>
+				</li>
+				<li>
+					Fix these issues on i945 targets (X60/T60/macbook21)
+					<ul>
+						<li>
+							i945: fix VRAM size (currently 8MB. should be 64MB). 
+							See <a href="future/index.html#i945_vram_size">future/index.html#i945_vram_size</a>.
+						</li>
+						<li>
+							Fix remaining incompatible LCD panels in native graphics on T60. 
+							See <a href="future/index.html#lcd_i945_incompatibility">future/index.html#lcd_i945_incompatibility</a>.
+						</li>
+						<li>
+							i945: the intel video driver used to initialize the display without native graphics initialization
+							and without the extracted video BIOS. It no longer does, so investigate why it does not, and fix
+							the regression (fix has to be done in the kernel, Linux).
+							See <a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html</a> and
+							<a href="http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html">http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html</a>
+						</li>
+						<li>
+							Add fake_vbt tables on i945 systems (also GM45).
+						</li>
+						<li>
+							Commit 26ca08caf81ad2dcc9c8246a743d82ffb464c767 in coreboot, see the while (1) loop that
+							waits for the panel to power up on i945. This is an infinite loop if the panel doesn't power up.
+							Fix it. Also, are there panels that don't power up? Test this, and fix it.
+						</li>
+					</ul>
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+	
+	<div class="section">
+		<h1>
+			Flashing from lenovobios to libreboot (and vice versa)
+		</h1>
+			<ul>
+				<li>
+					Implement everything outlined in
+					<a href="hcl/gm45_remove_me.html#demefactory">hcl/gm45_remove_me.html#demefactory</a>
+					and test it.
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Payloads</h1>
+			<ul>
+				<li>
+					Add ProteanOS payload to systems with big enough flash chips. (eg X200/R400).
+					This page (outdated, but still useful according to the maintainer) has some info:
+					<a href="http://www.proteanos.com/doc/plat/porting/">http://www.proteanos.com/doc/plat/porting/</a>.
+					pehjota says that once the port is done, prokit can be modified to generate the entire
+					distribution as a vmlinuz and initrd.img file.
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Build system</h1>
+			<ul>
+				<li>
+					When downloading coreboot/grub/memtest/etc using the download scripts, it currently does
+					not check the integrity of these sources at all. Libreboot releases are signed, but
+					what can be done to improve it is to check the sha512sums of all files downloaded
+					by these scripts (which are in the git repository, but not the release archives,
+					because the release archives already include these sources). Do this for all
+					non-integrated modules used in libreboot.
+				</li>
+				<li>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
+				memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
+				<li>
+					Make libreboot (all of it!) build reproducibly. This is very important.
+					See <a href="http://projects.mtjm.eu/work_packages/16">http://projects.mtjm.eu/work_packages/16</a>.
+				</li>
+				<li>
+					build/release/archives currently fails on Parabola (it only works well in Trisquel).
+					That script is buggy, and full of ugly hacks anyway, 
+					so re-write it and make it modular/portable this time.
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Improvements to the utilities</h1>
+			<ul>
+				<li>
+					Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to ignore
+					a list of chip definitions. This is a much cleaner solution. (add an option to override
+					the ignore).
+				</li>
+				<li>
+					Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
+					little-endian; for instance, mapping a little endian file directly to a struct, instead
+					of serializing/deserializing. Re-factor both utilities and make them fully portable.
+					See <a href="http://projects.mtjm.eu/work_packages/18">http://projects.mtjm.eu/work_packages/18</a>
+				</li>
+				<li>
+					Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed
+					using its own script, but updating it is still a bit too manual. linux-libre's deblob
+					scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.
+				</li>
+				<li>
+					Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400 and T400
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>
+			BeagleBone Black
+		</h1>
+			<ul>
+				<li>Get libre distros ported to it. Eg proteanos, trisquel, parabola, librecmc and so on.</li>
+				<li>See <a href="https://coreboot.org/BBB_screwdriver">BBB screwdriver</a> - from the coreboot
+				project, this is an openwrt-based image for the BBB that comes with EHCI enabled out of the box.
+				Look into re-basing that on librecmc (librecmc is a deblobbed version of openwrt).</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Documentation improvements</h1>
+			<ul>
+				<li>
+					Add information from hw registers on all boards.
+					Get them for the following remaining boards: X60, T60, macbook21, R400
+				</li>
+				<li>
+					There are no instructions for how to use the GRUB terminal to find
+					a grub.cfg manually, or how to boot an installed GNU/Linux manually, 
+					so some users get stuck after the initial installation of libreboot
+					not knowing how to boot the GNU/Linux system that they had before installing.
+					Fix that. (also, promote the FSF-endorsed distros while you do it)
+				</li>
+				<li>
+					Add guides for GM45 laptops in docs/security/
+				</li>
+				<li>
+					Add guides for GM45 laptops in docs/hardware/
+				</li>
+				<li>
+					Convert documentation to Sphinx/ReST
+					See <a href="http://projects.mtjm.eu/work_packages/5">http://projects.mtjm.eu/work_packages/5</a>
+					and <a href="http://projects.mtjm.eu/work_packages/12">http://projects.mtjm.eu/work_packages/12</a>
+				</li>
+				<li>
+					LUKS key in initramfs: Add Trisquel documentation for docs/gnulinux/encrypted_trisquel.html.
+					See <a href="http://projects.mtjm.eu/work_packages/39">http://projects.mtjm.eu/work_packages/39</a>
+				</li>
+				<li>
+					PLCC flashing guide is needed:
+					<a href="http://blogs.coreboot.org/files/2013/07/vultureprog_shuttle_sbs.jpg">image</a>,
+					<a href="http://blogs.coreboot.org/files/2013/08/vultureprog_probing.jpg">image</a>,
+					<a href="http://blogs.coreboot.org/files/2013/06/superboosted2.jpg">image</a> - 
+					work with mrnuke on getting info about vultureprog PLCC flashing into libreboot. Libreboot needs
+					server boards. <a href="https://github.com/mrnuke/vultureprog">https://github.com/mrnuke/vultureprog</a>,
+					<a href="https://github.com/mrnuke/qiprog">https://github.com/mrnuke/qiprog</a>,
+					<a href="https://github.com/mrnuke/vultureprog-hardware">https://github.com/mrnuke/vultureprog-hardware</a>.
+					He also uses the sigrok logic analyzer (free/libre):
+					<a href="http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945">http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945</a>
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Project (institutional) improvements</h1>
+			<ul>
+				<li>
+					Add proper guidelines for contributions,
+					like <i>Development Guidelines</i> on the coreboot wiki. For instance, require
+					<i>Sign-off-by</i> in all commits for libreboot. Consulting with the FSF about this
+					(licensing@fsf.org).
+				</li>
+				<li>
+					<b>Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware.
+					Consult with the openlunchbox project (and maybe others) on getting hardware manufactured
+					with libreboot support (out of the box, from the factory).</b>
+				</li>
+				<li>
+					PROPOSAL (only a proposal, for now):
+					Look into the possibility of expanding libreboot to support non-coreboot systems. (u-boot, for instance). 
+					Currently, libreboot presents itself as a deblobbed coreboot distribution. There are other systems out there
+					that use other firmware, such as u-boot, which libreboot could theoretically support. This would mean that
+					the build scripts know how to build things other than just coreboot/grub.
+					<ul>
+						<li>Allwinner A10 (ARM) SoCs</li>
+						<li>PMON?</li>
+						<li>barebox (u-boot derivative)</li>
+						<li>etc</li>
+						<li>
+							<a href="http://zedboard.org/product/zedboard">http://zedboard.org/product/zedboard</a>
+							might be a candidate, according to the main developer of openlunchbox.
+						</li>
+					</ul>
+				</li>
+				<li>
+					Set up a routine (project-wise) for testing each system with the latest kernel version.
+					See <a href="http://projects.mtjm.eu/work_packages/22">http://projects.mtjm.eu/work_packages/22</a>
+					and <a href="http://projects.mtjm.eu/work_packages/21">http://projects.mtjm.eu/work_packages/21</a>
+				</li>
+			</ul>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+		<h1>EC firmware</h1>
+			<p>
+				<a href="http://www.coreboot.org/Embedded_controller">http://www.coreboot.org/Embedded_controller</a>
+				Replace this on all libreboot targets. Some laptops use an extra SPI flash chip for the EC, some
+				have EC in the main chip, some don't use SPI flash at all but have the firmware inside the EC chip itself.
+				If the EC has integrated flash then you need to be able to get to the pins on the chip or be able to program them over LPC or SPI (if they have that feature).
+				The lenovo laptops currently supported in libreboot all use H8 EC chips (contains flash inside the chip).
+				Read the datasheets on how to externally programme the EC. Chromebooks seem to have free EC
+				(<a href="https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/">https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/</a>).
+			</p>
+			
+			<p><a href="#pagetop">Back to top of page.</a></p>
 	</div>
 
 	<div class="section">
