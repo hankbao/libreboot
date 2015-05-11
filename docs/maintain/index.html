@@ -423,6 +423,12 @@
 				<i>modules.conf</i> defines which modules will be included in the GRUB
 				ELF executable.
 			</p>
+			
+			<p>
+				Since GRUB is the payload in libreboot, you should also
+				build the ROM images and test them, with this different
+				GRUB version that you have prepared.
+			</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
@@ -435,7 +441,20 @@
 		<h1 id="newconfig_grub">Modify the configuration used in GRUB</h1>
 
 			<p>
-				TODO: write this section
+				Look in <i>resources/scripts/helpers/build/roms/withgrub</i> to
+				see how the GRUB configuration files are generated.
+			</p>
+			
+			<p>
+				You might need to modify this. You can also modify the
+				default configuration by making changes to the files
+				under <i>resources/grub/config/</i>
+			</p>
+			
+			<p>
+				Since GRUB is the payload in libreboot, you should also
+				build the ROM images and test them, with this different
+				GRUB version that you have prepared.
 			</p>
 
 			<p>
