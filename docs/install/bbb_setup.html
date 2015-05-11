@@ -297,6 +297,21 @@ Note: flashrom can never write if the flash chip isn't found automatically.
  18              -       - 3.3V PSU RED
  22              -       - NC - this is pin 1 on the flash chip
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
+
+You may also need to connect pins 1 and 9 (tie to 3.3V supply). These are HOLD# and WP#.
+On some systems they are held high, if the flash chip is attached to the board.
+If you're flashing a chip that isn't connected to a board, you'll almost certainly
+have to connect them.
+
+SOIC16 pinout (more info available online, or in the datasheet for your flash chip):
+HOLD	1-16	SCK
+VDD	2-15	MOSI
+N/C	3-14	N/C
+N/C	4-13	N/C
+N/C	5-12	N/C
+N/C	6-11	N/C
+SS		7-10	GND
+MISO	8-9	WP
 </pre>
 			<p>
 				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
@@ -307,6 +322,17 @@ Note: flashrom can never write if the flash chip isn't found automatically.
  NC              -       - 21
  3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
+
+You may also need to connect pins 3 and 7 (tie to 3.3V supply). These are HOLD# and WP#.
+On some systems they are held high, if the flash chip is attached to the board.
+If you're flashing a chip that isn't connected to a board, you'll almost certainly
+have to connect them.
+
+SOIC8 pinout (more info available online, or in the datasheet for your flash chip):
+SS		1-8	VDD
+MISO	2-7	HOLD
+WP		3-6	SCK
+GND	4-5	MOSI
 </pre>
 			<p>
 				<b>NC = no connection</b>
