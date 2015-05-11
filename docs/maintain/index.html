@@ -356,21 +356,38 @@
 		<h1 id="updating_grub">Updating GRUB</h1>
 
 			<p>
-				TODO: write this section
+				$ <b>rm -rf grub/</b><br/>
+				$ <b>git clone git://git.savannah.gnu.org/grub.git</b>
+				$ <b>cd grub/</b>
+				$ <b>git log</b>
 			</p>
 
 			<p>
-				<a href="#pagetop">Back to top of page</a>.
+				Open the file <i>resources/scripts/helpers/download/grub</i> and
+				replace the commit ID on the line that performs <i>git reset --hard</i>
+				with the commit ID of the GRUB revision that you just downloaded.
 			</p>
-
-	</div>
-
-	<div class="section">
-	
-		<h1 id="newpatch_grub">Add/remove/modify patches in GRUB</h1>
-
+			
 			<p>
-				TODO: write this section
+				$ <b>cd ../</b><br/>
+				$ <b>./download grub</b>
+			</p>
+			
+			<p>
+				If it fails because of merge conflicts, you'll need to re-base
+				or (as appropriate) remove the offending patch(es) in 
+				<i>resources/scripts/helpers/download/grub</i>.
+			</p>
+			
+			<p>
+				Finally, verify that it will build:<br/>
+				$ <b>./build module grub</b>
+			</p>
+			
+			<p>
+				Since GRUB is the payload in libreboot, you should also
+				build the ROM images and test them, with this different
+				GRUB version that you have prepared.
 			</p>
 
 			<p>
