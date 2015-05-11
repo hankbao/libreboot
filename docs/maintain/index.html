@@ -304,7 +304,41 @@
 		<h1 id="newboard_libreboot">Adding a new board to libreboot</h1>
 
 			<p>
-				TODO: write this section
+				Make sure that the board is supported, and that the patches
+				are included (if there are custom patches that you need).
+				Add configs for it like so:<br/>
+				$ <b>./build config corebootreplace <u><i>new_board_name_here</i></u></b>
+			</p>
+			
+			<p>
+				This can also be used for replacing an existing config.
+			</p>
+			
+			<p>
+				Configure the board. Make sure to add the steps to the config section
+				in <a href="../git/index.html">../git/index.html</a>.
+			</p>
+			
+			<p>
+				When you're done, the config will be stored in <i>resources/libreboot/config/</i>.
+				Now build-test it and then check that it actually works.
+			</p>
+			
+			<p>
+				The following scripts may also need to be modified before building:
+				<i>resources/scripts/helpers/build/roms/withgrub</i> and
+				<i>resources/scripts/helpers/build/roms/helper</i>
+			</p>
+			
+			<p>
+				The following can be used when updating coreboot-libre:<br/>
+				$ <b>./build config corebootupdate</b> (adding a board name on the end is optional)
+			</p>
+			
+			<p>
+				The following can be used if you want to modify an existing
+				configuration:<br/>
+				$ <b>./build config corebootmodify</b> (adding a board name on the end is optional)
 			</p>
 
 			<p>
