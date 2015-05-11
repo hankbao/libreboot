@@ -33,69 +33,64 @@
 		<h1 id="board_ports">Board ports</h1>
 			<ul>
 				<li>
-					Current candidates (new boards) for libreboot:
+					Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
 					<ul>
 						<li>
-							Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
+							Lenovo G505S (works without CPU microcode updates).
+							Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but
+							it can draw a bitmap in user space, using a special utility) - 
+							<a href="https://github.com/alterapraxisptyltd/openatom">openatom in github</a>.
+							SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
+						</li>
+						<li>
+							ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
+							fam10h, already in coreboot. Works without CPU microcode updates, has native graphics initialization
+							(text-mode and framebuffer mode). PLCC flash chip, but can be read/flashed from factory firmware
+							so just boot up, dump, hot-swap and flash the dump to make a backup, then check that the system
+							boots with the backup. Then flash the original chip with libreboot. <b>External PLCC flash programmer
+							not needed!</b>
+						</li>
+						<li>
+							ASUS KGPE-D16 - code not yet public,
+							ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
+							They are asking for 50K* USD to pay for the work to upstream the code (do code review, add more patches, 
+							get it merged in coreboot master repository - a lot of work!). Crowd funding will be necessary.
+							Crowd funding will be necessary.
+							See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">coreboot mailing list</a>.
+							This board uses DIP-8 (socket) SPI flash, so it's easy to flash (external flashing required for initial install).
+							* was 35K. The extra 15K is a stretch goal for S3 support and full text-mode graphics initialization (bugs eliminated).
+						</li>
+						<li>
+							F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
+						</li>
+						<li>
+							<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
+						</li>
+						<li><b>This list needs to expand!</b></li>
+					</ul>
+				</li>
+				<li>
+					That doesn't mean Intel is off the table just yet:
+					<ul>
+						<li>
+							ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
+						</li>
+						<li>
+							ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
+						</li>
+						<li>
+							Non-lenovo GM45 laptops:
 							<ul>
-								<li>
-									Lenovo G505S (works without CPU microcode updates).
-									Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but
-									it can draw a bitmap in user space, using a special utility) - 
-									<a href="https://github.com/alterapraxisptyltd/openatom">openatom in github</a>.
-									SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
-								</li>
-								<li>
-									ASUS KFSN4-DRE - fam10h, already in coreboot, seems to have native graphics initialization already,
-									fam10h, already in coreboot. Works without CPU microcode updates, has native graphics initialization
-									(text-mode and framebuffer mode). PLCC flash chip, but can be read/flashed from factory firmware
-									so just boot up, dump, hot-swap and flash the dump to make a backup, then check that the system
-									boots with the backup. Then flash the original chip with libreboot. <b>External PLCC flash programmer
-									not needed!</b>
-								</li>
-								<li>
-									ASUS KGPE-D16 - code not yet public,
-									ported by <a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc.</a> (USA). 
-									They are asking for 50K* USD to pay for the work to upstream the code (do code review, add more patches, 
-									get it merged in coreboot master repository - a lot of work!). Crowd funding will be necessary.
-									Crowd funding will be necessary.
-									See <a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">coreboot mailing list</a>.
-									This board uses DIP-8 (socket) SPI flash, so it's easy to flash (external flashing required for initial install).
-									* was 35K. The extra 15K is a stretch goal for S3 support and full text-mode graphics initialization (bugs eliminated).
-								</li>
-								<li>
-									F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
-								</li>
-								<li>
-									<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
-								</li>
-								<li><b>This list needs to expand!</b></li>
+								Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
+								NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
 							</ul>
 						</li>
 						<li>
-							That doesn't mean Intel is off the table just yet:
-							<ul>
-								<li>
-									ThinkPad R500: <a href="http://projects.mtjm.eu/work_packages/43">http://projects.mtjm.eu/work_packages/43</a>
-								</li>
-								<li>
-									ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
-								</li>
-								<li>
-									Non-lenovo GM45 laptops:
-									<ul>
-										Dell Latitude E6400 - quite a few of these online. This is a good laptop to target in coreboot and libreboot.
-										NOTE: EC support. ALSO: DDR2 memory (coreboot raminit for GM45 currently only supports DDR3)</li>
-									</ul>
-								</li>
-								<li>
-									<b>Desktop</b> system: Dell Optiplex 755. There are <b>lots</b> of these available online.
-									ICH9. DDR2 RAM (needs work in coreboot). No EC (it's a desktop). It will require
-									quite a bit of work in coreboot, but this is a very good candidate.
-									The ME can probably be removed and disabled, using ich9gen without any modifications
-									(or with few modifications). Where are the datasheets? Schematics?
-								</li>
-							</ul>
+							<b>Desktop</b> system: Dell Optiplex 755. There are <b>lots</b> of these available online.
+							ICH9. DDR2 RAM (needs work in coreboot). No EC (it's a desktop). It will require
+							quite a bit of work in coreboot, but this is a very good candidate.
+							The ME can probably be removed and disabled, using ich9gen without any modifications
+							(or with few modifications). Where are the datasheets? Schematics?
 						</li>
 					</ul>
 				</li>
