@@ -372,40 +372,24 @@ GND	4-5	MOSI
 			</p>
 			
 			<p>
-				<b>tty0_</b> in the coreboot IRC channel had this to say:
+				<a href="http://flashrom.org/ISP">http://flashrom.org/ISP</a> 
+				is what we typically do in libreboot, though not always. That page
+				has some notes about using resistors to affect stability.
 			</p>
-<pre>
-&lt;stefanct&gt; http://flashrom.org/ISP
-&lt;stefanct&gt; i was even using 220 ohm today
-&lt;tty0_&gt; fchmmr: I flash with 20MHz. But had to do a lot of stuff to make it work:
-&lt;n1cky&gt; stefanct: got a picture?
-&lt;tty0_&gt; I made &quot;coax&quot; with 0.1 mm core  and aluminum foley (from my kitchen), add 100 Ohm resistors (serial)
-&lt;tty0_&gt; above the aluminum foley i've put heatshrink
-&lt;stefanct&gt; i think that's a bit overkill :)
-&lt;tty0_&gt; did this for: CS, CLK, D0, D1
-&lt;tty0_&gt; i can flash with 50MHz
-* roxfan has quit (Ping timeout: 246 seconds)
-&lt;tty0_&gt; I planned to take pics and explain
-&lt;fchmmr&gt; sgsit, 50MHz / 0.5MHz = 100 times faster than what we are used to.
-&lt;kmalkki&gt; and flashrom does not tell you the correct actual SPI clock
-&lt;tty0_&gt; yep
-&lt;kmalkki&gt; (for spidev on BBB)
-&lt;fchmmr&gt; tty0_, I'm adding these notes to the libreboot documentation.
-&lt;tty0_&gt; 512 takes forever (compared with this)
-&lt;fchmmr&gt; tty0_, more notes from you (and photos), probably a full guide, would be very useful for a lot of people.
-&lt;tty0_&gt; kmalkki: yes
-&lt;stefanct&lt; and on the bbb the maximum is in the device tree
-&lt;tty0_&gt; stefanct: If you have to do it many times it it worth i believe. I had so much problems flashing my x200t without it
-&lt;stefanct&lt; in my case it is 16MHz
-&lt;stefanct&lt; tty0_: if it helps... sure
-&lt;kmalkki&gt; tty0_: so what hardware did you claim 50MHz with?
-&lt;tty0_&gt; BBB
-
-&lt;tty0_&gt; http://i.imgur.com/qHGxKpj.jpg
-&lt;tty0_&gt; BTW, i use twisted pair as core (in case i need to put capacitors)
-&lt;tty0_&gt; One of my early x200t attempts: http://i.imgur.com/L0fVK3i.jpg
-
-</pre>
+			
+			<p>
+				tty0_ in #libreboot was able to get better flashing speeds with the following configuration:
+			</p>
+				<ul>
+					<li>&quot;coax&quot; with 0.1 mm core  and aluminum foley (from my kitchen), add 100 Ohm resistors (serial)</li>
+					<li>put heatstrink above the foley, for: CS, CLK, D0, D1</li>
+					<li>Twisted pair used as core (in case more capacitors are needed)</li>
+					<li>
+						See this image: 
+						<a href="http://i.imgur.com/qHGxKpj.jpg">http://i.imgur.com/qHGxKpj.jpg</a>
+					</li>
+					<li>He was able to flash at 50MHz (lower speeds are also fine).</li>
+				</ul>
 	
 	</div>
 	
