@@ -405,6 +405,10 @@ rm -rf libreboot_src/resources/scripts/helpers/build/release
 rm -f libreboot_src/download
 rm -rf libreboot_src/resources/scripts/helpers/download/
 
+# Patches are not needed, because they are
+# already merged in libreboot_src/coreboot/
+rm -rf libreboot_src/resources/libreboot/patch/
+
 # ich9deblob: there are certain files in there
 # that the user most likely does not want to share
 rm -f libreboot_src/resources/utilities/ich9deblob/deblobbed_descriptor.bin
