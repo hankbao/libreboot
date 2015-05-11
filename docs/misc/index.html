@@ -142,7 +142,7 @@ WantedBy=multi-user.target
 			<p>
 				Alternatively you can use i2cdump. In Trisquel, this is in the package i2c-tools.<br/>
 				$ <b>sudo modprobe i2c-dev</b><br/>
-				$ <b>sudo i2cdump -y 5 0x50</b><br/>
+				$ <b>sudo i2cdump -y 5 0x50</b> (you might have to change the value for -y)<br/>
 				$ <b>sudo rmmod i2c-dev</b><br/>
 				You'll see the panel name in the output (from the EDID dump). 
 			</p>
