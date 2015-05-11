@@ -401,7 +401,27 @@
 		<h1 id="altbuild_grub_payload">Change how the GRUB payload (grub.elf) is built (utility: grub-assemble)</h1>
 
 			<p>
-				TODO: write this section
+				Look in <i>resources/utilities/grub-assemble/</i>.
+			</p>
+			
+			<p>
+				<i>gen.sh</i> creates ELF executables of GRUB with different configurations:
+				text-mode or framebuffer mode in coreboot. Essentially,
+				the text-mode version has no background nor any custom fonts,
+				and contains MemTest86+. You probably don't need to modify these
+				files at all.
+			</p>
+			
+			<p>
+				<i>grub_memdisk_keymap</i> simply adds all the keyboard layout
+				files. The keymap files are in <i>keymap/</i>, and
+				can be added to using the instructions at
+				<a href="../grub/index.html#grub_custom_keyboard">../grub/index.html#grub_custom_keyboard</a>.
+			</p>
+			
+			<p>
+				<i>modules.conf</i> defines which modules will be included in the GRUB
+				ELF executable.
 			</p>
 
 			<p>
