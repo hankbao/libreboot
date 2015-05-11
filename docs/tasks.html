@@ -180,19 +180,6 @@
 				<h3>Build system</h3>
 					<ul>
 						<li>
-							All parts of libreboot that download 
-							non-intergrated parts (coreboot/grub/memtest/bucts/flashrom) rely on only a single
-							repository link, which means single-point-of-failure. Make them fall back on alternative
-							(backup) repositories if the main ones are down.
-							<ul>
-								<li>The coreboot one also cherry picks patches from review.coreboot.org (gerrit), but coreboot.org
-								is sometimes down. When that happens, libreboot cannot be built from git. 
-								The solution is to directly include those patches that are used, as patch/diff files
-								under <i>resources/libreboot/patch/, instead of cherry picking from gerrit
-								(but still include a commented-out link to the gerrit patch that the diff file came from)</i></li>
-							</ul>
-						</li>
-						<li>
 							When downloading coreboot/grub/memtest/etc using the download scripts, it currently does
 							not check the integrity of these sources at all. Libreboot releases are signed, but
 							what can be done to improve it is to check the sha512sums of all files downloaded
