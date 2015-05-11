@@ -1,0 +1,30 @@
+From 519a5be5914a2949f93f4c2f76b22cf4e6102879 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Sat, 11 Oct 2014 20:36:10 +0100
+Subject: [PATCH 17/22] lenovo/t60: Enable legacy brightness controls (native
+ graphics)
+
+Value obtained by reading BLC_PWM_CTL when running the VBIOS (option ROM).
+
+Change-Id: I95f634c5071f6d4bdd423819ce4e40985732761c
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/mainboard/lenovo/t60/devicetree.cb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mainboard/lenovo/t60/devicetree.cb b/src/mainboard/lenovo/t60/devicetree.cb
+index a0ee7f9..43f570e 100644
+--- a/src/mainboard/lenovo/t60/devicetree.cb
++++ b/src/mainboard/lenovo/t60/devicetree.cb
+@@ -25,7 +25,7 @@ chip northbridge/intel/i945
+ 	register "gpu_hotplug" = "0x00000220"
+ 	register "gpu_lvds_use_spread_spectrum_clock" = "1"
+ 	register "gpu_lvds_is_dual_channel" = "1"
+-	register "gpu_backlight" = "0x1280128"
++	register "gpu_backlight" = "0x58BF58BE"
+ 
+ 	device cpu_cluster 0 on
+ 		chip cpu/intel/socket_mFCPGA478
+-- 
+1.9.1
+

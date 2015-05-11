@@ -1,0 +1,43 @@
+From a0aa2b0da29244b7ca657b45f5d4e959cebea8ad Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 5 Apr 2015 18:03:15 -0500
+Subject: [PATCH 01/22] src/southbridge/intel/i82801ix: Add GPIO register
+ locations
+
+Change-Id: I226a1a6bc6b1f921c03f8ec57875a88314928aeb
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/intel/i82801ix/i82801ix.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/southbridge/intel/i82801ix/i82801ix.h b/src/southbridge/intel/i82801ix/i82801ix.h
+index 10b2717..afc644b 100644
+--- a/src/southbridge/intel/i82801ix/i82801ix.h
++++ b/src/southbridge/intel/i82801ix/i82801ix.h
+@@ -1,6 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  * Copyright (C) 2008-2009 coresystems GmbH
+  *               2012 secunet Security Networks AG
+  *
+@@ -76,6 +77,15 @@
+ #define ALT_GP_SMI_STS	0x3a
+ 
+ 
++#define GP_IO_USE_SEL	0x00
++#define GP_IO_SEL	0x04
++#define GP_LVL		0x0c
++#define GPO_BLINK	0x18
++#define GPI_INV		0x2c
++#define GP_IO_USE_SEL2	0x30
++#define GP_IO_SEL2	0x34
++#define GP_LVL2		0x38
++
+ #define DEBUG_PERIODIC_SMIS	0
+ 
+ #define MAINBOARD_POWER_OFF	0
+-- 
+1.9.1
+

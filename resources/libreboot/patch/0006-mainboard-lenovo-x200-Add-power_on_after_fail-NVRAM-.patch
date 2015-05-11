@@ -1,0 +1,76 @@
+From 7f23259568c9afb01e22e24ae7ae8e201cb89445 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Mon, 6 Apr 2015 22:12:47 -0500
+Subject: [PATCH 06/22] mainboard/lenovo/x200: Add power_on_after_fail NVRAM
+ option
+
+Change-Id: I8e78cbae132566b6ca27e0a68af2656364c82b8f
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/lenovo/x200/cmos.default |  1 +
+ src/mainboard/lenovo/x200/cmos.layout  | 29 +++++++++++++++--------------
+ 2 files changed, 16 insertions(+), 14 deletions(-)
+
+diff --git a/src/mainboard/lenovo/x200/cmos.default b/src/mainboard/lenovo/x200/cmos.default
+index 1da4c7c..67b8920 100644
+--- a/src/mainboard/lenovo/x200/cmos.default
++++ b/src/mainboard/lenovo/x200/cmos.default
+@@ -2,6 +2,7 @@ boot_option=Fallback
+ last_boot=Fallback
+ baud_rate=115200
+ debug_level=Spew
++power_on_after_fail=Disable
+ volume=0x3
+ first_battery=Primary
+ bluetooth=Enable
+diff --git a/src/mainboard/lenovo/x200/cmos.layout b/src/mainboard/lenovo/x200/cmos.layout
+index 57dd4d1..fbb2293 100644
+--- a/src/mainboard/lenovo/x200/cmos.layout
++++ b/src/mainboard/lenovo/x200/cmos.layout
+@@ -64,28 +64,29 @@ entries
+ 
+ # coreboot config options: southbridge
+ 408         1       e       10        sata_mode
++409         2       e       7         power_on_after_fail
+ 
+ # coreboot config options: EC
+-409         1       e       9        first_battery
+-410         1       e       1        bluetooth
+-411         1       e       1        wwan
+-412         1       e       1        wlan
+-413         1       e       1        trackpoint
+-414         1       e       1        fn_ctrl_swap
+-415         1       e       1        sticky_fn
++411         1       e       9        first_battery
++412         1       e       1        bluetooth
++413         1       e       1        wwan
++414         1       e       1        wlan
++415         1       e       1        trackpoint
++416         1       e       1        fn_ctrl_swap
++417         1       e       1        sticky_fn
+ 
+ # coreboot config options: bootloader
+-416         512       s       0        boot_devices
+-928           8       h       0        boot_default
++418         512       s       0        boot_devices
++930           8       h       0        boot_default
+ 
+-936         1       e       1        power_management_beeps
+-937         1       e       1        low_battery_beep
+-938         1       e       1        uwb
++938         1       e       1        power_management_beeps
++939         1       e       1        low_battery_beep
++940         1       e       1        uwb
+ 
+ # coreboot config options: northbridge
+-939         3       e       11       gfx_uma_size
++941         3       e       11       gfx_uma_size
+ 
+-#942          2       r       0        unused
++#944          2       r       0        unused
+ 
+ # coreboot config options: check sums
+ 984          16       h       0        check_sum
+-- 
+1.9.1
+

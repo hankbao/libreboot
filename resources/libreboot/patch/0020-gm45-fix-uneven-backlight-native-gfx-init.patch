@@ -1,0 +1,41 @@
+From 512caf2594be34e07383b8a5d5e9e2013c6e2067 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Mon, 29 Dec 2014 21:02:48 +0000
+Subject: [PATCH 20/22] gm45: fix uneven backlight (native gfx init)
+
+When setting brightness levels low, backlight becomes uneven.
+This patch fixes that.
+
+Tested on X200.
+
+Change-Id: Ie71bf696ba4431ab25076f92dd5fdc9fdc167b09
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/northbridge/intel/gm45/acpi/igd.asl | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/northbridge/intel/gm45/acpi/igd.asl b/src/northbridge/intel/gm45/acpi/igd.asl
+index 199765b..6f0eb8c 100644
+--- a/src/northbridge/intel/gm45/acpi/igd.asl
++++ b/src/northbridge/intel/gm45/acpi/igd.asl
+@@ -206,14 +206,14 @@ Device (GFX0)
+ 
+ 		Method (_BCM, 1, NotSerialized)
+ 		{
+-			Store (ShiftLeft (Arg0, 4), ^^BCLV)
++			Store (ShiftLeft (Arg0, 8), ^^BCLV)
+ 			Store (0x80000000, ^^CR1)
+-			Store (0x0610, ^^BCLM)
++			Store (ShiftLeft (0x61, 8), ^^BCLM)
+ 		}
+ 		Method (_BQC, 0, NotSerialized)
+ 		{
+ 			Store (^^BCLV, Local0)
+-			ShiftRight (Local0, 4, Local0)
++			ShiftRight (Local0, 8, Local0)
+ 			Return (Local0)
+ 		}
+ 
+-- 
+1.9.1
+

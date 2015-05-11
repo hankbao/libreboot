@@ -1,0 +1,83 @@
+From 8c85c6ce851927a6ee781f2ddc970584376e6710 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 7 Apr 2015 13:45:06 -0500
+Subject: [PATCH 04/22] southbridge/intel/common/spi: Add Flash lockdown option
+
+Under certain circumstances it is desirable to prevent
+software from altering the contents of the Flash device.
+
+This Expert-mode option allows the hardware write protect
+to be set on bootup.
+
+Change-Id: I92d3c60a69f1688579d954d0476e30a6892cf4d5
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/intel/common/Kconfig |  9 +++++++++
+ src/southbridge/intel/common/spi.c   | 20 ++++++++++++++------
+ 2 files changed, 23 insertions(+), 6 deletions(-)
+
+diff --git a/src/southbridge/intel/common/Kconfig b/src/southbridge/intel/common/Kconfig
+index 949310b..52ada30 100644
+--- a/src/southbridge/intel/common/Kconfig
++++ b/src/southbridge/intel/common/Kconfig
+@@ -1,2 +1,11 @@
+ config SOUTHBRIDGE_INTEL_COMMON
+ 	def_bool n
++
++config LOCK_DOWN_BIOS
++	bool "Lock down the Flash"
++	default n
++	depends on EXPERT
++	help
++	  Lock down the Flash chip to prevent further modification by software.
++	  WARNING: Altering the contents of the Flash chip further WILL require
++	  a hardware programmer AND physical access to the Flash device!
+\ No newline at end of file
+diff --git a/src/southbridge/intel/common/spi.c b/src/southbridge/intel/common/spi.c
+index 416a30f..6c8e2eb 100644
+--- a/src/southbridge/intel/common/spi.c
++++ b/src/southbridge/intel/common/spi.c
+@@ -2,6 +2,7 @@
+  * Copyright (c) 2011 The Chromium OS Authors.
+  * Copyright (C) 2009, 2010 Carl-Daniel Hailfinger
+  * Copyright (C) 2011 Stefan Tauner
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * See file CREDITS for list of people who contributed to this
+  * project.
+@@ -354,11 +355,19 @@ void spi_init(void)
+ 
+ 	ich_set_bbar(0);
+ 
+-	/* Disable the BIOS write protect so write commands are allowed. */
+-	pci_read_config_byte(dev, 0xdc, &bios_cntl);
+-	/* Deassert SMM BIOS Write Protect Disable. */
+-	bios_cntl &= ~(1 << 5);
+-	pci_write_config_byte(dev, 0xdc, bios_cntl | 0x1);
++	if (IS_ENABLED(CONFIG_LOCK_DOWN_BIOS)) {
++		/* Engage lockdown */
++		hsfs = readw_(&ich9_spi->hsfs);
++		hsfs = hsfs | HSFS_FLOCKDN;
++		writew_(hsfs, &ich9_spi->hsfs);
++	}
++	else {
++		/* Disable the BIOS write protect so write commands are allowed. */
++		pci_read_config_byte(dev, 0xdc, &bios_cntl);
++		/* Deassert SMM BIOS Write Protect Disable. */
++		bios_cntl &= ~(1 << 5);
++		pci_write_config_byte(dev, 0xdc, bios_cntl | 0x1);
++	}
+ }
+ #ifndef __SMM__
+ static void spi_init_cb(void *unused)
+@@ -928,7 +937,6 @@ static int ich_hwseq_write(struct spi_flash *flash,
+ 	return 0;
+ }
+ 
+-
+ static struct spi_flash *spi_flash_hwseq(struct spi_slave *spi)
+ {
+ 	struct spi_flash *flash = NULL;
+-- 
+1.9.1
+

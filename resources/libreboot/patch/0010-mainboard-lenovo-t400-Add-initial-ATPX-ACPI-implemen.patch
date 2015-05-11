@@ -1,0 +1,138 @@
+From 83483e772d5b19b52b82e2518805be2e305e6a27 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 5 Apr 2015 23:22:18 -0500
+Subject: [PATCH 10/22] mainboard/lenovo/t400: Add initial ATPX ACPI
+ implementation
+
+Change-Id: I9b86ebec59ccb63db0e1ba61533d162507a22379
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/lenovo/t400/acpi/graphics.asl | 101 ++++++++++++++++++++++++++++
+ src/mainboard/lenovo/t400/dsdt.asl          |   3 +
+ 2 files changed, 104 insertions(+)
+ create mode 100644 src/mainboard/lenovo/t400/acpi/graphics.asl
+
+diff --git a/src/mainboard/lenovo/t400/acpi/graphics.asl b/src/mainboard/lenovo/t400/acpi/graphics.asl
+new file mode 100644
+index 0000000..e928d77
+--- /dev/null
++++ b/src/mainboard/lenovo/t400/acpi/graphics.asl
+@@ -0,0 +1,101 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++/* WARNING
++ * Switchable graphics not yet tested!
++ */
++
++/* Hybrid graphics enable/disable GPIO bitfields */
++Name (HYG1, 0x004A0000)
++Name (HYG2, 0x00020000)
++
++/* GPIO control port */
++Name (GPCP, DEFAULT_GPIOBASE)
++
++/* GPIO control map */
++OperationRegion (GPCM, SystemIO, GPCP, 0x3F)
++Field (GPCM, ByteAcc, NoLock, Preserve) {
++	GPUS, 32,
++	GPIS, 32,
++	Offset (0x0C),
++	GPLV, 32,
++	Offset (0x30),
++	GQUS, 32,
++	GQIS, 32,
++	GQLV, 32
++}
++
++Method(SHYB, 1) {
++	/* Switch hybrid graphics */
++	if (LEqual(Arg0, One))
++	{
++		/* Discrete graphics requested */
++		Or(GPLV, HYG1, GPLV)
++		Or(GQLV, HYG2, GQLV)
++	}
++	else
++	{
++		/* Integrated graphics requested */
++		Xor(HYG1, 0xFFFFFFFF, Local0)
++		And(GPLV, Local0, GPLV)
++		Xor(HYG2, 0xFFFFFFFF, Local0)
++		And(GQLV, Local0, GQLV)
++	}
++}
++
++Method (ATPX, 2, NotSerialized) {
++	/* Create local variables */
++	Name (ATPR, Buffer (0x08) {
++		0x0, 0x0, 0x0, 0x0,
++		0x0, 0x0, 0x0, 0x0
++	})
++	CreateWordField (ATPR, 0x00, SIZE)
++	CreateWordField (ATPR, 0x02, VERS)
++	CreateDWordField (ATPR, 0x02, MASK)
++	CreateDWordField (ATPR, 0x04, FUNC)
++	CreateDWordField (ATPR, 0x06, FLAG)
++
++	/* Version request */
++	if (LEqual(Arg0, 0x0))
++	{
++		/* Assemble and return version information */
++		Store (0x08, SIZE)	/* Response length */
++		Store (0x01, VERS)	/* Version number */
++		Store (0x0F, FUNC)	/* Supported functions? */
++		Return (ATPR)
++	}
++
++	/* Mux select */
++	if (LEqual(Arg0, 0x2))
++	{
++		CreateByteField (Arg1, 0x02, PWST)
++		Store (PWST, Local0)
++		And (Local0, 0x01, Local0)
++		If (Local0)
++		{
++			/* Enable discrete graphics */
++			SHYB(0x01)
++		}
++		else
++		{
++			/* Enable integrated graphics */
++			SHYB(0x00)
++		}
++	}
++}
+diff --git a/src/mainboard/lenovo/t400/dsdt.asl b/src/mainboard/lenovo/t400/dsdt.asl
+index 0409e66..d2582ce 100644
+--- a/src/mainboard/lenovo/t400/dsdt.asl
++++ b/src/mainboard/lenovo/t400/dsdt.asl
+@@ -54,6 +54,9 @@ DefinitionBlock(
+ 	/* Chipset specific sleep states */
+ 	#include <southbridge/intel/i82801ix/acpi/sleepstates.asl>
+ 
++	/* Hybrid graphics support code */
++	#include "acpi/graphics.asl"
++
+ 	/* Dock support code */
+ 	#include "acpi/dock.asl"
+ }
+-- 
+1.9.1
+

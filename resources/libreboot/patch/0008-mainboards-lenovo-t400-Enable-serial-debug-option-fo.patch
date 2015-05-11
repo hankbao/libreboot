@@ -1,0 +1,27 @@
+From fa064bbdca26d7fb9241f9414200fe39e65c2f58 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 5 Apr 2015 17:58:01 -0500
+Subject: [PATCH 08/22] mainboards/lenovo/t400: Enable serial debug option for
+ use with dock
+
+Change-Id: I93fcc8147586c7ca32d4805579f4185cad3d61db
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/lenovo/t400/Kconfig | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/mainboard/lenovo/t400/Kconfig b/src/mainboard/lenovo/t400/Kconfig
+index 392ce692..a38af5e 100644
+--- a/src/mainboard/lenovo/t400/Kconfig
++++ b/src/mainboard/lenovo/t400/Kconfig
+@@ -8,7 +8,6 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select SOUTHBRIDGE_INTEL_I82801IX
+ 	select EC_LENOVO_PMH7
+ 	select EC_LENOVO_H8
+-	select NO_UART_ON_SUPERIO
+ 	select DRIVERS_ICS_954309
+ 	select BOARD_ROMSIZE_KB_8192
+ 	select DRIVERS_GENERIC_IOAPIC
+-- 
+1.9.1
+
