@@ -313,7 +313,36 @@
 		<h1 id="newpatch_libreboot">Add/remove/modify patches in coreboot-libre</h1>
 
 			<p>
-				TODO: write this section
+				Under <b>resources/scripts/helpers/download/coreboot</b> you can find
+				the instructions used for patching coreboot.
+			</p>
+			
+			<p>
+				Modify the commit ID on the <i>git reset --hard</i> line accordingly, 
+				and update the list of patches used accordingly. Do not cherry-pick
+				from review.coreboot.org directly; instead, include the diff in
+				resources/libreboot/patch/ and use <i>git am</i>
+				(you can get the diff by using git-format-patch).
+			</p>
+			
+			<p>
+				When you're done, simply download coreboot again:<br/>
+				$ <b>./download coreboot</b>
+			</p>
+			
+			<p>
+				Finally, re-build the parts from coreboot that are used
+				by the build system:<br/>
+				$ <b>./build module coreboot</b>
+			</p>
+			
+			<p>
+				Instead of running the above command, you can save time
+				by copying out the crossgcc that you compiled before
+				(from coreboot/util/crossgcc/) and then putting it back.
+				After you've done that, run everything in
+				<i>resources/scripts/helpers/build/module/coreboot</i>
+				except for the part that builds GCC.
 			</p>
 
 			<p>
