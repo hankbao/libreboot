@@ -1,0 +1,59 @@
+#!/bin/bash
+
+#  helper script: Downloads SeaBIOS and patches it.
+#
+#	Copyright (C) 2015 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# This script assumes that the working directory is the
+# root of libreboot_src or libreboot git.
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
+# Get GRUB, revert to commit last used and apply patches.
+
+# Remove the old version that may still exist
+# ------------------------------------------------------------------------------
+
+printf "Downloading GRUB\n"
+
+rm -rf seabios
+
+# Get latest GRUB
+# ------------------------------------------------------------------------------
+
+# download it using git
+git clone git://git.seabios.org/seabios.git seabios
+
+# modifications are required
+cd seabios/
+
+# Reset to the last commit that was tested
+# ------------------------------------------------------------------------------
+
+git reset --hard 92f9b9189eb00da42a8bfcf26c664f48ee8d2868
+
+# Apply patches
+# ------------------------------------------------------------------------------
+
+# no patches are used in this revision of libreboot
+
+cd ../
+printf "\n\n"
+
+# ------------------- DONE ----------------------
+
