@@ -275,6 +275,14 @@
 			</p>
 			
 			<p>
+				You should also make sure to update
+				<i>resources/scripts/helpers/build/trim/coreboot</i>
+				which purges unused parts of coreboot. Basically, if it's
+				purging parts that you now need, then that's a bug and you
+				should fix it.
+			</p>
+			
+			<p>
 				You should also test the resulting ROM images from building
 				with the new or modified coreboot revision.
 			</p>
@@ -325,6 +333,15 @@
 				The following can be used if you want to modify an existing
 				configuration:<br/>
 				$ <b>./build config corebootmodify</b> (adding a board name on the end is optional)
+			</p>
+			
+			<p>
+				You should also make sure to update the whitelist in
+				<i>resources/scripts/helpers/build/trim/coreboot</i>
+				which purges unused parts of coreboot (including boards). 
+				Basically, if it's
+				purging parts that you now need, then that's a bug and you
+				should fix it.
 			</p>
 
 			<p>

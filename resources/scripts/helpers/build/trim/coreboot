@@ -1,0 +1,313 @@
+#!/bin/bash
+
+#  helper: trim the coreboot-libre source code (delete unused parts)
+#
+#	Copyright (C) 2015 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# This script assumes that the working directory is the root
+# of libreboot_src or git
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
+printf "purging unused parts of coreboot-libre...\n"
+
+printf "Size of coreboot directory before the purge: $(du -ch coreboot | grep total)\n"
+
+cd coreboot/
+
+# __UNUSED BOARDS_______________________________________________________
+
+printf "deleting unused boards\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/mainboard/
+
+whitelist=" \
+$(find ./apple/macbook21/) \
+$(find ./emulation/qemu-i440fx/) \
+$(find ./emulation/qemu-q35/ ) \
+$(find ./lenovo/r400/) \
+$(find ./lenovo/t60/) \
+$(find ./lenovo/t400/) \
+$(find ./lenovo/t500/) \
+$(find ./lenovo/x60/) \
+$(find ./lenovo/x200/) \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __UNUSED VENDORCODE___________________________________________________
+
+printf "deleting unused vendor code\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/vendorcode/
+
+whitelist=" \
+./google/chromeos/chromeos.h \
+./google/chromeos/gnvs.h \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __Unused architectures________________________________________________
+
+printf "deleting unused CPU architectures\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/arch/
+
+whitelist=" \
+$(find ./x86/) \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __Unused SoC code_____________________________________________________
+
+printf "deleting unused SoCs\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/soc/
+
+whitelist=" \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __Unused northbridge code_____________________________________________
+
+printf "deleting unused northbridges\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/northbridge/
+
+whitelist=" \
+$(find ./intel/i945/) \
+$(find ./intel/gm45/) \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __Unused southbridge code_____________________________________________
+
+printf "deleting unused southbridges\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/southbridge/
+
+whitelist=" \
+$(find ./intel/i82371eb/) \
+$(find ./intel/i82801gx/) \
+$(find ./intel/i82801ix/) \
+$(find ./intel/common/) \
+$(find ./ti/pci1x2x/) \
+$(find ./ricoh/rl5c476/) \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+# __Unused CPU code_____________________________________________________
+
+printf "deleting unused CPUs\n"
+
+# keep the Kconfig files in place, otherwise there are build errors
+
+cd src/cpu/
+
+whitelist=" \
+$(find ./intel/) \
+$(find ./x86/) \
+$(find -type f -name 'Kconfig') \
+$(find -type f -name 'Makefile.inc') \
+"
+
+for file in $(find -type f); do
+
+	# keep files that are in the whitelist
+	cnt="0"
+	for keep in $whitelist; do
+		if [ "$keep" = "$file" ]; then
+			cnt="1"
+			break
+		fi
+	done
+	if [ "$cnt" = "1" ]; then
+		continue
+	fi
+	
+	# delete if it's not in the whitelist
+	rm -f $file
+	
+done
+
+cd ../../
+
+# ______________________________________________________________________
+
+cd ../
+
+printf "Size of coreboot directory after the purge: $(du -ch coreboot | grep total)\n"
+
+printf "...done\n"
+
+printf "\n\n"

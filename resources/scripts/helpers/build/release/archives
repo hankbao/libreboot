@@ -404,6 +404,9 @@ rm -rf libreboot_src/resources/utilities/coreboot-libre/
 rm -rf libreboot_src/resources/scripts/helpers/build/release
 rm -f libreboot_src/download
 rm -rf libreboot_src/resources/scripts/helpers/download/
+# no need for script to purge sources, since purged sources
+# are already included in libreboot_src
+rm -rf libreboot_src/resources/scripts/helpers/build/trim/
 
 # Patches are not needed, because they are
 # already merged in libreboot_src/coreboot/
