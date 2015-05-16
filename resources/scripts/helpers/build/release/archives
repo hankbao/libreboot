@@ -60,6 +60,7 @@ rm -rf tobuild/
 rm -rf libreboot_bin
 rm -rf libreboot_src
 rm -rf libreboot_doc
+rm -rf libreboot_crossgcc
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
@@ -433,6 +434,9 @@ rm -f libreboot_src/ich9fdgbe_4m.bin
 rm -rf libreboot_src/tobuild/
 rm -f libreboot_src/tobuild.tar.xz
 
+# separate coreboot's crossgcc toolchain into a new archive
+mv libreboot_src/coreboot/util/crossgcc/tarballs/ libreboot_crossgcc
+
 # mention the commit ID (libreboot, git) in the release archives
 cat commitid > libreboot_src/commitid
 cat commitid > libreboot_util/commitid
@@ -445,9 +449,14 @@ printf "Compressing libreboot_util/ into libreboot_util.tar.xz\n"
 # create lzma compressed util archive
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
+printf "Compressing libreboot_crossgcc/ into libreboot_crossgcc.tar.xz\n"
+# create lzma compressed util archive
+tar -c libreboot_crossgcc | xz -9e >libreboot_crossgcc.tar.xz
+
 # Move the archives to the release directory
 mv libreboot_src.tar.xz release/
 mv libreboot_util.tar.xz release/
+mv libreboot_crossgcc.tar.xz release/
 
 # Create a symlink to the commitid file, in release/
 cat commitid > release/commitid
@@ -460,6 +469,7 @@ printf "\n\n"
 # The uncompressed archives are no longer needed
 rm -rf libreboot_src
 rm -rf libreboot_util
+rm -rf libreboot_crossgcc
 
 # For those utilities that have to be built on the target
 ./build external source
