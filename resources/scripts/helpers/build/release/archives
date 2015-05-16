@@ -440,6 +440,7 @@ mv libreboot_src/coreboot/util/crossgcc/tarballs/ libreboot_crossgcc
 # mention the commit ID (libreboot, git) in the release archives
 cat commitid > libreboot_src/commitid
 cat commitid > libreboot_util/commitid
+cat commitid > libreboot_crossgcc/commitid
 
 # create lzma compressed src archive
 printf "Compressing libreboot_src/ into libreboot_src.tar.xz\n"
