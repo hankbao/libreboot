@@ -294,7 +294,7 @@ Note: flashrom can never write if the flash chip isn't found automatically.
  NC              -       - NC
  NC              -       - NC
  NC              -       - NC
- 18              -       - 3.3V PSU RED
+ 18              -       - 3.3V (PSU)
  22              -       - NC - this is pin 1 on the flash chip
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 
@@ -320,7 +320,7 @@ MISO	8-9	WP
  18              -       - 1
  22              -       - NC
  NC              -       - 21
- 3.3V PSU RED    -       - 17 - this is pin 1 on the flash chip
+ 3.3V (PSU)      -       - 17 - this is pin 1 on the flash chip
 <i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
 
 You may also need to connect pins 3 and 7 (tie to 3.3V supply). These are HOLD# and WP#.
@@ -338,11 +338,12 @@ GND	4-5	MOSI
 				<b>NC = no connection</b>
 			</p>
 			<p>
-				<b><u>DO NOT</u> connect 3.3V PSU RED yet. ONLY connect this once the pomona is connected to the flash chip.</b>
+				<b><u>DO NOT</u> connect 3.3V (PSU) yet. ONLY connect this once the pomona is connected to the flash chip.</b>
 			</p>
 			<p>
-				<b>You also need to connect the BLACK wire from the 3.3V PSU to pin 2 on the BBB (P9 header). It is safe to install this now
-				(that is, before you connect the pomona to the flash chip).</b>
+				<b>You also need to connect the BLACK wire (ground/earth) from the 3.3V PSU to pin 2 on the BBB (P9 header). 
+				It is safe to install this now
+				(that is, before you connect the pomona to the flash chip); in fact, you should.</b>
 			</p>
 			<p>
 				if you need to extend the 3.3v psu leads, just use the same colour M-F leads, <b>but</b> keep all other 
