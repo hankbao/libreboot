@@ -277,6 +277,7 @@ cd src/cpu/
 whitelist=" \
 $(find ./intel/) \
 $(find ./x86/) \
+$(find ./qemu-x86/) \
 $(find -type f -name 'Kconfig') \
 $(find -type f -name 'Makefile.inc') \
 "
