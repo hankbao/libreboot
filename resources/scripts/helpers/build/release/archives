@@ -450,7 +450,7 @@ printf "Compressing libreboot_util/ into libreboot_util.tar.xz\n"
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
 printf "Compressing libreboot_crossgcc/ into libreboot_crossgcc.tar.xz\n"
-# create lzma compressed util archive
+# create lzma compressed crossgcc archive
 tar -c libreboot_crossgcc | xz -9e >libreboot_crossgcc.tar.xz
 
 # Move the archives to the release directory
