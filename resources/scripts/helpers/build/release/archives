@@ -479,7 +479,7 @@ printf "The archive tobuild.tar.xz has been created with everything needed to bu
 
 # create sha512sum manifest
 cd release/
-printf "Creating manifest of SHA512 sums in sha512sums.txt...\n"
+printf "Creating manifest of SHA512 sums in sha512sum.txt...\n"
 for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done
 printf "...done.\n"
 cd ../
