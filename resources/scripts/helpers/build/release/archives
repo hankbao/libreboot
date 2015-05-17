@@ -364,12 +364,6 @@ cd ../../
 # -------------
 # Miscellaneous
 # -------------
-# include X60 cmos.layout file
-mkdir libreboot_util/cmoslayouts/
-cp coreboot/src/mainboard/apple/macbook21/cmos.layout libreboot_util/cmoslayouts/macbook21cmos.layout
-cp coreboot/src/mainboard/lenovo/x60/cmos.layout libreboot_util/cmoslayouts/x60cmos.layout
-cp coreboot/src/mainboard/lenovo/t60/cmos.layout libreboot_util/cmoslayouts/t60cmos.layout
-cp coreboot/src/mainboard/lenovo/x200/cmos.layout libreboot_util/cmoslayouts/x200cmos.layout
 
 # Flashing script
 cp flash libreboot_util/
