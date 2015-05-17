@@ -226,11 +226,6 @@
 		<h1>Improvements to the utilities</h1>
 			<ul>
 				<li>
-					Stop deleting flash chip definitions in flashrom. Instead, modify flashrom to ignore
-					a list of chip definitions. This is a much cleaner solution. (add an option to override
-					the ignore).
-				</li>
-				<li>
 					Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume
 					little-endian; for instance, mapping a little endian file directly to a struct, instead
 					of serializing/deserializing. Re-factor both utilities and make them fully portable.
