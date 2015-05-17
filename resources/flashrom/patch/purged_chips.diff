@@ -1,6 +1,8 @@
---- flashchips.c	2014-12-29 23:36:27.463726125 +0000
-+++ flashchips.c_defspurged	2014-12-30 01:53:02.300362113 +0000
-@@ -6602,80 +6602,6 @@
+Index: flashchips.c
+===================================================================
+--- flashchips.c	(revision 1889)
++++ flashchips.c	(working copy)
+@@ -7038,80 +7038,6 @@
  
  	{
  		.vendor		= "Macronix",
@@ -39,13 +41,13 @@
 -
 -	{
 -		.vendor		= "Macronix",
--		.name		= "MX25L1605A/MX25L1606E",
+-		.name		= "MX25L1605A/MX25L1606E/MX25L1608E",
 -		.bustype	= BUS_SPI,
 -		.manufacture_id	= MACRONIX_ID,
 -		.model_id	= MACRONIX_MX25L1605,
 -		.total_size	= 2048,
 -		.page_size	= 256,
--		/* OTP: 64B total; enter 0xB1, exit 0xC1 (MX25L1606E only) */
+-		/* OTP: 64B total; enter 0xB1, exit 0xC1 (MX25L1606E and MX25L1608E only) */
 -		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
 -		.tested		= TEST_OK_PREW,
 -		.probe		= probe_spi_rdid,
@@ -70,9 +72,9 @@
 -			},
 -		},
 -		.printlock	= spi_prettyprint_status_register_bp3_srwd, /* MX25L1605A bp2 only */
--		.unlock		= spi_disable_blockprotect,
+-		.unlock		= spi_disable_blockprotect_bp3_srwd,
 -		.write		= spi_chip_write_256,
--		.read		= spi_chip_read, /* Fast read (0x0B) supported */
+-		.read		= spi_chip_read, /* Fast read (0x0B) supported (MX25L1608E supports dual-I/O read) */
 -		.voltage	= {2700, 3600},
 -	},
 -
@@ -81,7 +83,7 @@
  		.name		= "MX25L1605D/MX25L1608D/MX25L1673E",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -6783,41 +6709,6 @@
+@@ -7219,41 +7145,6 @@
  
  	{
  		.vendor		= "Macronix",
@@ -123,11 +125,11 @@
  		.name		= "MX25L3205D/MX25L3208D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -6854,84 +6745,6 @@
+@@ -7290,84 +7181,6 @@
  
  	{
  		.vendor		= "Macronix",
--		.name		= "MX25L3206E",
+-		.name		= "MX25L3206E/MX25L3208E",
 -		.bustype	= BUS_SPI,
 -		.manufacture_id	= MACRONIX_ID,
 -		.model_id	= MACRONIX_MX25L3205,
@@ -158,7 +160,7 @@
 -			},
 -		},
 -		.printlock	= spi_prettyprint_status_register_bp3_srwd,
--		.unlock		= spi_disable_blockprotect,
+-		.unlock		= spi_disable_blockprotect_bp3_srwd,
 -		.write		= spi_chip_write_256,
 -		.read		= spi_chip_read, /* Fast read (0x0B) and dual I/O supported */
 -		.voltage	= {2700, 3600},
@@ -197,7 +199,7 @@
 -			},
 -		},
 -		.printlock	= spi_prettyprint_status_register_bp3_srwd,
--		.unlock		= spi_disable_blockprotect,
+-		.unlock		= spi_disable_blockprotect_bp3_srwd,
 -		.write		= spi_chip_write_256,
 -		.read		= spi_chip_read, /* Fast read (0x0B) and dual I/O supported */
 -		.voltage	= {2700, 3600},
@@ -208,19 +210,18 @@
  		.name		= "MX25L3235D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -7002,82 +6815,6 @@
- 		.voltage	= {2700, 3600},
- 	},
+@@ -7476,86 +7289,6 @@
  
--	{
--		.vendor		= "Macronix",
--		.name		= "MX25L6406E/MX25L6436E",
+ 	{
+ 		.vendor		= "Macronix",
+-		.name		= "MX25L6406E/MX25L6408E",
 -		.bustype	= BUS_SPI,
 -		.manufacture_id	= MACRONIX_ID,
 -		.model_id	= MACRONIX_MX25L6405,
 -		.total_size	= 8192,
 -		.page_size	= 256,
--		/* OTP: 06E 64B/36E 512B total; enter 0xB1, exit 0xC1 */
+-		/* MX25L6406E supports SFDP */
+-		/* OTP: 06E 64B total; enter 0xB1, exit 0xC1 */
 -		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
 -		.tested		= TEST_OK_PREW,
 -		.probe		= probe_spi_rdid,
@@ -232,6 +233,9 @@
 -				.block_erase = spi_block_erase_20,
 -			}, {
 -				.eraseblocks = { {64 * 1024, 128} },
+-				.block_erase = spi_block_erase_52,
+-			}, {
+-				.eraseblocks = { {64 * 1024, 128} },
 -				.block_erase = spi_block_erase_d8,
 -			}, {
 -				.eraseblocks = { {8 * 1024 * 1024, 1} },
@@ -241,16 +245,16 @@
 -				.block_erase = spi_block_erase_c7,
 -			}
 -		},
--		.printlock	= spi_prettyprint_status_register_bp3_srwd, /* bit6 for 36E is quad enable */
--		.unlock		= spi_disable_blockprotect,
+-		.printlock	= spi_prettyprint_status_register_bp3_srwd,
+-		.unlock		= spi_disable_blockprotect_bp3_srwd,
 -		.write		= spi_chip_write_256,
--		.read		= spi_chip_read,
+-		.read		= spi_chip_read, /* Fast read (0x0B), dual I/O read supported */
 -		.voltage	= {2700, 3600},
 -	},
 -
 -	{
 -		.vendor		= "Macronix",
--		.name		= "MX25L6445E/MX25L6473E",
+-		.name		= "MX25L6436E/MX25L6445E/MX25L6465E/MX25L6473E",
 -		.bustype	= BUS_SPI,
 -		.manufacture_id	= MACRONIX_ID,
 -		.model_id	= MACRONIX_MX25L6405,
@@ -282,12 +286,14 @@
 -			}
 -		},
 -		.printlock	= spi_prettyprint_status_register_bp3_srwd, /* bit6 is quad enable */
--		.unlock		= spi_disable_blockprotect,
+-		.unlock		= spi_disable_blockprotect_bp3_srwd,
 -		.write		= spi_chip_write_256,
 -		.read		= spi_chip_read, /* Fast read (0x0B) and multi I/O supported */
 -		.voltage	= {2700, 3600},
 -	},
 -
- 	{
- 		.vendor		= "Macronix",
- 		.name		= "MX25L12805(D)",
+-	{
+-		.vendor		= "Macronix",
+ 		.name		= "MX25L12805D",
+ 		.bustype	= BUS_SPI,
+ 		.manufacture_id	= MACRONIX_ID,
