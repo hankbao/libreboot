@@ -475,7 +475,14 @@ mv tobuild.tar.xz release/
 printf "Tar archives are stored in release/.\n"
 printf "NOTE: don't forget to add ARM binaries for flashrom.\n"
 printf "NOTE: don't forget to add i386 binaries for flashrom/bucts.\n"
-printf "The archive tobuild.tar.xz has been created with everything needed to build these utilities.\n"
+printf "The archive tobuild.tar.xz has been created with everything needed to build these utilities.\n\n"
+
+# create sha512sum manifest
+cd release/
+printf "Creating manifest of SHA512 sums in sha512sums.txt...\n"
+for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done
+printf "...done.\n"
+cd ../
 
 printf "\n\n"
 
