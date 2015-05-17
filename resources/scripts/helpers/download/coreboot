@@ -130,6 +130,12 @@ printf "ThinkPad T500 (depends on T400 patch)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/81/9181/2 && git cherry-pick FETCH_HEAD
 git am ../resources/libreboot/patch/0022-New-mainboard-Lenovo-T500.patch
 
+# BACKPORTED
+# This was merged in master, but this is an older revision. For now, simply backport it (X200 digitizer patch)
+printf "ThinkPad X200 Tablet digitizer patch (backported)\n"
+# git fetch http://review.coreboot.org/coreboot refs/changes/08/10208/4 && git cherry-pick FETCH_HEAD
+git am ../resources/libreboot/patch/0023-lenovo-x200-Enable-wacom-digitizer-support-for-x200t.patch
+
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
 

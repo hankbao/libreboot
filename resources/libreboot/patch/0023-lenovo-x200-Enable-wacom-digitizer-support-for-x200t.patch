@@ -1,0 +1,117 @@
+From 201f57c0a7dfa37bbb47a3f989d35ff00f6a9fe6 Mon Sep 17 00:00:00 2001
+From: Alex David <opdecirkel@gmail.com>
+Date: Sun, 17 May 2015 12:52:54 +0100
+Subject: [PATCH] lenovo/x200: Enable wacom digitizer support for x200t
+
+This patch is based on commit f2b3cd63
+(lenovo/x60: Support digitizer on X60t and X201t)
+
+Tested on Thinkpad X200 Tablet (7450): all pen functionallity
+works (i.e. movements, presure sensitivity and buttons)
+
+THIS IS A REBASE (BACKPORT)
+It's used on an older coreboot revision for this release.
+This patch will be deleted when libreboot next updates
+itself, because the patch is merged now in coreboot upstream.
+
+Signed-off-by: Alex David <opdecirkel@gmail.com>
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/drivers/lenovo/wacom.c              |  3 ++-
+ src/mainboard/lenovo/x200/Kconfig       |  2 ++
+ src/mainboard/lenovo/x200/devicetree.cb | 16 ++++++++++++++++
+ src/mainboard/lenovo/x200/mainboard.c   |  7 +++++++
+ 4 files changed, 27 insertions(+), 1 deletion(-)
+
+diff --git a/src/drivers/lenovo/wacom.c b/src/drivers/lenovo/wacom.c
+index 7368afe..2e899f8 100644
+--- a/src/drivers/lenovo/wacom.c
++++ b/src/drivers/lenovo/wacom.c
+@@ -34,10 +34,11 @@ static const char tablet_numbers[][5] = {
+ 	"6363", "6364", "6365", "6366",
+ 	"6367", "6368", "7762", "7763",
+ 	"7764", "7767", "7768", "7769",
++	/* X200t. */
++	"7448", "7449", "7450", "7453",
+ 	/* X201t. */
+ 	"0053", "0831", "2985", "3093",
+ 	"3113", "3144", "3239", "4184",
+-	"7448", "7449", "7450", "7453",
+ 	"2263", "2266",
+ };
+ 
+diff --git a/src/mainboard/lenovo/x200/Kconfig b/src/mainboard/lenovo/x200/Kconfig
+index 01556b3..7bae12d 100644
+--- a/src/mainboard/lenovo/x200/Kconfig
++++ b/src/mainboard/lenovo/x200/Kconfig
+@@ -21,6 +21,8 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 	select INTEL_INT15
++	select SUPERIO_NSC_PC87382
++	select DRIVERS_LENOVO_WACOM
+ 
+ config MAINBOARD_DIR
+ 	string
+diff --git a/src/mainboard/lenovo/x200/devicetree.cb b/src/mainboard/lenovo/x200/devicetree.cb
+index cc27d25..09bc08f 100644
+--- a/src/mainboard/lenovo/x200/devicetree.cb
++++ b/src/mainboard/lenovo/x200/devicetree.cb
+@@ -176,6 +176,22 @@ chip northbridge/intel/gm45
+ 					register "eventc_enable" = "0xff"
+ 					register "eventd_enable" = "0xff"
+ 				end
++
++				chip superio/nsc/pc87382
++					device pnp 164e.3 on # Digitizer
++						io 0x60 = 0x200
++						irq 0x29 = 0xb0
++						irq 0x70 = 0x5
++						irq 0xf0 = 0x82
++					end
++					# IR, not connected
++					device pnp 164e.2 off end
++					# GPIO, not connected
++					device pnp 164e.7 off end
++					# DLPC, not connected
++					device pnp 164e.19 off end
++				end
++
+ 			end
+ 			device pci 1f.2 on # SATA/IDE 1
+ 				subsystemid 0x17aa 0x20f8
+diff --git a/src/mainboard/lenovo/x200/mainboard.c b/src/mainboard/lenovo/x200/mainboard.c
+index 5354834..0ecffda 100644
+--- a/src/mainboard/lenovo/x200/mainboard.c
++++ b/src/mainboard/lenovo/x200/mainboard.c
+@@ -31,6 +31,7 @@
+ #include <ec/lenovo/pmh7/pmh7.h>
+ #include <ec/acpi/ec.h>
+ #include <ec/lenovo/h8/h8.h>
++#include "drivers/lenovo/lenovo.h"
+ 
+ #include "cstates.c" /* Include it, as the linker won't find
+ 			the overloaded weak function in there. */
+@@ -49,6 +50,11 @@ const char *smbios_mainboard_bios_version(void)
+ 	return s;
+ }
+ 
++static void fill_ssdt(void)
++{
++	drivers_lenovo_serial_ports_ssdt_generate("\\_SB.PCI0.LPCB", 0);
++}
++
+ static void mainboard_init(device_t dev)
+ {
+ 	/* This sneaked in here, because X200 SuperIO chip isn't really
+@@ -62,6 +68,7 @@ static void mainboard_enable(device_t dev)
+ 	install_intel_vga_int15_handler(GMA_INT15_ACTIVE_LFP_INT_LVDS, GMA_INT15_PANEL_FIT_CENTERING, GMA_INT15_BOOT_DISPLAY_DEFAULT, 2);
+ 
+ 	dev->ops->init = mainboard_init;
++	dev->ops->acpi_fill_ssdt_generator = fill_ssdt;
+ }
+ 
+ struct chip_operations mainboard_ops = {
+-- 
+1.9.1
+
