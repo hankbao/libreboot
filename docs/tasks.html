@@ -127,6 +127,10 @@
 							Fix remaining incompatible LCD panels in native graphics on T500. 
 							See <a href="hcl/t500.html">hcl/t500.html</a>.
 						</li>
+						<li>
+							T400/T500/R400 (tested on T400): UART (serial port) doesn't work. Investigate.
+							(already tried enabling early h8 dock option. some RE with superiotool is needed).
+						</li>
 					</ul>
 				</li>
 				<li>
@@ -232,12 +236,12 @@
 					See <a href="http://projects.mtjm.eu/work_packages/18">http://projects.mtjm.eu/work_packages/18</a>
 				</li>
 				<li>
+					Make ich9gen/ich9deblob/demefactory show GPL license info via <i>--version</i> argument.
+				</li>
+				<li>
 					Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed
 					using its own script, but updating it is still a bit too manual. linux-libre's deblob
 					scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.
-				</li>
-				<li>
-					Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400, T400 and T500
 				</li>
 			</ul>
 			<p><a href="#pagetop">Back to top of page.</a></p>

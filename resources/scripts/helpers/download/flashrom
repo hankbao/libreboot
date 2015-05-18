@@ -43,9 +43,8 @@ svn co -r 1889 svn://flashrom.org/flashrom/trunk flashrom
 
 cd flashrom/
 
-# Enable X200 Tablet and X200S whitelist (X200 is already whitelisted)
-printf "Enabling whitelist for X200S and X200 Tablet\n"
-svn patch ../resources/flashrom/patch/x200s_x200t_whitelist.diff
+printf "Enabling whitelist for X200S, X200 Tablet, T400, T500 and R400\n"
+svn patch ../resources/flashrom/patch/x200s_x200t_t400_t500_r400_whitelist.diff
 
 # Remove redundant definitions for the flash chips that
 # supported libreboot machines use. This removes the need
