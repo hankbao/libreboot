@@ -44,13 +44,13 @@ svn co -r 1889 svn://flashrom.org/flashrom/trunk flashrom
 cd flashrom/
 
 printf "Enabling whitelist for X200S, X200 Tablet, T400, T500 and R400\n"
-svn patch ../resources/flashrom/patch/x200s_x200t_t400_t500_r400_whitelist.diff
+patch board_enable.c < ../resources/flashrom/patch/x200s_x200t_t400_t500_r400_whitelist.diff
 
 # Remove redundant definitions for the flash chips that
 # supported libreboot machines use. This removes the need
 # for the user to run with the "-c" argument on these machines
 printf "Patching flashchips.c to remove the redundant entries\n"
-svn patch ../resources/flashrom/patch/purged_chips.diff
+patch flashchips.c < ../resources/flashrom/patch/purged_chips.diff
 
 cd ../
 
