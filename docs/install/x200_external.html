@@ -22,6 +22,17 @@
 				can also be followed (adapted) if you brick your X200, to know how
 				to recover.
 			</p>
+			
+			<ul>
+				<li><a href="#flashchips">Flash chips</a></li>
+				<li><a href="#macaddress">MAC address</a></li>
+				<li><a href="#clip">Initial BBB configuration and installation procedure</a></li>
+				<li><a href="#boot">Boot it!</a></li>
+				<li><a href="#wifi">Wifi</a></li>
+				<li><a href="#wwan">wwan</a></li>
+				<li><a href="#memory">Memory</a></li>
+				<li><a href="#gpio33">X200S and X200 Tablet users: GPIO33 trick will not work.</a></li>
+			</ul>
 
 			<p><a href="index.html">Back to main index</a></p>
 	</div>
@@ -127,8 +138,6 @@ chip on those pins?
 				Check the list of SOIC-8 flash chips at <a href="../hcl/gm45_remove_me.html#flashchips">../hcl/gm45_remove_me.html#flashchips</a> but
 				do note that these are only 4MiB (32Mb) chips. The only X200 SPI chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
 				the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
-				Another possible solution: ground GPIO33 and boot up in non-descriptor mode. This might make software flashing possible, if
-				it's possible to circumvent any flashing protections that might exist.
 			</p>
 
 			<h2>
@@ -332,7 +341,7 @@ Verifying flash... VERIFIED.
 	
 	<div class="section">
 	
-			<h2>
+			<h2 id="boot">
 				Boot it!
 			</h2>
 			<p>
@@ -346,6 +355,52 @@ Verifying flash... VERIFIED.
 				Now <a href="../gnulinux/index.html">install GNU/Linux</a>.
 			</p>
 	
+	</div>
+	
+	<div class="section">
+			<h2 id="gpio33">
+				X200S and X200 Tablet users: GPIO33 trick will not work.
+			</h2>
+				<p>
+					sgsit found out about a pin called GPIO33, which can be grounded to disable the flashing protections
+					by the descriptor and stop the ME from starting (which itself interferes with flashing attempts).
+					The theory was proven correct; however, it is still useless in practise.
+				</p>
+				<p>
+					Look just above the 7 in TP37 (that's GPIO33):<br/>
+					<img src="../hcl/images/x200/gpio33_location.jpg" alt="" />
+				</p>
+				<p>
+					By default we would see this in lenovobios, when trying flashrom -p internal -w rom.rom:
+				</p>
+<pre>
+FREG0: Warning: Flash Descriptor region (0x00000000-0x00000fff) is read-only.
+FREG2: Warning: Management Engine region (0x00001000-0x005f5fff) is locked.
+</pre>
+				<p>
+					With GPIO33 grounded during boot, this disabled the flash protections as set
+					by descriptor, and stopped the ME from starting. The output changed to:
+				</p>
+<pre>
+The Flash Descriptor Override Strap-Pin is set. Restrictions implied by
+the Master Section of the flash descriptor are NOT in effect. Please note
+that <b>Protected Range (PR) restrictions still apply.</b>
+</pre>
+				<p>
+					The part in bold is what got us. This was still observed:
+				</p>
+<pre>
+PR0: Warning: 0x007e0000-0x01ffffff is read-only.
+PR4: Warning: 0x005f8000-0x005fffff is locked.
+</pre>
+
+				<p>
+					It is actually possible to disable these protections. Lenovobios does,
+					when updating the BIOS (proprietary one). One possible way to go about this
+					would be to debug the BIOS update utility from Lenovo, to find out
+					how it's disabling these protections. Some more research is available here:
+					<a href="http://www.coreboot.org/Board:lenovo/x200/internal_flashing_research">http://www.coreboot.org/Board:lenovo/x200/internal_flashing_research</a>
+				</p>
 	</div>
 
 	<div class="section">
