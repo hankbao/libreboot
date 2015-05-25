@@ -79,7 +79,7 @@
 				by coreboot native graphics initialization.
 			</p>
 			<p>
-				Keymaps are named appropriate according to each keyboard layout
+				Keymaps are named appropriate/y according to each keyboard layout
 				support in GRUB. To learn how these keymaps are created, see
 				<a href="../grub/index.html#grub_keyboard">../grub/index.html#grub_keyboard</a>
 			</p>
@@ -107,6 +107,11 @@
 				<p>
 					Other arguments are available for QEMU. The manual will contain more information.
 				</p>
+				
+				<p>
+					On GM45 hardware (with libreboot), make sure that the <i>kvm</i> and <i>kvm_intel</i> kernel modules
+					are not loaded, when using QEMU.
+				</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
@@ -116,7 +121,14 @@
 	
 	<div class="section">
 
-		<h1 id="flashrom">How to install or update libreboot (if running libreboot or coreboot)</h1>
+		<h1 id="flashrom">How to update libreboot (if you are already running libreboot or coreboot)</h1>
+
+			<p>
+				On all current targets, updating libreboot can be accomplished without disassembly and,
+				therefore, without having to externally re-flash using any dedicated hardware. In other words,
+				you can do everything entirely in software, directly from the OS that is running on your libreboot
+				system.
+			</p>
 
 			<div class="important">
 				<p>
@@ -125,59 +137,103 @@
 			</div>
 			
 			<p>
-				These instructions work for most targets, provided that they are already running libreboot or coreboot.
-			</p>
-			<p>
 				Look at the <a href="#rom">list of ROM images</a> to see which image is compatible with your device.
 			</p>
-			<p>
-				X60/T60 users with Lenovo BIOS should refer to <a href="#flashrom_lenovobios">#flashrom_lenovobios</a> instead.
-				Similary, MacBook2,1 users running Apple EFI should refer to <a href="#flashrom_macbook21">#flashrom_macbook21</a>.
-			</p>
-			<p>
-				<b>
-					ThinkPad T60 and X60 Tablet users: be sure to read <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>
-					or <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>.
-				</b>
-			</p>
-			<p>
-				X200/R400/T400/T500 users running Lenovo BIOS should refer to <a href="x200_external.html">x200_external.html</a>,
-				<a href="r400_external.html">r400_external.html</a>,
-				<a href="t400_external.html">t400_external.html</a> or
-				<a href="t500_external.html">t500_external.html</a>. <b>These machines contain the hard coded
-				MAC address for the onboard ethernet chipset, directly inside the SPI flash; 
-				<a href="../hcl/gm45_remove_me.html#ich9gen">ich9gen</a> shows how to change it (the default
-				libreboot ROM images for these machines contain a generic MAC address).</b>
-			</p>
-			<p>
-				X200/R400/T400/T500 users should also note, that it is possible for the user to write-protect whole regions
-				of the SPI flash by using a modified descriptor. Locked regions must be flashed externally;
-				see <a href="x200_external.html">x200_external.html</a>, <a href="r400_external.html">r400_external.html</a>,
-				<a href="t400_external.html">t400_external.html</a> or <a href="t500_external.html">t500_external.html</a>.
-				<b>Libreboot unlocks all regions, by default.</b>
-			</p>
-			<div class="important">
-				<p>
-					How to update the flash chip contents:<br/>
-					$ <b>sudo ./flash update <a href="#rom">yourrom.rom</a></b>
-				</p>
-			</div>
-			<div class="important">
-				<p>
-					Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but
-					you are sure that you chose the correct ROM image, then run this alternative command:<br/>
-					$ <b>sudo ./flash forceupdate <a href="#rom">yourrom.rom</a></b>
-				</p>
-			</div>
 
-			<div class="important">
+			<h2>Are you currently running the original, proprietary firmware?</h2>
 
 				<p>
-					You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output. <b>Shut down</b>
-					after you see this, and then boot up again after a few seconds.
+					If you are currently running the proprietary firmware (not libreboot or coreboot),
+					then the flashing instructions for your system are going to be different.
+				</p>
+				<p>
+					X60/T60 users running the proprietary firmware should refer to <a href="#flashrom_lenovobios">#flashrom_lenovobios</a>.
+					MacBook2,1 users running Apple EFI should refer to <a href="#flashrom_macbook21">#flashrom_macbook21</a>
+				</p>
+				<p>
+					X200 users, refer to <a href="x200_external.html">x200_external.html</a>,
+					R400 users refer to <a href="r400_external.html">r400_external.html</a>,
+					T400 users refer to <a href="t400_external.html">t400_external.html</a>,
+					T500 users refer to <a href="t500_external.html">t500_external.html</a>
 				</p>
 
-			</div>
+			<h2>Are you currently running libreboot (or coreboot)?</h2>
+				
+				<p>
+					X60/T60 users should be fine with this guide. If you write-protected the flash chip, please refer to 
+					<a href="x60_unbrick.html">x60_unbrick.html</a>, <a href="x60tablet_unbrick.html">x60tablet_unbrick.html</a>
+					or <a href="t60_unbrick.html">t60_unbrick.html</a>. <i>This probably does not apply to you. Most people
+					do not write-protect the flash chip, so you probably didn't either.</i>
+				</p>
+				<p>
+					Similarly, it is possible to write-protect the flash chip in coreboot or libreboot on GM45 laptops
+					(X200/R400/T400/T500). If you did this, then you will need to use the links above for flashing, 
+					treating your laptop as though it currently has the proprietary firmware (because write-protected SPI flash
+					requires external re-flashing, as is also the case when running the proprietary firmware).
+				</p>
+				
+				<p>
+					If you did not write-protect the flash chip, or it came to you without any write-protection
+					(<b><i>libreboot does not write-protect the flash chip by default, so this probably applies to you</i></b>),
+					read on!
+				</p>
+
+			<h2>MAC address on GM45 (X200/R400/T400/T500)</h2>
+
+				<p>
+					<b>Users of the X200/R400/T400/T500 take note:</b> The MAC address for the onboard ethernet chipset
+					is located inside the flash chip. Libreboot ROM images for these laptops contain a generic MAC
+					address by default (00:F5:F0:40:71:FE), but this is not what you want.
+					<i>Make sure to change the MAC address inside the ROM image, before flashing it.
+					The instructions on <a href="../hcl/gm45_remove_me.html#ich9gen">../hcl/gm45_remove_me.html#ich9gen</a>
+					show how to do this.</i>
+				</p>
+
+				<p>
+					It is important that you change the default MAC address, before flashing. It will be printed on a sticker
+					at the bottom of the laptop, or it will be printed on a sticker next to or underneath the RAM. Alternatively,
+					and assuming that your current firmware has the correct MAC address in it, you can get it from your OS.
+				</p>
+
+			<h2>All good?</h2>
+
+				<p>Excellent! Moving on...</p>
+
+				<p>
+					Download the <i>libreboot_util.tar.xz</i> archive, and extract it. Inside, you will find
+					a directory called <i>flashrom</i>. This contains statically compiled executable files of
+					the <i>flashrom</i> utility, which you will use to re-flash your libreboot system.
+				</p>
+
+				<p>
+					Simply use <i>cd</i> on your terminal, to switch to the <i>libreboot_util</i> directory. Inside,
+					there is a script called <i>flash</i>, which will detect what CPU architecture you have
+					(e.g. i686, x86_64) and use the appropriate executable. It is also possible for you to
+					build these executables from the libreboot source code archives.
+				</p>
+
+				<div class="important">
+					<p>
+						How to update the flash chip contents:<br/>
+						$ <b>sudo ./flash update <a href="#rom">yourrom.rom</a></b>
+					</p>
+				</div>
+				<div class="important">
+					<p>
+						Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but
+						you are sure that you chose the correct ROM image, then run this alternative command:<br/>
+						$ <b>sudo ./flash forceupdate <a href="#rom">yourrom.rom</a></b>
+					</p>
+				</div>
+
+				<div class="important">
+
+					<p>
+						You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output. <b>Shut down</b>
+						after you see this, and then boot up again after a few seconds.
+					</p>
+
+				</div>
 
 			<p><a href="#pagetop">Back to top of page</a></p>
 			
