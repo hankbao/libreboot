@@ -59,7 +59,6 @@ rm -rf release/
 rm -rf tobuild/
 rm -rf libreboot_bin
 rm -rf libreboot_src
-rm -rf libreboot_crossgcc
 
 # Get manifest which will be used to copy everything
 find -maxdepth 1 > releasefilelist
@@ -401,9 +400,6 @@ rm -f libreboot_src/ich9fdgbe_4m.bin
 rm -rf libreboot_src/tobuild/
 rm -f libreboot_src/tobuild.tar.xz
 
-# separate coreboot's crossgcc toolchain into a new archive
-mv libreboot_src/coreboot/util/crossgcc/tarballs/ crossgcc
-
 # mention the commit ID (libreboot, git) in the release archives
 cat commitid > libreboot_src/commitid
 cat commitid > libreboot_util/commitid
@@ -419,7 +415,6 @@ tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 # Move the archives to the release directory
 mv libreboot_src.tar.xz release/
 mv libreboot_util.tar.xz release/
-mv crossgcc/ release/
 # Put the change log in the release directory.
 cp docs/release.html release/
 cp docs/archive_old.html release/
