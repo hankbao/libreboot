@@ -1,0 +1,53 @@
+#!/bin/sh
+
+#
+#  helper script: generate the documentation release archive
+#
+#	Copyright (C) 2015 Patrick "P. J." McDermott <pj@pehjota.net>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
+printf 'Building the documentation release archive\n'
+
+version="$(git describe --tags HEAD)"
+if [ "x${VERSION_IN_FILENAMES+set}" = 'xset' ]; then
+	distdir="libreboot_${version}_docs"
+else
+	distdir='libreboot_docs'
+fi
+
+printf 'Deleting old documentation release archives\n'
+rm -f "${distdir}.tar.xz"
+rm -f "release/${distdir}.tar.xz"
+rm -Rf "${distdir}/"
+
+printf 'Copying documentation to %s/\n' "${distdir}"
+cp -R docs/ "${distdir}/"
+
+printf '%s\n' "${version}" >"${distdir}/version"
+
+printf 'Creating %s.tar.xz\n' "${distdir}"
+tar -c "${distdir}/" | xz -9e >"${distdir}.tar.xz"
+
+# Move the archives to the release/ directory.
+[ -d release/ ] || mkdir release/
+mv "${distdir}.tar.xz" release/
+
+rm -Rf "${distdir}/"
+
+printf 'Documentation release archives are stored in release/\n'

@@ -59,7 +59,6 @@ rm -rf release/
 rm -rf tobuild/
 rm -rf libreboot_bin
 rm -rf libreboot_src
-rm -rf libreboot_doc
 rm -rf libreboot_crossgcc
 
 # Get manifest which will be used to copy everything
@@ -96,32 +95,6 @@ printf "\n\n"
 # create directory for the release
 mkdir release/
 mkdir release/rom/
-
-# ### Prepare libreboot_docs archive ready for release
-# ----------------------------------------------------------------------------------------------------------------------------
-
-printf "Creating libreboot_docs.tar.xz\n"
-
-cd release/
-
-mkdir libreboot_docs/
-
-cp -r ../docs/ libreboot_docs/
-
-# This file is only for the git repository
-rm -f libreboot_docs/docs/tasks.html
-
-cat ../commitid > libreboot_docs/commitid
-
-# create lzma compressed docs archive
-tar -c libreboot_docs | xz -9e >libreboot_docs.tar.xz
-
-# the directory is no longer needed
-rm -rf libreboot_docs/
-
-cd ../
-
-printf "\n\n"
 
 # ### Further work in libreboot_src: delete *.git and *.svn
 # ### To save space since they are not useful in the release archives
