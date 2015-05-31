@@ -58,35 +58,6 @@ rm -f tobuild.tar.xz
 rm -rf release/
 rm -rf tobuild/
 rm -rf libreboot_bin
-rm -rf libreboot_src
-
-# Get manifest which will be used to copy everything
-find -maxdepth 1 > releasefilelist
-
-printf "\n\n"
-
-# ### Prepare libreboot_src archive ready for release
-# ----------------------------------------------------------------------------------------------------------------------------
-
-printf "Copying libreboot sources to libreboot_src/\n"
-mkdir libreboot_src
-
-for resource in $(cat releasefilelist)
-do
-	if [ "$resource" != "." ] && [ "$resource" != "./docs" ]; then
-		cp -r $resource libreboot_src
-	fi
-done
-
-cd libreboot_src/
-
-# clean everything
-./build clean all
-
-# back to main checkout directory
-cd ../
-
-printf "\n\n"
 
 # ### Create the release/ directory where the archives will go
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -94,48 +65,6 @@ printf "\n\n"
 # create directory for the release
 mkdir release/
 mkdir release/rom/
-
-# ### Further work in libreboot_src: delete *.git and *.svn
-# ### To save space since they are not useful in the release archives
-# ### Changes to these projects should be submitted upstream
-# ----------------------------------------------------------------------------------------------------------------------------
-
-echo "Deleting .git* and .svn* in the modules of libreboot_src/\n"
-
-cd libreboot_src/
-
-# These instructions will also work even if .git or .svn are already deleted
-# because "rm -rf" won't complain if they are missing. It is still useful on
-# the release archives (non-git), for example if the user re-downloads these programmes.
-
-# remove .git for libreboot project itself
-rm -rf .git*
-
-# remove .git for bucts
-cd bucts/
-rm -rf .git*
-cd ../
-
-# coreboot:
-# the instructions for coreboot remain in the download script
-# they need to stay there, because otherwise "git diff"
-# will show the blobs that were deleted (which means,
-# that libreboot would be distributing blobs)
-
-# Flashrom:
-cd flashrom/
-rm -rf .svn
-cd ../
-
-# GRUB:
-cd grub/
-rm -rf .git
-rm -f .gitignore
-cd ../
-
-printf "\n\n"
-
-cd ../
 
 # ### Prepare ROM archives ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
@@ -348,72 +277,14 @@ printf "\n\n"
 # ### Create the release tarballs
 # ----------------------------------------------------------------------------------------------------------------------------
 
-# Also delete the manifest
-rm -f libreboot_src/releasefilelist
-rm -f libreboot_util/releasefilelist
-rm -f releasefilelist
-
-# Useless files
-rm -rf libreboot_src/TODO/
-rm -f libreboot_src/push
-
-# Delete the deblob scripts from libreboot_src
-# Since _src doesn't distribute the download scripts,
-# and already comes with a deblobbed coreboot, the
-# deblobbing scripts aren't needed at all
-rm -rf libreboot_src/resources/utilities/coreboot-libre/
-
-# We don't want to encourage development
-# to happen on the release archives. 
-# Development goes in git. These scripts are
-# not needed in libreboot_src, because
-# the files that they download are already included
-rm -rf libreboot_src/resources/scripts/helpers/build/release
-rm -f libreboot_src/download
-rm -rf libreboot_src/resources/scripts/helpers/download/
-# no need for script to purge sources, since purged sources
-# are already included in libreboot_src
-rm -rf libreboot_src/resources/scripts/helpers/build/trim/
-
-# Patches are not needed, because they are
-# already merged in libreboot_src/coreboot/
-rm -rf libreboot_src/resources/libreboot/patch/
-
-# ich9deblob: there are certain files in there
-# that the user most likely does not want to share
-rm -f libreboot_src/resources/utilities/ich9deblob/deblobbed_descriptor.bin
-rm -f libreboot_src/resources/utilities/ich9deblob/factory.rom
-rm -f libreboot_src/resources/utilities/ich9deblob/libreboot.rom
-rm -f libreboot_src/resources/utilities/ich9deblob/mkdescriptor.c
-rm -f libreboot_src/resources/utilities/ich9deblob/mkdescriptor.h
-rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.c
-rm -f libreboot_src/resources/utilities/ich9deblob/mkgbe.h
-rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_4m.bin
-rm -f libreboot_src/resources/utilities/ich9deblob/ich9fdgbe_8m.bin
-rm -f libreboot_src/resources/utilities/ich9deblob/demefactory_4kdescriptor.bin
-rm -f libreboot_src/mkgbe.c
-rm -f libreboot_src/mkgbe.h
-rm -f libreboot_src/ich9fdgbe_8m.bin
-rm -f libreboot_src/ich9fdgbe_4m.bin
-
-# delete the "tobuild"
-rm -rf libreboot_src/tobuild/
-rm -f libreboot_src/tobuild.tar.xz
-
 # mention the commit ID (libreboot, git) in the release archives
-cat commitid > libreboot_src/commitid
 cat commitid > libreboot_util/commitid
-
-# create lzma compressed src archive
-printf "Compressing libreboot_src/ into libreboot_src.tar.xz\n"
-tar -c libreboot_src | xz -9e >libreboot_src.tar.xz
 
 printf "Compressing libreboot_util/ into libreboot_util.tar.xz\n"
 # create lzma compressed util archive
 tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
 # Move the archives to the release directory
-mv libreboot_src.tar.xz release/
 mv libreboot_util.tar.xz release/
 # Put the change log in the release directory.
 cp docs/release.html release/
@@ -430,7 +301,6 @@ printf "\n\n"
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # The uncompressed archives are no longer needed
-rm -rf libreboot_src
 rm -rf libreboot_util
 
 # For those utilities that have to be built on the target
