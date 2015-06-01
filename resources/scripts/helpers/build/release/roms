@@ -1,0 +1,55 @@
+#!/bin/sh
+
+#
+#  helper script: generate the ROM image release archives
+#
+#	Copyright (C) 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Patrick "P. J." McDermott <pj@pehjota.net>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
+printf 'Deleting old documentation release archives\n'
+rm -Rf release/rom/
+
+printf 'Building ROM image release archives for...\n'
+
+version="$(git describe --tags HEAD)"
+
+[ -d release/rom/ ] || mkdir release/rom/
+
+cd bin/
+for board in *; do
+	printf '...%s' "${board}"
+
+	# Put the version string in the archive.
+	printf '%s\n' "${version}" >"${board}/version"
+
+	# Create the compressed archive.
+	tar -c "${board}" | xz -9e >"../libreboot_${board}.tar.xz"
+
+	# No longer needed.
+	rm -f "${board}/version"
+
+	# Move the ROM images archive to the release/ directory.
+	mv "../libreboot_${board}.tar.xz" ../release/rom/
+
+	printf ' OK\n'
+done
+cd ../
+
+printf 'ROM image release archives are stored in release/\n'

@@ -63,35 +63,6 @@ rm -rf tobuild/
 
 # create directory for the release
 mkdir release/
-mkdir release/rom/
-
-# ### Prepare ROM archives ready for release
-# ----------------------------------------------------------------------------------------------------------------------------
-
-printf "Generating ROM image archives for...\n"
-
-cd bin/
-for board in $(ls)
-do
-	printf "...$board"
-	
-	# show the libreboot commit ID in the archive
-	cat ../commitid > "$board"/commitid
-	
-	# create lzma compressed src archive
-	tar -c "$board" | xz -9e >../libreboot_"$board".tar.xz
-	
-	# delete. no longer needed
-	rm -f "$board"/commitid
-	
-	# move the ROM images to the release/ directory
-	mv ../libreboot_"$board".tar.xz ../release/rom/
-	
-	printf " OK\n"
-done
-cd ../
-
-printf "\n\n"
 
 # ### Prepare libreboot_util archive ready for release
 # ----------------------------------------------------------------------------------------------------------------------------
