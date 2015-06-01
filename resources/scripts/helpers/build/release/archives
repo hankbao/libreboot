@@ -57,7 +57,6 @@ rm -f libreboot_*.tar.xz
 rm -f tobuild.tar.xz
 rm -rf release/
 rm -rf tobuild/
-rm -rf libreboot_bin
 
 # ### Create the release/ directory where the archives will go
 # ----------------------------------------------------------------------------------------------------------------------------
