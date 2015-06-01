@@ -1,4 +1,6 @@
 *~
+*.s[a-w]?
+*.vim
 /TODO/
 /bucts/
 /coreboot/
