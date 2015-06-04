@@ -195,6 +195,22 @@
 					and assuming that your current firmware has the correct MAC address in it, you can get it from your OS.
 				</p>
 
+			<h2>Flash chip size on GM45 (X200/R400/T400/T500)</h2>
+
+				<p>
+					<b>Users of the X200/R400/T400/T500 take note:</b> There are two different sized capacities
+					that you flash chip could have: 4MiB or 8MiB. There are archives for each capacity, for each
+					of these laptops, and you will need to select the correct size.
+				</p>
+
+				<p>
+					To easily identify which size chip is present:<br>
+					# <b>dmidecode | grep ROM\ Size</b><br>
+				</p>
+<pre>
+# ROM Size: 8192 kB
+</pre>
+
 			<h2>All good?</h2>
 
 				<p>Excellent! Moving on...</p>
@@ -388,6 +404,7 @@
 
 		<p>
 			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Copyright &copy; 2015 Chris Ryder &lt;cdkr00@gmail.com&gt;<br/>
 			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
 		</p>
