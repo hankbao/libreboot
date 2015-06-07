@@ -89,4 +89,4 @@ obj/gbe/gbe.o:
 # make clean
 # ----------------------------------------------------------------------
 clean:
-	rm -rf ich9deblob ich9gen demefactory obj/*.o obj/*/*.o
+	rm -Rf ich9deblob ich9gen demefactory obj/*.o obj/*/*.o

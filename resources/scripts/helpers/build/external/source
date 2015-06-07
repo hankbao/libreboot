@@ -26,7 +26,7 @@ set -u -e
 printf "Creating source archive for flashrom and bucts\n"
 
 # delete the old data
-rm -rf tobuild
+rm -Rf tobuild
 rm -f tobuild.tar.xz
 
 # this is where they will go
@@ -68,6 +68,6 @@ cp resources/scripts/misc/powertop.trisquel7 tobuild/
 tar -c tobuild | xz -9e >tobuild.tar.xz
 
 # and delete the directory
-rm -rf tobuild/
+rm -Rf tobuild/
 
 printf "\n\n"

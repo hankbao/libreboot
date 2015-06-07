@@ -32,7 +32,7 @@ set -u -e
 
 printf "Downloading MemTest86+\n"
 
-rm -rf "memtest86+-5.01"
+rm -Rf "memtest86+-5.01"
 
 # Get latest memtest86+:
 # ------------------------------------------------------------------------------

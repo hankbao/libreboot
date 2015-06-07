@@ -31,7 +31,7 @@ set -u -e
 
 printf "Downloading flashrom\n"
 
-rm -rf flashrom
+rm -Rf flashrom
 
 # Get flashrom
 # ------------------------------------------------------------------------------

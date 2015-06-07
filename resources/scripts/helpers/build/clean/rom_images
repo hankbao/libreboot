@@ -28,7 +28,7 @@ set -u -e
 # --------------------------------------------------------
 
 # delete the bin/ directory
-rm -rf bin/
+rm -Rf bin/
 
 printf "Deleted the bin/ directory containing the ROM images.\n\n"
 

@@ -203,7 +203,7 @@
 					<li>scripts (all): fix typos</li>
 					<li>Documentation: general cleanup.</li>
 					<li>builddeps-flashrom: reduce build commands to a single for loop</li>
-					<li>scripts (all): replace unnecessary rm -rf with rm -f</li>
+					<li>scripts (all): replace unnecessary rm -Rf with rm -f</li>
 					<li>powertop.trisquel7: remove sudo (script already checks if the user is root)</li>
 					<li>docs/release.html: add lenovo g505s to the list of candidates</li>
 					<li>.gitignore: add libreboot_bin.tar.xz and libreboot_src.tar.xz</li>
@@ -575,7 +575,7 @@
 					<li>'buildrom-withgrub' script: updated it to create 2 sets of ROMs for each machine: one with text-mode, one with coreboot framebuffer.</li>
 					<li>Documentation: updated index.html#rom to reflect the above</li>
 					<li>Deleted unused README and COPYING file from main directory</li>
-					<li>Removed some rm -rf .git* instructions from the get* scripts and moved them to build-release script</li>
+					<li>Removed some rm -Rf .git* instructions from the get* scripts and moved them to build-release script</li>
 					<li>
 						Split up default grub.cfg into 6 parts: extra/{common.cfg,txtmode.cfg,vesafb.cfg} and menuentries/{common.cfg,txtmode.cfg,vesafb.cfg}
 						<ul>

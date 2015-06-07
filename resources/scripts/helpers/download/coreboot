@@ -32,7 +32,7 @@ printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 # Remove the old version that may exist
 # ------------------------------------------------------------------------------
 
-rm -rf coreboot
+rm -Rf coreboot
 
 # Get latest coreboot:
 # ------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ git am ../resources/libreboot/patch/0023-lenovo-x200-Enable-wacom-digitizer-supp
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -rf .git
+rm -Rf .git
 rm -f .gitreview
 rm -f .gitmodules
 rm -f .gitignore
