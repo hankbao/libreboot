@@ -35,8 +35,7 @@ fi
 [ -d release/ ] || mkdir -p "release/"
 
 printf 'Deleting old source release archives\n'
-rm -f "release/*_src.tar.xz"
-rm -Rf "release/*_src/"
+rm -f release/*_src*
 
 mkdir "release/${distdir}/"
 
