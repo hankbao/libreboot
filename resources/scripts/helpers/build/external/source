@@ -33,22 +33,22 @@ rm -f tobuild.tar.xz
 mkdir tobuild
 
 # flashrom
-cp -r flashrom/ tobuild/
+cp -R flashrom/ tobuild/
 cd tobuild/flashrom/
 rm -f flashrom_lenovobios_sst flashrom_lenovobios_macronix
 make clean
 cd ../../
 mkdir tobuild/resources/
 mkdir tobuild/resources/flashrom/
-cp -r resources/flashrom/patch/ tobuild/resources/flashrom/
+cp -R resources/flashrom/patch/ tobuild/resources/flashrom/
 
 # bucts
-cp -r bucts tobuild/
+cp -R bucts tobuild/
 cd tobuild/bucts/
 make clean
 cd ../../
 mkdir tobuild/resources/bucts/
-cp -r resources/bucts/patch/ tobuild/resources/bucts/
+cp -R resources/bucts/patch/ tobuild/resources/bucts/
 
 # the build script will be needed
 cp build tobuild/

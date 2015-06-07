@@ -76,7 +76,7 @@ mkdir libreboot_util
 # --------------
 # X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
 # Include it statically compiled
-cp -r bucts bucts_
+cp -R bucts bucts_
 # make it statically compile
 ./build module bucts static
 mkdir libreboot_util/bucts/
@@ -90,7 +90,7 @@ mv bucts_/ bucts/
 # ----------------
 # Flashrom is used to install libreboot on supported targets
 # Include it statically compiled
-cp -r flashrom flashrom_
+cp -R flashrom flashrom_
 # make it statically compile
 ./build module flashrom static
 mkdir libreboot_util/flashrom
@@ -108,7 +108,7 @@ mv flashrom_ flashrom
 # ----------------
 # build cbfstool, compiled (statically linked) and include the binary
 cd coreboot/util/
-cp -r cbfstool cbfstool_
+cp -R cbfstool cbfstool_
 cd cbfstool/
 make clean
 make SHARED=0 CC='gcc -static'
@@ -142,7 +142,7 @@ cd ../../
 # ----------------
 # build ich9deblob, compiled (statically linked) and include the binary
 cd resources/utilities/
-cp -r ich9deblob ich9deblob_
+cp -R ich9deblob ich9deblob_
 cd ich9deblob/
 make clean
 make SHARED=0 CC='gcc -static'
@@ -182,7 +182,7 @@ cd ../../
 # -----------------
 # build nvramtool, compiled (statically linked) and include the binary
 cd coreboot/util/
-cp -r nvramtool nvramtool_
+cp -R nvramtool nvramtool_
 cd nvramtool/
 make clean
 make SHARED=0 CC='gcc -static'
@@ -210,7 +210,7 @@ cd ../../
 # -----------------
 # build cbmem, compiled (statically linked) and include the binary
 cd coreboot/util/
-cp -r cbmem cbmem_
+cp -R cbmem cbmem_
 cd cbmem/
 make clean
 make SHARED=0 CC='gcc -static'
@@ -260,7 +260,7 @@ mv libreboot_util.tar.xz release/
 cp docs/release.html release/
 cp docs/archive_old.html release/
 cp docs/cc-by-sa-4.txt release/
-cp -r docs/css/ release/
+cp -R docs/css/ release/
 
 # Create a symlink to the commitid file, in release/
 cat commitid > release/commitid
