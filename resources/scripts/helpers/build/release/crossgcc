@@ -26,11 +26,7 @@ set -u -e
 printf 'Building the coreboot crossgcc archives\n'
 
 version="$(git describe --tags HEAD)"
-if [ "x${VERSION_IN_FILENAMES+set}" = 'xset' ]; then
-	distdir="crossgcc_${version}"
-else
-	distdir='crossgcc'
-fi
+distdir="crossgcc_${version}"
 
 printf 'Deleting old coreboot crossgcc archives\n'
 rm -Rf "release/${distdir}/"

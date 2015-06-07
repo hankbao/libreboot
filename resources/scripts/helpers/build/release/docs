@@ -26,11 +26,7 @@ set -u -e
 printf 'Building the documentation release archive\n'
 
 version="$(git describe --tags HEAD)"
-if [ "x${VERSION_IN_FILENAMES+set}" = 'xset' ]; then
-	distdir="libreboot_${version}_docs"
-else
-	distdir='libreboot_docs'
-fi
+distdir="libreboot_${version}_docs"
 
 [ -d release/ ] || mkdir release/
 

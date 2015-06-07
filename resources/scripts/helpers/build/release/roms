@@ -29,11 +29,7 @@ if [ ! -d bin/ ]; then
 fi
 
 version="$(git describe --tags HEAD)"
-if [ "x${VERSION_IN_FILENAMES+set}" = 'xset' ]; then
-	distname="libreboot_${version}"
-else
-	distname='libreboot'
-fi
+distname="libreboot_${version}"
 
 [ -d release/rom/ ] || mkdir -p release/rom/
 
