@@ -18,6 +18,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# So that I one day find it again
+# http://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_02
+
 ## Don't add here. errors are expected.
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 # set -u -e
