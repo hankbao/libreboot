@@ -24,7 +24,7 @@
 set -u -e
 
 if [ ! -d bin/ ]; then
-	printf "No bin/ directory exists. (you haven't built any images)\n"
+	printf "build/release/roms: no bin/ directory exists. (you haven't built any images)\n"
 	exit 1
 fi
 
