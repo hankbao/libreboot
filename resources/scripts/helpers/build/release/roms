@@ -38,9 +38,9 @@ fi
 printf 'Deleting old documentation release archives\n'
 rm -Rf release/rom/
 
-printf 'Building ROM image release archives for...\n'
+mkdir -p release/rom/
 
-[ -d release/rom/ ] || mkdir -p release/rom/
+printf 'Building ROM image release archives for...\n'
 
 cd bin/
 for board in *; do
