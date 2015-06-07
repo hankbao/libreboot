@@ -44,7 +44,7 @@ cp -R docs/ "release/${distdir}/"
 printf '%s\n' "${version}" >"release/${distdir}/version"
 
 printf 'Creating %s.tar.xz\n' "release/${distdir}"
-tar -c "release/${distdir}/" | xz -9e >"release/${distdir}.tar.xz"
+(cd release/ && tar -c "${distdir}/" | xz -9e >"${distdir}.tar.xz")
 
 rm -Rf "release/${distdir}/"
 
