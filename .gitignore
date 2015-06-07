@@ -23,7 +23,6 @@
 /libreboot_util/
 /libreboot_src/
 /libreboot_docs/
-/crossgcc/
 /release/
 /resources/utilities/ich9deblob/factory.rom
 /resources/utilities/ich9deblob/deblobbed_descriptor.bin

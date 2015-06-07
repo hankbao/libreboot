@@ -4,6 +4,7 @@
 #  helper script: generate the coreboot crossgcc archives
 #
 #	Copyright (C) 2015 Patrick "P. J." McDermott <pj@pehjota.net>
+#  Copyright (C) 2015 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -28,13 +29,10 @@ distdir='crossgcc'
 
 printf 'Deleting old coreboot crossgcc archives\n'
 rm -Rf "release/${distdir}/"
-rm -Rf "${distdir}/"
 
-printf 'Copying coreboot crossgcc archives to %s/\n' "${distdir}"
-cp -R coreboot/util/crossgcc/tarballs/ "${distdir}/"
-
-# Move the archives to the release/ directory.
 [ -d release/ ] || mkdir release/
-mv "${distdir}" release/
+
+printf 'Copying coreboot crossgcc archives to %s/\n' "release/${distdir}"
+cp -R coreboot/util/crossgcc/tarballs/ "release/${distdir}/"
 
 printf 'coreboot crossgcc archives are stored in release/%s\n' "${distdir}"
