@@ -35,7 +35,7 @@ fi
 [ -d release/ ] || mkdir release/
 
 printf 'Deleting old documentation release archives\n'
-rm -f "release/${distdir}.tar.xz"
+rm -Rf release/*_docs*
 
 printf '%s\n' "${version}" >"docs/version"
 printf 'Creating compressed documentation archive at %s/\n' "release/${distdir}.tar.xz"
