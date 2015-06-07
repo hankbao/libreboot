@@ -35,10 +35,7 @@ else
 	distname='libreboot'
 fi
 
-printf 'Deleting old documentation release archives\n'
-rm -Rf release/rom/
-
-mkdir -p release/rom/
+[ -d release/rom/ ] || mkdir -p release/rom/
 
 printf 'Building ROM image release archives for...\n'
 
@@ -48,6 +45,9 @@ for board in *; do
 
 	# Put the version string in the archive.
 	printf '%s\n' "${version}" >"${board}/version"
+
+	# Delete the old archive
+	rm -f "../release/rom/${distname}_${board}.tar.xz"
 
 	# Create the compressed archive.
 	tar -c "${board}" | xz -9e >"../release/rom/${distname}_${board}.tar.xz"
