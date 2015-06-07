@@ -32,12 +32,10 @@ else
 	distdir='libreboot_src'
 fi
 
-[ -d release/ ] || mkdir -p "release/"
-
 printf 'Deleting old source release archives\n'
 rm -Rf release/*_src*
 
-mkdir "release/${distdir}/"
+mkdir -p "release/${distdir}/"
 
 printf 'Copying sources to %s/\n' "release/${distdir}"
 for resource in *; do
