@@ -23,6 +23,11 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+if [ ! -d bin/ ]; then
+	printf "No bin/ directory exists. (you haven't built any images)\n"
+	exit 1
+fi
+
 printf 'Deleting old documentation release archives\n'
 rm -Rf release/rom/
 
