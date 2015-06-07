@@ -36,16 +36,10 @@ fi
 
 printf 'Deleting old documentation release archives\n'
 rm -f "release/${distdir}.tar.xz"
-rm -Rf "release/${distdir}/"
 
-printf 'Copying documentation to %s/\n' "release/${distdir}"
-cp -R docs/ "release/${distdir}/"
-
-printf '%s\n' "${version}" >"release/${distdir}/version"
-
-printf 'Creating %s.tar.xz\n' "release/${distdir}"
-(cd release/ && tar -c "${distdir}/" | xz -9e >"${distdir}.tar.xz")
-
-rm -Rf "release/${distdir}/"
+printf '%s\n' "${version}" >"docs/version"
+printf 'Creating compressed documentation archive at %s/\n' "release/${distdir}.tar.xz"
+tar -c "docs/" | xz -9e >"release/${distdir}.tar.xz"
+rm -f "docs/version"
 
 printf 'Documentation release archives are stored in release/\n'
