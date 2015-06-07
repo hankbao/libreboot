@@ -30,7 +30,7 @@ printf 'Building ROM image release archives for...\n'
 
 version="$(git describe --tags HEAD)"
 
-[ -d release/rom/ ] || mkdir release/rom/
+[ -d release/rom/ ] || mkdir -p release/rom/
 
 cd bin/
 for board in *; do
