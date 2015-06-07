@@ -2,6 +2,7 @@
 *.s[a-w]?
 *.vim
 /TODO/
+/docs/version
 /bucts/
 /coreboot/
 /flashrom/
