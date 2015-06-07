@@ -28,12 +28,17 @@ if [ ! -d bin/ ]; then
 	exit 1
 fi
 
+version="$(git describe --tags HEAD)"
+if [ "x${VERSION_IN_FILENAMES+set}" = 'xset' ]; then
+	distname="libreboot_${version}"
+else
+	distname='libreboot'
+fi
+
 printf 'Deleting old documentation release archives\n'
 rm -Rf release/rom/
 
 printf 'Building ROM image release archives for...\n'
-
-version="$(git describe --tags HEAD)"
 
 [ -d release/rom/ ] || mkdir -p release/rom/
 
@@ -45,7 +50,7 @@ for board in *; do
 	printf '%s\n' "${version}" >"${board}/version"
 
 	# Create the compressed archive.
-	tar -c "${board}" | xz -9e >"../release/rom/libreboot_${board}.tar.xz"
+	tar -c "${board}" | xz -9e >"../release/rom/${distname}_${board}.tar.xz"
 
 	# No longer needed.
 	rm -f "${board}/version"
