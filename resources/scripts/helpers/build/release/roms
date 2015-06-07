@@ -45,13 +45,10 @@ for board in *; do
 	printf '%s\n' "${version}" >"${board}/version"
 
 	# Create the compressed archive.
-	tar -c "${board}" | xz -9e >"../libreboot_${board}.tar.xz"
+	tar -c "${board}" | xz -9e >"../release/rom/libreboot_${board}.tar.xz"
 
 	# No longer needed.
 	rm -f "${board}/version"
-
-	# Move the ROM images archive to the release/ directory.
-	mv "../libreboot_${board}.tar.xz" ../release/rom/
 
 	printf ' OK\n'
 done

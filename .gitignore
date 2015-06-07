@@ -9,15 +9,6 @@
 /memtest86+-5.01/
 /bin/
 /libreboot_util.tar.xz
-/libreboot_macbook21.tar.xz
-/libreboot_qemu_i440fx_piix4.tar.xz
-/libreboot_qemu_q35_ich9.tar.xz
-/libreboot_r400_4mb.tar.xz
-/libreboot_r400_8mb.tar.xz
-/libreboot_t60.tar.xz
-/libreboot_x200_4mb.tar.xz
-/libreboot_x200_8mb.tar.xz
-/libreboot_x60.tar.xz
 /libreboot_util/
 /release/
 /resources/utilities/ich9deblob/factory.rom
