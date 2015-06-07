@@ -33,7 +33,8 @@ else
 fi
 
 printf 'Deleting old source release archives\n'
-rm -Rf release/*_src*
+rm -f "release/${distdir}.tar.xz"
+rm -Rf "release/${distdir}"
 
 mkdir -p "release/${distdir}/"
 
