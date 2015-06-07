@@ -38,6 +38,8 @@ printf 'Deleting old source release archives\n'
 rm -f "release/${distdir}.tar.xz"
 rm -Rf "release/${distdir}/"
 
+mkdir "release/${distdir}/"
+
 printf 'Copying sources to %s/\n' "release/${distdir}"
 for resource in *; do
 	case "${resource}" in
