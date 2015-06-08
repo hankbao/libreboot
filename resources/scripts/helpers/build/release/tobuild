@@ -71,6 +71,7 @@ printf '%s\n' "${version}" >"${distdir}/version"
 # and delete the directory
 rm -Rf "${distdir}/"
 
+printf "\n"
 printf "Tar archive created: %s\n" "${distdir}.tar.xz"
 printf "NOTE: don't forget to add ARM binaries for flashrom.\n"
 printf "NOTE: don't forget to add i386 binaries for flashrom/bucts.\n"
