@@ -19,6 +19,9 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
 version="$(git describe --tags HEAD)"
 versiondir="release/${version}"
 sha512filename="sha512sum.txt"
