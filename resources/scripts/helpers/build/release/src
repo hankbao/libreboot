@@ -103,4 +103,4 @@ printf 'Creating %s.tar.xz\n' "${distdir}"
 
 rm -Rf "${distdir}/"
 
-printf 'Source release archives are stored in release/\n'
+printf 'Source release archives are stored in %s/\n' "${versiondir}"
