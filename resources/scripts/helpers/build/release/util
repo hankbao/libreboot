@@ -273,13 +273,4 @@ printf "\n\n"
 # The uncompressed archives are no longer needed
 rm -Rf libreboot_util
 
-# create sha512sum manifest
-cd release/
-printf "Creating manifest of SHA512 sums in sha512sum.txt...\n"
-for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done
-printf "...done.\n"
-cd ../
-
-printf "\n\n"
-
 # ------------------- DONE ----------------------
