@@ -256,11 +256,6 @@ tar -c libreboot_util | xz -9e >libreboot_util.tar.xz
 
 # Move the archives to the release directory
 mv libreboot_util.tar.xz release/
-# Put the change log in the release directory.
-cp docs/release.html release/
-cp docs/archive_old.html release/
-cp docs/cc-by-sa-4.txt release/
-cp -R docs/css/ release/
 
 # Create a symlink to the commitid file, in release/
 cat commitid > release/commitid
