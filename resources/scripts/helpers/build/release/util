@@ -169,9 +169,6 @@ cd "../../"
 # Flashing script
 cp "flash" "${distdir}/"
 
-# for changing the GRUB background
-cp "resources/scripts/misc/grub-background" "${distdir}/"
-
 printf "\n\n"
 
 # ### Create the release tarballs
