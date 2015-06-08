@@ -177,61 +177,6 @@ rm -Rf ich9deblob
 mv ich9deblob_ ich9deblob
 cd ../../
 
-# -----------------
-# nvramtool related
-# -----------------
-# build nvramtool, compiled (statically linked) and include the binary
-cd coreboot/util/
-cp -R nvramtool nvramtool_
-cd nvramtool/
-make clean
-make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_util/nvramtool
-
-mkdir ../../../libreboot_util/nvramtool/"$arch"
-mv nvramtool ../../../libreboot_util/nvramtool/"$arch"/
-
-if [ "$arch" = "x86_64" ]
-	then
-		# Now build 32-bit binaries
-		make clean
-		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_util/nvramtool/i686
-		mv nvramtool ../../../libreboot_util/nvramtool/i686/
-fi
-
-cd ../
-rm -Rf nvramtool
-mv nvramtool_ nvramtool
-cd ../../
-
-# -----------------
-# cbmem related
-# -----------------
-# build cbmem, compiled (statically linked) and include the binary
-cd coreboot/util/
-cp -R cbmem cbmem_
-cd cbmem/
-make clean
-make SHARED=0 CC='gcc -static'
-mkdir ../../../libreboot_util/cbmem
-
-mkdir ../../../libreboot_util/cbmem/"$arch"
-mv cbmem ../../../libreboot_util/cbmem/"$arch"/
-
-if [ "$arch" = "x86_64" ]
-	then
-		# Now build 32-bit binaries
-		make clean
-		make SHARED=0 CC='gcc -static -m32'
-		mkdir ../../../libreboot_util/cbmem/i686
-		mv cbmem ../../../libreboot_util/cbmem/i686/
-fi
-cd ../
-rm -Rf cbmem
-mv cbmem_ cbmem
-cd ../../
-
 # -------------
 # Miscellaneous
 # -------------
