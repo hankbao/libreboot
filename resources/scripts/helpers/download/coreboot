@@ -150,9 +150,6 @@ cd ../
 printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
 
-# Delete the unused parts of coreboot-libre
-./build trim coreboot
-
 printf "\n\n"
 
 # ------------------- DONE ----------------------
