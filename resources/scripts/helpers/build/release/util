@@ -176,7 +176,7 @@ printf "\n\n"
 
 printf "Compressing %s/ into %s.tar.xz\n" "${distdir}" "${distdir}.tar.xz"
 # create lzma compressed util archive
-(cd "${versiondir}/" && tar -c "${distname}" | xz -9e >"${distname}.tar.xz")
+(cd "${versiondir}/" && tar -c "${distname}/" | xz -9e >"${distname}.tar.xz")
 
 printf "done\n\n"
 
