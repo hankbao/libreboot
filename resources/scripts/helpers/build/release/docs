@@ -23,12 +23,13 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-[ -d release/ ] || mkdir release/
-
 printf 'Building the documentation release archive\n'
 
 version="$(git describe --tags HEAD)"
-distdir="release/libreboot_${version}_docs"
+versiondir="release/${version}"
+distdir="${versiondir}/libreboot_${version}_docs"
+
+[ -d "${versiondir}/" ] || mkdir -p "${versiondir}/"
 
 printf 'Deleting old documentation release archives\n'
 rm -f "${distdir}.tar.xz"
