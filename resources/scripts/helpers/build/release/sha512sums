@@ -21,6 +21,8 @@
 
 version="$(git describe --tags HEAD)"
 versiondir="release/${version}"
+sha512filename="sha512sum.txt"
+sha512filepath="${versiondir}/${sha512filename}"
 
 if [ ! -d "${versiondir}/" ]; then
 
@@ -30,11 +32,11 @@ if [ ! -d "${versiondir}/" ]; then
 fi
 
 # delete the old file
-rm -f "${versiondir}/sha512sum.txt"
+rm -f "${sha512filepath}"
 
 # create sha512sum file
-printf "Creating list of SHA512 sums in %s/sha512sum.txt...\n" "${versiondir}"
-(cd "${versiondir}/" && for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done)
+printf "Creating list of SHA512 sums in %s...\n" "${sha512filepath}"
+(cd "${versiondir}/" && for file in $(find -type f); do sha512sum $file >> "${sha512filename}"; done)
 printf "...done.\n"
 
 printf "\n"
