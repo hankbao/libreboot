@@ -29,9 +29,11 @@ if [ ! -d bin/ ]; then
 fi
 
 version="$(git describe --tags HEAD)"
+versiondir="release/${version}"
+romdir="${versiondir}/rom"
 distname="libreboot_${version}"
 
-[ -d release/rom/ ] || mkdir -p release/rom/
+[ -d "${romdir}/" ] || mkdir -p "${romdir}/"
 
 printf 'Building ROM image release archives for...\n'
 
@@ -43,10 +45,10 @@ for board in *; do
 	printf '%s\n' "${version}" >"${board}/version"
 
 	# Delete the old archive
-	rm -f "../release/rom/${distname}_${board}.tar.xz"
+	rm -f "../${romdir}/${distname}_${board}.tar.xz"
 
 	# Create the compressed archive.
-	tar -c "${board}" | xz -9e >"../release/rom/${distname}_${board}.tar.xz"
+	tar -c "${board}" | xz -9e >"../${romdir}/${distname}_${board}.tar.xz"
 
 	# No longer needed.
 	rm -f "${board}/version"
