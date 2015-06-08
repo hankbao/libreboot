@@ -23,18 +23,19 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-[ -d release/ ] || mkdir release/
-
 printf 'Building the coreboot crossgcc archives\n'
 
 version="$(git describe --tags HEAD)"
-distdir="release/crossgcc_${version}"
+versiondir="release/${version}"
+distdir="${versiondir}/crossgcc_${version}"
 
 printf 'Deleting old coreboot crossgcc archives\n'
 rm -Rf "${distdir}/"
 
+[ -d "${distdir}/" ] || mkdir -p "${distdir}/"
+
 printf 'Copying coreboot crossgcc archives to %s/\n' "${distdir}"
-cp -R coreboot/util/crossgcc/tarballs/ "${distdir}/"
+cp -R coreboot/util/crossgcc/tarballs/* "${distdir}/"
 
 printf '%s\n' "${version}" >"${distdir}/version"
 
