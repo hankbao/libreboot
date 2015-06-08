@@ -73,10 +73,9 @@ rm -f "${distdir}/push"
 # comes with a deblobbed coreboot, the deblobbing scripts aren't needed at all.
 rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 
-# We don't want to encourage development to happen on the release archives.
-# Development goes in Git.  These scripts are not needed in the source archive,
-# because the files that they download are already included and trimmed.
-rm -Rf "${distdir}/resources/scripts/helpers/build/release/"
+# Download scripts not needed, because the modules already exist
+# in the src release archive. Trim scripts also not needed, because
+# the sources in the _src release archive are already trimmed.
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
 rm -Rf "${distdir}/resources/scripts/helpers/build/trim/"
