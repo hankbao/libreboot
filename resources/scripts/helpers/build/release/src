@@ -45,7 +45,7 @@ mkdir -p "${distdir}/"
 printf 'Copying sources to %s/\n' "${distdir}"
 for resource in *; do
 	case "${resource}" in
-		libreboot_* | release | tobuild* | docs);;
+		release | docs);;
 		*) cp -R "${resource}" "${distdir}/";;
 	esac
 done
