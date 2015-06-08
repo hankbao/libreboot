@@ -176,12 +176,15 @@
 				</b>
 
 				GRUB works the same way, but in it's own way. Example GRUB commands:<br/>
-					grub&gt; <b>linux (usb0)/path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS</b><br/>
-					grub&gt; <b>initrd (usb0)/path/to/initrd</b><br/>
+					grub&gt; <b>set root='usb0'</b><br/>
+					grub&gt; <b>linux /path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS</b><br/>
+					grub&gt; <b>initrd /path/to/initrd</b><br/>
 					grub&gt; <b>boot</b><br/>
+				Note: <i>usb0</i> may be incorrect. Check the output of the <i>ls</i> command in GRUB,
+				to see a list of USB devices/partitions.
 
 				Of course this will vary from distro to distro. If you did all that correctly, it should now be booting the ISO
-				the way you specified.
+				the way that you specified.
 			</p>
 
 			<p>
