@@ -22,6 +22,9 @@
 			<p>
 				<a href="#why">What is libreboot?</a>
 			</p>
+			<p>
+				<a href="#version">How do I know what version I'm running?</a>
+			</p>
 	</div>
 	
 	<div class="section">
@@ -148,6 +151,18 @@
 				</ul>
 
 			<p><a href="#pagetop">Back to top of page.</a></p>
+
+	</div>
+
+	<div class="section" id="version">
+
+			<p>
+				If you are 127 commits after release 20150518
+				(commit message <i>build/roms/helper: add version information to CBFS</i>)
+				(or you have any stable release after 20150518), then you can
+				press C at the GRUB console, and use this command to find out what version of libreboot you have:<br/>
+				<b>cat (cbfsdisk)/lbversion</b>
+			</p>
 
 	</div>
 

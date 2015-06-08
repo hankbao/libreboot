@@ -35,6 +35,15 @@ printf "Helper script: build ROM images for '$1'\n"
 
 cd coreboot/
 
+if [ -f "../version" ]; then
+	# _src release archive is being used
+	version="$(cat ../version)"
+else
+	# git repo is being used
+	version="$(git describe --tags HEAD)"
+fi
+printf '%s\n' "${version}" >"lbversion"
+
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
 
@@ -78,7 +87,10 @@ do
 	mv build/coreboot.rom "$1"_"$romtype".rom
 	# .config no longer needed
 	rm -f .config
-	
+
+	# Add version information to this image
+	./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f lbversion -n lbversion -t raw
+
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
@@ -119,6 +131,9 @@ mv "$1"*rom "$1"
 rm -Rf ../bin/"$1"
 # now put the new ROM's in ./bin
 mv "$1" ../bin
+
+# libreboot version file no longer needed
+rm -f "lbversion"
 
 # go back to main source directory
 cd ../
