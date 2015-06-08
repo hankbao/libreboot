@@ -70,4 +70,7 @@ tar -c tobuild | xz -9e >tobuild.tar.xz
 # and delete the directory
 rm -Rf tobuild/
 
-printf "\n\n"
+printf "Tar archives are stored in release/.\n"
+printf "NOTE: don't forget to add ARM binaries for flashrom.\n"
+printf "NOTE: don't forget to add i386 binaries for flashrom/bucts.\n"
+printf "The archive tobuild.tar.xz has been created with everything needed to build these utilities.\n\n"
