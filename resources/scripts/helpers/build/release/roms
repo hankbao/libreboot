@@ -57,4 +57,4 @@ for board in *; do
 done
 cd ../
 
-printf 'ROM image release archives are stored in release/\n'
+printf 'ROM image release archives are stored in ${romdir}/\n'
