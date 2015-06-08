@@ -234,9 +234,11 @@
 					Make libreboot (all of it!) build reproducibly. This is very important.
 				</li>
 				<li>
-					build/release/archives currently fails on Parabola (it only works well in Trisquel).
-					That script is buggy, and full of ugly hacks anyway, 
-					so re-write it and make it modular/portable this time.
+					build/release/util currently fails on Parabola (it only works well in Trisquel).
+					- this should be made portable. Build (cross-compile all of the dependencies from upstream,
+					and include a <i>ccs/</i> release archive. Then use those for dependencies to cross-compile
+					everything (this should make portability easy, and there aren't a lot of dependencies
+					for the utilities).
 				</li>
 			</ul>
 			<p><a href="#pagetop">Back to top of page.</a></p>
