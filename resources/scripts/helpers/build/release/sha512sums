@@ -30,7 +30,7 @@ else
 	version="$(git describe --tags HEAD)"
 fi
 versiondir="release/${version}"
-sha512filename="sha512sum.txt"
+sha512filename="SHA512SUMS"
 sha512filepath="${versiondir}/${sha512filename}"
 
 if [ ! -d "${versiondir}/" ]; then
