@@ -768,12 +768,55 @@
 
 					<p>
 						<b>This is only confirmed to work (tested) in Trisquel 7. Parabola *fails* at this stage
-						(for now).</b>
+						(for now). For all other distros, YMMV.</b>
 					</p>
 
 					<p>
-						Do the following:<br/>
-						$ <b>./build release archives</b>
+						This is mainly intended for use with the git repository.
+						These commands will work in the release archive (_src), unless otherwise noted below.
+					</p>
+
+					<p>
+						The archives will appear under <i>release/${version}/</i>;
+						${version} will either be set using <i>git describe</i> or,
+						if a <i>version</i> file already exists (_src release archive),
+						then it will simply re-use that.
+					</p>
+
+					<p>
+						Tag the current commit, and that version will appear in both the ${version}
+						string on the directory under <i>release/</i>, and in the file names of the
+						archives. Otherwise, whatever git uses for <i>git describe --tags HEAD</i>
+						will be used.
+					</p>
+
+					<p>
+						Utilities (static executables):<br/>
+						$ <b>./build release util</b>
+					</p>
+					<p>
+						Archive containing flashrom and bucts source code:<br/>
+						$ <b>./build release tobuild</b>
+					</p>
+					<p>
+						crossgcc archives:<br/>
+						$ <b>./build release crossgcc</b>
+					</p>
+					<p>
+						Documentation archive (<b>does not work on _src release archive, only git</b>):<br/>
+						$ <b>./build release docs</b>
+					</p>
+					<p>
+						ROM image archives:<br/>
+						$ <b>./build release roms</b>
+					</p>
+					<p>
+						Source code archive:<br/>
+						$ <b>./build release src</b>
+					</p>
+					<p>
+						SHA512 sums of all other release archives that have been generated:<br/>
+						$ <b>./build release sha512sums</b>
 					</p>
 
 					<p>
