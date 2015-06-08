@@ -39,4 +39,4 @@ printf 'Creating compressed documentation archive at %s/\n' "${distdir}.tar.xz"
 tar -c "docs/" | xz -9e >"${distdir}.tar.xz"
 rm -f "docs/version"
 
-printf 'Documentation release archives are stored in release/\n'
+printf 'Documentation release archives are stored in %s/\n' "${versiondir}"
