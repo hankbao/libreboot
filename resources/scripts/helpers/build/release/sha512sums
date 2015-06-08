@@ -19,11 +19,22 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-# create sha512sum manifest
-cd release/
-printf "Creating manifest of SHA512 sums in sha512sum.txt...\n"
-for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done
+version="$(git describe --tags HEAD)"
+versiondir="release/${version}"
+
+if [ ! -d "${versiondir}/" ]; then
+
+	printf "build/release/sha512sums: directory %s/ does not exist. You haven't generated any archives yet.\n" "${versiondir}"
+	exit 1
+
+fi
+
+# delete the old file
+rm -f "${versiondir}/sha512sum.txt"
+
+# create sha512sum file
+printf "Creating list of SHA512 sums in %s/sha512sum.txt...\n" "${versiondir}"
+(cd "${versiondir}/" && for file in $(find -type f); do sha512sum $file >> sha512sum.txt; done)
 printf "...done.\n"
-cd ../
 
 printf "\n"
