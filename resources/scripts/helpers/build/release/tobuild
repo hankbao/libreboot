@@ -23,7 +23,13 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-version="$(git describe --tags HEAD)"
+if [ -f "version" ]; then
+	# _src release archive is being used
+	version="$(cat version)"
+else
+	# git repo is being used
+	version="$(git describe --tags HEAD)"
+fi
 versiondir="release/${version}"
 distname="tobuild"
 distdir="${versiondir}/${distname}"
