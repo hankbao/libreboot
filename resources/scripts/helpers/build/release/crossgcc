@@ -37,6 +37,4 @@ rm -Rf "${distdir}/"
 printf 'Copying coreboot crossgcc archives to %s/\n' "${distdir}"
 cp -R coreboot/util/crossgcc/tarballs/* "${distdir}/"
 
-printf '%s\n' "${version}" >"${distdir}/version"
-
 printf 'coreboot crossgcc archives are stored in %s\n' "${distdir}"
