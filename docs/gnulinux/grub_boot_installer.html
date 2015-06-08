@@ -169,6 +169,13 @@
 			</p>
 
 			<p>
+				For Trisquel (and other debian-based distros), there are typically menuentries listed in
+				<i>/isolinux/txt.cfg</i> or <i>/isolinux/gtk.cfg</i>. For dual-architecture ISO images
+				(i686 and x86_64), there may be separate files/directories for each architecture.
+				Just keep searching through the image, until you find the correct ISOLINUX configuration file.
+			</p>
+
+			<p>
 				Now look at the ISOLINUX menuentry. It'll look like:<br/>
 				<b>
 					kernel /path/to/kernel<br/>
