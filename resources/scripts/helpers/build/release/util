@@ -54,9 +54,7 @@ cat .git/refs/heads/master > commitid
 
 printf "Deleting the old release archives\n"
 rm -f libreboot_*.tar.xz
-rm -f tobuild.tar.xz
 rm -Rf release/
-rm -Rf tobuild/
 
 # ### Create the release/ directory where the archives will go
 # ----------------------------------------------------------------------------------------------------------------------------
