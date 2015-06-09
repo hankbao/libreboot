@@ -589,16 +589,8 @@
 		<p>
 			Using the above installation method, you will have to unlock the encrypted file system twice
 			(once in GRUB, and again when booting Parabola).
-			To circumvent this, you can insert a keyfile into the initramfs. This is generally safe, because the /boot/ directory is encrypted.
-			You will need to apply a patch for this to work, until the patch is merged upstream.
-			Every time the mkinitcpio package is updated, you will need to re-apply the patch (recommended)
-			or add mkinitcpio to HoldPkg in /etc/pacman.conf (<b>not</b> recommended).
-			<br/>
-			Download the encrypt.patch file from this page:
-			<a href=https://bugs.archlinux.org/index.php?do=details&action=details.addvote&task_id=31877>FS#31877</a><br/>
-			Patch the encrypt hook:<br/>
-			# <b>patch /usr/lib/initcpio/hooks/encrypt /path/to/encrypt.patch</b><br/>
-			Create a Keyfile:<br/>
+			To circumvent this, you can insert a keyfile into the initramfs. This is generally safe, because the /boot/ directory is encrypted.<br/>
+			First create a keyfile:<br/>
 			# <b>dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile iflag=fullblock</b><br/>
 			Add the keyfile to the Luks Device:<br/>
 			# <b>cryptsetup luksAddKey /dev/sdX /etc/mykeyfile</b><br/> 
@@ -607,7 +599,7 @@
 			Re-create the initramfs image:<br/>
 			# <b>mkinitcpio -p linux-libre</b><br/>
 			Reboot and add the following to the kernel command line in GRUB:<br/>
-			# <b>cryptkey=initramfs:/etc/mykeyfile</b><br/>
+			# <b>cryptkey=rootfs:/etc/mykeyfile</b><br/>
 			<br/>
 			If everything works as expected, permanently add the kernel parameter to the GRUB config using
 			the instructions at <a href="grub_cbfs.html">grub_cbfs.html</a>.
