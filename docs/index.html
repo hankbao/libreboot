@@ -164,7 +164,8 @@
 				(or you have any <b>upstream</b> stable release of libreboot after 20150518), then you can
 				press C at the GRUB console, and use this command to find out what version of libreboot you have:<br/>
 				<b>cat (cbfsdisk)/lbversion</b><br/>
-				This will also work on non-release images, built from the git repository.
+				This will also work on non-release images (the version string is automatically generated,
+				using <i>git describe --tags HEAD</i>), built from the git repository.
 				A file named <i>version</i> will also be included in the archives that you downloaded (if you are
 				using release archives).
 			</p>
