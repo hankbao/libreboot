@@ -23,14 +23,15 @@
 	<div class="section">
 
 		<h1>Table of Contents</h1>
-
-			<li>
-				<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
-				<ul>
-					<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
-					<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
-				</ul>
-			</li>
+			<ul>
+				<li>
+					<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
+					<ul>
+						<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
+						<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
+					</ul>
+				</li>
+			</ul>
 			
 	</div>
 
@@ -100,16 +101,12 @@
 					<p>
 						Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
 						Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
-						$ <b>sudo -s</b><br/>
+						$ <b>sudo -s</b> (or <b>su -</b>)<br/>
 						# <b>cd /boot/</b><br/>
-						# <b>rm -Rf vmlinuz initrd.img</b><br/>
-						# <b>ln -s <u>kernel</u> ksym</b><br/>
-						# <b>ln -s <u>initrd</u> isym</b><br/>
+						# <b>rm -f vmlinuz initrd.img</b><br/>
+						# <b>ln -s <u>yourkernel</u> ksym</b><br/>
+						# <b>ln -s <u>yourinitrd</u> isym</b><br/>
 						# <b>exit</b>
-					</p>
-
-					<p>
-						Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
 					</p>
 
 					<p>
