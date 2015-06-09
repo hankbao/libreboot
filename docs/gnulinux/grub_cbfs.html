@@ -8,12 +8,12 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Libreboot documentation: GRUB menu</title>
+	<title>How to replace the default GRUB configuration file on a libreboot system</title>
 </head>
 
 <body>
 	<div class="section">
-		<h1 id="pagetop">How to change your default GRUB menu</h1>
+		<h1 id="pagetop">How to replace the default GRUB configuration file on a libreboot system</h1>
 			<p>
 				Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
@@ -63,13 +63,6 @@
 						<li><a href="#re-use_rom">Re-use the currently flashed ROM image</a></li>
 					</ul>
 					<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
-					<li>
-						<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
-						<ul>
-							<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
-							<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
-						</ul>
-					</li>
 					<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
 					<li><a href="#test_it">Test it!</a>
 					<li><a href="#final_steps">Final steps</a></li>
@@ -142,6 +135,11 @@
 				on the running system where it is intended to be used. Modify the file at that location however you see fit, 
 				and then stop reading this guide (the rest of this page is irrelevant to you); <b>in libreboot_grub.cfg on disk,
 				if you are adapting it based on grub.cfg from CBFS then remove the check for libreboot_grub.cfg otherwise it will loop.</b>.
+			</p>
+
+			<p>
+				This is all well and good, but what should you actually put in your GRUB configuration file?
+				Read <a href="grub_config.html">grub_config.html</a> for more information.
 			</p>
 
 			<p>
@@ -286,7 +284,12 @@
 			</p>
 
 			<p>
-				Now you have a grubtest.cfg in the cbfstool directory. Edit it however you wish.
+				Now you have a grubtest.cfg in the cbfstool directory.
+			</p>
+
+			<p>
+				This is all well and good, but what should you actually put in your GRUB configuration file?
+				Read <a href="grub_config.html">grub_config.html</a> for more information.
 			</p>
 
 			<p>
@@ -296,114 +299,12 @@
 	</div>
 
 	<div class="section">
-		<h2 id="example_modifications">Example modifications for <i>grubtest.cfg</i></h2>
-
-		<p>
-			These are some common examples of ways in which the grubtest.cfg file can be modified.
-		</p>
-
-
-		<div class="subsection">
-				<h3 id="example_modifications_trisquel">Trisquel GNU/Linux-libre</h3>
-
-					<p>
-						As an example, on my test system in /boot/grub/grub.cfg (on the HDD/SSD) I see for the main menu entry:
-					</p>
-					<ul>
-							<li><b>linux	/boot/vmlinuz-3.15.1-gnu.nonpae root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro   crashkernel=384M-2G:64M,2G-:128M quiet splash $vt_handoff</b></li>
-							<li><b>initrd	/boot/initrd.img-3.15.1-gnu.nonpae</b></li>
-					</ul>
-
-					<p>
-						<b>ro</b>, <b>quiet</b>, <b>splash</b>, <b>crashkernel=384M-2G:64M,2G-:128M</b> and 
-						<b>$vt_handoff</b> can be safely ignored.
-					</p>
-
-					<p>
-						I use this to get my partition layout:<br/>
-						$ <b>lsblk</b>
-					</p>
-
-					<p>
-						In my case, I have no /boot partition, instead /boot is on the same partition as / on sda1. 
-						Yours might be different. In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending 
-						on whether I am using MBR or GPT partitioning. Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or 
-						(ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
-						'msdos' is a GRUB name simply because this partitioning type is traditionally used by MS-DOS. 
-						It doesn't mean that you have a proprietary OS.
-					</p>
-
-					<p>
-						Trisquel doesn't keep the filenames of kernels consistent, instead it keeps old kernels and 
-						new kernel updates are provided with the version in the filename. This can make GRUB payload 
-						a bit tricky. Fortunately, there are symlinks /vmlinuz and /initrd.img
-						so if your /boot and / are on the same partition, you can set GRUB to boot from that. 
-						These are also updated automatically when installing kernel updates from your distributions 
-						apt-get repositories.
-						<b>
-							Note: when using <a href="http://jxself.org/linux-libre">jxself kernel releases</a>, 
-							these are not updated at all and you have to update them manually.
-						</b>
-					</p>
-
-					<p>
-						For the GRUB payload grubtest.cfg (in the 'Load Operating System' menu entry), we therefore have (in this example):<br/>
-						<b>set root='ahci0,msdos1'</b><br/>
-						<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951</b><br/>
-						<b>initrd /initrd.img</b>
-					</p>
-
-					<p>
-						Optionally, you can convert the UUID to its real device name, for example /dev/sda1 in this case.
-						sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
-					</p>
-
-					<p>
-						Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
-						Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
-						$ <b>sudo -s</b><br/>
-						# <b>cd /boot/</b><br/>
-						# <b>rm -Rf vmlinuz initrd.img</b><br/>
-						# <b>ln -s <u>kernel</u> ksym</b><br/>
-						# <b>ln -s <u>initrd</u> isym</b><br/>
-						# <b>exit</b>
-					</p>
-
-					<p>
-						Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
-					</p>
-
-					<p>
-						Then your grubtest.cfg menu entry (for payload) becomes like that, for example if / was on sda2 and /boot was on sda1:<br/>
-						<b>set root='ahci0,msdos1'</b><br/>
-						<b>linux /ksym root=/dev/sda2</b><br/>
-						<b>initrd /isym</b>
-					</p>
-
-					<p>
-						There are lots of possible variations so please try to adapt.
-					</p>
-
-		</div>
-
-		<div class="subsection">
-			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h3>
-
-				<p>
-					You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
-					are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
-				</p>
-		</div>
-
-		<p>
-			<a href="#pagetop">Back to top of page.</a>
-		</p>
-		
-	</div>
-
-	<div class="section">
 
 		<h2 id="reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</h2>
+
+			<p>
+				So you've created your configuration. Now, how do you use it?
+			</p>
 
 			<p>
 				Delete the grubtest.cfg that remained inside the ROM:<br/>

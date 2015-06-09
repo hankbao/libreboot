@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Writing a GRUB configuration file</title>
+</head>
+
+<body>
+	<div class="section">
+		<h1 id="pagetop">Writing a GRUB configuration file</h1>
+			
+			<p>
+				<a href="index.html">Back to index</a>
+			</p>
+	</div>
+
+	<div class="section">
+
+		<h1>Table of Contents</h1>
+
+			<li>
+				<a href="#example_modifications">Example modifications for <i>grubtest.cfg</i></a>
+				<ul>
+					<li><a href="#example_modifications_trisquel">Trisquel GNU/Linux-libre</a></li>
+					<li><a href="#example_modifications_parabola">Parabola GNU/Linux-libre</a></li>
+				</ul>
+			</li>
+			
+	</div>
+
+	<div class="section">
+		<h2 id="example_modifications">Example modifications for <i>grubtest.cfg</i></h2>
+
+		<p>
+			These are some common examples of ways in which the grubtest.cfg file can be modified.
+		</p>
+
+
+		<div class="subsection">
+				<h3 id="example_modifications_trisquel">Trisquel GNU/Linux-libre</h3>
+
+					<p>
+						As an example, on my test system in /boot/grub/grub.cfg (on the HDD/SSD) I see for the main menu entry:
+					</p>
+					<ul>
+							<li><b>linux	/boot/vmlinuz-3.15.1-gnu.nonpae root=UUID=3a008e14-4871-497b-95e5-fb180f277951 ro   crashkernel=384M-2G:64M,2G-:128M quiet splash $vt_handoff</b></li>
+							<li><b>initrd	/boot/initrd.img-3.15.1-gnu.nonpae</b></li>
+					</ul>
+
+					<p>
+						<b>ro</b>, <b>quiet</b>, <b>splash</b>, <b>crashkernel=384M-2G:64M,2G-:128M</b> and 
+						<b>$vt_handoff</b> can be safely ignored.
+					</p>
+
+					<p>
+						I use this to get my partition layout:<br/>
+						$ <b>lsblk</b>
+					</p>
+
+					<p>
+						In my case, I have no /boot partition, instead /boot is on the same partition as / on sda1. 
+						Yours might be different. In GRUB terms, sda means ahci0. 1 means msdos1, or gpt1, depending 
+						on whether I am using MBR or GPT partitioning. Thus, /dev/sda1 is GRUB is (ahci0,msdos1) or 
+						(ahci0,gpt1). In my case, I use MBR partitioning so it's (ahci0,msdos1).
+						'msdos' is a GRUB name simply because this partitioning type is traditionally used by MS-DOS. 
+						It doesn't mean that you have a proprietary OS.
+					</p>
+
+					<p>
+						Trisquel doesn't keep the filenames of kernels consistent, instead it keeps old kernels and 
+						new kernel updates are provided with the version in the filename. This can make GRUB payload 
+						a bit tricky. Fortunately, there are symlinks /vmlinuz and /initrd.img
+						so if your /boot and / are on the same partition, you can set GRUB to boot from that. 
+						These are also updated automatically when installing kernel updates from your distributions 
+						apt-get repositories.
+						<b>
+							Note: when using <a href="http://jxself.org/linux-libre">jxself kernel releases</a>, 
+							these are not updated at all and you have to update them manually.
+						</b>
+					</p>
+
+					<p>
+						For the GRUB payload grubtest.cfg (in the 'Load Operating System' menu entry), we therefore have (in this example):<br/>
+						<b>set root='ahci0,msdos1'</b><br/>
+						<b>linux /vmlinuz root=UUID=3a008e14-4871-497b-95e5-fb180f277951</b><br/>
+						<b>initrd /initrd.img</b>
+					</p>
+
+					<p>
+						Optionally, you can convert the UUID to its real device name, for example /dev/sda1 in this case.
+						sdX naming isn't very reliable, though, which is why UUID is used for most distributions.
+					</p>
+
+					<p>
+						Alternatively, if your /boot is on a separate partition then you cannot rely on the /vmlinuz and /initrd.img symlinks.
+						Instead, go into /boot and create your own symlinks (update them manually when you install a new kernel update).<br/>
+						$ <b>sudo -s</b><br/>
+						# <b>cd /boot/</b><br/>
+						# <b>rm -Rf vmlinuz initrd.img</b><br/>
+						# <b>ln -s <u>kernel</u> ksym</b><br/>
+						# <b>ln -s <u>initrd</u> isym</b><br/>
+						# <b>exit</b>
+					</p>
+
+					<p>
+						Replace the underlined <b>kernel</b> and <b>initrd</b> filenames above with the actual filenames, of course.
+					</p>
+
+					<p>
+						Then your grubtest.cfg menu entry (for payload) becomes like that, for example if / was on sda2 and /boot was on sda1:<br/>
+						<b>set root='ahci0,msdos1'</b><br/>
+						<b>linux /ksym root=/dev/sda2</b><br/>
+						<b>initrd /isym</b>
+					</p>
+
+					<p>
+						There are lots of possible variations so please try to adapt.
+					</p>
+
+		</div>
+
+		<div class="subsection">
+			<h3 id="example_modifications_parabola">Parabola GNU/Linux-libre</h3>
+
+				<p>
+					You can basically adapt the above. Note however that Parabola does not keep old kernels still installed, and the file names 
+					are always consistent, so you don't need to boot from symlinks, you can just use the real thing directly.
+				</p>
+		</div>
+
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>
