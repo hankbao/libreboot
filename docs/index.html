@@ -164,8 +164,18 @@
 				(or you have any <b>upstream</b> stable release of libreboot after 20150518), then you can
 				press C at the GRUB console, and use this command to find out what version of libreboot you have:<br/>
 				<b>cat (cbfsdisk)/lbversion</b><br/>
+				This will also work on non-release images, built from the git repository.
 				A file named <i>version</i> will also be included in the archives that you downloaded (if you are
 				using release archives).
+			</p>
+
+			<p>
+				If it exists, you can also extract this <i>lbversion</i> file by using the <i>cbfstool</i> utility
+				which libreboot includes, from a ROM image that you either dumped or haven't flashed yet.
+				In GNU/Linux, run cbfstool on your ROM image (<i>libreboot.rom</i>, in this example):<br/>
+				$ <b>./cbfstool libreboot.rom extract -n lbversion -f lbversion</b><br/>
+				You will now have a file, named <i>lbversion</i>, which you can read in whatever programme
+				it is that you use for reading/writing text files.
 			</p>
 
 			<p>
@@ -180,7 +190,8 @@
 				<b>lscoreboot</b><br/>
 				You may find a date in here, detailing when that ROM image was built. For pre-built images distributed
 				by the libreboot project, this is a rough approximation of what version you have, because the version
-				numbers are dated, and the release archives are typically built on the same day as the release.
+				numbers are dated, and the release archives are typically built on the same day as the release; you can
+				correlate that with the release information in <a href="release.html">release.html</a>.
 			</p>
 
 			<p>
