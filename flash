@@ -95,12 +95,12 @@ if [ "$mode" = "i945lenovo_firstflash" ] || [ "$mode" = "i945lenovo_secondflash"
 		# git or libreboot_src
 		bucts="./bucts/bucts"
 		flashrom_lenovobios_sst="./flashrom/flashrom_lenovobios_sst"
-		flashrom_lenovobios_macronix="./flashrom/flashrom_lenovobios_sst"
+		flashrom_lenovobios_macronix="./flashrom/flashrom_lenovobios_macronix"
 	else
 		# libreboot_util
 		bucts="./bucts/$arch/bucts"
 		flashrom_lenovobios_sst="./flashrom/$arch/flashrom_lenovobios_sst"
-		flashrom_lenovobios_macronix="./flashrom/$arch/flashrom_lenovobios_sst"
+		flashrom_lenovobios_macronix="./flashrom/$arch/flashrom_lenovobios_macronix"
 	fi
 	
 	# anti-bricking precaution
