@@ -30,29 +30,29 @@ set -e -u
 # this will have to do.
 
 printf "Searching for blobs in coreboot\n"
-cp deblob-check ../../../coreboot
-cd ../../../coreboot/
+cp "deblob-check" "../../../coreboot"
+cd "../../../coreboot/"
 
-chmod +x deblob-check
-find -type f | xargs ./deblob-check > blobs
-rm -f deblob-check
+chmod +x "deblob-check"
+find -type f | xargs ./deblob-check > "blobs"
+rm -f "deblob-check"
 
-rm -f tocheck
-touch tocheck
+rm -f "tocheck"
+touch "tocheck"
 
 for file in $(cat blobs)
 do
-	if ! grep -Fxq "$file" ../resources/utilities/coreboot-libre/nonblobs
+	if ! grep -Fxq "${file}" "../resources/utilities/coreboot-libre/nonblobs"
 	then
-		 echo "$file" >> tocheck
+		 printf "%s\n" "${file}" >> tocheck
 	fi
 done
-rm -f blobs
+rm -f "blobs"
 
-rm -f ../resources/utilities/coreboot-libre/tocheck
-mv tocheck ../resources/utilities/coreboot-libre
+rm -f "../resources/utilities/coreboot-libre/tocheck"
+mv "tocheck" "../resources/utilities/coreboot-libre/"
 
-cd ../resources/utilities/coreboot-libre
+cd "../resources/utilities/coreboot-libre/"
 
 printf "Done! open resources/utilities/coreboot-libre/tocheck in an editor\n"
 printf "This will contain the names of the files that you must decide whether they are blobs or not\n\n"

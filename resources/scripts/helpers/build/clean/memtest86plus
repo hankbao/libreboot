@@ -34,7 +34,7 @@ cd "memtest86+-5.01"/
 make clean
 
 # done. go back to main directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

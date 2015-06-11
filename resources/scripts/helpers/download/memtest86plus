@@ -32,7 +32,7 @@ set -u -e
 
 printf "Downloading MemTest86+\n"
 
-rm -Rf "memtest86+-5.01"
+rm -Rf "memtest86+-5.01/"
 
 # Get latest memtest86+:
 # ------------------------------------------------------------------------------
@@ -47,23 +47,23 @@ tar -xzf "memtest86+-5.01.tar.gz"
 rm -f "memtest86+-5.01.tar.gz"
 
 # there are modifications required
-cd "memtest86+-5.01"/
+cd "memtest86+-5.01/"
 
 # Apply necessary patches
 # ------------------------------------------------------------------------------
 
 # place the right config
-rm -f config.h
-cp ../resources/memtest86/patch/config.h .
+rm -f "config.h"
+cp "../resources/memtest86/patch/config.h" .
 
 # place the right Makefile
-rm -f Makefile
-cp ../resources/memtest86/patch/Makefile .
+rm -f "Makefile"
+cp "../resources/memtest86/patch/Makefile" .
 
 # (diff them with defaults to see what changed)
 
 # we're done
-cd ../
+cd "../"
 
 printf "\n\n"
 

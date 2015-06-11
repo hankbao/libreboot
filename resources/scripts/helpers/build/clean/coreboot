@@ -29,7 +29,7 @@ set -u -e
 
 printf "Cleaning the previous build of the utilities in coreboot\n"
 
-cd coreboot/
+cd "coreboot/"
 
 # ----------------------
 # clean coreboot itself:
@@ -40,11 +40,11 @@ make clean
 # clean the utilities
 # -------------------
 # clean cbfstool
-cd util/cbfstool/
+cd "util/cbfstool/"
 make clean
 
 # go back to coreboot dir
-cd ../../
+cd "../../"
 
 # -------------------------------------
 # clean reference crossGCC for coreboot
@@ -53,7 +53,7 @@ cd ../../
 make crossgcc-clean
 
 # done. go back to main directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

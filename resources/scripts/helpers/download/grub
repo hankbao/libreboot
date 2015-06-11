@@ -31,7 +31,7 @@ set -u -e
 
 printf "Downloading GRUB\n"
 
-rm -Rf grub
+rm -Rf "grub/"
 
 # Get latest GRUB
 # ------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ rm -Rf grub
 git clone git://git.savannah.gnu.org/grub.git
 
 # modifications are required
-cd grub
+cd "grub/"
 
 # Reset to the last commit that was tested
 # ------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-
 # https://people.torproject.org/~lunar/volatile/2015-03-17-e3Yp1d7FifQ/0001-lib-syslinux_parse-add-support-for-vesa-menu.c32.patch
 git am "../resources/grub/patch/0002-lib-syslinux_parse-add-support-for-vesa-menu.c32.patch"
 
-cd ../
+cd "../"
 printf "\n\n"
 
 # ------------------- DONE ----------------------

@@ -43,7 +43,7 @@ distname="libreboot_${version}"
 
 printf 'Building ROM image release archives for...\n'
 
-cd bin/
+cd "bin/"
 for board in *; do
 	printf '...%s' "${board}"
 
@@ -61,6 +61,6 @@ for board in *; do
 
 	printf ' OK\n'
 done
-cd ../
+cd "../"
 
 printf 'ROM image release archives are stored in %s/\n' "${romdir}"

@@ -31,7 +31,7 @@ set -u -e
 
 printf "Downloading bucts\n"
 
-rm -Rf bucts
+rm -Rf "bucts/"
 
 # Get bucts
 # ------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ rm -Rf bucts
 git clone git://git.stuge.se/bucts.git
 
 # modifications are required
-cd bucts
+cd "bucts/"
 
 # Reset to the last commit that was tested
 # ------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ git reset --hard dc27919d7a66a6e8685ce07c71aefa4f03ef7c07
 git am "../resources/bucts/patch/0001-Makefile-don-t-use-git.patch"
 
 # we're done
-cd ../
+cd "../"
 
 printf "\n\n"
 

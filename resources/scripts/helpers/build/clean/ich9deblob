@@ -28,9 +28,9 @@ set -u -e
 # --------------------------------------------------------------------
 
 printf "Cleaning the previous build of ich9deblob\n"
-cd resources/utilities/ich9deblob/
+cd "resources/utilities/ich9deblob/"
 make clean
-cd ../../../
+cd "../../../"
 printf "\n\n"
 
 # ------------------- DONE ----------------------

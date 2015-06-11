@@ -28,9 +28,9 @@ set -u -e
 # --------------------------------------------------------------------
 
 printf "Cleaning the previous build of i945-pwm\n"
-cd resources/utilities/i945-pwm
+cd "resources/utilities/i945-pwm/"
 make clean
-cd ../../../
+cd "../../../"
 printf "\n\n"
 
 # ------------------- DONE ----------------------

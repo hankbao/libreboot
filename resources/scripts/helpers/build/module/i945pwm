@@ -29,14 +29,14 @@ set -u -e
 
 printf "Building i945-pwm\n"
 
-cd resources/utilities/i945-pwm/
+cd "resources/utilities/i945-pwm/"
 
 make clean
 # build it
 make
 
 # done. go back to main directory
-cd ../../../
+cd "../../../"
 
 printf "\n\n"
 

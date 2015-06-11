@@ -29,12 +29,12 @@ set -u -e
 
 printf "Cleaning the previous build of bucts\n"
 
-cd bucts/
+cd "bucts/"
 make clean
 
 printf "\n\n"
 
 # done. go back to main directory.
-cd ../
+cd "../"
 
 # ------------------- DONE ----------------------

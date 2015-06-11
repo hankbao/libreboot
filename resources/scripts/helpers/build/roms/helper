@@ -25,15 +25,15 @@
 set -u -e
 
 if (( $# != 1 )); then
-	echo "Usage: ./buildrom-withgrub boardname"
-	echo "Example: ./buildrom-withgrub x60"
-	echo "You need to specify exactly 1 argument"
+	printf "Usage: ./buildrom-withgrub boardname\n"
+	printf "Example: ./buildrom-withgrub x60\n"
+	printf "You need to specify exactly 1 argument\n"
 	exit 1
 fi
 
-printf "Helper script: build ROM images for '$1'\n"
+printf "Helper script: build ROM images for '%s'\n" "${1}"
 
-cd coreboot/
+cd "coreboot/"
 
 if [ -f "../version" ]; then
 	# _src release archive is being used
@@ -47,30 +47,30 @@ printf '%s\n' "${version}" >"lbversion"
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
 
-if [ "$1" = "qemu_i440fx_piix4" ] || [ "$1" = "qemu_q35_ich9" ]
+if [ "${1}" = "qemu_i440fx_piix4" ] || [ "${1}" = "qemu_q35_ich9" ]
 then
 	# assume that the default config enable framebuffer mode, duplicate and patch for text-mode
 	# necessary, otherwise it will ask you to enter the Y/X resolution of the framebuffer at build time
-	cp ../resources/libreboot/config/"$1"/config config_vesafb
-	sed 's/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/' < config_vesafb > config_txtmode
+	cp "../resources/libreboot/config/${1}/config" "config_vesafb"
+	sed 's/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/' < "config_vesafb" > "config_txtmode"
 else
 	# assume that the default config enables text-mode, duplicate and patch for framebuffer mode
-	cp ../resources/libreboot/config/"$1"/config config_txtmode
-	sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < config_txtmode > config_vesafb
+	cp "../resources/libreboot/config/${1}/config" "config_txtmode"
+	sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < "config_txtmode" > "config_vesafb"
 fi
 
 for romtype in txtmode vesafb
 do
 	# skip building txtmode roms for now (memtest86 is broken)
 	# todo: make a new release ASAP, with memtest86+ working again, and text-mode working on GM45
-	if [ "$romtype" = "txtmode" ]; then
+	if [ "${romtype}" = "txtmode" ]; then
 		# TODO: remove this if, once you get memtest86+ working again
 		continue
 	fi
 
-	if [ "$1" = "x200_8mb" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "r400_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t400_4mb" ] || [ "$1" = "t500_8mb" ] || [ "$1" = "t500_4mb" ]
+	if [ "${1}" = "x200_8mb" ] || [ "${1}" = "x200_4mb" ] || [ "${1}" = "r400_8mb" ] || [ "${1}" = "r400_4mb" ] || [ "${1}" = "t400_8mb" ] || [ "${1}" = "t400_4mb" ] || [ "${1}" = "t500_8mb" ] || [ "${1}" = "t500_4mb" ]
 		then
-			if [ "$romtype" = "txtmode" ]
+			if [ "${romtype}" = "txtmode" ]
 				then
 					printf "Text mode graphics is currently broken on X200, R400, T400 and T500. Only framebuffer mode works.\n"
 					printf "TODO: offending coreboot commit found (see docs/release.html). Fix text-mode graphics initialization.\n"
@@ -80,25 +80,25 @@ do
 
 	# Build coreboot ROM image
 	make clean
-	mv config_"$romtype" .config
-	mv grub_"$romtype".elf grub.elf
+	mv "config_${romtype}" ".config"
+	mv "grub_${romtype}.elf" "grub.elf"
 	make
-	mv grub.elf grub_"$romtype".elf
-	mv build/coreboot.rom "$1"_"$romtype".rom
+	mv "grub.elf" "grub_${romtype}.elf"
+	mv "build/coreboot.rom" "${1}_${romtype}.rom"
 	# .config no longer needed
-	rm -f .config
+	rm -f ".config"
 
 	# Add version information to this image
-	./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f lbversion -n lbversion -t raw
+	./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f lbversion -n lbversion -t raw
 
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
 		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ] || [ "$1" = "t400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t500_4mb" ] || [ "$1" = "t500_8mb" ]
 		then
-			./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/background1280x800.png -n background.png -t raw
+			./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f ../resources/grub/background/background1280x800.png -n background.png -t raw
 		else
-			./util/cbfstool/cbfstool "$1"_"$romtype".rom add -f ../resources/grub/background/background1024x768.png -n background.png -t raw
+			./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f ../resources/grub/background/background1024x768.png -n background.png -t raw
 		fi
 	fi
 
@@ -106,37 +106,37 @@ do
 	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
 	do
 		# copy the images based on the keymap
-		cp "$1"_"$romtype".rom "$1"_"$keymap"_"$romtype".rom
+		cp "${1}_${romtype}.rom" "${1}_${keymap}_${romtype}.rom"
 
 		# Insert grub config into the image
-		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype".cfg -n grub.cfg -t raw
+		./util/cbfstool/cbfstool ${1}_${keymap}_${romtype}.rom add -f grub_${keymap}_${romtype}.cfg -n grub.cfg -t raw
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
-		./util/cbfstool/cbfstool "$1"_"$keymap"_"$romtype".rom add -f grub_"$keymap"_"$romtype"_test.cfg -n grubtest.cfg -t raw
+		./util/cbfstool/cbfstool ${1}_${keymap}_${romtype}.rom add -f grub_${keymap}_${romtype}_test.cfg -n grubtest.cfg -t raw
 	done
 
 	# This config-less ROM is no longer needed
-	rm -Rf "$1"_"$romtype".rom
+	rm -f "${1}_${romtype}.rom"
 done
 
 # Now we clean up and prepare the bin directory containing all the images
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # prepare directory for new ROM images
-rm -Rf "$1"
-mkdir "$1"
+rm -Rf "${1}/"
+mkdir "${1}/"
 # move the ROM's into the newly created directory
-mv "$1"*rom "$1"
+mv "${1}"*.rom "${1}/"
 
 # delete the old ROM's from ../bin
-rm -Rf ../bin/"$1"
+rm -Rf "../bin/${1}/"
 # now put the new ROM's in ./bin
-mv "$1" ../bin
+mv "${1}/" "../bin"
 
 # libreboot version file no longer needed
 rm -f "lbversion"
 
 # go back to main source directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

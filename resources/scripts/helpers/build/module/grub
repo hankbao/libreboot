@@ -29,10 +29,10 @@ set -u -e
 
 printf "Building GRUB\n"
 
-cd grub/
+cd "grub/"
 
 # clean it first
-[[ -f Makefile ]] && make clean
+[[ -f Makefile ]] && make distclean
 
 # build grub
 ./autogen.sh
@@ -42,6 +42,6 @@ make
 printf "\n\n"
 
 # done. go back to main directory
-cd ../
+cd "../"
 
 # ------------------- DONE ----------------------

@@ -29,7 +29,7 @@ set -u -e
 
 printf "Building bucts\n"
 
-cd bucts/
+cd "bucts/"
 
 buildtype="unknown"
 if (( $# != 1 )); then
@@ -38,19 +38,19 @@ else
 	buildtype="static"
 fi
 
-if [ "$buildtype" = "static" ]; then
-	patch Makefile < ../resources/bucts/patch/staticlink.diff
+if [ "${buildtype}" = "static" ]; then
+	patch "Makefile" < "../resources/bucts/patch/staticlink.diff"
 fi
 
 make clean
 make
 
-if [ "$buildtype" = "static" ]; then
-	patch Makefile -R < ../resources/bucts/patch/staticlink.diff
+if [ "${buildtype}" = "static" ]; then
+	patch "Makefile" -R < "../resources/bucts/patch/staticlink.diff"
 fi
 
 # done. go back to main directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

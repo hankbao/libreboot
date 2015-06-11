@@ -26,6 +26,8 @@
 /resources/utilities/ich9deblob/ich9fdgbe_4m.bin
 /resources/utilities/ich9deblob/ich9fdgbe_8m.bin
 /resources/utilities/coreboot-libre/tocheck
+/resources/utilities/grub-assemble/grub_txtmode.elf
+/resources/utilities/grub-assemble/grub_vesafb.elf
 /mkgbe.c
 /mkgbe.h
 /ich9fdgbe_8m.bin

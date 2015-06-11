@@ -29,18 +29,18 @@ set -u -e
 
 printf "Building the utilities in coreboot\n"
 
-cd coreboot
+cd "coreboot/"
 
 # -----------------------------------------
 # Build the utilities required by libreboot
 # -----------------------------------------
 
 # cbfstool
-cd util/cbfstool/
+cd "util/cbfstool/"
 make
 
 # done. go back to coreboot dir
-cd ../../
+cd "../../"
 
 # -------------------------------------
 # build reference crossGCC for coreboot
@@ -48,7 +48,7 @@ cd ../../
 make crossgcc-i386
 
 # done. go back to main libreboot_src directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

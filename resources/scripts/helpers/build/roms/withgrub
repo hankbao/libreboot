@@ -27,9 +27,9 @@ set -u -e
 
 printf "Building ROM images with the GRUB payload\n"
 
-if [ ! -d "bin" ]
+if [ ! -d "bin/" ]
 then
-	mkdir bin/
+	mkdir "bin/"
 fi
 
 boards="unknown"
@@ -44,71 +44,71 @@ fi
 
 # Put GRUB payloads and config files
 # in the coreboot directory, ready for next step
-cd coreboot/
+cd "coreboot/"
 for romtype in txtmode vesafb
 do
-	cd ../resources/utilities/grub-assemble
-	./gen.sh "$romtype"
-	rm -f ../../../coreboot/grub_"$romtype".elf
-	mv grub_"$romtype".elf ../../../coreboot/
-	cd ../../../coreboot
+	cd "../resources/utilities/grub-assemble"
+	./gen.sh ${romtype}
+	rm -f "../../../coreboot/grub_${romtype}.elf"
+	mv "grub_${romtype}.elf" "../../../coreboot/"
+	cd "../../../coreboot"
 
 	# GRUB configuration files
-	for keymap in $(ls ../resources/utilities/grub-assemble/keymap/original)
+	for keymap in $(ls "../resources/utilities/grub-assemble/keymap/original/")
 	do
-		cat ../resources/grub/config/extra/common.cfg > grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/extra/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
-		echo "keymap $keymap" >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/common.cfg >> grub_"$keymap"_"$romtype".cfg
-		cat ../resources/grub/config/menuentries/"$romtype".cfg >> grub_"$keymap"_"$romtype".cfg
+		cat "../resources/grub/config/extra/common.cfg" > "grub_${keymap}_${romtype}.cfg"
+		cat "../resources/grub/config/extra/${romtype}.cfg" >> "grub_${keymap}_${romtype}.cfg"
+		printf "keymap %s\n" "${keymap}" >> "grub_${keymap}_${romtype}.cfg"
+		cat "../resources/grub/config/menuentries/common.cfg" >> "grub_${keymap}_${romtype}.cfg"
+		cat "../resources/grub/config/menuentries/${romtype}.cfg" >> "grub_${keymap}_${romtype}.cfg"
 		# grubtest.cfg should be able to switch back to grub.cfg
-		sed 's/grubtest.cfg/grub.cfg/' < grub_"$keymap"_"$romtype".cfg > grub_"$keymap"_"$romtype"_test.cfg
+		sed 's/grubtest.cfg/grub.cfg/' < "grub_${keymap}_${romtype}.cfg" > "grub_${keymap}_${romtype}_test.cfg"
 	done
 done
 cd ../
 
 # Build ROM images for supported boards
-for board in $boards
+for board in ${boards}
 do
-	if [ -f resources/libreboot/config/"$board"/config ]; then
-		./build roms helper $board
+	if [ -f "resources/libreboot/config/${board}/config" ]; then
+		./build roms helper ${board}
 	fi
 done
 
 # Needed on i945 systems for the bucts/dd trick (documented)
 # This enables the ROM to be flashed over the lenovo bios firmware
-for i945board in x60 t60
+for i945board in "x60" "t60"
 do
-	if [ -d bin/"$i945board"/ ]; then
-		cd bin/"$i945board"/
+	if [ -d "bin/${i945board}/" ]; then
+		cd "bin/${i945board}/"
 		for i945rom in $(ls)
 		do
-			dd if="$i945rom" of=top64k.bin bs=1 skip=$[$(stat -c %s "$i945rom") - 0x10000] count=64k
-			dd if=top64k.bin of="$i945rom" bs=1 seek=$[$(stat -c %s "$i945rom") - 0x20000] count=64k conv=notrunc
+			dd if="${i945rom}" of=top64k.bin bs=1 skip=$[$(stat -c %s "${i945rom}") - 0x10000] count=64k
+			dd if=top64k.bin of="${i945rom}" bs=1 seek=$[$(stat -c %s "${i945rom}") - 0x20000] count=64k conv=notrunc
 			rm -f top64k.bin
 		done
-		cd ../../
+		cd "../../"
 	fi
 done
 
 # Build the deblobbed descriptor+gbe regions for GM45/ICH9M targets.
 # Then put them in the ROM images.
-if [ -d bin/ ]; then
-	cd bin/
+if [ -d "bin/" ]; then
+	cd "bin/"
 	for board in "x200" "r400" "t400" "t500"
 	do
 		for romsize in "4m" "8m"
 		do	
-			if [ -d "$board"_"$romsize"b/ ]; then
-				cd "$board"_"$romsize"b/
+			if [ -d "${board}_${romsize}b/" ]; then
+				cd "${board}_${romsize}b/"
 				../../resources/utilities/ich9deblob/ich9gen
 				for rom in $(ls)
 				do
-					dd if=ich9fdgbe_"$romsize".bin of="$rom" bs=1 count=12k conv=notrunc
+					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
 				done
-				rm -f ich9fdgbe_4m.bin
-				rm -f ich9fdgbe_8m.bin
-				cd ../
+				rm -f "ich9fdgbe_4m.bin"
+				rm -f "ich9fdgbe_8m.bin"
+				cd "../"
 			fi
 		done
 	done
@@ -116,8 +116,8 @@ if [ -d bin/ ]; then
 fi
 
 # The GRUB payloads are no longer needed
-rm -f coreboot/grub_vesafb.elf
-rm -f coreboot/grub_txtmode.elf
+rm -f "coreboot/grub_vesafb.elf"
+rm -f "coreboot/grub_txtmode.elf"
 # The GRUB configs are no longer needed
 rm -f coreboot/grub*cfg
 

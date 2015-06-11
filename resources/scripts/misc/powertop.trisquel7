@@ -22,7 +22,7 @@
 set -u -e
 
 if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+   printf "This script must be run as root\n" 
    exit 1
 fi
 
@@ -33,19 +33,19 @@ apt-get -y install powertop
 # Remove startup symlink if it exists
 update-rc.d powertop remove
 # Remove previous file if it exists
-rm  -rf /etc/init.d/powertop
+rm -Rf "/etc/init.d/powertop"
 
 # write the correct commands there:
-echo "#!/bin/sh" > /etc/init.d/powertop
-echo "/usr/sbin/powertop --auto-tune" >> /etc/init.d/powertop
+printf "#!/bin/sh\n" > "/etc/init.d/powertop"
+printf "/usr/sbin/powertop --auto-tune\n" >> "/etc/init.d/powertop"
 
 # make it executable:
-chmod +x /etc/init.d/powertop
+chmod +x "/etc/init.d/powertop"
 
 # Add the service to make it run automatically at boot time:
 update-rc.d powertop defaults
 
 # Run powertop now and tell the user
 powertop --auto-tune
-echo "Done. Run 'powertop --auto-tune' now. This will also run automatically at boot time. Run it again at any time, if needed. This has also been done for you just now."
+printf "Done. Run 'powertop --auto-tune' now. This will also run automatically at boot time. Run it again at any time, if needed. This has also been done for you just now.\n"
 

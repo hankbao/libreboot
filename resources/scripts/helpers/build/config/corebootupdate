@@ -25,22 +25,22 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-cd resources/libreboot/config/
+cd "resources/libreboot/config/"
 
 if [ $# -lt 1 ]; then
-	configs=$(ls)
+	configs="$(ls)"
 else
-	configs=$@
+	configs="$@"
 fi
 
-cd ../../../coreboot/
-for config in $configs; do
-	printf "Updating config for $config\n"
+cd "../../../coreboot/"
+for config in ${configs}; do
+	printf "Updating config for %s\n" "${config}"
 	sleep 5
 	
-	mv ../resources/libreboot/config/$config/config .config
+	mv "../resources/libreboot/config/${config}/config" ".config"
 	make oldconfig
-	mv .config ../resources/libreboot/config/$config/config
+	mv ".config" "../resources/libreboot/config/${config}/config"
 done
 
-cd ../
+cd "../"

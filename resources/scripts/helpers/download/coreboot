@@ -32,7 +32,7 @@ printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 # Remove the old version that may exist
 # ------------------------------------------------------------------------------
 
-rm -Rf coreboot
+rm -Rf "coreboot/"
 
 # Get latest coreboot:
 # ------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ rm -Rf coreboot
 git clone http://review.coreboot.org/coreboot
 
 # there are modifications required
-cd coreboot/
+cd "coreboot/"
 
 # reset to previously tested revision
 git reset --hard e19c8b0091022ae3f490601aed0c290cd5171b79
@@ -53,17 +53,17 @@ git reset --hard e19c8b0091022ae3f490601aed0c290cd5171b79
 
 printf "Downloading patches for T400 (hybrid graphics and other fixes)"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/9331/7 && git checkout FETCH_HEAD
-git am ../resources/libreboot/patch/0001-src-southbridge-intel-i82801ix-Add-GPIO-register-loc.patch
-git am ../resources/libreboot/patch/0002-northbridge-intel-gm45-gma-Add-backlight-control-reg.patch
-git am ../resources/libreboot/patch/0003-northbridge-intel-gm45-gma-Minor-cleanup.patch
-git am ../resources/libreboot/patch/0004-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch
-git am ../resources/libreboot/patch/0005-mainboard-lenovo-x200-Use-defines-from-southbridge-f.patch
-git am ../resources/libreboot/patch/0006-mainboard-lenovo-x200-Add-power_on_after_fail-NVRAM-.patch
-git am ../resources/libreboot/patch/0007-mainboards-lenovo-Copy-X200-board-to-T400-for-future.patch
-git am ../resources/libreboot/patch/0008-mainboards-lenovo-t400-Enable-serial-debug-option-fo.patch
-git am ../resources/libreboot/patch/0009-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch
-git am ../resources/libreboot/patch/0010-mainboard-lenovo-t400-Add-initial-ATPX-ACPI-implemen.patch
-git am ../resources/libreboot/patch/0011-mainboard-lenovo-t400-Increase-backlight-frequency-t.patch
+git am "../resources/libreboot/patch/0001-src-southbridge-intel-i82801ix-Add-GPIO-register-loc.patch"
+git am "../resources/libreboot/patch/0002-northbridge-intel-gm45-gma-Add-backlight-control-reg.patch"
+git am "../resources/libreboot/patch/0003-northbridge-intel-gm45-gma-Minor-cleanup.patch"
+git am "../resources/libreboot/patch/0004-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch"
+git am "../resources/libreboot/patch/0005-mainboard-lenovo-x200-Use-defines-from-southbridge-f.patch"
+git am "../resources/libreboot/patch/0006-mainboard-lenovo-x200-Add-power_on_after_fail-NVRAM-.patch"
+git am "../resources/libreboot/patch/0007-mainboards-lenovo-Copy-X200-board-to-T400-for-future.patch"
+git am "../resources/libreboot/patch/0008-mainboards-lenovo-t400-Enable-serial-debug-option-fo.patch"
+git am "../resources/libreboot/patch/0009-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch"
+git am "../resources/libreboot/patch/0010-mainboard-lenovo-t400-Add-initial-ATPX-ACPI-implemen.patch"
+git am "../resources/libreboot/patch/0011-mainboard-lenovo-t400-Increase-backlight-frequency-t.patch"
 
 # Downloads these patches:
 # http://review.coreboot.org/#/c/9318/
@@ -80,33 +80,33 @@ git am ../resources/libreboot/patch/0011-mainboard-lenovo-t400-Increase-backligh
 
 # Related - hard-code enable integrated-only GPU (GM45):
 # git fetch http://review.coreboot.org/coreboot refs/changes/90/10090/2 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0012-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch
+git am "../resources/libreboot/patch/0012-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch"
 
 # ----
 
 printf "Text mode patch for X60 native graphics (main patch already merged in coreboot. See 6723 on coreboot gerrit)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/25/6725/3 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0013-lenovo-x60-Enable-text-mode-native-gfx-init.patch
+git am "../resources/libreboot/patch/0013-lenovo-x60-Enable-text-mode-native-gfx-init.patch"
 
 printf "lenovo/x60: Enable legacy brightness controls (native graphics)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/4 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0014-lenovo-x60-Enable-legacy-brightness-controls-native-.patch
+git am "../resources/libreboot/patch/0014-lenovo-x60-Enable-legacy-brightness-controls-native-.patch"
 
 printf "Enable T60 native graphics\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/9 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0015-lenovo-t60-Enable-native-intel-gfx-init.patch
+git am "../resources/libreboot/patch/0015-lenovo-t60-Enable-native-intel-gfx-init.patch"
 
 printf "Enable text-mode graphics for T60\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/50/7050/2 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0016-lenovo-t60-Enable-text-mode-native-gfx-init.patch
+git am "../resources/libreboot/patch/0016-lenovo-t60-Enable-text-mode-native-gfx-init.patch"
 
 printf "lenovo/t60: Enable legacy brightness controls (native graphics)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/51/7051/1 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0017-lenovo-t60-Enable-legacy-brightness-controls-native-.patch
+git am "../resources/libreboot/patch/0017-lenovo-t60-Enable-legacy-brightness-controls-native-.patch"
 
 printf "ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/7 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0018-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
+git am "../resources/libreboot/patch/0018-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch"
 
 # printf "i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and 'scrolling' backlight\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
@@ -116,36 +116,36 @@ git am ../resources/libreboot/patch/0018-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoin
 
 printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/1 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0019-NOTFORMERGE-northbridge-gm45-raminit.c-enable-GS45-h.patch
+git am "../resources/libreboot/patch/0019-NOTFORMERGE-northbridge-gm45-raminit.c-enable-GS45-h.patch"
 
 printf "fix uneven backlight on X200 (when setting brightness low)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/1 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0020-gm45-fix-uneven-backlight-native-gfx-init.patch
+git am "../resources/libreboot/patch/0020-gm45-fix-uneven-backlight-native-gfx-init.patch"
 
 printf "ThinkPad R400 support (clone of the T400)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/93/8393/3 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0021-lenovo-r400-Add-clone-of-Lenovo-T400.patch
+git am "../resources/libreboot/patch/0021-lenovo-r400-Add-clone-of-Lenovo-T400.patch"
 
 printf "ThinkPad T500 (depends on T400 patch)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/81/9181/2 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0022-New-mainboard-Lenovo-T500.patch
+git am "../resources/libreboot/patch/0022-New-mainboard-Lenovo-T500.patch"
 
 # BACKPORTED
 # This was merged in master, but this is an older revision. For now, simply backport it (X200 digitizer patch)
 printf "ThinkPad X200 Tablet digitizer patch (backported)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/08/10208/4 && git cherry-pick FETCH_HEAD
-git am ../resources/libreboot/patch/0023-lenovo-x200-Enable-wacom-digitizer-support-for-x200t.patch
+git am "../resources/libreboot/patch/0023-lenovo-x200-Enable-wacom-digitizer-support-for-x200t.patch"
 
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -Rf .git
-rm -f .gitreview
-rm -f .gitmodules
-rm -f .gitignore
+rm -Rf ".git/"
+rm -f ".gitreview"
+rm -f ".gitmodules"
+rm -f ".gitignore"
 
-cd ../
+cd "../"
 
 printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob

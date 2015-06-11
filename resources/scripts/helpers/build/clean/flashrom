@@ -29,15 +29,15 @@ set -u -e
 
 printf "Cleaning the previous build of flashrom\n"
 
-cd flashrom/
+cd "flashrom/"
 
 make clean
 # remove patched binaries
-rm -f flashrom_lenovobios_sst
-rm -f flashrom_lenovobios_macronix
+rm -f "flashrom_lenovobios_sst"
+rm -f "flashrom_lenovobios_macronix"
 
 # done. go back to main directory
-cd ../
+cd "../"
 
 printf "\n\n"
 

@@ -107,6 +107,10 @@ rm -f "${distdir}/mkgbe.h"
 rm -f "${distdir}/ich9fdgbe_8m.bin"
 rm -f "${distdir}/ich9fdgbe_4m.bin"
 
+# Remove any GRUB payload ELF executables that may exist
+rm -f "${distdir}/resources/utilities/grub-assemble/grub_txtmode.elf"
+rm -f "${distdir}/resources/utilities/grub-assemble/grub_vesafb.elf"
+
 printf 'Creating %s.tar.xz\n' "${distdir}"
 (cd "${versiondir}/" && tar -c "${distname}/" | xz -9e >"${distname}.tar.xz")
 

@@ -29,7 +29,7 @@ set -u -e
 
 printf "Building ich9deblob\n"
 
-cd resources/utilities/ich9deblob
+cd "resources/utilities/ich9deblob/"
 
 # clean it first
 make clean
@@ -38,7 +38,7 @@ make clean
 make
 
 # done. go back to main directory
-cd ../../../
+cd "../../../"
 
 printf "\n\n"
 
