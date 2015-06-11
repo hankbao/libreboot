@@ -46,6 +46,9 @@ cd "flashrom/"
 printf "Enabling whitelist for X200S, X200 Tablet, T400, T500 and R400\n"
 patch "board_enable.c" < "../resources/flashrom/patch/x200s_x200t_t400_t500_r400_whitelist.diff"
 
+printf "Enabling whitelist for Libiquity Taurinus X200\n"
+patch "board_enable.c" < "../resources/flashrom/patch/0001-Add-board-enable-for-Libiquity-Taurinus-X200.patch"
+
 # Remove redundant definitions for the flash chips that
 # supported libreboot machines use. This removes the need
 # for the user to run with the "-c" argument on these machines
