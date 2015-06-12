@@ -168,6 +168,34 @@ rm -Rf "ich9deblob/"
 mv "ich9deblob_/" "ich9deblob/"
 cd "../../"
 
+# -----------------
+# nvramtool related
+# -----------------
+# build nvramtool, compiled (statically linked) and include the binary
+cd "coreboot/util/"
+cp -R "nvramtool/" "nvramtool_/"
+cd "nvramtool/"
+make clean
+make SHARED=0 CC='gcc -static'
+
+mkdir -p "../../../${distdir}/nvramtool/${arch}/"
+
+mv "nvramtool" "../../../${distdir}/nvramtool/${arch}/"
+
+if [ "$arch" = "x86_64" ]
+	then
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir "../../../${distdir}/nvramtool/i686/"
+		mv "nvramtool" "../../../${distdir}/nvramtool/i686/"
+fi
+
+cd "../"
+rm -Rf "nvramtool/"
+mv "nvramtool_/" "nvramtool/"
+cd "../../"
+
 # -------------
 # Miscellaneous
 # -------------
