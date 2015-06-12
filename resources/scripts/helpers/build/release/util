@@ -107,7 +107,7 @@ make SHARED=0 CC='gcc -static'
 
 mv "cbfstool" "../../../${distdir}/cbfstool/${arch}/"
 
-if [ "$arch" = "x86_64" ]
+if [ "${arch}" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
@@ -144,7 +144,7 @@ mv "ich9deblob" "../../../${distdir}/ich9deblob/${arch}/"
 mv "ich9gen" "../../../${distdir}/ich9deblob/${arch}/"
 mv "demefactory" "../../../${distdir}/ich9deblob/${arch}/"
 
-if [ "$arch" = "x86_64" ]
+if [ "${arch}" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
@@ -182,7 +182,7 @@ mkdir -p "../../../${distdir}/nvramtool/${arch}/"
 
 mv "nvramtool" "../../../${distdir}/nvramtool/${arch}/"
 
-if [ "$arch" = "x86_64" ]
+if [ "${arch}" = "x86_64" ]
 	then
 		# Now build 32-bit binaries
 		make clean
