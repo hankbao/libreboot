@@ -22,18 +22,18 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-build=./resources/scripts/helpers/build
+build="./resources/scripts/helpers/build"
 mode="unknown"
 option="unknown"
 
 usage="./build mode option"
-availablemodes="$(ls $build/)"
+availablemodes="$(ls ${build}/)"
 availableoptions="unknown" # unknown until the mode is determined
 
 # User specified no or too few/many parameters
 if [ $# -lt 2 ]; then
-	printf "$usage\n\n"
-	printf "possible values for 'mode':\n$availablemodes\n\n"
+	printf "%s\n\n" "${usage}"
+	printf "possible values for 'mode':\n%s\n\n" "${availablemodes}"
 	printf "Example: ./build module all\n"
 	printf "Example: ./build module flashrom\n"
 	printf "Example: ./build roms withgrub\n"
@@ -43,26 +43,26 @@ if [ $# -lt 2 ]; then
 	printf "Refer to the libreboot documentation for more info\n\n"
 	exit 1
 fi
-mode=$1
-option=$2
+mode="${1}"
+option="${2}"
 shift 2
 
-if [ -d "$build/$mode" ]; then
-	availableoptions="$(ls $build/$mode/)"
-	if [ "$option" = "list" ]; then
-		printf "Available options for '$mode' are:\nall\n$availableoptions\n\n"
-	elif [ -f "$build/$mode/$option" ]; then
-		$build/$mode/$option "$@"
-	elif [ "$option" = "all" ]; then
-		for option in $availableoptions; do
-			$build/$mode/$option "$@"
+if [ -d "${build}/${mode}" ]; then
+	availableoptions="$(ls ${build}/${mode}/)"
+	if [ "${option}" = "list" ]; then
+		printf "Available options for '%s' are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
+	elif [ -f "${build}/${mode}/${option}" ]; then
+		${build}/${mode}/${option} "$@"
+	elif [ "${option}" = "all" ]; then
+		for option in ${availableoptions}; do
+			${build}/${mode}/${option} "$@"
 		done
 	else
-		printf "Invalid option for '$mode'. Available options are:\nall\n$availableoptions\n\n"
+		printf "Invalid option for '%s'. Available options are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
 		exit 1
 	fi
 else
-	printf "Invalid mode. Available modes are:\n$availablemodes\n\n"
+	printf "Invalid mode. Available modes are:\n%s\n\n" "${availablemodes}"
 	exit 1
 fi
 
