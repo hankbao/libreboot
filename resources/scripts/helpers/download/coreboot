@@ -51,6 +51,38 @@ git reset --hard e19c8b0091022ae3f490601aed0c290cd5171b79
 
 # ----
 
+# notes when rebasing (also see further down for more notes)
+# Re-factor power_management_beeps code and disable it by default:
+# http://review.coreboot.org/#/c/10531
+# http://review.coreboot.org/#/c/10533/
+# http://review.coreboot.org/#/c/10532/
+# ^ also, document how to use this setting in libreboot.git/docs
+
+# check on coreboot mailing list (see "favourites" in mail client):
+# [coreboot] macbook21: broken by 10385 (Make DSDT a file in CBFS rather than embedding it into ramstage.)
+# -- probably affects the X60 and T60 as well, if this is not already fixed.
+# seems to be related to normal/fallback payload mechanism
+
+# Reproducible builds:
+# https://reproducible.debian.net/coreboot/coreboot.html
+# check coreboot mailing list, eg:
+# http://www.coreboot.org/pipermail/coreboot/2015-June/079994.html
+# Check GRUB in Debian (or GRUB upstream) for how to make that reproducible
+# if Debian has done this already (they are working on reproducible builds)
+# merged in master:
+# http://review.coreboot.org/#/c/8616/
+# http://review.coreboot.org/#/c/8617/
+# http://review.coreboot.org/#/c/8618/
+# http://review.coreboot.org/#/c/8619/
+# not yet merged in master:
+# http://review.coreboot.org/#/c/10515/ <-- not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
+# ^ libreboot builds coreboot without .git* so this might be challenging.
+
+# igd.asl re-write is merged: this means other patches need rebasing, and a *lot* of testing is needed:
+# the merged patch is here: http://review.coreboot.org/#/c/7472/
+
+# ----
+
 printf "Downloading patches for T400 (hybrid graphics and other fixes)"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/9331/7 && git checkout FETCH_HEAD
 git am "../resources/libreboot/patch/0001-src-southbridge-intel-i82801ix-Add-GPIO-register-loc.patch"
@@ -58,7 +90,7 @@ git am "../resources/libreboot/patch/0002-northbridge-intel-gm45-gma-Add-backlig
 git am "../resources/libreboot/patch/0003-northbridge-intel-gm45-gma-Minor-cleanup.patch"
 git am "../resources/libreboot/patch/0004-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch"
 git am "../resources/libreboot/patch/0005-mainboard-lenovo-x200-Use-defines-from-southbridge-f.patch"
-git am "../resources/libreboot/patch/0006-mainboard-lenovo-x200-Add-power_on_after_fail-NVRAM-.patch"
+git am "../resources/libreboot/patch/0006-mainboard-lenovo-x200-Add-power_on_after_fail-NVRAM-.patch" # NOTE: look into ensuring that it is disabled.
 git am "../resources/libreboot/patch/0007-mainboards-lenovo-Copy-X200-board-to-T400-for-future.patch"
 git am "../resources/libreboot/patch/0008-mainboards-lenovo-t400-Enable-serial-debug-option-fo.patch"
 git am "../resources/libreboot/patch/0009-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch"

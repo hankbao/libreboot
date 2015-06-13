@@ -203,6 +203,9 @@ cd "../../"
 # Flashing script
 cp "flash" "${distdir}/"
 
+# powertop script
+cp "resources/scripts/misc/powertop.trisquel7" "${distdir}/"
+
 printf "\n\n"
 
 # ### Create the release tarballs
