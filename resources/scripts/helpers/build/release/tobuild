@@ -31,7 +31,7 @@ else
 	version="$(git describe --tags HEAD)"
 fi
 versiondir="release/${version}"
-distname="tobuild"
+distname="libreboot_${verson}_tobuild"
 distdir="${versiondir}/${distname}"
 
 printf "Creating source archive for flashrom and bucts\n"
