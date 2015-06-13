@@ -55,12 +55,12 @@ if [ $# -lt 2 ]; then
 fi
 
 # User specified an invalid mode of operation
-if [ "${1}" = "update" ] || [ "${1}" = "forceupdate" ] || [ "${1}" = "i945lenovo_firstflash" ] || [ "${1}" != "i945lenovo_secondflash" ] || [ "${1}" != "i945apple_firstflash" ]; then
-	printf "Mode selected: %s\n" "${1}"
-else
+if [ "${1}" != "update" ] && [ "${1}" != "forceupdate" ] && [ "${1}" != "i945lenovo_firstflash" ] && [ "${1}" != "i945lenovo_secondflash" ] && [ "${1}" != "i945apple_firstflash" ]; then
 	printf "%s\n" "${usage}"
 	printf "Invalid mode. Modes available: %s\n" "${availablemodes}"
 	exit 1
+else
+	printf "Mode selected: %s\n" "${1}"
 fi
 
 # The specified file does not exist
