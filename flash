@@ -54,24 +54,23 @@ if [ $# -lt 2 ]; then
 	exit 1
 fi
 
+mode="${1}"
+rompath="${2}"
+
 # User specified an invalid mode of operation
-if [ "${1}" != "update" ] && [ "${1}" != "forceupdate" ] && [ "${1}" != "i945lenovo_firstflash" ] && [ "${1}" != "i945lenovo_secondflash" ] && [ "${1}" != "i945apple_firstflash" ]; then
+if [ "${mode}" != "update" ] && [ "${mode}" != "forceupdate" ] && [ "${mode}" != "i945lenovo_firstflash" ] && [ "${mode}" != "i945lenovo_secondflash" ] && [ "${mode}" != "i945apple_firstflash" ]; then
 	printf "%s\n" "${usage}"
 	printf "Invalid mode. Modes available: %s\n" "${availablemodes}"
 	exit 1
 else
-	printf "Mode selected: %s\n" "${1}"
+	printf "Mode selected: %s\n" "${mode}"
 fi
 
 # The specified file does not exist
-if [ ! -f "${2}" ]; then
+if [ ! -f "${rompath}" ]; then
 	printf "File not found!\n"
 	exit 1
 fi
-
-# For easy of readability
-mode=${1}
-rompath=${2}
 
 flashrom="unknown"
 if [ -f "build" ]; then
