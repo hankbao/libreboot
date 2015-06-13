@@ -25,8 +25,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 # set -u -e
 
-if [[ $EUID -ne 0 ]]; then
-   echo "This script must be run as root" 
+if [[ ${EUID} -ne 0 ]]; then
+   printf "This script must be run as root\n"
    exit 1
 fi
 
@@ -36,7 +36,7 @@ if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
 elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
 	arch="x86_64"
 else
-	echo "This script must be run on an i686 or x86_64 host. x86_64 is recommended."
+	printf "This script must be run on an i686 or x86_64 host. x86_64 is recommended.\n"
 	exit 1
 fi
 
@@ -47,31 +47,31 @@ mode="unknown"
 rompath="unknown"
 
 # User specified no or too few/many parameters
-if (( $# != 2 )); then
-	echo "$usage"
-	echo "You need to specify exactly one mode, and one file"
-	echo "$availablemodes"
+if [ $# -lt 2 ]; then
+	printf "%s\n" "${usage}"
+	printf "You need to specify exactly one mode, and one file\n"
+	printf "%s\n" "${availablemodes}"
 	exit 1
 fi
 
 # User specified an invalid mode of operation
-if [ "$1" = "update" ] || [ "$1" = "forceupdate" ] || [ "$1" = "i945lenovo_firstflash" ] || [ "$1" != "i945lenovo_secondflash" ] || [ "$1" != "i945apple_firstflash" ]; then
-	echo "Mode selected: $1"
+if [ "${1}" = "update" ] || [ "${1}" = "forceupdate" ] || [ "${1}" = "i945lenovo_firstflash" ] || [ "${1}" != "i945lenovo_secondflash" ] || [ "${1}" != "i945apple_firstflash" ]; then
+	printf "Mode selected: %s\n" "${1}"
 else
-	echo "$usage"
-	echo "Invalid mode. Modes available: $availablemodes"
+	printf "%s\n" "${usage}"
+	printf "Invalid mode. Modes available: %s\n" "${availablemodes}"
 	exit 1
 fi
 
 # The specified file does not exist
-if [ ! -f "$2" ]; then
-	echo "File not found!"
+if [ ! -f "${2}" ]; then
+	printf "File not found!\n"
 	exit 1
 fi
 
 # For easy of readability
-mode=$1
-rompath=$2
+mode=${1}
+rompath=${2}
 
 flashrom="unknown"
 if [ -f "build" ]; then
@@ -79,10 +79,10 @@ if [ -f "build" ]; then
 	flashrom="./flashrom/flashrom"
 else
 	# libreboot_util
-	flashrom="./flashrom/$arch/flashrom"
+	flashrom="./flashrom/${arch}/flashrom"
 fi
-if [ ! -f "$flashrom" ]; then
-	echo "flashrom binary not present"
+if [ ! -f "${flashrom}" ]; then
+	printf "flashrom binary not present\n"
 	exit 1
 fi
 
@@ -90,7 +90,7 @@ fi
 bucts="unknown"
 flashrom_lenovobios_sst="unknown"
 flashrom_lenovobios_macronix="unknown"
-if [ "$mode" = "i945lenovo_firstflash" ] || [ "$mode" = "i945lenovo_secondflash" ]; then
+if [ "${mode}" = "i945lenovo_firstflash" ] || [ "${mode}" = "i945lenovo_secondflash" ]; then
 	if [ -f "build" ]; then
 		# git or libreboot_src
 		bucts="./bucts/bucts"
@@ -98,38 +98,38 @@ if [ "$mode" = "i945lenovo_firstflash" ] || [ "$mode" = "i945lenovo_secondflash"
 		flashrom_lenovobios_macronix="./flashrom/flashrom_lenovobios_macronix"
 	else
 		# libreboot_util
-		bucts="./bucts/$arch/bucts"
-		flashrom_lenovobios_sst="./flashrom/$arch/flashrom_lenovobios_sst"
-		flashrom_lenovobios_macronix="./flashrom/$arch/flashrom_lenovobios_macronix"
+		bucts="./bucts/${arch}/bucts"
+		flashrom_lenovobios_sst="./flashrom/${arch}/flashrom_lenovobios_sst"
+		flashrom_lenovobios_macronix="./flashrom/${arch}/flashrom_lenovobios_macronix"
 	fi
 	
 	# anti-bricking precaution
-	if [ ! -f "$bucts" ]; then
-		echo "bucts binary not present. ABORTING so as to protect against bricking the machine."
+	if [ ! -f "${bucts}" ]; then
+		printf "bucts binary not present. ABORTING so as to protect against bricking the machine.\n"
 		exit 1
 	fi
 	
 	# fail if flashrom is not present
-	if [ ! -f "$flashrom_lenovobios_sst" ] || [ ! -f "$flashrom_lenovobios_macronix" ]; then
-		echo "Flashrom binaries not present."
+	if [ ! -f "${flashrom_lenovobios_sst}" ] || [ ! -f "${flashrom_lenovobios_macronix}" ]; then
+		printf "Flashrom binaries not present.\n"
 		exit 1
 	fi
 fi
 
-if [ "$mode" = "update" ]; then
-	$flashrom -p internal -w "$rompath"
-elif [ "$mode" = "forceupdate" ]; then
-	$flashrom -p internal:boardmismatch=force -w "$rompath"
-elif [ "$mode" = "i945apple_firstflash" ]; then
-	$flashrom -p internal:laptop=force_I_want_a_brick -w "$rompath"
-elif [ "$mode" = "i945lenovo_firstflash" ]; then
-	$bucts 1 # needed to prevent bricks.
+if [ "${mode}" = "update" ]; then
+	${flashrom} -p internal -w "${rompath}"
+elif [ "${mode}" = "forceupdate" ]; then
+	${flashrom} -p internal:boardmismatch=force -w "${rompath}"
+elif [ "${mode}" = "i945apple_firstflash" ]; then
+	${flashrom} -p internal:laptop=force_I_want_a_brick -w "${rompath}"
+elif [ "${mode}" = "i945lenovo_firstflash" ]; then
+	${bucts} 1 # needed to prevent bricks.
 	# One will fail (this is harmless), and the other will succeed.
-	$flashrom_lenovobios_sst -p internal -w "$rompath"
-	$flashrom_lenovobios_macronix -p internal -w "$rompath"
-elif [ "$mode" = "i945lenovo_secondflash" ]; then
-	$flashrom -p internal -w "$rompath"
-	$bucts 0
+	${flashrom_lenovobios_sst} -p internal -w "${rompath}"
+	${flashrom_lenovobios_macronix} -p internal -w "${rompath}"
+elif [ "${mode}" = "i945lenovo_secondflash" ]; then
+	${flashrom} -p internal -w "${rompath}"
+	${bucts} 0
 fi
 
 
