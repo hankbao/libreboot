@@ -53,8 +53,12 @@ for board in *; do
 	# Delete the old archive
 	rm -f "../${romdir}/${distname}_${board}.tar.xz"
 
+	cp -R "${board}/" "${distname}_${board}/"
+
 	# Create the compressed archive.
-	tar -c "${board}" | xz -9e >"../${romdir}/${distname}_${board}.tar.xz"
+	tar -c "${distname}_${board}/" | xz -9e >"../${romdir}/${distname}_${board}.tar.xz"
+
+	rm -Rf "${distname}_${board}/"
 
 	# No longer needed.
 	rm -f "${board}/version"
