@@ -82,7 +82,7 @@ git reset --hard e19c8b0091022ae3f490601aed0c290cd5171b79
 # the merged patch is here: http://review.coreboot.org/#/c/7472/
 
 # PATCHES TO ADD:
-# http://review.coreboot.org/#/c/10431/
+# http://review.coreboot.org/#/c/10431/ - NOTE: now merged. no need to add it, just rebase the other patches (otherwise backport this one)
 
 # ----
 
