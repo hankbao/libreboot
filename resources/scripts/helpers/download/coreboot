@@ -191,6 +191,9 @@ rm -f ".gitreview"
 rm -f ".gitmodules"
 rm -f ".gitignore"
 
+# Strictly overkill. libreboot doesn't even checkout this submodule
+rm -Rf "3rdparty/"
+
 cd "../"
 
 printf "Deblobbing coreboot\n"
