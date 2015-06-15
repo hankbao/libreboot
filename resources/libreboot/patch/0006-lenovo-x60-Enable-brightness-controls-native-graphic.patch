@@ -1,10 +1,17 @@
-From 89f4c7561e486030d867674e4df2978a7260c4a7 Mon Sep 17 00:00:00 2001
+From 30b0666a7d2b0d8265433cb308ed1bbbabd10674 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Sat, 11 Oct 2014 16:43:28 +0100
-Subject: [PATCH 14/22] lenovo/x60: Enable legacy brightness controls (native
+Subject: [PATCH 06/17] lenovo/x60: Enable brightness controls (native
  graphics)
 
-Value obtained by reading BLC_PWM_CTL when running the VBIOS (option ROM).
+This makes the Fn Home/End keys work for controlling the
+brightness of the display. Value obtained by reading
+BLC_PWM_CTL when running the VBIOS (option ROM).
+
+On i945 legacy brightness control is enabled by a single
+bit in BLC_PWM_CTL. It's bit 16 or bit 0 (the other one
+reverses polarity). Set the bit to enable brightness
+controls.
 
 Change-Id: Id855c4e91fe71fb489739e62fbe99ca22841acd2
 Signed-off-by: Francis Rowe <info@gluglug.org.uk>
@@ -13,10 +20,10 @@ Signed-off-by: Francis Rowe <info@gluglug.org.uk>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/mainboard/lenovo/x60/devicetree.cb b/src/mainboard/lenovo/x60/devicetree.cb
-index 382ebaf..4e02d3c 100644
+index a3d31a6..9c3c524 100644
 --- a/src/mainboard/lenovo/x60/devicetree.cb
 +++ b/src/mainboard/lenovo/x60/devicetree.cb
-@@ -25,7 +25,7 @@ chip northbridge/intel/i945
+@@ -27,7 +27,7 @@ chip northbridge/intel/i945
  	register "gpu_hotplug" = "0x00000220"
  	register "gpu_lvds_use_spread_spectrum_clock" = "1"
  	register "gpu_lvds_is_dual_channel" = "0"

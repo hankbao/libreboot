@@ -225,6 +225,42 @@
 				memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
 				<li>
 					Make libreboot (all of it!) build reproducibly. This is very important.
+					<ul>
+						<li>Talk to h01ger in coreboot about the coreboot part (he did reproducible.debian.net/coreboot/coreboot.html</li>
+						<li>
+							h01ger says ------ fchmmr: please keep the reproducible-builds@lists.alioth.debian.org mailing list posted - i'm aware of http://projects.mtjm.eu/work_packages/16 :-)
+						</li>
+						<li><a href="https://reproducible.debian.net/coreboot/coreboot.html">https://reproducible.debian.net/coreboot/coreboot.html</a></li>
+						<li>
+							check coreboot mailing list, eg:
+							<a href="http://www.coreboot.org/pipermail/coreboot/2015-June/079994.html">http://www.coreboot.org/pipermail/coreboot/2015-June/079994.html</a>
+						</li>
+						<li>
+							Check GRUB in Debian (or GRUB upstream) for how to make that reproducible
+							if Debian has done this already (they are working on reproducible builds)
+							- <b>h01ger says reproducible.debian.net/grub2</b>
+						</li>
+						<li>
+							<a href="https://wiki.debian.org/ReproducibleBuilds">https://wiki.debian.org/ReproducibleBuilds</a>
+						</li>
+						<li>
+							Join #debian-reproducible on OFTC IRC.
+						</li>
+						<li>
+							merged in master (coreboot) - pay attention to these, especially
+							the fact that the reproducibility relies on git (libreboot uses coreboot without git,
+							and the reason makes this unavoidable):
+							<a href="http://review.coreboot.org/#/c/8616/">http://review.coreboot.org/#/c/8616/</a>
+							<a href="http://review.coreboot.org/#/c/8617/">http://review.coreboot.org/#/c/8617/</a>
+							<a href="http://review.coreboot.org/#/c/8618/">http://review.coreboot.org/#/c/8618/</a>
+							<a href="http://review.coreboot.org/#/c/8619/">http://review.coreboot.org/#/c/8619/</a>
+						</li>
+						<li>
+							not yet merged in master (coreboot:
+							<a href="http://review.coreboot.org/#/c/10515/">http://review.coreboot.org/#/c/10515/</a> -- 
+							not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
+						</li>
+					</ul>
 				</li>
 				<li>
 					build/release/util currently fails on Parabola (it only works well in Trisquel).

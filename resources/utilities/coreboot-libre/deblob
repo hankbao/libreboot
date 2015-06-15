@@ -31,31 +31,24 @@ cd "coreboot/"
 # ---------------------
 # Intel SoC (broadwell): CPU microcode updates
 # ---------------------
-rm -f \
-"src/soc/intel/broadwell/microcode/microcode-M7240651_0000001C.h" \
-"src/soc/intel/broadwell/microcode/microcode-MF2306D2_FFFF0009.h" \
-"src/soc/intel/broadwell/microcode/microcode-MC0306D3_FFFF0010.h" \
-"src/soc/intel/broadwell/microcode/microcode-MC0306D4_0000000D.h"
 
 # ---------------------
 # Intel SoC (baytrail): CPU microcode updates
 # ---------------------
-rm -f \
-"src/soc/intel/baytrail/microcode/M0C30678_00000816.h" \
-"src/soc/intel/baytrail/microcode/M0C3067_0000031E.h"
 
 # ---------------------
 # AMD: CPU microcode updates
 # ---------------------
+
 rm -f \
-"src/cpu/amd/model_fxx/microcode_rev_d.h" \
-"src/cpu/amd/model_fxx/microcode_rev_c.h" \
 "src/cpu/amd/model_fxx/microcode_rev_e.h" \
-"src/cpu/amd/model_10xxx/mc_patch_01000095.h" \
-"src/cpu/amd/model_10xxx/mc_patch_01000096.h" \
+"src/cpu/amd/model_fxx/microcode_rev_c.h" \
+"src/cpu/amd/model_fxx/microcode_rev_d.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000d9.h" \
+"src/cpu/amd/model_10xxx/mc_patch_01000096.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000dc.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000db.h" \
+"src/cpu/amd/model_10xxx/mc_patch_01000095.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000c7.h" \
 "src/cpu/amd/model_10xxx/mc_patch_010000c8.h"
 
@@ -158,6 +151,13 @@ rm -f \
 "src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/AlibSsdtKB.h" \
 "src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFM2.h" \
 "src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFS1.h"
+
+# ----------------------------------
+# Purpose unknown. TODO: investigate
+# ----------------------------------
+
+rm -f \
+"util/broadcom/secimage/misc.c"
 
 printf "\n\n"
 

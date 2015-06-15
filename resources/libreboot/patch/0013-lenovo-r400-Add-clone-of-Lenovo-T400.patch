@@ -1,59 +1,28 @@
-From 264b65a2a8220c120297173fd9d6bab9880965f1 Mon Sep 17 00:00:00 2001
+From f5755e978b6a1b10adb0bfeb4c3fd790315c4848 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Micha=C5=82=20Mas=C5=82owski?= <mtjm@mtjm.eu>
 Date: Tue, 3 Feb 2015 23:26:05 +0100
-Subject: [PATCH 21/22] lenovo/r400: Add clone of Lenovo T400
+Subject: [PATCH 13/17] lenovo/r400: Add clone of Lenovo T400
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The existing code for the Lenovo T400 works without changes on the
-Lenovo R400.
-
-The vendor BIOS provides different HDA verbs as the connectors are on
-the front and not the right, but this doesn't provide enough benefit
-to justify having different source files.
-
-This used to be based on the X200 code, now based on T400. This
-should still be replaced with a separate port, with the
-differences implemented, instead of being a clone.
+Lenovo R400.  Same HDA verbs are provided by Lenovo BIOS on both
+laptops.
 
 Change-Id: I1dadddd7250ab80a4c40c2435865d72e3e5d99c9
 Signed-off-by: Michał Masłowski <mtjm@mtjm.eu>
 Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 ---
- src/mainboard/lenovo/Kconfig             | 6 ++++++
  src/mainboard/lenovo/r400/Kconfig        | 7 +++++++
+ src/mainboard/lenovo/r400/Kconfig.name   | 2 ++
  src/mainboard/lenovo/r400/board_info.txt | 6 ++++++
  src/mainboard/lenovo/t400/Kconfig        | 6 +++++-
- util/nvidia/cbootimage                   | 2 +-
- 5 files changed, 25 insertions(+), 2 deletions(-)
+ 4 files changed, 20 insertions(+), 1 deletion(-)
  create mode 100644 src/mainboard/lenovo/r400/Kconfig
+ create mode 100644 src/mainboard/lenovo/r400/Kconfig.name
  create mode 100644 src/mainboard/lenovo/r400/board_info.txt
 
-diff --git a/src/mainboard/lenovo/Kconfig b/src/mainboard/lenovo/Kconfig
-index b6da044..4fc56cd 100644
---- a/src/mainboard/lenovo/Kconfig
-+++ b/src/mainboard/lenovo/Kconfig
-@@ -70,6 +70,11 @@ config BOARD_LENOVO_G505S
- 	help
- 	  Lenovo G505s
- 
-+config BOARD_LENOVO_R400
-+	bool "ThinkPad R400"
-+	help
-+	  Lenovo R400 laptop. Consult wiki for details.
-+
- endchoice
- 
- source "src/mainboard/lenovo/x60/Kconfig"
-@@ -84,6 +89,7 @@ source "src/mainboard/lenovo/t520/Kconfig"
- source "src/mainboard/lenovo/t530/Kconfig"
- source "src/mainboard/lenovo/t60/Kconfig"
- source "src/mainboard/lenovo/g505s/Kconfig"
-+source "src/mainboard/lenovo/r400/Kconfig"
- 
- config MAINBOARD_VENDOR
- 	string
 diff --git a/src/mainboard/lenovo/r400/Kconfig b/src/mainboard/lenovo/r400/Kconfig
 new file mode 100644
 index 0000000..0966bf1
@@ -67,6 +36,14 @@ index 0000000..0966bf1
 +	default "ThinkPad R400"
 +
 +endif
+diff --git a/src/mainboard/lenovo/r400/Kconfig.name b/src/mainboard/lenovo/r400/Kconfig.name
+new file mode 100644
+index 0000000..15a99b1
+--- /dev/null
++++ b/src/mainboard/lenovo/r400/Kconfig.name
+@@ -0,0 +1,2 @@
++config BOARD_LENOVO_R400
++	bool "ThinkPad R400"
 diff --git a/src/mainboard/lenovo/r400/board_info.txt b/src/mainboard/lenovo/r400/board_info.txt
 new file mode 100644
 index 0000000..007ec6c
@@ -80,7 +57,7 @@ index 0000000..007ec6c
 +Flashrom support: n
 +Clone of: lenovo/t400
 diff --git a/src/mainboard/lenovo/t400/Kconfig b/src/mainboard/lenovo/t400/Kconfig
-index a38af5e..719f6e4 100644
+index a1d0652..2ea592f 100644
 --- a/src/mainboard/lenovo/t400/Kconfig
 +++ b/src/mainboard/lenovo/t400/Kconfig
 @@ -1,4 +1,4 @@
@@ -89,7 +66,7 @@ index a38af5e..719f6e4 100644
  
  config BOARD_SPECIFIC_OPTIONS # dummy
  	def_bool y
-@@ -25,10 +25,14 @@ config MAINBOARD_DIR
+@@ -26,10 +26,14 @@ config MAINBOARD_DIR
  	string
  	default lenovo/t400
  
@@ -104,13 +81,6 @@ index a38af5e..719f6e4 100644
  config MMCONF_BASE_ADDRESS
  	hex
  	default 0xf0000000
-diff --git a/util/nvidia/cbootimage b/util/nvidia/cbootimage
-index 2eb9a86..b7d5b2d 160000
---- a/util/nvidia/cbootimage
-+++ b/util/nvidia/cbootimage
-@@ -1 +1 @@
--Subproject commit 2eb9a86724db0d86c9ab9b6aeca21d1000d74e78
-+Subproject commit b7d5b2d6a6dd05874d86ee900ff441d261f9034c
 -- 
 1.9.1
 

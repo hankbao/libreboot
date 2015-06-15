@@ -1,0 +1,41 @@
+From beb6138691594cd227a1b50079d14e6adc4e8ef5 Mon Sep 17 00:00:00 2001
+From: David Hendricks <dhendrix@chromium.org>
+Date: Mon, 15 Jun 2015 17:03:22 -0700
+Subject: [PATCH] buildgcc: Define $CMAKE only if clang package is built
+
+This moves the CMAKE definition down into the case statement
+for $PACKAGE so that it is only required when the user wants to
+build clang.
+
+With this approach, "./buildgcc -P clang" will error out with the
+"ERROR: Missing tool:" message if cmake is not installed.
+
+Change-Id: I1e5c1bd67ade8f93ba0390df7f234deb47b9b18a
+Signed-off-by: David Hendricks <dhendrix@chromium.org>
+---
+ util/crossgcc/buildgcc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/util/crossgcc/buildgcc b/util/crossgcc/buildgcc
+index 7f440f7..552a6a2 100755
+--- a/util/crossgcc/buildgcc
++++ b/util/crossgcc/buildgcc
+@@ -165,7 +165,6 @@ searchtool()
+ TAR=$(searchtool tar) || exit $?
+ PATCH=$(searchtool patch) || exit $?
+ MAKE=$(searchtool make) || exit $?
+-CMAKE=$(searchtool cmake "cmake") || exit $?
+ SHA1SUM=$(searchtool sha1sum)
+ SHA512SUM=$(searchtool sha512sum)
+ CHECKSUM=$SHA1SUM
+@@ -554,6 +553,7 @@ case "$PACKAGE" in
+ 	CLANG|clang)
+ 		NAME=clang
+ 		PACKAGES="LLVM CFE CRT CTE"
++		CMAKE=$(searchtool cmake "cmake") || exit $?
+ 		;;
+ 	IASL|iasl)
+ 		NAME="IASL ACPI compiler"
+-- 
+1.9.1
+

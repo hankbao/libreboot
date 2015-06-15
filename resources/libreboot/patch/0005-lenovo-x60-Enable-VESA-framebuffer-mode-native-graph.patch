@@ -1,10 +1,15 @@
-From e1a421df8add1b976ee9bd001c88fbc95900e1f3 Mon Sep 17 00:00:00 2001
-From: Vladimir Serbinenko <phcoder@gmail.com>
-Date: Thu, 21 Aug 2014 02:25:59 +0200
-Subject: [PATCH 13/22] lenovo/x60: Enable text mode native gfx init
+From 35dbc64845f9624f6629f400dbd4b6d502baf398 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Mon, 15 Jun 2015 20:08:06 +0100
+Subject: [PATCH 05/17] lenovo/x60: Enable VESA framebuffer mode (native
+ graphics)
 
-Change-Id: I3aad96a7034c73e447cf8995473a45ffd3893f3f
-Signed-off-by: Vladimir Serbinenko <phcoder@gmail.com>
+At present, no option exists for "Keep VESA framebuffer", which
+means that text-mode will be used. Add the appropriate Kconfig
+option.
+
+Change-Id: Iaed07eba6d9288c857f7e7a0b0be1107071e49e5
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 ---
  src/mainboard/lenovo/x60/Kconfig | 1 +
  1 file changed, 1 insertion(+)

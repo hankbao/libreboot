@@ -1,39 +1,30 @@
-From 8747a02e76193b8764088ca25784a5e41969e357 Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From 3b67763d6029ce954cea0dbc02ff6814b7c02478 Mon Sep 17 00:00:00 2001
+From: Steve Shenton <sgsit@libreboot.org>
 Date: Fri, 12 Dec 2014 12:42:01 +0000
-Subject: [PATCH 19/22] NOTFORMERGE: northbridge/gm45/raminit.c: enable GS45
- high-perf
-
-X200S uses GS45 chipset, unlike X200 which uses GM45. These two
-chipsets are mostly compatible except for raminit.
+Subject: [PATCH 11/17] northbridge/gm45/raminit.c: enable GS45
+ high-performance mode
 
 The datasheets for GS45 describe a high- and low-performance mode
-for different CPU's. Coreboot currently disables GS45 altogether,
+for different CPUs. Coreboot currently disables GS45 altogether,
 but forcing coreboot to treat high-performance GS45 as GM45 makes
-the X200S boot with certain RAM configurations.
-
-1x2GB fails: http://paste.debian.net/hidden/ae66cff7/
-2x2GB fails: http://paste.debian.net/hidden/8802e220/
-2x4GB boots: http://paste.debian.net/hidden/61114378/
+the X200S and X200 Tablet boot if it has the right CPU type.
 
 Hardcode-enable GS45 high-performance mode in coreboot, passing it
-off as GM45. This is known to work with all CPU's except the SU
+off as GM45. This is known to work with all CPUs except the SU
 (low performance) models.
 
-Patch courtesy of sgsit.
-
 Change-Id: I57032bb6e1ebdaf4e2aa09548e73d253afb9b078
-Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 Signed-off-by: Steve Shenton <sgsit@libreboot.org>
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 ---
  src/northbridge/intel/gm45/raminit.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/src/northbridge/intel/gm45/raminit.c b/src/northbridge/intel/gm45/raminit.c
-index 2c810de..a194c85 100644
+index 9c4fecd..9f5aa06 100644
 --- a/src/northbridge/intel/gm45/raminit.c
 +++ b/src/northbridge/intel/gm45/raminit.c
-@@ -109,8 +109,8 @@ void get_gmch_info(sysinfo_t *sysinfo)
+@@ -108,8 +108,8 @@ void get_gmch_info(sysinfo_t *sysinfo)
  			printk(BIOS_SPEW, "GMCH: GS40\n");
  			break;
  		case GMCH_GS45:
@@ -44,7 +35,7 @@ index 2c810de..a194c85 100644
  			break;
  		case GMCH_PM45:
  			printk(BIOS_SPEW, "GMCH: PM45\n");
-@@ -1693,7 +1693,7 @@ void raminit(sysinfo_t *const sysinfo, const int s3resume)
+@@ -1692,7 +1692,7 @@ void raminit(sysinfo_t *const sysinfo, const int s3resume)
  {
  	const dimminfo_t *const dimms = sysinfo->dimms;
  	const timings_t *const timings = &sysinfo->selected_timings;

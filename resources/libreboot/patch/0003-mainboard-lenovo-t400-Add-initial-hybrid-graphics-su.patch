@@ -1,7 +1,7 @@
-From 76a977c5fb717315154317ea4ccb0d46b329731a Mon Sep 17 00:00:00 2001
+From bbf3462e7442c2cae568e147d3f0eb1195f86991 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Sun, 5 Apr 2015 18:10:09 -0500
-Subject: [PATCH 09/22] mainboard/lenovo/t400: Add initial hybrid graphics
+Subject: [PATCH 03/17] mainboard/lenovo/t400: Add initial hybrid graphics
  support
 
 TEST: Booted T400 with Intel/ATI hybrid graphics in integrated
@@ -27,10 +27,10 @@ index 67b8920..06eec57 100644
 +hybrid_graphics_mode=Integrated Only
 \ No newline at end of file
 diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
-index fbb2293..687b284 100644
+index 2dc91bf..44f5d04 100644
 --- a/src/mainboard/lenovo/t400/cmos.layout
 +++ b/src/mainboard/lenovo/t400/cmos.layout
-@@ -86,7 +86,10 @@ entries
+@@ -85,7 +85,10 @@ entries
  # coreboot config options: northbridge
  941         3       e       11       gfx_uma_size
  
@@ -42,7 +42,7 @@ index fbb2293..687b284 100644
  
  # coreboot config options: check sums
  984          16       h       0        check_sum
-@@ -138,6 +141,9 @@ enumerations
+@@ -137,6 +140,9 @@ enumerations
  11    3     128M
  11    5     96M
  11    6     160M
@@ -53,7 +53,7 @@ index fbb2293..687b284 100644
  # -----------------------------------------------------------------
  checksums
 diff --git a/src/mainboard/lenovo/t400/romstage.c b/src/mainboard/lenovo/t400/romstage.c
-index 5f50f32..20071c0 100644
+index a739d18..c62df60 100644
 --- a/src/mainboard/lenovo/t400/romstage.c
 +++ b/src/mainboard/lenovo/t400/romstage.c
 @@ -1,6 +1,7 @@
@@ -64,7 +64,7 @@ index 5f50f32..20071c0 100644
   * Copyright (C) 2012 secunet Security Networks AG
   *
   * This program is free software; you can redistribute it and/or
-@@ -38,6 +39,118 @@
+@@ -37,6 +38,118 @@
  #define LPC_DEV PCI_DEV(0, 0x1f, 0)
  #define MCH_DEV PCI_DEV(0, 0, 0)
  
@@ -183,7 +183,7 @@ index 5f50f32..20071c0 100644
  static void default_southbridge_gpio_setup(void)
  {
  	outl(0x197e23fe, DEFAULT_GPIOBASE + GP_IO_USE_SEL);
-@@ -99,6 +212,31 @@ void main(unsigned long bist)
+@@ -98,6 +211,31 @@ void main(unsigned long bist)
  
  	default_southbridge_gpio_setup();
  
@@ -215,7 +215,7 @@ index 5f50f32..20071c0 100644
  	/* ASPM related setting, set early by original BIOS. */
  	DMIBAR16(0x204) &= ~(3 << 10);
  
-@@ -178,6 +316,11 @@ void main(unsigned long bist)
+@@ -177,6 +315,11 @@ void main(unsigned long bist)
  	outl(inl(DEFAULT_GPIOBASE + 0x38) & ~0x400, DEFAULT_GPIOBASE + 0x38);
  
  	cbmem_initted = !cbmem_recovery(s3resume);

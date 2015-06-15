@@ -1,7 +1,7 @@
-From 5a762600dd0d41c1f1f24dfccea62d9cefb5b3d6 Mon Sep 17 00:00:00 2001
+From 64106428f6739ed87392f59993f3e0f1a3f045c8 Mon Sep 17 00:00:00 2001
 From: Vladimir Serbinenko <phcoder@gmail.com>
 Date: Tue, 4 Mar 2014 18:08:26 +0100
-Subject: [PATCH 15/22] lenovo/t60: Enable native intel gfx init.
+Subject: [PATCH 07/17] lenovo/t60: Enable native intel gfx init.
 
 Tested on T60 with intel graphics.
 
@@ -29,12 +29,12 @@ index 0cf19a1..2254185 100644
  	string
  	default lenovo/t60
 diff --git a/src/mainboard/lenovo/t60/devicetree.cb b/src/mainboard/lenovo/t60/devicetree.cb
-index bca0787..a0ee7f9 100644
+index 719fa9a..fdced26 100644
 --- a/src/mainboard/lenovo/t60/devicetree.cb
 +++ b/src/mainboard/lenovo/t60/devicetree.cb
-@@ -22,6 +22,11 @@
- 
- chip northbridge/intel/i945
+@@ -24,6 +24,11 @@ chip northbridge/intel/i945
+ 	register "gfx.ndid" = "3"
+ 	register "gfx.did" = "{ 0x80000100, 0x80000240, 0x80000410, 0x80000410, 0x00000005 }"
  
 +	register "gpu_hotplug" = "0x00000220"
 +	register "gpu_lvds_use_spread_spectrum_clock" = "1"

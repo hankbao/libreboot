@@ -1,53 +1,31 @@
-From 0413e35202f8336418fd9bdd19eb6e9e599f9dfc Mon Sep 17 00:00:00 2001
+From 44b02659da616c6d64445e5645684a68e7e5e742 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
-Date: Tue, 31 Mar 2015 22:51:22 +0100
-Subject: [PATCH 22/22] New mainboard: Lenovo T500
+Date: Sun, 14 Jun 2015 15:40:00 +0100
+Subject: [PATCH 14/17] lenovo/t500: Add clone of Lenovo T400
 
-Clone of Lenovo T400. It works/boots, but needs
-more testing.
+The existing code for the Lenovo T400 works without changes on the
+Lenovo T500.  Same HDA verbs are provided by Lenovo BIOS on both
+laptops.
 
-Change-Id: I7ace604ca7fede44ce78277561d31e3083fc6c8c
+Change-Id: I300408a8a0ed00476aee6061925befc2822fb505
 Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 ---
- src/mainboard/lenovo/Kconfig             | 6 ++++++
  src/mainboard/lenovo/t400/Kconfig        | 2 +-
  src/mainboard/lenovo/t500/Kconfig        | 7 +++++++
+ src/mainboard/lenovo/t500/Kconfig.name   | 2 ++
  src/mainboard/lenovo/t500/board_info.txt | 6 ++++++
- 4 files changed, 20 insertions(+), 1 deletion(-)
+ 4 files changed, 16 insertions(+), 1 deletion(-)
  create mode 100644 src/mainboard/lenovo/t500/Kconfig
+ create mode 100644 src/mainboard/lenovo/t500/Kconfig.name
  create mode 100644 src/mainboard/lenovo/t500/board_info.txt
 
-diff --git a/src/mainboard/lenovo/Kconfig b/src/mainboard/lenovo/Kconfig
-index 4fc56cd..3dee443 100644
---- a/src/mainboard/lenovo/Kconfig
-+++ b/src/mainboard/lenovo/Kconfig
-@@ -47,6 +47,11 @@ config BOARD_LENOVO_T430S
- 	help
- 	  Lenovo T430s laptop. Consult wiki for details.
- 
-+config BOARD_LENOVO_T500
-+	bool "ThinkPad T500"
-+	help
-+	  Lenovo T500 laptop. Consult wiki for details.
-+
- config BOARD_LENOVO_T520
- 	bool "ThinkPad T520"
- 	help
-@@ -85,6 +90,7 @@ source "src/mainboard/lenovo/x230/Kconfig"
- source "src/mainboard/lenovo/t400/Kconfig"
- source "src/mainboard/lenovo/t420s/Kconfig"
- source "src/mainboard/lenovo/t430s/Kconfig"
-+source "src/mainboard/lenovo/t500/Kconfig"
- source "src/mainboard/lenovo/t520/Kconfig"
- source "src/mainboard/lenovo/t530/Kconfig"
- source "src/mainboard/lenovo/t60/Kconfig"
 diff --git a/src/mainboard/lenovo/t400/Kconfig b/src/mainboard/lenovo/t400/Kconfig
-index 719f6e4..9afb8ce 100644
+index 2ea592f..b1f7d28 100644
 --- a/src/mainboard/lenovo/t400/Kconfig
 +++ b/src/mainboard/lenovo/t400/Kconfig
 @@ -1,4 +1,4 @@
 -if BOARD_LENOVO_T400 || BOARD_LENOVO_R400
-+if BOARD_LENOVO_T400 || BOARD_LENOVO_R400 || BOARD_LENOVO_T500
++if BOARD_LENOVO_T400 || BOARD_LENOVO_T500 || BOARD_LENOVO_R400
  
  config BOARD_SPECIFIC_OPTIONS # dummy
  	def_bool y
@@ -64,6 +42,14 @@ index 0000000..e1e8420
 +	default "ThinkPad T500"
 +
 +endif
+diff --git a/src/mainboard/lenovo/t500/Kconfig.name b/src/mainboard/lenovo/t500/Kconfig.name
+new file mode 100644
+index 0000000..89c6087
+--- /dev/null
++++ b/src/mainboard/lenovo/t500/Kconfig.name
+@@ -0,0 +1,2 @@
++config BOARD_LENOVO_T500
++	bool "ThinkPad T500"
 diff --git a/src/mainboard/lenovo/t500/board_info.txt b/src/mainboard/lenovo/t500/board_info.txt
 new file mode 100644
 index 0000000..007ec6c

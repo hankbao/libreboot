@@ -1,17 +1,10 @@
-From a36e204862fc556c7d06cbc9c29f6b0a4df21287 Mon Sep 17 00:00:00 2001
+From 7786aea5d38e6e132a259c2a00cf75f493fc12fd Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Mon, 13 Oct 2014 00:14:53 +0100
-Subject: [PATCH 18/22] NOTFORMERGE: ec/lenovo/h8:
+Subject: [PATCH 10/17] NOTFORMERGE: ec/lenovo/h8:
  wlan/trackpoint/touchpad/bluetooth/wwan
 
-Permanently enable them. Ignore configuration made by nvramtool.
-Almost every user will want all of these to be enabled, and those
-who would like them to be disabled would physically remove the
-relevant components from their machine anyway, or just not use
-them (in the case of the touchpad or trackpoint). So, why make it
-configurable in the first place? All it does is add confusion.
-
-The mind boggles.
+Permanently enable them.
 
 Change-Id: Ic76ab9ab9c865f30312378e18af58bece6c3260a
 Signed-off-by: Francis Rowe <info@gluglug.org.uk>
@@ -21,10 +14,10 @@ Signed-off-by: Francis Rowe <info@gluglug.org.uk>
  2 files changed, 15 insertions(+), 17 deletions(-)
 
 diff --git a/src/ec/lenovo/h8/h8.c b/src/ec/lenovo/h8/h8.c
-index 13b0483..b688e64 100644
+index 46480f4..b6bc406 100644
 --- a/src/ec/lenovo/h8/h8.c
 +++ b/src/ec/lenovo/h8/h8.c
-@@ -245,9 +245,11 @@ static void h8_enable(struct device *dev)
+@@ -252,9 +252,11 @@ static void h8_enable(struct device *dev)
  
  	ec_write(H8_FAN_CONTROL, H8_FAN_CONTROL_AUTO);
  
@@ -39,7 +32,7 @@ index 13b0483..b688e64 100644
  
  	h8_trackpoint_enable(1);
  	h8_usb_power_enable(1);
-@@ -255,14 +257,13 @@ static void h8_enable(struct device *dev)
+@@ -262,14 +264,13 @@ static void h8_enable(struct device *dev)
  	if (get_option(&val, "volume") == CB_SUCCESS)
  		ec_write(H8_VOLUME_CONTROL, val);
  
@@ -61,7 +54,7 @@ index 13b0483..b688e64 100644
  	if (conf->has_uwb) {
  		if (get_option(&val, "uwb") != CB_SUCCESS)
 diff --git a/src/ec/lenovo/pmh7/pmh7.c b/src/ec/lenovo/pmh7/pmh7.c
-index f67fbda..9cb7149 100644
+index cc6e891..38aef16 100644
 --- a/src/ec/lenovo/pmh7/pmh7.c
 +++ b/src/ec/lenovo/pmh7/pmh7.c
 @@ -106,7 +106,6 @@ static void enable_dev(struct device *dev)

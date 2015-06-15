@@ -1,7 +1,7 @@
-From 8c85c6ce851927a6ee781f2ddc970584376e6710 Mon Sep 17 00:00:00 2001
+From 29a398fd71efa8ca63a98125ec4e5c1de96bcb85 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Tue, 7 Apr 2015 13:45:06 -0500
-Subject: [PATCH 04/22] southbridge/intel/common/spi: Add Flash lockdown option
+Subject: [PATCH 01/17] southbridge/intel/common/spi: Add Flash lockdown option
 
 Under certain circumstances it is desirable to prevent
 software from altering the contents of the Flash device.
@@ -34,7 +34,7 @@ index 949310b..52ada30 100644
 +	  a hardware programmer AND physical access to the Flash device!
 \ No newline at end of file
 diff --git a/src/southbridge/intel/common/spi.c b/src/southbridge/intel/common/spi.c
-index 416a30f..6c8e2eb 100644
+index 1d3ebf6..04f05ed 100644
 --- a/src/southbridge/intel/common/spi.c
 +++ b/src/southbridge/intel/common/spi.c
 @@ -2,6 +2,7 @@
@@ -45,7 +45,7 @@ index 416a30f..6c8e2eb 100644
   *
   * See file CREDITS for list of people who contributed to this
   * project.
-@@ -354,11 +355,19 @@ void spi_init(void)
+@@ -353,11 +354,19 @@ void spi_init(void)
  
  	ich_set_bbar(0);
  
@@ -70,7 +70,7 @@ index 416a30f..6c8e2eb 100644
  }
  #ifndef __SMM__
  static void spi_init_cb(void *unused)
-@@ -928,7 +937,6 @@ static int ich_hwseq_write(struct spi_flash *flash,
+@@ -927,7 +936,6 @@ static int ich_hwseq_write(struct spi_flash *flash,
  	return 0;
  }
  
