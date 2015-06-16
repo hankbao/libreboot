@@ -44,7 +44,7 @@ git clone http://review.coreboot.org/coreboot
 cd "coreboot/"
 
 # reset to previously tested revision
-git reset --hard 5f6c392924306eb514610487963d3686293e380d
+git reset --hard cd5cdd3ba42371cc97b1464fd7b98de5bef05a6a
 
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
@@ -137,12 +137,6 @@ git am "../resources/libreboot/patch/0014-lenovo-t500-Add-clone-of-Lenovo-T400.p
 printf "ec/lenovo/h8: re-factor handling of power_management_beeps\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/10531/8 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0015-ec-lenovo-h8-re-factor-handling-of-power_management_.patch"
-
-printf "buildgcc: Define CMAKE only if clang package is built\n"
-# Needed, otherwise the build system complains that cmake isn't present (unless it's installed)
-# Libreboot doesn't use clang, which is the only part of coreboot that requires cmake
-# git fetch http://review.coreboot.org/coreboot refs/changes/56/10556/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0016-buildgcc-Define-CMAKE-only-if-clang-package-is-built.patch"
 
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
