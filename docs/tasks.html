@@ -69,7 +69,9 @@
 						<li>
 							<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
 							<ul>
-								<li>Look into the <i>rockchip</i> (rk3288. note: mali gpu. one or two blobs might need replacing) and <i>IBM 'POWER8' platforms</i></li>
+								<li>Look into the <i>rockchip</i> (rk3288. note: mali gpu. one or two blobs might need replacing.
+								see <a href="http://blogs.coreboot.org/blog/2015/05/26/report-on-chrome-os-upstreaming/">this page</a>
+								for example) and <i>IBM 'POWER8' platforms</i></li>
 							</ul>
 						</li>
 						<li><b>This list needs to expand!</b></li>
@@ -117,10 +119,19 @@
 		<h1>Platform-specific bugs</h1>
 			<ul>
 				<li>
+					all thinkpads: When the system is running, plugging in an ethernet cable
+					doesn't always work (no network), you have to try several times. Booting with
+					an ethernet cable attached is reliable. Debug this and fix it.
+				</li>
+				<li>
 					Fix these issues on GM45/GS45 targets:
 					<ul>
 						<li>
 							X200: text-mode is broken. only framebuffer graphics work. Git-bisect is needed.
+						</li>
+						<li>
+							X60: on the latest coreboot-libre update lately (during June 2015), keyboard works intermittently.
+							Bisect and fix.
 						</li>
 						<li>
 							X200/X60: battery drained even while system is "off" on some systems. investigate.
@@ -212,6 +223,12 @@
 	<div class="section">
 		<h1>Build system</h1>
 			<ul>
+				<li>
+					add <i>resources/checksums/*</i> and update it whenever updating the modules
+					(coreboot, flashrom, etc) or updating patches.
+					For each download script, make it check the sha512 hashes of all the files, to ensure
+					that the files match the checksums.
+				</li>
 				<li>re-enable building of txtmode images (get memtest86 working again first, and fix gm45 txtmode)</li>
 				<li>
 					When downloading coreboot/grub/memtest/etc using the download scripts, it currently does

@@ -22,6 +22,7 @@
 				<li><a href="#trisquel7_powertop">High Pitched Whining Noise on Idle (how to remove in Trisquel 7)</a></li>
 				<li><a href="#high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</a></li>
 				<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
+				<li><a href="#powerbeeps">Power Management Beeps on Thinkpads</a></li>
 				<li><a href="patch.html">Using diff and patch</a></li>
 				<li><a href="#get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</a></li>
 			</ul>
@@ -130,6 +131,31 @@ WantedBy=multi-user.target
 			</p>
 			<p><a href="#pagetop">Back to top of page</a>
 			
+	</div>
+
+	<div class="section" id="powerbeeps">
+		
+		<h1>Power Management Beeps on Thinkpads</h1>
+
+			<p>
+				When disconnecting or connecting the charger, a beep occurs.
+				When the battery goes to a critically low charge level,
+				a beep occurs. Nvramtool is included in libreboot, and can
+				be used to enable or disable this behaviour.
+			</p>
+
+			<p>
+				Disable or enable beeps when removing/adding the charger:<br/>
+				$ <b>sudo ./nvramtool -w power_management_beeps=Enable</b><br/>
+				$ <b>sudo ./nvramtool -w power_management_beeps=Disable</b>
+			</p>
+
+			<p>
+				Disable or enable beeps when battery is low:<br/>
+				$ <b>sudo ./nvramtool -w low_battery_beep=Enable</b><br/>
+				$ <b>sudo ./nvramtool -w low_battery_beep=Disable</b>
+			</p>
+		
 	</div>
 
 	<div class="section">
