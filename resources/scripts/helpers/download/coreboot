@@ -88,11 +88,14 @@ git am "../resources/libreboot/patch/0004-NOTFORMERGE-lenovo-t400-hard-code-enab
 printf "lenovo/x60: Enable VESA framebuffer mode (native graphics)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/53/10553/1 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0005-lenovo-x60-Enable-VESA-framebuffer-mode-native-graph.patch"
+# NOTE: merged in master
 
 # NOTE: Investigate what mono and mtjm wrote about bit 16 in BLC_PWM_CTL
 printf "lenovo/x60: Enable legacy brightness controls (native graphics)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/48/7048/9 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0006-lenovo-x60-Enable-brightness-controls-native-graphic.patch"
+# NOTE: http://review.coreboot.org/#/c/10624 is a follow-up. re-include 7048 (latest one) then include 10624
+# NOTE: 7048 is now merged in coreboot master
 
 printf "Enable T60 native graphics\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/10 && git cherry-pick FETCH_HEAD
