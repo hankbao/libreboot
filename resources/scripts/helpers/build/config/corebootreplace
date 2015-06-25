@@ -37,8 +37,10 @@ cd "../../../coreboot/"
 for config in ${configs}; do
 	printf "Updating config for %s\n" "${config}"
 	sleep 5
-	
+
 	make menuconfig
+
+	[ ! -d "../resources/libreboot/config/${config}/" ] && mkdir -p "../resources/libreboot/config/${config}/"
 	mv ".config" "../resources/libreboot/config/${config}/config"
 done
 
