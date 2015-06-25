@@ -37,6 +37,11 @@ cd "../../../coreboot/"
 for config in ${configs}; do
 	printf "Updating config for %s\n" "${config}"
 	sleep 5
+
+	if [ ! -d "../resources/libreboot/config/${config}/" ]; then
+		printf "build/config/corebootupdate WARNING: config '%s' does not exist. Skipping.\n" "${config}"
+		continue
+	fi
 	
 	mv "../resources/libreboot/config/${config}/config" ".config"
 	make oldconfig
