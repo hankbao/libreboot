@@ -35,7 +35,7 @@ fi
 
 cd "../../../coreboot/"
 for config in ${configs}; do
-	printf "Updating config for %s\n" "${config}"
+	printf "Replacing or creating new config for %s\n" "${config}"
 	sleep 2
 
 	make menuconfig

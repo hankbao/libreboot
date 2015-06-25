@@ -35,7 +35,7 @@ fi
 
 cd "../../../coreboot/"
 for config in ${configs}; do
-	printf "Updating config for %s\n" "${config}"
+	printf "Modifying config for %s\n" "${config}"
 	sleep 2
 
 	if [ ! -d "../resources/libreboot/config/${config}/" ]; then
