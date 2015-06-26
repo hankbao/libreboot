@@ -61,13 +61,6 @@ fi
 
 for romtype in txtmode vesafb
 do
-	# skip building txtmode roms for now (memtest86 is broken)
-	# todo: make a new release ASAP, with memtest86+ working again, and text-mode working on GM45
-	if [ "${romtype}" = "txtmode" ]; then
-		# TODO: remove this if, once you get memtest86+ working again
-		continue
-	fi
-
 	if [ "${1}" = "x200_8mb" ] || [ "${1}" = "x200_4mb" ] || [ "${1}" = "r400_8mb" ] || [ "${1}" = "r400_4mb" ] || [ "${1}" = "t400_8mb" ] || [ "${1}" = "t400_4mb" ] || [ "${1}" = "t500_8mb" ] || [ "${1}" = "t500_4mb" ]
 		then
 			if [ "${romtype}" = "txtmode" ]
