@@ -141,6 +141,12 @@ printf "ec/lenovo/h8: re-factor handling of power_management_beeps\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/10531/8 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0015-ec-lenovo-h8-re-factor-handling-of-power_management_.patch"
 
+# Other fixes:
+
+printf "mainboard/asus/kfsn4-dre: Enable VGA support (without it, VGA out won't work on the KFSN4-DRE)\n"
+# git fetch http://review.coreboot.org/coreboot refs/changes/73/10673/1 && git cherry-pick FETCH_HEAD
+git am "../resources/libreboot/patch/0016-mainboard-asus-kfsn4-dre-Enable-VGA-support.patch"
+
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
 

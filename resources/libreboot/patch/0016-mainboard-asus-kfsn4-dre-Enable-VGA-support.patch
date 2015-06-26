@@ -1,0 +1,29 @@
+From 3a8ac6c1ea904ac6885683962ce17c51941ba33d Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 26 Jun 2015 14:56:51 -0500
+Subject: [PATCH] mainboard/asus/kfsn4-dre: Enable VGA support
+
+The ASUS KFSN4-DRE has full native VGA support, enable it
+by default in the Kconfig files.
+
+Change-Id: I09fc8845a30f26ca49f3547812f9784621ff4b5e
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kfsn4-dre/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mainboard/asus/kfsn4-dre/Kconfig b/src/mainboard/asus/kfsn4-dre/Kconfig
+index 9d9ab1e..28b5dcd 100644
+--- a/src/mainboard/asus/kfsn4-dre/Kconfig
++++ b/src/mainboard/asus/kfsn4-dre/Kconfig
+@@ -21,6 +21,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select MMCONF_SUPPORT_DEFAULT
+ 	select DRIVERS_I2C_W83793
+ 	select DRIVERS_XGI_Z9S
++	select VGA
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 
+-- 
+1.9.1
+
