@@ -36,6 +36,7 @@ if [ $# -lt 1 ]; then
 	printf "Example (download flashrom): ./download flashrom\n"
 	printf "Example (download coreboot): ./download coreboot\n"
 	printf "Example (download coreboot and flashrom): ./download coreboot flashrom\n"
+	printf "Example (lists all available downloadable components): ./download list\n"
 	exit 1
 fi
 programmes="$@"
@@ -44,6 +45,8 @@ if [ "${programmes}" = "all" ]; then
 	for programme in ${availableprogrammes}; do
 		${download}/${programme}
 	done
+elif [ "${programmes}" = "list" ]; then
+	printf "Available programmes are:\nall\n%s\n" "${availableprogrammes}"
 else
 	for programme in programmes; do
 		if [ -f "${download}/${programme}" ]; then
