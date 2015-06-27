@@ -48,11 +48,12 @@ if [ "${programmes}" = "all" ]; then
 elif [ "${programmes}" = "list" ]; then
 	printf "Available programmes are:\nall\n%s\n" "${availableprogrammes}"
 else
-	for programme in programmes; do
+	for programme in ${programmes}; do
+		printf "\"%s\"\n" "${programme}"
 		if [ -f "${download}/${programme}" ]; then
 			${download}/${programme}
 		else
-			printf "download: WARNING: Invalid programme '%s'. Available programmes are:\nall\n%s\n" "${programme}" "${availableprogrammes}"
+			printf "download: WARNING: Invalid programme '%s'. Available programmes are:\nall\n%s\n" "${programmes}" "${availableprogrammes}"
 		fi
 	done
 fi
