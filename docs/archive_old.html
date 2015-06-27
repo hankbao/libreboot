@@ -32,6 +32,7 @@
 
 		<h2>Releases</h2>
 			<ul>
+				<li><a href="#release20150518">r20150518 (18th May 2015)</a></li>
 				<li><a href="#release20150124">r20150124 (24th January 2015), r20150126 (26th January 2015), r20150208 (8th February 2015)</a></li>
 				<li><a href="#release20141015">r20141015 (15th October 2015)</a></li>
 				<li><a href="#release20140911">r20140911 (6th release)</a> (11th September 2014 <b>pre-release, 7th beta</b>)</li>
@@ -42,6 +43,282 @@
 				<li><a href="#release20131212">r20131212 (1st release)</a> (12th December 2013)</li>
 			</ul>
 			
+	</div>
+
+	<div class="section">
+
+		<h1 id="release20150518">Release 20150518</h1>
+		
+			<p>
+				Release date: 18th May 2015.
+			</p>
+
+				<p>
+					Installation instructions can be found at <b><i>docs/install/index.html</i></b>. 
+					Building instructions (for source code) can be found at <b><i>docs/git/index.html#build</i></b>.
+				</p>
+
+			<h2>Machines supported in this release:</h2>
+				<ul>
+					<li>
+						<b>ThinkPad X60/X60s</b>
+						<ul>
+							<li>
+								You can also remove the motherboard from an X61/X61s and replace it with an X60/X60s motherboard.
+								An X60 Tablet motherboard will also fit inside an X60/X60s. 
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
+						<ul>
+							<li>See <b><i>docs/hcl/index.html#supported_x60t_list</i></b> for list of supported LCD panels</li>
+							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T60</b> (Intel GPU) (there are issues; see below):
+						<ul>
+							<li>See notes below for exceptions, and <b><i>docs/hcl/index.html#supported_t60_list</i></b> for known working LCD panels.</li>
+							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
+							<li>See <b><i>docs/future/index.html#t60_cpu_microcode</i></b>.</li>
+							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b><i>docs/hcl/index.html#t60_ati_intel</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad X200</b>
+						<ul>
+							<li>X200S and X200 Tablet are also supported, conditionally; see <b><i>docs/hcl/x200.html#x200s</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad R400</b>
+						<ul>
+							<li>See <b><i>docs/hcl/r400.html</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T400</b>
+						<ul>
+							<li>See <b><i>docs/hcl/t400.html</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T500</b>
+						<ul>
+							<li>See <b><i>docs/hcl/t500.html</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
+						<ul>
+							<li>See <b><i>docs/hcl/index.html#macbook11</i></b>.</li>
+						</ul>
+					</li>
+					<li>
+						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
+						<ul>
+							<li>See <b><i>docs/hcl/index.html#macbook21</i></b>.</li>
+						</ul>
+					</li>
+				</ul>
+
+			<h2>
+				Changes for this release, relative to r20150208 (earliest changes last, recent changes first)
+			</h2>
+				<ul>
+					<li>Add a whitelist entry to board_enable.c in flashrom, for the ThinkPad R400, T400 and T500</li>
+					<li>
+						Updated flashrom (to SVN revision 1889)
+						<ul>
+							<li>X200 whitelist patch removed (merged upstream)</li>
+							<li>X200 whitelist modified to include X200S and X200 Tablet</li>
+						</ul>
+					</li>
+					<li>libreboot_util: don't include cmos layout files (not needed anymore)</li>
+					<li><b>coreboot-libre: backport patches for X200 Tablet digitizer support</b></li>
+					<li>build/release/archives: create SHA512 sum manifest file of the release archives</li>
+					<li>build/release/archives: separate crossgcc into a new archive</li>
+					<li>disabled generation of txtmode ROM images for now (they will be back again in the next release)</li>
+					<li>coreboot-libre: delete unused code (reduce size of src archive)</li>
+					<li>Flashing guides: make them more friendly to colourblind people</li>
+					<li>
+						docs/gnulinux/encrypted_*.html: Remove mention of password length
+						- it was arbitrary and pointless.
+					</li>
+					<li>docs/maintain/index.html: Finish the guide</li>
+					<li>
+						scripts/download/coreboot: use diffs included in libreboot, not external gerrit cherry-picks
+						- review.coreboot.org (gerrit) being down no longer kills
+						libreboot (backup mirrors of the master repository exist)
+					</li>
+					<li>docs/install/bbb_setup.html: Add info about wp/hold and pinouts</li>
+					<li>docs/index.html: improve the description of libreboot</li>
+					<li>docs/hcl/gm45_remove_me.html: notes about the demefactory utility</li>
+					<li>docs/install/bbb_setup.html: EHCI debug: recommend linux-libre</li>
+					<li>docs/install/bbb_setup.html: EHCI Debug logging setup guide</li>
+					<li>docs/hcl/t500.html: Add screen compatibility report (TODO: fix incompatible screens)</li>
+					<li>
+						Update coreboot(again) + merge GM45 hybrid GPU patches
+						- means that T400/T500 with the ATI+Intel hybrid GPU setup
+						will work (ATI disabled, Intel permanently enabled).
+						power_on_after_fail nvram option added to all GM45 boards,
+						defaulting to No, so that plugging it AC doesn't boot up
+						the system against the users will. Net20DC is now the default
+						debug dongle on all boards (compatible with BBB).
+					</li>
+					<li>demefactory (new utility): create GM45 factory.rom without the ME</li>
+					<li>ich9deblob: re-factor descriptor.c functions</li>
+					<li>docs/hcl/t500.html: add hardware logs</li>
+					<li>docs/gnulinux/encrypted_*.html: No password for default entry</li>
+					<li>docs/git/index.html: Add more details about BUC.TS</li>
+					<li>grub.cfg: Also scan for grub2/grub.cfg, not just grub/grub.cfg</li>
+					<li>docs/maintain/ (new section. WIP!): Maintaining libreboot</li>
+					<li>docs/gnulinux/grub_boot_installer.html: Fix hazardous instruction</li>
+					<li>docs/tasks.html: Better categorization between intel/amd/arm</li>
+					<li>docs/install/bbb_setup.html: notes about SPI flashing stability</li>
+					<li>docs/install/bbb_setup.html: more names for the 0.1&quot; cables</li>
+					<li>docs/install/*_external.html: add disclaimer about thermal paste</li>
+					<li>docs/install/bbb_setup.html: Fix broken links</li>
+					<li>docs/install/bbb_setup.html: preliminary notes about EHCI debug</li>
+					<li>docs/hcl/gm45_remove_me.html: Link to websites talking about the ME</li>
+					<li>docs/install/{t400,t500,r400}_external.html: Notes about CPU compatibility</li>
+					<li>Delete the ich9macchange script. It's useless, and confuses people</li>
+					<li>docs/hcl/gm45_remove_me.html: prioritize ich9gen executable path</li>
+					<li>docs/hcl/gm45_remove_me.html: prioritize changing mac address</li>
+					<li>docs/hcl/gm45_remove_me.html: less confusing notes about ich9gen</li>
+					<li>build/dependencies/parabola: Add dependencies for x86_64</li>
+					<li>Move parabola/trisquel dependency scripts to scripts/helpers/build</li>
+					<li>scripts/dependencies/paraboladependencies: build dependencies (32-bit Parabola)</li>
+					<li><b>New board</b>: ThinkPad T500</li>
+					<li>Add diffs for descriptor/gbe differences between T500 and X200</li>
+					<li>coreboot-libre: provide better blob categorization</li>
+					<li>docs/hcl/gm45_remove_me.html: add notes about flash write protect</li>
+					<li><b>New board</b>: ThinkPad T400</li>
+					<li>GRUB: add partial vesamenu.c32 support (fixes tails ISOLINUX menu)</li>
+					<li>Update GRUB (to revision fa07d919d1ff868b18d8a42276d094b63a58e299)</li>
+					<li>
+						Update coreboot (to revision 83b05eb0a85d7b7ac0837cece67afabbdb46ea65)
+						<ul>
+							<li>
+								Intel CPU microcode (most of it) no longer deleted,
+								because it was deleted upstream (moved to a 3rd
+								party repository).
+							</li>
+							<li>MacBook2,1 cstate patch is no longer cherry picked (merged upstream)</li>
+							<li>Patch to disable use of timestamps in coreboot no longer included (merged upstream)</li>
+						</ul>
+					</li>
+					<li>coreboot-libre: don't list vortex86ex kbd firmware as microcode (list it separately)</li>
+					<li>coreboot-libre: don't rm */early_setup_ss.h (these are not blobs)</li>
+					<li>coreboot-libre: add GPLv3 license to the findblobs script</li>
+					<li>coreboot-libreboot: don't rm raminit_tables (nahelem/sandybridge) (they are not blobs)</li>
+					<li>coreboot-libre: don't delete the .spd.hex files (they are not blobs)</li>
+					<li>build/release/archives: don't put rmodtool in libreboot_util</li>
+					<li>docs/install/x200_external.html: recommend installing GNU/Linux at the end</li>
+					<li>docs/install/x200_external.html: add more photos, improve instructions</li>
+					<li>build/clean/grub: use distclean instead of clean</li>
+					<li>grub-assemble: Add the <i>bsd</i> and <i>part_bsd</i> modules</li>
+					<li>build/roms/withgrub: Only run ich9gen if gm45/gs45 images exist</li>
+					<li>docs/git/index.html: Add notes about building for specific boards</li>
+					<li>build/roms/withgrub: Allow building for a custom range of boards</li>
+					<li>grub-assemble: Disable verbose output</li>
+					<li>Add documentation on how to unlock root encrypted fs with key in initramfs in Parabola Linux</li>
+					<li>docs/gnulinux/grub_cbfs.html: Improve structure (easier to use)</li>
+					<li>grub.cfg: Disable the beep on startup</li>
+					<li>docs/install/bbb_setup.html: Make the guide easier to use</li>
+					<li>docs/gnulinux/grub_cbfs.html: Remove redundant instructions</li>
+					<li>docs/install/x200_external.html: Mark pins in the images</li>
+					<li>docs/install/bbb_setup.html: Replace 3.3V PSU photo with ATX PSU</li>
+					<li>docs/hcl/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.22</li>
+					<li>docs/hcl/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.18</li>
+					<li>grub.cfg: add syslinux_configfile menuentry for ahci0</li>
+					<li>grub.cfg: Add more paths for syslinux_configfile</li>
+					<li>docs/future.html: T60: Add EDID dump from LG-Philips LP150E05-A2K1</li>
+					<li>docs/install/bbb_setup.html: Further clarify which clip is needed</li>
+					<li>bash scripts: Make script output more user-friendly in general</li>
+					<li>bash scripts: Only enable verbose output if DEBUG= is used</li>
+					<li>
+						build: Support multiple extra options
+						- now possible to build multiple images for arbitrary
+						boards (configs), but without building the entire
+						collection.
+					</li>
+					<li>
+						Deleted the signing archive key
+						- the finger print and ID is given instead, so that
+						the user can download it from a key server
+					</li>
+					<li>
+						scripts/helpers/build/release: Move docs to separate archive
+						- reduces the size of the other archives considerably
+					</li>
+					<li>Move DEBLOB to resources/utilities/coreboot-libre/deblob</li>
+					<li>
+						scripts/helpers/build/release: Delete DEBLOB from libreboot_src/
+						- not needed in libreboot_src (release archive) because it
+						contains a coreboot revision that has already been deblobbed.
+					</li>
+					<li>flash (script): Use <i>build</i> instead of <i>DEBLOB</i> to know if in src</li>
+					<li>docs/install/r400_external.html: Show images, don't link.</li>
+					<li>docs/install/x200_external.html: Show images, don't link.</li>
+					<li>docs/install/bbb_setup.html: Show images, instead of linking</li>
+					<li>Documentation: optimize all images (reduce file sizes)</li>
+					<li>
+						Remove download links from the release page (and the archive page)
+						- release archives are hosted differently following this release,
+						which means that the old methods are no longer viable.
+					</li>
+					<li>Moved ich9macchange to resources/scripts/misc/ich9macchange</li>
+					<li>
+						ich9macchange: assume that the script is being run from _util
+						(act only on one ROM image, defined by a user-provided path)
+					</li>
+					<li>Move grub-background to resources/scripts/misc/grub-background</li>
+					<li>grub-background: assume that it is being run from libreboot_util</li>
+					<li>grub-background: change only one ROM image, specified by path</li>
+					<li>build (release archives): Add the commitid file to release/</li>
+					<li>build-release: Move the release archives to release/</li>
+					<li>
+						Merge all build scripts into a single generic script,
+						with helpers in resources/scripts/helpers/build/
+					</li>
+					<li>
+						Replace <i>getall</i> with <i>download</i>, which takes as input an argument
+						specifying which programme the user wants to download.
+					</li>
+					<li>Moved the get scripts to resources/scripts/helpers/download/</li>
+					<li>build-release: Remove the powertop entries</li>
+					<li>Moved powertop.trisquel7 to resources/scripts/misc/</li>
+					<li>Deleted the powertop.trisquel6 script (Trisquel 6 is obsolete)</li>
+					<li>Documentation: general improvements to the flashing instructions</li>
+					<li>Merged all flashing scripts into a single script</li>
+					<li>Updated GRUB</li>
+					<li>bucts: Make it build without git</li>
+					<li>Moved dejavu-fonts-ttf-2.34/AUTHORS to resources/grub/font/</li>
+					<li>Deleted GRUB Invaders from libreboot</li>
+					<li>Deleted SeaBIOS from libreboot</li>
+					<li>build-release: optimize use of tar (reduced file sizes)</li>
+					<li>grub.cfg: add another SYSLINUX config location (/syslinux/syslinux.cfg)</li>
+					<li>build-release: remove the bin/ directory from libreboot_util</li>
+					<li>cleandeps: delete the bin/ directory</li>
+					<li>buildrom-withgrub: create the bin directory if it does not exist</li>
+					<li>coreboot-libre: don't use git for version timestamp</li>
+					<li>i945-pwm: add clean command to Makefile</li>
+					<li>i945-pwm: add -lz to Makefile</li>
+					<li>docs/install/x200_external: Mention GPIO33 non-descriptor mode</li>
+					<li>docs/hcl/index.html: Remove redundant links</li>
+					<li>ich9macchange: Add R400</li>
+					<li>build-release: Separate ROM images into individual archives</li>
+					<li>build-release: rename libreboot_bin to libreboot_util</li>
+					<li><b>New board:</b> ThinkPad R400 support added to libreboot.</li>
+					<li>bbb_setup.html: tell user to use libreboot's own flashrom</li>
+				</ul>
+				
 	</div>
 	
 	<div class="section">
