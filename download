@@ -41,12 +41,12 @@ if [ $# -lt 1 ]; then
 fi
 programmes="$@"
 
-if [ "${programmes}" = "all" ]; then
+if [ "${programmes}" = "list" ]; then
+	printf "Available programmes are:\nall\n%s\n" "${availableprogrammes}"
+elif [ "${programmes}" = "all" ]; then
 	for programme in ${availableprogrammes}; do
 		${download}/${programme}
 	done
-elif [ "${programmes}" = "list" ]; then
-	printf "Available programmes are:\nall\n%s\n" "${availableprogrammes}"
 else
 	for programme in ${programmes}; do
 		printf "\"%s\"\n" "${programme}"
