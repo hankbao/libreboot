@@ -23,30 +23,35 @@
 set -u -e
 
 download="./resources/scripts/helpers/download"
-programme="unknown"
+programmes="unknown"
 
-usage="./download programme"
+usage="./download programme(s) # programmes are space separated, if specifing multiple programmes"
 availableprogrammes="$(ls ${download}/)"
 
 # User specified no or too few/many parameters
-if (( $# != 1 )); then
+if [ $# -lt 1 ]; then
 	printf "%s\n\n" "${usage}"
-	printf "possible values for 'programme':\nall:\n%s\n\n" "${availableprogrammes}"
+	printf "possible values for 'programmes':\nall:\n%s\n\n" "${availableprogrammes}"
 	printf "Example (download everything): ./download all\n"
-	printf "Example (download coreboot): ./download coreboot\n\n"
+	printf "Example (download flashrom): ./download flashrom\n"
+	printf "Example (download coreboot): ./download coreboot\n"
+	printf "Example (download coreboot and flashrom): ./download coreboot flashrom\n"
 	exit 1
 fi
-programme="${1}"
+programmes="$@"
 
-if [ "${programme}" = "all" ]; then
+if [ "${programmes}" = "all" ]; then
 	for programme in ${availableprogrammes}; do
 		${download}/${programme}
 	done
-elif [ -f "${download}/${programme}" ]; then
-	${download}/${programme}
 else
-	printf "Invalid programme. Available programmes are:\nall\n%s\n" "${availableprogrammes}"
-	exit 1
+	for programme in programmes; do
+		if [ -f "${download}/${programme}" ]; then
+			${download}/${programme}
+		else
+			printf "download: WARNING: Invalid programme '%s'. Available programmes are:\nall\n%s\n" "${programme}" "${availableprogrammes}"
+		fi
+	done
 fi
 
 # ------------------- DONE ----------------------
