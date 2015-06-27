@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ASUS KFSN4-DRE server/workstation board</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">ASUS KFSN4-DRE server/workstation board</h1>
+
+			<p>
+				This is a server board using AMD hardware (Fam10h). It can also be used
+				for building a high-powered workstation. Powered by libreboot.
+			</p>
+
+			<p>
+				<b>
+					NOTE: This board is unsupported in libreboot 20150518.
+					To use it in libreboot, for now, you must build for it
+					from source using the libreboot git repository.
+				</b>
+			</p>
+			
+			<p>
+				These boards use LPC flash (not SPI), in a PLCC socket. The default flash size
+				1MiB (8Mbits), and can be upgraded to 2MiB (16Mbits).
+				SST49LF080A is the default that the board uses.
+				SST49LF016C is an example of a 2MiB (16Mbits) chip, which might work.
+				It is believed that 2MiB (16Mbits) is the maximum size available for the flash chip.
+			</p>
+
+			<p>
+				Flashing instructions can be found at <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+			</p>
+			
+			<p>
+				<a href="index.html">Back to previous index</a>.
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="issues">Current issues</h1>
+			<ul>
+				<li>
+					There seems to be a 30 second bootblock delay (observed by tpearson);
+					the system otherwise boots and works as expected.
+					See <a href="text/kfsn4-dre/bootlog.txt">text/kfsn4-dre/bootlog.txt</a>
+					- this uses the 'simple' bootblock, while tpearson uses the 'normal'
+					bootblock. He says that he will look into this.
+				</li>
+			</ul>
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy; 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
+			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
+		</p>
+
+		<p>
+			This document is distributed in the hope that it will be useful,
+			but WITHOUT ANY WARRANTY; without even the implied warranty of
+			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a> for more information.
+		</p>
+		
+	</div>
+
+</body>
+</html>
+
