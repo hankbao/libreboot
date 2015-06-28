@@ -30,7 +30,8 @@
 		<h2>Software methods</h2>
 			<ul>
 				<li><a href="#rom">List of ROM images in libreboot</a></li>
-				<li><a href="#flashrom">How to update libreboot (if you are already running libreboot or coreboot)</a></li>
+				<li><a href="#flashrom">How to update or install libreboot (if you are already running libreboot or coreboot)</a></li>
+				<li><a href="#flashrom">KFSN4-DRE: initial installation guide (if running the proprietary firmware)</a></li>
 				<li><a href="#flashrom_lenovobios">ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware)</a></li>
 				<li><a href="#flashrom_macbook21">MacBook2,1: Initial installation guide (if running the proprietary firmware)</a></li>
 			</ul>
@@ -117,7 +118,7 @@
 	
 	<div class="section">
 
-		<h1 id="flashrom">How to update libreboot (if you are already running libreboot or coreboot)</h1>
+		<h1 id="flashrom">How to update or install libreboot (if you are already running libreboot or coreboot)</h1>
 
 			<p>
 				On all current targets, updating libreboot can be accomplished without disassembly and,
@@ -151,6 +152,36 @@
 					R400 users refer to <a href="r400_external.html">r400_external.html</a>,
 					T400 users refer to <a href="t400_external.html">t400_external.html</a>,
 					T500 users refer to <a href="t500_external.html">t500_external.html</a>
+				</p>
+
+			<h2>ASUS KFSN4-DRE?</h2>
+
+				<p>
+					Internal flashing should work just fine, even if you are
+					currently booting the proprietary firmware.
+				</p>
+
+				<p>
+					Libreboot currently lacks documentation for externally
+					re-flashing an LPC flash chip. However, these boards have
+					the flash chip inside of an LPCC socket, and it is possible
+					to hot-swap the chips. If you want to back up your
+					known-working image, simply hot-swap the chip for one that
+					is the same capacity, after having dumped a copy of the
+					current firmware (flashrom -p internal -r yourchosenname.rom),
+					and then flash that chip with the known-working image.
+					Check whether the system still boots, and if it does, then
+					it should be safe to flash the new image (because you now
+					have a backup of the old image).
+				</p>
+
+				<p>
+					Keeping at least one spare LPC PLCC chip with working firmware
+					on it is highly recommended, in case of bricks.
+				</p>
+
+				<p>
+					Do check the HCL entry: <a href="../hcl/kfsn4-dre.html">../hcl/kfsn4-dre.html</a>
 				</p>
 
 			<h2>Are you currently running libreboot (or coreboot)?</h2>
