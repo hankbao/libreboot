@@ -55,21 +55,18 @@ for payload in *; do
 
 		printf '...%s' "${payload}/${board}"
 
-		# Put the version string in the archive.
-		printf '%s\n' "${version}" >"${board}/version"
-
 		# Delete the old archive
 		rm -f "../../${romdir}/${payload}/${distname}_${board}.tar.xz"
 
 		cp -R "${board}/" "${archivename}/"
 
+		# Put the version string in the archive.
+		printf '%s\n' "${version}" >"${archivename}/version"
+
 		# Create the compressed archive.
 		tar -c "${archivename}/" | xz -9e >"../../${romdir}/${payload}/${archivename}.tar.xz"
 
 		rm -Rf "${archivename}/"
-
-		# No longer needed.
-		rm -f "${board}/version"
 
 		printf ' OK\n'
 		
