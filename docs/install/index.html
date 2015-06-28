@@ -55,28 +55,14 @@
 		<h1 id="rom">List of ROM images in libreboot</h1>
 
 			<p>
-				Libreboot supports the following (refer to the <a href="../release.html">release</a> page):
-			</p>
-				<ul>
-					<li>Apple MacBook1,1 and MacBook2,1: download <b>libreboot_macbook21.tar.xz</b></li>
-					<li>ASUS KFSN4-DRE: download <b>libreboot_kfsn4-dre.tar.xz</b> (see <a href="../hcl/kfsn4-dre.html">../hcl/kfsn4-dre.html</a>)</li>
-					<li>ThinkPad X60, X60s and X60 Tablet: download <b>libreboot_x60.tar.xz</b></li>
-					<li>ThinkPad T60: download <b>libreboot_t60.tar.xz</b> (see <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>)</li>
-					<li>ThinkPad X200: download <b>libreboot_x200_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_x200_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/x200.html">../hcl/x200.html</a>)</li>
-					<li>ThinkPad R400: download <b>libreboot_r400_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_r400_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/r400.html">../hcl/r400.html</a>)</li>
-					<li>ThinkPad T400: download <b>libreboot_t400_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_t400_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/t400.html">../hcl/t400.html</a>)</li>
-					<li>ThinkPad T500: download <b>libreboot_t500_8mb.tar.xz</b> (8MiB flash chip) or <b>libreboot_t500_4mb.tar.xz</b> (4MiB flash chip) (see <a href="../hcl/t500.html">../hcl/t500.html</a>)</li>
-				</ul>
-
-			<p>
-				<b>
-					The <i>libreboot_</i> text at the beginning of the filename
-					for each archive will actually have <i>VERSION_</i> appended.
-				</b>
+				Libreboot distributes pre-compiled ROM images, built from the libreboot source code.
+				These images are provided for user convenience, so that they don't have
+				to build anything from source on their own.
 			</p>
 
 			<p>
-				The ROM images in each archive use the following naming convention: <b>boardname_keymap_mode.rom</b>
+				The ROM images in each archive use the following at the end of the file name,
+				if they are built with the GRUB payload: <b>_<i>keymap</i>_<i>mode</i>.rom</b>
 			</p>
 			<p>
 				Available <i>modes</i>: <b>vesafb</b> or <b>txtmode</b>. The <i>vesafb</i> ROM images are recommended, in most cases;
@@ -84,7 +70,12 @@
 				by coreboot native graphics initialization.
 			</p>
 			<p>
-				Keymaps are named appropriate/y according to each keyboard layout
+				<i>keymap</i> can be one of several keymaps that keyboard supports (there are quite a few),
+				which affects the keyboard layout configuration that is used in GRUB. It doesn't matter
+				which ROM image you choose here, as far as the keymap in GNU/Linux is concerned.
+			</p>
+			<p>
+				Keymaps are named appropriately according to each keyboard layout
 				support in GRUB. To learn how these keymaps are created, see
 				<a href="../grub/index.html#grub_keyboard">../grub/index.html#grub_keyboard</a>
 			</p>
@@ -94,12 +85,9 @@
 				<p>
 					Libreboot comes with ROM images built for QEMU, by default:
 				</p>
-					<ul>
-						<li><b>libreboot_qemu_q35_ich9.tar.xz</b></li>
-						<li><b>libreboot_qemu_i440fx_piix4.tar.xz</b></li>
-					</ul>
+
 				<p>
-					Examples of how to use libreboot in QEMU:
+					Examples of how to use libreboot ROM images in QEMU:
 				</p>
 					<ul>
 						<li>$ <b>qemu-system-i386 -M q35 -m 512 -bios qemu_q35_ich9_keymap_mode.rom</b></li>
@@ -111,11 +99,6 @@
 				</p>
 				<p>
 					Other arguments are available for QEMU. The manual will contain more information.
-				</p>
-				
-				<p>
-					On GM45 hardware (with libreboot), make sure that the <i>kvm</i> and <i>kvm_intel</i> kernel modules
-					are not loaded, when using QEMU.
 				</p>
 
 			<p>
