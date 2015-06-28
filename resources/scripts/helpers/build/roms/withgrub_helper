@@ -31,7 +31,7 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
-printf "Helper script: build ROM images for '%s'\n" "${1}"
+printf "GRUB Helper script: build ROM images for '%s'\n" "${1}"
 
 cd "coreboot/"
 
@@ -122,8 +122,9 @@ mv "${1}"*.rom "${1}/"
 
 # delete the old ROM's from ../bin
 rm -Rf "../bin/${1}/"
-# now put the new ROM's in ./bin
-mv "${1}/" "../bin"
+# now put the new ROM's in ./bin/grub/
+[ ! -d "../bin/grub/" ] && mkdir -p "../bin/grub/"
+mv "${1}/" "../bin/grub/"
 
 # libreboot version file no longer needed
 rm -f "lbversion"

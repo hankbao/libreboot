@@ -71,7 +71,7 @@ cd ../
 for board in ${boards}
 do
 	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
-		./build roms helper ${board}
+		./build roms withgrub_helper ${board}
 	fi
 done
 
