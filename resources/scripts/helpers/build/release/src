@@ -74,11 +74,9 @@ rm -f "${distdir}/push"
 rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 
 # Download scripts not needed, because the modules already exist
-# in the src release archive. Trim scripts also not needed, because
-# the sources in the _src release archive are already trimmed.
+# in the src release archive
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
-rm -Rf "${distdir}/resources/scripts/helpers/build/trim/"
 
 # The release archive for _src does not include docs, so it
 # is nonsense to include the script for it there

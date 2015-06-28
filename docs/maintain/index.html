@@ -275,14 +275,6 @@
 			</p>
 			
 			<p>
-				You should also make sure to update
-				<i>resources/scripts/helpers/build/trim/coreboot</i>
-				which purges unused parts of coreboot. Basically, if it's
-				purging parts that you now need, then that's a bug and you
-				should fix it.
-			</p>
-			
-			<p>
 				You should also test the resulting ROM images from building
 				with the new or modified coreboot revision.
 			</p>
@@ -343,15 +335,6 @@
 				$ <b>./build config corebootmodify grub/kfsn4-dre</b><br/>
 				$ <b>./build config corebootreplace grub/kfsn4-dre</b><br/>
 				$ <b>./build config corebootupdate grub/kfsn4-dre</b><br/>
-			</p>
-			
-			<p>
-				You should also make sure to update the whitelist in
-				<i>resources/scripts/helpers/build/trim/coreboot</i>
-				which purges unused parts of coreboot (including boards). 
-				Basically, if it's
-				purging parts that you now need, then that's a bug and you
-				should fix it.
 			</p>
 
 			<p>
