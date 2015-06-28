@@ -39,32 +39,46 @@ versiondir="release/${version}"
 romdir="${versiondir}/rom"
 distname="libreboot_${version}"
 
-[ -d "${romdir}/" ] || mkdir -p "${romdir}/"
-
 printf 'Building ROM image release archives for...\n'
 
 cd "bin/"
-for board in *; do
-	printf '...%s' "${board}"
 
-	# Put the version string in the archive.
-	printf '%s\n' "${version}" >"${board}/version"
+for payload in *; do
 
-	# Delete the old archive
-	rm -f "../${romdir}/${distname}_${board}.tar.xz"
+	[ ! -d "../${romdir}/${payload}/" ] && mkdir -p "../${romdir}/${payload}/"
 
-	cp -R "${board}/" "${distname}_${board}/"
+	cd "${payload}/"
+	
+	for board in *; do
 
-	# Create the compressed archive.
-	tar -c "${distname}_${board}/" | xz -9e >"../${romdir}/${distname}_${board}.tar.xz"
+		archivename="${distname}_${payload}_${board}"
 
-	rm -Rf "${distname}_${board}/"
+		printf '...%s' "${payload}/${board}"
 
-	# No longer needed.
-	rm -f "${board}/version"
+		# Put the version string in the archive.
+		printf '%s\n' "${version}" >"${board}/version"
 
-	printf ' OK\n'
+		# Delete the old archive
+		rm -f "../../${romdir}/${payload}/${distname}_${board}.tar.xz"
+
+		cp -R "${board}/" "${archivename}/"
+
+		# Create the compressed archive.
+		tar -c "${archivename}/" | xz -9e >"../../${romdir}/${payload}/${archivename}.tar.xz"
+
+		rm -Rf "${archivename}/"
+
+		# No longer needed.
+		rm -f "${board}/version"
+
+		printf ' OK\n'
+		
+	done
+	
+	cd "../"
+	
 done
+
 cd "../"
 
 printf 'ROM image release archives are stored in %s/\n' "${romdir}"
