@@ -38,7 +38,7 @@ if [ $# -gt 0 ]; then
 	boards="$@"
 else
 	# build all ROM images
-	boards="$(ls resources/libreboot/config/)"
+	boards="$(ls resources/libreboot/config/grub/)"
 fi
 
 
@@ -70,7 +70,7 @@ cd ../
 # Build ROM images for supported boards
 for board in ${boards}
 do
-	if [ -f "resources/libreboot/config/${board}/config" ]; then
+	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
 		./build roms helper ${board}
 	fi
 done
