@@ -51,24 +51,6 @@
 
 		<h2 id="compatibility_noblobs">Compatibility (without blobs)</h2>
 
-			<p>
-				Usual limitations apply for native graphics initialization
-				(no VBT and/or INT10H and only GRUB works so no BIOS, so no DOS/Windows support
-				- who cares? There is no system but GNU, and Linux is one of it's kernels).
-			</p>
-
-			<p>
-				When connecting the AC adapter while system is powered off, system will then power on.
-				This probably happens in coreboot aswell (with or without blobs).
-				It's a minor annoyance, but it should be fixed (if it's not already fixed by now).
-			</p>
-
-			<p>
-				This method of disabling the ME leaves the flash descriptor and gbe in place (non-functional data, fully documented)
-				and disables the ME using soft straps. This means that the gigabit ethernet will still work (putting the system in
-				non-descriptor mode would wipe it out).
-			</p>
-
 			<div class="subsection">
 				<h3 id="hwvirt">Hardware virtualization (vt-x)</h3>
 					<p>
@@ -76,6 +58,10 @@
 						if running QEMU with vt-x enabled on 2 cores for the guest. With a single core enabled
 						for the guest, the guest panics (but the host is fine). Working around this in QEMU
 						might be possible; if not, software virtualization should work fine (it's just slower).
+					</p>
+					<p>
+						On GM45 hardware (with libreboot), make sure that the <i>kvm</i> and <i>kvm_intel</i> kernel modules
+						are not loaded, when using QEMU.
 					</p>
 					<p>
 						The following errata datasheet from Intel might help with investigation:
