@@ -104,7 +104,7 @@ if [ "${mode}" = "i945lenovo_firstflash" ] || [ "${mode}" = "i945lenovo_secondfl
 	
 	# anti-bricking precaution
 	if [ ! -f "${bucts}" ]; then
-		printf "bucts binary not present. ABORTING so as to protect against bricking the machine.\n"
+		printf "bucts binary not present. ABORTING so as to protect against bricking the system.\n"
 		exit 1
 	fi
 	

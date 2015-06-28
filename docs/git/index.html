@@ -152,11 +152,11 @@
 				external flashing will be safe regardless.
 				Each ROM contains identical data inside the two final 64K region in the file*.
 				This corresponds to the final two 64K regions in the flash chip. Lenovo BIOS will prevent you from writing the
-				final one, so running &quot;<b>bucts 1</b>&quot; will set the machine to boot from the other block instead (which
+				final one, so running &quot;<b>bucts 1</b>&quot; will set the system to boot from the other block instead (which
 				is writeable along with everything beneath it when using a patched flashrom. see <a href="#build_flashrom">#build_flashrom</a>). 
 				After shutting down and booting up after the first flash of libreboot,
 				the final 64K block is writeable so you flash the ROM again with an unpatched flashrom and run "<b>bucts 0</b>" to
-				make the machine boot from the normal (highest) block again.
+				make the system boot from the normal (highest) block again.
 			</p>
 
 			<p>
@@ -289,7 +289,7 @@
 
 			<p>
 				Configurations are then saved as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
-				for each machine type by the libreboot build scripts are stored in resources/libreboot/config/
+				for each system type by the libreboot build scripts are stored in resources/libreboot/config/
 			</p>
 
 			<div class="subsection">
@@ -334,7 +334,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -355,7 +355,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>kfsn4-dre/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 
@@ -376,7 +376,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -397,7 +397,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>x60/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 					<p>
 						This configuration is used on all variants: X60, X60S and X60 Tablet.
@@ -426,7 +426,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -446,7 +446,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>t60/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>	
 					<p>
 						It is believed that the motherboards on 14.1&quot; and 15.1&quot; T60s are the same, so the same configuration is used
@@ -475,7 +475,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -497,7 +497,7 @@
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>x200_8mb/config</b> and
 						resources/libreboot/config/<b>x200_4mb/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 			
@@ -522,7 +522,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -543,7 +543,7 @@
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>r400_8mb/config</b> and
 						resources/libreboot/config/<b>r400_4mb/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 			
@@ -568,7 +568,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -589,7 +589,7 @@
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>t400_8mb/config</b> and
 						resources/libreboot/config/<b>t400_4mb/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 			
@@ -614,7 +614,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -635,7 +635,7 @@
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>t500_8mb/config</b> and
 						resources/libreboot/config/<b>t500_4mb/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 
@@ -661,7 +661,7 @@
 							Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot framebuffer for a separate set of ROM images, in each machine.</li>
+								to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
@@ -681,7 +681,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>macbook21/config</b> and is used by the build
-						scripts for this machine. <b>This config is also used for the MacBook1,1</b>.
+						scripts for this system. <b>This config is also used for the MacBook1,1</b>.
 					</p>
 			</div>
 				
@@ -699,7 +699,7 @@
 							Display / Keep VESA framebuffer = <i>enable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot text-mode for a separate set of ROM images, in each machine.</li>
+								to enable coreboot text-mode for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						
@@ -715,7 +715,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>qemu_i440fx_piix4/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 				
@@ -733,7 +733,7 @@
 							Display / Keep VESA framebuffer = <i>enable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
 							<ul>
 								<li>Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time
-								to enable coreboot text-mode for a separate set of ROM images, in each machine.</li>
+								to enable coreboot text-mode for a separate set of ROM images, in each system.</li>
 							</ul>
 						</li>
 						
@@ -749,7 +749,7 @@
 					</ul>
 					<p>
 						The resulting .config file was saved as resources/libreboot/config/<b>qemu_q35_ich9/config</b> and is used by the build
-						scripts for this machine.
+						scripts for this system.
 					</p>
 			</div>
 
@@ -874,7 +874,7 @@
 					</p>
 					<p>
 						<b>To include statically linked i686 and x86_64 binaries for bucts and flashrom,
-						you will need to build them on a chroot, a virtual machine or a real
+						you will need to build them on a chroot, a virtual system or a real
 						system where the host uses each given architecture. These packages are difficult
 						to cross-compile, and the libreboot project is still figuring out how to deal
 						with them.</b>
@@ -917,7 +917,7 @@
 					</p>
 					
 					<p>
-						The ROM images will be stored in separate archives for each machine, under <b>release/rom/</b>.
+						The ROM images will be stored in separate archives for each system, under <b>release/rom/</b>.
 					</p>
 			
 			</div>

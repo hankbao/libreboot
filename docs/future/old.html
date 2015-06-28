@@ -80,7 +80,7 @@
 					Reading <b>0xe4361254</b> (address) in Lenovo BIOS always yields FFFFFFFF, even when writing to it (and writing to it doesn't affect brightness controls). 
 					'mtjm' on IRC found that the buttons (Fn keys) control /sys/class/backlight/acpi_video0 which has no affect on 61254 (BLC_PWM_CTL). He says
 					intel_backlight has different values and uses the register. devmem2 works, needs checking <b>lspci -vv</b> for where the memory is mapped,
-					which is different than on coreboot; mtjm found that it was 0xec061254 on his machine (X60 Tablet), and the register value is different too.
+					which is different than on coreboot; mtjm found that it was 0xec061254 on his system (X60 Tablet), and the register value is different too.
 					<b>This is relevant, because we still don't know how backlight controls are actually handled. We got it working by accident. We need to know more.</b>.
 				</p>
 				<p>
@@ -225,7 +225,7 @@
 			<p>
 				<b>
 					The replay code is obsolete (see 5320 changeset on review.coreboot.org for better version
-					which supports more machines/screens, and then 5345 for T60). Information here for reference since that is where the fix was first applied. 
+					which supports more systems/screens, and then 5345 for T60). Information here for reference since that is where the fix was first applied. 
 				</b>
 			</p>
 

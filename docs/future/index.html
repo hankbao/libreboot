@@ -141,7 +141,7 @@
 			</p>
 
 			<p>
-				Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on machines with the offending panels in:
+				Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on systems with the offending panels in:
 			</p>
 				<ul>
 					<li>Coreboot (or libreboot, whatever) with VBIOS (disable native graphics also)</li>
@@ -286,8 +286,8 @@ f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 				Before each test run, boot a live USB and delete the old logs in /var/log (kernel log, xorg log, dmesg and so on).
 			</p>
 			<p>
-				Load (from the ROM) the runningvga.bin for each LCD panel on each machine; do not execute it, only load it! (coreboot will have to be modified).
-				Rename the ROM appropriately, based on the machine name and the panel name. coreboot_nativegfx_5868_plusrunningvga_t60_14_LTD141ECMB.rom,
+				Load (from the ROM) the runningvga.bin for each LCD panel on each system; do not execute it, only load it! (coreboot will have to be modified).
+				Rename the ROM appropriately, based on the system name and the panel name. coreboot_nativegfx_5868_plusrunningvga_t60_14_LTD141ECMB.rom,
 				for instance. Keep a copy for later use.
 			</p>
 
@@ -299,7 +299,7 @@ f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 
 			<p>
 				With each boot, make notes about what you see and get logs using the <a href="#standard_test">standard test</a>.
-				You will need the files from <a href="#intelvbttool_results">#intelvbttool_results</a> for each machine.
+				You will need the files from <a href="#intelvbttool_results">#intelvbttool_results</a> for each system.
 			</p>
 
 			Results (# means untested):
@@ -418,7 +418,7 @@ f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 			</p>
 
 			<p>
-				Backup both files (runningvga.bin and intelvbttool_out), renaming them to match the machine and LCD panel used.
+				Backup both files (runningvga.bin and intelvbttool_out), renaming them to match the system and LCD panel used.
 				<a href="../misc/index.html#get_edid_panelname">../misc/index.html#get_edid_panelname</a> will show you how to get the name (model) of the LCD panel used.
 			</p>
 

@@ -26,7 +26,7 @@
 					Types of brick:
 					<ul>
 						<li><a href="#bucts_brick">Brick type 1: bucts not reset</a></li>
-						<li><a href="#recovery">Brick type 2: bad rom (or user error), machine won't boot</a></li>
+						<li><a href="#recovery">Brick type 2: bad rom (or user error), system won't boot</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -45,20 +45,20 @@
 				dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k<br/>
 				dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump<br/>
 				dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc<br/>
-				(doing this makes the ROM suitable for use when flashing a machine that still has Lenovo BIOS running,
+				(doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running,
 				using those instructions: <a href="http://www.coreboot.org/Board:lenovo/x60/Installation">http://www.coreboot.org/Board:lenovo/x60/Installation</a>.
 			</p>
 	</div>
 	
 	<div class="section">
 
-		<h1 id="recovery">bad rom (or user error), machine won't boot</h1>
+		<h1 id="recovery">bad rom (or user error), system won't boot</h1>
 			<p>
-				In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your machine from
-				booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your machine is bricked and will not boot at all.
+				In this scenario, you compiled a ROM that had an incorrect configuration, or there is an actual bug preventing your system from
+				booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash while Lenovo BIOS was running. In any case, your system is bricked and will not boot at all.
 			</p>
 			<p>
-				&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the machine, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
+				&quot;Unbricking&quot; means flashing a known-good (working) ROM. The problem: you can't boot the system, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
 			</p>
 			<p>
 				Remove those screws:<br/>
@@ -223,7 +223,7 @@ POMONA 5250:
 				<img src="../images/x60_unbrick/0039.jpg" alt="" />
 			</p>
 			<p>
-				Connect the wifi antenna cables. At the start of the tutorial, this machine had an Intel wifi chip. Here you see I've replaced it with an 
+				Connect the wifi antenna cables. At the start of the tutorial, this system had an Intel wifi chip. Here you see I've replaced it with an 
 				Atheros AR5B95 (supports 802.11n and can be used without blobs):<br/>
 				<img src="../images/x60_unbrick/0040.jpg" alt="" />
 			</p>

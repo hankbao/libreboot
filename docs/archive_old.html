@@ -561,7 +561,7 @@
 								 This was put there before for users upgrading from libreboot r5
 								 to r6, but also allows the user to flash the wrong image. For
 								 example, the user could flash a T60 image on an X60, thus
-								 bricking the machine. It's almost certain that most people
+								 bricking the system. It's almost certain that most people
 								 have upgraded by now, so remove this potentially dangerous
 								 option.
 							</li>
@@ -676,7 +676,7 @@
 						</ul>
 					</li>
 				</ul>
-			<h2>New machines supported in this release:</h2>
+			<h2>New systems supported in this release:</h2>
 				<ul>
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
@@ -708,7 +708,7 @@
 				</ul>
 			<h2>Machines no longer supported (compared to previous release):</h2>
 				<ul>
-					<li><b>All previous machines still supported!</b></li>
+					<li><b>All previous systems still supported!</b></li>
 				</ul>
 
 			<h2>
@@ -725,7 +725,7 @@
 					<li>Regression fix: Re-add CD-ROM (ata0) in GRUB</li>
 					<li>Documentation: add notes about performance penalty when using ecryptfs.</li>
 					<li>Documentation: Fixed spelling and grammatical errors.</li>
-					<li>Documentation: macbook21: add new machine as tested</li>
+					<li>Documentation: macbook21: add new system as tested</li>
 					<li>Documentation: macbook21: add info about improving touchpad sensitivity</li>
 					<li>Documentation: X60 Tablet: add more information about finger input</li>
 					<li>Documentation: release.html: Add information about recently merged commit in coreboot</li>
@@ -786,7 +786,7 @@
 						</ul>
 					</li>
 					<li>Updated GRUB to new version from August 14th, 2014.</li>
-					<li>Unified all grub configurations for all machines to a single grub.cfg under resources/grub/config/</li>
+					<li>Unified all grub configurations for all systems to a single grub.cfg under resources/grub/config/</li>
 					<li>Updated flashrom to new version from August 20th, 2014</li>
 					<li>
 						Added getseabios and builddeps-seabios (builddeps and getall were also updated)
@@ -815,7 +815,7 @@
 					<li>Commented out lines in resources/grub/config/grub.cfg for loading font/background (not useful anymore, now that GRUB is in text-mode).</li>
 					<li>Commented out lines in buildrom-withgrub that included backgrounds/fonts (not useful anymore, now that GRUB is in text-mode).</li>
 					<li>
-						Added resources/utilities/i945-pwm/ (from git://git.mtjm.eu/i945-pwm), for debugging acpi brightness on i945 machines.
+						Added resources/utilities/i945-pwm/ (from git://git.mtjm.eu/i945-pwm), for debugging acpi brightness on i945 systems.
 						<ul>
 							<li>Added instructions for it in builddeps, builddeps-i945pwm, builddeb and cleandeps</li>
 						</ul>
@@ -849,7 +849,7 @@
 					<li>Moved resources/grub/keymap to resources/utilities/grub-assemble/keymap, and updated that utility to use it</li>
 					<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
 					<li>Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory</li>
-					<li>'buildrom-withgrub' script: updated it to create 2 sets of ROMs for each machine: one with text-mode, one with coreboot framebuffer.</li>
+					<li>'buildrom-withgrub' script: updated it to create 2 sets of ROMs for each system: one with text-mode, one with coreboot framebuffer.</li>
 					<li>Documentation: updated index.html#rom to reflect the above</li>
 					<li>Deleted unused README and COPYING file from main directory</li>
 					<li>Removed some rm -Rf .git* instructions from the get* scripts and moved them to build-release script</li>

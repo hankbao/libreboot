@@ -2,7 +2,7 @@
 
 #  helper: prepare a small source archive for those utils
 #  that don't easily cross-compile. Then the tarball can be extracted
-#  on those machines with the target architecture, and compiled.
+#  on those systems with the target architecture, and compiled.
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #

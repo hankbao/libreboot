@@ -19,14 +19,14 @@
 			<p>
 				This sections relates to disabling and removing the ME (Intel <b>M</b>anagement <b>E</b>ngine) on
 				GM45. This was originally done on the ThinkPad X200, and later adapted for the ThinkPad R400/T400/T500. It can
-				in principle be done on any GM45 or GS45 machine.
+				in principle be done on any GM45 or GS45 system.
 			</p>
 			<p>
 				The ME is a blob that typically must be left inside the flash chip (in the ME region, as outlined
 				by the default descriptor). On GM45, it is possible to remove it without any ill effects. All
-				other parts of coreboot on GM45 machines (provided GMA MHD4500 / Intel graphics) can be blob-free,
+				other parts of coreboot on GM45 systems (provided GMA MHD4500 / Intel graphics) can be blob-free,
 				so removing the ME was the last obstacle to
-				make GM45 a feasible target in libreboot (the machines can also work without the microcode blobs). 
+				make GM45 a feasible target in libreboot (the systems can also work without the microcode blobs). 
 			</p>
 			<p>
 				The ME is removed and disabled in libreboot by modifying the descriptor. More info about
@@ -121,7 +121,7 @@
 			</p>
 			
 			<p>
-				Your libreboot.rom image is now ready to be flashed on the machine. Refer back to 
+				Your libreboot.rom image is now ready to be flashed on the system. Refer back to 
 				<a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
 				for how to flash it.
 			</p>
@@ -161,12 +161,12 @@
 		<h1 id="ich9deblob">ICH9 deblob utility</h1>
 		
 			<p>
-				<b>This is no longer strictly necessary. Libreboot ROM images for GM45 machines now
+				<b>This is no longer strictly necessary. Libreboot ROM images for GM45 systems now
 				contain the 12KiB descriptor+gbe generated from ich9gen, by default.</b>
 			</p>
 			
 			<p>
-				This was the tool originally used to disable the ME on X200 (later adapted for other machines that use the
+				This was the tool originally used to disable the ME on X200 (later adapted for other systems that use the
 				GM45 chipset). <a href="#ich9gen">ich9gen</a> now supersedes it;
 				ich9gen is better because it does not rely on dumping the factory.rom image (whereas, ich9deblob does).
 			</p>
@@ -187,14 +187,14 @@
 			</p>
 			
 			<p>
-				Place the factory.rom from your machine 
+				Place the factory.rom from your system 
 				(can be obtained using the external flashing guides for GM45 targets linked <a href="../install/index.html">../install/index.html</a>) in
 				the directory where you have your ich9deblob executable, then run the tool:<br/>
 				$ <b>./ich9deblob</b>
 			</p>
 			<p>
 				A 12kiB file named <b>deblobbed_descriptor.bin</b> will now appear. <b>Keep this and the factory.rom stored in a safe location!</b>
-				The first 4KiB contains the descriptor data region for your machine, and the next 8KiB contains the gbe region (config data for your
+				The first 4KiB contains the descriptor data region for your system, and the next 8KiB contains the gbe region (config data for your
 				gigabit NIC). These 2 regions could actually be separate files, but they are joined into 1 file in this case.
 			</p>
 			
@@ -493,7 +493,7 @@ DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00
 				
 				<p>
 					By default, the X200 (as shipped by Lenovo) actually has an invalid main gbe checksum. The backup gbe region is correct,
-					and is what these machines default to. Basically, you should do what you need on the *backup* gbe region, and
+					and is what these systems default to. Basically, you should do what you need on the *backup* gbe region, and
 					then correct the main one by copying from the backup.
 				</p>
 				

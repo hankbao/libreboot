@@ -2,7 +2,7 @@
  *  ich9deblob.c
  *  This file is part of the ich9deblob utility from the libreboot project
  * 
- * Purpose: disable and remove the ME from ich9m/gm45 machines in coreboot.
+ * Purpose: disable and remove the ME from ich9m/gm45 systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Francis Rowe <info@gluglug.org.uk>
@@ -25,7 +25,7 @@
 /* Original utility can be found at https://gitorious.org/ich9descriptortool */
  
 /*
- * Read a factory.rom dump (ich9m/gm45 machines) and 
+ * Read a factory.rom dump (ich9m/gm45 systems) and 
  * modify the flash descriptor to remove all regions except descriptor,
  * Gbe and BIOS. Set BIOS region to full size of the ROM image (after
  * the flash descriptor and gbe). Basically, deblob the descriptor.

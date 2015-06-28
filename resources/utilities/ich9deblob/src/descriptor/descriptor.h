@@ -66,7 +66,7 @@ struct FLVALSIG
 	/*
 	 * 4 bytes. 
 	 * descriptor mode = 0FF0A55A (hex, big endian). Note: stored in ROM in little endian order.
-	 * Anything else is considered invalid and will put the machine in non-descriptor mode.
+	 * Anything else is considered invalid and will put the system in non-descriptor mode.
 	 */
 	uint32_t signature; /* Put 0x0FF0A55A here. confirmed in deblobbed_descriptor.bin */
 };

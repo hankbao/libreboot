@@ -89,10 +89,10 @@
 
 			<p>
 				There are several advantages to modifying the GRUB configuration stored in CBFS, but
-				this also means that you have to flash a new libreboot ROM image on your machine (some users
+				this also means that you have to flash a new libreboot ROM image on your system (some users
 				feel intimidated by this, to say the least).
 				Doing so can be risky if not handled correctly, because it can result in a bricked
-				machine (recovery is easy if you have the <a href="../install/bbb_setup.html">equipment</a>
+				system (recovery is easy if you have the <a href="../install/bbb_setup.html">equipment</a>
 				for it, but most people don't). If you aren't up to that then don't worry; it is possible
 				to use a custom GRUB menu without flashing a new image, by loading a GRUB configuration
 				from a partition on the main storage instead.
@@ -270,7 +270,7 @@
 				The libreboot.rom file contains your <i>grub.cfg</i> and <i>grubtest.cfg</i> files. 
 				grub.cfg will load first, but it has a menu entry for switching to the copy (grubtest.cfg).
 				Thus, you should extract, modify and re-insert the grubtest.cfg first. 
-				This reduces your chance of making a mistake that could make your machine unbootable (or very hard to boot).
+				This reduces your chance of making a mistake that could make your system unbootable (or very hard to boot).
 			</p>
 
 			<p>
