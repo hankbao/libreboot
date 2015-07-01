@@ -307,6 +307,48 @@
 
 	<div class="section">
 
+		<h1 id="ram_s3_microcode">RAM, S3 and microcode updates</h1>
+
+			<p>
+				Not all memory modules work. Most of the default ones do, but you have to be careful
+				when upgrading to 8GiB; some modules work, some don't.
+			</p>
+
+			<p>
+				pehjota started collecting some steppings for different CPUs on several X200 laptops.
+				You can get the CPUID by running: <br/>
+				$ <b>dmesg | sed -n 's/^.* microcode: CPU0 sig=0x\([^,]*\),.*$/\1/p'</b>
+			</p>
+
+			<p>
+				What pehjota wrote:
+				 The laptops that have issues resuming from suspend, as well as a laptop that (as I mentioned earlier in #libreboot) won't boot with any Samsung DIMMs, all have CPUID 0x10676 (stepping M0).
+			</p>
+
+			<p>
+				What pehjota wrote:
+				Laptops with CPUID 0x167A (stepping R0) resume properly every time and work with Samsung DIMMs.  I'll 
+				need to do more testing on more units to better confirm these trends, but it looks like the M0 microcode 
+				is very buggy.  That would also explain why I didn't have issues with Samsung DIMMs with the Lenovo BIOS 
+				(which would have microcode updates).  I wonder if VT-x works on R0.
+			</p>
+
+			<p>
+				What pehjota wrote:
+				As I said, 10676 is M0 and 1067A is R0; those are the two CPUIDs and steppings for Intel Core 2 Duo P8xxx CPUs with factory microcode.  (1067 is the family and model, and 6 or A is the stepping ID.)
+			</p>
+
+			<p>
+				<b>
+					TODO: check the CPUIDs and test S3 resume and/or KVM on any C2D systems (including non-P8xxx ones, which I don't have here) you have available.  I'd be curious if you could confirm these results.
+				</b>
+				It might not be coreboot that's buggy with raminit/S3; it might just be down to the microcode updates.
+			</p>
+
+	</div>
+
+	<div class="section">
+
 		<h2 id="unsorted">Unsorted notes</h2>
 
 <pre>
