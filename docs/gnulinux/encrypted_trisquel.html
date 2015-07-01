@@ -229,7 +229,7 @@
 
 			<p>
 				Do that:<br/>
-				grub&gt; <b>cryptomount -a (ahci0,msdos1)</b><br/>
+				grub&gt; <b>cryptomount -a</b><br/>
 				grub&gt; <b>set root='lvm/grubcrypt-trisquel'</b><br/>
 				grub&gt; <b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
 				grub&gt; <b>initrd /initrd.img</b><br/>
@@ -276,10 +276,16 @@
 			</p>
 
 			<p>
-				<b>cryptomount -a (ahci0,msdos1)</b><br/>
+				<b>cryptomount -a</b><br/>
 				<b>set root='lvm/grubcrypt-trisquel'</b><br/>
 				<b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
 				<b>initrd /initrd.img</b>
+			</p>
+
+			<p>
+				Note: <i>cryptomount -a</i> mounts all encrypted devices found. It may be desirable to just mount the needed partition.
+				To do so you may either specify your partition via layout (e.g.: <i>cryptomount -a (ahci0,msdos1)</i>)
+				or use the UUID <i>cryptomount -u UUID</i>.
 			</p>
 
 			<p>
@@ -320,6 +326,7 @@
 
 		<p>
 			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Copyright &copy; 2015 Tobias Heinicke &lt;theinicke@bss-wf.de&gt;<br/>
 			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
 		</p>

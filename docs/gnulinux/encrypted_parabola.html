@@ -474,7 +474,7 @@
 				(using those 2 underlines will boot lts kernel instead of normal).
 			</p>
 			<p>
-				grub> <b>cryptomount -a (ahci0,msdos1)</b><br/>
+				grub> <b>cryptomount -a</b><br/>
 				grub> <b>set root='lvm/matrix-rootvol'</b><br/>
 				grub> <b>linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root</b><br/>
 				grub> <b>initrd /boot/initramfs-linux-libre<u>-lts</u>.img</b><br/>
@@ -497,7 +497,7 @@
 			<p>
 				Inside the 'Load Operating System' menu entry, change the contents to:<br/>
 				<b><i>
-					cryptomount -a (ahci0,msdos1)<br/>
+					cryptomount -a<br/>
 					set root='lvm/matrix-rootvol'<br/>
 					linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root<br/>
 					initrd /boot/initramfs-linux-libre<u>-lts</u>.img
@@ -508,6 +508,12 @@
 				Note: the underlined parts above (-lts) can also be removed, to boot the latest kernel instead of LTS (long-term support) kernels.
 				You could also copy the menu entry and in one have -lts, and without in the other menuentry.
 				You could also create a menu entry to load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
+			</p>
+
+			<p>
+				Note: <i>cryptomount -a</i> mounts all encrypted devices found. It may be desirable to just mount the needed partition.
+				To do so you may either specify your partition via layout (e.g.: <i>cryptomount -a (ahci0,msdos1)</i>)
+				or use the UUID <i>cryptomount -u UUID</i>.
 			</p>
 
 			<p>
@@ -635,6 +641,7 @@
 			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
 			Copyright &copy; 2015 Thomas Zelch &lt;tze@xenlab.de&gt;<br/>
 			Copyright &copy; 2015 Arthur Heymans &lt;arthur@aheymans.xyz&gt;<br/>
+			Copyright &copy; 2015 Tobias Heinicke &lt;theinicke@bss-wf.de&gt;<br/>
 			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
 			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
 		</p>
