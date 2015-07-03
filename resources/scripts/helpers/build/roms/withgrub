@@ -93,15 +93,15 @@ done
 
 # Build the deblobbed descriptor+gbe regions for GM45/ICH9M targets.
 # Then put them in the ROM images.
-if [ -d "bin/" ]; then
-	cd "bin/"
+if [ -d "bin/grub/" ]; then
+	cd "bin/grub/"
 	for board in "x200" "r400" "t400" "t500"
 	do
 		for romsize in "4m" "8m"
 		do	
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"
-				../../resources/utilities/ich9deblob/ich9gen
+				../../../resources/utilities/ich9deblob/ich9gen
 				for rom in $(ls)
 				do
 					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
@@ -112,7 +112,7 @@ if [ -d "bin/" ]; then
 			fi
 		done
 	done
-	cd ../
+	cd ../../
 fi
 
 # The GRUB payloads are no longer needed
