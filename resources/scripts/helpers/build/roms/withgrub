@@ -79,15 +79,15 @@ done
 # This enables the ROM to be flashed over the lenovo bios firmware
 for i945board in "x60" "t60"
 do
-	if [ -d "bin/${i945board}/" ]; then
-		cd "bin/${i945board}/"
+	if [ -d "bin/grub/${i945board}/" ]; then
+		cd "bin/grub/${i945board}/"
 		for i945rom in $(ls)
 		do
 			dd if="${i945rom}" of=top64k.bin bs=1 skip=$[$(stat -c %s "${i945rom}") - 0x10000] count=64k
 			dd if=top64k.bin of="${i945rom}" bs=1 seek=$[$(stat -c %s "${i945rom}") - 0x20000] count=64k conv=notrunc
 			rm -f top64k.bin
 		done
-		cd "../../"
+		cd "../../../"
 	fi
 done
 
