@@ -52,7 +52,8 @@
 							<a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">post 1</a> and
 							<a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">post 2</a><br/><br/>
 							
-							The board is fully functional (blobs not required), and will be an instant addition to libreboot.<br/><br/>
+							The board is fully functional (blobs not required), and will be an instant addition to libreboot.
+							See <a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a><br/><br/>
 							
 							<a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc</a> (USA) has ported
 							this board to coreboot, and is using the port internally on their computing cluster, for
@@ -182,6 +183,7 @@
 						<li>
 							X200/X60: battery drained even while system is "off" on some systems. investigate.
 							Could just be the Ethernet controller waiting for a Wake-on-LAN frame.
+							'ethtool -s net0 wol d' disables wake on lan until the next boot. There are a lot of ways to make it permanent: netctl. systemd, udev, cron
 						</li>
 						<li>
 							Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work.
