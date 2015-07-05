@@ -480,6 +480,24 @@
 http://vzimmer.blogspot.co.uk/2015/06/firmware-related-blogs.html
 ^ list of links to look out for (news items)
 
+also:
+https://paste.debian.net/plainh/b3699c60
+(T400 EDID dump)
+
+TODO: tidy up the docs to make it clear that EDID dumps are needed
+
+
+my T400 panel (1280x800. working):
+https://paste.debian.net/plainh/776705d5
+
+look at this patch when it merges, see if it affects anything
+http://review.coreboot.org/#/c/10742/
+
+todo: investigate why X60/T60 still uses power and drain battery
+when powered off (also affects X200)
+might be the code that handles power_on_after_fail nvram option
+wake on lan was tested, it doesn't seem to be the cause
+
 -->
 
 	<div class="section">
