@@ -48,25 +48,16 @@
 		<h1>Table of Contents</h1>
 
 			<ul>
-				<li><a href="#getting_started">Getting started</a></li>
-				<li><a href="#libreboot_grub_config_ondisk">Option A: don't flash a new ROM</a></li>
-				<li><a href="#libreboot_grub_config_flash">Option B: flash a new ROM</a></li>
+				<li><a href="#introduction">Introduction</a></li>
+				<li><a href="#option1_dont_reflash">1st option: don't re-flash</a></li>
+				<li><a href="#option2_reflash">2nd option: re-flash</a></li>
 				<ul>
-					<li><a href="#tools">Get the tools ready</a></li>
-					<ul>
-						<li><a href="#locate_tools">Locate the tools in the binary release</a></li>
-						<li><a href="#build_tools">Build the tools from source</a></li>
-					</ul>
-					<li><a href="#which_rom">Which ROM image should I use?</a></li>
-					<ul>
-						<li><a href="#use_prebuilt_rom">Use one of the provided ROM images</a></li>
-						<li><a href="#re-use_rom">Re-use the currently flashed ROM image</a></li>
-					</ul>
-					<li><a href="#extract_grubtest">Extract grubtest from the ROM image</a>
-					<li><a href="#reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</a></li>
-					<li><a href="#test_it">Test it!</a>
+					<li><a href="#tools">Acquire the necessary utilities</a></li>
+					<li><a href="#rom">Acquiring the correct ROM image</a></li>
+					<li><a href="#extract_testconfig">Extract grubtest from the ROM image</a>
+					<li><a href="#reinsert_modified_testconfig">Re-insert the modified grubtest.cfg into the ROM image</a></li>
+					<li><a href="#testing">Testing</a>
 					<li><a href="#final_steps">Final steps</a></li>
-					<li><a href="#troubleshooting">Troubleshooting</a></li>
 				</ul>
 			</ul>
 			
@@ -74,7 +65,7 @@
 
 	<div class="section">
 
-		<h2 id="getting_started">Getting started</h2>
+		<h2 id="introduction">Introduction</h2>
 
 			<p>
 				Download the latest release from 
@@ -103,7 +94,7 @@
 
 	<div class="section">
 		
-		<h2 id="libreboot_grub_config_ondisk">Option A: don't flash a new ROM</h2>
+		<h2 id="option1_dont_reflash">1st option: don't re-flash</h2>
 
 			<p>
 				By default, GRUB in libreboot is configured to scan all partitions on the main storage
@@ -129,8 +120,8 @@
 			
 			<p>
 				If you want to adapt a copy of the existing <i>libreboot</i> GRUB configuration and use that for the libreboot_grub.cfg file, then
-				follow <a href="#tools">#tools</a>, <a href="#which_rom">#which_rom</a> and
-				<a href="#extract_grubtest">#extract_grubtest</a> to get the <b><i>grubtest.cfg</i></b>. 
+				follow <a href="#tools">#tools</a>, <a href="#rom">#rom</a> and
+				<a href="#extract_testconfig">#extract_testconfig</a> to get the <b><i>grubtest.cfg</i></b>. 
 				Rename <b><i>grubtest.cfg</i></b> to <b><i>libreboot_grub.cfg</i></b> and save it to <b><i>/boot/grub/</i></b>
 				on the running system where it is intended to be used. Modify the file at that location however you see fit, 
 				and then stop reading this guide (the rest of this page is irrelevant to you); <b>in libreboot_grub.cfg on disk,
@@ -150,11 +141,10 @@
 
 	<div class="section">
 		
-		<h2 id="libreboot_grub_config_flash">Option B: flash a new ROM</h2>
+		<h2 id="option2_reflash">2nd option: re-flash</h2>
 
 			<p>
-				Alternatively to editing the GRUB configuration file on your disk, you can also change the configuration that is
-				stored in the CBFS on the flash chip.
+				You can modify what is stored inside the flash chip quite easily. Read on to find out how.
 			</p>
 
 			<p>
@@ -163,44 +153,12 @@
 			
 	</div>
 	<div class="section">
-		<h2 id="tools">Get the tools ready</h2>
-
-		<p>
-			You will need to use the <b><i>cbfstool</i></b>, <b><i>rmodtool</i></b> and <b><i>flashrom</i></b> tools.
-			You can either use the pre-compiled binaries provided by the binary release of libreboot, or build the tools
-			yourself from source from the libreboot source code.
-		</p>
-
-		<div class="subsection">
-			<h3 id="locate_tools">Locate the tools in the binary release</h3>
+		<h2 id="tools">Acquire the necessary utilities</h2>
 
 			<p>
-				If you are working with the binary release libreboot_util, you will find the <b><i>cbfstool</i></b> and
-				<b><i>rmodtool</i></b> binaries under ./cbfstool/{architecture}/ , where {architecture} refers to your 
-				hardware name for which your current running kernel is compiled for. You can find it by running:
-				<br/>
-				<b>$ uname -m</b>
+				Use <b><i>cbfstool</i></b> and <b><i>flashrom</i></b>. There are available in the <i>_util</i> release archive,
+				or they can be compiled (see <a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a>).
 			</p>
-			<p>
-				The <b><i>flashrom</i></b> binary is located under ./flashrom/{architecture}/
-			</p>
-			<p>
-				Whenever one of the tools is used in a command in this tutorial, it will be called as, e.g., ./cbfstool <br/>
-				Please adapt the paths accordingly (e.g.: cbfstool/i686/cbfstool).
-			</p>
-		</div class="subsection">
-
-		<div class="subsection">
-			<h3 id="build_tools">Build the tools from source</h3>
-
-			<p>
-				If you are working with libreboot_src, then you can run <b><i>make</i></b> command in 
-				libreboot_src/coreboot/util/cbfstool to build the <b><i>cbfstool</i></b> and <b><i>rmodtool</i></b>
-				executables. See <a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a> for
-				instructions on how to build <b><i>flashrom</i></b>.
-
-			</p>
-		</div class="subsection">
 
 			<p>
 				<a href="#pagetop">Back to top of page.</a>
@@ -210,45 +168,17 @@
 
 	<div class="section">
 
-		<h2 id="which_rom">Which ROM image should I use?</h2>
+		<h2 id="rom">Acquiring the correct ROM image</h2>
 
 			<p>
 				You can either work directly with one of the ROM images already included in the libreboot ROM archives, or re-use the ROM that
 				you have currently flashed. For the purpose of this tutorial it is assumed that your ROM image file is named <i>libreboot.rom</i>,
 				so please make sure to adapt.
 			</p>
-
-			<div class="subsection">
-				<h3 id="use_prebuilt_rom">Use one of the provided ROM images</h3>
-				<p>
-					Libreboot ROM images are distributed in separate tar archives, named {computer_model}.tar.xz.
-					If you build from source without generated any release archives,
-					the ROM images will be in ./bin/{computer_model}/. Make a working copy of the ROM you want to use:
-					<br/>
-					<b>$ cp ./bin/{computer_model}/{computer_model}_{keyboard_layout}_{mode}.rom libreboot.rom</b>
-					<br/>
-					{keyboard_layout} defines the keyboard layout that will be available on the GRUB console. This might be important
-					if you protect GRUB with a password later on and want to insert non-ASCII characters.
-					{mode} can be <i>vesafb</i> or <i>txtmode</i> and starts GRUB with a background image or in text mode.
-				</p>
-			</div>
-
-			<div class="subsection">
-				<h3 id="re-use_rom">Re-use the currently flashed ROM image</h3>
-				<p>
-					If you want to re-use the ROM that you currently have flashed (and running)				and then run:<br/>
-					<b>$ sudo ./flashrom -p internal -r libreboot.rom</b><br/>
-					Notice that this is using <b>&quot;-r&quot;</b> (read) instead of <b>&quot;-w&quot;</b> (write). 
-					This will create a dump (copy) of your current firmware and name it <b>libreboot.rom</b>. 
-					You need to take ownership of the file. For example:<br/>
-					<b>$ sudo chown yourusername:yourusername libreboot.rom</b><br/>
-					<b># chown yourusername:yourusername libreboot.rom</b>
-				</p>
-			</div>
-
 			<p>
-				If you currently have flashed a ROM image from an older version, it is recommended to update first: 
-				basically, modify one of the latest ROM images and then flash it.
+				ROM images are included pre-compiled in libreboot. You can also dump your current firmware, using flashrom:<br/>
+				$ <b>sudo flashrom -p internal -r libreboot.rom</b><br/>
+				# <b>flashrom -p internal -r libreboot.rom</b>
 			</p>
 
 			<p>
@@ -259,18 +189,17 @@
 
 	<div class="section">
 
-		<h2 id="extract_grubtest">Extract grubtest.cfg from the ROM image</h2>
+		<h2 id="extract_testconfig">Extract grubtest.cfg from the ROM image</h2>
 
 			<p>
-				Display contents of ROM:<br/>
+				You can check the contents of the ROM image, inside CBFS:<br/>
 				<b>$ ./cbfstool libreboot.rom print</b>
 			</p>
 
 			<p>
-				The libreboot.rom file contains your <i>grub.cfg</i> and <i>grubtest.cfg</i> files. 
-				grub.cfg will load first, but it has a menu entry for switching to the copy (grubtest.cfg).
-				Thus, you should extract, modify and re-insert the grubtest.cfg first. 
-				This reduces your chance of making a mistake that could make your system unbootable (or very hard to boot).
+				The files <i>grub.cfg</i> and <i>grubtest.cfg</i> should be present. grub.cfg is loaded by default, 
+				with a menuentry for switching to grubtest.cfg. In this tutorial, you will first modify and test <i>grubtest.cfg</i>.
+				This is to reduce the possibility of bricking your device.
 			</p>
 
 			<p>
@@ -279,12 +208,7 @@
 			</p>
 
 			<p>
-				Make a copy of the original file, before you modify it:<br/>
-				<b>$ cp grubtest.cfg grubtest_vanilla.cfg</b>
-			</p>
-
-			<p>
-				Now you have a grubtest.cfg in the cbfstool directory.
+				Modify the grubtest.cfg accordingly.
 			</p>
 
 			<p>
@@ -300,30 +224,16 @@
 
 	<div class="section">
 
-		<h2 id="reinsert_modified_grubtest">Re-insert the modified grubtest.cfg into the ROM image</h2>
+		<h2 id="reinsert_modified_testconfig">Re-insert the modified grubtest.cfg into the ROM image</h2>
 
 			<p>
-				So you've created your configuration. Now, how do you use it?
-			</p>
-
-			<p>
-				Delete the grubtest.cfg that remained inside the ROM:<br/>
+				Delete the unmodified config from the ROM image:<br/>
 				<b>$ ./cbfstool libreboot.rom remove -n grubtest.cfg</b>
 			</p>
 
 			<p>
-				Display ROM contents and now you see grubtest.cfg no longer exists there:<br/>
-				<b>$ ./cbfstool libreboot.rom print</b>
-			</p>
-
-			<p>
-				Add the modified version that you just made:<br/>
+				Insert the modified version:<br/>
 				<b>$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw</b>
-			</p>
-
-			<p>
-				Now display ROM contents again and see that it exists again:<br/>
-				<b>$ ./cbfstool libreboot.rom print</b>
 			</p>
 
 			<p>
@@ -334,7 +244,7 @@
 
 	<div class="section">
 
-		<h2 id="test_it">Test it!</h2>
+		<h2 id="testing">Testing</h2>
 
 			<p>
 				<b>
@@ -380,18 +290,8 @@
 			</p>
 
 			<p>
-				Display ROM contents and now you see grub.cfg no longer exists there:<br/>
-				<b>$ ./cbfstool libreboot.rom print</b>
-			</p>
-
-			<p>
 				Add the modified version that you just made:<br/>
 				<b>$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw</b>
-			</p>
-
-			<p>
-				Now display ROM contents again and see that it exists again:<br/>
-				<b>$ ./cbfstool libreboot.rom print</b>
 			</p>
 
 			<p>
@@ -409,41 +309,48 @@
 
 	<div class="section">
 
-		<h2 id="troubleshooting">Troubleshooting</h2>
-
-			<p>
-				A user reported that segmentation faults occur with cbfstool 
-				when using this procedure depending on the size of the grub.cfg being re-insterted. 
-				In his case, a minimum size of 857 bytes was required. This could (at the time of 
-				this release) be a bug in cbfstool that should be investigated with the coreboot 
-				community. If cbfstool segfaults, then keep this in mind. 'strace' (or gdb? clang?) 
-				could be used for debugging. This was in libreboot 5th release (based on coreboot 
-				from late 2013), and I'm not sure if the issue persists in the current releases.
-				I have not been able to reproduce it. strace (from that user) is here: 
-				<a href="cbfstool_libreboot5_strace">cbfstool_libreboot5_strace</a>. 
-				The issue has been reported by a few users, so it does not happen all the time: 
-				this bug (if it still exists) could (should) be reproduced.
-			</p> 
-
-			<p>
-				<a href="#pagetop">Back to top of page.</a>
-			</p>
-			
-	</div>
-
-	<div class="section">
-
 		<p>
-			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-			Copyright &copy; 2015 Julian Mehne &lt;juli@nmehne.de&gt;<br/>
-			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
+			Copyright &copy;  2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
 		</p>
 
 		<p>
-			This document is distributed in the hope that it will be useful,
-			but WITHOUT ANY WARRANTY; without even the implied warranty of
-			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a> for more information.
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
 		</p>
 		
 	</div>

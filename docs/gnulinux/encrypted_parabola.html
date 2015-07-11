@@ -511,9 +511,8 @@
 			</p>
 
 			<p>
-				Note: <i>cryptomount -a</i> mounts all encrypted devices found. It may be desirable to just mount the needed partition.
-				To do so you may either specify your partition via layout (e.g.: <i>cryptomount -a (ahci0,msdos1)</i>)
-				or use the UUID <i>cryptomount -u UUID</i>.
+				Without specifying a device, the <i>-a</i> parameter tries to unlock all detected LUKS volumes. 
+				You can also specify -u UUID or -a (device).
 			</p>
 
 			<p>
@@ -591,24 +590,27 @@
 	</div>
 
 	<div class="section">
-		<h2>Optional: Use Keyfile in Initramfs to unlock encrypted root</h2>
+		<h2>Using a key file to unlock /boot/</h2>
 		<p>
-			Using the above installation method, you will have to unlock the encrypted file system twice
-			(once in GRUB, and again when booting Parabola).
-			To circumvent this, you can insert a keyfile into the initramfs. This is generally safe, because the /boot/ directory is encrypted.<br/>
-			First create a keyfile:<br/>
+			By default, you will have to enter your LUKS passphrase twice; once in GRUB, and once when booting the kernel.
+			GRUB unlocks the encrypted partition and then loads the kernel, but the kernel is not aware of the fact
+			that it is being loaded from an encrypted volume. Therefore, you will be asked to enter your passphrase a second time.
+			A workaround is to put a keyfile inside initramfs, with instructions for the kernel to use it when
+			booting. This is safe, because /boot/ is encrypted (otherwise, putting a keyfile inside initramfs would be a bad idea).<br/>
+
+			Generate the file:<br/>
 			# <b>dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile iflag=fullblock</b><br/>
-			Add the keyfile to the Luks Device:<br/>
+			Insert it into the luks volume:<br/>
 			# <b>cryptsetup luksAddKey /dev/sdX /etc/mykeyfile</b><br/> 
 			Add the keyfile to the initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:<br/>
+			Integrate it inside initramfs:<br/>
 			# <b>FILES="/etc/mykeyfile"</b><br/>
-			Re-create the initramfs image:<br/>
+			Create the initramfs image from scratch:<br/>
 			# <b>mkinitcpio -p linux-libre</b><br/>
-			Reboot and add the following to the kernel command line in GRUB:<br/>
+			Add the following to your grub.cfg, or add it in the kernel command line for GRUB:<br/>
 			# <b>cryptkey=rootfs:/etc/mykeyfile</b><br/>
 			<br/>
-			If everything works as expected, permanently add the kernel parameter to the GRUB config using
-			the instructions at <a href="grub_cbfs.html">grub_cbfs.html</a>.
+			You can also place this inside the grub.cfg that exists in CBFS: <a href="grub_cbfs.html">grub_cbfs.html</a>.
 		</p>
 	
 	</div>
@@ -638,18 +640,47 @@
 	<div class="section">
 
 		<p>
-			Copyright &copy; 2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
-			Copyright &copy; 2015 Thomas Zelch &lt;tze@xenlab.de&gt;<br/>
-			Copyright &copy; 2015 Arthur Heymans &lt;arthur@aheymans.xyz&gt;<br/>
-			Copyright &copy; 2015 Tobias Heinicke &lt;theinicke@bss-wf.de&gt;<br/>
-			This document is released under the Creative Commons Attribution-ShareAlike 4.0 International Public License and all future versions.
-			A copy of the license can be found at <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a>.
+			Copyright &copy;  2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
 		</p>
 
 		<p>
-			This document is distributed in the hope that it will be useful,
-			but WITHOUT ANY WARRANTY; without even the implied warranty of
-			MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See <a href="../cc-by-sa-4.txt">../cc-by-sa-4.txt</a> for more information.
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
 		</p>
 		
 	</div>
