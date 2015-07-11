@@ -801,6 +801,17 @@
 			</p>
 
 			<p>
+				NOTE: crossgcc is included in <i>coreboot/util/crossgcc/tarballs/</i> in the release archives,
+				but the build system for libreboot does not automatically download/build it.
+				If you are using libreboot from the git repository, make sure to do the following:<br/>
+				$ <b>cd coreboot/</b><br/>
+				$ <b>make crossgcc-i386</b><br/>
+				$ <b>cd ../</b><br/>
+				This will download coreboot's reference cross-compile toolchain,
+				which is highly recommended by the coreboot project.
+			</p>
+
+			<p>
 				After that, build the ROM images (for all boards):<br/>
 				$ <b>./build roms withgrub</b><br/>
 				Alternatively, you can build for a specific board or set of boards.

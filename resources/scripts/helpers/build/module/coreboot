@@ -42,11 +42,6 @@ make
 # done. go back to coreboot dir
 cd "../../"
 
-# -------------------------------------
-# build reference crossGCC for coreboot
-# -------------------------------------
-make crossgcc-i386
-
 # done. go back to main libreboot_src directory
 cd "../"
 
