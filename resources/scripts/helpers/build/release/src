@@ -85,9 +85,6 @@ rm -f "${distdir}/resources/scripts/helpers/build/release/docs"
 # Patches are not needed, because they are already applied to coreboot sources.
 rm -Rf "${distdir}/resources/libreboot/patch/"
 
-# coreboot's crossgcc archives are distributed separately.
-rm -Rf "${distdir}/coreboot/util/crossgcc/tarballs/"
-
 # ich9deblob: There are certain files in there that the user most likely does
 # not want to share.
 rm -f "${distdir}/resources/utilities/ich9deblob/deblobbed_descriptor.bin"
