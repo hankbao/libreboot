@@ -47,6 +47,17 @@ cd "bucts/"
 
 printf "Patching bucts to not require git for building\n"
 git reset --hard dc27919d7a66a6e8685ce07c71aefa4f03ef7c07
+
+# Verify checksums of the downloaded files
+# ------------------------------------------------------------------------------
+
+sha512sum -c "../resources/scripts/helpers/sha512sums/bucts" || (cd "../" && rm -Rf "bucts/" && printf "Invalid checksums for bucts\n" && exit 1)
+
+printf "Valid checksums for bucts\n"
+
+# Apply patches
+# ------------------------------------------------------------------------------
+
 git am "../resources/bucts/patch/0001-Makefile-don-t-use-git.patch"
 
 # we're done

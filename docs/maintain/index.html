@@ -560,6 +560,15 @@
 				is <i>resources/scripts/helpers/download/bucts</i> and
 				the build script is <i>resources/scripts/helpers/build/module/bucts</i>.
 			</p>
+			<p>
+				Note: you will also need to replace the sha512 sums in
+				<i>resources/scripts/helpers/sha512sums/bucts</i>. Do this with
+				an <i>unmodified</i> version of bucts, from the commit that you are using,
+				and make sure that the files/directories beginning with <i>.git</i> do not
+				appear in the list of sha512 checksums. You can generate the list like so:<br/>
+				$ <b>rm -f ../resources/scripts/helpers/sha512sums/bucts</b><br/>
+				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/bucts; done</b>
+			</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
