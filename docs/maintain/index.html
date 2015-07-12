@@ -223,6 +223,18 @@
 			</p>
 
 			<p>
+				Note: you will also need to replace the sha512 sums in
+				<i>resources/scripts/helpers/sha512sums/coreboot</i>. Do this with
+				an <i>unmodified</i> version of coreboot, from the commit that you are using,
+				and make sure that the files/directories beginning with <i>.git</i> do not
+				appear in the list of sha512 checksums. You must <i>also</i> run the deblob
+				script to remove the blobs, before generating this list of sha512 sums. 
+				You can generate the list like so:<br/>
+				$ <b>rm -f ../resources/scripts/helpers/sha512sums/coreboot</b><br/>
+				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/coreboot; done</b>
+			</p>
+
+			<p>
 				Download coreboot again, only this time, using the download
 				script. The download script also applies custom patches
 				to coreboot (see resources/scripts/helpers/download/coreboot);
@@ -442,6 +454,7 @@
 				an <i>unmodified</i> version of GRUB, from the commit that you are using,
 				and make sure that the files/directories beginning with <i>.git</i> do not
 				appear in the list of sha512 checksums. You can generate the list like so:<br/>
+				$ <b>rm -f ../resources/scripts/helpers/sha512sums/grub</b><br/>
 				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/grub; done</b>
 			</p>
 
