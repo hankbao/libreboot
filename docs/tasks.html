@@ -109,9 +109,6 @@
 								which afaik is free-sw. For GRUB, see <a href="https://wiki.linaro.org/LEG/Engineering/Grub2">https://wiki.linaro.org/LEG/Engineering/Grub2</a></li>
 							</ul>
 						</li>
-						<li>
-							TRS-80 Model 100: https://en.wikipedia.org/wiki/TRS-80_Model_100
-						</li>
 						<li><b>This list needs to expand!</b></li>
 					</ul>
 				</li>
@@ -188,11 +185,14 @@
 							X200/X60: battery drained even while system is "off" on some systems. investigate.
 							Could just be the Ethernet controller waiting for a Wake-on-LAN frame.
 							'ethtool -s net0 wol d' disables wake on lan until the next boot. There are a lot of ways to make it permanent: netctl. systemd, udev, cron
+							- wake on lan was tested, and isn't the issue. It is probably how coreboot handles power off state
+							(see the code that handles power_on_after_fail)
 						</li>
 						<li>
 							Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work.
 							- probably a different hda_verb
 							- <b>different HDA verbs are now used, test this again</b>
+							- worked while system was disassambled, but booted (loose), stopped working when re-assembling. Not sure what's going on here.
 						</li>
 						<li>
 							Fix remaining incompatible LCD panels in native graphics on T500 and T400. 
@@ -276,21 +276,6 @@
 	<div class="section">
 		<h1>Build system</h1>
 			<ul>
-				<li>
-					add <i>resources/checksums/*</i> and update it whenever updating the modules
-					(coreboot, flashrom, etc) or updating patches.
-					For each download script, make it check the sha512 hashes of all the files, to ensure
-					that the files match the checksums.
-				</li>
-				<li>re-enable building of txtmode images (get memtest86 working again first, and fix gm45 txtmode)</li>
-				<li>
-					When downloading coreboot/grub/memtest/etc using the download scripts, it currently does
-					not check the integrity of these sources at all. Libreboot releases are signed, but
-					what can be done to improve it is to check the sha512sums of all files downloaded
-					by these scripts (which are in the git repository, but not the release archives,
-					because the release archives already include these sources). Do this for all
-					non-integrated modules used in libreboot.
-				</li>
 				<li>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
 				memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
 				<li>
@@ -331,13 +316,6 @@
 							not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
 						</li>
 					</ul>
-				</li>
-				<li>
-					build/release/util currently fails on Parabola (it only works well in Trisquel).
-					- this should be made portable. Build (cross-compile all of the dependencies from upstream,
-					and include a <i>ccs/</i> release archive. Then use those for dependencies to cross-compile
-					everything (this should make portability easy, and there aren't a lot of dependencies
-					for the utilities).
 				</li>
 			</ul>
 			<p><a href="#pagetop">Back to top of page.</a></p>
@@ -403,30 +381,16 @@
 					Get them for the following remaining boards: X60, T60, macbook21, R400
 				</li>
 				<li>
-					There are no instructions for how to use the GRUB terminal to find
-					a grub.cfg manually, or how to boot an installed GNU/Linux manually, 
-					so some users get stuck after the initial installation of libreboot
-					not knowing how to boot the GNU/Linux system that they had before installing.
-					Fix that. (also, promote the FSF-endorsed distros while you do it)
-				</li>
-				<li>
 					Add guides for GM45 laptops in docs/security/
 				</li>
 				<li>
 					Add guides for GM45 laptops in docs/hardware/
 				</li>
 				<li>
-					Convert documentation to Sphinx/ReST
-					<ul>
-						<li>Translations are needed for the documentation and the main website.
-						Most people don't speak English as a first language.</li>
-					</ul>
+					Convert documentation to use Latex (or whatever the GNU project requires) as source.
 				</li>
 				<li>
-					LUKS key in initramfs: Add Trisquel documentation for docs/gnulinux/encrypted_trisquel.html.
-				</li>
-				<li>
-					LPC PLCC flashing guide is needed:
+					LPC (eg PLCC socket) flashing guide is needed:
 					<a href="http://blogs.coreboot.org/files/2013/07/vultureprog_shuttle_sbs.jpg">image</a>,
 					<a href="http://blogs.coreboot.org/files/2013/08/vultureprog_probing.jpg">image</a>,
 					<a href="http://blogs.coreboot.org/files/2013/06/superboosted2.jpg">image</a> - 
@@ -461,6 +425,10 @@
 				<li>
 					Set up a routine (project-wise) for testing each system with the latest kernel version.
 				</li>
+				<li>
+					Define properly how to maintain libreboot (things to look out for, things to do on a release). It's somewhat
+					documented now, but it's not perfect. Delegate tasks (to people that are reliable).
+				</li>
 			</ul>
 			<p><a href="#pagetop">Back to top of page.</a></p>
 	</div>
@@ -481,31 +449,6 @@
 			
 			<p><a href="#pagetop">Back to top of page.</a></p>
 	</div>
-	
-<!--
-
-http://vzimmer.blogspot.co.uk/2015/06/firmware-related-blogs.html
-^ list of links to look out for (news items)
-
-also:
-https://paste.debian.net/plainh/b3699c60
-(T400 EDID dump)
-
-TODO: tidy up the docs to make it clear that EDID dumps are needed
-
-
-my T400 panel (1280x800. working):
-https://paste.debian.net/plainh/776705d5
-
-look at this patch when it merges, see if it affects anything
-http://review.coreboot.org/#/c/10742/
-
-todo: investigate why X60/T60 still uses power and drain battery
-when powered off (also affects X200)
-might be the code that handles power_on_after_fail nvram option
-wake on lan was tested, it doesn't seem to be the cause
-
--->
 
 	<div class="section">
 

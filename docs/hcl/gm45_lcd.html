@@ -186,6 +186,31 @@ panel powered up
 </pre>
 
 		<p>
+			Another incompatible (T400) screen:
+		</p>
+<pre>
+No size specified (using byte-data access)
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: XX ff ff ff ff ff ff 00 30 ae 33 40 00 00 00 00    X.......0?3@....
+10: 00 0f 01 03 80 1e 13 78 ea cd 75 91 55 4f 8b 26    .??????x??u?UO?&amp;
+20: 21 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01    !PT...??????????
+30: 01 01 01 01 01 01 b0 27 a0 60 51 84 2d 30 30 20    ???????'?`Q?-00 
+40: 36 00 2f be 10 00 00 19 d5 1f a0 40 51 84 1a 30    6./??..????@Q??0
+50: 30 20 36 00 2f be 10 00 00 19 00 00 00 0f 00 90    0 6./??..?...?.?
+60: 0a 32 90 0a 28 14 01 00 4c a3 42 44 00 00 00 fe    ?2??(??.L?BD...?
+70: 00 4c 54 4e 31 34 31 57 44 2d 4c 30 35 0a 00 32    .LTN141WD-L05?.2
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+
+</pre>
+
+		<p>
 			For comparison, here is a working display (T400 screen, but was
 			connected to a T500. Some T500 displays also work, but no EDID
 			available on this page yet):
@@ -263,6 +288,31 @@ Pixel N=10, M1=14, M2=11, P1=1
 Pixel clock 138857 kHz
 waiting for panel powerup
 panel powered up
+</pre>
+
+		<p>
+			Another compatible T400 screen:
+		</p>
+<pre>
+trisquel@trisquel:~$ sudo i2cdump -y 2 0x50
+No size specified (using byte-data access)
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: 00 ff ff ff ff ff ff 00 30 ae 31 40 00 00 00 00    ........0?1@....
+10: 00 12 01 03 80 1e 13 78 ea b3 85 95 58 53 8a 28    .??????x????XS?(
+20: 25 50 54 00 00 00 01 01 01 01 01 01 01 01 01 01    %PT...??????????
+30: 01 01 01 01 01 01 26 1b 00 7d 50 20 16 30 30 20    ??????&?.}P ?00 
+40: 36 00 30 be 10 00 00 18 8b 16 00 7d 50 20 16 30    6.0??..???.}P ?0
+50: 30 20 36 00 30 be 10 00 00 18 00 00 00 0f 00 81    0 6.0??..?...?.?
+60: 0a 32 81 0a 28 14 01 00 30 e4 28 01 00 00 00 fe    ?2??(??.0?(?...?
+70: 00 4c 50 31 34 31 57 58 33 2d 54 4c 52 31 00 d8    .LP141WX3-TLR1.?
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
 </pre>
 
 	</div>
