@@ -47,6 +47,13 @@ cd "grub/"
 
 git reset --hard afd0f21b2027310fda52b00ac1b964041d39a363
 
+# Verify checksums of the downloaded files
+# ------------------------------------------------------------------------------
+
+sha512sum -c "../resources/scripts/helpers/sha512sums/grub" || (cd "../" && rm -Rf "grub/" && printf "Invalid checksums for GRUB\n" && exit 1)
+
+printf "Valid checksums for GRUB\n"
+
 # Apply patches
 # ------------------------------------------------------------------------------
 

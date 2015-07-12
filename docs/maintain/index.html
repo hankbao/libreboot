@@ -436,6 +436,14 @@
 				build the ROM images and test them, with this different
 				GRUB version that you have prepared.
 			</p>
+			<p>
+				Note: you will also need to replace the sha512 sums in
+				<i>resources/scripts/helpers/sha512sums/grub</i>. Do this with
+				an <i>unmodified</i> version of GRUB, from the commit that you are using,
+				and make sure that the files/directories beginning with <i>.git</i> do not
+				appear in the list of sha512 checksums. You can generate the list like so:<br/>
+				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/grub; done</b>
+			</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.

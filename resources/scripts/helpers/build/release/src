@@ -77,6 +77,7 @@ rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 # in the src release archive
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
+rm -Rf "${distdir}/resources/scripts/helpers/sha512sums/"
 
 # The release archive for _src does not include docs, so it
 # is nonsense to include the script for it there
