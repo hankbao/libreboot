@@ -55,6 +55,24 @@
 				are not used, leading to the failure. The actual graphics initialization does work.
 			</p>
 	</div>
+
+	<div class="section">
+		<h1>Differences in dmesg (kernel parameter added: )</h1>
+			<p>
+				<a href="https://01.org/linuxgraphics/documentation/how-report-bugs">https://01.org/linuxgraphics/documentation/how-report-bugs</a>
+			</p>
+			<p>
+				These panels all work in the original firmware, so the idea is to see what differences there are in how coreboot handles them.
+			</p>
+			<p>
+				<a href="http://www.coreboot.org/pipermail/coreboot/attachments/20150712/d2e214bb/attachment-0002.txt">dmesg with coreboot-libre</a> (coreboot) - 
+				See: <i>[drm:intel_lvds_init] detected single-link lvds configuration</i>
+			</p>
+			<p>
+				<a href="http://www.coreboot.org/pipermail/coreboot/attachments/20150712/d2e214bb/attachment-0003.txt">dmesg with lenovobios</a> (lenovobios) - 
+				For the same line, it says dual-channel lvds configuration.
+			</p>
+	</div>
 	
 	<div class="section">
 
