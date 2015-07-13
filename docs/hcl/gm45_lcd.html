@@ -54,6 +54,12 @@
 				own initialization code has buggy EDID parsing in some way, such that the proper settings for the panel
 				are not used, leading to the failure. The actual graphics initialization does work.
 			</p>
+
+			<p>
+				The i915 module in the Linux kernel also provides an option to set the LVDS link configuration.
+				lvds_channel_mode:Specify LVDS channel mode (0=probe BIOS [default], 1=single-channel, 2=dual-channel) (int)
+				- from /sbin/modinfo i915
+			</p>
 	</div>
 
 	<div class="section">
