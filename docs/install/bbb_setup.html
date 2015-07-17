@@ -36,11 +36,12 @@
 						External SPI programmer: <b>BeagleBone Black</b> (rev. C)
 						is highly recommended. Sometimes referred to as 'BBB'.
 						<a href="http://beagleboard.org/black">This page</a> contains a list of distributors.
+						farnell sells them - <a href="http://farnell.com/">http://farnell.com/</a>
 					</li>
 					<li>
-						Electrical tape: cover the entire bottom surface of the BBB (the part that
+						Electrical/insulative tape: cover the entire bottom surface of the BBB (the part that
 						rests on a surface). This is important, when placing the BBB on top of a board
-						so that nothing shorts.
+						so that nothing shorts. - easy to find in most hardware/electronics stores
 					</li>
 					<li>
 						Clip for connecting to the flash chip: if you have a SOIC-16
@@ -49,15 +50,24 @@
 						need the <b>Pomona 5250</b> or equivalent. Do check which chip you have,
 						before ordering a clip. Also, make sure to buy at least two clips
 						(they break easily).
+						- Farnell sells these, and ships to many countries. <a href="http://farnell.com/">http://farnell.com/</a>
+						- Some people find these difficult to get, especially in South America. If you have more links to suppliers, 
+						please contact the libreboot project with the relevant information.
 					</li>
 					<li>
 						<b>External 3.3V DC power supply</b>, for powering the flash chip.
 						An ATX power supply / PSU (common on Intel/AMD desktop computers) will work for this.
+						A lab PSU (DC) will also work (adjusted to 3.3V). Etc.
+						<ul>
+							<li>Getting a multimeter might be worthwhile, to verify that it's supplying 3.3V</li>
+						</ul>
 					</li>
 					<li>
 						<b>External 5V DC power supply</b> (barrel connector), for powering the BBB.
 						The BeagleBone can have power supplied via USB, but a
-						dedicated power supply is recommended. 
+						dedicated power supply is recommended.  These should be easy to find in most places
+						that sell electronics. - <b>OPTIONAL. Only needed if not powering with the USB cable, or if you want
+						to use <a href="bbb_ehci.html">EHCI debug</a></b>
 					</li>
 					<li>
 						<b>Pin header / jumper cables</b> (2.54mm / 0.1&quot; headers)
@@ -69,16 +79,20 @@
 							<li>dupont (this is just one possible brand name)</li>
 							<li>Often used on breadboards, so they might be called breadboard cables</li>
 							<li>Maybe they are called <b>wires</b> instead of cables or leads</li>
+							<li>They are also the same cables used on the GPIOs on the RPi</li>
+							<li><b>adafruit.com</b> sells them, and there are others</li>
+							<li><b>Some people find these difficult to buy. Contact the libreboot project if you have more links to sellers.</b></li>
+							<li>You might also be able to make these cables yourself.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
-						with one.)
+						with one.) - <b>OPTIONAL - only needed for <a href="bbb_ehci.html">EHCI debug</a> or for serial/ssh access without ethernet cable (g_multi kernel module)</b>
 					</li>
 					<li>
 						<b>FTDI TTL cable or debug board</b>, for accessing the serial console on your BBB.
 						<a href="http://elinux.org/Beagleboard:BeagleBone_Black_Serial">This page</a> contains
-						a list.
+						a list. - <b>OPTIONAL - only needed for serial console on the BBB, if not using SSH via ethernet cable</b>
 					</li>
 				</ul>
 		
