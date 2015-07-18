@@ -118,7 +118,7 @@ fi
 if [ "${mode}" = "update" ]; then
 	${flashrom} -p internal -w "${rompath}"
 elif [ "${mode}" = "forceupdate" ]; then
-	${flashrom} -p internal:boardmismatch=force -w "${rompath}"
+	${flashrom} -p internal:boardmismatch=force,laptop=force_I_want_a_brick -w "${rompath}"
 elif [ "${mode}" = "i945apple_firstflash" ]; then
 	${flashrom} -p internal:laptop=force_I_want_a_brick -w "${rompath}"
 elif [ "${mode}" = "i945lenovo_firstflash" ]; then
