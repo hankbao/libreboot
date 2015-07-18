@@ -127,7 +127,7 @@ elif [ "${mode}" = "i945lenovo_firstflash" ]; then
 	${flashrom_lenovobios_sst} -p internal -w "${rompath}"
 	${flashrom_lenovobios_macronix} -p internal -w "${rompath}"
 elif [ "${mode}" = "i945lenovo_secondflash" ]; then
-	${flashrom} -p internal -w "${rompath}"
+	${flashrom} -p internal:laptop=force_I_want_a_brick -w "${rompath}"
 	${bucts} 0
 fi
 

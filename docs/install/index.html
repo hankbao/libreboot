@@ -343,6 +343,10 @@
 					When you have booted up again, you must also do this:<br/>
 					$ <b>sudo ./flash i945lenovo_secondflash <a href="#rom">yourrom.rom</a></b>
 				</p>
+				<p>
+					If flashing fails at this stage, try the following:<br/>
+					$ <b>sudo ./flashrom/i686/flashrom -p internal:laptop=force_I_want_a_brick -w <a href="#rom">yourrom.rom</a></b>
+				</p>
 			</div>
 
 			<div class="important">
