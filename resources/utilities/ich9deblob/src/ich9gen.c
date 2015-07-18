@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -25,8 +25,10 @@ int main(int argc, char *argv[])
 	int i, j;
 	
 	struct GBEREGIONRECORD_8K gbeStruct8k = generatedGbeStruct8k();
-	struct DESCRIPTORREGIONRECORD descriptorStruct4M = generatedDescriptorStructRom4M();
-	struct DESCRIPTORREGIONRECORD descriptorStruct8M = generatedDescriptorStructRom8M();
+	struct DESCRIPTORREGIONRECORD descriptorStruct4M = generatedDescriptorStruct(ROMSIZE_4MB, WITHGBE);
+	struct DESCRIPTORREGIONRECORD descriptorStruct8M = generatedDescriptorStruct(ROMSIZE_8MB, WITHGBE);
+	struct DESCRIPTORREGIONRECORD descriptorStructNoGbe4M = generatedDescriptorStruct(ROMSIZE_4MB, WITHOUTGBE);
+	struct DESCRIPTORREGIONRECORD descriptorStructNoGbe8M = generatedDescriptorStruct(ROMSIZE_8MB, WITHOUTGBE);
 	
 	/* Only for the compatibility checks */
 	struct DESCRIPTORREGIONRECORD dummyDescriptorStruct;
@@ -117,6 +119,21 @@ int main(int argc, char *argv[])
 	}
 	
 	if (notCreatedDescriptorGbeFile(descriptorStruct8M, gbeStruct8k, "ich9fdgbe_8m.bin")) {
+		return 1;
+	}
+	
+	/*
+	 * ------------------------------------------------------------------
+	 * Generate the 4KiB files (descriptors without GbE), ready to be used in a libreboot image
+	 * In these descriptors, the onboard Intel GbE NIC is disabled; a discrete one is used instead
+	 * ------------------------------------------------------------------
+	 */
+	
+	if (notCreated4kDescriptorFile(descriptorStructNoGbe4M, "ich9fdnogbe_4m.bin")) {
+		return 1;
+	}
+	
+	if (notCreated4kDescriptorFile(descriptorStructNoGbe8M, "ich9fdnogbe_8m.bin")) {
 		return 1;
 	}
 	

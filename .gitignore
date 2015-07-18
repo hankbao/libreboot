@@ -17,8 +17,8 @@
 /resources/utilities/ich9deblob/demefactory
 /resources/utilities/ich9deblob/obj/*.o
 /resources/utilities/ich9deblob/obj/*/*.o
-/resources/utilities/ich9deblob/mkdescriptor.[ch]
-/resources/utilities/ich9deblob/mkgbe.[ch]
+/resources/utilities/ich9deblob/mkdescriptor*.[ch]
+/resources/utilities/ich9deblob/mkgbe*.[ch]
 /resources/utilities/coreboot-libre/tocheck
 /resources/utilities/grub-assemble/grub_*.elf
 /mkgbe.[ch]

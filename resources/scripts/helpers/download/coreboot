@@ -115,6 +115,7 @@ git am "../resources/libreboot/patch/0008-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoi
 printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/11 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0009-northbridge-gm45-raminit.c-enable-GS45-high-performa.patch"
+# NOTE: 7786 is abandoned. See: http://review.coreboot.org/#/c/11135/ <-- that's the new one
 
 printf "fix uneven backlight on X200 (when setting brightness low)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/2 && git cherry-pick FETCH_HEAD

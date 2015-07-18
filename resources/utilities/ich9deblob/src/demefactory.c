@@ -52,7 +52,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Extract the descriptor and gbe regions from the factory.rom dump
+	 * Extract the descriptor region from the factory.rom dump
 	 * ------------------------------------------------------------------
 	 */
 	FILE* fp = NULL;
@@ -98,7 +98,8 @@ int main()
 	 */
 
 	// Disable the ME/TPM:
-	descriptorStruct = descriptorDisableMeTpm(descriptorStruct);
+	descriptorStruct = descriptorDisableMe(descriptorStruct);
+	descriptorStruct = descriptorDisableTpm(descriptorStruct);
 	
 	/* Host/CPU is allowed to read/write all regions. */
 	descriptorStruct = descriptorHostRegionsUnlocked(descriptorStruct);
@@ -111,7 +112,7 @@ int main()
 
 	/*
 	 * ------------------------------------------------------------------
-	 * Create the file with the modified descriptor and gbe inside
+	 * Create the file with the modified descriptor inside
 	 * ------------------------------------------------------------------
 	 */
 
@@ -122,7 +123,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Generate ich9gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
+	 * Generate ich9gen data (C code that will recreate the deactivatedME descriptor from scratch)
 	 * ------------------------------------------------------------------
 	 */
 	/* Code for generating the Descriptor struct */

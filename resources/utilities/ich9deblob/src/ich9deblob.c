@@ -5,7 +5,7 @@
  * Purpose: disable and remove the ME from ich9m/gm45 systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014,2015 Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -58,6 +58,7 @@ int main()
 	
 	char* romFilename = "factory.rom";
 	char* descriptorGbeFilename = "deblobbed_descriptor.bin";
+	char* descriptorNoGbeFilename = "deblobbed_4kdescriptor.bin";
 	
 	unsigned int bufferLength;
 	unsigned int romSize;
@@ -99,22 +100,25 @@ int main()
 	}
 	printf("\ndescriptor region read successfully\n");
 	
-	gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
-
-	/*
-	 * Set offset so that we can read the data from
-	 * the gbe region
-	 */
-	fseek(fp, gbeRegionStart, SEEK_SET);
-	/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
-	bufferLength = fread(gbeBuffer8k, 1, GBEREGIONSIZE_8K, fp);
-	if (GBEREGIONSIZE_8K != bufferLength)
+	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
-		printf("\nerror: could not read GBe region from %s (%i) bytes read\n", romFilename, bufferLength);
-		fclose(fp);
-		return 1;
+		gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
+
+		/*
+		 * Set offset so that we can read the data from
+		 * the gbe region
+		 */
+		fseek(fp, gbeRegionStart, SEEK_SET);
+		/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
+		bufferLength = fread(gbeBuffer8k, 1, GBEREGIONSIZE_8K, fp);
+		if (GBEREGIONSIZE_8K != bufferLength)
+		{
+			printf("\nerror: could not read GBe region from %s (%i) bytes read\n", romFilename, bufferLength);
+			fclose(fp);
+			return 1;
+		}
+		printf("\ngbe (8KiB) region read successfully\n");
 	}
-	printf("\ngbe (8KiB) region read successfully\n");
 
 	fseek(fp, 0L, SEEK_END);
 	romSize = ftell(fp);
@@ -124,7 +128,9 @@ int main()
 	
 	/* Debugging (before modification) */
 	printDescriptorRegionLocations(descriptorStruct, "Original");
-	printGbeChecksumDataFromStruct8k(gbeStruct8k, "Original");
+	if (descriptorDefinesGbeRegion(descriptorStruct)) 
+		printGbeChecksumDataFromStruct8k(gbeStruct8k, "Original");
+	else printf("NO GBE REGION\n");
 	
 	/*
 	 * ------------------------------------------------------------------
@@ -133,24 +139,45 @@ int main()
 	 */
 
 	/* Delete the ME/Platform regions, place Gbe after the descriptor, resize BIOS region to fill the gap */
-	descriptorStruct = deblobbedDescriptorStructFromFactory(descriptorStruct, romSize);
+	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct, romSize);
+
+	/* The ME is disallowed read-write access to all regions
+	 * (this is probably redundant, since the ME firmware is already removed from libreboot) */
+	descriptorStruct = descriptorMeRegionsForbidden(descriptorStruct);
+	/* Host/CPU is allowed to read/write all regions.
+	 * This makes flashrom -p internal work */
+	descriptorStruct = descriptorHostRegionsUnlocked(descriptorStruct);
+
+	/* Set OEM string */
+	descriptorStruct = descriptorOemString(descriptorStruct);
 
 	/* Modify the Gbe region (see function for details) */
-	gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
+	if (descriptorDefinesGbeRegion(descriptorStruct))
+		gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
 
 	/* Debugging (after modifying the descriptor and gbe regions) */
 	printDescriptorRegionLocations(descriptorStruct, "Modified");
-	printGbeChecksumDataFromStruct8k(gbeStruct8k, "Modified");
+	if (descriptorDefinesGbeRegion(descriptorStruct))
+		printGbeChecksumDataFromStruct8k(gbeStruct8k, "Modified");
+	else printf("NO GBE REGION\n");
 
 	/*
 	 * ------------------------------------------------------------------
 	 * Create the file with the modified descriptor and gbe inside
 	 * ------------------------------------------------------------------
 	 */
-
 	printf("\n");
-	if (notCreatedDescriptorGbeFile(descriptorStruct, gbeStruct8k, descriptorGbeFilename)) {
-		return 1;
+	if (descriptorDefinesGbeRegion(descriptorStruct))
+	{
+		if (notCreatedDescriptorGbeFile(descriptorStruct, gbeStruct8k, descriptorGbeFilename)) {
+			return 1;
+		}
+	}
+	else
+	{
+		if (notCreated4kDescriptorFile(descriptorStruct, descriptorNoGbeFilename)) {
+			return 1;
+		}
 	}
 	
 	/*
@@ -166,18 +193,29 @@ int main()
 	if (notCreatedCFileFromDescriptorStruct(descriptorStruct, "mkdescriptor.c", "mkdescriptor.h")) {
 		return 1;
 	}
-	
-	/* Code for generating the Gbe struct */
-	/* mkgbe.h */
-	if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
-		return 1;
-	} /* and now mkgbe.c */
-	if (notCreatedCFileFromGbeStruct4k(gbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
-		return 1;
+
+	if (descriptorDefinesGbeRegion(descriptorStruct))
+	{
+		/* Code for generating the Gbe struct */
+		/* mkgbe.h */
+		if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
+			return 1;
+		} /* and now mkgbe.c */
+		if (notCreatedCFileFromGbeStruct4k(gbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
+			return 1;
+		}
 	}
 	
-	printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");
-	printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+	if (descriptorDefinesGbeRegion(descriptorStruct))
+	{
+		printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");
+		printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+	}
+	else
+	{
+		printf("The modified descriptor region have also been dumped as src files: mkdescriptor.c, mkdescriptor.h\n");
+		printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+	}
 
 	return 0;
 }

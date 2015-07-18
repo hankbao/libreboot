@@ -153,12 +153,32 @@
 							F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
 						</li>
 						<li>
-							<b>TODO: Add ARM candidates here (the above systems are all AMD).</b>
 							<ul>
 								<li>Look into the <i>rockchip</i> (rk3288. note: mali gpu. one or two blobs might need replacing.
 								see <a href="http://blogs.coreboot.org/blog/2015/05/26/report-on-chrome-os-upstreaming/">this page</a>
 								for example) and <i>IBM 'POWER8' platforms</i> - NOTE: ARM systems use the <i>depthcharge</i> payload
 								which afaik is free-sw. For GRUB, see <a href="https://wiki.linaro.org/LEG/Engineering/Grub2">https://wiki.linaro.org/LEG/Engineering/Grub2</a></li>
+								<li>
+									asus chromebook c201. paulk is working on it. See libreboot mailing list post
+									<a href="https://lists.nongnu.org/archive/html/libreboot/2015-08/msg00009.html">https://lists.nongnu.org/archive/html/libreboot/2015-08/msg00009.html</a> for
+									details<br/>
+									<a href="http://review.coreboot.org/#/c/11112/">http://review.coreboot.org/#/c/11112/</a>(merged)<br/>
+									<a href="http://review.coreboot.org/#/c/11113/">http://review.coreboot.org/#/c/11113/</a><br/>
+									<a href="http://review.coreboot.org/#/c/11114/">http://review.coreboot.org/#/c/11114/</a><br/>
+									<a href="http://review.coreboot.org/#/c/11116/">http://review.coreboot.org/#/c/11116/</a><br/>
+									<a href="http://review.coreboot.org/#/c/11115/">http://review.coreboot.org/#/c/11115/</a>(merged)<br/>
+									<a href="http://review.coreboot.org/#/c/11117/">http://review.coreboot.org/#/c/11117/</a><br/>
+									<a href="http://review.coreboot.org/#/c/11119/">http://review.coreboot.org/#/c/11119/</a><br/>
+									<a href="http://review.coreboot.org/#/c/11118/">http://review.coreboot.org/#/c/11118/</a>(merged)<br/>
+									<a href="http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=shortlog;h=refs/heads/next">http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=shortlog;h=refs/heads/next</a><br/>
+									<a href="http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=commit;h=5ca76d1cb8fda74c93a6c65dab8a776d72e1f61a">http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=commit;h=5ca76d1cb8fda74c93a6c65dab8a776d72e1f61a</a><br/>
+									<a href="http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=commit;h=01c61f3c0ca96d49c2d33e0bf93e1d4779664011">http://git.code.paulk.fr/gitweb/?p=depthcharge.git;a=commit;h=01c61f3c0ca96d49c2d33e0bf93e1d4779664011</a><br/>
+									<a href="http://git.paulk.fr/gitweb/?p=embedded-freedom-scripts.git;a=summary">http://git.paulk.fr/gitweb/?p=embedded-freedom-scripts.git;a=summary</a>
+									<a href="http://www.chromium.org/chromium-os/chromiumos-design-docs/firmware-boot-and-recovery">http://www.chromium.org/chromium-os/chromiumos-design-docs/firmware-boot-and-recovery</a><br/>
+									<a href="http://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot">http://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot</a><br/>
+									<a href="http://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot-crypto">http://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot-crypto</a>
+								</li>
+								<li>There may be others</li>
 							</ul>
 						</li>
 						<li><b>This list needs to expand!</b></li>
@@ -173,9 +193,6 @@
 							not sure about video init (does it have native graphics initialization?). TODO: review it for libreboot once damo22 pushes
 							the code to coreboot for review. damo22 says it should work with several CPUs (Atom D510 D525 N5x etc - but he's unsure). 
 							TODO: find other boards similar that could be ported. damo22's one has an Intel Atom D510 CPU.
-						</li>
-						<li>
-							ThinkPad R500
 						</li>
 						<li>
 							ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
@@ -217,6 +234,10 @@
 	<div class="section">
 		<h1>Platform-specific bugs</h1>
 			<ul>
+				<li>
+					Several serious bugs exist on the ThinkPad R500, which makes
+					the system virtually unusable. See <a href="hcl/r500/index.html#issues">hcl/r500/index.html#issues</a>.
+				</li>
 				<li>
 					GM45: investigate S3/raminit on all models (CPU stepping/cpuid).
 					See <a href="hcl/x200.html#ram_s3_microcode">hcl/x200.html#ram_s3_microcode</a>
@@ -434,8 +455,9 @@
 				<li>
 					Next release after 20150518, relating to the ASUS KFSN4-DRE:
 					<ul>
-						<li>Remove the note in docs/release.html that says <i>NOTE: not in libreboot 20150518. Only in git, for now.</i></li>
+						<li>Remove the notes in docs/release.html that say <i>NOTE: not in libreboot 20150518. Only in git, for now.</i></li>
 						<li>Remove the note in docs/hcl/kfsn4-dre.html that says <i> NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. </i></li>
+						<li>Remove the note in docs/hcl/r500.html that says <i> NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. </i></li>
 					</ul>
 				</li>
 				<li>
@@ -522,6 +544,10 @@
 			</p>
 			<p>
 				<a href="https://github.com/lynxis/h8s-ec">https://github.com/lynxis/h8s-ec</a>
+				<a href="https://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html">https://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html</a>
+			</p>
+			<p>
+				<a href="https://archive.org/details/27c3-4174-en-the_hidden_nemesis">https://archive.org/details/27c3-4174-en-the_hidden_nemesis</a>
 			</p>
 			
 			<p><a href="#pagetop">Back to top of page.</a></p>
