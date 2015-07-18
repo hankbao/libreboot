@@ -46,6 +46,14 @@
 /* size of the descriptor in bytes */
 #define DESCRIPTORREGIONSIZE 0x1000
 
+/* ROM image sizes in bytes */
+#define ROMSIZE_512KB 0x80000
+#define ROMSIZE_1MB 0x100000
+#define ROMSIZE_2MB 0x200000
+#define ROMSIZE_4MB 0x400000
+#define ROMSIZE_8MB 0x800000
+#define ROMSIZE_16MB 0x1000000
+
 /* 
  * Related to the flash descriptor
  * bits 12(0xC)-24(0x18) are represented for words found in the flash descriptor
@@ -305,11 +313,19 @@ struct DESCRIPTORREGIONRECORD
  
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct);
-struct DESCRIPTORREGIONRECORD descriptorMePlatformRegionsRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
-struct DESCRIPTORREGIONRECORD descriptorDisableMeTpm(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorMeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorPlatformRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorDisableMe(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorDisableTpm(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMoveGbeToStart(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorGbeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
-struct DESCRIPTORREGIONRECORD deblobbedDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
+struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterDescriptor(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
+struct DESCRIPTORREGIONRECORD descriptorOemString(struct DESCRIPTORREGIONRECORD descriptorStruct);
+int descriptorDefinesGbeRegion(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD librebootSetGbeBiosDescriptorRegions(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
+uint8_t componentDensity(unsigned int romSizeInBytes);
+struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
 int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);

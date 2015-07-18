@@ -39,6 +39,7 @@
 								<li><a href="#config_t60">ThinkPad T60</a></li>
 								<li><a href="#config_x200">ThinkPad X200</a></li>
 								<li><a href="#config_r400">ThinkPad R400</a></li>
+								<li><a href="#config_r500">ThinkPad R500</a></li>
 								<li><a href="#config_t400">ThinkPad T400</a></li>
 								<li><a href="#config_t500">ThinkPad T500</a></li>
 								<li><a href="#config_macbook21">MacBook2,1</a></li>
@@ -559,6 +560,48 @@
 						<p>
 							The resulting .config file was saved as resources/libreboot/config/<b>grub/r400_8mb/config</b> and
 							resources/libreboot/config/<b>grub/r400_4mb/config</b> and is used by the build
+							scripts for this system.
+						</p>
+				</div>
+
+				<div class="subsection">
+					<h3 id="config_r500">
+						ThinkPad R500 configuration (file: resources/libreboot/config/grub/r500_4mb/config)
+					</h3>
+						<ul>
+							<li>General / Expert mode = <i>enable</i></li>
+							<li>General / Use CMOS for configuration values = <i>enable</i></li>
+							
+							<li>Mainboard / Mainboard vendor = <i>Lenovo</i></li>
+							<li>Mainboard / Mainboard model = <i>ThinkPad R500</i></li>
+							<li>Mainboard / ROM chip size = <i>4096 KB (4 MB)</i></li>
+							<li>Chipset / Include CPU microcode in CBFS = <i>Do not include microcode updates</i></li>
+							<li>Chipset / Size of CBFS filesystem in ROM = <i>0x3FF000</i></li>
+							<li>Devices / Use native graphics initialization = <i>enable</i></li>
+							<li>
+								Display / Keep VESA framebuffer = <i>disable</i> (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+								<ul>
+									<li>Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time
+									to enable coreboot framebuffer for a separate set of ROM images, in each system.</li>
+								</ul>
+							</li>
+							<li>Generic Drivers / USB 2.0 EHCI debug dongle support = <i>Enable</i></li>
+							<li>Generic Drivers / Enable early (pre-RAM) usbdebug = <i>Enable</i></li>
+							<li>Generic Drivers / Type of dongle = <i>Net20DC or compatible</i></li>
+							
+							<li>Console / USB dongle console output = <i>enable</i></li>
+							<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+							<li>Payload / Payload path and filename = <i>grub.elf</i></li>
+						</ul>
+						<p>
+							Go back and disable option ROMs:
+						</p>
+						<ul>
+							<li>Devices / Run VGA Option ROMs = <i>disable</i></li>
+							<li>Devices / Run Option ROMs on PCI devices = <i>disable</i></li>
+						</ul>
+						<p>
+							The resulting .config file was saved as resources/libreboot/config/<b>grub/r500_4mb/config</b> and is used by the build
 							scripts for this system.
 						</p>
 				</div>

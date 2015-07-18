@@ -23,11 +23,5 @@
 #include <stdint.h>
 #include "../descriptor/descriptor.h"
 
-/* ROM image sizes in bytes */
-#define ROMSIZE_4MB 0x400000
-#define ROMSIZE_8MB 0x800000
-
-struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize);
-struct DESCRIPTORREGIONRECORD generatedDescriptorStructRom4M();
-struct DESCRIPTORREGIONRECORD generatedDescriptorStructRom8M();
+struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe);
 #endif

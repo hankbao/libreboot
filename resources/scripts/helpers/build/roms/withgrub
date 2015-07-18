@@ -92,11 +92,27 @@ do
 	fi
 done
 
+# TEMPORARY HACK: copy t400* to r500*
+# (until proper R500 support is added)
+if [ -d "bin/grub/" ]; then
+	cd "bin/grub/"
+	for board in "t400"
+	do
+		for romsize in "4m" "8m"
+		do	
+			if [ -d "${board}_${romsize}b/" ]; then
+				cp -R "${board}_${romsize}b/" "r500_${romsize}b/"
+			fi
+		done
+	done
+	cd ../../
+fi
+
 # Build the deblobbed descriptor+gbe regions for GM45/ICH9M targets.
 # Then put them in the ROM images.
 if [ -d "bin/grub/" ]; then
 	cd "bin/grub/"
-	for board in "x200" "r400" "t400" "t500"
+	for board in "x200" "r400" "r500" "t400" "t500"
 	do
 		for romsize in "4m" "8m"
 		do	
@@ -105,7 +121,11 @@ if [ -d "bin/grub/" ]; then
 				../../../resources/utilities/ich9deblob/ich9gen
 				for rom in *
 				do
-					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
+					if [ "${board}" = "r500" ]; then
+						dd if="ich9fdnogbe_${romsize}.bin" of="${rom}" bs=1 count=4k conv=notrunc
+					else
+						dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
+					fi
 				done
 				rm -f "ich9fd"*.bin "mk"*.[ch]
 				cd "../"

@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 /* Generate a 4KiB Descriptor struct, with default values. */
 /* Read ../descriptor/descriptor.h for an explanation of the default values used here */
 
-struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
+struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe)
 {
     int i;
     struct DESCRIPTORREGIONRECORD descriptorStruct;
@@ -34,7 +34,7 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.flMaps.flMap0.NC = 0x0;
     descriptorStruct.flMaps.flMap0.reserved1 = 0x00;
     descriptorStruct.flMaps.flMap0.FRBA = 0x04;
-    descriptorStruct.flMaps.flMap0.NR = 0x2; /* see ../descriptor/descriptor.c */
+    descriptorStruct.flMaps.flMap0.NR = hasGbe ? 0x2 : 0x1; /* see ../descriptor/descriptor.c */
     descriptorStruct.flMaps.flMap0.reserved2 = 0x00;
     /* FLMAP1 */
     descriptorStruct.flMaps.flMap1.FMBA = 0x06;
@@ -49,8 +49,8 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
 
     /* Component Section Record */
     /* FLCOMP */
-    descriptorStruct.componentSection.flcomp.component1Density = 0x4;
-    descriptorStruct.componentSection.flcomp.component2Density = 0x2;
+    descriptorStruct.componentSection.flcomp.component1Density = componentDensity(romSize);
+    descriptorStruct.componentSection.flcomp.component2Density = componentDensity(romSize);
     descriptorStruct.componentSection.flcomp.reserved1 = 0x0;
     descriptorStruct.componentSection.flcomp.reserved2 = 0x00;
     descriptorStruct.componentSection.flcomp.reserved3 = 0x0;
@@ -76,10 +76,8 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.regionSection.flReg0.LIMIT = 0x0000;
     descriptorStruct.regionSection.flReg0.reserved2 = 0x0;
     /* FLREG1 (BIOS) */
-    /* descriptorStruct.regionSection.flReg1.BASE = 0x0003; */
-    descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */
+    descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + (hasGbe ? GBEREGIONSIZE_8K : 0)) >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved1 = 0x0;
-    /* descriptorStruct.regionSection.flReg1.LIMIT = 0x07ff; */
     descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg1.reserved2 = 0x0;
     /* FLREG2 (ME) */
@@ -88,11 +86,9 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.regionSection.flReg2.LIMIT = 0x0000; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg2.reserved2 = 0x0;
     /* FLREG3 (Gbe) */
-    /* descriptorStruct.regionSection.flReg3.BASE = 0x0001; */
-    descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */
+    descriptorStruct.regionSection.flReg3.BASE = hasGbe ? (DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT) : 0x1fff; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg3.reserved1 = 0x0;
-    /* descriptorStruct.regionSection.flReg3.LIMIT = 0x0002; */
-    descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */
+    descriptorStruct.regionSection.flReg3.LIMIT = hasGbe ? (GBEREGIONSIZE_8K >> FLREGIONBITSHIFT) : 0x0000; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg3.reserved2 = 0x0;
     /* FLREG4 (Platform) */
     descriptorStruct.regionSection.flReg4.BASE = 0x1fff; /* see ../descriptor/descriptor.c */
@@ -161,8 +157,8 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.ichStraps.ichStrap0.bmcMode = 0x0;
     descriptorStruct.ichStraps.ichStrap0.tripPointSelect = 0x0;
     descriptorStruct.ichStraps.ichStrap0.reserved2 = 0x0;
-    descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x1;
-    descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;
+    descriptorStruct.ichStraps.ichStrap0.integratedGbe = hasGbe ? 0x1 : 0x0;
+    descriptorStruct.ichStraps.ichStrap0.lanPhy = hasGbe ? 0x1 : 0x0;
     descriptorStruct.ichStraps.ichStrap0.reserved3 = 0x0;
     descriptorStruct.ichStraps.ichStrap0.dmiRequesterId = 0x0;
     descriptorStruct.ichStraps.ichStrap0.smBus2Address = 0x00;
@@ -229,15 +225,5 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     }
 
     return descriptorStruct;
-}
-
-struct DESCRIPTORREGIONRECORD generatedDescriptorStructRom4M()
-{
-    return generatedDescriptorStruct(ROMSIZE_4MB);
-}
-
-struct DESCRIPTORREGIONRECORD generatedDescriptorStructRom8M()
-{
-    return generatedDescriptorStruct(ROMSIZE_8MB);
 }
 

@@ -156,6 +156,9 @@ rm -f \
 # Purpose unknown. TODO: investigate
 # ----------------------------------
 
+# <Stepan> francis7: util/broadcom/secimage/misc.c is a precalculated crc32 polynome table
+# <Stepan> It's just a standard crc32 implementation
+
 rm -f \
 "util/broadcom/secimage/misc.c"
 

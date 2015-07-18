@@ -45,6 +45,7 @@
 				<li><a href="t60_unbrick.html">ThinkPad T60: Recovery guide</a></li>
 				<li><a href="x200_external.html">ThinkPad X200/X200S/X200T (needed if running the proprietary firmware, or to unbrick)</a></li>
 				<li><a href="r400_external.html">ThinkPad R400 (needed if running the proprietary firmware, or to unbrick)</a></li>
+				<li><a href="r500_external.html">ThinkPad R500 (needed if running the proprietary firmware, or to unbrick)</a></li>
 				<li><a href="t400_external.html">ThinkPad T400 (needed if running the proprietary firmware, or to unbrick)</a></li>
 				<li><a href="t500_external.html">ThinkPad T500 (needed if running the proprietary firmware, or to unbrick)</a></li>
 			</ul>
@@ -142,6 +143,7 @@
 				<p>
 					X200 users, refer to <a href="x200_external.html">x200_external.html</a>,
 					R400 users refer to <a href="r400_external.html">r400_external.html</a>,
+					R500 users refer to <a href="r500_external.html">r500_external.html</a>,
 					T400 users refer to <a href="t400_external.html">t400_external.html</a>,
 					T500 users refer to <a href="t500_external.html">t500_external.html</a>
 				</p>
@@ -194,7 +196,7 @@
 				</p>
 				<p>
 					Similarly, it is possible to write-protect the flash chip in coreboot or libreboot on GM45 laptops
-					(X200/R400/T400/T500). If you did this, then you will need to use the links above for flashing, 
+					(X200/R400/R500/T400/T500). If you did this, then you will need to use the links above for flashing, 
 					treating your laptop as though it currently has the proprietary firmware (because write-protected SPI flash
 					requires external re-flashing, as is also the case when running the proprietary firmware).
 				</p>
@@ -222,7 +224,15 @@
 					and assuming that your current firmware has the correct MAC address in it, you can get it from your OS.
 				</p>
 
-			<h2>Flash chip size on GM45 (X200/R400/T400/T500)</h2>
+				<p>
+					<b>
+						R500 users: your laptop lacks a GbE region, because it has a different NIC. You do not need to change the MAC
+						address on this laptop; it will already be correct. You can simply flash the available ROM images for the R500, as-is.
+						See <a href="../hcl/r500.html#nogbe">../hcl/r500.html#nogbe</a>.
+					</b>
+				</p>
+
+			<h2>Flash chip size</h2>
 
 				<p>
 					Use this to find out:<br/>
