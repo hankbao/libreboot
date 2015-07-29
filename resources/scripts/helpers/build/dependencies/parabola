@@ -47,7 +47,7 @@ pacman -S base-devel libstdc++5
 
 pacman -S arm-none-eabi-gcc
 
-pacman -S pacman -S libpciaccess
+pacman -S libpciaccess
 
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
