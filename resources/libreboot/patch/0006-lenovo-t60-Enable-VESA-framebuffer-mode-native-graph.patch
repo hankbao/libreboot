@@ -1,7 +1,7 @@
-From c37e4a312e8c18b3b1e2fb11bb1cf8bb5b4aa9d2 Mon Sep 17 00:00:00 2001
+From 1623f381e7c5b8329d035d666d5498a75e81d635 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Mon, 15 Jun 2015 19:56:29 +0100
-Subject: [PATCH 08/17] lenovo/t60: Enable VESA framebuffer mode (native
+Subject: [PATCH 06/13] lenovo/t60: Enable VESA framebuffer mode (native
  graphics)
 
 At present, no option exists for "Keep VESA framebuffer", which

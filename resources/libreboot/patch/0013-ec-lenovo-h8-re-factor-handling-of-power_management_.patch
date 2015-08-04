@@ -1,7 +1,7 @@
-From 5fdab56649a84249c8eecd30caa34318ebde6b1d Mon Sep 17 00:00:00 2001
+From fc3e9f93b5b08abe1a684550d2ddda998657882b Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Fri, 12 Jun 2015 23:10:52 +0100
-Subject: [PATCH 15/17] ec/lenovo/h8: re-factor handling of
+Subject: [PATCH 13/13] ec/lenovo/h8: re-factor handling of
  power_management_beeps
 
 The current code duplicates the same check unnecessarily,
@@ -15,7 +15,7 @@ Signed-off-by: Francis Rowe <info@gluglug.org.uk>
  1 file changed, 8 insertions(+), 7 deletions(-)
 
 diff --git a/src/ec/lenovo/h8/h8.c b/src/ec/lenovo/h8/h8.c
-index b6bc406..fde408c 100644
+index a6cb6b6..6493ec2 100644
 --- a/src/ec/lenovo/h8/h8.c
 +++ b/src/ec/lenovo/h8/h8.c
 @@ -2,6 +2,7 @@

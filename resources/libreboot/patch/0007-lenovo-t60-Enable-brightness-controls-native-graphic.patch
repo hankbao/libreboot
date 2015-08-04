@@ -1,7 +1,7 @@
-From e226918085e01a51916357b4c8d667e31e040fe4 Mon Sep 17 00:00:00 2001
+From 172b2fad7663f3c52cd8830cf064234b0ae53575 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Mon, 15 Jun 2015 19:59:46 +0100
-Subject: [PATCH 09/17] lenovo/t60: Enable brightness controls (native
+Subject: [PATCH 07/13] lenovo/t60: Enable brightness controls (native
  graphics)
 
 This makes the Fn Home/End keys work for controlling the

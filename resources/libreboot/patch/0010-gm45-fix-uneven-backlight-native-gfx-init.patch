@@ -1,7 +1,7 @@
-From cb40445b1debc5900835f94d0aa3287cc213a0d5 Mon Sep 17 00:00:00 2001
+From bea0f09575914be6f2d35dbc53220bce6ac03aac Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Mon, 29 Dec 2014 21:02:48 +0000
-Subject: [PATCH 12/17] gm45: fix uneven backlight (native gfx init)
+Subject: [PATCH 10/13] gm45: fix uneven backlight (native gfx init)
 
 When setting brightness levels low, backlight becomes uneven.
 This patch fixes that.

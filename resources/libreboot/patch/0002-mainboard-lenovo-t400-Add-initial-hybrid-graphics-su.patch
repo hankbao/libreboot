@@ -1,7 +1,7 @@
-From bbf3462e7442c2cae568e147d3f0eb1195f86991 Mon Sep 17 00:00:00 2001
+From 26cfb399e15e9e2afa311bcd7774926a07c545c1 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Sun, 5 Apr 2015 18:10:09 -0500
-Subject: [PATCH 03/17] mainboard/lenovo/t400: Add initial hybrid graphics
+Subject: [PATCH 02/13] mainboard/lenovo/t400: Add initial hybrid graphics
  support
 
 TEST: Booted T400 with Intel/ATI hybrid graphics in integrated

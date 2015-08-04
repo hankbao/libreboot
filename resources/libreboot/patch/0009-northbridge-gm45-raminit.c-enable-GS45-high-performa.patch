@@ -1,8 +1,7 @@
-From 3b67763d6029ce954cea0dbc02ff6814b7c02478 Mon Sep 17 00:00:00 2001
+From a59b0e652911627cb00b748bb71f07ce0fa90534 Mon Sep 17 00:00:00 2001
 From: Steve Shenton <sgsit@libreboot.org>
 Date: Fri, 12 Dec 2014 12:42:01 +0000
-Subject: [PATCH 11/17] northbridge/gm45/raminit.c: enable GS45
- high-performance mode
+Subject: [PATCH] northbridge/gm45/raminit.c: enable GS45 high-performance mode
 
 The datasheets for GS45 describe a high- and low-performance mode
 for different CPUs. Coreboot currently disables GS45 altogether,

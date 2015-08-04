@@ -1,7 +1,7 @@
-From 44b02659da616c6d64445e5645684a68e7e5e742 Mon Sep 17 00:00:00 2001
+From 330670470afd0b12fd58f8cf734cb3c85c3a20f5 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Sun, 14 Jun 2015 15:40:00 +0100
-Subject: [PATCH 14/17] lenovo/t500: Add clone of Lenovo T400
+Subject: [PATCH 12/13] lenovo/t500: Add clone of Lenovo T400
 
 The existing code for the Lenovo T400 works without changes on the
 Lenovo T500.  Same HDA verbs are provided by Lenovo BIOS on both
@@ -20,7 +20,7 @@ Signed-off-by: Francis Rowe <info@gluglug.org.uk>
  create mode 100644 src/mainboard/lenovo/t500/board_info.txt
 
 diff --git a/src/mainboard/lenovo/t400/Kconfig b/src/mainboard/lenovo/t400/Kconfig
-index 2ea592f..b1f7d28 100644
+index 467cd63..0eac311 100644
 --- a/src/mainboard/lenovo/t400/Kconfig
 +++ b/src/mainboard/lenovo/t400/Kconfig
 @@ -1,4 +1,4 @@

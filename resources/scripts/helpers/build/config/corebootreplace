@@ -25,7 +25,7 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-cd "resources/libreboot/config/"
+cd "resources/libreboot/config/grub/"
 
 if [ $# -lt 1 ]; then
 	configs="$(ls)"
@@ -33,15 +33,15 @@ else
 	configs="$@"
 fi
 
-cd "../../../coreboot/"
+cd "../../../../coreboot/"
 for config in ${configs}; do
 	printf "Replacing or creating new config for %s\n" "${config}"
 	sleep 2
 
 	make menuconfig
 
-	[ ! -d "../resources/libreboot/config/${config}/" ] && mkdir -p "../resources/libreboot/config/${config}/"
-	mv ".config" "../resources/libreboot/config/${config}/config"
+	[ ! -d "../resources/libreboot/config/grub/${config}/" ] && mkdir -p "../resources/libreboot/config/grub/${config}/"
+	mv ".config" "../resources/libreboot/config/grub/${config}/config"
 done
 
 cd "../"

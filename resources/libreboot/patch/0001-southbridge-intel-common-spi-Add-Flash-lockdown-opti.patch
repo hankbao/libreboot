@@ -1,7 +1,7 @@
-From 29a398fd71efa8ca63a98125ec4e5c1de96bcb85 Mon Sep 17 00:00:00 2001
+From 60b17a1eee72342ff226761caea2501960d44a30 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Tue, 7 Apr 2015 13:45:06 -0500
-Subject: [PATCH 01/17] southbridge/intel/common/spi: Add Flash lockdown option
+Subject: [PATCH 01/13] southbridge/intel/common/spi: Add Flash lockdown option
 
 Under certain circumstances it is desirable to prevent
 software from altering the contents of the Flash device.

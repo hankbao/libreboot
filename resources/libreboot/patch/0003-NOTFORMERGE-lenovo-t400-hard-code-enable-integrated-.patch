@@ -1,7 +1,7 @@
-From 959c74de0ecd066c9d241b784aa280dadc43bb1e Mon Sep 17 00:00:00 2001
+From dad7e30fcaf87af2d51232896b2cabc59bba4a88 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Mon, 15 Jun 2015 03:44:15 +0100
-Subject: [PATCH 04/17] NOTFORMERGE: lenovo/t400: hard-code enable
+Subject: [PATCH 03/13] NOTFORMERGE: lenovo/t400: hard-code enable
  integrated-only video
 
 Written with libreboot in mind. Libreboot uses native graphics

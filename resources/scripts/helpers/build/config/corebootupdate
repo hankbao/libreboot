@@ -25,7 +25,7 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-cd "resources/libreboot/config/"
+cd "resources/libreboot/config/grub/"
 
 if [ $# -lt 1 ]; then
 	configs="$(ls)"
@@ -33,19 +33,19 @@ else
 	configs="$@"
 fi
 
-cd "../../../coreboot/"
+cd "../../../../coreboot/"
 for config in ${configs}; do
 	printf "Updating config for %s\n" "${config}"
 	sleep 2
 
-	if [ ! -d "../resources/libreboot/config/${config}/" ]; then
+	if [ ! -d "../resources/libreboot/config/grub/${config}/" ]; then
 		printf "build/config/corebootupdate WARNING: config '%s' does not exist. Skipping.\n" "${config}"
 		continue
 	fi
 	
-	mv "../resources/libreboot/config/${config}/config" ".config"
+	mv "../resources/libreboot/config/grub/${config}/config" ".config"
 	make oldconfig
-	mv ".config" "../resources/libreboot/config/${config}/config"
+	mv ".config" "../resources/libreboot/config/grub/${config}/config"
 done
 
 cd "../"

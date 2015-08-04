@@ -1,7 +1,7 @@
-From f5755e978b6a1b10adb0bfeb4c3fd790315c4848 Mon Sep 17 00:00:00 2001
+From 93c1510605981a38c6d616a9c77a7675d7c66b59 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Micha=C5=82=20Mas=C5=82owski?= <mtjm@mtjm.eu>
 Date: Tue, 3 Feb 2015 23:26:05 +0100
-Subject: [PATCH 13/17] lenovo/r400: Add clone of Lenovo T400
+Subject: [PATCH 11/13] lenovo/r400: Add clone of Lenovo T400
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -57,7 +57,7 @@ index 0000000..007ec6c
 +Flashrom support: n
 +Clone of: lenovo/t400
 diff --git a/src/mainboard/lenovo/t400/Kconfig b/src/mainboard/lenovo/t400/Kconfig
-index a1d0652..2ea592f 100644
+index e410f20..467cd63 100644
 --- a/src/mainboard/lenovo/t400/Kconfig
 +++ b/src/mainboard/lenovo/t400/Kconfig
 @@ -1,4 +1,4 @@
@@ -66,7 +66,7 @@ index a1d0652..2ea592f 100644
  
  config BOARD_SPECIFIC_OPTIONS # dummy
  	def_bool y
-@@ -26,10 +26,14 @@ config MAINBOARD_DIR
+@@ -27,10 +27,14 @@ config MAINBOARD_DIR
  	string
  	default lenovo/t400
  

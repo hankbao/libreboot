@@ -1,7 +1,7 @@
-From 64106428f6739ed87392f59993f3e0f1a3f045c8 Mon Sep 17 00:00:00 2001
+From 4c337212bd77ab456f018d05b69bd8d0ef5d7761 Mon Sep 17 00:00:00 2001
 From: Vladimir Serbinenko <phcoder@gmail.com>
 Date: Tue, 4 Mar 2014 18:08:26 +0100
-Subject: [PATCH 07/17] lenovo/t60: Enable native intel gfx init.
+Subject: [PATCH 05/13] lenovo/t60: Enable native intel gfx init.
 
 Tested on T60 with intel graphics.
 
