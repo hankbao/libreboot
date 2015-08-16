@@ -34,36 +34,36 @@ fi
 # This is so that they can moved to separate scripts.
 #
 
-pacman -S wget
+pacman -S --needed wget
 
 # For downloading source code
 # ------------------------------------------------------------
 
 printf "Source Code: In order to download the it, subversion and git is needed\n"
-pacman -S subversion git
+pacman -S --needed subversion git
 
 # For building source code:
 # ------------------------------------------------------------
 
 printf "Building Source Code: development packages\n"
-pacman -S base-devel libstdc++5
+pacman -S --needed base-devel libstdc++5
 
 pacman -S arm-none-eabi-gcc
 
-pacman -S libpciaccess
+pacman -S --needed libpciaccess
 
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
 		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
-		pacman -Sl multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
+		pacman -Sl --needed multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
 		pacman -S --needed gcc{,-libs}-multilib lib32-{lib{ltdl,pciaccess,stdc++5},glibc,fakeroot}
 fi
 
 # Memtest86+ build dependencies
 # ------------------------------------------------------------
 
-# pacman -S base-devel
+# pacman -S --needed base-devel
 
 # i945-pwm build dependencies
 # ------------------------------------------------------------
@@ -81,29 +81,29 @@ pacman -S ncurses doxygen iasl gdb flex bison
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
 		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
-		pacman -S lib32-ncurses
+		pacman -S --needed lib32-ncurses
 fi
 
 # GRUB build dependencies (also requires build-essential, bison and flex)
 # ------------------------------------------------------------
 
-# pacman -S base-devel bison flex
+# pacman -S --needed base-devel bison flex
 
 printf "GRUB: Fonts, (crypto) filesystem support, automake, etc.\n"
-pacman -S autogen m4 autoconf help2man freetype2 automake fuse fuse-exfat xz gawk device-mapper libtool python
-pacman -S bdf-unifont # trying this, otherwise there was an error. I'll try AUR if this won't work.
+pacman -S --needed autogen m4 autoconf help2man freetype2 automake fuse fuse-exfat xz gawk device-mapper libtool python
+pacman -S --needed bdf-unifont # trying this, otherwise there was an error. I'll try AUR if this won't work.
 
 # BucTS build dependencies (external script)
 # ------------------------------------------------------------
 
-# pacman -S base-devel
+# pacman -S --needed base-devel
 
 # Flashrom build dependencies (also requires build-essential and subversion)
 # ------------------------------------------------------------
 
 printf "Flashrom: Your external programmer will be most probably using PCI bus, FTDI chips need additional libraries\n"
-pacman -S pciutils zlib libftdi libftdi-compat 
-# pacman -S base-devel subversion
+pacman -S --needed pciutils zlib libftdi libftdi-compat 
+# pacman -S --needed base-devel subversion
 
 # ------------------- DONE ----------------------
 
