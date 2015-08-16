@@ -5,6 +5,7 @@
 # this script is based on the script for Trisquel 7
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Klemens Nanni <klemens@posteo.de>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -38,11 +39,13 @@ pacman -S wget
 # For downloading source code
 # ------------------------------------------------------------
 
+printf "Source Code: In order to download the it, subversion and git is needed\n"
 pacman -S subversion git
 
 # For building source code:
 # ------------------------------------------------------------
 
+printf "Building Source Code: development packages\n"
 pacman -S base-devel libstdc++5
 
 pacman -S arm-none-eabi-gcc
@@ -52,8 +55,9 @@ pacman -S libpciaccess
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
-		pacman -S gcc-libs-multilib gcc-multilib lib32-fakeroot lib32-libltdl lib32-glibc lib32-libstdc++5 
-		pacman -S lib32-libpciaccess
+		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
+		pacman -Sl multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
+		pacman -S --needed gcc{,-libs}-multilib lib32-{lib{ltdl,pciaccess,stdc++5},glibc,fakeroot}
 fi
 
 # Memtest86+ build dependencies
@@ -69,12 +73,14 @@ fi
 # Coreboot build dependencies (also requires build-essential and git)
 # ------------------------------------------------------------
 
+printf "Coreboot: Ncurses for menuconfig and a few other tools\n"
 pacman -S ncurses doxygen iasl gdb flex bison
 # pacman -S git base-devel
 
 # For cross-compiling i686 target on x86_64 host.
 if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
 	then
+		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
 		pacman -S lib32-ncurses
 fi
 
@@ -83,6 +89,7 @@ fi
 
 # pacman -S base-devel bison flex
 
+printf "GRUB: Fonts, (crypto) filesystem support, automake, etc.\n"
 pacman -S autogen m4 autoconf help2man freetype2 automake fuse fuse-exfat xz gawk device-mapper libtool python
 pacman -S bdf-unifont # trying this, otherwise there was an error. I'll try AUR if this won't work.
 
@@ -94,6 +101,7 @@ pacman -S bdf-unifont # trying this, otherwise there was an error. I'll try AUR 
 # Flashrom build dependencies (also requires build-essential and subversion)
 # ------------------------------------------------------------
 
+printf "Flashrom: Your external programmer will be most probably using PCI bus, FTDI chips need additional libraries\n"
 pacman -S pciutils zlib libftdi libftdi-compat 
 # pacman -S base-devel subversion
 
