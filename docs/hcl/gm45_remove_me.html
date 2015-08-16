@@ -140,6 +140,17 @@
    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
 </pre>
+				<p>
+					Also look in <i>resources/utilities/ich9deblob/src/ich9gen/mkdescriptor.c</i>
+					for the following lines:
+				</p>
+<pre>
+    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+</pre>
 
 				<p>
 					Change them all to 0x0, then re-compile ich9gen. After you have done that,
