@@ -3,6 +3,7 @@
 #  helper script: create ROM images for a given system, with GRUB
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -75,7 +76,7 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	mv "grub_${romtype}.elf" "grub.elf"
-	make
+	make -j$(nproc)
 	mv "grub.elf" "grub_${romtype}.elf"
 	mv "build/coreboot.rom" "${1}_${romtype}.rom"
 	# .config no longer needed

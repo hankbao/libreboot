@@ -3,6 +3,7 @@
 #  helper script: builds bucts source code
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -43,7 +44,7 @@ if [ "${buildtype}" = "static" ]; then
 fi
 
 make clean
-make
+make -j$(nproc)
 
 if [ "${buildtype}" = "static" ]; then
 	patch "Makefile" -R < "../resources/bucts/patch/staticlink.diff"

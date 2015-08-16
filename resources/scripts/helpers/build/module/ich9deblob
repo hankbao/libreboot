@@ -3,6 +3,7 @@
 #  helper script: builds ich9deblob source code
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -35,7 +36,7 @@ cd "resources/utilities/ich9deblob/"
 make clean
 
 # build ich9deblob
-make
+make -j$(nproc)
 
 # done. go back to main directory
 cd "../../../"
