@@ -309,6 +309,15 @@
 <b>set superusers=&quot;root&quot;</b>
 <b>password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
 			</pre>
+			<p style="font-size:2em;">
+				MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
+				Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
+				Then copy that to grub.cfg once you're satisfied.
+				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+			</p>
+			<p>
+				(emphasis added, because it's needed. This is a common roadblock for users)
+			</p>
 
 			<p>
 				Obviously, replace it with the correct hash that you actually got for the password that you entered. Meaning, not the hash that you see above!
