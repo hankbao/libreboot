@@ -152,6 +152,14 @@
     descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
 </pre>
 
+				<p style="font-size:2em;">
+					NOTE: When you write-protect the flash chip, re-flashing is no longer possible unless you
+					use dedicated external equipment, which also means disassembling the laptop. The same equipment
+					can also be used to remove the write-protection later on, if you choose to do so. *Only* write-protect
+					the chip if you have the right equipment for external flashing later on; for example, see
+					<a href="../install/bbb_setup.html">../install/bbb_setup.html</a>.
+				</p>
+
 				<p>
 					Change them all to 0x0, then re-compile ich9gen. After you have done that,
 					follow the notes in <a href="#ich9gen">#ich9gen</a> to generate a new
