@@ -45,6 +45,8 @@ case ${@} in
 		for programme in ${@}; do
 			echo ${availableprogrammes} | grep -wq ${programme} || (printf "ERROR: Invalid programme '${programme}'. See ./download help.\n"; exit 1)
 		done
-		${download}/${@};;
+		for programme in ${@}; do
+			${download}/${programme}
+		done;;
 esac
 # ------------------- DONE ----------------------
