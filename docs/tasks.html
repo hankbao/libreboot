@@ -125,6 +125,9 @@
 											<a href="https://github.com/facebook/openbmc">https://github.com/facebook/openbmc</a> - also linked from
 											<a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a>
 											- might be possible adapt this.
+											- You
+											 might need to use the vendor tools running from under the proprietary BIOS to wipe the Flash chip holding the IPMI firmware,
+											 if it's baked in. (on KGPE-D16, it's an <a href="http://www.servethehome.com/wp-content/uploads/2013/03/ASUS-ASMB6-iKVM-Module.png">add-on card</a> so just don't add the add-on card - also SOIC-16 according to tpearson. but not sure what form factor used on S8230 - it better not be bl***y WSON).
 										</li>
 										<li>
 											SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine.
