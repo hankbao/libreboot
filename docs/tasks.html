@@ -120,6 +120,11 @@
 										</li>
 										<li>
 											IPMI firmware is non-free but optional (for iKVM feature, remote management like Intel ME).  Not sure if add-on module or baked in.
+											In either case, it might be removed or otherwise excluded because it's a HUGE backdoor. Unlike Intel ME, this isn't signed so can be
+											removed, and also replaced theoretically. Is the protocol standard public? If so, might be easy/feasible to replace with free code.
+											<a href="https://github.com/facebook/openbmc">https://github.com/facebook/openbmc</a> - also linked from
+											<a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a>
+											- might be possible adapt this.
 										</li>
 										<li>
 											SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine.
