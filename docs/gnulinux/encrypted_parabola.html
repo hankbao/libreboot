@@ -521,7 +521,30 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 			</p>
 
 			<p>
-				Above the 'Load Operating System' menu entry you should also add a GRUB password, like so:
+				Start dhcp on ethernet:<br/>
+				# <b>systemctl start dhcpcd.service</b>
+				This is just for the step below. I won't cover network configuration here. That is for another Parabola article.
+			</p>
+
+			<p>
+				The password below (it's <b>password</b>, by the way) after <i>'password_pbkdf2 root'</i> <i>should be changed</i> and is created by the <b>grub-mkpasswd-pbkdf2</b> utility, which you need to install or otherwise compile, 
+				like so:<br/>
+				# <b>pacman -S grub</b>
+			</p>
+		
+			<p>
+				GRUB isn't needed for booting, since it's already included as a payload in libreboot. This is only so that the utility needed becomes available. Get your hash
+				by entering your chosen password at the prompt, when running this command:<br/>
+				# <b>grub-mkpasswd-pbkdf2</b>
+			</p>
+
+			<p>
+				It will output the hash for the password that you entered. Make sure to specify a password that is different from both your LUKS *and* your root/user password.
+				Use it to replace the default hash mentioned above.
+			</p>
+
+			<p>
+				Above the 'Load Operating System' menu entry you should also add a GRUB password, like so (this example uses <b>password</b> as the password):
 			</p>
 	<pre><b><i>
 set superusers=&quot;root&quot;
@@ -543,30 +566,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 			</p>
 
 			<p>
-				Start dhcp on ethernet:<br/>
-				# <b>systemctl start dhcpcd.service</b>
-				This is just for the step below. I won't cover network configuration here. That is for another Parabola article.
-			</p>
-
-			<p>
-				The password hash (it's <b>password</b>, by the way) after <i>'password_pbkdf2 root'</i> <i>should be changed</i> and is created by the <b>grub-mkpasswd-pbkdf2</b> utility, which you need to install or otherwise compile, 
-				like so:<br/>
-				# <b>pacman -S grub</b>
-			</p>
-		
-			<p>
-				GRUB isn't needed for booting, since it's already included as a payload in libreboot. This is only so that the utility needed becomes available. Get your hash
-				by entering your chosen password at the prompt, when running this command:<br/>
-				# <b>grub-mkpasswd-pbkdf2</b>
-			</p>
-
-			<p>
-				It will output the hash for the password that you entered. Make sure to specify a password that is different from both your LUKS *and* your root/user password.
-				Use it to replace the default hash mentioned above.
-			</p>
-
-			<p>
-				With this setup, you will have to enter a password at boot time, in GRUB, before being able to use any of the menu entries or switch to the terminal.
+				With this configuration, you will have to enter a password at boot time, in GRUB, before being able to use any of the menu entries or switch to the terminal.
 				This protects your system from an attacker simply booting a live usb distro and re-flashing the boot firmware.
 			</p>
 
