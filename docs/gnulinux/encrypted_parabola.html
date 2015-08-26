@@ -42,35 +42,42 @@
 		</p>
 
 		<p>
-			For this guide I used the 2013 09 01 image to boot the live installer and install the system.
+			For this guide I used the 2015 08 01 image to boot the live installer and install the system.
+			This is available at <a href="https://wiki.parabola.nu/Get_Parabola#Main_live_ISO">this page</a>.
 		</p>
 		
 		<p>
 			This guide will go through the installation steps taken at the time of writing, which may or may not change due to
 			the volatile nature of Parabola (it changes all the time). In general most of it should remain the same. If you spot mistakes,
 			please say so! This guide will be ported to the Parabola wiki at a later date. For up to date Parabola install guide, go to
-			the Parabola wiki. This guide essentially cherry picks the useful information (valid at the time of writing: 2014-09-15).
+			the Parabola wiki. This guide essentially cherry picks the useful information (valid at the
+			time of writing: 2015-08-25).
 		</p>
 		
 	</div>
 
 	<div class="section">
 		
+		<p>	This section deals with wiping the storage device on which you plan to install Parabola
+			GNU/Linux. Follow these steps, but if you use an SSD, also:
+
 		<p>
-			Firstly if you use an SSD, beware there are issues with TRIM (not enabled through luks) and security issues if you do enable it.
+			- beware there are issues with TRIM (not enabled through luks) and security issues if you do enable it.
 			See <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Specialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29">this page</a>
 			for more info.
 		</p>
 
-		<p>
-			<b>If you are using an SSD for this, make sure it's brand-new (or barely used). Or, otherwise, be sure that it never previously
-			contained plaintext copies of your data.</b>
+		<p>	- make sure it's brand-new (or barely used). Or, otherwise, be sure that it never previously contained plaintext copies of your data.
+		</p>
+
+		<p>	- make sure to read <a href="https://wiki.archlinux.org/index.php/Solid_State_Drives">this article</a>. Edit /etc/fstab later on when 
+			chrooted into your install. Also, read the whole article and keep all points in mind, adapting them for this guide.
 		</p>
 
 		<p>
 			Wipe the MBR (if you use MBR):<br/>
 			# <b>lsblk</b><br/>
-			Your HDD is probably /dev/sda:
+			Your storage is probably /dev/sda, but be very sure to double check this or you WILL lose your data!<br/>
 			# <b>dd if=/dev/zero of=/dev/sda bs=446 count=1; sync</b><br/>
 			Never use SeaBIOS! The MBR section can easily be changed with malicious code, which SeaBIOS will blindly execute. 
 			This guide is for libreboot with GRUB-as-payload only.
@@ -88,17 +95,9 @@
 			If your drive was already LUKS encrypted (maybe you are re-installing your distro) then
 			it is already 'wiped'. You should just wipe the LUKS header.
 			<a href="https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/">https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/</a>
-			showed me how to do this. It recommends doing the first 3MiB. Now, that guide is recommending putting zero there. I'm doing to use urandom. Do this:<br/>
+			showed me how to do this. It recommends doing the first 3MiB. Now, that guide is recommending putting zero there. I'm going to use urandom. Do this:<br/>
 			# <b>head -c 3145728 /dev/urandom &gt; /dev/sda; sync</b><br/>
-			(wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
-		</p>
-		<p>
-			<b>
-				If you do plan to use an SSD, make sure to read
-				<a href="https://wiki.archlinux.org/index.php/Solid_State_Drives">https://wiki.archlinux.org/index.php/Solid_State_Drives</a><br/>
-				Edit /etc/fstab later on when chrooted into your install. Also, read the whole article and keep all points in mind, adapting
-				them for this guide. 
-			</b>
+			(Wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
 		</p>
 		
 	</div>
@@ -109,9 +108,20 @@
 			Change keyboard layout
 		</h2>
 			<p>
-				Parabola live shell assumes US Qwerty. If you have something different, use:<br/>
+				Parabola live shell assumes US Qwerty. If you have something different, list the available keymaps and use yours:<br/>
+				# <b>localectl list-keymaps</b><br/>
 				# <b>loadkeys LAYOUT</b><br/>
 				For me, LAYOUT would have been dvorak-uk.
+			</p>
+
+	</div>
+
+	<div class="section">
+
+		<h2>Establish an internet connection</h2>
+			<p>
+				Refer to <a href="https://wiki.parabola.nu/Beginners%27_guide#Establish_an_internet_connection">this guide</a>. Wired is recommended,
+				but wireless is also explained there.
 			</p>
 			
 	</div>
@@ -147,7 +157,7 @@
 				I am then directed to <a href="https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption">https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption</a>.
 			</p>
 			<p>
-				Parabola forces you to RTFM.
+				Parabola forces you to RTFM. Do that.
 			</p>
 			<p>
 				It tells me to run:<br/>
@@ -165,8 +175,8 @@
 			<p>
 				I am initializing LUKS with the following:<br/>
 				# <b>cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash whirlpool --use-random --verify-passphrase luksFormat /dev/sda1</b>
-				-- choose a <b>secure</b> passphrase here. Ideally lots of lowercase/uppercase numbers, letters, symbols etc all in a random pattern. The password
-				length should be as long as you are able to handle without writing it down or storing it anywhere.
+				Choose a <b>secure</b> passphrase here. Ideally lots of lowercase/uppercase numbers, letters, symbols etc all in a random pattern. The
+				password length should be as long as you are able to handle without writing it down or storing it anywhere.
 			</p>
 			
 	</div>
@@ -179,10 +189,8 @@
 			</p>
 			<p>
 				Open the LUKS partition:<br/>
-				# <b>cryptsetup open --type luks /dev/sda1 lvm</b><br/>
-				(it will be available at /dev/mapper/lvm)<br/>
-				I'm told that the above is old syntax, which is what I did anyway. You could also try:<br/>
-				# <b>cryptsetup luksOpen /dev/sda1 lvm</b>
+				# <b>cryptsetup luksOpen /dev/sda1 lvm</b><br/>
+				(it will be available at /dev/mapper/lvm)
 			</p>
 			<p>
 				Create LVM partition:<br/>
@@ -192,13 +200,17 @@
 			</p>
 			<p>
 				Now I create the volume group, inside of which the logical volumes will be created:<br/>
-				# <b>vgcreate matrix /dev/mapper/lvm</b> (volume group name is 'matrix')<br/>
+				# <b>vgcreate matrix /dev/mapper/lvm</b><br/>
+				(volume group name is 'matrix' - choose your own name, if you like)
 				Show that you created it:<br/>
 				# <b>vgdisplay</b>
 			</p>
 			<p>
 				Now create the logical volumes:<br/>
 				# <b>lvcreate -L 2G matrix -n swapvol</b> (2G swap partition, named <u>swapvol</u>)<br/>
+				Again, choose your own name if you like. Also, make sure to choose a swap size of your own needs. It basically depends on how much RAM
+				you have installed. I refer to <a 
+href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space">http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space</a>.<br/>
 				# <b>lvcreate -l +100%FREE matrix -n rootvol</b> (single large partition in the rest of the space, named <u>rootvol</u>)<br/>
 				You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example,
 				if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system).
@@ -213,14 +225,20 @@
 
 	<div class="section">
 		
-		<h2>Create / and swap partitions</h2>
+		<h2>Create / and swap partitions, and mount</h2>
 			<p>
 				For the swapvol LV I use:<br/>
-				# <b>mkswap /dev/mapper/matrix-swapvol</b>
+				# <b>mkswap /dev/mapper/matrix-swapvol</b><br/>
+				Activate swap:<br/>
+				# <b>swapon /dev/matrix/swapvol</b>
 			</p>
 			<p>
 				For the rootvol LV I use:<br/>
 				# <b>mkfs.ext4 /dev/mapper/matrix-rootvol</b>
+			</p>
+			<p>
+				Mount the root (/) partition:<br/>
+				# <b>mount /dev/matrix/rootvol /mnt</b>
 			</p>
 			
 	</div>
@@ -228,10 +246,6 @@
 	<div class="section">
 		
 		<h2>Continue with Parabola installation</h2>
-			<p>
-				Mount the root (/) partition:<br/>
-				# <b>mount /dev/matrix/rootvol /mnt</b><br/>
-			</p>
 			<p>
 				This guide is really about GRUB, Parabola and cryptomount. I have to show how to install Parabola
 				so that the guide can continue.
@@ -242,22 +256,16 @@
 			</p>
 			<p>
 				Create /home and /boot on rootvol mountpoint:<br/>
-				# <b>mkdir /mnt/home</b><br/>
-				# <b>mkdir /mnt/boot</b>
+				# <b>mkdir -p /mnt/home</b><br/>
+				# <b>mkdir -p /mnt/boot</b>
 			</p>
 			<p>
-				The wiki says to enable the swap so that it can be detected by 'genfstab':<br/>
-				# <b>swapon /dev/matrix/swapvol</b>
-			</p>
-			<p>
-				DHCP was already working for me, so I had internet during the install. Therefore, I ignore the 'Connect to the Internet' section of the install guide.
-				I also ignore wifi, since I can set that up after the install. For now, I am just using ethernet.
-				Otherwise, refer to <a href="https://wiki.archlinux.org/index.php/Configuring_Network">https://wiki.archlinux.org/index.php/Configuring_Network</a>.
-				You can test to see if internet is already working by pinging a few domains.
+				Once all the remaining partitions, if any, have been mounted, the devices are ready to install Parabola.
 			</p>
 
 			<p>
-				I commented out all lines except the Server line for the UK Parabola server (main server) in <b>/etc/pacman.d/mirrorlist</b> and then did:<br/>
+				In <b>/etc/pacman.d/mirrorlist</b>, comment out all lines except the Server line closest to where you are (I chose the UK Parabola
+				server (main server)) and then did:<br/>
 				# <b>pacman -Syy</b><br/>
 				# <b>pacman -Syu</b><br/>
 				# <b>pacman -Sy pacman</b> (and then I did the other 2 steps above, again)<br/>
@@ -274,6 +282,8 @@
 					&nbsp;&nbsp;&nbsp;# <b>pacman-key --refresh-keys</b><br/>
 					&nbsp;&nbsp;&nbsp;# <b>pacman -Sy parabola-keyring</b><br/>
 					&nbsp;&nbsp;&nbsp;To be honest, you should do the above anyway. Parabola has a lot of maintainers, and a lot of keys. Really!<br/>
+					&nbsp;&nbsp;&nbsp;If you get an error mentioning dirmngr, do:<br/>
+					&nbsp;&nbsp;&nbsp;# <b>dirmngr &lt;/dev/null</b><br/>
 					&nbsp;&nbsp;&nbsp;Also, it says that if the clock is set incorrectly then you have to manually set the correct time <br/>
 					&nbsp;&nbsp;&nbsp;(if keys are listed as expired because of it):<br/>
 					&nbsp;&nbsp;&nbsp;# <b>date MMDDhhmm[[CC]YY][.ss]</b><br/>
@@ -289,8 +299,8 @@
 				&lt;/troubleshooting&gt;<br/>
 			</p>
 			<p>
-				I also like to install other packages (base-devel, compilers and so on) and wpa_supplicant/dialog are needed for wireless after the install:<br/>
-				# <b>pacstrap /mnt base base-devel wpa_supplicant dialog</b>
+				I also like to install other packages (base-devel, compilers and so on) and wpa_supplicant/dialog/iw/wpa_actiond are needed for wireless after the install:<br/>
+				# <b>pacstrap /mnt base base-devel wpa_supplicant dialog iw wpa_actiond</b>
 			</p>
 			
 	</div>
@@ -299,12 +309,16 @@
 
 		<h2>Configure the system</h2>
 			<p>
-				From the Parabola installation guide (Arch's one was identical):<br/>
-				# <b>genfstab -p /mnt &gt;&gt; /mnt/etc/fstab</b>
+				Generate an fstab - UUIDs are used because they have certain advantages (see <a href="https://wiki.parabola.nu/Fstab#Identifying_filesystems">https://wiki.parabola.nu/Fstab#Identifying_filesystems</a>.
+				If you prefer labels instead, replace the -U option with -L):<br/>
+				# <b>genfstab -U -p /mnt &gt;&gt; /mnt/etc/fstab</b><br/>
+				Check the created file:<br/>
+				# <b>cat /mnt/etc/fstab</b><br/>
+				(If there are any errors, edit the file. Do <b>NOT</b> run the genfstab command again!)
 			</p>
 			<p>
 				Chroot into new system:<br/>
-				# <b>arch-chroot /mnt</b>
+				# <b>arch-chroot /mnt /bin/bash</b>
 			</p>
 			<p>
 				It's a good idea to have this installed:<br/>
@@ -322,89 +336,76 @@
 				Parabola does not have wget. This is sinister. Install it:<br/>
 				# <b>pacman -S wget</b>
 			</p>
-			<ul>
-				<li>Write your hostname to /etc/hostname</li>
-				<li>
-					Symlink /etc/localtime to /usr/share/zoneinfo/Zone/SubZone. Replace Zone and Subzone to your liking. For example:
-					<ul>
-						<li># <b>ln -s /usr/share/zoneinfo/Europe/London /etc/localtime</b></li>
-					</ul>
-				</li>
-				<li>
-					Set <a href="https://wiki.parabolagnulinux.org/Locale#Setting_system-wide_locale">locale</a> preferences in /etc/locale.conf. In my case, I did:<br/>
-					<i>
-						LANG="en_GB.UTF-8"<br/>
-						# Keep the default sort order (e.g. files starting with a '.'<br/>
-						# should appear at the start of a directory listing.)<br/>
-						LC_COLLATE="C"<br/>
-						# Set the short date to YYYY-MM-DD (test with "date +%c")<br/>
-						LC_TIME="en_GB.UTF-8"
-					</i>
-				</li>
-				<li>
-					Add <a href="https://wiki.parabolagnulinux.org/KEYMAP">console keymap and font</a> preferences in /etc/vconsole.conf. In my case:<br/>
-					<i>
-						KEYMAP=dvorak-uk<br/>
-						FONT=Lat2-Terminus16
-					</i>
-				</li>
-				<li>
-					Uncomment the selected locale (same as what you specified in /etc/locale.conf) in /etc/locale.gen and generate it with:
-					<ul>
-						<li># <b>locale-gen</b></li>
-					</ul>
-				</li>
-				<li>
-					Configure /etc/mkinitcpio.conf as needed (see <a href="https://wiki.parabolagnulinux.org/Mkinitcpio">mkinitcpio</a>)
-					Specifically, for this use case:<br/>
-					<ul>
-						<li>
-							add <b>i915</b> to the MODULES array (forces the driver to load earlier, so that the consolefont isn't wiped out after getting to login).<br/>
-							add <b>encrypt</b> and <b>lvm2</b> in that order, before the 'filesystems' entry in the HOOKS array.<br/>
-							add <b>keymap</b>, <b>consolefont</b> and <b>shutdown</b> to the end of the HOOKS array in that order.<br/>
-							move <b>keyboard</b>, <b>keymap</b> and <b>consolefont</b> in that order, to go before 'encrypt' in the HOOKS array.<br/>
-							At the end your HOOKS array will look like this:<br/>
-							<i>HOOKS=&quot;base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown&quot;</i>
-							<ul>
-								<li>keymap adds to initramfs the keymap that you specified in /etc/vconsole.conf</li>
-								<li>consolefont adds to initramfs the font that you specified in /etc/vconsole.conf</li>
-								<li>encrypt adds LUKS support to the initramfs - needed to unlock your disks at boot time</li>
-								<li>lvm2 adds LVM support to the initramfs - needed to mount the LVM partitions at boot time</li>
-								<li>shutdown is needed according to Parabola wiki for unmounting devices (such as LUKS/LVM) during shutdown</li>
-								<li>
-									Runtime modules can be found in /usr/lib/initcpio/hooks, and build hooks can be found in 
-									/usr/lib/initcpio/install.
-								</li>
-								<li><b>mkinitcpio -H hookname</b> gives information about each hook.</li>
-							</ul>
-						</li>
-					</ul>
-				</li>
-				<li>
-					Now using mkinitcpio, you can create the kernel and ramdisk for booting with (this is different from Arch, specifying linux-libre instead of linux):<br/>
-					# <b>mkinitcpio -p linux-libre</b><br/>
-					Also do it for linux-libre-lts:<br/>
-					# <b>mkinitcpio -p linux-libre-lts</b><br/>
-					Also do it for linux-libre-grsec:<br/>
-					# <b>mkinitcpio -p linux-libre-grsec</b>
-				</li>
-			</ul>
-			
-	</div>
-
-	<div class="section">
-	
-		<h2>Set a root password</h2>
 			<p>
-				At the time of writing, Parabola used SHA512 by default for it's password hashing.
+				Locale:<br/>
+				# <b>nano /etc/locale.gen</b><br/>
+				Uncomment your needed localisations. For example en_GB.UTF-8 (UTF-8 is highly recommended over other options).<br/>
+				# <b>locale-gen</b><br/>
+				# <b>echo LANG=en_GB.UTF-8 > /etc/locale.conf</b><br/>
+				# <b>export LANG=en_GB.UTF-8</b>
 			</p>
 			<p>
-				I referred to <a href="https://wiki.archlinux.org/index.php/SHA_password_hashes">https://wiki.archlinux.org/index.php/SHA_password_hashes</a>.
+				Console font and keymap:<br/>
+				# <b>nano /etc/vconsole.conf</b><br/>
+				In my case:
+					KEYMAP=dvorak-uk
+					FONT=Lat9w-16
+			</p>
+			<p>	
+				Time zone:<br/>
+				# <b>ln -s /usr/share/zoneinfo/Europe/London /etc/localtime</b><br/>
+				(Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
+			</p>
+			<p>	
+				Hardware clock:<br/>
+				# <b>hwclock --systohc --utc</b>
 			</p>
 			<p>
-				Open /etc/pam.d/passwd and add rounds=65536 at the end of the uncommented 'password' line.
+				Hostname:
+				Write your hostname to /etc/hostname. For example, if your hostname is parabola:<br/>
+				# <b>echo parabola &gt; /etc/hostname</b><br/>
+				Add the same hostname to /etc/hosts:<br/>
+				# <b>nano /etc/hosts</b><br/>
+			</p>
+<pre>
+#&lt;ip-address&gt;	&lt;hostname.domain.org&gt;	&lt;hostname&gt;
+127.0.0.1	localhost.localdomain	localhost	parabola
+::1		localhost.localdomain	localhost	parabola
+</pre>
+			<p>	Configure the network:
+				Refer to <a href="https://wiki.parabola.nu/Beginners%27_guide#Configure_the_network">https://wiki.parabola.nu/Beginners%27_guide#Configure_the_network</a>.
+			</p>
+			<p>	Mkinitcpio:
+				Configure /etc/mkinitcpio.conf as needed (see <a href="https://wiki.parabola.nu/Mkinitcpio">https://wiki.parabola.nu/Mkinitcpio</a>).
+				Runtime modules can be found in /usr/lib/initcpio/hooks, and build hooks can be found in /usr/lib/initcpio/install. (# <b>mkinitcpio -H hookname</b> gives information about each hook.)
+				Specifically, for this use case:<br/>
+				# <b>nano /etc/mkinitcpio.conf</b><br/>
+				Then modify the file like so:
+			</p>
+				<ul>
+					<li>MODULES="i915"</li>
+					<li>This forces the driver to load earlier, so that the console font isn't wiped out after getting to login)</li>
+					<li>HOOKS="base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown"</li>
+					<li>Explanation:</li>
+					<li>keymap adds to initramfs the keymap that you specified in /etc/vconsole.conf</li>
+					<li>consolefont adds to initramfs the font that you specified in /etc/vconsole.conf</li>
+					<li>encrypt adds LUKS support to the initramfs - needed to unlock your disks at boot time</li>
+					<li>lvm2 adds LVM support to the initramfs - needed to mount the LVM partitions at boot time</li>
+					<li>shutdown is needed according to Parabola wiki for unmounting devices (such as LUKS/LVM) during shutdown)</li>
+				</ul>
+			<p>
+				Now using mkinitcpio, you can create the kernel and ramdisk for booting with (this is different from Arch, specifying linux-libre instead of linux):<br/>
+				# <b>mkinitcpio -p linux-libre</b><br/>
+				Also do it for linux-libre-lts:<br/>
+				# <b>mkinitcpio -p linux-libre-lts</b><br/>
+				Also do it for linux-libre-grsec:<br/>
+				# <b>mkinitcpio -p linux-libre-grsec</b>
 			</p>
 			<p>
+				Set the root password:
+				At the time of writing, Parabola used SHA512 by default for its password hashing. I referred to <a href="https://wiki.archlinux.org/index.php/SHA_password_hashes">https://wiki.archlinux.org/index.php/SHA_password_hashes</a>.<br/>
+				# <b>nano /etc/pam.d/passwd</b><br/>
+				Add rounds=65536 at the end of the uncommented 'password' line.<br/>
 				# <b>passwd root</b><br/>
 				Make sure to set a secure password! Also, it must never be the same as your LUKS password.
 			</p>
@@ -447,7 +448,7 @@
 			</p>
 			<p>
 				unmount:<br/>
-				# <b>umount /mnt</b><br/>
+				# <b>umount -R /mnt</b><br/>
 				# <b>swapoff -a</b>
 			</p>
 			<p>
@@ -461,7 +462,7 @@
 			</p>
 			<p>
 				# <b>shutdown -h now</b><br/>
-				Then boot up again.
+				Remove the installation media, then boot up again.
 			</p>
 			
 	</div>
@@ -651,6 +652,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 
 		<p>
 			Copyright &copy;  2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
+			Copyright &copy;  2015 Jeroen Quint &lt;jezza@diplomail.ch&gt;<br/>
 			Permission is granted to copy, distribute and/or modify this document
 			under the terms of the GNU Free Documentation License, Version 1.3
 			or any later version published by the Free Software Foundation;
