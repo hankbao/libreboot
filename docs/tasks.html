@@ -114,6 +114,16 @@
 											Board-specific wiring (PCI interrupts, DIMM voltage selection). etc.
 											Board seems to use socketed SOIC-8 SPI flash according to tpearson, based on photos available online - looks like a ZIF socket or something else, a clip retaining the chip.
 										</li>
+										<li>
+											tpearson says: Tyan seems to have done the same thing as Asus did and built a whole lot of custom power control circuitry out of FETs.
+											According to him, this will take much effort to reverse engineer.
+										</li>
+										<li>
+											IPMI firmware is non-free but optional (for iKVM feature, remote management like Intel ME).  Not sure if add-on module or baked in.
+										</li>
+										<li>
+											SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine.
+										</li>
 									</ul>
 								</li>
 							</ul>
