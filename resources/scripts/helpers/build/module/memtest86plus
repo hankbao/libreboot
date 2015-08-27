@@ -30,7 +30,7 @@ set -u -e
 
 printf "Building MemTest86+\n"
 
-cd "memtest86+-5.01/"
+cd "memtest86plus/1"
 
 # clean it first
 make clean

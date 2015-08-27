@@ -4,6 +4,7 @@
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
 #	Copyright (C) 2015 Joseph Michael Thompson <jmt@josepht.me>
+#	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -54,19 +55,22 @@ tar -xzf "memtest86+-5.01.tar.gz"
 # delete the tar file (no longer needed)
 rm -f "memtest86+-5.01.tar.gz"
 
+# make direcotory name consistent
+mv "memtest86+-5.01" "memtest86plus"
+
 # there are modifications required
-cd "memtest86+-5.01/"
+cd "memtest86plus/"
 
 # Apply necessary patches
 # ------------------------------------------------------------------------------
 
 # place the right config
 rm -f "config.h"
-cp "../resources/memtest86/patch/config.h" .
+cp "../resources/memtest86plus/patch/config.h" .
 
 # place the right Makefile
 rm -f "Makefile"
-cp "../resources/memtest86/patch/Makefile" .
+cp "../resources/memtest86plus/patch/Makefile" .
 
 # (diff them with defaults to see what changed)
 
