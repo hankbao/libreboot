@@ -88,20 +88,12 @@ rm -Rf "${distdir}/resources/libreboot/patch/"
 
 # ich9deblob: There are certain files in there that the user most likely does
 # not want to share.
-rm -f "${distdir}/resources/utilities/ich9deblob/deblobbed_descriptor.bin"
-rm -f "${distdir}/resources/utilities/ich9deblob/factory.rom"
-rm -f "${distdir}/resources/utilities/ich9deblob/libreboot.rom"
-rm -f "${distdir}/resources/utilities/ich9deblob/mkdescriptor.c"
-rm -f "${distdir}/resources/utilities/ich9deblob/mkdescriptor.h"
-rm -f "${distdir}/resources/utilities/ich9deblob/mkgbe.c"
-rm -f "${distdir}/resources/utilities/ich9deblob/mkgbe.h"
-rm -f "${distdir}/resources/utilities/ich9deblob/ich9fdgbe_4m.bin"
-rm -f "${distdir}/resources/utilities/ich9deblob/ich9fdgbe_8m.bin"
-rm -f "${distdir}/resources/utilities/ich9deblob/demefactory_4kdescriptor.bin"
-rm -f "${distdir}/mkgbe.c"
-rm -f "${distdir}/mkgbe.h"
-rm -f "${distdir}/ich9fdgbe_8m.bin"
-rm -f "${distdir}/ich9fdgbe_4m.bin"
+rm -f "${distdir}/resources/utilities/ich9deblob/"*.bin
+rm -f "${distdir}/resources/utilities/ich9deblob/"*.rom
+rm -f "${distdir}/resources/utilities/ich9deblob/mk"*.[ch]
+rm -f "${distdir}/mk"*.[ch]
+rm -f "${distdir}/"*.bin
+rm -f "${distdir}/"*.rom
 
 # Remove any GRUB payload ELF executables that may exist
 rm -f "${distdir}/resources/utilities/grub-assemble/grub_txtmode.elf"
