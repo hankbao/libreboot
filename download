@@ -24,11 +24,11 @@
 set -u -e
 
 download=./resources/scripts/helpers/download
-programmes="none"
+programmes=$(ls ${download}/)
 
 case ${@} in
 	all)
-		programmes=$(ls ${download}/)
+		
 		;;
 	list)
 		printf "possible values for 'programmes':\nall:\n%s\n\n" "${programmes}"
