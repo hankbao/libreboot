@@ -27,11 +27,21 @@ download=./resources/scripts/helpers/download
 programmes=$(ls ${download}/)
 noconfirm="0"
 
+help () {
+	printf "%s\n\n" "./download programme(s) # programmes are space separated, if specifing multiple programmes"
+	printf "possible values for 'programmes':\nall:\n%s\n\n" "${programmes}"
+	printf "Example (download everything): ./download all\n"
+	printf "Example (download flashrom): ./download flashrom\n"
+	printf "Example (download coreboot): ./download coreboot\n"
+	printf "Example (download coreboot and flashrom): ./download coreboot flashrom\n"
+	printf "Example (lists all available downloadable components): ./download list\n"
+}
+
 if [ $# -lt 1 ]; then
 	printf "ERROR: download script: no argmunt given.\n"
+	help
 	exit 1
 fi
-
 
 if [ "${1}" = "--noconfirm" ] || [ "${1}" = "-y" ]; then
 	noconfirm="1"
@@ -46,13 +56,7 @@ case ${@} in
 		exit 
 		;;
 	help)
-		printf "%s\n\n" "./download programme(s) # programmes are space separated, if specifing multiple programmes"
-		printf "possible values for 'programmes':\nall:\n%s\n\n" "${programmes}"
-		printf "Example (download everything): ./download all\n"
-		printf "Example (download flashrom): ./download flashrom\n"
-		printf "Example (download coreboot): ./download coreboot\n"
-		printf "Example (download coreboot and flashrom): ./download coreboot flashrom\n"
-		printf "Example (lists all available downloadable components): ./download list\n"
+		help
 		exit 
 		;;
 	*)
