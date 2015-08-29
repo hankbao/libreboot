@@ -42,13 +42,6 @@ git clone git://git.savannah.gnu.org/grub.git
 # modifications are required
 cd "grub/"
 
-# Verify checksums of the downloaded files
-# ------------------------------------------------------------------------------
-
-sha512sum -c "../resources/scripts/helpers/sha512sums/grub" || (cd "../" && rm -Rf "grub/" && printf "Invalid checksums for GRUB\n" && exit 1)
-
-printf "Valid checksums for GRUB\n"
-
 # Apply patches
 # ------------------------------------------------------------------------------
 
