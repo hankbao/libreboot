@@ -26,6 +26,11 @@ set -u -e
 download=./resources/scripts/helpers/download
 programmes=$(ls ${download}/)
 
+if [ $# -lt 1 ]; then
+	printf "ERROR: download script: no argmunt given.\n"
+	exit 1
+fi
+
 case ${@} in
 	all)
 		;;
