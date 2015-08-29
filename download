@@ -52,7 +52,7 @@ case ${@} in
 	all)
 		;;
 	list)
-		printf "possible values for 'programmes':\nall:\n%s\n\n" "${programmes}"
+		printf "possible values for 'programmes':\nall\n%s\n\n" "${programmes}"
 		exit 
 		;;
 	help)
