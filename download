@@ -66,6 +66,7 @@ esac
 for programme in ${programmes}; do
 
 	if [ "${noconfirm}" = "0" ]; then
+		printf "Use \"./download --noconfirm\" or \"./download -y\" if you want to be rid of these confirmation dialogues.\n\n"
 		if [ -d "${programme}/" ]; then
 			printf "A ${programme}/ directory already exists, delete it? [yN]: "
 			read answer
