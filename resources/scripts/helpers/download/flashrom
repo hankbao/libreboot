@@ -37,9 +37,12 @@ rm -Rf "flashrom/"
 # ------------------------------------------------------------------------------
 
 # download it using subversion
-svn co -r 1889 svn://flashrom.org/flashrom/trunk flashrom
+git clone https://github.com/stefanct/flashrom.git
 
 cd "flashrom/"
+
+# reset to known revision
+git reset --hard 80c9382948afa5e572854d49846a36b7f9d90e03
 
 # Apply patches
 # ------------------------------------------------------------------------------

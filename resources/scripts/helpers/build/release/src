@@ -61,7 +61,7 @@ printf '\n'
 # Delete Git repositories and properties and Subversion administrative
 # directories and properties.
 rm -Rf "${distdir}/bucts/".git*
-rm -Rf "${distdir}/flashrom/".svn*
+rm -Rf "${distdir}/flashrom/".git*
 rm -Rf "${distdir}/grub/".git*
 
 # Delete useless files.
