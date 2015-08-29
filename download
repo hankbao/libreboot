@@ -38,7 +38,7 @@ help () {
 }
 
 if [ $# -lt 1 ]; then
-	printf "ERROR: download script: no argmunt given.\n"
+	printf "ERROR: download script: no argument given.\n"
 	help
 	exit 1
 fi
