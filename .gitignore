@@ -7,7 +7,7 @@
 /coreboot/
 /flashrom/
 /grub/
-/memtest86+-5.01/
+/memtest86plus/
 /bin/
 /release/
 /resources/utilities/ich9deblob/*.rom

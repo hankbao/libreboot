@@ -33,7 +33,7 @@ set -u -e
 
 printf "Downloading MemTest86+\n"
 
-rm -Rf "memtest86+-5.01/"
+rm -Rf "memtest86plus/"
 
 # Get latest memtest86+:
 # ------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ tar -xzf "memtest86+-5.01.tar.gz"
 rm -f "memtest86+-5.01.tar.gz"
 
 # make direcotory name consistent
-mv "memtest86+-5.01" "memtest86plus"
+mv "memtest86+-5.01/" "memtest86plus/"
 
 # there are modifications required
 cd "memtest86plus/"

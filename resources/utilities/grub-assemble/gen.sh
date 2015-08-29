@@ -50,7 +50,7 @@ then
 	  --modules="${grub_modules}" \
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
-	  /memtest="../../../memtest86+-5.01/memtest" \
+	  /memtest="../../../memtest86plus/memtest" \
 	  $(./grub_memdisk_keymap)
 else
 	printf "grub-assemble gen.sh: invalid mode '%s'\n" "${1}"
