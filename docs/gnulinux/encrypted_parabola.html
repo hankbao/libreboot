@@ -341,16 +341,18 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 				# <b>nano /etc/locale.gen</b><br/>
 				Uncomment your needed localisations. For example en_GB.UTF-8 (UTF-8 is highly recommended over other options).<br/>
 				# <b>locale-gen</b><br/>
-				# <b>echo LANG=en_GB.UTF-8 > /etc/locale.conf</b><br/>
+				# <b>echo LANG=en_GB.UTF-8 &gt; /etc/locale.conf</b><br/>
 				# <b>export LANG=en_GB.UTF-8</b>
 			</p>
 			<p>
 				Console font and keymap:<br/>
 				# <b>nano /etc/vconsole.conf</b><br/>
 				In my case:
-					KEYMAP=dvorak-uk
-					FONT=Lat9w-16
 			</p>
+<pre>
+KEYMAP=dvorak-uk
+FONT=Lat9w-16
+</pre>
 			<p>	
 				Time zone:<br/>
 				# <b>ln -s /usr/share/zoneinfo/Europe/London /etc/localtime</b><br/>
