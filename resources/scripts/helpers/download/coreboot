@@ -46,13 +46,6 @@ cd "coreboot/"
 # reset to previously tested revision
 git reset --hard 5d5fcdd82b72c1fc621aab9fd6ff88cce9345d8e
 
-# Verify checksums of the downloaded files
-# ------------------------------------------------------------------------------
-
-sha512sum -c "../resources/scripts/helpers/sha512sums/coreboot" || (cd "../" && rm -Rf "coreboot/" && printf "Invalid checksums for coreboot\n" && exit 1)
-
-printf "Valid checksums for coreboot\n"
-
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
 

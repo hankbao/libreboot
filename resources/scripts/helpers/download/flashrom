@@ -41,13 +41,6 @@ svn co -r 1889 svn://flashrom.org/flashrom/trunk flashrom
 
 cd "flashrom/"
 
-# Verify checksums of the downloaded files
-# ------------------------------------------------------------------------------
-
-sha512sum -c "../resources/scripts/helpers/sha512sums/flashrom" || (cd "../" && rm -Rf "flashrom/" && printf "Invalid checksums for flashrom\n" && exit 1)
-
-printf "Valid checksums for flashrom\n"
-
 # Apply patches
 # ------------------------------------------------------------------------------
 

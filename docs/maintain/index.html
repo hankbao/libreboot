@@ -223,18 +223,6 @@
 			</p>
 
 			<p>
-				Note: you will also need to replace the sha512 sums in
-				<i>resources/scripts/helpers/sha512sums/coreboot</i>. Do this with
-				an <i>unmodified</i> version of coreboot, from the commit that you are using,
-				and make sure that the files/directories beginning with <i>.git</i> do not
-				appear in the list of sha512 checksums. You must <i>also</i> run the deblob
-				script to remove the blobs, before generating this list of sha512 sums. 
-				You can generate the list like so:<br/>
-				$ <b>rm -f ../resources/scripts/helpers/sha512sums/coreboot</b><br/>
-				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/coreboot; done</b>
-			</p>
-
-			<p>
 				Download coreboot again, only this time, using the download
 				script. The download script also applies custom patches
 				to coreboot (see resources/scripts/helpers/download/coreboot);
@@ -448,15 +436,6 @@
 				build the ROM images and test them, with this different
 				GRUB version that you have prepared.
 			</p>
-			<p>
-				Note: you will also need to replace the sha512 sums in
-				<i>resources/scripts/helpers/sha512sums/grub</i>. Do this with
-				an <i>unmodified</i> version of GRUB, from the commit that you are using,
-				and make sure that the files/directories beginning with <i>.git</i> do not
-				appear in the list of sha512 checksums. You can generate the list like so:<br/>
-				$ <b>rm -f ../resources/scripts/helpers/sha512sums/grub</b><br/>
-				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/grub; done</b>
-			</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
@@ -543,15 +522,6 @@
 			<p>
 				Patches are in <i>resources/flashrom/patch/</i>
 			</p>
-			<p>
-				Note: you will also need to replace the sha512 sums in
-				<i>resources/scripts/helpers/sha512sums/flashrom</i>. Do this with
-				an <i>unmodified</i> version of flashrom, from the commit that you are using,
-				and make sure that the files/directories beginning with <i>.svn</i> do not
-				appear in the list of sha512 checksums. You can generate the list like so:<br/>
-				$ <b>rm -f ../resources/scripts/helpers/sha512sums/flashrom</b><br/>
-				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/flashrom; done</b>
-			</p>
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
@@ -568,15 +538,6 @@
 				in <i>resources/bucts/patch</i>, the download script
 				is <i>resources/scripts/helpers/download/bucts</i> and
 				the build script is <i>resources/scripts/helpers/build/module/bucts</i>.
-			</p>
-			<p>
-				Note: you will also need to replace the sha512 sums in
-				<i>resources/scripts/helpers/sha512sums/bucts</i>. Do this with
-				an <i>unmodified</i> version of bucts, from the commit that you are using,
-				and make sure that the files/directories beginning with <i>.git</i> do not
-				appear in the list of sha512 checksums. You can generate the list like so:<br/>
-				$ <b>rm -f ../resources/scripts/helpers/sha512sums/bucts</b><br/>
-				$ <b>for i in $(find -type f); do sha512sum &quot;${i}&quot; >> ../resources/scripts/helpers/sha512sums/bucts; done</b>
 			</p>
 
 			<p>

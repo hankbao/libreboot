@@ -42,11 +42,6 @@ git clone git://git.savannah.gnu.org/grub.git
 # modifications are required
 cd "grub/"
 
-# Reset to the last commit that was tested
-# ------------------------------------------------------------------------------
-
-git reset --hard afd0f21b2027310fda52b00ac1b964041d39a363
-
 # Verify checksums of the downloaded files
 # ------------------------------------------------------------------------------
 
