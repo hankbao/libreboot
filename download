@@ -25,10 +25,17 @@ set -u -e
 
 download=./resources/scripts/helpers/download
 programmes=$(ls ${download}/)
+noconfirm="0"
 
 if [ $# -lt 1 ]; then
 	printf "ERROR: download script: no argmunt given.\n"
 	exit 1
+fi
+
+
+if [ "${1}" = "--noconfirm" ] || [ "${1}" = "-y" ]; then
+	noconfirm="1"
+	shift 1
 fi
 
 case ${@} in
@@ -58,14 +65,16 @@ esac
 
 for programme in ${programmes}; do
 
-	if [ -d "${programme}/" ]; then
-		printf "A ${programme}/ directory already exists, delete it? [yN]: "
-		read answer
-		if [ "${answer}" = "y" ]; then
-			rm -Rf "${programme}/" && printf "Old ${programme} directory deleted.\n\n"
-		else
-			printf "${programme} directory not deleted, and therefore not replaced.\n"
-			continue
+	if [ "${noconfirm}" = "0" ]; then
+		if [ -d "${programme}/" ]; then
+			printf "A ${programme}/ directory already exists, delete it? [yN]: "
+			read answer
+			if [ "${answer}" = "y" ]; then
+				rm -Rf "${programme}/" && printf "Old ${programme} directory deleted.\n\n"
+			else
+				printf "${programme} directory not deleted, and therefore not replaced.\n"
+				continue
+			fi
 		fi
 	fi
 
