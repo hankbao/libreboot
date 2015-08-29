@@ -30,9 +30,11 @@ case ${@} in
 	all)
 		for programme in ${availableprogrammes}; do
 			${download}/${programme}
-		done;;
+		done
+		;;
 	list)
-		printf "possible values for 'programmes':\nall:\n%s\n\n" "${availableprogrammes}";;
+		printf "possible values for 'programmes':\nall:\n%s\n\n" "${availableprogrammes}"
+		;;
 	help)
 		printf "%s\n\n" "./download programme(s) # programmes are space separated, if specifing multiple programmes"
 		printf "possible values for 'programmes':\nall:\n%s\n\n" "${availableprogrammes}"
@@ -40,13 +42,15 @@ case ${@} in
 		printf "Example (download flashrom): ./download flashrom\n"
 		printf "Example (download coreboot): ./download coreboot\n"
 		printf "Example (download coreboot and flashrom): ./download coreboot flashrom\n"
-		printf "Example (lists all available downloadable components): ./download list\n";;
+		printf "Example (lists all available downloadable components): ./download list\n"
+		;;
 	*)
 		for programme in ${@}; do
 			echo ${availableprogrammes} | grep -wq ${programme} || (printf "ERROR: Invalid programme '${programme}'. See ./download help.\n"; exit 1)
 		done
 		for programme in ${@}; do
 			${download}/${programme}
-		done;;
+		done
+		;;
 esac
 # ------------------- DONE ----------------------
