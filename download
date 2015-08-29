@@ -48,7 +48,7 @@ if [ "${1}" = "--noconfirm" ] || [ "${1}" = "-y" ]; then
 	shift 1
 fi
 
-case ${@} in
+case "${@}" in
 	all)
 		;;
 	list)
@@ -60,10 +60,10 @@ case ${@} in
 		exit 
 		;;
 	*)
-		for programme in ${@}; do
-			echo ${programmes} | grep -wq ${programme} || (printf "ERROR: Invalid programme '${programme}'. See ./download help.\n"; exit 1)
+		for programme in "${@}"; do
+			echo "${programmes}" | grep -wq "${programme}" || (printf "ERROR: Invalid programme '%s'. See ./download help.\n" "${programme}"; exit 1)
 		done
-		programmes=${@}
+		programmes="${*}"
 		;;
 esac
 
@@ -72,16 +72,16 @@ for programme in ${programmes}; do
 	if [ "${noconfirm}" = "0" ]; then
 		printf "Use \"./download --noconfirm\" or \"./download -y\" if you want to be rid of these confirmation dialogues.\n\n"
 		if [ -d "${programme}/" ]; then
-			printf "A ${programme}/ directory already exists, delete it? [yN]: "
-			read answer
+			printf "A %s/ directory already exists, delete it? [yN]: " "${programme}"
+			read -r answer
 			if [ "${answer}" = "y" ]; then
-				rm -Rf "${programme}/" && printf "Old ${programme} directory deleted.\n\n"
+				rm -Rf "${programme:?}" && printf "Old %s directory deleted.\n\n" "${programme}"
 			else
-				printf "${programme} directory not deleted, and therefore not replaced.\n"
+				printf "%s directory not deleted, and therefore not replaced.\n" "${programme}"
 				continue
 			fi
 		fi
 	fi
 
-	${download}/${programme}
+	"${download}/${programme}"
 done
