@@ -23,8 +23,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-download=./resources/scripts/helpers/download
-programmes=( "${download}"/* )
+download="resources/scripts/helpers/download"
+programmes="$(ls ${download}/)"
 noconfirm="0"
 
 help () {
