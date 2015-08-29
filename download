@@ -52,5 +52,17 @@ case ${@} in
 esac
 
 for programme in ${programmes}; do
+
+	if [ -d "${programme}/" ]; then
+		printf "A ${programme}/ directory already exists, delete it? [yN]: "
+		read answer
+		if [ "${answer}" = "y" ]; then
+			rm -Rf "${programme}/" && printf "Old ${programme} directory deleted.\n\n"
+		else
+			printf "${programme} directory not deleted, and therefore not replaced.\n"
+			continue
+		fi
+	fi
+
 	${download}/${programme}
 done
