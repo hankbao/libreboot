@@ -61,7 +61,7 @@ case "${@}" in
 		;;
 	*)
 		for programme in "${@}"; do
-			echo "${programmes}" | grep -wq "${programme}" || (printf "ERROR: Invalid programme '%s'. See ./download help.\n" "${programme}"; exit 1)
+			printf "%s" "${programmes}\n" | grep -wq "${programme}" || (printf "ERROR: Invalid programme '%s'. See ./download help.\n" "${programme}"; exit 1)
 		done
 		programmes="${*}"
 		;;
