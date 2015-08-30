@@ -99,8 +99,10 @@ do
 	fi
 
 	# Add the correct GRUB configuration file for this image.
-	for keymap in $(for keylayout in ../resources/utilities/grub-assemble/keymap/original/*; do printf "%s\n" "${keylayout##*/}"; done)
+	for keylayout in ../resources/utilities/grub-assemble/keymap/original/*
 	do
+		keymap="${keylayout##*/}"
+
 		# copy the images based on the keymap
 		cp "${boardtarget}_${romtype}.rom" "${boardtarget}_${keymap}_${romtype}.rom"
 
