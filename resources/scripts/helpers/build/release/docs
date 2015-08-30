@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #
 #  helper script: generate the documentation release archive
