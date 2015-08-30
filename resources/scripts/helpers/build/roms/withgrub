@@ -38,7 +38,7 @@ if [ $# -gt 0 ]; then
 	boards="$@"
 else
 	# build all ROM images
-	boards="$(ls resources/libreboot/config/grub/)"
+	boards="$(for board in resources/libreboot/config/grub/*; do printf "%s\n" "${board##*/}"; done)"
 fi
 
 
@@ -54,7 +54,7 @@ do
 	cd "../../../coreboot"
 
 	# GRUB configuration files
-	for keymap in $(ls "../resources/utilities/grub-assemble/keymap/original/")
+	for keymap in $(for keylayout in ../resources/utilities/grub-assemble/keymap/original/*; do printf "%s\n" "${keylayout##*/}"; done)
 	do
 		cat "../resources/grub/config/extra/common.cfg" > "grub_${keymap}_${romtype}.cfg"
 		cat "../resources/grub/config/extra/${romtype}.cfg" >> "grub_${keymap}_${romtype}.cfg"
@@ -81,7 +81,7 @@ for i945board in "x60" "t60"
 do
 	if [ -d "bin/grub/${i945board}/" ]; then
 		cd "bin/grub/${i945board}/"
-		for i945rom in $(ls)
+		for i945rom in *
 		do
 			dd if="${i945rom}" of=top64k.bin bs=1 skip=$[$(stat -c %s "${i945rom}") - 0x10000] count=64k
 			dd if=top64k.bin of="${i945rom}" bs=1 seek=$[$(stat -c %s "${i945rom}") - 0x20000] count=64k conv=notrunc
@@ -102,7 +102,7 @@ if [ -d "bin/grub/" ]; then
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"
 				../../../resources/utilities/ich9deblob/ich9gen
-				for rom in $(ls)
+				for rom in *
 				do
 					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
 				done
