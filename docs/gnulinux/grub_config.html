@@ -42,6 +42,20 @@
 			These are some common examples of ways in which the grubtest.cfg file can be modified.
 		</p>
 
+		<div class="subsection">
+
+			<h2>Trisquel with full disk encryption, custom partition layout</h2>
+				<p>
+					GRUB can boot from a symlink (or symlinks) pointing to your kernel/initramfs, whether from an unencrypted or encrypted /boot/. You
+					can create your own custom symlink(s) but you have to manually update them when updating your kernel. This guide (not maintained by
+					the libreboot project) shows how to configure Trisquel to automatically update that symlink on every kernel update.
+					<a href="http://www.rel4tion.org/people/fr33domlover/libreboot-fix/">http://www.rel4tion.org/people/fr33domlover/libreboot-fix/</a>
+				</p>
+				<p>
+					TODO: adapt those notes and put them here. The author said that it was CC-0, so re-licensing under GFDL shouldn't be a problem.
+				</p>
+
+		</div>
 
 		<div class="subsection">
 				<h3 id="example_modifications_trisquel">Trisquel GNU/Linux-libre</h3>
