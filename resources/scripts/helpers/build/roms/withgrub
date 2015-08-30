@@ -44,8 +44,9 @@ do
 	cd "../../../coreboot"
 
 	# GRUB configuration files
-	for keymap in $(for keylayout in ../resources/utilities/grub-assemble/keymap/original/*; do printf "%s\n" "${keylayout##*/}"; done)
+	for keylayout in ../resources/utilities/grub-assemble/keymap/original/*
 	do
+		keymap="${keylayout##*/}"
 		cat "../resources/grub/config/extra/common.cfg" > "grub_${keymap}_${romtype}.cfg"
 		cat "../resources/grub/config/extra/${romtype}.cfg" >> "grub_${keymap}_${romtype}.cfg"
 		printf "keymap %s\n" "${keymap}" >> "grub_${keymap}_${romtype}.cfg"
