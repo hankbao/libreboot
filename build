@@ -27,7 +27,7 @@ mode="unknown"
 option="unknown"
 
 usage="./build mode option"
-availablemodes="$(ls ${build}/)"
+availablemodes="$(for mode in ${build}/*; do printf "%s\n" "${mode##*/}"; done)"
 availableoptions="unknown" # unknown until the mode is determined
 
 # User specified no or too few/many parameters
@@ -48,7 +48,7 @@ option="${2}"
 shift 2
 
 if [ -d "${build}/${mode}" ]; then
-	availableoptions="$(ls ${build}/${mode}/)"
+	availableoptions="$(for option in ${build}/${mode}/*; do printf "%s\n" "${option##*/}"; done)"
 	if [ "${option}" = "list" ]; then
 		printf "Available options for '%s' are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
 	elif [ -f "${build}/${mode}/${option}" ]; then
