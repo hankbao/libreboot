@@ -36,7 +36,7 @@ apt-get -y install wget
 # For downloading source code
 # ------------------------------------------------------------
 
-apt-get -y install subversion git
+apt-get -y install git
 
 # For building source code:
 # ------------------------------------------------------------
@@ -86,10 +86,10 @@ apt-get -y install ttf-unifont libopts25 libselinux1-dev autogen m4 autoconf hel
 
 apt-get -y install build-essential
 
-# Flashrom build dependencies (also requires build-essential and subversion)
+# Flashrom build dependencies (also requires build-essential)
 # ------------------------------------------------------------
 
-apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential subversion
+apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential
 
 # For cross-compiling i686 target on x86_64 host.
 if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]

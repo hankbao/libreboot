@@ -39,8 +39,8 @@ pacman -S --needed wget
 # For downloading source code
 # ------------------------------------------------------------
 
-printf "Source Code: In order to download the it, subversion and git is needed\n"
-pacman -S --needed subversion git
+printf "Source Code: In order to download the it, git is needed\n"
+pacman -S --needed git
 
 # For building source code:
 # ------------------------------------------------------------
@@ -98,9 +98,9 @@ pacman -S --needed bdf-unifont # trying this, otherwise there was an error. I'll
 
 # pacman -S --needed base-devel
 
-# Flashrom build dependencies (also requires build-essential and subversion)
+# Flashrom build dependencies (also requires build-essential)
 # ------------------------------------------------------------
 
 printf "Flashrom: Your external programmer will be most probably using PCI bus, FTDI chips need additional libraries\n"
 pacman -S --needed pciutils zlib libftdi libftdi-compat 
-# pacman -S --needed base-devel subversion
+# pacman -S --needed base-devel
