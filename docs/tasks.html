@@ -336,6 +336,11 @@
 	<div class="section">
 		<h1>Build system</h1>
 			<ul>
+				<li>Patch the coreboot build system, so that version information is still reliably generated
+				(e.g. in the logs), which is currently lacking because libreboot deletes the .git directory
+				(because the git history contains the deleted blobs, so libreboot has to delete it). It could
+				just be a small patch that hardcodes the coreboot version information, for that coreboot version,
+				each time libreboot rebases on a new version of coreboot.</li>
 				<li>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
 				memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
 				<li>
