@@ -33,6 +33,7 @@ hackconfig () {
 
 	if [ ! -d "../resources/libreboot/config/grub/${1}/" ]; then
 		printf "build/config/corebootmodify WARNING: config '%s' does not exist. Skipping.\n" "${1}"
+		cd "../"
 		return
 	fi
 	
