@@ -25,23 +25,22 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-cd "resources/libreboot/config/grub/"
+hackconfig () {
+	cd "coreboot/"
 
-if [ $# -lt 1 ]; then
-	configs="$(for config in *; do printf "%s\n" "${config}"; done)"
-else
-	configs="${*}"
-fi
-
-cd "../../../../coreboot/"
-for config in ${configs}; do
-	printf "Replacing or creating new config for %s\n" "${config}"
+	printf "Replacing or creating new config for %s\n" "${1}"
 	sleep 2
-
+	
 	make menuconfig
 
-	[ ! -d "../resources/libreboot/config/grub/${config}/" ] && mkdir -p "../resources/libreboot/config/grub/${config}/"
-	mv ".config" "../resources/libreboot/config/grub/${config}/config"
-done
+	[ ! -d "../resources/libreboot/config/grub/${1}/" ] && mkdir -p "../resources/libreboot/config/grub/${1}/"
+	mv ".config" "../resources/libreboot/config/grub/${1}/config"
 
-cd "../"
+	cd "../"
+}
+
+if [ $# -lt 1 ]; then
+	for config in resources/libreboot/config/grub/*; do hackconfig "${config##*/}"; done
+else
+	for config in "${@}"; do hackconfig "${config}"; done
+fi

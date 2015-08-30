@@ -25,27 +25,26 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-cd "resources/libreboot/config/grub/"
+hackconfig () {
+	cd "coreboot/"
 
-if [ $# -lt 1 ]; then
-	configs="$(for i in *; do printf "%s\n" "${i}"; done)"
-else
-	configs="${*}"
-fi
-
-cd "../../../../coreboot/"
-for config in ${configs}; do
-	printf "Updating config for %s\n" "${config}"
+	printf "Updating config for %s\n" "${1}"
 	sleep 2
 
-	if [ ! -d "../resources/libreboot/config/grub/${config}/" ]; then
-		printf "build/config/corebootupdate WARNING: config '%s' does not exist. Skipping.\n" "${config}"
-		continue
+	if [ ! -d "../resources/libreboot/config/grub/${1}/" ]; then
+		printf "build/config/corebootupdate WARNING: config '%s' does not exist. Skipping.\n" "${1}"
+		return
 	fi
 	
-	mv "../resources/libreboot/config/grub/${config}/config" ".config"
+	mv "../resources/libreboot/config/grub/${1}/config" ".config"
 	make oldconfig
-	mv ".config" "../resources/libreboot/config/grub/${config}/config"
-done
+	mv ".config" "../resources/libreboot/config/grub/${1}/config"
 
-cd "../"
+	cd "../"
+}
+
+if [ $# -lt 1 ]; then
+	for config in resources/libreboot/config/grub/*; do hackconfig "${config##*/}"; done
+else
+	for config in "${@}"; do hackconfig "${config}"; done
+fi
