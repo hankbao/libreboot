@@ -61,12 +61,12 @@ cd ../
 # Build ROM images for supported boards
 buildrom() {
 	board="$1"
-	if [[ -f "resources/libreboot/config/grub/${board}/config" ]]; then
+	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
 		./build roms withgrub_helper "${board}"
 	fi
 }
 
-if [[ $# -gt 0 ]]; then
+if [ $# -gt 0 ]; then
 	for board in "${@}"; do
 		buildrom "$board"
 	done
