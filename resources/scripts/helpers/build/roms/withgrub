@@ -32,16 +32,6 @@ then
 	mkdir "bin/"
 fi
 
-boards="unknown"
-if [ $# -gt 0 ]; then
-	# build only the ROM images that were requested
-	boards="${*}"
-else
-	# build all ROM images
-	boards="$(for board in resources/libreboot/config/grub/*; do printf "%s\n" "${board##*/}"; done)"
-fi
-
-
 # Put GRUB payloads and config files
 # in the coreboot directory, ready for next step
 cd "coreboot/"
@@ -68,12 +58,22 @@ done
 cd ../
 
 # Build ROM images for supported boards
-for board in ${boards}
-do
-	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
+buildrom() {
+	board="$1"
+	if [[ -f "resources/libreboot/config/grub/${board}/config" ]]; then
 		./build roms withgrub_helper "${board}"
 	fi
-done
+}
+
+if [[ $# -gt 0 ]]; then
+	for board in "${@}"; do
+		buildrom "$board"
+	done
+else
+	for board in resources/libreboot/config/grub/*; do
+		buildrom "${board##*/}"
+	done
+fi
 
 # Needed on i945 systems for the bucts/dd trick (documented)
 # This enables the ROM to be flashed over the lenovo bios firmware
