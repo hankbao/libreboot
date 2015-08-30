@@ -25,15 +25,8 @@ set -u -e
 
 download="resources/scripts/helpers/download"
 
-programs=( "${download}/"* )
 # echo "${programs##*/}" ; echo "${programs%/*}"
-
-programlist () {
-	for program in "${programs[@]}"; do
-		printf "%s\n" "${program##*/}"
-	done
-}
-programs="$(programlist)"
+programs="$(for program in ${download}/*; do printf "%s\n" "${program##*/}"; done)"
 
 noconfirm="0"
 
