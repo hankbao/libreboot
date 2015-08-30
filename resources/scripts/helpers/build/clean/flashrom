@@ -40,5 +40,3 @@ rm -f "flashrom_lenovobios_macronix"
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

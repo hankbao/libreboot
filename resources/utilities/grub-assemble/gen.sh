@@ -23,7 +23,7 @@ grubdir="../../../grub"
 
 source "modules.conf"
 
-printf "Creating GRUB ELF executable for configuration '$1'\n"
+printf "Creating GRUB ELF executable for configuration '%s'\n" "${1}"
 if [ "${1}" = "vesafb" ]
 then
 	# Generate the grub.elf (vesafb)

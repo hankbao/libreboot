@@ -36,5 +36,3 @@ printf "Cleaning the previous build of GRUB\n"
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

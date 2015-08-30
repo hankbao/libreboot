@@ -38,7 +38,7 @@ cd "coreboot/"
 
 # cbfstool
 cd "util/cbfstool/"
-make -j$(nproc)
+make -j"$(nproc)"
 
 # done. go back to coreboot dir
 cd "../../"
@@ -47,5 +47,3 @@ cd "../../"
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

@@ -57,6 +57,3 @@ git am "../resources/bucts/patch/0001-Makefile-don-t-use-git.patch"
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------
-

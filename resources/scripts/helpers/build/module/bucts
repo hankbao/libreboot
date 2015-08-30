@@ -44,7 +44,7 @@ if [ "${buildtype}" = "static" ]; then
 fi
 
 make clean
-make -j$(nproc)
+make -j"$(nproc)"
 
 if [ "${buildtype}" = "static" ]; then
 	patch "Makefile" -R < "../resources/bucts/patch/staticlink.diff"
@@ -54,5 +54,3 @@ fi
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

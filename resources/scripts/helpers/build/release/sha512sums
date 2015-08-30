@@ -45,7 +45,7 @@ rm -f "${sha512filepath}"
 
 # create sha512sum file
 printf "Creating list of SHA512 sums in %s...\n" "${sha512filepath}"
-(cd "${versiondir}/" && for file in $(find -type f); do sha512sum $file >> "${sha512filename}"; done)
+(cd "${versiondir}/" && for file in $(find -type f); do sha512sum "${file}" >> "${sha512filename}"; done)
 printf "...done.\n"
 
 printf "\n"

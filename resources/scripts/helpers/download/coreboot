@@ -152,6 +152,3 @@ printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------
-

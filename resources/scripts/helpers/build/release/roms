@@ -66,7 +66,7 @@ for payload in *; do
 		# Create the compressed archive.
 		tar -c "${archivename}/" | xz -9e >"../../${romdir}/${payload}/${archivename}.tar.xz"
 
-		rm -Rf "${archivename}/"
+		rm -Rf "${archivename:?}/"
 
 		printf ' OK\n'
 		

@@ -26,12 +26,12 @@
 set -u -e
 
 arch="unknown"
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]
+if [ "$(uname -i)" = "i686" ] || [ "$(uname -m)" = "i686" ]
 	then
 		arch="i686"
 		echo "Running on i686. ok."
 		sleep 2
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+elif [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		arch="x86_64"
 		echo "Running on x86_64. ok."
@@ -55,7 +55,7 @@ distdir="${versiondir}/${distname}"
 printf "Creating utility archive (static executables)\n"
 
 # delete the old data
-rm -Rf "${distdir}/"
+rm -Rf "${distdir:?}/"
 rm -f "${distdir}.tar.xz"
 
 # this is where they will go
@@ -221,6 +221,4 @@ printf "done\n\n"
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # The uncompressed archives are no longer needed
-rm -Rf "${distdir}/"
-
-# ------------------- DONE ----------------------
+rm -Rf "${distdir:?}/"

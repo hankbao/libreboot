@@ -47,7 +47,7 @@ apt-get -y install build-essential
 apt-get -y install gcc-arm-linux-gnueabi
 
 # For cross-compiling i686 target on x86_64 host.
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		apt-get -y install gcc-multilib libc6-i386 libc6-dev-i386 
 		apt-get -y install lib32stdc++6 g++-multilib dh-autoreconf
@@ -71,7 +71,7 @@ apt-get -y install build-essential
 apt-get -y install libncurses5-dev doxygen iasl gdb flex bison build-essential git
 
 # For cross-compiling i686 target on x86_64 host.
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		apt-get -y install lib32ncurses5-dev 
 fi
@@ -92,10 +92,7 @@ apt-get -y install build-essential
 apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential subversion
 
 # For cross-compiling i686 target on x86_64 host.
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		apt-get -y install lib32z1-dev 
 fi
-
-# ------------------- DONE ----------------------
-

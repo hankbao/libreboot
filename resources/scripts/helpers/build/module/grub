@@ -38,11 +38,9 @@ cd "grub/"
 # build grub
 ./autogen.sh
 ./configure --with-platform=coreboot
-make -j$(nproc)
+make -j"$(nproc)"
 
 printf "\n\n"
 
 # done. go back to main directory
 cd "../"
-
-# ------------------- DONE ----------------------

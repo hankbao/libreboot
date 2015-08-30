@@ -36,11 +36,9 @@ cd "memtest86plus/"
 make clean
 
 # build memtest86+
-make -j$(nproc)
+make -j"$(nproc)"
 
 # done. go back to main directory
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

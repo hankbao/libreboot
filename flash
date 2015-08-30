@@ -31,9 +31,9 @@ if [[ ${EUID} -ne 0 ]]; then
 fi
 
 arch="unknown"
-if [ $(uname -i) = "i686" ] || [ $(uname -m) = "i686" ]; then
+if [ "$(uname -i)" = "i686" ] || [ "$(uname -m)" = "i686" ]; then
 	arch="i686"
-elif [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]; then
+elif [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]; then
 	arch="x86_64"
 else
 	printf "This script must be run on an i686 or x86_64 host. x86_64 is recommended.\n"

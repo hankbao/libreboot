@@ -30,7 +30,7 @@ cd "resources/libreboot/config/grub/"
 if [ $# -lt 1 ]; then
 	configs="$(for i in *; do printf "%s\n" "${i}"; done)"
 else
-	configs="$@"
+	configs="${*}"
 fi
 
 cd "../../../../coreboot/"

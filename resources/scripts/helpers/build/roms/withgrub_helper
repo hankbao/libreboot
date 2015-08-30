@@ -32,7 +32,9 @@ if (( $# != 1 )); then
 	exit 1
 fi
 
-printf "GRUB Helper script: build ROM images for '%s'\n" "${1}"
+boardtarget="${1}"
+
+printf "GRUB Helper script: build ROM images for '%s'\n" "${boardtarget}"
 
 cd "coreboot/"
 
@@ -48,21 +50,21 @@ printf '%s\n' "${version}" >"lbversion"
 # Build ROM images with text-mode and corebootfb modes.
 # ---------------------------------------------------------------------------------------------------------------
 
-if [ "${1}" = "qemu_i440fx_piix4" ] || [ "${1}" = "qemu_q35_ich9" ]
+if [ "${boardtarget}" = "qemu_i440fx_piix4" ] || [ "${boardtarget}" = "qemu_q35_ich9" ]
 then
 	# assume that the default config enable framebuffer mode, duplicate and patch for text-mode
 	# necessary, otherwise it will ask you to enter the Y/X resolution of the framebuffer at build time
-	cp "../resources/libreboot/config/grub/${1}/config" "config_vesafb"
+	cp "../resources/libreboot/config/grub/${boardtarget}/config" "config_vesafb"
 	sed 's/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/' < "config_vesafb" > "config_txtmode"
 else
 	# assume that the default config enables text-mode, duplicate and patch for framebuffer mode
-	cp "../resources/libreboot/config/grub/${1}/config" "config_txtmode"
+	cp "../resources/libreboot/config/grub/${boardtarget}/config" "config_txtmode"
 	sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < "config_txtmode" > "config_vesafb"
 fi
 
 for romtype in txtmode vesafb
 do
-	if [ "${1}" = "x200_8mb" ] || [ "${1}" = "x200_4mb" ] || [ "${1}" = "r400_8mb" ] || [ "${1}" = "r400_4mb" ] || [ "${1}" = "t400_8mb" ] || [ "${1}" = "t400_4mb" ] || [ "${1}" = "t500_8mb" ] || [ "${1}" = "t500_4mb" ]
+	if [ "${boardtarget}" = "x200_8mb" ] || [ "${boardtarget}" = "x200_4mb" ] || [ "${boardtarget}" = "r400_8mb" ] || [ "${boardtarget}" = "r400_4mb" ] || [ "${boardtarget}" = "t400_8mb" ] || [ "${boardtarget}" = "t400_4mb" ] || [ "${boardtarget}" = "t500_8mb" ] || [ "${boardtarget}" = "t500_4mb" ]
 		then
 			if [ "${romtype}" = "txtmode" ]
 				then
@@ -76,23 +78,23 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	mv "grub_${romtype}.elf" "grub.elf"
-	make -j$(nproc)
+	make -j"$(nproc)"
 	mv "grub.elf" "grub_${romtype}.elf"
-	mv "build/coreboot.rom" "${1}_${romtype}.rom"
+	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 	# .config no longer needed
 	rm -f ".config"
 
 	# Add version information to this image
-	./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f lbversion -n lbversion -t raw
+	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f lbversion -n lbversion -t raw
 
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
 		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ] || [ "$1" = "t400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t500_4mb" ] || [ "$1" = "t500_8mb" ]
 		then
-			./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f ../resources/grub/background/background1280x800.png -n background.png -t raw
+			./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../resources/grub/background/background1280x800.png -n background.png -t raw
 		else
-			./util/cbfstool/cbfstool ${1}_${romtype}.rom add -f ../resources/grub/background/background1024x768.png -n background.png -t raw
+			./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../resources/grub/background/background1024x768.png -n background.png -t raw
 		fi
 	fi
 
@@ -100,32 +102,32 @@ do
 	for keymap in $(for keylayout in ../resources/utilities/grub-assemble/keymap/original/*; do printf "%s\n" "${keylayout##*/}"; done)
 	do
 		# copy the images based on the keymap
-		cp "${1}_${romtype}.rom" "${1}_${keymap}_${romtype}.rom"
+		cp "${boardtarget}_${romtype}.rom" "${boardtarget}_${keymap}_${romtype}.rom"
 
 		# Insert grub config into the image
-		./util/cbfstool/cbfstool ${1}_${keymap}_${romtype}.rom add -f grub_${keymap}_${romtype}.cfg -n grub.cfg -t raw
+		./util/cbfstool/cbfstool "${boardtarget}_${keymap}_${romtype}.rom" add -f "grub_${keymap}_${romtype}.cfg" -n grub.cfg -t raw
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
-		./util/cbfstool/cbfstool ${1}_${keymap}_${romtype}.rom add -f grub_${keymap}_${romtype}_test.cfg -n grubtest.cfg -t raw
+		./util/cbfstool/cbfstool "${boardtarget}_${keymap}_${romtype}.rom" add -f "grub_${keymap}_${romtype}_test.cfg" -n grubtest.cfg -t raw
 	done
 
 	# This config-less ROM is no longer needed
-	rm -f "${1}_${romtype}.rom"
+	rm -f "${boardtarget}_${romtype}.rom"
 done
 
 # Now we clean up and prepare the bin directory containing all the images
 # ----------------------------------------------------------------------------------------------------------------------------
 
 # prepare directory for new ROM images
-rm -Rf "${1}/"
-mkdir "${1}/"
+rm -Rf "${boardtarget:?}/"
+mkdir "${boardtarget}/"
 # move the ROM's into the newly created directory
-mv "${1}"*.rom "${1}/"
+mv "${boardtarget}"*.rom "${boardtarget}/"
 
 # delete the old ROM's from ../bin
-rm -Rf "../bin/grub/${1}/"
+rm -Rf "../bin/grub/${boardtarget}/"
 # now put the new ROM's in ./bin/grub/
 [ ! -d "../bin/grub/" ] && mkdir -p "../bin/grub/"
-mv "${1}/" "../bin/grub/"
+mv "${boardtarget}/" "../bin/grub/"
 
 # libreboot version file no longer needed
 rm -f "lbversion"
@@ -134,4 +136,3 @@ rm -f "lbversion"
 cd "../"
 
 printf "\n\n"
-

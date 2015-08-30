@@ -32,5 +32,3 @@ cd "resources/utilities/ich9deblob/"
 make clean
 cd "../../../"
 printf "\n\n"
-
-# ------------------- DONE ----------------------

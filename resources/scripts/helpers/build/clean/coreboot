@@ -56,5 +56,3 @@ make crossgcc-clean
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

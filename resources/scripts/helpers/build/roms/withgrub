@@ -35,7 +35,7 @@ fi
 boards="unknown"
 if [ $# -gt 0 ]; then
 	# build only the ROM images that were requested
-	boards="$@"
+	boards="${*}"
 else
 	# build all ROM images
 	boards="$(for board in resources/libreboot/config/grub/*; do printf "%s\n" "${board##*/}"; done)"
@@ -71,7 +71,7 @@ cd ../
 for board in ${boards}
 do
 	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
-		./build roms withgrub_helper ${board}
+		./build roms withgrub_helper "${board}"
 	fi
 done
 
@@ -122,6 +122,3 @@ rm -f "coreboot/grub_txtmode.elf"
 rm -f coreboot/grub*cfg
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------
-

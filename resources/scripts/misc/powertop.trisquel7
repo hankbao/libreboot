@@ -48,4 +48,3 @@ update-rc.d powertop defaults
 # Run powertop now and tell the user
 powertop --auto-tune
 printf "Done. Run 'powertop --auto-tune' now. This will also run automatically at boot time. Run it again at any time, if needed. This has also been done for you just now.\n"
-

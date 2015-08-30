@@ -50,6 +50,3 @@ git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-
 
 cd "../"
 printf "\n\n"
-
-# ------------------- DONE ----------------------
-

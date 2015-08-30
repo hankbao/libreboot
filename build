@@ -52,10 +52,10 @@ if [ -d "${build}/${mode}" ]; then
 	if [ "${option}" = "list" ]; then
 		printf "Available options for '%s' are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
 	elif [ -f "${build}/${mode}/${option}" ]; then
-		${build}/${mode}/${option} "$@"
+		"${build}/${mode}/${option}" "$@"
 	elif [ "${option}" = "all" ]; then
 		for option in ${availableoptions}; do
-			${build}/${mode}/${option} "$@"
+			"${build}/${mode}/${option}" "$@"
 		done
 	else
 		printf "Invalid option for '%s'. Available options are:\nall\n%s\n\n" "${mode}" "${availableoptions}"

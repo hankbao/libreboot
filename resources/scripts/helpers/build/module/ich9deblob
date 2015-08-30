@@ -36,11 +36,9 @@ cd "resources/utilities/ich9deblob/"
 make clean
 
 # build ich9deblob
-make -j$(nproc)
+make -j"$(nproc)"
 
 # done. go back to main directory
 cd "../../../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------

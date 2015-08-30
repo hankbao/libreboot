@@ -78,6 +78,3 @@ cp "../resources/memtest86plus/patch/Makefile" .
 cd "../"
 
 printf "\n\n"
-
-# ------------------- DONE ----------------------
-

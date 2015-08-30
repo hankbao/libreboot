@@ -37,7 +37,7 @@ distdir="${versiondir}/${distname}"
 printf "Creating source archive for flashrom and bucts\n"
 
 # delete the old data
-rm -Rf "${distdir}/"
+rm -Rf "${distdir:?}/"
 rm -f "${distdir}.tar.xz"
 
 # this is where they will go
@@ -75,7 +75,7 @@ printf '%s\n' "${version}" >"${distdir}/version"
 (cd "${versiondir}/" && tar -c "${distname}/" | xz -9e >"${distname}.tar.xz")
 
 # and delete the directory
-rm -Rf "${distdir}/"
+rm -Rf "${distdir:?}/"
 
 printf "\n"
 printf "Tar archive created: %s\n" "${distdir}.tar.xz"

@@ -32,5 +32,3 @@ cd "resources/utilities/i945-pwm/"
 make clean
 cd "../../../"
 printf "\n\n"
-
-# ------------------- DONE ----------------------

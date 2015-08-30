@@ -53,7 +53,7 @@ pacman -S arm-none-eabi-gcc
 pacman -S --needed libpciaccess
 
 # For cross-compiling i686 target on x86_64 host.
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
 		pacman -Sl --needed multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
@@ -78,7 +78,7 @@ pacman -S ncurses doxygen iasl gdb flex bison
 # pacman -S git base-devel
 
 # For cross-compiling i686 target on x86_64 host.
-if [ $(uname -i) = "x86_64" ] || [ $(uname -m) = "x86_64" ]
+if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
 	then
 		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
 		pacman -S --needed lib32-ncurses
@@ -104,6 +104,3 @@ pacman -S --needed bdf-unifont # trying this, otherwise there was an error. I'll
 printf "Flashrom: Your external programmer will be most probably using PCI bus, FTDI chips need additional libraries\n"
 pacman -S --needed pciutils zlib libftdi libftdi-compat 
 # pacman -S --needed base-devel subversion
-
-# ------------------- DONE ----------------------
-

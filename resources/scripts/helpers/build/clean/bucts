@@ -36,5 +36,3 @@ printf "\n\n"
 
 # done. go back to main directory.
 cd "../"
-
-# ------------------- DONE ----------------------
