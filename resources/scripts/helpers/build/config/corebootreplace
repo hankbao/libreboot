@@ -25,6 +25,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+configpath="resources/libreboot/config/grub"
+
 hackconfig () {
 	cd "coreboot/"
 
@@ -33,14 +35,14 @@ hackconfig () {
 	
 	make menuconfig
 
-	[ ! -d "../resources/libreboot/config/grub/${1}/" ] && mkdir -p "../resources/libreboot/config/grub/${1}/"
-	mv ".config" "../resources/libreboot/config/grub/${1}/config"
+	[ ! -d "../${configpath}/${1}/" ] && mkdir -p "../${configpath}/${1}/"
+	mv ".config" "../${configpath}/${1}/config"
 
 	cd "../"
 }
 
 if [ $# -lt 1 ]; then
-	for config in resources/libreboot/config/grub/*; do hackconfig "${config##*/}"; done
+	for config in ${configpath}/*; do hackconfig "${config##*/}"; done
 else
 	for config in "${@}"; do hackconfig "${config}"; done
 fi

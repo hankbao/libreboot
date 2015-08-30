@@ -25,27 +25,29 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+configpath="resources/libreboot/config/grub"
+
 hackconfig () {
 	cd "coreboot/"
 
 	printf "Modifying config for %s\n" "${1}"
 	sleep 2
 
-	if [ ! -d "../resources/libreboot/config/grub/${1}/" ]; then
+	if [ ! -d "../${configpath}/${1}/" ]; then
 		printf "build/config/corebootmodify WARNING: config '%s' does not exist. Skipping.\n" "${1}"
 		cd "../"
 		return
 	fi
 	
-	mv "../resources/libreboot/config/grub/${1}/config" ".config"
+	mv "../${configpath}/${1}/config" ".config"
 	make menuconfig
-	mv ".config" "../resources/libreboot/config/grub/${1}/config"
+	mv ".config" "../${configpath}/${1}/config"
 
 	cd "../"
 }
 
 if [ $# -lt 1 ]; then
-	for config in resources/libreboot/config/grub/*; do hackconfig "${config##*/}"; done
+	for config in ${configpath}/*; do hackconfig "${config##*/}"; done
 else
 	for config in "${@}"; do hackconfig "${config}"; done
 fi
