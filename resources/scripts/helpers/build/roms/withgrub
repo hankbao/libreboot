@@ -106,8 +106,7 @@ if [ -d "bin/grub/" ]; then
 				do
 					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
 				done
-				rm -f "ich9fd"*.bin
-				rm -f "mk"*.[ch]
+				rm -f "ich9fd"*.bin "mk"*.[ch]
 				cd "../"
 			fi
 		done
@@ -115,10 +114,7 @@ if [ -d "bin/grub/" ]; then
 	cd ../../
 fi
 
-# The GRUB payloads are no longer needed
-rm -f "coreboot/grub_vesafb.elf"
-rm -f "coreboot/grub_txtmode.elf"
-# The GRUB configs are no longer needed
-rm -f coreboot/grub*cfg
+# The GRUB files are no longer needed
+rm -f "coreboot/grub"*.{elf,cfg}
 
 printf "\n\n"
