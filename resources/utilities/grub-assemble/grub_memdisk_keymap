@@ -22,9 +22,8 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-keymaps="$(for keymap in keymap/original/*; do printf "%s\n" "${keymap##*/}"; done)"
-
-for keymap in ${keymaps}
+for keylayout in keymap/original/*
 do
+	keymap="${keylayout##*/}"
 	printf "/boot/grub/layouts/%s.gkb=keymap/%s.gkb " "${keymap}" "${keymap}"
 done
