@@ -23,6 +23,14 @@ grubdir="../../../grub"
 
 source "modules.conf"
 
+list_keymaps () {
+	for keylayout in keymap/original/*
+	do
+		keymap="${keylayout##*/}"
+		printf "/boot/grub/layouts/%s.gkb=keymap/%s.gkb " "${keymap}" "${keymap}"
+	done
+}
+
 printf "Creating GRUB ELF executable for configuration '%s'\n" "${1}"
 if [ "${1}" = "vesafb" ]
 then
@@ -37,7 +45,7 @@ then
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
 	  /dejavusansmono.pf2="../../../resources/grub/font/dejavusansmono.pf2" \
-	  $(./grub_memdisk_keymap)
+	  $(list_keymaps)
 elif [ "${1}" = "txtmode" ]
 then
 	# Generate the grub.elf (txtmode)
@@ -51,7 +59,7 @@ then
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
 	  /memtest="../../../memtest86plus/memtest" \
-	  $(./grub_memdisk_keymap)
+	  $(list_keymaps)
 else
 	printf "grub-assemble gen.sh: invalid mode '%s'\n" "${1}"
 	exit 1
