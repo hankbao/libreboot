@@ -28,7 +28,7 @@ set -u -e
 cd "resources/libreboot/config/grub/"
 
 if [ $# -lt 1 ]; then
-	configs="$(ls)"
+	configs="$(for i in *; do printf "%s\n" "${i}"; done)"
 else
 	configs="$@"
 fi
