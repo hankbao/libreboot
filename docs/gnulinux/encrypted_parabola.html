@@ -623,7 +623,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 				and, inside it, all instances of grub.cfg to grubtest.cfg. This is so that the main config still links (in the menu) to grubtest.cfg, so that you don't have to manually switch to it, in case you ever
 				want to follow this guide again in the future (modifying the already modified config).
 				Inside libreboot_util/cbfstool/{armv7l i686 x86_64}, we can do this with the following command:<br/>
-				$ <b>sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg > grub.cfg</b><br/>
+				$ <b>sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e 's:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt; grub.cfg</b><br/>
 				Delete the grub.cfg that remained inside the ROM:<br/>
 				$ <b>./cbfstool libreboot.rom remove -n grub.cfg</b><br/>
 				Add the modified version that you just made:<br/>
