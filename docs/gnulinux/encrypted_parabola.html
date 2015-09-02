@@ -490,15 +490,43 @@ FONT=Lat9w-16
 	</div>
 
 	<div class="section">
+
+                <h2>Follow-up tutorial: configuring Parabola</h2>
+                        <p>
+				We will modify grub.config inside the ROM and do all kinds of fun stuff, but I recommend that you first transform the current bare-bones Parabola install into a more useable system.
+				Doing so will make the upcoming ROM modifications MUCH easier to perform and less risky!
+				<a href="configuring_parabola.html">configuring_parabola.html</a> shows my own notes post-installation. Using these, you can get a basic
+                                system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system.
+                                Parabola is user-centric, which means that you are in control. For more information, read <a href="https://wiki.archlinux.org/index.php/The_Arch_Way">The Arch Way</a>
+                                (Parabola also follows it).
+                        </p>
+
+        </div>
+
+	<div class="section">
 		
 		<h2>Modify grub.cfg inside the ROM</h2>
 
 			<p>
-				Now you need to modify the ROM, so that Parabola can boot automatically with this configuration. 
+				(Re-)log in to your system, pressing C, so booting manually from GRUB (see above). You need to modify the ROM, so that Parabola can boot automatically with this configuration. 
 				<a href="grub_cbfs.html">grub_cbfs.html</a> shows you how. Follow that guide, using the configuration details below.
+				If you go for option 2 (re-flash), promise to do this on grubtest.cfg first! We can't emphasise this enough. This is to reduce the possibility of bricking your device!
 			</p>
+
 			<p>
-				Inside the 'Load Operating System' menu entry, change the contents to:<br/>
+				I will go for the re-flash option here. Firstly, cd to the libreboot_util/cbfstool/{armv7l i686 x86_64} directory.
+				Dump the current firmware - where <i>libreboot.rom<i> is an example: make sure to adapt:<br/>
+                                # <b>flashrom -p internal -r libreboot.rom</b><br/>
+				You can check if everything is in there (<i>grub.cfg<i> and <i>grubtest.cfg<i> would be really nice):<br/>
+				$ <b>./cbfstool libreboot.rom print</b><br/>
+				Extract grubtest.cfg:<br/>
+				$ <b>./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg</b><br/>
+				And modify:<br/>
+				$ <b>nano grubtest.cfg</b>
+			</p>
+
+			<p>
+				In grubtest.cfg, inside the 'Load Operating System' menu entry, change the contents to:<br/>
 				<b><i>
 					cryptomount -a<br/>
 					set root='lvm/matrix-rootvol'<br/>
@@ -511,6 +539,7 @@ FONT=Lat9w-16
 				Note: the underlined parts above (-lts) can also be removed, to boot the latest kernel instead of LTS (long-term support) kernels.
 				You could also copy the menu entry and in one have -lts, and without in the other menuentry.
 				You could also create a menu entry to load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
+				The first entry will load by default.
 			</p>
 
 			<p>
@@ -519,73 +548,97 @@ FONT=Lat9w-16
 			</p>
 
 			<p>
-				Personally, I opted to have the entry for linux-libre-grsec at the top, so that it would load by default.
-			</p>
-
-			<p>
-				Start dhcp on ethernet:<br/>
+				Now, to protect your system from an attacker simply booting a live usb distro and re-flashing the boot firmware, we are going to add a password for GRUB.
+				In a new terminal window, if you are not yet online, start dhcp on ethernet:<br/>
 				# <b>systemctl start dhcpcd.service</b>
-				This is just for the step below. I won't cover network configuration here. That is for another Parabola article.
+				Or make sure to get connected to the internet in any other way you prefer, at least.
+			</p>
+
+			<p style="font-size:2em;">
+                                AGAIN: MAKE SURE TO DO THIS WHOLE SECTION ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
+                                (When we get there, upon reboot, select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
+                                Only once you are satisfied, copy that to grub.cfg. Only a few steps to go, though.)
+                                WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+                        </p>
+
+			<p>
+                                (emphasis added, because it's needed: this is a common roadblock for users.)
+                        </p>
+
+			<p>
+				We need a utility that comes with GRUB, so we will download it temporarily. (Remember that GRUB isn't needed for booting, since it's already included as a payload in libreboot.)
+				Also, we will use flashrom, and I installed dmidecode. You only need base-devel (compilers and so on) to build and use cbfstool. It was already installed if you followed this tutorial, but here 
+				it is:<br/>
+				# <b>pacman -S grub flashrom dmidecode base-devel</b><br/>
+				Next, do:<br/>
+				# <b>grub-mkpasswd-pbkdf2</b><br/>
+				Enter your chosen password at the prompt and your hash will be shown. Copy this string - you will add it to your grubtest.cfg.
+			</p>
+
+			<p>	
+				The password below (it's <b>password</b>, by the way) after <i>'password_pbkdf2 root'</i> <i>should be changed</i> to your own.
+				Make sure to specify a password that is different from both your LUKS *and* your root/user password.
+				Obviously, do not simply copy and paste the examples shown here...
 			</p>
 
 			<p>
-				The password below (it's <b>password</b>, by the way) after <i>'password_pbkdf2 root'</i> <i>should be changed</i> and is created by the <b>grub-mkpasswd-pbkdf2</b> utility, which you need to install or otherwise compile, 
-				like so:<br/>
-				# <b>pacman -S grub</b>
-			</p>
-		
-			<p>
-				GRUB isn't needed for booting, since it's already included as a payload in libreboot. This is only so that the utility needed becomes available. Get your hash
-				by entering your chosen password at the prompt, when running this command:<br/>
-				# <b>grub-mkpasswd-pbkdf2</b>
-			</p>
-
-			<p>
-				It will output the hash for the password that you entered. Make sure to specify a password that is different from both your LUKS *and* your root/user password.
-				Use it to replace the default hash mentioned above.
-			</p>
-
-			<p>
-				Above the 'Load Operating System' menu entry you should also add a GRUB password, like so (this example uses <b>password</b> as the password):
+				Next, back in grubtest.cfg, above the first 'Load Operating System' menu entry, you should now add your GRUB password, like so
+				(replace with your own name (I used <b>root<b> on both lines, feel free to choose another one) and the password hash which you copied):
 			</p>
 	<pre><b><i>
 set superusers=&quot;root&quot;
 password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711
 	</i></b></pre>
-			<p style="font-size:2em;">
-				MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
-				Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
-				Then copy that to grub.cfg once you're satisfied.
-				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
-			</p>
+
 			<p>
-				(emphasis added, because it's needed. This is a common roadblock for users)
+				Save your changes in grubtest.cfg, then delete the unmodified config from the ROM image:<br/>
+				$ <b>./cbfstool libreboot.rom remove -n grubtest.cfg</b><br/>
+				and insert the modified grubtest.cfg:<br/>
+				$ <b>./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw</b><br/>
+			</p>
+	
+			<p>
+				Now refer to <a href="http://libreboot.org/docs/install/index.html#flashrom">http://libreboot.org/docs/install/index.html#flashrom</a>.
+				Cd (up) to the libreboot_util directory and update the flash chip contents:<br/>
+				# <b>./flash update libreboot.rom</b><br/>
+				Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but you are sure that you chose the correct ROM image, then run this alternative command:<br/>
+				# <b>./flash forceupdate libreboot.rom</b><br/>
+				You should see "Verifying flash... VERIFIED." written at the end of the flashrom output.
 			</p>
 
 			<p>
-				Note that the above entry specifies user 'root'; this is just a username for GRUB. You don't even need to use root.
-				Change root on both of those 2 lines to whatever you want.
+				With this new configuration, Parabola can boot automatically and you will have to enter a password at boot time, in GRUB, before being able to use any of the menu entries or switch to the terminal.
+				Let's test it out: reboot and choose grubtest.cfg from the GRUB menu, using the arrow keys on your keyboard.
+				Enter the name you chose, the GRUB password, your LUKS passphrase and login as root/your user. All went well? Great!
 			</p>
 
 			<p>
-				With this configuration, you will have to enter a password at boot time, in GRUB, before being able to use any of the menu entries or switch to the terminal.
-				This protects your system from an attacker simply booting a live usb distro and re-flashing the boot firmware.
+				If it does not work like you want it to, if you are unsure or sceptical in any way, don't despair: you have been wise and did not brick your device! Reboot and login the default way, and then modify 
+				your grubtest.cfg until you get it right!
+				<b>Do *not* proceed past this point unless you are 100% sure that your new configuration is safe (or desirable) to use.<b>
 			</p>
 
 			<p>
-				You probably only need base-devel (compilers and so on) to build and use cbfstool. It was already installed if you followed this tutorial, but here it is:<br/>
-				# <b>pacman -S base-devel</b>
+				Now, we can easily and safely create a copy of grubtest.cfg, called grub.cfg. This will be the same except for one difference: the menuentry 'Switch to grub.cfg' is changed to 'Switch to grubtest.cfg'
+				and, inside it, all instances of grub.cfg to grubtest.cfg. This is so that the main config still links (in the menu) to grubtest.cfg, so that you don't have to manually switch to it, in case you ever
+				want to follow this guide again in the future (modifying the already modified config).
+				Inside libreboot_util/cbfstool/{armv7l i686 x86_64}, we can do this with the following command:<br/>
+				$ <b>sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg > grub.cfg</b><br/>
+				Delete the grub.cfg that remained inside the ROM:<br/>
+				$ <b>./cbfstool libreboot.rom remove -n grub.cfg</b><br/>
+				Add the modified version that you just made:<br/>
+				$ <b>./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw</b><br/>
 			</p>
 
 			<p>
-				For flashing the modified ROM, I just used flashrom from the Parabola repo's:<br/>
-				# <b>pacman -S flashrom</b><br/>
-				I also installed dmidecode:<br/>
-				# <b>pacman -S dmidecode</b>
+				Now you have a modified ROM. Once more, refer to <a href="http://libreboot.org/docs/install/index.html#flashrom">http://libreboot.org/docs/install/index.html#flashrom</a>.
+                                Cd to the libreboot_util directory and update the flash chip contents:<br/>
+                                # <b>./flash update libreboot.rom</b><br/>
+				And wait for the "Verifying flash... VERIFIED." Once you have done that, shut down and then boot up with your new configuration.
 			</p>
 
 			<p>
-				When done, deleted GRUB (remember, we only needed it for the <i>grub-mkpasswd-pbkdf2</i> utility;
+				When done, delete GRUB (remember, we only needed it for the <i>grub-mkpasswd-pbkdf2</i> utility;
 				GRUB is already part of libreboot, flashed alongside it as a <i>payload</i>):<br/>
 				# <b>pacman -R grub</b>
 			</p>
@@ -596,14 +649,13 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 
 		<p>
 			If you followed all that correctly, you should now have a fully encrypted Parabola installation.
-			This is a very barebones Parabola install (the default one). Refer to the wiki for how to do the rest 
-			(desktop, etc).
+			Refer to the wiki for how to do the rest.
 		</p>
 	
 	</div>
 
 	<div class="section">
-		<h2>Using a key file to unlock /boot/</h2>
+		<h2>Bonus: Using a key file to unlock /boot/</h2>
 		<p>
 			By default, you will have to enter your LUKS passphrase twice; once in GRUB, and once when booting the kernel.
 			GRUB unlocks the encrypted partition and then loads the kernel, but the kernel is not aware of the fact
@@ -611,16 +663,18 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 			A workaround is to put a keyfile inside initramfs, with instructions for the kernel to use it when
 			booting. This is safe, because /boot/ is encrypted (otherwise, putting a keyfile inside initramfs would be a bad idea).<br/>
 
-			Generate the file:<br/>
+			Boot up and login as root or your user. Then generate the key file:<br/>
 			# <b>dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile iflag=fullblock</b><br/>
 			Insert it into the luks volume:<br/>
-			# <b>cryptsetup luksAddKey /dev/sdX /etc/mykeyfile</b><br/> 
+			# <b>cryptsetup luksAddKey /dev/sdX /etc/mykeyfile</b><br/>
+			and enter your LUKS passphrase when prompted.
 			Add the keyfile to the initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:<br/>
-			Integrate it inside initramfs:<br/>
 			# <b>FILES="/etc/mykeyfile"</b><br/>
 			Create the initramfs image from scratch:<br/>
 			# <b>mkinitcpio -p linux-libre</b><br/>
-			Add the following to your grub.cfg, or add it in the kernel command line for GRUB:<br/>
+			# <b>mkinitcpio -p linux-libre-lts</b><br/>
+			# <b>mkinitcpio -p linux-libre-grsec</b><br/>
+			Add the following to your grub.cfg - you are now able to do that, see above! -, or add it in the kernel command line for GRUB:<br/>
 			# <b>cryptkey=rootfs:/etc/mykeyfile</b><br/>
 			<br/>
 			You can also place this inside the grub.cfg that exists in CBFS: <a href="grub_cbfs.html">grub_cbfs.html</a>.
@@ -636,18 +690,6 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 				<a href="https://wiki.parabolagnulinux.org/User:GNUtoo/laptop">https://wiki.parabolagnulinux.org/User:GNUtoo/laptop</a>
 			</p>
 		
-	</div>
-
-	<div class="section">
-
-		<h2>Follow-up tutorial: configuring Parabola</h2>
-			<p>
-				<a href="configuring_parabola.html">configuring_parabola.html</a> shows my own notes post-installation. Using these, you can get a basic
-				system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system. 
-				Parabola is user-centric, which means that you are in control. For more information, read <a href="https://wiki.archlinux.org/index.php/The_Arch_Way">The Arch Way</a>
-				(Parabola also follows it).
-			</p>
-			
 	</div>
 
 	<div class="section">
