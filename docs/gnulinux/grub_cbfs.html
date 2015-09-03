@@ -50,15 +50,17 @@
 			<ul>
 				<li><a href="#introduction">Introduction</a></li>
 				<li><a href="#option1_dont_reflash">1st option: don't re-flash</a></li>
-				<li><a href="#option2_reflash">2nd option: re-flash</a></li>
-				<ul>
-					<li><a href="#tools">Acquire the necessary utilities</a></li>
-					<li><a href="#rom">Acquiring the correct ROM image</a></li>
-					<li><a href="#extract_testconfig">Extract grubtest from the ROM image</a>
-					<li><a href="#reinsert_modified_testconfig">Re-insert the modified grubtest.cfg into the ROM image</a></li>
-					<li><a href="#testing">Testing</a>
-					<li><a href="#final_steps">Final steps</a></li>
-				</ul>
+				<li>
+					<a href="#option2_reflash">2nd option: re-flash</a>
+					<ul>
+						<li><a href="#tools">Acquire the necessary utilities</a></li>
+						<li><a href="#rom">Acquiring the correct ROM image</a></li>
+						<li><a href="#extract_testconfig">Extract grubtest from the ROM image</a>
+						<li><a href="#reinsert_modified_testconfig">Re-insert the modified grubtest.cfg into the ROM image</a></li>
+						<li><a href="#testing">Testing</a>
+						<li><a href="#final_steps">Final steps</a></li>
+					</ul>
+				</li>
 			</ul>
 			
 	</div>
@@ -159,7 +161,7 @@
 				Use <b><i>cbfstool</i></b> and <b><i>flashrom</i></b>. There are available in the <i>libreboot_util</i> release archive,
 				or they can be compiled (see <a href="../git/index.html#build_flashrom">../git/index.html#build_flashrom</a>).
 				Flashrom is also available from the repositories:<br/>
-				# <b>pacman -S flashrom<b>
+				# <b>pacman -S flashrom</b>
 			</p>
 
 			<p>
@@ -181,8 +183,8 @@
 				ROM images are included pre-compiled in libreboot. You can also dump your current firmware, using flashrom:<br/>
 				$ <b>sudo flashrom -p internal -r libreboot.rom</b><br/>
 				# <b>flashrom -p internal -r libreboot.rom</b><br/>
-				If you are told to specify the chip, add the option <b>-c {your chip}<b> to the command, for example:<br/>
-				# <b>flashrom -c MX25L6405 -p internal -r libreboot.rom<b>
+				If you are told to specify the chip, add the option <b>-c {your chip}</b> to the command, for example:<br/>
+				# <b>flashrom -c MX25L6405 -p internal -r libreboot.rom</b>
 			</p>
 
 			<p>
@@ -197,7 +199,7 @@
 
 			<p>
 				You can check the contents of the ROM image, inside CBFS:<br/>
-				<b>$ cd .../libreboot_util/cbfstool<b>
+				<b>$ cd .../libreboot_util/cbfstool</b>
 				<b>$ ./cbfstool libreboot.rom print</b>
 			</p>
 
@@ -255,11 +257,11 @@
 				<b>
 					Now you have a modified ROM. Refer back to <a href="../install/index.html#flashrom">../install/index.html#flashrom</a> for information
 					on how to flash it.<br/>
-					$ <b>cd /libreboot_util<b>
-					# <b>./flash update libreboot.rom<b><br/>
+					$ <b>cd /libreboot_util</b>
+					# <b>./flash update libreboot.rom</b><br/>
 					Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but you are sure that you chose the correct ROM image, then run this alternative command:<br/>
-					# <b>./flash forceupdate libreboot.rom<b><br/>
-					You should see <b>"Verifying flash... VERIFIED."<b> written at the end of the flashrom output.
+					# <b>./flash forceupdate libreboot.rom</b><br/>
+					You should see <b>&quot;Verifying flash... VERIFIED.&quot;</b> written at the end of the flashrom output.
 					Once you have done that, shut down and then boot up with your new test configuration.
 				</b>
 			</p>
