@@ -491,17 +491,17 @@ FONT=Lat9w-16
 
 	<div class="section">
 
-                <h2>Follow-up tutorial: configuring Parabola</h2>
-                        <p>
+		<h2>Follow-up tutorial: configuring Parabola</h2>
+			<p>
 				We will modify grub.config inside the ROM and do all kinds of fun stuff, but I recommend that you first transform the current bare-bones Parabola install into a more useable system.
 				Doing so will make the upcoming ROM modifications MUCH easier to perform and less risky!
 				<a href="configuring_parabola.html">configuring_parabola.html</a> shows my own notes post-installation. Using these, you can get a basic
-                                system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system.
-                                Parabola is user-centric, which means that you are in control. For more information, read <a href="https://wiki.archlinux.org/index.php/The_Arch_Way">The Arch Way</a>
-                                (Parabola also follows it).
-                        </p>
+				system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system.
+				Parabola is user-centric, which means that you are in control. For more information, read <a href="https://wiki.archlinux.org/index.php/The_Arch_Way">The Arch Way</a>
+				(Parabola also follows it).
+			</p>
 
-        </div>
+	</div>
 
 	<div class="section">
 		
@@ -515,9 +515,9 @@ FONT=Lat9w-16
 
 			<p>
 				I will go for the re-flash option here. Firstly, cd to the libreboot_util/cbfstool/{armv7l i686 x86_64} directory.
-				Dump the current firmware - where <i>libreboot.rom<i> is an example: make sure to adapt:<br/>
-                                # <b>flashrom -p internal -r libreboot.rom</b><br/>
-				You can check if everything is in there (<i>grub.cfg<i> and <i>grubtest.cfg<i> would be really nice):<br/>
+				Dump the current firmware - where <i>libreboot.rom</i> is an example: make sure to adapt:<br/>
+            # <b>flashrom -p internal -r libreboot.rom</b><br/>
+				You can check if everything is in there (<i>grub.cfg</i> and <i>grubtest.cfg</i> would be really nice):<br/>
 				$ <b>./cbfstool libreboot.rom print</b><br/>
 				Extract grubtest.cfg:<br/>
 				$ <b>./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg</b><br/>
@@ -526,14 +526,14 @@ FONT=Lat9w-16
 			</p>
 
 			<p>
-				In grubtest.cfg, inside the 'Load Operating System' menu entry, change the contents to:<br/>
-				<b><i>
-					cryptomount -a<br/>
-					set root='lvm/matrix-rootvol'<br/>
-					linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root<br/>
-					initrd /boot/initramfs-linux-libre<u>-lts</u>.img
-				</i></b>
+				In grubtest.cfg, inside the 'Load Operating System' menu entry, change the contents to:
 			</p>
+<pre>
+cryptomount -a<br/>
+set root='lvm/matrix-rootvol'<br/>
+linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root<br/>
+initrd /boot/initramfs-linux-libre<u>-lts</u>.img
+</pre>
 
 			<p>
 				Note: the underlined parts above (-lts) can also be removed, to boot the latest kernel instead of LTS (long-term support) kernels.
@@ -555,15 +555,15 @@ FONT=Lat9w-16
 			</p>
 
 			<p style="font-size:2em;">
-                                AGAIN: MAKE SURE TO DO THIS WHOLE SECTION ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
-                                (When we get there, upon reboot, select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
-                                Only once you are satisfied, copy that to grub.cfg. Only a few steps to go, though.)
-                                WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
-                        </p>
+				AGAIN: MAKE SURE TO DO THIS WHOLE SECTION ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
+				(When we get there, upon reboot, select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
+				Only once you are satisfied, copy that to grub.cfg. Only a few steps to go, though.)
+				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+			</p>
 
 			<p>
-                                (emphasis added, because it's needed: this is a common roadblock for users.)
-                        </p>
+				(emphasis added, because it's needed: this is a common roadblock for users.)
+			</p>
 
 			<p>
 				We need a utility that comes with GRUB, so we will download it temporarily. (Remember that GRUB isn't needed for booting, since it's already included as a payload in libreboot.)
@@ -583,12 +583,12 @@ FONT=Lat9w-16
 
 			<p>
 				Next, back in grubtest.cfg, above the first 'Load Operating System' menu entry, you should now add your GRUB password, like so
-				(replace with your own name (I used <b>root<b> on both lines, feel free to choose another one) and the password hash which you copied):
+				(replace with your own name (I used <b>root</b> on both lines, feel free to choose another one) and the password hash which you copied):
 			</p>
-	<pre><b><i>
+<pre>
 set superusers=&quot;root&quot;
 password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711
-	</i></b></pre>
+</pre>
 
 			<p>
 				Save your changes in grubtest.cfg, then delete the unmodified config from the ROM image:<br/>
@@ -615,7 +615,7 @@ password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB97
 			<p>
 				If it does not work like you want it to, if you are unsure or sceptical in any way, don't despair: you have been wise and did not brick your device! Reboot and login the default way, and then modify 
 				your grubtest.cfg until you get it right!
-				<b>Do *not* proceed past this point unless you are 100% sure that your new configuration is safe (or desirable) to use.<b>
+				<b>Do *not* proceed past this point unless you are 100% sure that your new configuration is safe (or desirable) to use.</b>
 			</p>
 
 			<p>
