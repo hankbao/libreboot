@@ -49,5 +49,12 @@ git reset --hard 7a210304ebfd6d704b4fc08fe496a0c417441879
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
 
+# GRUB enhancement patches from grub.johnlane.ie
+git am "../resources/grub/patch/grub.johnlane.ie/0001-Cryptomount-support-LUKS-detached-header.patch"
+git am "../resources/grub/patch/grub.johnlane.ie/0002-Cryptomount-support-key-files.patch"
+git am "../resources/grub/patch/grub.johnlane.ie/0003-Cryptomount-luks-allow-multiple-passphrase-attempts.patch"
+git am "../resources/grub/patch/grub.johnlane.ie/0004-Cryptomount-support-plain-dm-crypt.patch"
+git am "../resources/grub/patch/grub.johnlane.ie/0005-Cryptomount-support-for-hyphens-in-UUID.patch"
+
 cd "../"
 printf "\n\n"
