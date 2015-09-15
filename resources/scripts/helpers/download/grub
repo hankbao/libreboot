@@ -55,6 +55,8 @@ git am "../resources/grub/patch/grub.johnlane.ie/0002-Cryptomount-support-key-fi
 git am "../resources/grub/patch/grub.johnlane.ie/0003-Cryptomount-luks-allow-multiple-passphrase-attempts.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0004-Cryptomount-support-plain-dm-crypt.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0005-Cryptomount-support-for-hyphens-in-UUID.patch"
+# hotfix from kl3 (merged from autoboot)
+git am "../resources/grub/patch/grub.johnlane.ie/0006-grub-core-disk-cryptodisk.c-Point-to-const-char.patch"
 
 cd "../"
 printf "\n\n"
