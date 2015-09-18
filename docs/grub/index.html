@@ -22,6 +22,7 @@
 				Or <a href="../index.html">Back to main index</a>.
 			</p>
 			<ul>
+				<li><a href="#grub_background">Changing the background image in GRUB</a></li>
 				<li><a href="#grub_font">Setting font in GRUB</a></li>
 				<li><a href="#grub_keyboard">GRUB keyboard layouts</a>
 					<ul>
@@ -30,6 +31,23 @@
 					</ul>
 				</li>
 			</ul>
+	</div>
+
+	<div class="section">
+
+		<h1 id="grub_background">Changing the background image in GRUB</h1>
+
+			<p>
+				Use cbfstool from libreboot_util, or libreboot_src/coreboot/util/cbfstool/ if you want to build from source.
+			</p>
+			<p>
+				./cbfstool yourrom.rom remove background.png -n background.png<br/>
+				./cbfstool yourrom.rom add -f background.png -n background.png -t raw
+			</p>
+			<p>
+				When you've done this, re-flash your ROM and you should have a new background at boot time.
+			</p>
+
 	</div>
 
 	<div class="section">
