@@ -37,7 +37,6 @@ if [ $# -lt 2 ]; then
 	printf "Example: ./build module all\n"
 	printf "Example: ./build module flashrom\n"
 	printf "Example: ./build roms withgrub\n"
-	printf "Example: ./build release archives\n"
 	printf "Example: ./build clean all\n"
 	printf "Example (extra option) ./build module bucts static\n"
 	printf "Refer to the libreboot documentation for more info\n\n"
