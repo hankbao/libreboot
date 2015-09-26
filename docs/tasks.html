@@ -249,7 +249,12 @@
 					Fix these issues on GM45/GS45 targets:
 					<ul>
 						<li>
-							X200: text-mode is broken. only framebuffer graphics work. Git-bisect is needed.
+							X200: text-mode is broken. only framebuffer graphics work.
+							880101121e0cef5df3afda075809e2fbacf68ffe is the commit in coreboot that added native graphics initialization
+							for GM45. The commit message says that text mode should work. tpearson tested with this revision, and it didn't
+							work in text mode, so it looks like text mode never worked at all. It could be that it did work before phcoder
+							submitted it, but then he made more changes that broke text mode, and didn't realize this. This means that a bisect
+							is not possible.
 						</li>
 						<li>
 							X60: on the latest coreboot-libre update lately (during June 2015), keyboard works intermittently.
