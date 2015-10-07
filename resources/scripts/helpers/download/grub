@@ -24,8 +24,6 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Get GRUB, revert to commit last used and apply patches.
-
 # Remove the old version that may still exist
 # ------------------------------------------------------------------------------
 
@@ -41,6 +39,9 @@ git clone git://git.savannah.gnu.org/grub.git
 
 # modifications are required
 cd "grub/"
+
+# reset to known revision
+git reset --hard 7a210304ebfd6d704b4fc08fe496a0c417441879
 
 # Apply patches
 # ------------------------------------------------------------------------------
