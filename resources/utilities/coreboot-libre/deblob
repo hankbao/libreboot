@@ -29,30 +29,6 @@ printf "Deleting blobs in coreboot\n"
 cd "coreboot/"
 
 # ---------------------
-# Intel SoC (broadwell): CPU microcode updates
-# ---------------------
-
-# ---------------------
-# Intel SoC (baytrail): CPU microcode updates
-# ---------------------
-
-# ---------------------
-# AMD: CPU microcode updates
-# ---------------------
-
-rm -f \
-"src/cpu/amd/model_fxx/microcode_rev_e.h" \
-"src/cpu/amd/model_fxx/microcode_rev_c.h" \
-"src/cpu/amd/model_fxx/microcode_rev_d.h" \
-"src/cpu/amd/model_10xxx/mc_patch_010000d9.h" \
-"src/cpu/amd/model_10xxx/mc_patch_01000096.h" \
-"src/cpu/amd/model_10xxx/mc_patch_010000dc.h" \
-"src/cpu/amd/model_10xxx/mc_patch_010000db.h" \
-"src/cpu/amd/model_10xxx/mc_patch_01000095.h" \
-"src/cpu/amd/model_10xxx/mc_patch_010000c7.h" \
-"src/cpu/amd/model_10xxx/mc_patch_010000c8.h"
-
-# ---------------------
 # AMD: CPU microcode updates
 # ---------------------
 rm -f \
@@ -95,12 +71,6 @@ rm -f \
 "src/vendorcode/amd/agesa/f16kb/Proc/CPU/Family/0x16/KB/F16KbId7001MicrocodePatch.c" \
 "src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch05000029.c" \
 "src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch05000119.c"
-
-# ---------------------
-# VIA (nano): CPU microcode updates
-# ---------------------
-rm -f \
-"src/cpu/via/nano/nano_ucode_blob.c"
 
 # -------------------------------------
 # AMD AGESA: SMU firmware
@@ -152,15 +122,19 @@ rm -f \
 "src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFM2.h" \
 "src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFS1.h"
 
-# ----------------------------------
-# Purpose unknown. TODO: investigate
-# ----------------------------------
-
-# <Stepan> francis7: util/broadcom/secimage/misc.c is a precalculated crc32 polynome table
-# <Stepan> It's just a standard crc32 implementation
+# ------------------------
+# Blobs in 3rdparty/vboot/
+# ------------------------
 
 rm -f \
-"util/broadcom/secimage/misc.c"
+"3rdparty/vboot/tests/futility/data/bios_peppy_mp.bin" \
+"3rdparty/vboot/tests/futility/data/bios_link_mp.bin"
+
+# Unsure if these are proprietary blobs:
+rm -f \
+"3rdparty/vboot/tests/testcases/padding_test_vectors.inc" \
+"3rdparty/vboot/firmware/lib/cgptlib/crc32.c" \
+"3rdparty/vboot/firmware/lib/cryptolib/padding.c"
 
 printf "\n\n"
 

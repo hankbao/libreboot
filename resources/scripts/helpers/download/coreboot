@@ -44,7 +44,10 @@ git clone http://review.coreboot.org/coreboot
 cd "coreboot/"
 
 # reset to previously tested revision
-git reset --hard 5d5fcdd82b72c1fc621aab9fd6ff88cce9345d8e
+git reset --hard a2bed346a1a45c822bc255e90a0bf6a6ae1d1d50
+
+# vboot submodule is needed
+git submodule update --init --checkout -- 3rdparty/vboot/
 
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
@@ -61,9 +64,10 @@ git reset --hard 5d5fcdd82b72c1fc621aab9fd6ff88cce9345d8e
 
 # ----
 
-printf "southbridge/intel/common/spi: Add Flash lockdown option\n"
+# Had issues building with. This patch isn't even used, anyway.
+# printf "southbridge/intel/common/spi: Add Flash lockdown option\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/70/9370/4 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0001-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch"
+# git am "../resources/libreboot/patch/0001-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch"
 
 # This patch doesn't actually work...
 # printf "mainboards/lenovo/t400: Enable serial debug option for use with dock\n"
@@ -144,8 +148,7 @@ rm -f ".gitreview"
 rm -f ".gitmodules"
 rm -f ".gitignore"
 
-# Strictly overkill. libreboot doesn't even checkout this submodule
-rm -Rf "3rdparty/"
+rm -Rf 3rdparty/*/.git*
 
 cd "../"
 

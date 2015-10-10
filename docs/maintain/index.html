@@ -151,8 +151,12 @@
 				commit from the coreboot version that you just downloaded.
 			</p>
 			<p>
+				You must also checkout the <i>vboot</i> submodule:<br/>
+				$ <b>git submodule update --init --checkout -- 3rdparty/vboot/</b>
+			</p>
+			<p>
 				Delete the .git* resources. For example:<br/>
-				$ <b>rm -Rf .git*</b><br/>
+				$ <b>rm -Rf .git* 3rdparty/*/.git*</b><br/>
 				...this is to avoid the deblobbing script from picking up files
 				in there as blobs, which would be only false positives and
 				increase the amount of time taken. Now come out of coreboot:<br/>
