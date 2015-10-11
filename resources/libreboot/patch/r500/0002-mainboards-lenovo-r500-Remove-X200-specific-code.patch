@@ -1,0 +1,107 @@
+From 8674a3090ef843905c779b92e55a3951bbb5add8 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Wed, 5 Aug 2015 00:59:29 +0100
+Subject: [PATCH 2/7] mainboards/lenovo/r500: Remove X200-specific code
+
+Change-Id: Ib5a7217f95b75c38e318972bb742547a534c064b
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/mainboard/lenovo/r500/Kconfig       | 9 ++++-----
+ src/mainboard/lenovo/r500/Kconfig.name  | 4 ++--
+ src/mainboard/lenovo/r500/devicetree.cb | 7 +------
+ src/mainboard/lenovo/r500/dock.h        | 4 ++--
+ src/mainboard/lenovo/r500/mainboard.c   | 2 +-
+ 5 files changed, 10 insertions(+), 16 deletions(-)
+
+diff --git a/src/mainboard/lenovo/r500/Kconfig b/src/mainboard/lenovo/r500/Kconfig
+index 7bae12d..d08e5f5 100644
+--- a/src/mainboard/lenovo/r500/Kconfig
++++ b/src/mainboard/lenovo/r500/Kconfig
+@@ -1,4 +1,4 @@
+-if BOARD_LENOVO_X200
++if BOARD_LENOVO_R500
+ 
+ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	def_bool y
+@@ -22,15 +22,14 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 	select INTEL_INT15
+ 	select SUPERIO_NSC_PC87382
+-	select DRIVERS_LENOVO_WACOM
+ 
+ config MAINBOARD_DIR
+ 	string
+-	default lenovo/x200
++	default lenovo/r500
+ 
+ config MAINBOARD_PART_NUMBER
+ 	string
+-	default "ThinkPad X200"
++	default "ThinkPad R500"
+ 
+ config MMCONF_BASE_ADDRESS
+ 	hex
+@@ -48,4 +47,4 @@ config CBFS_SIZE
+ 	hex
+ 	default 0x200000
+ 
+-endif # BOARD_LENOVO_X200
++endif # BOARD_LENOVO_R500
+diff --git a/src/mainboard/lenovo/r500/Kconfig.name b/src/mainboard/lenovo/r500/Kconfig.name
+index 8e1dd43..558b9b0 100644
+--- a/src/mainboard/lenovo/r500/Kconfig.name
++++ b/src/mainboard/lenovo/r500/Kconfig.name
+@@ -1,2 +1,2 @@
+-config BOARD_LENOVO_X200
+-	bool "ThinkPad X200 / X200t"
++config BOARD_LENOVO_R500
++	bool "ThinkPad R500"
+diff --git a/src/mainboard/lenovo/r500/devicetree.cb b/src/mainboard/lenovo/r500/devicetree.cb
+index cb4a021..c3fffe8 100644
+--- a/src/mainboard/lenovo/r500/devicetree.cb
++++ b/src/mainboard/lenovo/r500/devicetree.cb
+@@ -181,12 +181,7 @@ chip northbridge/intel/gm45
+ 				end
+ 
+ 				chip superio/nsc/pc87382
+-					device pnp 164e.3 on # Digitizer
+-						io 0x60 = 0x200
+-						irq 0x29 = 0xb0
+-						irq 0x70 = 0x5
+-						irq 0xf0 = 0x82
+-					end
++					device pnp 164e.3 off end
+ 					# IR, not connected
+ 					device pnp 164e.2 off end
+ 					# GPIO, not connected
+diff --git a/src/mainboard/lenovo/r500/dock.h b/src/mainboard/lenovo/r500/dock.h
+index a5029e1..a9a90da 100644
+--- a/src/mainboard/lenovo/r500/dock.h
++++ b/src/mainboard/lenovo/r500/dock.h
+@@ -17,8 +17,8 @@
+  * Foundation, Inc.
+  */
+ 
+-#ifndef THINKPAD_X200_DOCK_H
+-#define THINKPAD_X200_DOCK_H
++#ifndef THINKPAD_R500_DOCK_H
++#define THINKPAD_R500_DOCK_H
+ 
+ extern void dock_connect(void);
+ extern void dock_disconnect(void);
+diff --git a/src/mainboard/lenovo/r500/mainboard.c b/src/mainboard/lenovo/r500/mainboard.c
+index d91e225..1bfbf48 100644
+--- a/src/mainboard/lenovo/r500/mainboard.c
++++ b/src/mainboard/lenovo/r500/mainboard.c
+@@ -34,7 +34,7 @@
+ 
+ static void fill_ssdt(device_t device)
+ {
+-	drivers_lenovo_serial_ports_ssdt_generate("\\_SB.PCI0.LPCB", 0);
++	/* Nothing to see here. Move along. */
+ }
+ 
+ static void mainboard_enable(device_t dev)
+-- 
+1.9.1
+

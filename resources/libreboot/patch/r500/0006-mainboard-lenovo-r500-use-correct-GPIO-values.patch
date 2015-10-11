@@ -1,0 +1,40 @@
+From 0197ee58d0ead0ffdaea74022c17c60d2d14ac27 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Wed, 5 Aug 2015 19:53:59 +0100
+Subject: [PATCH 6/7] mainboard/lenovo/r500: use correct GPIO values
+
+Change-Id: I2f1e8515cf27769cd90d59b8edc6d6caff855eaa
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/mainboard/lenovo/r500/romstage.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/mainboard/lenovo/r500/romstage.c b/src/mainboard/lenovo/r500/romstage.c
+index 455dd35..c29d661 100644
+--- a/src/mainboard/lenovo/r500/romstage.c
++++ b/src/mainboard/lenovo/r500/romstage.c
+@@ -39,9 +39,9 @@
+ 
+ static void default_southbridge_gpio_setup(void)
+ {
+-	outl(0x197e23fe, DEFAULT_GPIOBASE + GP_IO_USE_SEL);
+-	outl(0xe1a66dfe, DEFAULT_GPIOBASE + GP_IO_SEL);
+-	outl(0xe3faef3f, DEFAULT_GPIOBASE + GP_LVL);
++	outl(0x197e33fe, DEFAULT_GPIOBASE + GP_IO_USE_SEL);
++	outl(0xe0ea6dfe, DEFAULT_GPIOBASE + GP_IO_SEL);
++	outl(0xe3feef3b, DEFAULT_GPIOBASE + GP_LVL);
+ 
+ 	/* Disable blink [31:0]. */
+ 	outl(0x00000000, DEFAULT_GPIOBASE + GPO_BLINK);
+@@ -53,7 +53,7 @@ static void default_southbridge_gpio_setup(void)
+ 	/* Set input/output mode [60:32] (0 == out, 1 == in). */
+ 	outl(0x1f55f9f1, DEFAULT_GPIOBASE + GP_IO_SEL2);
+ 	/* Set gpio levels [60:32].  */
+-	outl(0x1dffff53, DEFAULT_GPIOBASE + GP_LVL2);
++	outl(0x1dfefb53, DEFAULT_GPIOBASE + GP_LVL2);
+ }
+ 
+ static void early_lpc_setup(void)
+-- 
+1.9.1
+
