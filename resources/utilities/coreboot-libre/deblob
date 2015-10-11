@@ -130,10 +130,6 @@ rm -f \
 "3rdparty/vboot/tests/futility/data/bios_peppy_mp.bin" \
 "3rdparty/vboot/tests/futility/data/bios_link_mp.bin"
 
-# Unsure if this is a proprietary blob:
-rm -f \
-"3rdparty/vboot/tests/testcases/padding_test_vectors.inc"
-
 printf "\n\n"
 
 cd "../"

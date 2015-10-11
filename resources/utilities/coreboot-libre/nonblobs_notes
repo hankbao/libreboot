@@ -11,5 +11,8 @@ These are used by native raminit for the relevant platforms, and are not blobs
 "src/southbridge/sis/sis966/early_setup_ss.h"
 not blobs
 
+./3rdparty/vboot/tests/testcases/padding_test_vectors.inc
+It's not a blob, see tests/rsa_padding_test.h for explanation.
+
 The text in this file is CC-BY-SA 4.0 or higher. All contributions to it must
 be made under the same license.

@@ -352,3 +352,4 @@
 ./3rdparty/vboot/futility/cmd_gbb_utility.c
 ./3rdparty/vboot/firmware/lib/cgptlib/crc32.c
 ./3rdparty/vboot/firmware/lib/cryptolib/padding.c
+./3rdparty/vboot/tests/testcases/padding_test_vectors.inc
