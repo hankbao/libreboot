@@ -85,6 +85,10 @@ rm -f "${distdir}/resources/scripts/helpers/build/release/docs"
 
 # Patches are not needed, because they are already applied to coreboot sources.
 rm -Rf "${distdir}/resources/libreboot/patch/"
+# Other patches aren't needed in the release, either
+rm -Rf "${distdir}/resources/depthcharge/patch/"
+rm -Rf "${distdir}/resources/grub/patch/"
+rm -Rf "${distdir}/resources/memtest86plus/patch/"
 
 # ich9deblob: There are certain files in there that the user most likely does
 # not want to share.
