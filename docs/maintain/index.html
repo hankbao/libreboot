@@ -251,12 +251,15 @@
 
 			<p>
 				Update all configs:<br/>
-				$ <b>./build config corebootupdate</b><br/>
+				$ <b>./build config grubupdate</b><br/>
+				$ <b>./build config dcupdate</b><br/>
 				This simply takes all of the coreboot <b>.config</b> files from
 				<i>resources/libreboot/config/</i> and does <b>make oldconfig</b>
 				on them. It usually works. If it doesn't, you'll need to recreate
-				those configs from scratch using <b>./build config corebootreplace</b> (optionally
-				add a config name), or <b>./build config corebootmodify</b> (ditto)
+				those configs from scratch using <b>./build config grubreplace</b>
+				or <b>./build config dcreplace</b> (optionally
+				add a config name), or <b>./build config grubmodify</b>
+				or <b>./build config dcmodify</b> (ditto)
 				(see <a href="../git/index.html#config">../git/index.html#config</a>)
 			</p>
 
@@ -300,8 +303,10 @@
 			<p>
 				Make sure that the board is supported, and that the patches
 				are included (if there are custom patches that you need).
-				Add configs for it like so:<br/>
-				$ <b>./build config corebootreplace <i>payload</i>/<i>boardname</i></b>
+				Add configs for it like so (for GRUB payload):<br/>
+				$ <b>./build config grubreplace <i>payload</i>/<i>boardname</i></b><br/>
+				Alternatively, for depthcharge payload:<br/>
+				$ <b>./build config dcreplace <i>payload</i>/<i>boardname</i></b>
 			</p>
 			
 			<p>
@@ -325,24 +330,36 @@
 			</p>
 			
 			<p>
-				The following can be used when updating coreboot-libre:<br/>
-				$ <b>./build config corebootupdate</b> (adding a board name on the end is optional)
+				The following can be used when updating coreboot-libre (GRUB payload):<br/>
+				$ <b>./build config grubupdate</b><br/>
+				You must also do this for boards that use the depthcharge payload:<br/>
+				$ <b>./build config dcupdate</b><br/>
+				(adding a board name on the end is optional, for either of these)
 			</p>
 			
 			<p>
 				The following can be used if you want to modify an existing
-				configuration:<br/>
-				$ <b>./build config corebootmodify</b> (adding a board name on the end is optional)
+				configuration (GRUB payload):<br/>
+				$ <b>./build config grubmodify</b><br/>
+				For those boards which use the depthcharge payload:<br/>
+				$ <b>./build config dcmodify</b><br/>
+				(adding a board name on the end is optional)
 			</p>
 
 			<p>
 				Examples (GRUB payload):<br/>
-				$ <b>./build config corebootmodify x60</b><br/>
-				$ <b>./build config corebootreplace x60</b><br/>
-				$ <b>./build config corebootupdate x60</b><br/>
-				$ <b>./build config corebootmodify kfsn4-dre</b><br/>
-				$ <b>./build config corebootreplace kfsn4-dre</b><br/>
-				$ <b>./build config corebootupdate kfsn4-dre</b><br/>
+				$ <b>./build config grubmodify x60</b><br/>
+				$ <b>./build config grubreplace x60</b><br/>
+				$ <b>./build config grubupdate x60</b><br/>
+				$ <b>./build config grubmodify kfsn4-dre</b><br/>
+				$ <b>./build config grubreplace kfsn4-dre</b><br/>
+				$ <b>./build config grubupdate kfsn4-dre</b><br/>
+			</p>
+			<p>
+				Examples (depthcharge payload):<br/>
+				$ <b>./build config dcmodify veyron_speedy</b><br/>
+				$ <b>./build config dcreplace veyron_speedy</b><br/>
+				$ <b>./build config dcupdate veyron_speedy</b>
 			</p>
 
 			<p>
