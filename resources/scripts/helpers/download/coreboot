@@ -155,4 +155,13 @@ cd "../"
 printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
 
+if [ -f "version" ]; then
+	# _src release archive is being used
+	version="libreboot-$(cat version)"
+else
+	# git repo is being used
+	version="libreboot-$(git describe --tags HEAD)"
+fi
+printf '%s\n' "${version}" >"coreboot/.coreboot-version"
+
 printf "\n\n"
