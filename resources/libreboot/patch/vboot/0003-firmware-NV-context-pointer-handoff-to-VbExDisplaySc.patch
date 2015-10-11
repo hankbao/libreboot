@@ -1,0 +1,79 @@
+From 5bd1373a9313bc31bacb2d765ede2c19242a7e9b Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 10 Aug 2015 22:46:43 +0200
+Subject: [PATCH 3/7] firmware: NV context pointer handoff to VbExDisplayScreen
+
+VbExDisplayScreen might need to display some information based on the NV context
+so it makes sense to pass that pointer along.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ firmware/include/vboot_api.h    | 3 ++-
+ firmware/lib/vboot_display.c    | 2 +-
+ firmware/stub/vboot_api_stub.c  | 2 +-
+ tests/vboot_api_devmode_tests.c | 2 +-
+ 4 files changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/firmware/include/vboot_api.h b/firmware/include/vboot_api.h
+index 7e94773..66d1ee4 100644
+--- a/firmware/include/vboot_api.h
++++ b/firmware/include/vboot_api.h
+@@ -24,6 +24,7 @@
+ #include <stdint.h>
+ #include <stdlib.h>
+ 
++#include "vboot_nvstorage.h"
+ #include "gpt.h"
+ 
+ /*****************************************************************************/
+@@ -765,7 +766,7 @@ VbError_t VbExDisplaySetDimension(uint32_t width, uint32_t height);
+  * to be simple ASCII text such as "NO GOOD" or "INSERT"; these screens should
+  * only be seen during development.
+  */
+-VbError_t VbExDisplayScreen(uint32_t screen_type);
++VbError_t VbExDisplayScreen(uint32_t screen_type, VbNvContext *vnc);
+ 
+ /**
+  * Write an image to the display, with the upper left corner at the specified
+diff --git a/firmware/lib/vboot_display.c b/firmware/lib/vboot_display.c
+index 542aaed..0158cc2 100644
+--- a/firmware/lib/vboot_display.c
++++ b/firmware/lib/vboot_display.c
+@@ -325,7 +325,7 @@ VbError_t VbDisplayScreen(VbCommonParams *cparams, uint32_t screen,
+ 	disp_current_screen = screen;
+ 
+ 	/* Display default first */
+-	if (VBERROR_SUCCESS == VbExDisplayScreen(screen))
++	if (VBERROR_SUCCESS == VbExDisplayScreen(screen, vncptr))
+ 		return VBERROR_SUCCESS;
+ 
+ 	/* If default doesn't have anything to show, fall back to GBB bitmaps */
+diff --git a/firmware/stub/vboot_api_stub.c b/firmware/stub/vboot_api_stub.c
+index 7320b6c..f773b6e 100644
+--- a/firmware/stub/vboot_api_stub.c
++++ b/firmware/stub/vboot_api_stub.c
+@@ -43,7 +43,7 @@ VbError_t VbExDisplaySetDimension(uint32_t width, uint32_t height)
+ 	return VBERROR_SUCCESS;
+ }
+ 
+-VbError_t VbExDisplayScreen(uint32_t screen_type)
++VbError_t VbExDisplayScreen(uint32_t screen_type, VbNvContext *vnc)
+ {
+ 	return VBERROR_SUCCESS;
+ }
+diff --git a/tests/vboot_api_devmode_tests.c b/tests/vboot_api_devmode_tests.c
+index 925a146..af90f7f 100644
+--- a/tests/vboot_api_devmode_tests.c
++++ b/tests/vboot_api_devmode_tests.c
+@@ -265,7 +265,7 @@ VbError_t VbExBeep(uint32_t msec, uint32_t frequency) {
+   return beep_return;
+ }
+ 
+-VbError_t VbExDisplayScreen(uint32_t screen_type) {
++VbError_t VbExDisplayScreen(uint32_t screen_type, VbNvContext *vnc) {
+   switch(screen_type) {
+   case VB_SCREEN_BLANK:
+     VBDEBUG(("VbExDisplayScreen(BLANK)\n"));
+-- 
+1.9.1
+

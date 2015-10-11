@@ -49,6 +49,39 @@ git reset --hard a2bed346a1a45c822bc255e90a0bf6a6ae1d1d50
 # vboot submodule is needed
 git submodule update --init --checkout -- 3rdparty/vboot/
 
+# there are modifications required
+cd "3rdparty/vboot/"
+
+git reset --hard 82db93d5fc924860e4f1fb4cf24f29b5b335a480
+
+# Patch vboot
+# ------------------------------------------------------------------------------
+
+printf "firmware: Developer mode timeout delay shortening (down to 3 seconds)\n"
+git am "../../../resources/libreboot/patch/vboot/0001-firmware-Developer-mode-timeout-delay-shortening-dow.patch"
+
+printf "firmware: Text-based screen display in priority\n"
+git am "../../../resources/libreboot/patch/vboot/0002-firmware-Text-based-screen-display-in-priority.patch"
+
+printf "firmware: NV context pointer handoff to VbExDisplayScreen\n"
+git am "../../../resources/libreboot/patch/vboot/0003-firmware-NV-context-pointer-handoff-to-VbExDisplaySc.patch"
+
+printf "firmware: Hold key combination in developer mode\n"
+git am "../../../resources/libreboot/patch/vboot/0004-firmware-Hold-key-combination-in-developer-mode.patch"
+
+printf "firmware: Screen blank and wait at disabled USB boot warning\n"
+git am "../../../resources/libreboot/patch/vboot/0005-firmware-Screen-blank-and-wait-at-disabled-USB-boot-.patch"
+
+printf "firmware: Separate screen and wait at device information screen\n"
+git am "../../../resources/libreboot/patch/vboot/0006-firmware-Separate-screen-and-wait-at-device-informat.patch"
+
+printf "firmware: Localization keys removal\n"
+git am "../../../resources/libreboot/patch/vboot/0007-firmware-Localization-keys-removal.patch"
+
+# leave the vboot tree
+cd "../../"
+
+
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
 
@@ -138,6 +171,15 @@ git am "../resources/libreboot/patch/0012-lenovo-t500-Add-clone-of-Lenovo-T400.p
 printf "ec/lenovo/h8: re-factor handling of power_management_beeps\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/10531/8 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0013-ec-lenovo-h8-re-factor-handling-of-power_management_.patch"
+
+# Chromebook:
+
+printf "armv7: Word-sized/half-word-sized memory operations for 32/16 bit read/write\n"
+# git fetch http://review.coreboot.org/coreboot refs/changes/98/11698/6 && git cherry-pick FETCH_HEAD
+git am "../resources/libreboot/patch/chromebook/0001-armv7-Word-sized-half-word-sized-memory-operations-f.patch"
+
+printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
+git am "../resources/libreboot/patch/chromebook/0002-chromeos-Allow-disabling-vboot-firmware-verification.patch"
 
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------

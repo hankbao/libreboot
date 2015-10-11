@@ -1,0 +1,132 @@
+From 5ad9900434045ea97c536c98cb514bdb43114c12 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Sun, 9 Aug 2015 12:09:35 +0200
+Subject: [PATCH 4/7] Adaptation for a read-only boot path when no vboot
+ handoff data is found
+
+When no vboot handoff data is found, this makes the unified depthcharge build
+attempt to follow the read-only boot path.
+
+vboot_select_firmware is called to grab the kernel key from the firmware header,
+but it won't actually jump to a RW version of depthcharge.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/image/Makefile.inc                |  1 +
+ src/image/startrw_stub.c              | 34 ++++++++++++++++++++++++++++++++++
+ src/vboot/main.c                      | 17 ++++++++++++++++-
+ src/vboot/util/commonparams-unified.c | 11 +++++++++--
+ 4 files changed, 60 insertions(+), 3 deletions(-)
+ create mode 100644 src/image/startrw_stub.c
+
+diff --git a/src/image/Makefile.inc b/src/image/Makefile.inc
+index 95aeda1..4b74c11 100644
+--- a/src/image/Makefile.inc
++++ b/src/image/Makefile.inc
+@@ -18,6 +18,7 @@
+ depthcharge-y += fmap.c
+ depthcharge-y += index.c
+ readonly-y += startrw.c
++unified-y += startrw_stub.c
+ 
+ trampoline-y += load_elf.c
+ 
+diff --git a/src/image/startrw_stub.c b/src/image/startrw_stub.c
+new file mode 100644
+index 0000000..8e40302
+--- /dev/null
++++ b/src/image/startrw_stub.c
+@@ -0,0 +1,34 @@
++/*
++ * Copyright 2012 Google Inc.
++ *
++ * See file CREDITS for list of people who contributed to this
++ * project.
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public License as
++ * published by the Free Software Foundation; either version 2 of
++ * the License, or (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but without any warranty; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
++ * MA 02111-1307 USA
++ */
++
++#include <libpayload.h>
++#include <lzma.h>
++
++#include "base/elf.h"
++#include "image/enter_trampoline.h"
++#include "image/startrw.h"
++#include "image/symbols.h"
++
++int start_rw_firmware(const void *compressed_image, uint32_t size)
++{
++	return 0;
++}
+diff --git a/src/vboot/main.c b/src/vboot/main.c
+index 7dc05f5..97a218d 100644
+--- a/src/vboot/main.c
++++ b/src/vboot/main.c
+@@ -82,6 +82,20 @@ static int vboot_init_handoff()
+ 	return vboot_do_init_out_flags(vboot_handoff->init_params.out_flags);
+ }
+ 
++static int vboot_init_ro()
++{
++	// Set up the common param structure, clearing shared data.
++	if (common_params_init(1))
++		return 1;
++
++	// Initialize vboot.
++	if (vboot_init())
++		return 1;
++
++	// Select firmware.
++	return vboot_select_firmware();
++}
++
+ int main(void)
+ {
+ 	// Let the world know we're alive.
+@@ -108,7 +122,8 @@ int main(void)
+ 
+ 	// Set up the common param structure, not clearing shared data.
+ 	if (vboot_init_handoff())
+-		halt();
++		if (vboot_init_ro())
++			halt();
+ 
+ 	/* Fastboot is only entered in recovery path */
+ 	if (vboot_in_recovery())
+diff --git a/src/vboot/util/commonparams-unified.c b/src/vboot/util/commonparams-unified.c
+index 10fcb93..575dcfd 100644
+--- a/src/vboot/util/commonparams-unified.c
++++ b/src/vboot/util/commonparams-unified.c
+@@ -28,7 +28,14 @@
+ int find_common_params(void **blob, int *size)
+ {
+ 	struct vboot_handoff *vboot_handoff = lib_sysinfo.vboot_handoff;
+-	*blob = &vboot_handoff->shared_data[0];
+-	*size = ARRAY_SIZE(vboot_handoff->shared_data);
++
++	if (vboot_handoff != NULL) {
++		*blob = &vboot_handoff->shared_data[0];
++		*size = ARRAY_SIZE(vboot_handoff->shared_data);
++	} else {
++		*blob = shared_data_blob;
++		*size = sizeof(shared_data_blob);
++	}
++
+ 	return 0;
+ }
+-- 
+1.9.1
+

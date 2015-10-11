@@ -1,0 +1,50 @@
+From 741adbf4fdb4ef72245f9373a2980ecade41f3f5 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 10 Aug 2015 22:59:50 +0200
+Subject: [PATCH 4/7] firmware: Hold key combination in developer mode
+
+This binds the Ctrl + H key combination to hold the developer mode screen.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ firmware/lib/vboot_api_kernel.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/firmware/lib/vboot_api_kernel.c b/firmware/lib/vboot_api_kernel.c
+index 312014b..e191137 100644
+--- a/firmware/lib/vboot_api_kernel.c
++++ b/firmware/lib/vboot_api_kernel.c
+@@ -251,7 +251,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+ 	GoogleBinaryBlockHeader *gbb = cparams->gbb;
+ 	VbSharedDataHeader *shared =
+ 		(VbSharedDataHeader *)cparams->shared_data_blob;
+-	uint32_t allow_usb = 0, allow_legacy = 0, ctrl_d_pressed = 0;
++	uint32_t allow_usb = 0, allow_legacy = 0, ctrl_d_pressed = 0, hold = 0;
+ 	VbAudioContext *audio = 0;
+ 
+ 	VBDEBUG(("Entering %s()\n", __func__));
+@@ -364,6 +364,12 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+ 			ctrl_d_pressed = 1;
+ 			goto fallout;
+ 			break;
++		case 0x08:
++			/* Ctrl+H = hold */
++			VBDEBUG(("VbBootDeveloper() - "
++				 "hold developer mode screen\n"));
++			hold = 1;
++			break;
+ 		case 0x0c:
+ 			VBDEBUG(("VbBootDeveloper() - "
+ 				 "user pressed Ctrl+L; Try legacy boot\n"));
+@@ -430,7 +436,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+ 			VbCheckDisplayKey(cparams, key, &vnc);
+ 			break;
+ 		}
+-	} while(VbAudioLooping(audio));
++	} while(hold || VbAudioLooping(audio));
+ 
+  fallout:
+ 
+-- 
+1.9.1
+

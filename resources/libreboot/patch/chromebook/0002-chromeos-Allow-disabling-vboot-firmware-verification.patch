@@ -1,0 +1,84 @@
+From d0e6324693214c51e707928e26571ecc9ab8ee03 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Sun, 9 Aug 2015 10:23:38 +0200
+Subject: [PATCH 2/2] chromeos: Allow disabling vboot firmware verification
+ when ChromeOS is enabled
+
+Some ChromeOS bindings might be wanted without using vboot verification, for
+instance to boot up depthcharge from the version of Coreboot installed in the
+write-protected part of the SPI flash (without jumping to a RW firmware).
+
+Vboot firmware verification is still selected by default when ChromeOS is
+enabled, but this allows more flexibility since vboot firmware verification is
+no longer a hard requirement for ChromeOS (that this particular use case still
+allows booting ChromeOS).
+
+In the future, it would make sense to have all the separate components that
+CONFIG_CHROMEOS enables have their own config options, so that they can be
+enabled separately.
+
+Change-Id: Ia4057a56838aa05dcf3cb250ae1a27fd91402ddb
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/lib/bootmode.c                            | 2 ++
+ src/vendorcode/google/chromeos/Kconfig        | 2 +-
+ src/vendorcode/google/chromeos/vboot2/Kconfig | 4 ++++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/bootmode.c b/src/lib/bootmode.c
+index f2ff72a..13c0130 100644
+--- a/src/lib/bootmode.c
++++ b/src/lib/bootmode.c
+@@ -80,8 +80,10 @@ void gfx_set_init_done(int done)
+ int display_init_required(void)
+ {
+ 	/* For Chrome OS always honor vboot_skip_display_init(). */
++#if CONFIG_VBOOT_VERIFY_FIRMWARE
+ 	if (IS_ENABLED(CONFIG_CHROMEOS))
+ 		return !vboot_skip_display_init();
++#endif
+ 
+ 	/* By default always initialize display. */
+ 	return 1;
+diff --git a/src/vendorcode/google/chromeos/Kconfig b/src/vendorcode/google/chromeos/Kconfig
+index 8309d19..694e0d7 100644
+--- a/src/vendorcode/google/chromeos/Kconfig
++++ b/src/vendorcode/google/chromeos/Kconfig
+@@ -31,7 +31,6 @@ config CHROMEOS
+ 	select BOOTMODE_STRAPS
+ 	select ELOG
+ 	select COLLECT_TIMESTAMPS
+-	select VBOOT_VERIFY_FIRMWARE
+ 	help
+ 	  Enable ChromeOS specific features like the GPIO sub table in
+ 	  the coreboot table. NOTE: Enabling this option on an unsupported
+@@ -129,6 +128,7 @@ config VIRTUAL_DEV_SWITCH
+ 
+ config VBOOT_VERIFY_FIRMWARE
+ 	bool "Verify firmware with vboot."
++	default y if CHROMEOS
+ 	default n
+ 	depends on HAVE_HARD_RESET
+ 	help
+diff --git a/src/vendorcode/google/chromeos/vboot2/Kconfig b/src/vendorcode/google/chromeos/vboot2/Kconfig
+index 33c33a5..5bd8b54 100644
+--- a/src/vendorcode/google/chromeos/vboot2/Kconfig
++++ b/src/vendorcode/google/chromeos/vboot2/Kconfig
+@@ -16,6 +16,8 @@
+ ## Foundation, Inc.
+ ##
+ 
++if VBOOT_VERIFY_FIRMWARE
++
+ config VBOOT_STARTS_IN_BOOTBLOCK
+ 	bool "Vboot starts verifying in bootblock"
+ 	default n
+@@ -133,3 +135,5 @@ config VBOOT_DYNAMIC_WORK_BUFFER
+ 	  ram to allocate the vboot work buffer. That means vboot verification
+ 	  is after memory init and requires main memory to back the work
+ 	  buffer.
++
++endif # VBOOT_VERIFY_FIRMWARE
+-- 
+1.9.1
+

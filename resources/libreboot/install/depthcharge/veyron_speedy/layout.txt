@@ -1,0 +1,2 @@
+00000000:000fffff coreboot
+001eff00:001effff ro-frid

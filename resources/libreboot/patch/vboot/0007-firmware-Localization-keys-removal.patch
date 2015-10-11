@@ -1,0 +1,54 @@
+From 982044d150604b74e2bb619ca00042430dd0b73d Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Tue, 11 Aug 2015 00:07:18 +0200
+Subject: [PATCH 7/7] firmware: Localization keys removal
+
+Since we're using a text-based interface, binding the arrow keys to localization
+changes has no effect and only makes the screen flicker.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ firmware/lib/vboot_api_kernel.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/firmware/lib/vboot_api_kernel.c b/firmware/lib/vboot_api_kernel.c
+index 2f33258..a5d2f03 100644
+--- a/firmware/lib/vboot_api_kernel.c
++++ b/firmware/lib/vboot_api_kernel.c
+@@ -229,7 +229,6 @@ int VbUserConfirms(VbCommonParams *cparams, uint32_t confirm_flags)
+ 					return 1;
+ 				}
+ 			}
+-			VbCheckDisplayKey(cparams, key, &vnc);
+ 		}
+ 		VbExSleepMs(CONFIRM_KEY_DELAY);
+ 	}
+@@ -455,7 +454,6 @@ developer_mode_screen:
+ 			break;
+ 		default:
+ 			VBDEBUG(("VbBootDeveloper() - pressed key %d\n", key));
+-			VbCheckDisplayKey(cparams, key, &vnc);
+ 			break;
+ 		}
+ 	} while(hold || VbAudioLooping(audio));
+@@ -539,8 +537,6 @@ VbError_t VbBootRecovery(VbCommonParams *cparams, LoadKernelParams *p)
+ 			 * platforms don't like to scan USB too rapidly.
+ 			 */
+ 			for (i = 0; i < REC_DISK_DELAY; i += REC_KEY_DELAY) {
+-				VbCheckDisplayKey(cparams, VbExKeyboardRead(),
+-						  &vnc);
+ 				if (VbWantShutdown(cparams->gbb->flags))
+ 					return VBERROR_SHUTDOWN_REQUESTED;
+ 				VbExSleepMs(REC_KEY_DELAY);
+@@ -638,8 +634,6 @@ VbError_t VbBootRecovery(VbCommonParams *cparams, LoadKernelParams *p)
+ 					i = 4;
+ 					break;
+ 				}
+-			} else {
+-				VbCheckDisplayKey(cparams, key, &vnc);
+ 			}
+ 			if (VbWantShutdown(cparams->gbb->flags))
+ 				return VBERROR_SHUTDOWN_REQUESTED;
+-- 
+1.9.1
+
