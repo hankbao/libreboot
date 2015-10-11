@@ -130,11 +130,9 @@ rm -f \
 "3rdparty/vboot/tests/futility/data/bios_peppy_mp.bin" \
 "3rdparty/vboot/tests/futility/data/bios_link_mp.bin"
 
-# Unsure if these are proprietary blobs:
+# Unsure if this is a proprietary blob:
 rm -f \
-"3rdparty/vboot/tests/testcases/padding_test_vectors.inc" \
-"3rdparty/vboot/firmware/lib/cgptlib/crc32.c" \
-"3rdparty/vboot/firmware/lib/cryptolib/padding.c"
+"3rdparty/vboot/tests/testcases/padding_test_vectors.inc"
 
 printf "\n\n"
 

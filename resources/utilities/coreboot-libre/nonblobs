@@ -350,3 +350,5 @@
 ./3rdparty/vboot/utility/vbutil_what_keys
 ./3rdparty/vboot/cgpt/cgpt_wrapper.c
 ./3rdparty/vboot/futility/cmd_gbb_utility.c
+./3rdparty/vboot/firmware/lib/cgptlib/crc32.c
+./3rdparty/vboot/firmware/lib/cryptolib/padding.c
