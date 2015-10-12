@@ -52,10 +52,115 @@
 	</div>
 
 	<div class="section">
-		<h1 id="ec">EC firmware</h1>
+		<h1 id="videoblobs">Caution: Video acceleration requires a blob. Do not install it. Use software rendering.</h1>
+			<p>
+				The lima driver source code for the onboard Mali GPU is not released. The developer withheld it for personal reasons.
+				Until that is released, the only way to use video on this laptop is to not have video acceleration, by
+				making sure not to install the relevant blob. Most tasks can still be performed without video acceleration, without
+				any noticeable performance penalty.
+			</p>
+			<p>
+				In practise, this means that certain things like games, blender and GNOME shell (or other fancy desktops) won't work well.
+				The libreboot project recommends a lightweight desktop which does not need video acceleration, such as <i>LXDE</i>.
+			</p>
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+	</div>
+	<div class="section">
+		<h1 id="wifiblobs">Caution: WiFi needs a blob. Do not install it. Use a USB dongle.</h1>
+			<p>
+				These laptops have non-removeable (soldered on) WiFi chips, which require non-free firmware in the Linux kernel
+				in order to work.
+			</p>
+			<p>
+				The libreboot project recommends that you use an external USB wifi dongle that works
+				with free software. See <a href="index.html#recommended_wifi">index.html#recommended_wifi</a>.
+			</p>
+			<p>
+				There are 2 companies (endorsed by the Free Software Foundation, under their <i>Respects your Freedom</i>
+				guidelines, that sell USB WiFi dongles guaranteed to work with free software (i.e. linux-libre kernel):
+			</p>
+				<ul>
+					<li><a href="https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-adapter-gnu-linux-tpe-n150usb">ThinkPenguin sells them</a> (company based in USA)</li>
+					<li><a href="https://tehnoetic.com/tehnoetic-wireless-adapter-gnu-linux-libre-tet-n150">Tehnoetic sells them</a> (company based in Europe)</li>
+				</ul>
+			<p>
+				These wifi dongles are the Unex DNUA-93F, which uses the AR9271 (atheros) chipset, supported by
+				the free <i>ath9k_htc</i> driver in the Linux kernel. They work in <i>linux-libre</i> too.
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="ec">EC firmware is free software!</h1>
 			<p>
 				It's free software. Google provides the source. Build scripts will be added later, with EC sources
 				provided in libreboot, and builds of the EC firmware.
+			</p>
+			<p>
+				This is unlike the other current libreboot laptops (Intel based). In practise, you can
+				(if you do without the video/wifi blobs) be more free when using one of these laptops.
+			</p>
+	</div>
+	
+	<div class="section">
+		<h1 id="os">Replace ChromeOS immediately!</h1>
+			<p>
+				This laptop comes preinstalled (from the factory) with Google ChromeOS. This is a GNU/Linux distribution, but it's not general purpose
+				and it comes with proprietary software. It's designed for <i><a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">SaaSS</a></i>. Libreboot recommends that all users of this laptop replace it with another distribution.
+			</p>
+			<h2>No FSF-endorsed distros available</h2>
+				<p>
+					The FSF has a <a href="https://www.gnu.org/distros/free-distros.html">list of distributions</a> that are 100% free software. None of these
+					are confirmed to work on ARM chromebooks yet. Parabola looks hopeful:
+					<a href="https://www.parabola.nu/news/parabola-supports-armv7/">https://www.parabola.nu/news/parabola-supports-armv7/</a>
+				</p>
+				<p>
+					The libreboot project would like to see all FSF-endorsed distro projects port to these laptops. This includes Trisquel, GuixSD and others.
+					And ProteanOS. Maybe even LibreCMC. The more the merrier. We need them, badly.
+				</p>
+			<h2>What can be done meanwhile?</h2>
+				<p>
+					There are some other distributions, which are not freedom-friendly, but can be with some tweaking.
+				</p>
+				<p>
+					There isn't much choice, but we can recommend these distributions for the time being:
+				</p>
+				<h3>Debian GNU/Linux</h3>
+					<p>
+						The FSF details the problems with Debian:
+						<a href="https://www.gnu.org/distros/common-distros.html#Debian">https://www.gnu.org/distros/common-distros.html#Debian</a>
+					</p>
+					<p>
+						You can actually run Debian without any proprietary software. The default installation comes without any proprietary software,
+						and although the project does have proprietary software, its only in a separate repository which isn't enabled by default.
+						The Debian project has a strict policy of keeping proprietary software out of the main repository, and moving it to a separate repository;
+						this repository is called <i>non-free</i>, with supplementary packages that require it in <i>contrib</i>, also not enabled by default.
+						If you install Debian and replace the kernel with <a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">linux-libre</a>,
+						you can be reasonably certain not to install any proprietary software. However, make sure to exercise caution, since this isn't
+						endorsed at all, and mistakes can happen.
+					</p>
+					<p>
+						<b>Note that this does not mean Debian is ok! Far from it! Institutionally, Debian is rotten because it distributes proprietary software,
+						even if it's optional and not included by default.</b>
+					</p>
+				<h3>Fedora GNU/Linux</h3>
+					<p>
+						Unlike Debian, Fedora (to the best of our knowledge) only distributes proprietary software in the form of firmware blobs for the Linux kernel.
+						There are repositories for Fedora that contain proprietary software, but none of these are official and have to be added. So just don't add them.
+						Then, delete <i>linux</i> and replace it with <a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">linux-libre</a>.
+					</p>
+					<p>
+						<b>Note that this does not mean Fedora is ok! Far from it! Institutionally, Fedora is rotten because it distributes proprietary software,
+						even if it's easy to remove.</b>
+					</p>
+				<h3>We need libre distributions to be ported.</h3>
+					<p>
+						As soon as possible, the libreboot project would like to remove mention of Fedora and Debian.
+						We find such distributions ethically repugnant.
+					</p>
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
 			</p>
 	</div>
 
@@ -64,30 +169,6 @@
 			<p>
 				These systems do not use the GRUB payload. Instead, they use a payload called depthcharge,
 				which is common on Chromebooks.
-			</p>
-	</div>
-
-	<div class="section">
-		<h1 id="issues">Issues</h1>
-			<p>
-				Non-free drivers needed in linux kernel for video acceleration;
-				it's possible to use it without video acceleration.
-			</p>
-			<p>
-				Non-free drivers needed for built-in (soldered) wifi; it's possible
-				to use an external USB wifi dongle. Check <a href="index.html#recommended_wifi">index.html#recommended_wifi</a>.
-			</p>
-			<p>
-				Comes preinstalled (from the factory) with Google ChromeOS. This is a GNU/Linux distribution, but it's not general purpose
-				and it comes with proprietary software. It's designed for <i><a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">SaaSS</a></i>. Libreboot recommends that all users of this laptop
-				replace ChromeOS with Debian or Fedora. No FSF-endorsed distribution is available yet, but Guix and Trisquel might be easy
-				enough to port.
-			</p>
-			<p>
-				If you go with Debian, make sure to <b><i>not</i></b> enable the <i>non-free</i> and <i>contrib</i> repositories.
-			</p>
-			<p>
-				If you go with Fedora, make sure to <i>delete</i> Linux and replace it with Linux-libre.
 			</p>
 	</div>
 
