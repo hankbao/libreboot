@@ -128,6 +128,7 @@ printf "lenovo/x60: use correct BLC_PWM_CTL value\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/24/10624/1 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0004-lenovo-x60-use-correct-BLC_PWM_CTL-value.patch"
 
+# NOTE: this patch has been merged upstream. Delete it from libreboot the next time you re-base
 printf "Enable T60 native graphics\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/10 && git cherry-pick FETCH_HEAD
 git am "../resources/libreboot/patch/0005-lenovo-t60-Enable-native-intel-gfx-init.patch"
