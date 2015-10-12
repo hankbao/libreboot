@@ -15,7 +15,7 @@
 	<div class="section">
 		<h1>Installing Parabola GNU/Linux with full disk encryption (including /boot)</h1>
 			<p>
-				Libreboot uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
+				Libreboot on x86 uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
 				(where your GRUB menu comes from) is stored directly alongside libreboot
 				and it's GRUB payload executable, inside
@@ -29,6 +29,9 @@
 				can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a 
 				payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical
 				access to the system.
+			</p>
+			<p>
+				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
 			</p>
 			<p>
 				<a href="index.html">Back to previous index</a>
