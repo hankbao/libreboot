@@ -31,7 +31,8 @@
 			</p>
 
 			<p>
-				More info will be added later.
+				<b>More info will be added later, including build/installation instructions.
+				The board is supported in libreboot, however, and has been confirmed to work.</b>
 			</p>
 
 			<p>
@@ -44,10 +45,46 @@
 	</div>
 
 	<div class="section">
-		<h1 id="thescrew">The screw</h1>
+		<ul>
+			<li><a href="#thescrew">Flash chip write protection: the screw</a></li>
+			<li><a href="#googlebastards">Google is bad. We do not endorse them.</a></li>
+			<li><a href="#videoblobs">Caution: Video acceleration requires a blob. Do not install it. Use software rendering.</a></li>
+			<li><a href="#wifiblobs">Caution: WiFi acceleration requires a blob. Do not install it. Use a USB dongle.</a></li>
+			<li><a href="#ec">EC firmware is free software!</a></li>
+			<li><a href="#os">Replace ChromeOS immediately!</a></li>
+			<li><a href="#depthcharge">Depthcharge payload</a></li>
+		</ul>
+
+
+	<div class="section">
+		<h1 id="thescrew">Flash chip write protection: the screw</h1>
 			<p>
 				It's next to the flash chip. Unscrew it, and the flash chip is read-write. Screw it back in, and the flash chip is read-only.
 				It's called the screw.
+			</p>
+	</div>
+	
+	<div class="section">
+		<h1 id="googlebastards">Google is bad. We do not endorse them.</h1>
+			<p>
+				It's merely a coincidence that libreboot can support this hardware, with some issues (see sections below).
+				While Google does hire a lot of coreboot developers, it's not the case that these laptops can be used
+				in freedom (libreboot) because Google cares about user freedom. It's just a lucky coincidence. Nothing more.
+			</p>
+			<p>
+				Chromebooks are designed (from the factory) to actually coax the user into using
+				<a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">proprietary web services</a>
+				(SaaSS) that invade the user's privacy. Google is even a member of the <i>PRISM</i> program, as outlined
+				by Edward Snowden. See notes about ChromeOS below. The libreboot project recommends
+				that the user replace the default <i>ChromeOS</i> with a less evil distribution.
+			</p>
+			<p>
+				We also use the same argument for the MacBook and the ThinkPads that are supported in libreboot.
+				Those laptops are supported, in spite of Apple and Lenovo, companies which are actually <i>hostile</i>
+				to the free software movement.
+			</p>
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
 			</p>
 	</div>
 
@@ -177,7 +214,7 @@
 	</div>
 
 	<div class="section">
-		<h1 id="depthcharge">Depthcharge</h1>
+		<h1 id="depthcharge">Depthcharge payload</h1>
 			<p>
 				These systems do not use the GRUB payload. Instead, they use a payload called depthcharge,
 				which is common on Chromebooks.
