@@ -105,75 +105,8 @@
 					The libreboot project would like to see all FSF-endorsed distro projects port to these laptops. This includes Trisquel, GuixSD and others.
 					And ProteanOS. Maybe even LibreCMC. The more the merrier. We need them, badly.
 				</p>
-			<h2>What can be done meanwhile?</h2>
 				<p>
-					There are some other distributions, which are not freedom-friendly (institutionally speaking), but can be used as such with some tweaking.
-				</p>
-				<p>
-					There isn't much choice, but we can recommend these distributions for the time being:
-				</p>
-				<h3>Debian GNU/Linux</h3>
-					<p>
-						The FSF briefly details the problems with Debian:
-						<a href="https://www.gnu.org/distros/common-distros.html#Debian">https://www.gnu.org/distros/common-distros.html#Debian</a>
-					</p>
-					<p>
-						You can actually run Debian without any proprietary software. The default installation comes without any proprietary software,
-						and although the project does have proprietary software, its only in a separate repository which isn't enabled by default.
-						The Debian project has a strict policy of keeping proprietary software out of the main repository, and moving it to a separate repository;
-						this repository is called <i>non-free</i>, with supplementary packages that require it in <i>contrib</i>, also not enabled by default.
-						If you install Debian and replace the kernel with <a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">linux-libre</a>,
-						you can be reasonably certain not to install any proprietary software. However, make sure to exercise caution, since this isn't
-						endorsed at all, and mistakes can happen.
-					</p>
-					<p>
-						<b>Note that this does not mean Debian is ok! Far from it! Institutionally, Debian is ethically questionable because it distributes proprietary software,
-						even if it's optional and not included by default. At the same time, they also do work on things like reproducible builds (recent example),
-						and it's the underpin design upon which Trisquel is ultimately based. Debian does a lot of good work, so it's a shame that they have this
-						silly issue, even after several years.</b>
-					</p>
-					<p>
-						The libreboot project calls on Debian to outsource the hosting and documentation for <i>non-free</i> and <i>contrib</i>
-						to a separate, third party project (like what Fedora almost does, as described below).
-					</p>
-					<p>
-						There are linux-libre builds available for Debian, but only on x86 thus far. See:
-						<a href="https://jxself.org/linux-libre/">https://jxself.org/linux-libre/</a>. For now, you'll have to build linux-libre from source.
-					</p>
-				<h3>Fedora GNU/Linux</h3>
-					<p>
-						The FSF briefly details the problems with Fedora:
-						<a href="https://www.gnu.org/distros/common-distros.html#Fedora">https://www.gnu.org/distros/common-distros.html#Fedora</a>
-					</p>
-					<p>
-						Unlike Debian, Fedora (to the best of our knowledge) only distributes proprietary software in the form of firmware blobs for the Linux kernel.
-						There are repositories for Fedora that contain proprietary software, but none of those are official and have to be added. So just don't add them.
-						Then, delete <i>linux</i> and replace it with <a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/">linux-libre</a>.
-					</p>
-					<p>
-						<b>Note that this does not mean Fedora is ok! Far from it! Institutionally, Fedora is ethically questionable because it distributes proprietary software,
-						even if it's easy to remove.</b>
-					</p>
-					<p>
-						There are linux-libre builds available for Fedora, but only on x86 thus far. See:
-						<a href="http://www.fsfla.org/ikiwiki/selibre/linux-libre/freed-ora.en.html">http://www.fsfla.org/ikiwiki/selibre/linux-libre/freed-ora.en.html</a>.
-						For now, you'll have to build linux-libre from source.
-					</p>
-				<h3>We need libre distributions to be ported.</h3>
-					<p>
-						As soon as possible, the libreboot project would like to remove mention of Fedora and Debian, which
-						we actually feel uncomfortable recommending to users, but saw as an acceptable (and temporary) compromise
-						(because otherwise, more people would either keep ChromeOS, or they would replace it with another distribution
-						that is worse than Debian/Fedora, freedom-wise. We decided that it was better to recommend the lesser evil,
-						than to leave people less certain).
-					</p>
-				<p>
-					In both Debian and Fedora, the browsers available do not try to steer the user away from proprietary browser plugins/add-ons.
-					For instance, they both use upstream FireFox (Debian merely removes the Mozilla branding and renames it to IceWeasel). Make
-					sure to check the license of any browser plugins that you install, to ensure that the plugin is free software.
-				</p>
-				<p>
-					There may also be other edge cases like this, so do beware when using those distributions.
+					<b>We need these distributions to be ported as soon as possible.</b>
 				</p>
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
