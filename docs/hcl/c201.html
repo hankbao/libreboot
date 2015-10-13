@@ -253,7 +253,8 @@
 			<p>
 				Unlike x86 (e.g. Intel/AMD) CPUs, ARM CPUs do not use microcode, not even built in.
 				On the Intel/AMD based libreboot systems, there is still microcode in the CPU
-				(not considered problematic by the FSF, since it's part of the hardware and read-only), but we
+				(not considered problematic by the FSF provided that it is reasonably trusted
+				to not be malicious, since it's part of the hardware and read-only), but we
 				exclude microcode updates (volatile updates which are uploaded at boot time by the boot firmware,
 				if present), which are proprietary software.
 			</p>
