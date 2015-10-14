@@ -86,6 +86,9 @@ cd "../../"
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
 
+# TODO! Merge this patch:
+# http://review.coreboot.org/gitweb?p=coreboot.git;a=commitdiff;h=551cff08d540ced6817cfe230750a311d573c209
+
 # ----
 
 # check on coreboot mailing list (see "favourites" in mail client):
