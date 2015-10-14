@@ -64,6 +64,7 @@ rm -Rf "${distdir}/bucts/".git*
 rm -Rf "${distdir}/flashrom/".git*
 rm -Rf "${distdir}/grub/".git*
 rm -Rf "${distdir}/depthcharge/".git*
+rm -Rf "${distdir}/seabios/".git*
 
 # Delete useless files.
 rm -Rf "${distdir}/TODO/"
