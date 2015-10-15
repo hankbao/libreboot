@@ -57,7 +57,7 @@ then
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
 	  /dejavusansmono.pf2="../../../resources/grub/font/dejavusansmono.pf2" \
-	  "${keymaps}"
+	  ${keymaps}
 elif [ "${1}" = "txtmode" ]
 then
 	# Generate the grub.elf (txtmode)
@@ -71,7 +71,7 @@ then
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
 	  /memtest="../../../memtest86plus/memtest" \
-	  "${keymaps}"
+	  ${keymaps}
 else
 	printf "grub-assemble gen.sh: invalid mode '%s'\n" "${1}"
 	exit 1
