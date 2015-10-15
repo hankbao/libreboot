@@ -24,16 +24,16 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Get GRUB, revert to commit last used and apply patches.
+# Get SeaBIOS, revert to commit last used and apply patches.
 
 # Remove the old version that may still exist
 # ------------------------------------------------------------------------------
 
-printf "Downloading GRUB\n"
+printf "Downloading SeaBIOS\n"
 
 rm -rf seabios
 
-# Get latest GRUB
+# Get latest SeaBIOS
 # ------------------------------------------------------------------------------
 
 # download it using git
