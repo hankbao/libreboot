@@ -1,0 +1,55 @@
+From f2495e7909302bd8cbc0633bde5a9ce60a6336c5 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Thu, 13 Aug 2015 17:45:12 -0500
+Subject: [PATCH 114/146] southbridge/amd/sr5650: Hide clock configuration
+ device after setup is complete
+
+---
+ src/southbridge/amd/sr5650/early_setup.c |   16 ++++++++--------
+ src/southbridge/amd/sr5650/pcie.c        |    3 +++
+ 2 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/src/southbridge/amd/sr5650/early_setup.c b/src/southbridge/amd/sr5650/early_setup.c
+index e7cca06..cb666db 100644
+--- a/src/southbridge/amd/sr5650/early_setup.c
++++ b/src/southbridge/amd/sr5650/early_setup.c
+@@ -414,14 +414,14 @@ static void sr5650_por_misc_index_init(device_t nb_dev)
+ 	set_nbmisc_enable_bits(nb_dev, 0x01, 0xFFFFFFFF, 0x00000310);
+ 
+ 	/* NBCFG (NBMISCIND 0x0): NB_CNTL -
+-	 *   HIDE_NB_AGP_CAP  ([0], default=1)HIDE
+-	 *   HIDE_P2P_AGP_CAP ([1], default=1)HIDE
+-	 *   HIDE_NB_GART_BAR ([2], default=1)HIDE
+-	 *   HIDE_MMCFG_BAR   ([3], default=1)SHOW
+-	 *   AGPMODE30        ([4], default=0)DISABLE
+-	 *   AGP30ENCHANCED   ([5], default=0)DISABLE
+-	 *   HIDE_AGP_CAP     ([8], default=1)ENABLE */
+-	set_nbmisc_enable_bits(nb_dev, 0x00, 0x0000FFFF, 0 << 0 | 1 << 1 | 1 << 2 | 0 << 3 | 0 << 6);
++	 *   HIDE_NB_AGP_CAP    ([0], default=1)HIDE
++	 *   HIDE_P2P_AGP_CAP   ([1], default=1)HIDE
++	 *   HIDE_NB_GART_BAR   ([2], default=1)HIDE
++	 *   HIDE_MMCFG_BAR     ([3], default=1)SHOW
++	 *   AGPMODE30          ([4], default=0)DISABLE
++	 *   AGP30ENCHANCED     ([5], default=0)DISABLE
++	 *   HIDE_CLKCFG_HEADER ([8], default=0)SHOW */
++	set_nbmisc_enable_bits(nb_dev, 0x00, 0x0000FFFF, 0 << 0 | 1 << 1 | 1 << 2 | 0 << 3 | 0 << 6 | 0 << 8);
+ 
+ 	/* IOC_LAT_PERF_CNTR_CNTL */
+ 	set_nbmisc_enable_bits(nb_dev, 0x30, 0xFF, 0x00);
+diff --git a/src/southbridge/amd/sr5650/pcie.c b/src/southbridge/amd/sr5650/pcie.c
+index 09ce217..360e9cb 100644
+--- a/src/southbridge/amd/sr5650/pcie.c
++++ b/src/southbridge/amd/sr5650/pcie.c
+@@ -854,6 +854,9 @@ void sr56x0_lock_hwinitreg(void)
+ 
+ 	/* Lock HWInit Register NBMISCIND:0x0 NBCNTL[7] HWINIT_WR_LOCK */
+ 	set_nbmisc_enable_bits(nb_dev, 0x00, 1 << 7, 1 << 7);
++
++	/* Hide clock configuration PCI device HIDE_CLKCFG_HEADER */
++	set_nbmisc_enable_bits(nb_dev, 0x00, 0x00000100, 1 << 8);
+ }
+ 
+ /*****************************************
+-- 
+1.7.9.5
+

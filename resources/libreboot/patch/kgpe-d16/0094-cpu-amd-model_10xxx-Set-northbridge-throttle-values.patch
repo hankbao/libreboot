@@ -1,0 +1,136 @@
+From c6ca802a248f85f59723fbbc14aaa0c49165dbc5 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Sun, 2 Aug 2015 21:31:17 -0500
+Subject: [PATCH 094/146] cpu/amd/model_10xxx: Set northbridge throttle values
+
+---
+ src/cpu/amd/model_10xxx/init_cpus.c        |   21 +--------
+ src/cpu/amd/model_10xxx/model_10xxx_init.c |   66 ++++++++++++++++++++++++++++
+ 2 files changed, 67 insertions(+), 20 deletions(-)
+
+diff --git a/src/cpu/amd/model_10xxx/init_cpus.c b/src/cpu/amd/model_10xxx/init_cpus.c
+index f716e07..6122acd 100644
+--- a/src/cpu/amd/model_10xxx/init_cpus.c
++++ b/src/cpu/amd/model_10xxx/init_cpus.c
+@@ -877,6 +877,7 @@ static u32 AMD_checkLinkType(u8 node, u8 link, u8 regoff)
+ 		else
+ 			linktype |= HTPHY_LINKTYPE_UNGANGED;
+ 	}
++
+ 	return linktype;
+ }
+ 
+@@ -972,26 +973,6 @@ void cpuSetAMDMSR(uint8_t node_id)
+ 	}
+ 	AMD_Errata298();
+ 
+-	if (revision & AMD_FAM15_ALL) {
+-		uint32_t f5x80;
+-		uint8_t enabled;
+-		uint8_t compute_unit_count = 0;
+-		f5x80 = pci_read_config32(NODE_PCI(node_id, 5), 0x80);
+-		enabled = f5x80 & 0xf;
+-		if (enabled == 0x1)
+-			compute_unit_count = 1;
+-		if (enabled == 0x3)
+-			compute_unit_count = 2;
+-		if (enabled == 0x7)
+-			compute_unit_count = 3;
+-		if (enabled == 0xf)
+-			compute_unit_count = 4;
+-		msr = rdmsr(BU_CFG2);
+-		msr.lo &= ~(0x3 << 6);				/* ThrottleNbInterface[1:0] */
+-		msr.lo |= (((compute_unit_count - 1) & 0x3) << 6);
+-		wrmsr(BU_CFG2, msr);
+-	}
+-
+ 	/* Revision C0 and above */
+ 	if (revision & AMD_OR_C0) {
+ 		uint32_t f3x1fc = pci_read_config32(NODE_PCI(node_id, 3), 0x1fc);
+diff --git a/src/cpu/amd/model_10xxx/model_10xxx_init.c b/src/cpu/amd/model_10xxx/model_10xxx_init.c
+index 8a61f13..7319539 100644
+--- a/src/cpu/amd/model_10xxx/model_10xxx_init.c
++++ b/src/cpu/amd/model_10xxx/model_10xxx_init.c
+@@ -54,6 +54,28 @@ static inline uint8_t is_fam15h(void)
+ 	return fam15h;
+ }
+ 
++static inline uint8_t is_gt_rev_d(void)
++{
++	uint8_t fam15h = 0;
++	uint8_t rev_gte_d = 0;
++	uint32_t family;
++	uint32_t model;
++
++	family = model = cpuid_eax(0x80000001);
++	model = ((model & 0xf0000) >> 12) | ((model & 0xf0) >> 4);
++	family = ((family & 0xf00000) >> 16) | ((family & 0xf00) >> 8);
++
++	if (family >= 0x6f)
++		/* Family 15h or later */
++		fam15h = 1;
++
++	if ((model >= 0x8) || fam15h)
++		/* Revision D or later */
++		rev_gte_d = 1;
++
++	return rev_gte_d;
++}
++
+ static volatile uint8_t fam15h_startup_flags[MAX_NODES_SUPPORTED][MAX_CORES_SUPPORTED] = {{ 0 }};
+ 
+ static void model_10xxx_init(device_t dev)
+@@ -136,6 +158,50 @@ static void model_10xxx_init(device_t dev)
+ 	printk(BIOS_DEBUG, "siblings = %02d, ", siblings);
+ #endif
+ 
++	/* Set bus unit configuration */
++	if (is_fam15h()) {
++		uint32_t f5x80;
++		uint8_t enabled;
++		uint8_t compute_unit_count = 0;
++		f5x80 = pci_read_config32(dev_find_slot(0, PCI_DEVFN(0x18 + id.nodeid, 5)), 0x80);
++		enabled = f5x80 & 0xf;
++		if (enabled == 0x1)
++			compute_unit_count = 1;
++		if (enabled == 0x3)
++			compute_unit_count = 2;
++		if (enabled == 0x7)
++			compute_unit_count = 3;
++		if (enabled == 0xf)
++			compute_unit_count = 4;
++		msr = rdmsr(BU_CFG2_MSR);
++		msr.lo &= ~(0x3 << 6);				/* ThrottleNbInterface[1:0] */
++		msr.lo |= (((compute_unit_count - 1) & 0x3) << 6);
++		wrmsr(BU_CFG2_MSR, msr);
++	} else {
++		uint32_t f0x60;
++		uint32_t f0x160;
++		uint8_t core_count = 0;
++		uint8_t node_count = 0;
++		f0x60 = pci_read_config32(dev_find_slot(0, PCI_DEVFN(0x18 + id.nodeid, 0)), 0x60);
++		core_count = (f0x60 >> 16) & 0x1f;
++		node_count = ((f0x60 >> 4) & 0x7) + 1;
++		if (is_gt_rev_d()) {
++			f0x160 = pci_read_config32(dev_find_slot(0, PCI_DEVFN(0x18 + id.nodeid, 0)), 0x160);
++			core_count |= ((f0x160 >> 16) & 0x7) << 5;
++		}
++		core_count++;
++		core_count /= node_count;
++		msr = rdmsr(BU_CFG2_MSR);
++		if (is_gt_rev_d()) {
++			msr.hi &= ~(0x3 << (36 - 32));			/* ThrottleNbInterface[3:2] */
++			msr.hi |= ((((core_count - 1) >> 2) & 0x3) << (36 - 32));
++		}
++		msr.lo &= ~(0x3 << 6);				/* ThrottleNbInterface[1:0] */
++		msr.lo |= (((core_count - 1) & 0x3) << 6);
++		msr.lo &= ~(0x1 << 24);				/* WcPlusDis = 0 */
++		wrmsr(BU_CFG2_MSR, msr);
++	}
++
+ 	/* Disable Cf8ExtCfg */
+ 	msr = rdmsr(NB_CFG_MSR);
+ 	msr.hi &= ~(1 << (46 - 32));
+-- 
+1.7.9.5
+

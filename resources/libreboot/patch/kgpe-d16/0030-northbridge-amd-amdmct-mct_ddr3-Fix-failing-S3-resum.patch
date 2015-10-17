@@ -1,0 +1,46 @@
+From e88253116622c39c99511cef99791bf0d8422e95 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Mon, 1 Jun 2015 02:40:24 -0500
+Subject: [PATCH 030/146] northbridge/amd/amdmct/mct_ddr3: Fix failing S3
+ resume
+
+---
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index 2ea7dc1..98b533b 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -604,7 +604,9 @@ int8_t save_mct_information_to_nvram(void)
+ int8_t restore_mct_information_from_nvram(void)
+ {
+ 	ssize_t s3nv_offset;
+-	struct amd_s3_persistent_data persistent_data;
++	struct amd_s3_persistent_data *persistent_data;
++	struct cbfs_media default_media;
++	struct cbfs_media* media = CBFS_DEFAULT_MEDIA;
+ 
+ 	/* Obtain CBFS file offset */
+ 	s3nv_offset = get_s3nv_file_offset();
+@@ -615,8 +617,14 @@ int8_t restore_mct_information_from_nvram(void)
+ 	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
+ 	s3nv_offset += CONFIG_S3_DATA_SIZE;
+ 
+-	cbfs_read(CBFS_DEFAULT_MEDIA, &persistent_data, s3nv_offset, sizeof(struct amd_s3_persistent_data));
+-	restore_mct_data_from_save_variable(&persistent_data);
++	/* Map data structure in CBFS and restore settings */
++	if (init_backing_media(&media, &default_media))
++		return -1;
++
++	media->open(media);
++	persistent_data = media->map(media, s3nv_offset, sizeof(struct amd_s3_persistent_data));
++	restore_mct_data_from_save_variable(persistent_data);
++	media->close(media);
+ 
+ 	return 0;
+ }
+\ No newline at end of file
+-- 
+1.7.9.5
+

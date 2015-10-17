@@ -1,0 +1,92 @@
+From 657c3cc04be3d40e735acc460968950a3400f302 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Tue, 9 Jun 2015 19:34:16 -0500
+Subject: [PATCH 053/146] southbridge/amd/sb700: Indicate iSATA/eSATA port
+ type
+
+---
+ src/mainboard/asus/kgpe-d16/mainboard.c |   16 ++++++++++++++++
+ src/southbridge/amd/sb700/sata.c        |   19 +++++++++++++++++++
+ src/southbridge/amd/sb700/sb700.h       |    1 +
+ 3 files changed, 36 insertions(+)
+
+diff --git a/src/mainboard/asus/kgpe-d16/mainboard.c b/src/mainboard/asus/kgpe-d16/mainboard.c
+index 8de6f26..77e55db 100644
+--- a/src/mainboard/asus/kgpe-d16/mainboard.c
++++ b/src/mainboard/asus/kgpe-d16/mainboard.c
+@@ -99,6 +99,22 @@ void sb7xx_51xx_setup_sata_phys(struct device *dev)
+ 	pci_write_config16(dev, 0xaa, 0xa07a);
+ }
+ 
++/* override the default SATA port setup */
++void sb7xx_51xx_setup_sata_port_indication(void *sata_bar5)
++{
++	uint32_t dword;
++
++	/* RPR7.9 Program Port Indication Registers */
++	dword = read32(sata_bar5 + 0xf8);
++	dword &= ~(0x3f << 12);	/* All ports are iSATA */
++	dword &= ~0x3f;
++	write32(sata_bar5 + 0xf8, dword);
++
++	dword = read32(sata_bar5 + 0xfc);
++	dword &= ~(0x1 << 20);	/* No eSATA ports are present */
++	write32(sata_bar5 + 0xfc, dword);
++}
++
+ struct chip_operations mainboard_ops = {
+ 	.enable_dev = mainboard_enable,
+ };
+diff --git a/src/southbridge/amd/sb700/sata.c b/src/southbridge/amd/sb700/sata.c
+index c0b3cd5..dda2fc3 100644
+--- a/src/southbridge/amd/sb700/sata.c
++++ b/src/southbridge/amd/sb700/sata.c
+@@ -78,6 +78,23 @@ void __attribute__((weak)) sb7xx_51xx_setup_sata_phys(struct device *dev)
+ 	pci_write_config16(dev, 0xaa, 0xA07A);
+ }
+ 
++/* This function can be overloaded in mainboard.c */
++void __attribute__((weak)) sb7xx_51xx_setup_sata_port_indication(void *sata_bar5)
++{
++	uint32_t dword;
++
++	/* RPR7.9 Program Port Indication Registers */
++	dword = read32(sata_bar5 + 0xf8);
++	dword &= ~(0x3f << 12);	/* Ports 0 and 1 are eSATA */
++	dword |= (0x3 << 12);
++	dword &= ~0x3f;
++	write32(sata_bar5 + 0xf8, dword);
++
++	dword = read32(sata_bar5 + 0xfc);
++	dword |= 0x1 << 20;	/* At least one eSATA port is present */
++	write32(sata_bar5 + 0xfc, dword);
++}
++
+ static void sata_init(struct device *dev)
+ {
+ 	u8 byte;
+@@ -248,7 +265,9 @@ static void sata_init(struct device *dev)
+ 	/* Program the watchdog counter to 0x10 */
+ 	byte = 0x10;
+ 	pci_write_config8(dev, 0x46, byte);
++
+ 	sb7xx_51xx_setup_sata_phys(dev);
++	sb7xx_51xx_setup_sata_port_indication(sata_bar5);
+ 
+ 	/* Enable the I/O, MM, BusMaster access for SATA */
+ 	byte = pci_read_config8(dev, 0x4);
+diff --git a/src/southbridge/amd/sb700/sb700.h b/src/southbridge/amd/sb700/sb700.h
+index 941a4fd..8f792e7 100644
+--- a/src/southbridge/amd/sb700/sb700.h
++++ b/src/southbridge/amd/sb700/sb700.h
+@@ -74,6 +74,7 @@ void sb7xx_51xx_before_pci_init(void);
+ #include <device/pci.h>
+ /* allow override in mainboard.c */
+ void sb7xx_51xx_setup_sata_phys(struct device *dev);
++void sb7xx_51xx_setup_sata_port_indication(void *sata_bar5);
+ 
+ #endif
+ 
+-- 
+1.7.9.5
+

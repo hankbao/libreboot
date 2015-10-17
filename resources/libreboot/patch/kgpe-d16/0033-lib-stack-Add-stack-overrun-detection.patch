@@ -1,0 +1,36 @@
+From d2d52a97ccabc604e0a4ee2f43522bac2f93d47a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Sat, 5 Sep 2015 19:31:03 -0500
+Subject: [PATCH 033/146] lib/stack: Add stack overrun detection
+
+---
+ src/lib/stack.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/lib/stack.c b/src/lib/stack.c
+index 52dd723..bebeea2 100644
+--- a/src/lib/stack.c
++++ b/src/lib/stack.c
+@@ -18,6 +18,7 @@ it with the version available from LANL.
+  */
+ /* Copyright 2000, Ron Minnich, Advanced Computing Lab, LANL
+  * rminnich@lanl.gov
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  */
+ 
+ #include <assert.h>
+@@ -33,9 +34,9 @@ int checkstack(void *top_of_stack, int core)
+ 	u32 *stack = (u32 *) (top_of_stack - stack_size);
+ 
+ 	if (stack[0] != 0xDEADBEEF){
+-		printk(BIOS_ERR, "Stack overrun on CPU%d. "
++		printk(BIOS_ERR, "Stack overrun on CPU%d (address %p overwritten). "
+ 			"Increase stack from current %zu bytes\n",
+-			core, stack_size);
++			core, stack, stack_size);
+ 		BUG();
+ 		return -1;
+ 	}
+-- 
+1.7.9.5
+

@@ -1,0 +1,78 @@
+From 67497b91b5d5e9d28264cbbcdfb772e40860ad09 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Tue, 2 Jun 2015 15:55:35 -0500
+Subject: [PATCH 031/146] northbridge/amd/amdmct: Fix S3 suspend/resume with
+ latest CBFS changes
+
+---
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c |   28 ++++++++++++-------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index 98b533b..c9bcac1 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -36,17 +36,15 @@ static ssize_t get_s3nv_file_offset(void);
+ 
+ ssize_t get_s3nv_file_offset(void)
+ {
+-	struct cbfs_file file;
+-	ssize_t offset;
+-	struct cbfs_media *media = CBFS_DEFAULT_MEDIA;
+-
+-	offset = cbfs_locate_file(media, &file, S3NV_FILE_NAME);
+-	if (offset < 0) {
++	struct region_device s3nv_region;
++	struct cbfsf s3nv_cbfs_file;
++	if (cbfs_boot_locate(&s3nv_cbfs_file, S3NV_FILE_NAME, NULL)) {
+ 		printk(BIOS_DEBUG, "S3 state file not found in CBFS: %s\n", S3NV_FILE_NAME);
+ 		return -1;
+ 	}
++	cbfs_file_data(&s3nv_region, &s3nv_cbfs_file);
+ 
+-	return offset;
++	return s3nv_region.region.offset;
+ }
+ 
+ static uint32_t read_amd_dct_index_register(device_t dev, uint32_t index_ctl_reg, uint32_t index)
+@@ -604,9 +602,9 @@ int8_t save_mct_information_to_nvram(void)
+ int8_t restore_mct_information_from_nvram(void)
+ {
+ 	ssize_t s3nv_offset;
++	ssize_t s3nv_file_offset;
++	void * s3nv_cbfs_file_ptr;
+ 	struct amd_s3_persistent_data *persistent_data;
+-	struct cbfs_media default_media;
+-	struct cbfs_media* media = CBFS_DEFAULT_MEDIA;
+ 
+ 	/* Obtain CBFS file offset */
+ 	s3nv_offset = get_s3nv_file_offset();
+@@ -614,17 +612,19 @@ int8_t restore_mct_information_from_nvram(void)
+ 		return -1;
+ 
+ 	/* Align flash pointer to nearest boundary */
++	s3nv_file_offset = s3nv_offset;
+ 	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
+ 	s3nv_offset += CONFIG_S3_DATA_SIZE;
++	s3nv_file_offset = s3nv_offset - s3nv_file_offset;
+ 
+ 	/* Map data structure in CBFS and restore settings */
+-	if (init_backing_media(&media, &default_media))
++	s3nv_cbfs_file_ptr = cbfs_boot_map_with_leak(S3NV_FILE_NAME, CBFS_TYPE_RAW, NULL);
++	if (!s3nv_cbfs_file_ptr) {
++		printk(BIOS_DEBUG, "S3 state file could not be mapped: %s\n", S3NV_FILE_NAME);
+ 		return -1;
+-
+-	media->open(media);
+-	persistent_data = media->map(media, s3nv_offset, sizeof(struct amd_s3_persistent_data));
++	}
++	persistent_data = (s3nv_cbfs_file_ptr + s3nv_file_offset);
+ 	restore_mct_data_from_save_variable(persistent_data);
+-	media->close(media);
+ 
+ 	return 0;
+ }
+\ No newline at end of file
+-- 
+1.7.9.5
+

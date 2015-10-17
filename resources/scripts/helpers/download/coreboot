@@ -186,6 +186,12 @@ git am "../resources/libreboot/patch/chromebook/0001-armv7-Word-sized-half-word-
 printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
 git am "../resources/libreboot/patch/chromebook/0002-chromeos-Allow-disabling-vboot-firmware-verification.patch"
 
+# KGPE-D16 patches
+# note: this is also being upstreamed
+for i in ../resources/libreboot/patch/kgpe-d16/*; do
+	git am "${i}"
+done
+
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
 

@@ -1,0 +1,32 @@
+From 5db1eb01a5e5a0ae52f25f648a0a4df0b8b02d78 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Thu, 4 Jun 2015 00:07:05 -0500
+Subject: [PATCH 043/146] cpu/amd/car: Initialize entire CAR space instead of
+ only half
+
+---
+ src/cpu/amd/car/cache_as_ram.inc |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/cpu/amd/car/cache_as_ram.inc b/src/cpu/amd/car/cache_as_ram.inc
+index 9b29932..9c71270 100644
+--- a/src/cpu/amd/car/cache_as_ram.inc
++++ b/src/cpu/amd/car/cache_as_ram.inc
+@@ -460,12 +460,12 @@ fam10_end_part1:
+ 	/* Read the range with lodsl. */
+ 	cld
+ 	movl	$CacheBase, %esi
+-	movl	$(CacheSize >> 2), %ecx
++	movl	$CacheSize, %ecx
+ 	rep	lodsl
+ 
+ 	/* Clear the range. */
+ 	movl	$CacheBase, %edi
+-	movl	$(CacheSize >> 2), %ecx
++	movl	$CacheSize, %ecx
+ 	xorl	%eax, %eax
+ 	rep	stosl
+ 
+-- 
+1.7.9.5
+

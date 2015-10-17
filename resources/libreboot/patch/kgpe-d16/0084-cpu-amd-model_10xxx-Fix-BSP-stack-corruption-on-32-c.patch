@@ -1,0 +1,26 @@
+From 50df46615e5505f7b649c20a08e0cfbcc7c34eb6 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Fri, 24 Jul 2015 17:34:29 -0500
+Subject: [PATCH 084/146] cpu/amd/model_10xxx: Fix BSP stack corruption on
+ 32-core Fam10 systems
+
+---
+ src/cpu/amd/model_10xxx/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cpu/amd/model_10xxx/Kconfig b/src/cpu/amd/model_10xxx/Kconfig
+index 79db42a..d6bcaa2 100644
+--- a/src/cpu/amd/model_10xxx/Kconfig
++++ b/src/cpu/amd/model_10xxx/Kconfig
+@@ -36,7 +36,7 @@ config DCACHE_BSP_STACK_SIZE
+ 
+ config DCACHE_BSP_STACK_SLUSH
+ 	hex
+-	default 0x1000
++	default 0x4000
+ 
+ config DCACHE_AP_STACK_SIZE
+ 	hex
+-- 
+1.7.9.5
+

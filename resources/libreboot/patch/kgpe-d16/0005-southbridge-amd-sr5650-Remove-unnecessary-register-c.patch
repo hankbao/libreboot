@@ -1,0 +1,33 @@
+From 0d0290e3866dd24c77de9114937b692bba0e9db9 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Sun, 2 Aug 2015 21:29:20 -0500
+Subject: [PATCH 005/146] southbridge/amd/sr5650: Remove unnecessary register
+ configuration
+
+---
+ src/southbridge/amd/sr5650/early_setup.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/southbridge/amd/sr5650/early_setup.c b/src/southbridge/amd/sr5650/early_setup.c
+index d91f3bd..ec555f8 100644
+--- a/src/southbridge/amd/sr5650/early_setup.c
++++ b/src/southbridge/amd/sr5650/early_setup.c
+@@ -1,6 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -437,7 +438,6 @@ static void sr5650_por_htiu_index_init(device_t nb_dev)
+ 	set_htiu_enable_bits(nb_dev, 0x1D, 0x1<<2,  0x1<<2);
+ 	set_htiu_enable_bits(nb_dev, 0x1D, 0x1<<4,  0x1<<4);
+ 
+-	set_nbcfg_enable_bits(cpu_f0, 0x68, 3 << 21, 0 << 21);
+ 	axindxc_reg(0x10, 1 << 9, 1 << 9);
+ 	set_pcie_enable_bits(nb_dev, 0x10 | 5 << 16, 1 << 9, 1 << 9);
+ 	set_htiu_enable_bits(nb_dev, 0x06, 0x1<<26, 0x1<<26);
+-- 
+1.7.9.5
+

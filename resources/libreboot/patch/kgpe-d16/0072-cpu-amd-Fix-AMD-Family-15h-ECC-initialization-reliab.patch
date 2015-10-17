@@ -1,0 +1,479 @@
+From 1171e5a4e83f2aedeb59b78ffa29cac927ff3441 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Thu, 25 Jun 2015 15:07:34 -0500
+Subject: [PATCH 072/146] cpu/amd: Fix AMD Family 15h ECC initialization
+ reliability issues
+
+---
+ src/cpu/amd/car/cache_as_ram.inc               |    4 +
+ src/cpu/amd/model_10xxx/init_cpus.c            |   16 ++++
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c    |   16 ++--
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h    |    6 +-
+ src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c |   21 ++++-
+ src/northbridge/amd/amdmct/mct_ddr3/mctecc_d.c |  110 +++++++++++-------------
+ src/northbridge/amd/amdmct/mct_ddr3/mctmtr_d.c |    6 +-
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c  |   57 +++++++-----
+ 8 files changed, 138 insertions(+), 98 deletions(-)
+
+diff --git a/src/cpu/amd/car/cache_as_ram.inc b/src/cpu/amd/car/cache_as_ram.inc
+index 9c71270..9a51e3c 100644
+--- a/src/cpu/amd/car/cache_as_ram.inc
++++ b/src/cpu/amd/car/cache_as_ram.inc
+@@ -362,12 +362,16 @@ clear_fixed_var_mtrr_out:
+ 	simplemask CacheSize, 0
+ 	wrmsr
+ 
++	jmp_if_fam15h(fam15_skip_dram_mtrr_setup)
++
+ 	/* Enable memory access for first MBs using top_mem. */
+ 	movl	$TOP_MEM, %ecx
+ 	xorl	%edx, %edx
+ 	movl	$(((CONFIG_RAMTOP) + TOP_MEM_MASK) & ~TOP_MEM_MASK) , %eax
+ 	wrmsr
+ 
++fam15_skip_dram_mtrr_setup:
++
+ #if CONFIG_XIP_ROM_SIZE
+ 
+ 	/* Enable write base caching so we can do execute in place (XIP)
+diff --git a/src/cpu/amd/model_10xxx/init_cpus.c b/src/cpu/amd/model_10xxx/init_cpus.c
+index 57b9b89..0d1f043 100644
+--- a/src/cpu/amd/model_10xxx/init_cpus.c
++++ b/src/cpu/amd/model_10xxx/init_cpus.c
+@@ -317,6 +317,22 @@ static void STOP_CAR_AND_CPU(uint8_t skip_sharedc_config, uint32_t apicid)
+ 		msr = rdmsr(BU_CFG2);
+ 		msr.lo &= ~(1 << ClLinesToNbDis);
+ 		wrmsr(BU_CFG2, msr);
++	} else {
++		/* Family 15h or later
++		 * DRAM setup is delayed on Fam15 in order to prevent
++		 * any DRAM access before ECC check bits are initialized.
++		 * Each core also needs to have its initial DRAM map initialized
++		 * before it is put to sleep, otherwise it will fail to wake
++		 * in ramstage.  To meet both of these goals, delay DRAM map
++		 * setup until the last possible moment, where speculative
++		 * memory access is highly unlikely before core halt...
++		 */
++		if (!skip_sharedc_config) {
++			/* Enable memory access for first MBs using top_mem */
++			msr.hi = 0;
++			msr.lo = (CONFIG_RAMTOP + TOP_MEM_MASK) & (~TOP_MEM_MASK);
++			wrmsr(TOP_MEM, msr);
++		}
+ 	}
+ 
+ 	disable_cache_as_ram(skip_sharedc_config);	// inline
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index b66b328..5a0c746 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -1447,13 +1447,12 @@ restartinit:
+ 
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: SyncDCTsReady_D\n");
+ 		SyncDCTsReady_D(pMCTstat, pDCTstatA);	/* Make sure DCTs are ready for accesses.*/
+-	
++
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: HTMemMapInit_D\n");
+ 		HTMemMapInit_D(pMCTstat, pDCTstatA);	/* Map local memory into system address space.*/
+ 		mctHookAfterHTMap();
+-	
+-		printk(BIOS_DEBUG, "mctAutoInitMCT_D: CPUMemTyping_D\n");
+-		CPUMemTyping_D(pMCTstat, pDCTstatA);	/* Map dram into WB/UC CPU cacheability */
++
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: mctHookAfterCPU\n");
+ 		mctHookAfterCPU();			/* Setup external northbridge(s) */
+ 
+ 		/* FIXME
+@@ -1476,9 +1475,6 @@ restartinit:
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: DQSTiming_D\n");
+ 		DQSTiming_D(pMCTstat, pDCTstatA, allow_config_restore);	/* Get Receiver Enable and DQS signal timing*/
+ 
+-		printk(BIOS_DEBUG, "mctAutoInitMCT_D: UMAMemTyping_D\n");
+-		UMAMemTyping_D(pMCTstat, pDCTstatA);	/* Fix up for UMA sizing */
+-
+ 		if (!allow_config_restore) {
+ 			printk(BIOS_DEBUG, "mctAutoInitMCT_D: :OtherTiming\n");
+ 			mct_OtherTiming(pMCTstat, pDCTstatA);
+@@ -1499,6 +1495,12 @@ restartinit:
+ 			MCTMemClr_D(pMCTstat,pDCTstatA);
+ 		}
+ 
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: CPUMemTyping_D\n");
++		CPUMemTyping_D(pMCTstat, pDCTstatA);	/* Map dram into WB/UC CPU cacheability */
++
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: UMAMemTyping_D\n");
++		UMAMemTyping_D(pMCTstat, pDCTstatA);	/* Fix up for UMA sizing */
++
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_ForceNBPState0_Dis_Fam15\n");
+ 		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+ 			struct DCTStatStruc *pDCTstat;
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index 11555ae..ac8c934 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -725,8 +725,10 @@ struct amd_s3_persistent_mct_channel_data {
+ 	uint32_t f2x9cx30[12];
+ 	uint32_t f2x9cx40[12];
+ 
+-	/* Other (1 dword) */
++	/* Other (3 dwords) */
+ 	uint32_t f3x58;
++	uint32_t f3x5c;
++	uint32_t f3x60;
+ 
+ 	/* Family 15h-specific registers (90 dwords) */
+ 	uint32_t f2x200;
+@@ -785,7 +787,7 @@ struct amd_s3_persistent_mct_channel_data {
+ 	uint32_t f2x9cx0d0f0_0_f_31[9];		/* [lane] */
+ 	uint32_t f2x9cx0d0f8021;
+ 
+-	/* TOTAL: 340 dwords */
++	/* TOTAL: 342 dwords */
+ } __attribute__((packed));
+ 
+ struct amd_s3_persistent_node_data {
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
+index e74545b..207a135 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
+@@ -902,6 +902,16 @@ static void Calc_SetMaxRdLatency_D_Fam15(struct MCTStatStruc *pMCTstat,
+ 	uint32_t dev = pDCTstat->dev_dct;
+ 	uint16_t fam15h_freq_tab[] = {0, 0, 0, 0, 333, 0, 400, 0, 0, 0, 533, 0, 0, 0, 667, 0, 0, 0, 800, 0, 0, 0, 933};
+ 
++#if DQS_TRAIN_DEBUG > 0
++	printk(BIOS_DEBUG, "%s: Start\n", __func__);
++#endif
++
++	mem_clk = Get_NB32_DCT(dev, dct, 0x94) & 0x1f;
++	if (fam15h_freq_tab[mem_clk] == 0) {
++		pDCTstat->CH_MaxRdLat[dct] = 0x55;
++		return;
++	}
++
+ 	/* P is specified in PhyCLKs (1/2 MEMCLKs) */
+ 	for (nb_pstate = 0; nb_pstate < 2; nb_pstate++) {
+ 		/* 2.10.5.8.5 (2) */
+@@ -949,7 +959,6 @@ static void Calc_SetMaxRdLatency_D_Fam15(struct MCTStatStruc *pMCTstat,
+ 		t += 800;
+ 
+ 		/* 2.10.5.8.5 (10) */
+-		mem_clk = Get_NB32_DCT(dev, dct, 0x94) & 0x1f;
+ 		dword = Get_NB32(pDCTstat->dev_nbctl, (0x160 + (nb_pstate * 4)));		/* Retrieve NbDid, NbFid */
+ 		nb_clk = (200 * (((dword >> 1) & 0x1f) + 0x4)) / (((dword >> 7) & 0x1)?2:1);
+ 		n = (((((uint64_t)p * 1000000000000ULL)/(((uint64_t)fam15h_freq_tab[mem_clk] * 1000000ULL) * 2)) + ((uint64_t)t)) * ((uint64_t)nb_clk * 1000)) / 1000000000ULL;
+@@ -964,8 +973,16 @@ static void Calc_SetMaxRdLatency_D_Fam15(struct MCTStatStruc *pMCTstat,
+ 		Set_NB32_DCT_NBPstate(dev, dct, nb_pstate, 0x210, dword);
+ 
+ 		/* Save result for later use */
+-		pDCTstat->CH_MaxRdLat[dct] = n;
++		pDCTstat->CH_MaxRdLat[dct] = n - 1;
++
++#if DQS_TRAIN_DEBUG > 0
++	printk(BIOS_DEBUG, "%s: CH_MaxRdLat[%d]: %03x\n", __func__, dct, pDCTstat->CH_MaxRdLat[dct]);
++#endif
+ 	}
++
++#if DQS_TRAIN_DEBUG > 0
++	printk(BIOS_DEBUG, "%s: Done\n", __func__);
++#endif
+ }
+ 
+ static void start_dram_dqs_training_pattern_fam15(struct MCTStatStruc *pMCTstat,
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctecc_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mctecc_d.c
+index e352886..37db37c 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctecc_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctecc_d.c
+@@ -92,13 +92,8 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 	uint8_t sync_flood_on_dram_err[MAX_NODES_SUPPORTED];
+ 	uint8_t sync_flood_on_any_uc_err[MAX_NODES_SUPPORTED];
+ 
+-	uint8_t redirect_ecc_scrub = 0;
+-
+ 	mctHookBeforeECC();
+ 
+-	if ((pMCTstat->GStatus & 1 << GSB_ECCDIMMs) && mctGet_NVbits(NV_ECCRedir))
+-		redirect_ecc_scrub = 1;
+-
+ 	/* Construct these booleans, based on setup options, for easy handling
+ 	later in this procedure */
+ 	OB_NBECC = mctGet_NVbits(NV_NBECC);			/* MCA ECC (MCE) enable bit */
+@@ -117,8 +112,11 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 		OF_ScrubCTL |= (u32) nvbits << 8;
+ 	}
+ 
++	nvbits = mctGet_NVbits(NV_L3BKScrub);
++	OF_ScrubCTL |= (nvbits & 0x1f) << 24;			/* L3Scrub = NV_L3BKScrub */
++
+ 	nvbits = mctGet_NVbits(NV_DramBKScrub);
+-	OF_ScrubCTL |= nvbits;
++	OF_ScrubCTL |= nvbits;					/* DramScrub = NV_DramBKScrub */
+ 
+ 	/* Prevent lockups on DRAM errors during ECC init */
+ 	for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+@@ -133,6 +131,10 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 			dword &= ~(0x1 << 21);
+ 			Set_NB32(pDCTstat->dev_nbmisc, 0x44, dword);
+ 
++			/* Clear MC4 error status */
++			pci_write_config32(pDCTstat->dev_nbmisc, 0x48, 0x0);
++			pci_write_config32(pDCTstat->dev_nbmisc, 0x4c, 0x0);
++
+ 			/* Clear the RAM before enabling ECC to prevent MCE-related lockups */
+ 			DCTMemClr_Init_D(pMCTstat, pDCTstat);
+ 			DCTMemClr_Sync_D(pMCTstat, pDCTstat);
+@@ -170,6 +172,9 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 				if(LDramECC) {	/* if ECC is enabled on this dram */
+ 					if (OB_NBECC) {
+ 						mct_EnableDatIntlv_D(pMCTstat, pDCTstat);
++						val = Get_NB32(pDCTstat->dev_dct, 0x110);
++						val |= 1 << 5;	/* DctDatIntLv = 1 */
++						Set_NB32(pDCTstat->dev_dct, 0x110, val);
+ 						dev = pDCTstat->dev_nbmisc;
+ 						reg = 0x44;	/* MCA NB Configuration */
+ 						val = Get_NB32(dev, reg);
+@@ -180,37 +185,16 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 						printk(BIOS_DEBUG, "  ECC enabled on node: %02x\n", Node);
+ 					}
+ 				}	/* this node has ECC enabled dram */
++
++				if (MemClrECC) {
++					DCTMemClr_Sync_D(pMCTstat, pDCTstat);
++				}
+ 			} else {
+ 				LDramECC = 0;
+ 			}	/* Node has Dram */
+-
+-			if (MemClrECC) {
+-				DCTMemClr_Sync_D(pMCTstat, pDCTstat);
+-			}
+-
+-			if (pDCTstat->LogicalCPUID & (AMD_DR_GT_D0 | AMD_FAM15_ALL)) {
+-				/* Set up message triggered C1E */
+-				val = pci_read_config32(pDCTstat->dev_nbmisc, 0xd4);
+-				val &= ~(0x1 << 15);			/* StutterScrubEn = DRAM scrub enabled */
+-				val |= (mctGet_NVbits(NV_DramBKScrub)?1:0) << 15;
+-				pci_write_config32(pDCTstat->dev_nbmisc, 0xd4, val);
+-			}
+ 		}	/* if Node present */
+ 	}
+ 
+-	/* Restore previous MCA error handling settings */
+-	for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+-		struct DCTStatStruc *pDCTstat;
+-		pDCTstat = pDCTstatA + Node;
+-
+-		if (NodePresent_D(Node)) {
+-			dword = Get_NB32(pDCTstat->dev_nbmisc, 0x44);
+-			dword |= (sync_flood_on_dram_err[Node] & 0x1) << 30;
+-			dword |= (sync_flood_on_any_uc_err[Node] & 0x1) << 21;
+-			Set_NB32(pDCTstat->dev_nbmisc, 0x44, dword);
+-		}
+-	}
+-
+ 	if(AllECC)
+ 		pMCTstat->GStatus |= 1<<GSB_ECCDIMMs;
+ 	else
+@@ -229,19 +213,26 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 			/*WE/RE is checked because memory config may have been */
+ 			if((val & 3)==3) {	/* Node has dram populated */
+ 				if (isDramECCEn_D(pDCTstat)) {	/* if ECC is enabled on this dram */
+-					if (is_fam15h()) {
+-						/* Erratum 505 */
+-						fam15h_switch_dct(pDCTstat->dev_map, 0);
+-					}
+ 					dev = pDCTstat->dev_nbmisc;
+ 					val = curBase << 8;
+ 					if (OB_ECCRedir) {
+-						val |= (1<<0);			/* enable redirection */
++						val |= (1 << 0);		/* Enable redirection */
+ 					}
+ 					Set_NB32(dev, 0x5c, val);		/* Dram Scrub Addr Low */
+-					val = curBase>>24;
++					val = curBase >> 24;
+ 					Set_NB32(dev, 0x60, val);		/* Dram Scrub Addr High */
+-					Set_NB32(dev, 0x58, OF_ScrubCTL);	/*Scrub Control */
++
++					/* Set scrub rate controls */
++					if (is_fam15h()) {
++						/* Erratum 505 */
++						fam15h_switch_dct(pDCTstat->dev_map, 0);
++					}
++					Set_NB32(dev, 0x58, OF_ScrubCTL);	/* Scrub Control */
++					if (is_fam15h()) {
++						fam15h_switch_dct(pDCTstat->dev_map, 1);	/* Erratum 505 */
++						Set_NB32(dev, 0x58, OF_ScrubCTL);		/* Scrub Control */
++						fam15h_switch_dct(pDCTstat->dev_map, 0);	/* Erratum 505 */
++					}
+ 
+ 					if (!is_fam15h()) {
+ 						/* Divisor should not be set deeper than
+@@ -258,36 +249,31 @@ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA)
+ 						}
+ 					}
+ 
+-					if (is_fam15h()) {
+-						uint8_t dct;
+-
+-						/* Disable training mode
+-						 * See fam15EnableTrainingMode for the non-ECC training mode tear-down code
+-						 */
+-						for (dct = 0; dct < 2; dct++) {
+-							/* NOTE: Reads use DCT 0 and writes use the current DCT per Erratum 505 */
+-							dword = Get_NB32_DCT(pDCTstat->dev_nbmisc, 0, 0x58);	/* Scrub Rate Control */
+-							dword &= ~(0x1f << 24);					/* L3Scrub = NV_L3BKScrub */
+-							dword |= (mctGet_NVbits(NV_L3BKScrub) & 0x1f) << 24;
+-							dword &= ~(0x1f);					/* DramScrub = NV_DramBKScrub */
+-							dword |= mctGet_NVbits(NV_DramBKScrub) & 0x1f;
+-							Set_NB32_DCT(pDCTstat->dev_nbmisc, dct, 0x58, dword);	/* Scrub Rate Control */
+-
+-							dword = Get_NB32_DCT(pDCTstat->dev_nbmisc, dct, 0x5c);	/* DRAM Scrub Address Low */
+-							dword &= ~(0x1);					/* ScrubReDirEn = redirect_ecc_scrub */
+-							dword |= redirect_ecc_scrub & 0x1;
+-							Set_NB32_DCT(pDCTstat->dev_nbmisc, dct, 0x5c, dword);	/* DRAM Scrub Address Low */
+-
+-							dword = Get_NB32_DCT(pDCTstat->dev_nbmisc, dct, 0x1b8);	/* L3 Control 1 */
+-							dword &= ~(0x1 << 4);					/* L3ScrbRedirDis = 0 */
+-							Set_NB32_DCT(pDCTstat->dev_nbmisc, dct, 0x1b8, dword);	/* L3 Control 1 */
+-						}
++					if (pDCTstat->LogicalCPUID & (AMD_DR_GT_D0 | AMD_FAM15_ALL)) {
++						/* Set up message triggered C1E */
++						val = pci_read_config32(pDCTstat->dev_nbmisc, 0xd4);
++						val &= ~(0x1 << 15);			/* StutterScrubEn = DRAM scrub enabled */
++						val |= (mctGet_NVbits(NV_DramBKScrub)?1:0) << 15;
++						pci_write_config32(pDCTstat->dev_nbmisc, 0xd4, val);
+ 					}
+ 				}	/* this node has ECC enabled dram */
+ 			}	/*Node has Dram */
+ 		}	/*if Node present */
+ 	}
+ 
++	/* Restore previous MCA error handling settings */
++	for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
++		struct DCTStatStruc *pDCTstat;
++		pDCTstat = pDCTstatA + Node;
++
++		if (NodePresent_D(Node)) {
++			dword = Get_NB32(pDCTstat->dev_nbmisc, 0x44);
++			dword |= (sync_flood_on_dram_err[Node] & 0x1) << 30;
++			dword |= (sync_flood_on_any_uc_err[Node] & 0x1) << 21;
++			Set_NB32(pDCTstat->dev_nbmisc, 0x44, dword);
++		}
++	}
++
+ 	if(mctGet_NVbits(NV_SyncOnUnEccEn))
+ 		setSyncOnUnEccEn_D(pMCTstat, pDCTstatA);
+ 
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctmtr_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mctmtr_d.c
+index 596fb23..abc8ae3 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctmtr_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctmtr_d.c
+@@ -232,9 +232,9 @@ void UMAMemTyping_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstat
+ 		Cache32bTOP = val;
+ 		pMCTstat->Sub4GCacheTop = val;
+ 
+-	/*======================================================================
+-	 * Clear variable MTRR values
+-	 *======================================================================*/
++		/*======================================================================
++		 * Clear variable MTRR values
++		 *======================================================================*/
+ 		addr = 0x200;
+ 		lo = 0;
+ 		hi = lo;
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index 2132648..2edb7ce 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -89,6 +89,28 @@ static uint32_t read_config32_dct(device_t dev, uint8_t node, uint8_t dct, uint3
+ 	return pci_read_config32(dev, reg);
+ }
+ 
++static void write_config32_dct(device_t dev, uint8_t node, uint8_t dct, uint32_t reg, uint32_t value) {
++	if (is_fam15h()) {
++		uint32_t dword;
++#ifdef __PRE_RAM__
++		device_t dev_fn1 = PCI_DEV(0, 0x18 + node, 1);
++#else
++		device_t dev_fn1 = dev_find_slot(0, PCI_DEVFN(0x18 + node, 1));
++#endif
++
++		/* Select DCT */
++		dword = pci_read_config32(dev_fn1, 0x10c);
++		dword &= ~0x1;
++		dword |= (dct & 0x1);
++		pci_write_config32(dev_fn1, 0x10c, dword);
++	} else {
++		/* Apply offset */
++		reg += dct * 0x100;
++	}
++
++	pci_write_config32(dev, reg, value);
++}
++
+ static uint32_t read_amd_dct_index_register(device_t dev, uint32_t index_ctl_reg, uint32_t index)
+ {
+ 	uint32_t dword;
+@@ -489,29 +511,17 @@ void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_da
+ 
+ 			/* Other */
+ 			/* ECC scrub rate control */
+-			data->f3x58 = pci_read_config32(dev_fn3, 0x58);
++			data->f3x58 = read_config32_dct(dev_fn3, node, 0, 0x58);
++
++			/* ECC scrub location */
++			write_config32_dct(dev_fn3, node, 0, 0x58, 0x0);		/* Disable sequential scrub to work around non-atomic location read */
++			data->f3x5c = read_config32_dct(dev_fn3, node, 0, 0x5c);
++			data->f3x60 = read_config32_dct(dev_fn3, node, 0, 0x60);
++			write_config32_dct(dev_fn3, node, 0, 0x58, data->f3x58);	/* Re-enable sequential scrub */
+ 		}
+ 	}
+ }
+ #else
+-static void write_config32_dct(device_t dev, uint8_t node, uint8_t dct, uint32_t reg, uint32_t value) {
+-	if (is_fam15h()) {
+-		uint32_t dword;
+-		device_t dev_fn1 = PCI_DEV(0, 0x18 + node, 1);
+-
+-		/* Select DCT */
+-		dword = pci_read_config32(dev_fn1, 0x10c);
+-		dword &= ~0x1;
+-		dword |= (dct & 0x1);
+-		pci_write_config32(dev_fn1, 0x10c, dword);
+-	} else {
+-		/* Apply offset */
+-		reg += dct * 0x100;
+-	}
+-
+-	pci_write_config32(dev, reg, value);
+-}
+-
+ static void write_config32_dct_nbpstate(device_t dev, uint8_t node, uint8_t dct, uint8_t nb_pstate, uint32_t reg, uint32_t value) {
+ 	uint32_t dword;
+ 	device_t dev_fn1 = PCI_DEV(0, 0x18 + node, 1);
+@@ -613,8 +623,7 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ 				if (is_fam15h()) {
+ 					for (i=0; i<4; i++)
+ 						write_config32_dct_nbpstate(PCI_DEV(0, 0x18 + node, 2), node, channel, i, 0x210, data->f2x210[i]);
+-				}
+-				else {
++				} else {
+ 					write_config32_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x78, data->f2x78);
+ 				}
+ 
+@@ -1060,8 +1069,12 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ 			if (!persistent_data->node[node].node_present)
+ 				continue;
+ 
++			/* ECC scrub location */
++			write_config32_dct(PCI_DEV(0, 0x18 + node, 3), node, 0, 0x5c, data->f3x5c);
++			write_config32_dct(PCI_DEV(0, 0x18 + node, 3), node, 0, 0x60, data->f3x60);
++
+ 			/* ECC scrub rate control */
+-			pci_write_config32(PCI_DEV(0, 0x18 + node, 3), 0x58, data->f3x58);
++			write_config32_dct(PCI_DEV(0, 0x18 + node, 3), node, 0, 0x58, data->f3x58);
+ 
+ 			if (is_fam15h())
+ 				/* Set LockDramCfg and CC6SaveEn */
+-- 
+1.7.9.5
+

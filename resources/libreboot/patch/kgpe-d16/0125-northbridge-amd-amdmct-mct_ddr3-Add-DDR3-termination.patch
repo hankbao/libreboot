@@ -1,0 +1,34 @@
+From 2255079d463f0a09f74a8d0d64208772de5e0bc5 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Thu, 27 Aug 2015 13:18:06 -0500
+Subject: [PATCH 125/146] northbridge/amd/amdmct/mct_ddr3: Add DDR3
+ termination debug output
+
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c b/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
+index 09a5f68..7804a38 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
+@@ -163,6 +163,8 @@ static uint8_t fam15_rttwr(struct DCTStatStruc *pDCTstat, uint8_t dct, uint8_t d
+ 		}
+ 	}
+ 
++	printk(BIOS_INFO, "DIMM %d RttWr: %01x\n", dimm, term);
++
+ 	return term;
+ }
+ 
+@@ -362,6 +364,7 @@ static uint8_t fam15_rttnom(struct DCTStatStruc *pDCTstat, uint8_t dct, uint8_t
+ 		}
+ 	}
+ 
++	printk(BIOS_INFO, "DIMM %d RttNom: %01x\n", dimm, term);
+ 	return term;
+ }
+ 
+-- 
+1.7.9.5
+

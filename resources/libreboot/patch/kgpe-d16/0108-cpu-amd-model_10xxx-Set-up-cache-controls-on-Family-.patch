@@ -1,0 +1,41 @@
+From 6b299238948c1cdde372472e3854a79eb6233564 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Sat, 8 Aug 2015 20:31:03 -0500
+Subject: [PATCH 108/146] cpu/amd/model_10xxx: Set up cache controls on Family
+ 15h to improve performance
+
+---
+ src/cpu/amd/model_10xxx/defaults.h |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/cpu/amd/model_10xxx/defaults.h b/src/cpu/amd/model_10xxx/defaults.h
+index 5ab4335..ce25b25 100644
+--- a/src/cpu/amd/model_10xxx/defaults.h
++++ b/src/cpu/amd/model_10xxx/defaults.h
+@@ -139,8 +139,9 @@ static const struct {
+ 	  0x00000000, 1 << (42-32)},	/* Bx [PwcDisableWalkerSharing]=1 */
+ 
+ 	{ BU_CFG3, AMD_OR_C0, AMD_PTYPE_ALL,
+-	  1 << 22, 0x00000000,
+-	  1 << 22, 0x00000000},		/* C0 or above [PfcDoubleStride]=1 */
++	  (0x3 << 20) | (0x1 << 22), 0x00000000,
++	  (0x3 << 20) | (0x1 << 22), 0x00000000},	/* C0 or above [PfcDoubleStride]=1,
++	  						   PfcStrideMul]=0x3 */
+ 
+ 	{ EX_CFG, AMD_OR_C0, AMD_PTYPE_ALL,
+ 	  0x00000000, 1 << (54-32),
+@@ -646,6 +647,11 @@ static const struct {
+ 	 * System software should set F5x88[14] to 1b. */
+ 	{ 5, 0x88, AMD_OR_B2, AMD_PTYPE_ALL,
+ 	  1 << 14, 1 << 14 },
++
++	/* L3 Control 2 */
++	{ 3, 0x1b8, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000090, 0x000001d0 },	/* ImplRdProjDelayThresh = 0x2,
++					   ImplRdAnySubUnavail = 0x1 */
+ };
+ 
+ 
+-- 
+1.7.9.5
+

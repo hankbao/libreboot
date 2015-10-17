@@ -1,0 +1,75 @@
+From c05d2f8115f94ba223ee481bc8790312d8b9fbd5 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Thu, 25 Jun 2015 15:28:23 -0500
+Subject: [PATCH 073/146] northbridge/amd/amdfam10: Properly indicate node and
+ channel in SMBIOS tables
+
+---
+ src/northbridge/amd/amdfam10/northbridge.c  |    7 ++++++-
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c |   12 ++++++++++++
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h |    8 +++++---
+ 3 files changed, 23 insertions(+), 4 deletions(-)
+
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index f777d02..7cbb732 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -1205,7 +1205,12 @@ static int amdfam10_get_smbios_data17(int* count, int handle, int parent_handle,
+ 				t->attributes = 0;
+ 				t->attributes |= ranks & 0xf;	/* rank number is stored in the lowest 4 bits of the attributes field */
+ 				t->form_factor = MEMORY_FORMFACTOR_DIMM;
+-				snprintf(string_buffer, sizeof (string_buffer), "NODE %d DIMM_%s%d", node, (slot & 0x1)?"B":"A", (slot >> 1) + 1);
++				if (mem_info->dct_stat[node].Dual_Node_Package) {
++					snprintf(string_buffer, sizeof (string_buffer), "NODE %d DIMM_%s%d", node >> 1,
++						(mem_info->dct_stat[node].Internal_Node_ID)?((slot & 0x1)?"D":"C"):((slot & 0x1)?"B":"A"), (slot >> 1) + 1);
++				} else {
++					snprintf(string_buffer, sizeof (string_buffer), "NODE %d DIMM_%s%d", node, (slot & 0x1)?"B":"A", (slot >> 1) + 1);
++				}
+ 				t->device_locator = smbios_add_string(t->eos, string_buffer);
+ 				if (IS_ENABLED(CONFIG_DIMM_DDR2))
+ 					t->memory_type = MEMORY_TYPE_DDR2;
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 5a0c746..4a47ee8 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -1385,6 +1385,18 @@ restartinit:
+ 			pDCTstat->dev_nbctl = PA_NBCTL(Node);
+ 			pDCTstat->NodeSysBase = node_sys_base;
+ 
++			if (mctGet_NVbits(NV_PACK_TYPE) == PT_GR) {
++				uint32_t dword;
++				pDCTstat->Dual_Node_Package = 1;
++
++				/* Get the internal node number */
++				dword = Get_NB32(pDCTstat->dev_nbmisc, 0xe8);
++				dword = (dword >> 30) & 0x3;
++				pDCTstat->Internal_Node_ID = dword;
++			} else {
++				pDCTstat->Dual_Node_Package = 0;
++			}
++
+ 			printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_init Node %d\n", Node);
+ 			mct_init(pMCTstat, pDCTstat);
+ 			mctNodeIDDebugPort_D();
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index ac8c934..8c9da47 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -335,9 +335,11 @@ struct amd_spd_node_data {
+ 
+ struct DCTStatStruc {		/* A per Node structure*/
+ /* DCTStatStruct_F -  start */
+-	u8 Node_ID;		/* Node ID of current controller */
+-	uint8_t stopDCT;	/* Set if the DCT will be stopped */
+-	u8 ErrCode;		/* Current error condition of Node
++	u8 Node_ID;			/* Node ID of current controller */
++	uint8_t Internal_Node_ID;	/* Internal Node ID of the current controller */
++	uint8_t Dual_Node_Package;	/* 1=Dual node package (G34) */
++	uint8_t stopDCT;		/* Set if the DCT will be stopped */
++	u8 ErrCode;			/* Current error condition of Node
+ 		0= no error
+ 		1= Variance Error, DCT is running but not in an optimal configuration.
+ 		2= Stop Error, DCT is NOT running
+-- 
+1.7.9.5
+

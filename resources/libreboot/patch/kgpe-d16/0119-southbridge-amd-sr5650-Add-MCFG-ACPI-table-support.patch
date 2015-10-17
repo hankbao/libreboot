@@ -1,0 +1,83 @@
+From 6eebec9d23f174057319cc373448f887e2779ddd Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <kb9vqf@pearsoncomputing.net>
+Date: Fri, 14 Aug 2015 15:20:42 -0500
+Subject: [PATCH 119/146] southbridge/amd/sr5650: Add MCFG ACPI table support
+
+---
+ src/southbridge/amd/sb700/lpc.c     |    6 ------
+ src/southbridge/amd/sb800/lpc.c     |    7 +------
+ src/southbridge/amd/sr5650/sr5650.c |   16 ++++++++++++++++
+ 3 files changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/src/southbridge/amd/sb700/lpc.c b/src/southbridge/amd/sb700/lpc.c
+index 145a01f..fc27bef 100644
+--- a/src/southbridge/amd/sb700/lpc.c
++++ b/src/southbridge/amd/sb700/lpc.c
+@@ -34,12 +34,6 @@
+ #include <cpu/amd/powernow.h>
+ #include "sb700.h"
+ 
+-unsigned long acpi_fill_mcfg(unsigned long current)
+-{
+-       /* Just a dummy */
+-       return current;
+-}
+-
+ static void lpc_init(device_t dev)
+ {
+ 	u8 byte;
+diff --git a/src/southbridge/amd/sb800/lpc.c b/src/southbridge/amd/sb800/lpc.c
+index 0cd5b32..af96ea7 100644
+--- a/src/southbridge/amd/sb800/lpc.c
++++ b/src/southbridge/amd/sb800/lpc.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -29,12 +30,6 @@
+ #include <arch/acpi.h>
+ #include "sb800.h"
+ 
+-unsigned long acpi_fill_mcfg(unsigned long current)
+-{
+-       /* Just a dummy */
+-       return current;
+-}
+-
+ static void lpc_init(device_t dev)
+ {
+ 	u8 byte;
+diff --git a/src/southbridge/amd/sr5650/sr5650.c b/src/southbridge/amd/sr5650/sr5650.c
+index b296c47..4622f36 100644
+--- a/src/southbridge/amd/sr5650/sr5650.c
++++ b/src/southbridge/amd/sr5650/sr5650.c
+@@ -800,6 +800,22 @@ static void add_ivrs_device_entries(struct device *parent, struct device *dev, i
+ 	free(root_level);
+ }
+ 
++unsigned long acpi_fill_mcfg(unsigned long current)
++{
++	struct resource *res;
++	resource_t mmconf_base = EXT_CONF_BASE_ADDRESS;
++
++	device_t dev = dev_find_slot(0, PCI_DEVFN(0, 0));
++	/* Report MMCONF base */
++	res = probe_resource(dev, 0x1c);
++	if (res)
++		mmconf_base = res->base;
++
++	current += acpi_create_mcfg_mmconfig((acpi_mcfg_mmconfig_t *)current, mmconf_base, 0x0, 0x0, 0x1f);
++
++	return current;
++}
++
+ static unsigned long acpi_fill_ivrs(acpi_ivrs_t* ivrs, unsigned long current)
+ {
+ 	uint8_t *p;
+-- 
+1.7.9.5
+
