@@ -1,0 +1,187 @@
+From 6ae8695f880a4a15672eda801226b4b1c83aa1a8 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 17 Oct 2015 04:36:47 -0500
+Subject: [PATCH 002/139] southbridge/amd/sb700: Allow use of auxiliary SMBUS
+ controller
+
+Change-Id: I29ece10eeefc2c75a3829c169f1e1aede7194ec2
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/device/Kconfig                |  4 ++++
+ src/include/device/smbus.h        |  5 +++++
+ src/southbridge/amd/sb700/Kconfig |  1 +
+ src/southbridge/amd/sb700/sm.c    | 36 +++++++++++++++++++++++++++++++-----
+ src/southbridge/amd/sb700/smbus.c | 15 +++++++++++++++
+ 5 files changed, 56 insertions(+), 5 deletions(-)
+
+diff --git a/src/device/Kconfig b/src/device/Kconfig
+index 613461b..3dd2b61 100644
+--- a/src/device/Kconfig
++++ b/src/device/Kconfig
+@@ -192,6 +192,10 @@ config MULTIPLE_VGA_ADAPTERS
+ 	bool
+ 	default n
+ 
++config SMBUS_HAS_AUX
++	bool
++	default n
++
+ config SPD_CACHE
+ 	bool
+ 	default n
+diff --git a/src/include/device/smbus.h b/src/include/device/smbus.h
+index 073d7e2..53e90fb 100644
+--- a/src/include/device/smbus.h
++++ b/src/include/device/smbus.h
+@@ -47,4 +47,9 @@ int smbus_process_call(device_t dev, u8 cmd, u16 data);
+ int smbus_block_read(device_t dev, u8 cmd, u8 bytes, u8 *buffer);
+ int smbus_block_write(device_t dev, u8 cmd, u8 bytes, const u8 *buffer);
+ 
++#if IS_ENABLED(CONFIG_SMBUS_HAS_AUX)
++void smbus_switch_to_aux(uint8_t enable_aux);
++uint8_t smbus_switched_to_aux(void);
++#endif
++
+ #endif /* DEVICE_SMBUS_H */
+diff --git a/src/southbridge/amd/sb700/Kconfig b/src/southbridge/amd/sb700/Kconfig
+index 42ca2bb..a5dfe07 100644
+--- a/src/southbridge/amd/sb700/Kconfig
++++ b/src/southbridge/amd/sb700/Kconfig
+@@ -27,6 +27,7 @@ config SOUTHBRIDGE_SPECIFIC_OPTIONS # dummy
+ 	select IOAPIC
+ 	select HAVE_USBDEBUG_OPTIONS
+ 	select HAVE_HARD_RESET
++	select SMBUS_HAS_AUX
+ 
+ # Set for southbridge SP5100 which also uses SB700 driver
+ config SOUTHBRIDGE_AMD_SUBTYPE_SP5100
+diff --git a/src/southbridge/amd/sb700/sm.c b/src/southbridge/amd/sb700/sm.c
+index f544c88..c216e1f 100644
+--- a/src/southbridge/amd/sb700/sm.c
++++ b/src/southbridge/amd/sb700/sm.c
+@@ -40,6 +40,8 @@
+ #define CONFIG_MAINBOARD_POWER_ON_AFTER_POWER_FAIL MAINBOARD_POWER_ON
+ #endif
+ 
++uint8_t smbus_use_aux = 0;
++
+ /*
+ * SB700 enables all USB controllers by default in SMBUS Control.
+ * SB700 enables SATA by default in SMBUS Control.
+@@ -312,7 +314,10 @@ static int lsmbus_recv_byte(device_t dev)
+ 	device = dev->path.i2c.device;
+ 	pbus = get_pbus_smbus(dev);
+ 
+-	res = find_resource(pbus->dev, 0x90);
++	if (!smbus_use_aux)
++		res = find_resource(pbus->dev, 0x90);
++	else
++		res = find_resource(pbus->dev, 0x58);
+ 
+ 	return do_smbus_recv_byte(res->base, device);
+ }
+@@ -326,7 +331,10 @@ static int lsmbus_send_byte(device_t dev, u8 val)
+ 	device = dev->path.i2c.device;
+ 	pbus = get_pbus_smbus(dev);
+ 
+-	res = find_resource(pbus->dev, 0x90);
++	if (!smbus_use_aux)
++		res = find_resource(pbus->dev, 0x90);
++	else
++		res = find_resource(pbus->dev, 0x58);
+ 
+ 	return do_smbus_send_byte(res->base, device, val);
+ }
+@@ -340,7 +348,10 @@ static int lsmbus_read_byte(device_t dev, u8 address)
+ 	device = dev->path.i2c.device;
+ 	pbus = get_pbus_smbus(dev);
+ 
+-	res = find_resource(pbus->dev, 0x90);
++	if (!smbus_use_aux)
++		res = find_resource(pbus->dev, 0x90);
++	else
++		res = find_resource(pbus->dev, 0x58);
+ 
+ 	return do_smbus_read_byte(res->base, device, address);
+ }
+@@ -354,7 +365,10 @@ static int lsmbus_write_byte(device_t dev, u8 address, u8 val)
+ 	device = dev->path.i2c.device;
+ 	pbus = get_pbus_smbus(dev);
+ 
+-	res = find_resource(pbus->dev, 0x90);
++	if (!smbus_use_aux)
++		res = find_resource(pbus->dev, 0x90);
++	else
++		res = find_resource(pbus->dev, 0x58);
+ 
+ 	return do_smbus_write_byte(res->base, device, address, val);
+ }
+@@ -393,7 +407,7 @@ static void sb700_sm_read_resources(device_t dev)
+ 
+ 	/* dev->command |= PCI_COMMAND_MEMORY | PCI_COMMAND_MASTER; */
+ 
+-	/* smbus */
++	/* primary smbus */
+ 	res = new_resource(dev, 0x90);
+ 	res->base  = 0xB00;
+ 	res->size = 0x10;
+@@ -402,6 +416,15 @@ static void sb700_sm_read_resources(device_t dev)
+ 	res->gran = 8;
+ 	res->flags = IORESOURCE_IO | IORESOURCE_FIXED | IORESOURCE_RESERVE | IORESOURCE_ASSIGNED;
+ 
++	/* auxiliary smbus */
++	res = new_resource(dev, 0x58);
++	res->base  = 0xB20;
++	res->size = 0x10;
++	res->limit = 0xFFFFUL;	/* res->base + res->size -1; */
++	res->align = 8;
++	res->gran = 8;
++	res->flags = IORESOURCE_IO | IORESOURCE_FIXED | IORESOURCE_RESERVE | IORESOURCE_ASSIGNED;
++
+ 	compact_resources(dev);
+ }
+ 
+@@ -441,6 +464,9 @@ static void sb700_sm_set_resources(struct device *dev)
+ 
+ 	res = find_resource(dev, 0x90);
+ 	pci_write_config32(dev, 0x90, res->base | 1);
++
++	res = find_resource(dev, 0x58);
++	pci_write_config32(dev, 0x58, res->base | 1);
+ }
+ 
+ static struct pci_operations lops_pci = {
+diff --git a/src/southbridge/amd/sb700/smbus.c b/src/southbridge/amd/sb700/smbus.c
+index 94f5e24..a89e830 100644
+--- a/src/southbridge/amd/sb700/smbus.c
++++ b/src/southbridge/amd/sb700/smbus.c
+@@ -22,6 +22,11 @@
+ 
+ #include "smbus.h"
+ 
++extern uint8_t smbus_use_aux;
++
++void smbus_switch_to_aux(uint8_t enable_aux);
++uint8_t smbus_switched_to_aux(void);
++
+ void alink_ab_indx(u32 reg_space, u32 reg_addr, u32 mask, u32 val)
+ {
+ 	u32 tmp;
+@@ -216,4 +221,14 @@ int do_smbus_write_byte(u32 smbus_io_base, u32 device, u32 address, u8 val)
+ 	return 0;
+ }
+ 
++void smbus_switch_to_aux(uint8_t enable_aux)
++{
++	smbus_use_aux = enable_aux;
++}
++
++uint8_t smbus_switched_to_aux(void)
++{
++	return smbus_use_aux;
++}
++
+ #endif
+-- 
+1.9.1
+

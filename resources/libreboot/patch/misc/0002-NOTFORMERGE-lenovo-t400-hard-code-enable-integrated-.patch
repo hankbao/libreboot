@@ -1,0 +1,36 @@
+From 6e7cdcaa317f9fdea329839b1e6e6343cd45b642 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Mon, 15 Jun 2015 03:44:15 +0100
+Subject: [PATCH 2/9] NOTFORMERGE: lenovo/t400: hard-code enable
+ integrated-only video
+
+Written with libreboot in mind. Libreboot uses native graphics
+initialization only, so we want to ensure that these systems
+only use the integrated (Intel) GPU for which native init exists.
+
+Native graphics initialization does not yet exist for the ATI GPUs
+on these laptops...
+
+Change-Id: I2c056a8fb498972f87c4ec1122b239fdc9a4c666
+Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+---
+ src/mainboard/lenovo/t400/romstage.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/mainboard/lenovo/t400/romstage.c b/src/mainboard/lenovo/t400/romstage.c
+index c62df60..daf6fa8 100644
+--- a/src/mainboard/lenovo/t400/romstage.c
++++ b/src/mainboard/lenovo/t400/romstage.c
+@@ -212,7 +212,8 @@ void main(unsigned long bist)
+ 	default_southbridge_gpio_setup();
+ 
+ 	uint8_t hybrid_graphics_mode = HYBRID_GRAPHICS_INTEGRATED_ONLY;
+-	get_option(&hybrid_graphics_mode, "hybrid_graphics_mode");
++	/* Not for merge! Hard-code enable integrated-only by commenting this line: */
++	/* get_option(&hybrid_graphics_mode, "hybrid_graphics_mode");  */
+ 
+ 	/* Set up hybrid graphics */
+ 	hybrid_graphics_set_up_gpio();
+-- 
+1.9.1
+

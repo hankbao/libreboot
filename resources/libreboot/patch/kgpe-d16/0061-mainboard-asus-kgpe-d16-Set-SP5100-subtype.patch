@@ -1,0 +1,26 @@
+From 226e682880c316f193d58fc00b31265563c7ac38 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 18 Jun 2015 12:37:08 -0500
+Subject: [PATCH 061/139] mainboard/asus/kgpe-d16: Set SP5100 subtype
+
+Change-Id: If839fd71ed12c1fe27aeab374e242a6855737f5d
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mainboard/asus/kgpe-d16/Kconfig b/src/mainboard/asus/kgpe-d16/Kconfig
+index 75bf0ee..084a412 100644
+--- a/src/mainboard/asus/kgpe-d16/Kconfig
++++ b/src/mainboard/asus/kgpe-d16/Kconfig
+@@ -11,6 +11,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select SOUTHBRIDGE_AMD_SR5650
+ 	select SOUTHBRIDGE_AMD_SB700
+ 	select SOUTHBRIDGE_AMD_SB700_DISABLE_ISA_DMA
++	select SOUTHBRIDGE_AMD_SUBTYPE_SP5100
+ 	select SUPERIO_NUVOTON_NCT5572D
+ 	select PARALLEL_CPU_INIT
+ 	select HAVE_ROMSTAGE_CONSOLE_SPINLOCK
+-- 
+1.9.1
+

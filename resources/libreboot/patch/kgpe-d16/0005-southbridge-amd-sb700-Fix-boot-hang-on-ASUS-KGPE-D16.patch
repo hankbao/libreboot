@@ -1,0 +1,642 @@
+From e897086a84f3b7c1af321e2a8a303cc49367b390 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 17:46:15 -0500
+Subject: [PATCH 005/139] southbridge/amd/sb700: Fix boot hang on ASUS KGPE-D16
+
+Change-Id: I1d7d6715663a13ab94fd6d71808e35f0f7384d00
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sb700/Kconfig       |   4 +
+ src/southbridge/amd/sb700/acpi/ide.asl  | 234 ++++++++++++++++++++++++++++++++
+ src/southbridge/amd/sb700/acpi/sata.asl | 133 ++++++++++++++++++
+ src/southbridge/amd/sb700/bootblock.c   |  46 ++++++-
+ src/southbridge/amd/sb700/early_setup.c |  18 +++
+ src/southbridge/amd/sb700/lpc.c         |   3 +
+ src/southbridge/amd/sb700/sm.c          |  21 +--
+ src/southbridge/amd/sb700/smbus.h       |   5 +-
+ 8 files changed, 447 insertions(+), 17 deletions(-)
+ create mode 100644 src/southbridge/amd/sb700/acpi/ide.asl
+ create mode 100644 src/southbridge/amd/sb700/acpi/sata.asl
+
+diff --git a/src/southbridge/amd/sb700/Kconfig b/src/southbridge/amd/sb700/Kconfig
+index a5dfe07..f56f84a 100644
+--- a/src/southbridge/amd/sb700/Kconfig
++++ b/src/southbridge/amd/sb700/Kconfig
+@@ -42,6 +42,10 @@ config SOUTHBRIDGE_AMD_SB700_SKIP_ISA_DMA_INIT
+ 	bool
+ 	default n
+ 
++config SOUTHBRIDGE_AMD_SB700_DISABLE_ISA_DMA
++	bool
++	default n
++
+ config EHCI_BAR
+ 	hex
+ 	default 0xfef00000
+diff --git a/src/southbridge/amd/sb700/acpi/ide.asl b/src/southbridge/amd/sb700/acpi/ide.asl
+new file mode 100644
+index 0000000..9b5e3ea
+--- /dev/null
++++ b/src/southbridge/amd/sb700/acpi/ide.asl
+@@ -0,0 +1,234 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++/* Some timing tables */
++Name(UDTT, Package(){ /* Udma timing table */
++	120, 90, 60, 45, 30, 20, 15, 0	/* UDMA modes 0 -> 6 */
++})
++
++Name(MDTT, Package(){ /* MWDma timing table */
++	480, 150, 120, 0	/* Legacy DMA modes 0 -> 2 */
++})
++
++Name(POTT, Package(){ /* Pio timing table */
++	600, 390, 270, 180, 120, 0	/* PIO modes 0 -> 4 */
++})
++
++/* Some timing register value tables */
++Name(MDRT, Package(){ /* MWDma timing register table */
++	0x77, 0x21, 0x20, 0xFF	/* Legacy DMA modes 0 -> 2 */
++})
++
++Name(PORT, Package(){
++	0x99, 0x47, 0x34, 0x22, 0x20, 0x99	/* PIO modes 0 -> 4 */
++})
++
++OperationRegion(ICRG, PCI_Config, 0x40, 0x20) /* ide control registers */
++	Field(ICRG, AnyAcc, NoLock, Preserve)
++{
++	PPTS, 8,	/* Primary PIO Slave Timing */
++	PPTM, 8,	/* Primary PIO Master Timing */
++	OFFSET(0x04), PMTS, 8,	/* Primary MWDMA Slave Timing */
++	PMTM, 8,	/* Primary MWDMA Master Timing */
++	OFFSET(0x08), PPCR, 8,	/* Primary PIO Control */
++	OFFSET(0x0A), PPMM, 4,	/* Primary PIO master Mode */
++	PPSM, 4,	/* Primary PIO slave Mode */
++	OFFSET(0x14), PDCR, 2,	/* Primary UDMA Control */
++	OFFSET(0x16), PDMM, 4,	/* Primary UltraDMA Mode */
++	PDSM, 4,	/* Primary UltraDMA Mode */
++}
++
++Method(GTTM, 1) /* get total time*/
++{
++	Store(And(Arg0, 0x0F), Local0)	/* Recovery Width */
++	Increment(Local0)
++	Store(ShiftRight(Arg0, 4), Local1)	/* Command Width */
++	Increment(Local1)
++	Return(Multiply(30, Add(Local0, Local1)))
++}
++
++Device(PRID)
++{
++	Name (_ADR, Zero)
++	Method(_GTM, 0, Serialized)
++	{
++		NAME(OTBF, Buffer(20) { /* out buffer */
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
++		})
++
++		CreateDwordField(OTBF, 0, PSD0)   /* PIO spd0 */
++		CreateDwordField(OTBF, 4, DSD0)   /* DMA spd0 */
++		CreateDwordField(OTBF, 8, PSD1)   /* PIO spd1 */
++		CreateDwordField(OTBF, 12, DSD1) /* DMA spd1 */
++		CreateDwordField(OTBF, 16, BFFG) /* buffer flags */
++
++		/* Just return if the channel is disabled */
++		If(And(PPCR, 0x01)) { /* primary PIO control */
++			Return(OTBF)
++		}
++
++		/* Always tell them independent timing available and IOChannelReady used on both drives */
++		Or(BFFG, 0x1A, BFFG)
++
++		Store(GTTM(PPTM), PSD0) /* save total time of primary PIO master timming  to PIO spd0 */
++		Store(GTTM(PPTS), PSD1) /* save total time of primary PIO slave Timing  to PIO spd1 */
++
++		If(And(PDCR, 0x01)) {	/* It's under UDMA mode */
++			Or(BFFG, 0x01, BFFG)
++			Store(DerefOf(Index(UDTT, PDMM)), DSD0)
++		}
++		Else {
++			Store(GTTM(PMTM), DSD0) /* Primary MWDMA Master Timing,  DmaSpd0 */
++		}
++
++		If(And(PDCR, 0x02)) {	/* It's under UDMA mode */
++			Or(BFFG, 0x04, BFFG)
++			Store(DerefOf(Index(UDTT, PDSM)), DSD1)
++		}
++		Else {
++			Store(GTTM(PMTS), DSD1) /* Primary MWDMA Slave Timing,  DmaSpd0 */
++		}
++
++		Return(OTBF) /* out buffer */
++	}				/* End Method(_GTM) */
++
++	Method(_STM, 3, Serialized)
++	{
++		NAME(INBF, Buffer(20) { /* in buffer */
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF,
++			0xFF, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00
++		})
++
++		CreateDwordField(INBF, 0, PSD0)    /* PIO spd0 */
++		CreateDwordField(INBF, 4, DSD0)   /* PIO spd0 */
++		CreateDwordField(INBF, 8, PSD1)   /* PIO spd1 */
++		CreateDwordField(INBF, 12, DSD1) /* DMA spd1 */
++		CreateDwordField(INBF, 16, BFFG) /*buffer flag */
++
++		Store(Match(POTT, MLE, PSD0, MTR, 0, 0), Local0)
++		Divide(Local0, 5, PPMM,) /* Primary PIO master Mode */
++		Store(Match(POTT, MLE, PSD1, MTR, 0, 0), Local1)
++		Divide(Local1, 5, PPSM,) /* Primary PIO slave Mode */
++
++		Store(DerefOf(Index(PORT, Local0)), PPTM) /* Primary PIO Master Timing */
++		Store(DerefOf(Index(PORT, Local1)), PPTS) /* Primary PIO Slave Timing */
++
++		If(And(BFFG, 0x01)) {	/* Drive 0 is under UDMA mode */
++			Store(Match(UDTT, MLE, DSD0, MTR, 0, 0), Local0)
++			Divide(Local0, 7, PDMM,)
++			Or(PDCR, 0x01, PDCR)
++		}
++		Else {
++			If(LNotEqual(DSD0, 0xFFFFFFFF)) {
++				Store(Match(MDTT, MLE, DSD0, MTR, 0, 0), Local0)
++				Store(DerefOf(Index(MDRT, Local0)), PMTM)
++			}
++		}
++
++		If(And(BFFG, 0x04)) {	/* Drive 1 is under UDMA mode */
++			Store(Match(UDTT, MLE, DSD1, MTR, 0, 0), Local0)
++			Divide(Local0, 7, PDSM,)
++			Or(PDCR, 0x02, PDCR)
++		}
++		Else {
++			If(LNotEqual(DSD1, 0xFFFFFFFF)) {
++				Store(Match(MDTT, MLE, DSD1, MTR, 0, 0), Local0)
++				Store(DerefOf(Index(MDRT, Local0)), PMTS)
++			}
++		}
++		/* Return(INBF) */
++	}		/*End Method(_STM) */
++	Device(MST)
++	{
++		Name(_ADR, 0)
++		Method(_GTF, 0, Serialized) {
++			Name(CMBF, Buffer(21) {
++				0x03, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xEF,
++				0x03, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xEF,
++				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF5
++			})
++			CreateByteField(CMBF, 1, POMD)
++			CreateByteField(CMBF, 8, DMMD)
++			CreateByteField(CMBF, 5, CMDA)
++			CreateByteField(CMBF, 12, CMDB)
++			CreateByteField(CMBF, 19, CMDC)
++
++			Store(0xA0, CMDA)
++			Store(0xA0, CMDB)
++			Store(0xA0, CMDC)
++
++			Or(PPMM, 0x08, POMD)
++
++			If(And(PDCR, 0x01)) {
++				Or(PDMM, 0x40, DMMD)
++			}
++			Else {
++				Store(Match
++				      (MDTT, MLE, GTTM(PMTM),
++				       MTR, 0, 0), Local0)
++				If(LLess(Local0, 3)) {
++					Or(0x20, Local0, DMMD)
++				}
++			}
++			Return(CMBF)
++		}
++	}		/* End Device(MST) */
++
++	Device(SLAV)
++	{
++		Name(_ADR, 1)
++		Method(_GTF, 0, Serialized) {
++			Name(CMBF, Buffer(21) {
++				0x03, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xEF,
++				0x03, 0x00, 0x00, 0x00, 0x00, 0xFF, 0xEF,
++				0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xF5
++			})
++			CreateByteField(CMBF, 1, POMD)
++			CreateByteField(CMBF, 8, DMMD)
++			CreateByteField(CMBF, 5, CMDA)
++			CreateByteField(CMBF, 12, CMDB)
++			CreateByteField(CMBF, 19, CMDC)
++
++			Store(0xB0, CMDA)
++			Store(0xB0, CMDB)
++			Store(0xB0, CMDC)
++
++			Or(PPSM, 0x08, POMD)
++
++			If(And(PDCR, 0x02)) {
++				Or(PDSM, 0x40, DMMD)
++			}
++			Else {
++				Store(Match
++				      (MDTT, MLE, GTTM(PMTS),
++				       MTR, 0, 0), Local0)
++				If(LLess(Local0, 3)) {
++					Or(0x20, Local0, DMMD)
++				}
++			}
++			Return(CMBF)
++		}
++	}			/* End Device(SLAV) */
++}
+diff --git a/src/southbridge/amd/sb700/acpi/sata.asl b/src/southbridge/amd/sb700/acpi/sata.asl
+new file mode 100644
+index 0000000..46a82b7
+--- /dev/null
++++ b/src/southbridge/amd/sb700/acpi/sata.asl
+@@ -0,0 +1,133 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++Name(STTM, Buffer(20) {
++	0x78, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00,
++	0x78, 0x00, 0x00, 0x00, 0x0f, 0x00, 0x00, 0x00,
++	0x1f, 0x00, 0x00, 0x00
++})
++
++/* Start by clearing the PhyRdyChg bits */
++Method(_INI) {
++	\_GPE._L1F()
++}
++
++Device(PMRY)
++{
++	Name(_ADR, 0)
++	Method(_GTM, 0x0, NotSerialized) {
++		Return(STTM)
++	}
++	Method(_STM, 0x3, NotSerialized) {}
++
++	Device(PMST) {
++		Name(_ADR, 0)
++		Method(_STA,0) {
++			if (LGreater(P0IS,0)) {
++				return (0x0F) /* sata is visible */
++			} else {
++				return  (0x00) /* sata is missing */
++			}
++		}
++	}/* end of PMST */
++
++	Device(PSLA)
++	{
++		Name(_ADR, 1)
++		Method(_STA,0) {
++			if (LGreater(P1IS,0)) {
++				return (0x0F) /* sata is visible */
++			} else {
++				return (0x00) /* sata is missing */
++			}
++		}
++	}	/* end of PSLA */
++}   /* end of PMRY */
++
++
++Device(SEDY)
++{
++	Name(_ADR, 1)		/* IDE Scondary Channel */
++	Method(_GTM, 0x0, NotSerialized) {
++		Return(STTM)
++	}
++	Method(_STM, 0x3, NotSerialized) {}
++
++	Device(SMST)
++	{
++		Name(_ADR, 0)
++		Method(_STA,0) {
++			if (LGreater(P2IS,0)) {
++				return (0x0F) /* sata is visible */
++			} else {
++				return (0x00) /* sata is missing */
++			}
++		}
++	} /* end of SMST */
++
++	Device(SSLA)
++	{
++		Name(_ADR, 1)
++		Method(_STA,0) {
++			if (LGreater(P3IS,0)) {
++				return (0x0F) /* sata is visible */
++			} else {
++				return (0x00) /* sata is missing */
++			}
++		}
++	} /* end of SSLA */
++}   /* end of SEDY */
++
++/* SATA Hot Plug Support */
++Scope(\_GPE) {
++	Method(_L1F,0x0,NotSerialized) {
++		if (\_SB.P0PR) {
++			if (LGreater(\_SB.P0IS,0)) {
++				sleep(32)
++			}
++			Notify(\_SB.PCI0.SAT0.PMRY.PMST, 0x01) /* NOTIFY_DEVICE_CHECK */
++			store(one, \_SB.P0PR)
++		}
++
++		if (\_SB.P1PR) {
++			if (LGreater(\_SB.P1IS,0)) {
++				sleep(32)
++			}
++			Notify(\_SB.PCI0.SAT0.PMRY.PSLA, 0x01) /* NOTIFY_DEVICE_CHECK */
++			store(one, \_SB.P1PR)
++		}
++
++		if (\_SB.P2PR) {
++			if (LGreater(\_SB.P2IS,0)) {
++				sleep(32)
++			}
++			Notify(\_SB.PCI0.SAT0.SEDY.SMST, 0x01) /* NOTIFY_DEVICE_CHECK */
++			store(one, \_SB.P2PR)
++		}
++
++		if (\_SB.P3PR) {
++			if (LGreater(\_SB.P3IS,0)) {
++				sleep(32)
++			}
++			Notify(\_SB.PCI0.SAT0.SEDY.SSLA, 0x01) /* NOTIFY_DEVICE_CHECK */
++			store(one, \_SB.P3PR)
++		}
++	}
++}
+diff --git a/src/southbridge/amd/sb700/bootblock.c b/src/southbridge/amd/sb700/bootblock.c
+index 67e6434..8f722a8 100644
+--- a/src/southbridge/amd/sb700/bootblock.c
++++ b/src/southbridge/amd/sb700/bootblock.c
+@@ -1,6 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -35,10 +36,17 @@
+ static void sb700_enable_rom(void)
+ {
+ 	u8 reg8;
++	u32 dword;
+ 	pci_devfn_t dev;
+ 
+ 	dev = PCI_DEV(0, 0x14, 3);
+ 
++	/* The LPC settings below work for SPI flash as well;
++	 * the hardware does not distinguish between LPC and SPI flash ROM
++	 * aside from offering additional side-channel access to SPI flash
++	 * via a separate register-based interface.
++	 */
++
+ 	/* Decode variable LPC ROM address ranges 1 and 2. */
+ 	reg8 = pci_io_read_config8(dev, 0x48);
+ 	reg8 |= (1 << 3) | (1 << 4);
+@@ -52,15 +60,41 @@ static void sb700_enable_rom(void)
+ 
+ 	/* LPC ROM address range 2: */
+ 	/*
+-	 * Enable LPC ROM range start at:
+-	 * 0xfff8(0000): 512KB
+-	 * 0xfff0(0000): 1MB
+-	 * 0xffe0(0000): 2MB
+-	 * 0xffc0(0000): 4MB
+-	 */
++	* Enable LPC ROM range start at:
++	* 0xfff8(0000): 512KB
++	* 0xfff0(0000): 1MB
++	* 0xffe0(0000): 2MB
++	* 0xffc0(0000): 4MB
++	* 0xff80(0000): 8MB
++	*/
+ 	pci_io_write_config16(dev, 0x6c, 0x10000 - (CONFIG_COREBOOT_ROMSIZE_KB >> 6));
+ 	/* Enable LPC ROM range end at 0xffff(ffff). */
+ 	pci_io_write_config16(dev, 0x6e, 0xffff);
++
++	/* SB700 LPC Bridge 0x48h.
++	 * Turn on all LPC IO Port decode enables
++	 */
++	dword = pci_io_read_config32(dev, 0x44);
++	dword = 0xffffffff;
++	pci_io_write_config32(dev, 0x44, dword);
++
++	/* SB700 LPC Bridge 0x48h.
++	 * BIT0: Port Enable for SuperIO 0x2E-0x2F
++	 * BIT1: Port Enable for SuperIO 0x4E-0x4F
++	 * BIT4: Port Enable for LPC ROM Address Arrage2 (0x68-0x6C)
++	 * BIT6: Port Enable for RTC IO 0x70-0x73
++	 * BIT21: Port Enable for Port 0x80
++	 */
++	reg8 = pci_io_read_config8(dev, 0x48);
++	reg8 |= (1<<0) | (1<<1) | (1<<4) | (1<<6);
++	pci_io_write_config8(dev, 0x48, reg8);
++
++	/* SB700 LPC Bridge 0x4ah.
++	 * BIT4: Port Enable for Port 0x80
++	 */
++	reg8 = pci_io_read_config8(dev, 0x4a);
++	reg8 |= (1<<4);
++	pci_io_write_config8(dev, 0x4a, reg8);
+ }
+ 
+ static void bootblock_southbridge_init(void)
+diff --git a/src/southbridge/amd/sb700/early_setup.c b/src/southbridge/amd/sb700/early_setup.c
+index d25599e..de3fa97 100644
+--- a/src/southbridge/amd/sb700/early_setup.c
++++ b/src/southbridge/amd/sb700/early_setup.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -395,6 +396,15 @@ static void sb700_devices_por_init(void)
+ 	byte |= (1 << 0);
+ 	pci_write_config8(dev, 0xd2, byte);
+ 
++	/* set auxiliary smbus iobase and enable controller */
++	pci_write_config32(dev, 0x58, SMBUS_AUX_IO_BASE | 1);
++
++	if (inw(SMBUS_IO_BASE) == 0xFF)
++		printk(BIOS_INFO, "sb700_devices_por_init(): Primary SMBUS controller I/O not found\n");
++
++	if (inw(SMBUS_AUX_IO_BASE) == 0xFF)
++		printk(BIOS_INFO, "sb700_devices_por_init(): Secondary SMBUS controller I/O not found\n");
++
+ 	/* KB2RstEnable */
+ 	pci_write_config8(dev, 0x40, 0x44);
+ 
+@@ -439,6 +449,14 @@ static void sb700_devices_por_init(void)
+ 	/*pci_write_config8(dev, 0x79, 0x4F); */
+ 	pci_write_config8(dev, 0x78, 0xFF);
+ 
++	if (IS_ENABLED(CONFIG_SOUTHBRIDGE_AMD_SB700_DISABLE_ISA_DMA)) {
++		printk(BIOS_DEBUG, "sb700_devices_por_init(): Disabling ISA DMA support\n");
++		/* Disable LPC ISA DMA Capability */
++		byte = pci_read_config8(dev, 0x78);
++		byte &= ~(1 << 0);
++		pci_write_config8(dev, 0x78, byte);
++	}
++
+ 	/* Set smbus iospace enable, I don't know why write 0x04 into reg5 that is reserved */
+ 	pci_write_config16(dev, 0x4, 0x0407);
+ 
+diff --git a/src/southbridge/amd/sb700/lpc.c b/src/southbridge/amd/sb700/lpc.c
+index a39ec18..0cc1e8b 100644
+--- a/src/southbridge/amd/sb700/lpc.c
++++ b/src/southbridge/amd/sb700/lpc.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -45,6 +46,8 @@ static void lpc_init(device_t dev)
+ 	u32 dword;
+ 	device_t sm_dev;
+ 
++	printk(BIOS_SPEW, "%s\n", __func__);
++
+ 	/* Enable the LPC Controller */
+ 	sm_dev = dev_find_slot(0, PCI_DEVFN(0x14, 0));
+ 	dword = pci_read_config32(sm_dev, 0x64);
+diff --git a/src/southbridge/amd/sb700/sm.c b/src/southbridge/amd/sb700/sm.c
+index c216e1f..a4b78d0 100644
+--- a/src/southbridge/amd/sb700/sm.c
++++ b/src/southbridge/amd/sb700/sm.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -59,11 +60,8 @@ static void sm_init(device_t dev)
+ 	printk(BIOS_INFO, "sm_init().\n");
+ 
+ 	rev = get_sb700_revision(dev);
+-	ioapic_base = (void *)(pci_read_config32(dev, 0x74) & (0xffffffe0));	/* some like mem resource, but does not have  enable bit */
+-	/* Don't rename APIC ID */
+-	/* TODO: We should call setup_ioapic() here. But kernel hangs if cpu is K8.
+-	 * We need to check out why and change back. */
+-	clear_ioapic(ioapic_base);
++	ioapic_base = (void *)(pci_read_config32(dev, 0x74) & (0xffffffe0));	/* some like mem resource, but does not have enable bit */
++	setup_ioapic(ioapic_base, 0); /* Don't rename IOAPIC ID. */
+ 
+ 	/* 2.10 Interrupt Routing/Filtering */
+ 	dword = pci_read_config8(dev, 0x62);
+@@ -129,9 +127,10 @@ static void sm_init(device_t dev)
+ 	get_option(&on, "power_on_after_fail");
+ 	byte = pm_ioread(0x74);
+ 	byte &= ~0x03;
+-	if (on) {
+-		byte |= 2;
+-	}
++	if (on == 1)
++		byte |= 0x1;	/* Force power on */
++	else if (on == 2)
++		byte |= 0x2;	/* Use last power state */
+ 	byte |= 1 << 2;
+ 	pm_iowrite(0x74, byte);
+ 	printk(BIOS_INFO, "set power %s after power fail\n", on ? "on" : "off");
+@@ -295,6 +294,10 @@ static void sm_init(device_t dev)
+ 	byte &= ~(1 << 1);
+ 	pm_iowrite(0x59, byte);
+ 
++	/* Enable SCI as irq9. */
++	outb(0x4, 0xC00);
++	outb(0x9, 0xC01);
++
+ 	printk(BIOS_INFO, "sm_init() end\n");
+ 
+ 	/* Enable NbSb virtual channel */
+@@ -385,7 +388,7 @@ static void sb700_sm_read_resources(device_t dev)
+ 	struct resource *res;
+ 
+ 	/* Get the normal pci resources of this device */
+-	/* pci_dev_read_resources(dev); */
++	pci_dev_read_resources(dev);
+ 
+ 	/* apic */
+ 	res = new_resource(dev, 0x74);
+diff --git a/src/southbridge/amd/sb700/smbus.h b/src/southbridge/amd/sb700/smbus.h
+index d223fe7..34b4098 100644
+--- a/src/southbridge/amd/sb700/smbus.h
++++ b/src/southbridge/amd/sb700/smbus.h
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -24,8 +25,8 @@
+ #include "stddef.h"
+ #include <arch/io.h>
+ 
+-#define SMBUS_IO_BASE 0x6000	/* Is it a temporary SMBus I/O base address? */
+-				/*SIZE 0x40 */
++#define SMBUS_IO_BASE 0xb00
++#define SMBUS_AUX_IO_BASE 0xb20
+ 
+ #define SMBHSTSTAT 0x0
+ #define SMBSLVSTAT 0x1
+-- 
+1.9.1
+

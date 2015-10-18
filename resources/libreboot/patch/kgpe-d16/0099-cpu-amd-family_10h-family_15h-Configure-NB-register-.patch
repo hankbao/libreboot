@@ -1,0 +1,34 @@
+From fd637f3c6c5a176a18cf44bbd163dd61cabd8fb1 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 7 Aug 2015 23:58:28 -0500
+Subject: [PATCH 099/139] cpu/amd/family_10h-family_15h: Configure NB register
+ 2
+
+Change-Id: I55cfc96a197514212b2a4c344d3513396ebc2ad4
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/defaults.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index 4868c5c..5ab4335 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -621,6 +621,14 @@ static const struct {
+ 					   [5] DisPciCfgCpuMstAbtRsp = 1,
+ 					   [1] SyncFloodOnUsPwDataErr = 1 */
+ 
++	/* NB Configuration 2 */
++	{ 3, 0x188, AMD_DR_GT_B0, AMD_PTYPE_ALL,
++	  0x00000010, 0x00000010 },	/* EnStpGntOnFlushMaskWakeup = 0x1 */
++
++	/* NB Configuration 2 */
++	{ 3, 0x188, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000200, 0x00000200 },	/* DisL3HiPriFreeListAlloc = 0x1 */
++
+ 	/* errata 346 - Fam10 C2, C3
+ 	 *  System software should set F3x188[22] to 1b. */
+ 	{ 3, 0x188, AMD_DR_Cx, AMD_PTYPE_ALL,
+-- 
+1.9.1
+

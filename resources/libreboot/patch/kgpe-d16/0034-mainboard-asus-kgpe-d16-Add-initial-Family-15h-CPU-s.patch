@@ -1,0 +1,565 @@
+From cf1d449f1ac17478863403eb4154433b4fb4a3e7 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 19:37:57 -0500
+Subject: [PATCH 034/139] mainboard/asus/kgpe-d16: Add initial Family 15h CPU
+ support
+
+Change-Id: I76f74ed4ae383f8b1f57eaaa2e025035002430f2
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/Kconfig       |   1 +
+ src/mainboard/asus/kgpe-d16/cmos.default  |   3 +-
+ src/mainboard/asus/kgpe-d16/cmos.layout   |  15 +-
+ src/mainboard/asus/kgpe-d16/devicetree.cb |   4 +
+ src/mainboard/asus/kgpe-d16/resourcemap.c | 276 +++++++++++++++++++++++++++++-
+ src/mainboard/asus/kgpe-d16/romstage.c    |  58 ++++---
+ 6 files changed, 326 insertions(+), 31 deletions(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/Kconfig b/src/mainboard/asus/kgpe-d16/Kconfig
+index 9471692..8906dee 100644
+--- a/src/mainboard/asus/kgpe-d16/Kconfig
++++ b/src/mainboard/asus/kgpe-d16/Kconfig
+@@ -13,6 +13,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select SOUTHBRIDGE_AMD_SB700_DISABLE_ISA_DMA
+ 	select SUPERIO_NUVOTON_NCT5572D
+ 	select PARALLEL_CPU_INIT
++	select HAVE_ROMSTAGE_CONSOLE_SPINLOCK
+ 	select HAVE_HARD_RESET
+ 	select HAVE_OPTION_TABLE
+ 	select HAVE_CMOS_DEFAULT
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.default b/src/mainboard/asus/kgpe-d16/cmos.default
+index 39a4778..3e2ea3a 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.default
++++ b/src/mainboard/asus/kgpe-d16/cmos.default
+@@ -2,13 +2,14 @@ baud_rate = 115200
+ debug_level = Spew
+ multi_core = Enable
+ slow_cpu = off
++compute_unit_siblings = Enable
+ iommu = Disable
+ nmi = Disable
+ hypertransport_speed_limit = Auto
+ max_mem_clock = DDR3-1600
+ minimum_memory_voltage = 1.5V
+ ECC_memory = Enable
+-ECC_redirection = Disable
++ECC_redirection = Enable
+ ecc_scrub_rate = 1.28us
+ interleave_chip_selects = Enable
+ interleave_nodes = Disable
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.layout b/src/mainboard/asus/kgpe-d16/cmos.layout
+index 110e0bb..e55edc4 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.layout
++++ b/src/mainboard/asus/kgpe-d16/cmos.layout
+@@ -31,8 +31,8 @@ entries
+ 401          1       e       1        interleave_chip_selects
+ 402          1       e       1        interleave_nodes
+ 403          1       e       1        interleave_memory_channels
+-404          2       e       8        max_mem_clock
+-406          1       e       2        multi_core
++404          4       e       8        max_mem_clock
++408          1       e       2        multi_core
+ 412          4       e       6        debug_level
+ 440          4       e       9        slow_cpu
+ 444          1       e       1        nmi
+@@ -42,6 +42,7 @@ entries
+ 457          1       e       1        ECC_redirection
+ 458          4       e       11       hypertransport_speed_limit
+ 462          2       e       12       minimum_memory_voltage
++464          1       e       2        compute_unit_siblings
+ 477          1       e       1        ieee1394
+ 728        256       h       0        user_data
+ 984         16       h       0        check_sum
+@@ -79,10 +80,12 @@ enumerations
+ 6     6     Information
+ 6     7     Debug
+ 6     8     Spew
+-8     0     DDR3-1600
+-8     1     DDR3-1333
+-8     2     DDR3-1066
+-8     3     DDR3-800
++8     0     DDR3-1866
++8     1     DDR3-1600
++8     2     DDR3-1333
++8     3     DDR3-1066
++8     4     DDR3-800
++8     5     DDR3-667
+ 9     0     off
+ 9     1     87.5%
+ 9     2     75.0%
+diff --git a/src/mainboard/asus/kgpe-d16/devicetree.cb b/src/mainboard/asus/kgpe-d16/devicetree.cb
+index a172d89..18e337e 100644
+--- a/src/mainboard/asus/kgpe-d16/devicetree.cb
++++ b/src/mainboard/asus/kgpe-d16/devicetree.cb
+@@ -228,21 +228,25 @@ chip northbridge/amd/amdfam10/root_complex	# Root complex
+ 			device pci 18.2 on end
+ 			device pci 18.3 on end
+ 			device pci 18.4 on end
++			device pci 18.5 on end
+ 			device pci 19.0 on end		# Socket 0 node 1
+ 			device pci 19.1 on end
+ 			device pci 19.2 on end
+ 			device pci 19.3 on end
+ 			device pci 19.4 on end
++			device pci 19.5 on end
+ 			device pci 1a.0 on end		# Socket 1 node 0
+ 			device pci 1a.1 on end
+ 			device pci 1a.2 on end
+ 			device pci 1a.3 on end
+ 			device pci 1a.4 on end
++			device pci 1a.5 on end
+ 			device pci 1b.0 on end		# Socket 1 node 1
+ 			device pci 1b.1 on end
+ 			device pci 1b.2 on end
+ 			device pci 1b.3 on end
+ 			device pci 1b.4 on end
++			device pci 1b.5 on end
+ 		end
+ 	end
+ end
+diff --git a/src/mainboard/asus/kgpe-d16/resourcemap.c b/src/mainboard/asus/kgpe-d16/resourcemap.c
+index 3e240dc..3aab8b8 100644
+--- a/src/mainboard/asus/kgpe-d16/resourcemap.c
++++ b/src/mainboard/asus/kgpe-d16/resourcemap.c
+@@ -23,7 +23,262 @@
+ 
+ static void setup_mb_resource_map(void)
+ {
+-	static const unsigned int register_values[] = {
++	static const unsigned int fam15h_register_values[] = {
++		/* Careful set limit registers before base registers which contain the enables */
++		/* DRAM Limit i Registers
++		 * F1:0x44 i = 0
++		 * F1:0x4C i = 1
++		 * F1:0x54 i = 2
++		 * F1:0x5C i = 3
++		 * F1:0x64 i = 4
++		 * F1:0x6C i = 5
++		 * F1:0x74 i = 6
++		 * F1:0x7C i = 7
++		 * [ 2: 0] Destination Node ID
++		 *	   000 = Node 0
++		 *	   001 = Node 1
++		 *	   010 = Node 2
++		 *	   011 = Node 3
++		 *	   100 = Node 4
++		 *	   101 = Node 5
++		 *	   110 = Node 6
++		 *	   111 = Node 7
++		 * [ 7: 3] Reserved
++		 * [10: 8] Interleave select
++		 *	   specifies the values of A[14:12] to use with interleave enable.
++		 * [15:11] Reserved
++		 * [31:16] DRAM Limit Address i Bits 39-24
++		 *	   This field defines the upper address bits of a 40 bit  address
++		 *	   that define the end of the DRAM region.
++		 */
++		// PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x44), 0x0000f8f8, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x4C), 0x0000f8f8, 0x00000001,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x54), 0x0000f8f8, 0x00000002,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x5C), 0x0000f8f8, 0x00000003,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x64), 0x0000f8f8, 0x00000004,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x6C), 0x0000f8f8, 0x00000005,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x74), 0x0000f8f8, 0x00000006,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x7C), 0x0000f8f8, 0x00000007,
++
++		/* DRAM Base i Registers
++		 * F1:0x40 i = 0
++		 * F1:0x48 i = 1
++		 * F1:0x50 i = 2
++		 * F1:0x58 i = 3
++		 * F1:0x60 i = 4
++		 * F1:0x68 i = 5
++		 * F1:0x70 i = 6
++		 * F1:0x78 i = 7
++		 * [ 0: 0] Read Enable
++		 *	   0 = Reads Disabled
++		 *	   1 = Reads Enabled
++		 * [ 1: 1] Write Enable
++		 *	   0 = Writes Disabled
++		 *	   1 = Writes Enabled
++		 * [ 7: 2] Reserved
++		 * [10: 8] Interleave Enable
++		 *	   000 = No interleave
++		 *	   001 = Interleave on A[12] (2 nodes)
++		 *	   010 = reserved
++		 *	   011 = Interleave on A[12] and A[14] (4 nodes)
++		 *	   100 = reserved
++		 *	   101 = reserved
++		 *	   110 = reserved
++		 *	   111 = Interleve on A[12] and A[13] and A[14] (8 nodes)
++		 * [15:11] Reserved
++		 * [31:16] DRAM Base Address i Bits 39-24
++		 *	   This field defines the upper address bits of a 40-bit address
++		 *	   that define the start of the DRAM region.
++		 */
++		// PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x40), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x48), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x50), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x58), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x60), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x68), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x70), 0x0000f8fc, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x78), 0x0000f8fc, 0x00000000,
++
++		/* Memory-Mapped I/O Limit i Registers
++		 * F1:0x84 i = 0
++		 * F1:0x8C i = 1
++		 * F1:0x94 i = 2
++		 * F1:0x9C i = 3
++		 * F1:0xA4 i = 4
++		 * F1:0xAC i = 5
++		 * F1:0xB4 i = 6
++		 * F1:0xBC i = 7
++		 * [ 2: 0] Destination Node ID
++		 *	   000 = Node 0
++		 *	   001 = Node 1
++		 *	   010 = Node 2
++		 *	   011 = Node 3
++		 *	   100 = Node 4
++		 *	   101 = Node 5
++		 *	   110 = Node 6
++		 *	   111 = Node 7
++		 * [ 3: 3] Reserved
++		 * [ 5: 4] Destination Link ID
++		 *	   00 = Link 0
++		 *	   01 = Link 1
++		 *	   10 = Link 2
++		 *	   11 = Link 3
++		 * [ 6: 6] Reserved
++		 * [ 7: 7] Non-Posted
++		 *	   0 = CPU writes may be posted
++		 *	   1 = CPU writes must be non-posted
++		 * [31: 8] Memory-Mapped I/O Limit Address i (39-16)
++		 *	   This field defines the upp adddress bits of a 40-bit address that
++		 *	   defines the end of a memory-mapped I/O region n
++		 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x84), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x8C), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x94), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x9C), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xA4), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xAC), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xB4), 0x00000048, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xBC), 0x00000048, 0x00000000,
++
++		/* Memory-Mapped I/O Base i Registers
++		 * F1:0x80 i = 0
++		 * F1:0x88 i = 1
++		 * F1:0x90 i = 2
++		 * F1:0x98 i = 3
++		 * F1:0xA0 i = 4
++		 * F1:0xA8 i = 5
++		 * F1:0xB0 i = 6
++		 * F1:0xB8 i = 7
++		 * [ 0: 0] Read Enable
++		 *	   0 = Reads disabled
++		 *	   1 = Reads Enabled
++		 * [ 1: 1] Write Enable
++		 *	   0 = Writes disabled
++		 *	   1 = Writes Enabled
++		 * [ 2: 2] Cpu Disable
++		 *	   0 = Cpu can use this I/O range
++		 *	   1 = Cpu requests do not use this I/O range
++		 * [ 3: 3] Lock
++		 *	   0 = base/limit registers i are read/write
++		 *	   1 = base/limit registers i are read-only
++		 * [ 7: 4] Reserved
++		 * [31: 8] Memory-Mapped I/O Base Address i (39-16)
++		 *	   This field defines the upper address bits of a 40bit address
++		 *	   that defines the start of memory-mapped I/O region i
++		 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x80), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x88), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x90), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0x98), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xA0), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xA8), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xB0), 0x000000f0, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xB8), 0x000000f0, 0x00000000,
++
++		/* PCI I/O Limit i Registers
++		 * F1:0xC4 i = 0
++		 * F1:0xCC i = 1
++		 * F1:0xD4 i = 2
++		 * F1:0xDC i = 3
++		 * [ 2: 0] Destination Node ID
++		 *	   000 = Node 0
++		 *	   001 = Node 1
++		 *	   010 = Node 2
++		 *	   011 = Node 3
++		 *	   100 = Node 4
++		 *	   101 = Node 5
++		 *	   110 = Node 6
++		 *	   111 = Node 7
++		 * [ 3: 3] Reserved
++		 * [ 5: 4] Destination Link ID
++		 *	   00 = Link 0
++		 *	   01 = Link 1
++		 *	   10 = Link 2
++		 *	   11 = Link 3
++		 * [11: 6] Reserved
++		 * [24:12] PCI I/O Limit Address i
++		 *	   This field defines the end of PCI I/O region n
++		 * [31:25] Reserved
++		 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xC4), 0xFE000FC8, 0x00fff010, /* link 1 of cpu 0 --> AMD SR5690 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xCC), 0xFE000FC8, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xD4), 0xFE000FC8, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xDC), 0xFE000FC8, 0x00000000,
++
++		/* PCI I/O Base i Registers
++		 * F1:0xC0 i = 0
++		 * F1:0xC8 i = 1
++		 * F1:0xD0 i = 2
++		 * F1:0xD8 i = 3
++		 * [ 0: 0] Read Enable
++		 *	   0 = Reads Disabled
++		 *	   1 = Reads Enabled
++		 * [ 1: 1] Write Enable
++		 *	   0 = Writes Disabled
++		 *	   1 = Writes Enabled
++		 * [ 3: 2] Reserved
++		 * [ 4: 4] VGA Enable
++		 *	   0 = VGA matches Disabled
++		 *	   1 = matches all address < 64K and where A[9:0] is in the
++		 *	       range 3B0-3BB or 3C0-3DF independent of the base & limit registers
++		 * [ 5: 5] ISA Enable
++		 *	   0 = ISA matches Disabled
++		 *	   1 = Blocks address < 64K and in the last 768 bytes of eack 1K block
++		 *	       from matching agains this base/limit pair
++		 * [11: 6] Reserved
++		 * [24:12] PCI I/O Base i
++		 *	   This field defines the start of PCI I/O region n
++		 * [31:25] Reserved
++		 */
++// 		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xC0), 0xFE000FCC, 0x00001013,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xC8), 0xFE000FCC, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xD0), 0xFE000FCC, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xD8), 0xFE000FCC, 0x00000000,
++
++		/* Config Base and Limit i Registers
++		 * F1:0xE0 i = 0
++		 * F1:0xE4 i = 1
++		 * F1:0xE8 i = 2
++		 * F1:0xEC i = 3
++		 * [ 0: 0] Read Enable
++		 *	   0 = Reads Disabled
++		 *	   1 = Reads Enabled
++		 * [ 1: 1] Write Enable
++		 *	   0 = Writes Disabled
++		 *	   1 = Writes Enabled
++		 * [ 2: 2] Device Number Compare Enable
++		 *	   0 = The ranges are based on bus number
++		 *	   1 = The ranges are ranges of devices on bus 0
++		 * [ 3: 3] Reserved
++		 * [ 6: 4] Destination Node
++		 *	   000 = Node 0
++		 *	   001 = Node 1
++		 *	   010 = Node 2
++		 *	   011 = Node 3
++		 *	   100 = Node 4
++		 *	   101 = Node 5
++		 *	   110 = Node 6
++		 *	   111 = Node 7
++		 * [ 7: 7] Reserved
++		 * [ 9: 8] Destination Link
++		 *	   00 = Link 0
++		 *	   01 = Link 1
++		 *	   10 = Link 2
++		 *	   11 - Link 3
++		 * [15:10] Reserved
++		 * [23:16] Bus Number Base i
++		 *	   This field defines the lowest bus number in configuration region i
++		 * [31:24] Bus Number Limit i
++		 *	   This field defines the highest bus number in configuration region i
++		 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xE0), 0x0000FC88, 0x05000103, /* link 1 of cpu 0 --> AMD SR5690 */
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xE4), 0x0000FC88, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xE8), 0x0000FC88, 0x00000000,
++		PCI_ADDR(CONFIG_CBB, CONFIG_CDB, 1, 0xEC), 0x0000FC88, 0x00000000,
++
++	};
++
++	static const unsigned int fam10h_register_values[] = {
+ 		/* Careful set limit registers before base registers which contain the enables */
+ 		/* DRAM Limit i Registers
+ 		 * F1:0x44 i = 0
+@@ -279,6 +534,21 @@ static void setup_mb_resource_map(void)
+ 	};
+ 
+ 	int max;
+-	max = ARRAY_SIZE(register_values);
+-	setup_resource_map(register_values, max);
++	uint8_t fam15h = 0;
++	uint32_t family;
++
++	family = cpuid_eax(0x80000001);
++	family = ((family & 0xf00000) >> 16) | ((family & 0xf00) >> 8);
++
++	if (family >= 0x6f)
++		/* Family 15h or later */
++		fam15h = 1;
++
++	if (fam15h) {
++		max = ARRAY_SIZE(fam15h_register_values);
++		setup_resource_map(fam15h_register_values, max);
++	} else {
++		max = ARRAY_SIZE(fam10h_register_values);
++		setup_resource_map(fam10h_register_values, max);
++	}
+ }
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index a3f3310..9ea7cec 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -42,6 +42,7 @@
+ #include <superio/nuvoton/common/nuvoton.h>
+ #include <superio/nuvoton/nct5572d/nct5572d.h>
+ #include <cpu/x86/bist.h>
++#include <smp/spinlock.h>
+ // #include "northbridge/amd/amdk8/incoherent_ht.c"
+ #include <southbridge/amd/sb700/sb700.h>
+ #include <southbridge/amd/sb700/smbus.h>
+@@ -202,20 +203,20 @@ void DIMMSetVoltages(struct MCTStatStruc *pMCTstat,
+ 		if (pDCTstat->NodePresent && (node & 0x1)) {
+ 			/* Set voltages */
+ 			if (allowed_voltages & 0x8) {
+-				set_voltage = 1150;
++				set_voltage = 0x8;
+ 				set_ddr3_voltage(socket, 3);
+ 			} else if (allowed_voltages & 0x4) {
+-				set_voltage = 1250;
++				set_voltage = 0x4;
+ 				set_ddr3_voltage(socket, 2);
+ 			} else if (allowed_voltages & 0x2) {
+-				set_voltage = 1350;
++				set_voltage = 0x2;
+ 				set_ddr3_voltage(socket, 1);
+ 			} else {
+-				set_voltage = 1500;
++				set_voltage = 0x1;
+ 				set_ddr3_voltage(socket, 0);
+ 			}
+ 
+-			/* Save final DIMM voltages for SMBIOS use */
++			/* Save final DIMM voltages for MCT and SMBIOS use */
+ 			if (pDCTstat->NodePresent) {
+ 				for (dimm = 0; dimm < MAX_DIMMS_SUPPORTED; dimm++) {
+ 					pDCTstat->DimmConfiguredVoltage[dimm] = set_voltage;
+@@ -229,6 +230,9 @@ void DIMMSetVoltages(struct MCTStatStruc *pMCTstat,
+ 			}
+ 		}
+ 	}
++
++	/* Allow the DDR supply voltages to settle */
++	udelay(100000);
+ }
+ 
+ static void set_peripheral_control_lines(void) {
+@@ -288,6 +292,18 @@ static void execute_memory_test(void)
+ }
+ #endif
+ 
++static spinlock_t printk_spinlock CAR_GLOBAL;
++
++spinlock_t* romstage_console_lock(void)
++{
++	return car_get_var_ptr(&printk_spinlock);
++}
++
++void initialize_romstage_console_lock(void)
++{
++	car_get_var(printk_spinlock) = SPIN_LOCK_UNLOCKED;
++}
++
+ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ {
+ 	struct sys_info *sysinfo = &sysinfo_car;
+@@ -302,6 +318,9 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	int s3resume = acpi_is_wakeup_s3();
+ 
+ 	if (!cpu_init_detectedx && boot_cpu()) {
++		/* Initialize the printk spinlock */
++		initialize_romstage_console_lock();
++
+ 		/* Nothing special needs to be done to find bus 0 */
+ 		/* Allow the HT devices to be found */
+ 		set_bsp_node_CHtExtNodeCfgEn();
+@@ -354,7 +373,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 	post_code(0x33);
+ 
+-	cpuSetAMDMSR();
++	cpuSetAMDMSR(0);
+ 	post_code(0x34);
+ 
+ 	amd_ht_init(sysinfo);
+@@ -368,18 +387,21 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	setup_mb_resource_map();
+ 	post_code(0x36);
+ 
+-	/* wait for all the APs core0 started by finalize_node_setup. */
+-	/* FIXME: A bunch of cores are going to start output to serial at once.
+-	 * It would be nice to fix up prink spinlocks for ROM XIP mode.
+-	 * I think it could be done by putting the spinlock flag in the cache
+-	 * of the BSP located right after sysinfo.
+-	 */
++	/* Wait for all the APs core0 started by finalize_node_setup. */
+ 	wait_all_core0_started();
+ 
+ 	/* run _early_setup before soft-reset. */
+ 	sr5650_early_setup();
+ 	sb7xx_51xx_early_setup();
+ 
++	if (IS_ENABLED(CONFIG_LOGICAL_CPUS)) {
++		/* Core0 on each node is configured. Now setup any additional cores. */
++		printk(BIOS_DEBUG, "start_other_cores()\n");
++		start_other_cores();
++		post_code(0x37);
++		wait_all_other_cores_started(bsp_apicid);
++	}
++
+ 	if (IS_ENABLED(CONFIG_SET_FIDVID)) {
+ 		msr = rdmsr(0xc0010071);
+ 		printk(BIOS_DEBUG, "\nBegin FIDVID MSR 0xc0010071 0x%08x 0x%08x\n", msr.hi, msr.lo);
+@@ -389,11 +411,13 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 		post_code(0x39);
+ 
++		#if IS_ENABLED(CONFIG_SET_FIDVID)
+ 		if (!warm_reset_detect(0)) {			// BSP is node 0
+ 			init_fidvid_bsp(bsp_apicid, sysinfo->nodes);
+ 		} else {
+ 			init_fidvid_stage2(bsp_apicid, 0);	// BSP is node 0
+ 		}
++		#endif
+ 
+ 		post_code(0x3A);
+ 
+@@ -402,21 +426,13 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 		printk(BIOS_DEBUG, "End FIDVIDMSR 0xc0010071 0x%08x 0x%08x\n", msr.hi, msr.lo);
+ 	}
+ 
+-	if (IS_ENABLED(CONFIG_LOGICAL_CPUS)) {
+-		/* Core0 on each node is configured. Now setup any additional cores. */
+-		printk(BIOS_DEBUG, "start_other_cores()\n");
+-		start_other_cores();
+-		post_code(0x37);
+-		wait_all_other_cores_started(bsp_apicid);
+-	}
+-
+ 	post_code(0x38);
+ 
+ 	init_timer(); // Need to use TMICT to synconize FID/VID
+ 
+ 	sr5650_htinit();
+ 
+-	/* Reset for HT, FIDVID, PLL and errata changes to take affect. */
++	/* Reset for HT, FIDVID, PLL and errata changes to take effect. */
+ 	if (!warm_reset_detect(0)) {
+ 		printk(BIOS_INFO, "...WARM RESET...\n\n\n");
+ 		soft_reset();
+-- 
+1.9.1
+

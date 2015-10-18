@@ -1,0 +1,53 @@
+From ade973158610c177dcdaa98cef1b44ebd6ad9255 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Mon, 1 Jun 2015 02:40:24 -0500
+Subject: [PATCH 027/139] northbridge/amd/amdmct/mct_ddr3: Fix failing S3
+ resume
+
+Change-Id: I852a8132ff2f39f9297447455ad03d728ce9c5f6
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index 1dcbea0..c9bcac1 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -602,7 +602,9 @@ int8_t save_mct_information_to_nvram(void)
+ int8_t restore_mct_information_from_nvram(void)
+ {
+ 	ssize_t s3nv_offset;
+-	struct amd_s3_persistent_data persistent_data;
++	ssize_t s3nv_file_offset;
++	void * s3nv_cbfs_file_ptr;
++	struct amd_s3_persistent_data *persistent_data;
+ 
+ 	/* Obtain CBFS file offset */
+ 	s3nv_offset = get_s3nv_file_offset();
+@@ -610,11 +612,19 @@ int8_t restore_mct_information_from_nvram(void)
+ 		return -1;
+ 
+ 	/* Align flash pointer to nearest boundary */
++	s3nv_file_offset = s3nv_offset;
+ 	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
+ 	s3nv_offset += CONFIG_S3_DATA_SIZE;
++	s3nv_file_offset = s3nv_offset - s3nv_file_offset;
+ 
+-	cbfs_read(CBFS_DEFAULT_MEDIA, &persistent_data, s3nv_offset, sizeof(struct amd_s3_persistent_data));
+-	restore_mct_data_from_save_variable(&persistent_data);
++	/* Map data structure in CBFS and restore settings */
++	s3nv_cbfs_file_ptr = cbfs_boot_map_with_leak(S3NV_FILE_NAME, CBFS_TYPE_RAW, NULL);
++	if (!s3nv_cbfs_file_ptr) {
++		printk(BIOS_DEBUG, "S3 state file could not be mapped: %s\n", S3NV_FILE_NAME);
++		return -1;
++	}
++	persistent_data = (s3nv_cbfs_file_ptr + s3nv_file_offset);
++	restore_mct_data_from_save_variable(persistent_data);
+ 
+ 	return 0;
+ }
+\ No newline at end of file
+-- 
+1.9.1
+

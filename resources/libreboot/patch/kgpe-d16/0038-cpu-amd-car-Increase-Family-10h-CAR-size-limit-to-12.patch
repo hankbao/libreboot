@@ -1,0 +1,31 @@
+From e3a15e1b280319fc3c95617b46630b31cf9b571e Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 2 Jun 2015 13:25:23 -0500
+Subject: [PATCH 038/139] cpu/amd/car: Increase Family 10h CAR size limit to
+ 128k
+
+This resolves issues with 4-node (32-core) systems not having
+sufficient CAR memory to boot.
+
+Change-Id: I5378df7fe8c034ba30f7fdf454f81dd10a0c2ae4
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/car/post_cache_as_ram.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cpu/amd/car/post_cache_as_ram.c b/src/cpu/amd/car/post_cache_as_ram.c
+index 787bedd..2282cee 100644
+--- a/src/cpu/amd/car/post_cache_as_ram.c
++++ b/src/cpu/amd/car/post_cache_as_ram.c
+@@ -114,7 +114,7 @@ void post_cache_as_ram(void)
+ 	 * boundary during romstage execution
+ 	 */
+ 	volatile uint32_t *lower_stack_boundary;
+-	lower_stack_boundary = (void *)((CONFIG_DCACHE_RAM_BASE + CONFIG_DCACHE_RAM_SIZE) - CONFIG_STACK_SIZE);
++	lower_stack_boundary = (void *)((CONFIG_DCACHE_RAM_BASE + CONFIG_DCACHE_RAM_SIZE) - CONFIG_DCACHE_BSP_STACK_SIZE);
+ 	if ((*lower_stack_boundary) != 0xdeadbeef)
+ 		printk(BIOS_WARNING, "BSP overran lower stack boundary.  Undefined behaviour may result!\n");
+ 
+-- 
+1.9.1
+

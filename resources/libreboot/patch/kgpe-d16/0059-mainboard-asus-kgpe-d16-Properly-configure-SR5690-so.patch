@@ -1,0 +1,32 @@
+From 64ad6ee510824d3804a38a538f1822e5313eb3a3 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 12 Jun 2015 20:10:58 -0500
+Subject: [PATCH 059/139] mainboard/asus/kgpe-d16: Properly configure SR5690
+ southbridge PIKE slot
+
+Change-Id: I2f1373905ffd6460ac3c7c21738e2e2a9aa2e463
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/devicetree.cb | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/devicetree.cb b/src/mainboard/asus/kgpe-d16/devicetree.cb
+index 18e337e..ada268b 100644
+--- a/src/mainboard/asus/kgpe-d16/devicetree.cb
++++ b/src/mainboard/asus/kgpe-d16/devicetree.cb
+@@ -43,9 +43,9 @@ chip northbridge/amd/amdfam10/root_complex	# Root complex
+ 					end
+ 					register "gpp1_configuration" = "0"	# Configuration 16:0 default
+ 					register "gpp2_configuration" = "1"	# Configuration 8:8
+-					#register "gpp3a_configuration" = "2"	# Configuration 4:1:1:0:0:0
+-					register "gpp3a_configuration" = "11"	# Configuration 1:1:1:1:1:1
+-					register "port_enable" = "0x3ffc"	# Enable all ports except 0 and 1
++					register "gpp3a_configuration" = "2"	# Configuration 4:1:1:0:0:0
++					register "port_enable" = "0x3f1c"	# Enable all ports except 0, 1, 5, 6, and 7
++					register "pcie_settling_time" = "1000000"	# Allow PIKE to be detected / configured
+ 				end
+ 				chip southbridge/amd/sb700		# Secondary southbridge
+ 					device pci 11.0 on end			# SATA
+-- 
+1.9.1
+

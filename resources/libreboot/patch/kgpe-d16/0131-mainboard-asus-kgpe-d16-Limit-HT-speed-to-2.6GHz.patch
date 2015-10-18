@@ -1,0 +1,41 @@
+From a3c83c34f3871be5624259a8a5d76bbae0386720 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 3 Sep 2015 17:39:51 -0500
+Subject: [PATCH 131/139] mainboard/asus/kgpe-d16: Limit HT speed to 2.6GHz
+
+The CPU <--> CPU HT wiring on this board has only been validated
+to 2.6GHz.  While higher frequencies appear to function initially,
+and in fact function when only one CPU package is installed, dual
+CPU package systems will lock up after around 6 - 12 hours of uptime
+due to presumed HT link errors at the higher (>= 2.8GHz) HT clocks.
+
+If applications are not being used that stress the coherent fabric,
+then the uptime before hang may be much longer.  Users attempting
+to overclock the HT links are advised to "burn in test" the HT links
+by running memtester locked to a node with no local memory installed.
+
+Change-Id: I8fae90c67aa0e8b103e9b8906dea50d1e92ea5a9
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/romstage.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index d1b75b6..8f1ec35 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -349,6 +349,11 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 	struct sys_info *sysinfo = &sysinfo_car;
+ 
++	/* Limit the maximum HT speed to 2.6GHz to prevent lockups
++	 * due to HT CPU <--> CPU wiring not being validated to 3.2GHz
++	 */
++	sysinfo->ht_link_cfg.ht_speed_limit = 2600;
++
+ 	uint32_t bsp_apicid = 0, val;
+ 	uint8_t byte;
+ 	msr_t msr;
+-- 
+1.9.1
+

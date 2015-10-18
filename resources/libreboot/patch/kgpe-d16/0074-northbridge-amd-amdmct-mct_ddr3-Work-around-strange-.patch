@@ -1,0 +1,42 @@
+From 91caf442aef8c846b9d860bf3e8d2954a2a5e21b Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 25 Jun 2015 18:37:45 -0500
+Subject: [PATCH 074/139] northbridge/amd/amdmct/mct_ddr3: Work around strange
+ phy training issue
+
+Change-Id: Ic7a19d24954f47c922126e3da7be1f7e85f7396f
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mhwlc_d.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mhwlc_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mhwlc_d.c
+index bb076cb..bd37ba7 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mhwlc_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mhwlc_d.c
+@@ -207,6 +207,22 @@ uint8_t AgesaHwWlPhase2(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCT
+ 
+ 		pDCTData->WLCriticalGrossDelayPrevPass = cgd;
+ 
++		if (pDCTstat->Speed != pDCTstat->TargetFreq) {
++			/* FIXME
++			 * Using the Pass 1 training values causes major phy training problems on
++			 * all Family 15h processors I tested (Pass 1 values are randomly too high,
++			 * and Pass 2 cannot lock).
++			 * Figure out why this is and fix it, then remove the bypass code below...
++			 */
++			if (pass == FirstPass) {
++				for (ByteLane = 0; ByteLane < MAX_BYTE_LANES; ByteLane++) {
++					pDCTData->WLGrossDelay[index+ByteLane] = pDCTData->WLSeedGrossDelay[index+ByteLane];
++					pDCTData->WLFineDelay[index+ByteLane] = pDCTData->WLSeedFineDelay[index+ByteLane];
++				}
++				return 0;
++			}
++		}
++
+ 		/* Compensate for occasional noise/instability causing sporadic training failure */
+ 		for (ByteLane = 0; ByteLane < MAX_BYTE_LANES; ByteLane++) {
+ 			uint8_t faulty_value_detected = 0;
+-- 
+1.9.1
+

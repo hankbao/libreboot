@@ -1,0 +1,49 @@
+From 5ab09d94caec3d1b2cbc156fdf0b32bd7c2e518c Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 28 Jul 2015 13:45:29 -0500
+Subject: [PATCH 085/139] northbridge/amd/amdmct: Fix Family 15h detection
+
+Change-Id: I3623f8945bd62b7050ec609934f96543552c792b
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct/mct.h        | 3 ++-
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct/mct.h b/src/northbridge/amd/amdmct/mct/mct.h
+index d399eea..1af11b1 100644
+--- a/src/northbridge/amd/amdmct/mct/mct.h
++++ b/src/northbridge/amd/amdmct/mct/mct.h
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2007 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -501,7 +502,7 @@ struct DCTStatStruc {		/* A per Node structure*/
+ u32 NodePresent(u32 Node);
+ u32 Get_NB32n(struct DCTStatStruc *pDCTstat, u32 addrx);
+ u32 Get_NB32(u32 addr); /* NOTE: extend addr to 32 bit for bus > 0 */
+-u32 mctGetLogicalCPUID(u32 Node);
++uint64_t mctGetLogicalCPUID(u32 Node);
+ 
+ void K8FInterleaveBanks(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstat);
+ 
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index 6b5d8c1..e327d38 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -985,7 +985,7 @@ u8 mct_Get_Start_RcvrEnDly_1Pass(u8 Pass);
+ u16 mct_Average_RcvrEnDly_Pass(struct DCTStatStruc *pDCTstat, u16 RcvrEnDly, u16 RcvrEnDlyLimit, u8 Channel, u8 Receiver, u8 Pass);
+ void CPUMemTyping_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+ void UMAMemTyping_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+-u32 mctGetLogicalCPUID(u32 Node);
++uint64_t mctGetLogicalCPUID(u32 Node);
+ u8 ECCInit_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+ void TrainReceiverEn_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA, u8 Pass);
+ void mct_TrainDQSPos_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+-- 
+1.9.1
+

@@ -1,0 +1,56 @@
+From 043f3abb58733fe14feb7cca5c2101f6a905aeb8 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 18:46:24 -0500
+Subject: [PATCH 020/139] cpu/amd/car: Add initial Suspend to RAM (S3) support
+
+Change-Id: I1e1a67fa3c2c13cebcf8f0af318055b9d97d0a59
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/car/post_cache_as_ram.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/src/cpu/amd/car/post_cache_as_ram.c b/src/cpu/amd/car/post_cache_as_ram.c
+index 230d1aa..e265de1 100644
+--- a/src/cpu/amd/car/post_cache_as_ram.c
++++ b/src/cpu/amd/car/post_cache_as_ram.c
+@@ -1,4 +1,5 @@
+ /* Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ * Copyright (C) 2012 ChromeOS Authors
+  * 2005.6 by yhlu
+  * 2006.3 yhlu add copy data from CAR to ram
+  */
+@@ -9,6 +10,7 @@
+ #include <cpu/amd/mtrr.h>
+ #include <cpu/amd/car.h>
+ #include <arch/acpi.h>
++#include <romstage_handoff.h>
+ #include "cbmem.h"
+ #include "cpu/amd/car/disable_cache_as_ram.c"
+ 
+@@ -103,6 +105,13 @@ void post_cache_as_ram(void)
+ {
+ 	void *resume_backup_memory = NULL;
+ 
++	struct romstage_handoff *handoff;
++	handoff = romstage_handoff_find_or_add();
++	if (handoff != NULL)
++		handoff->s3_resume = acpi_is_wakeup_s3();
++	else
++		printk(BIOS_DEBUG, "Romstage handoff structure not added!\n");
++
+ 	int s3resume = acpi_is_wakeup_s3();
+ 	if (s3resume) {
+ 		cbmem_recovery(s3resume);
+@@ -150,6 +159,9 @@ void cache_as_ram_new_stack (void)
+ 
+ 	if (acpi_is_wakeup_s3()) {
+ 		resume_backup_memory = cbmem_find(CBMEM_ID_RESUME);
++#if PRINTK_IN_CAR
++		printk(BIOS_DEBUG, "Resume backup memory location: %p\n", resume_backup_memory);
++#endif
+ 	}
+ 	prepare_ramstage_region(resume_backup_memory);
+ 
+-- 
+1.9.1
+

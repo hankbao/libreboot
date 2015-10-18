@@ -1,0 +1,100 @@
+From 2eced49516682afa1c56ac1e83a8f4260d4dec2a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Mon, 18 May 2015 16:04:10 -0500
+Subject: [PATCH 025/139] src/console: Add x86 romstage spinlock option
+
+Change-Id: Ice42a0d3177736bf6e1bc601092e413601866f20
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/arch/x86/include/arch/smp/spinlock.h | 10 +++++++++-
+ src/console/printk.c                     | 19 +++++++++++++++++++
+ 2 files changed, 28 insertions(+), 1 deletion(-)
+
+diff --git a/src/arch/x86/include/arch/smp/spinlock.h b/src/arch/x86/include/arch/smp/spinlock.h
+index 32be2f2..a5904c7 100644
+--- a/src/arch/x86/include/arch/smp/spinlock.h
++++ b/src/arch/x86/include/arch/smp/spinlock.h
+@@ -1,7 +1,7 @@
+ #ifndef ARCH_SMP_SPINLOCK_H
+ #define ARCH_SMP_SPINLOCK_H
+ 
+-#ifndef __PRE_RAM__
++#if !defined(__PRE_RAM__) || defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK)
+ 
+ /*
+  * Your basic SMP spinlocks, allowing only a single CPU anywhere
+@@ -11,9 +11,17 @@ typedef struct {
+ 	volatile unsigned int lock;
+ } spinlock_t;
+ 
++#ifdef __PRE_RAM__
++spinlock_t* romstage_console_lock(void);
++#endif
+ 
+ #define SPIN_LOCK_UNLOCKED (spinlock_t) { 1 }
++
++#ifndef __PRE_RAM__
+ #define DECLARE_SPIN_LOCK(x) static spinlock_t x = SPIN_LOCK_UNLOCKED;
++#else
++#define DECLARE_SPIN_LOCK(x)
++#endif
+ 
+ /*
+  * Simple spin lock operations.  There are two variants, one clears IRQ's
+diff --git a/src/console/printk.c b/src/console/printk.c
+index aab7ff5..2aae980 100644
+--- a/src/console/printk.c
++++ b/src/console/printk.c
+@@ -2,6 +2,7 @@
+  *  blatantly copied from linux/kernel/printk.c
+  *
+  *  Copyright (C) 1991, 1992  Linus Torvalds
++ *  Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  */
+ 
+@@ -13,7 +14,13 @@
+ #include <stddef.h>
+ #include <trace.h>
+ 
++#if defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK)
++#ifndef __PRE_RAM__
+ DECLARE_SPIN_LOCK(console_lock)
++#endif
++#else
++DECLARE_SPIN_LOCK(console_lock)
++#endif
+ 
+ void do_putchar(unsigned char byte)
+ {
+@@ -39,7 +46,13 @@ int do_printk(int msg_level, const char *fmt, ...)
+ #endif
+ 
+ 	DISABLE_TRACE;
++#ifdef __PRE_RAM__
++#ifdef CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK
++	spin_lock(romstage_console_lock());
++#endif
++#else
+ 	spin_lock(&console_lock);
++#endif
+ 
+ 	va_start(args, fmt);
+ 	i = vtxprintf(wrap_putchar, fmt, args, NULL);
+@@ -47,7 +60,13 @@ int do_printk(int msg_level, const char *fmt, ...)
+ 
+ 	console_tx_flush();
+ 
++#ifdef __PRE_RAM__
++#ifdef CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK
++	spin_unlock(romstage_console_lock());
++#endif
++#else
+ 	spin_unlock(&console_lock);
++#endif
+ 	ENABLE_TRACE;
+ 
+ 	return i;
+-- 
+1.9.1
+

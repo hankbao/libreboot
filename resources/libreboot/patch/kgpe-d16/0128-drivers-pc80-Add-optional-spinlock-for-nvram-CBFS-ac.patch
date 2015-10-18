@@ -1,0 +1,175 @@
+From f6d958412705c488a29bfad0aaaf7bc70cdb255a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 28 Aug 2015 19:52:05 -0500
+Subject: [PATCH 128/139] drivers/pc80: Add optional spinlock for nvram CBFS
+ access
+
+When enabling the IOMMU on certain systems dmesg is spammed with I/O page faults like the following:
+AMD-Vi: Event logged [IO_PAGE_FAULT device=00:14.0 domain=0x000a address=0x000000fdf9103300 flags=0x0030]
+
+Decoding the faulting address:
+0x000000fdf9103300
+        fdf91x          Hypertransport system management region
+              33        SysMgtCmd (System Management Command) = 0x33
+              3         Base Command Type = 0x3: STPCLK (Stop Clock request)
+               3        SMAF (System Management Action Field) = [3:1] = 0x1
+               1        Signal State Bit Map = [0] = 0x1
+
+Therefore, the error appears to be triggered by an upstream C1E request.
+
+This was eventually traced to concurrent access to the SP5100's SMBus controller by
+multiple APs during startup.  Calls to the nvram read functions get_option and read_option
+call CBFS functions, which in turn make near-simultaneous requests to the SMBus controller,
+thus placing the SP5100 in an invalid state.  This limitation is not documented in any public
+AMD errata, and was only discovered through considerable debugging effort.
+
+Change-Id: I4e61b1ab767b1b7958ac7c1cf20eee41d2261bef
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/Kconfig                              |  4 +++
+ src/arch/x86/include/arch/smp/spinlock.h |  4 ++-
+ src/cpu/amd/car/post_cache_as_ram.c      |  3 +++
+ src/drivers/pc80/mc146818rtc.c           | 43 ++++++++++++++++++++++++++++++--
+ 4 files changed, 51 insertions(+), 3 deletions(-)
+
+diff --git a/src/Kconfig b/src/Kconfig
+index 4e46364..b85e381 100644
+--- a/src/Kconfig
++++ b/src/Kconfig
+@@ -451,6 +451,10 @@ config HAVE_ROMSTAGE_CONSOLE_SPINLOCK
+ 	bool
+ 	default n
+ 
++config HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK
++	bool
++	default n
++
+ config HAVE_MONOTONIC_TIMER
+ 	def_bool n
+ 	help
+diff --git a/src/arch/x86/include/arch/smp/spinlock.h b/src/arch/x86/include/arch/smp/spinlock.h
+index 5000779..cf142a9 100644
+--- a/src/arch/x86/include/arch/smp/spinlock.h
++++ b/src/arch/x86/include/arch/smp/spinlock.h
+@@ -1,7 +1,7 @@
+ #ifndef ARCH_SMP_SPINLOCK_H
+ #define ARCH_SMP_SPINLOCK_H
+ 
+-#if !defined(__PRE_RAM__) || defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK)
++#if !defined(__PRE_RAM__) || defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK) || defined(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
+ 
+ /*
+  * Your basic SMP spinlocks, allowing only a single CPU anywhere
+@@ -14,6 +14,8 @@ typedef struct {
+ #ifdef __PRE_RAM__
+ spinlock_t* romstage_console_lock(void);
+ void initialize_romstage_console_lock(void);
++spinlock_t* romstage_nvram_cbfs_lock(void);
++void initialize_romstage_nvram_cbfs_lock(void);
+ #endif
+ 
+ #define SPIN_LOCK_UNLOCKED (spinlock_t) { 1 }
+diff --git a/src/cpu/amd/car/post_cache_as_ram.c b/src/cpu/amd/car/post_cache_as_ram.c
+index 2282cee..55bb1be 100644
+--- a/src/cpu/amd/car/post_cache_as_ram.c
++++ b/src/cpu/amd/car/post_cache_as_ram.c
+@@ -87,6 +87,9 @@ static void prepare_ramstage_region(void *resume_backup_memory)
+ #if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK)
+ 	initialize_romstage_console_lock();
+ #endif
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++	initialize_romstage_nvram_cbfs_lock();
++#endif
+ 
+ 	print_car_debug("Done\n");
+ }
+diff --git a/src/drivers/pc80/mc146818rtc.c b/src/drivers/pc80/mc146818rtc.c
+index 07fc884..59de0a2 100644
+--- a/src/drivers/pc80/mc146818rtc.c
++++ b/src/drivers/pc80/mc146818rtc.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright 2014 The Chromium OS Authors. All rights reserved.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -37,6 +38,11 @@
+ #define LB_CKS_LOC		0
+ #endif
+ 
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++#include <smp/spinlock.h>
++#endif
++#endif
+ 
+ static void cmos_reset_date(void)
+ {
+@@ -208,6 +214,12 @@ enum cb_err get_option(void *dest, const char *name)
+ 	if (!IS_ENABLED(CONFIG_USE_OPTION_TABLE))
+ 		return CB_CMOS_OTABLE_DISABLED;
+ 
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++	spin_lock(romstage_nvram_cbfs_lock());
++#endif
++#endif
++
+ 	/* Figure out how long name is */
+ 	namelen = strnlen(name, CMOS_MAX_NAME_LENGTH);
+ 
+@@ -217,6 +229,11 @@ enum cb_err get_option(void *dest, const char *name)
+ 	if (!ct) {
+ 		printk(BIOS_ERR, "RTC: cmos_layout.bin could not be found. "
+ 						"Options are disabled\n");
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++		spin_unlock(romstage_nvram_cbfs_lock());
++#endif
++#endif
+ 		return CB_CMOS_LAYOUT_NOT_FOUND;
+ 	}
+ 	ce = (struct cmos_entries*)((unsigned char *)ct + ct->header_length);
+@@ -229,13 +246,35 @@ enum cb_err get_option(void *dest, const char *name)
+ 	}
+ 	if (!found) {
+ 		printk(BIOS_DEBUG, "WARNING: No CMOS option '%s'.\n", name);
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++		spin_unlock(romstage_nvram_cbfs_lock());
++#endif
++#endif
+ 		return CB_CMOS_OPTION_NOT_FOUND;
+ 	}
+ 
+-	if (get_cmos_value(ce->bit, ce->length, dest) != CB_SUCCESS)
++	if (get_cmos_value(ce->bit, ce->length, dest) != CB_SUCCESS) {
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++		spin_unlock(romstage_nvram_cbfs_lock());
++#endif
++#endif
+ 		return CB_CMOS_ACCESS_ERROR;
+-	if (!cmos_checksum_valid(LB_CKS_RANGE_START, LB_CKS_RANGE_END, LB_CKS_LOC))
++	}
++	if (!cmos_checksum_valid(LB_CKS_RANGE_START, LB_CKS_RANGE_END, LB_CKS_LOC)) {
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++		spin_unlock(romstage_nvram_cbfs_lock());
++#endif
++#endif
+ 		return CB_CMOS_CHECKSUM_INVALID;
++	}
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++	spin_unlock(romstage_nvram_cbfs_lock());
++#endif
++#endif
+ 	return CB_SUCCESS;
+ }
+ 
+-- 
+1.9.1
+

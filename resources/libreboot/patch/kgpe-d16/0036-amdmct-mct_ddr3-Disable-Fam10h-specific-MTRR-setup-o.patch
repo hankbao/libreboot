@@ -1,0 +1,38 @@
+From fd67f1513d362a0a02f999b632c62b7b5c074a50 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Mon, 1 Jun 2015 20:35:42 -0500
+Subject: [PATCH 036/139] amdmct/mct_ddr3: Disable Fam10h-specific MTRR setup
+ on Fam15h
+
+Change-Id: I5c12b5ef8564402601634e9f3528bbf9303e0b33
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 74066b1..4677c73 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -1842,11 +1842,13 @@ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+ 
+ 	if (nv_DQSTrainCTL) {
+ 		mctHookBeforeAnyTraining(pMCTstat, pDCTstatA);
+-		/* TODO: should be in mctHookBeforeAnyTraining */
+-		_WRMSR(0x26C, 0x04040404, 0x04040404);
+-		_WRMSR(0x26D, 0x04040404, 0x04040404);
+-		_WRMSR(0x26E, 0x04040404, 0x04040404);
+-		_WRMSR(0x26F, 0x04040404, 0x04040404);
++		if (!is_fam15h()) {
++			/* TODO: should be in mctHookBeforeAnyTraining */
++			_WRMSR(0x26C, 0x04040404, 0x04040404);
++			_WRMSR(0x26D, 0x04040404, 0x04040404);
++			_WRMSR(0x26E, 0x04040404, 0x04040404);
++			_WRMSR(0x26F, 0x04040404, 0x04040404);
++		}
+ 		mct_WriteLevelization_HW(pMCTstat, pDCTstatA, FirstPass);
+ 
+ 		if (is_fam15h()) {
+-- 
+1.9.1
+

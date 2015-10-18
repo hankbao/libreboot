@@ -1,0 +1,781 @@
+From dbe04aaef5ba56c90824eb62aea47e281b75149f Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 4 Jun 2015 00:11:03 -0500
+Subject: [PATCH 043/139] amd/amdmct/mct_ddr3: Use training values from
+ previous boot if possible
+
+DRAM training accounts for most of the romstage startup time, yet
+if the hardware configuration has not changed from the previous boot
+the previously discovered training values are still valid.  Use them
+if the DIMM configuration has not changed since the last boot.
+
+Change-Id: I37ed277b16476d38e4af76c6ae827a575c6b017d
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/cmos.layout       |   1 +
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c   | 206 +++++++++++++++++---------
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h   |   6 +
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c | 175 +++++++++++++++++++---
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.h |  10 +-
+ src/northbridge/amd/amdmct/wrappers/mcti_d.c  |   4 +
+ 6 files changed, 308 insertions(+), 94 deletions(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.layout b/src/mainboard/asus/kgpe-d16/cmos.layout
+index e55edc4..7944631 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.layout
++++ b/src/mainboard/asus/kgpe-d16/cmos.layout
+@@ -43,6 +43,7 @@ entries
+ 458          4       e       11       hypertransport_speed_limit
+ 462          2       e       12       minimum_memory_voltage
+ 464          1       e       2        compute_unit_siblings
++465          1       r       0        allow_spd_nvram_cache_restore
+ 477          1       e       1        ieee1394
+ 728        256       h       0        user_data
+ 984         16       h       0        check_sum
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index e60adb7..20e66f2 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -39,7 +39,8 @@
+ static u8 ReconfigureDIMMspare_D(struct MCTStatStruc *pMCTstat,
+ 					struct DCTStatStruc *pDCTstatA);
+ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+-				struct DCTStatStruc *pDCTstatA);
++				struct DCTStatStruc *pDCTstatA,
++				uint8_t allow_config_restore);
+ static void LoadDQSSigTmgRegs_D(struct MCTStatStruc *pMCTstat,
+ 					struct DCTStatStruc *pDCTstatA);
+ static void HTMemMapInit_D(struct MCTStatStruc *pMCTstat,
+@@ -355,8 +356,7 @@ static uint32_t fam15h_phy_predriver_calibration_code(struct DCTStatStruc *pDCTs
+ 					else if (drive_strength == 0x3)
+ 						calibration_code = 0xfff;
+ 				}
+-			}
+-			else if (ddr_voltage_index & 0x2) {
++			} else if (ddr_voltage_index & 0x2) {
+ 				/* 1.35V */
+ 				/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 42 */
+ 				if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -390,8 +390,7 @@ static uint32_t fam15h_phy_predriver_calibration_code(struct DCTStatStruc *pDCTs
+ 					else if (drive_strength == 0x3)
+ 						calibration_code = 0xdb6;
+ 				}
+-			}
+-			else if (ddr_voltage_index & 0x1) {
++			} else if (ddr_voltage_index & 0x1) {
+ 				/* 1.5V */
+ 				/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 41 */
+ 				if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -426,8 +425,7 @@ static uint32_t fam15h_phy_predriver_calibration_code(struct DCTStatStruc *pDCTs
+ 						calibration_code = 0xb6d;
+ 				}
+ 			}
+-		}
+-		else if (package_type == PT_C3) {
++		} else if (package_type == PT_C3) {
+ 			/* Socket C32 */
+ 			if (ddr_voltage_index & 0x4) {
+ 				/* 1.25V */
+@@ -473,8 +471,7 @@ static uint32_t fam15h_phy_predriver_calibration_code(struct DCTStatStruc *pDCTs
+ 					else if (drive_strength == 0x3)
+ 						calibration_code = 0xfff;
+ 				}
+-			}
+-			else if (ddr_voltage_index & 0x2) {
++			} else if (ddr_voltage_index & 0x2) {
+ 				/* 1.35V */
+ 				/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 45 */
+ 				if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -518,8 +515,7 @@ static uint32_t fam15h_phy_predriver_calibration_code(struct DCTStatStruc *pDCTs
+ 					else if (drive_strength == 0x3)
+ 						calibration_code = 0xdb6;
+ 				}
+-			}
+-			else if (ddr_voltage_index & 0x1) {
++			} else if (ddr_voltage_index & 0x1) {
+ 				/* 1.5V */
+ 				/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 44 */
+ 				if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -619,8 +615,7 @@ static uint32_t fam15h_phy_predriver_cmd_addr_calibration_code(struct DCTStatStr
+ 			else if (drive_strength == 0x3)
+ 				calibration_code = 0xb64;
+ 		}
+-	}
+-	else if (ddr_voltage_index & 0x2) {
++	} else if (ddr_voltage_index & 0x2) {
+ 		/* 1.35V */
+ 		/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 51 */
+ 		if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -654,8 +649,7 @@ static uint32_t fam15h_phy_predriver_cmd_addr_calibration_code(struct DCTStatStr
+ 			else if (drive_strength == 0x3)
+ 				calibration_code = 0x924;
+ 		}
+-	}
+-	else if (ddr_voltage_index & 0x1) {
++	} else if (ddr_voltage_index & 0x1) {
+ 		/* 1.5V */
+ 		/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 50 */
+ 		if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -736,8 +730,7 @@ static uint32_t fam15h_phy_predriver_clk_calibration_code(struct DCTStatStruc *p
+ 			else if (drive_strength == 0x3)
+ 				calibration_code = 0xff6;
+ 		}
+-	}
+-	else if (ddr_voltage_index & 0x2) {
++	} else if (ddr_voltage_index & 0x2) {
+ 		/* 1.35V */
+ 		/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 54 */
+ 		if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -771,8 +764,7 @@ static uint32_t fam15h_phy_predriver_clk_calibration_code(struct DCTStatStruc *p
+ 			else if (drive_strength == 0x3)
+ 				calibration_code = 0xdad;
+ 		}
+-	}
+-	else if (ddr_voltage_index & 0x1) {
++	} else if (ddr_voltage_index & 0x1) {
+ 		/* 1.5V */
+ 		/* Fam15h BKDG Rev. 3.14 section 2.10.5.3.4 Table 53 */
+ 		if ((MemClkFreq == 0x4) || (MemClkFreq == 0x6)) {
+@@ -841,16 +833,13 @@ static uint32_t fam15h_output_driver_compensation_code(struct DCTStatStruc *pDCT
+ 			else if (MemClkFreq == 0x6) {
+ 				/* DDR3-800 */
+ 				calibration_code = 0x10112222;
+-			}
+-			else if (MemClkFreq == 0xa) {
++			} else if (MemClkFreq == 0xa) {
+ 				/* DDR3-1066 */
+ 				calibration_code = 0x20112222;
+-			}
+-			else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
++			} else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
+ 				/* DDR3-1333 - DDR3-1600 */
+ 				calibration_code = 0x30112222;
+-			}
+-			else if (MemClkFreq == 0x16) {
++			} else if (MemClkFreq == 0x16) {
+ 				/* DDR3-1866 */
+ 				calibration_code = 0x30332222;
+ 			}
+@@ -860,16 +849,13 @@ static uint32_t fam15h_output_driver_compensation_code(struct DCTStatStruc *pDCT
+ 				if (MemClkFreq == 0x4) {
+ 					/* DDR3-667 */
+ 					calibration_code = 0x00112222;
+-				}
+-				else if (MemClkFreq == 0x6) {
++				} else if (MemClkFreq == 0x6) {
+ 					/* DDR3-800 */
+ 					calibration_code = 0x10112222;
+-				}
+-				else if (MemClkFreq == 0xa) {
++				} else if (MemClkFreq == 0xa) {
+ 					/* DDR3-1066 */
+ 					calibration_code = 0x20112222;
+-				}
+-				else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
++				} else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
+ 					/* DDR3-1333 - DDR3-1600 */
+ 					calibration_code = 0x30112222;
+ 				}
+@@ -881,20 +867,16 @@ static uint32_t fam15h_output_driver_compensation_code(struct DCTStatStruc *pDCT
+ 				if (MemClkFreq == 0x4) {
+ 					/* DDR3-667 */
+ 					calibration_code = 0x10222222;
+-				}
+-				else if (MemClkFreq == 0x6) {
++				} else if (MemClkFreq == 0x6) {
+ 					/* DDR3-800 */
+ 					calibration_code = 0x20222222;
+-				}
+-				else if (MemClkFreq == 0xa) {
++				} else if (MemClkFreq == 0xa) {
+ 					/* DDR3-1066 */
+ 					calibration_code = 0x30222222;
+-				}
+-				else if (MemClkFreq == 0xe) {
++				} else if (MemClkFreq == 0xe) {
+ 					/* DDR3-1333 */
+ 					calibration_code = 0x30222222;
+-				}
+- 				else if (MemClkFreq == 0x12) {
++				} else if (MemClkFreq == 0x12) {
+  					/* DDR3-1600 */
+  					if ((rank_count_dimm0 == 1) && (rank_count_dimm1 == 1))
+  						calibration_code = 0x30222222;
+@@ -1081,8 +1063,7 @@ static uint8_t fam15h_slow_access_mode(struct DCTStatStruc *pDCTstat, uint8_t dc
+ 					|| (MemClkFreq == 0xa) | (MemClkFreq == 0xe)) {
+ 					/* DDR3-667 - DDR3-1333 */
+ 					slow_access = 0;
+-				}
+-				else if (MemClkFreq == 0x12) {
++				} else if (MemClkFreq == 0x12) {
+ 					/* DDR3-1600 */
+ 					if (rank_count_dimm0 == 1)
+ 						slow_access = 0;
+@@ -1098,8 +1079,7 @@ static uint8_t fam15h_slow_access_mode(struct DCTStatStruc *pDCTstat, uint8_t dc
+ 					|| (MemClkFreq == 0xa)) {
+ 					/* DDR3-667 - DDR3-1066 */
+ 					slow_access = 0;
+-				}
+-				else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
++				} else if ((MemClkFreq == 0xe) || (MemClkFreq == 0x12)) {
+ 					/* DDR3-1333 - DDR3-1600 */
+ 					slow_access = 1;
+ 				}
+@@ -1184,6 +1164,30 @@ static void read_spd_bytes(struct MCTStatStruc *pMCTstat,
+ 	}
+ }
+ 
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
++static void calculate_and_store_spd_hashes(struct MCTStatStruc *pMCTstat,
++				struct DCTStatStruc *pDCTstat)
++{
++	uint8_t dimm;
++
++	for (dimm = 0; dimm < MAX_DIMMS_SUPPORTED; dimm++) {
++		calculate_spd_hash(pDCTstat->spd_data.spd_bytes[dimm], &pDCTstat->spd_data.spd_hash[dimm]);
++	}
++}
++
++static void compare_nvram_spd_hashes(struct MCTStatStruc *pMCTstat,
++				struct DCTStatStruc *pDCTstat)
++{
++	uint8_t dimm;
++
++	pDCTstat->spd_data.nvram_spd_match = 1;
++	for (dimm = 0; dimm < MAX_DIMMS_SUPPORTED; dimm++) {
++		if (pDCTstat->spd_data.spd_hash[dimm] != pDCTstat->spd_data.nvram_spd_hash[dimm])
++			pDCTstat->spd_data.nvram_spd_match = 0;
++	}
++}
++#endif
++
+ static void mctAutoInitMCT_D(struct MCTStatStruc *pMCTstat,
+ 			struct DCTStatStruc *pDCTstatA)
+ {
+@@ -1232,6 +1236,8 @@ static void mctAutoInitMCT_D(struct MCTStatStruc *pMCTstat,
+ 	 */
+ 	u8 Node, NodesWmem;
+ 	u32 node_sys_base;
++	uint8_t nvram;
++	uint8_t allow_config_restore;
+ 
+ 	uint8_t s3resume = acpi_is_wakeup_s3();
+ 
+@@ -1248,7 +1254,7 @@ restartinit:
+ 
+ #if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: Restoring DCT configuration from NVRAM\n");
+-		restore_mct_information_from_nvram();
++		restore_mct_information_from_nvram(0);
+ #endif
+ 
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_ForceNBPState0_Dis_Fam15\n");
+@@ -1298,11 +1304,26 @@ restartinit:
+ 			node_sys_base += (pDCTstat->NodeSysLimit + 2) & ~0x0F;
+ 		}
+ 
++		/* If the boot fails make sure training is attempted after reset */
++		nvram = 0;
++		set_option("allow_spd_nvram_cache_restore", &nvram);
++
+ #if IS_ENABLED(DIMM_VOLTAGE_SET_SUPPORT)
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: DIMMSetVoltage\n");
+ 		DIMMSetVoltages(pMCTstat, pDCTstatA);	/* Set the DIMM voltages (mainboard specific) */
+ #endif
+ 
++		/* If DIMM configuration has not changed since last boot restore training values */
++		allow_config_restore = 1;
++		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
++			struct DCTStatStruc *pDCTstat;
++			pDCTstat = pDCTstatA + Node;
++
++			if (pDCTstat->NodePresent)
++				if (!pDCTstat->spd_data.nvram_spd_match)
++					allow_config_restore = 0;
++		}
++
+ 		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+ 			struct DCTStatStruc *pDCTstat;
+ 			pDCTstat = pDCTstatA + Node;
+@@ -1336,14 +1357,33 @@ restartinit:
+ 		CPUMemTyping_D(pMCTstat, pDCTstatA);	/* Map dram into WB/UC CPU cacheability */
+ 		mctHookAfterCPU();			/* Setup external northbridge(s) */
+ 
++		/* FIXME
++		 * Previous training values should only be used if the current desired
++		 * speed is the same as the speed used in the previous boot.
++		 * How to get the desired speed at this point in the code?
++		 */
++#if 0
++		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
++			struct DCTStatStruc *pDCTstat;
++			pDCTstat = pDCTstatA + Node;
++
++			if (pDCTstat->NodePresent) {
++				if (pDCTstat->spd_data.nvram_memclk[0] != pDCTstat->DIMMAutoSpeed)
++					allow_config_restore = 0;
++			}
++		}
++#endif
++
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: DQSTiming_D\n");
+-		DQSTiming_D(pMCTstat, pDCTstatA);	/* Get Receiver Enable and DQS signal timing*/
++		DQSTiming_D(pMCTstat, pDCTstatA, allow_config_restore);	/* Get Receiver Enable and DQS signal timing*/
+ 
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: UMAMemTyping_D\n");
+ 		UMAMemTyping_D(pMCTstat, pDCTstatA);	/* Fix up for UMA sizing */
+ 
+-		printk(BIOS_DEBUG, "mctAutoInitMCT_D: :OtherTiming\n");
+-		mct_OtherTiming(pMCTstat, pDCTstatA);
++		if (!allow_config_restore) {
++			printk(BIOS_DEBUG, "mctAutoInitMCT_D: :OtherTiming\n");
++			mct_OtherTiming(pMCTstat, pDCTstatA);
++		}
+ 
+ 		if (ReconfigureDIMMspare_D(pMCTstat, pDCTstatA)) { /* RESET# if 1st pass of DIMM spare enabled*/
+ 			goto restartinit;
+@@ -1825,7 +1865,7 @@ static void exit_training_mode_fam15(struct MCTStatStruc *pMCTstat,
+ }
+ 
+ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+-				struct DCTStatStruc *pDCTstatA)
++				struct DCTStatStruc *pDCTstatA, uint8_t allow_config_restore)
+ {
+ 	u8 nv_DQSTrainCTL;
+ 
+@@ -1833,9 +1873,8 @@ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+ 		return;
+ 	}
+ 
+-	nv_DQSTrainCTL = mctGet_NVbits(NV_DQSTrainCTL);
+-	/* FIXME: BOZO- DQS training every time*/
+-	nv_DQSTrainCTL = 1;
++	// nv_DQSTrainCTL = mctGet_NVbits(NV_DQSTrainCTL);
++	nv_DQSTrainCTL = !allow_config_restore;
+ 
+ 	mct_BeforeDQSTrain_D(pMCTstat, pDCTstatA);
+ 	phyAssistedMemFnceTraining(pMCTstat, pDCTstatA);
+@@ -1854,15 +1893,16 @@ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+ 		}
+ 	}
+ 
++	mctHookBeforeAnyTraining(pMCTstat, pDCTstatA);
++	if (!is_fam15h()) {
++		/* TODO: should be in mctHookBeforeAnyTraining */
++		_WRMSR(0x26C, 0x04040404, 0x04040404);
++		_WRMSR(0x26D, 0x04040404, 0x04040404);
++		_WRMSR(0x26E, 0x04040404, 0x04040404);
++		_WRMSR(0x26F, 0x04040404, 0x04040404);
++	}
++
+ 	if (nv_DQSTrainCTL) {
+-		mctHookBeforeAnyTraining(pMCTstat, pDCTstatA);
+-		if (!is_fam15h()) {
+-			/* TODO: should be in mctHookBeforeAnyTraining */
+-			_WRMSR(0x26C, 0x04040404, 0x04040404);
+-			_WRMSR(0x26D, 0x04040404, 0x04040404);
+-			_WRMSR(0x26E, 0x04040404, 0x04040404);
+-			_WRMSR(0x26F, 0x04040404, 0x04040404);
+-		}
+ 		mct_WriteLevelization_HW(pMCTstat, pDCTstatA, FirstPass);
+ 
+ 		if (is_fam15h()) {
+@@ -1892,18 +1932,25 @@ static void DQSTiming_D(struct MCTStatStruc *pMCTstat,
+ 			exit_training_mode_fam15(pMCTstat, pDCTstatA);
+ 		else
+ 			mctSetEccDQSRcvrEn_D(pMCTstat, pDCTstatA);
++	} else {
++		mct_WriteLevelization_HW(pMCTstat, pDCTstatA, FirstPass);
+ 
+-		/* FIXME - currently uses calculated value	TrainMaxReadLatency_D(pMCTstat, pDCTstatA); */
+-		mctHookAfterAnyTraining();
+-		mctSaveDQSSigTmg_D();
++		mct_WriteLevelization_HW(pMCTstat, pDCTstatA, SecondPass);
+ 
+-		MCTMemClr_D(pMCTstat, pDCTstatA);
+-	} else {
+-		mctGetDQSSigTmg_D();	/* get values into data structure */
+-		LoadDQSSigTmgRegs_D(pMCTstat, pDCTstatA);	/* load values into registers.*/
+-		/* mctDoWarmResetMemClr_D(); */
+-		MCTMemClr_D(pMCTstat, pDCTstatA);
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: Restoring DIMM training configuration from NVRAM\n");
++		restore_mct_information_from_nvram(1);
++#endif
++
++		if (is_fam15h())
++			exit_training_mode_fam15(pMCTstat, pDCTstatA);
+ 	}
++
++	/* FIXME - currently uses calculated value	TrainMaxReadLatency_D(pMCTstat, pDCTstatA); */
++	mctHookAfterAnyTraining();
++
++	/* mctDoWarmResetMemClr_D(); */
++	MCTMemClr_D(pMCTstat, pDCTstatA);
+ }
+ 
+ static void LoadDQSSigTmgRegs_D(struct MCTStatStruc *pMCTstat,
+@@ -3913,6 +3960,8 @@ static void mct_preInitDCT(struct MCTStatStruc *pMCTstat,
+ 				struct DCTStatStruc *pDCTstat)
+ {
+ 	u8 err_code;
++	uint8_t nvram;
++	uint8_t allow_config_restore;
+ 
+ 	/* Preconfigure DCT0 */
+ 	DCTPreInit_D(pMCTstat, pDCTstat, 0);
+@@ -3927,6 +3976,27 @@ static void mct_preInitDCT(struct MCTStatStruc *pMCTstat,
+ 				pDCTstat->ErrCode = err_code;	/* Using DCT0 Error code to update pDCTstat.ErrCode */
+ 		}
+ 	}
++
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
++	calculate_and_store_spd_hashes(pMCTstat, pDCTstat);
++
++	if (load_spd_hashes_from_nvram(pDCTstat) < 0) {
++		pDCTstat->spd_data.nvram_spd_match = 0;
++	}
++	else {
++		compare_nvram_spd_hashes(pMCTstat, pDCTstat);
++	}
++#else
++	pDCTstat->spd_data.nvram_spd_match = 0;
++#endif
++
++	/* Check to see if restoration of SPD data from NVRAM is allowed */
++	allow_config_restore = 0;
++	if (get_option(&nvram, "allow_spd_nvram_cache_restore") == CB_SUCCESS)
++		allow_config_restore = !!nvram;
++
++	if (!allow_config_restore)
++		pDCTstat->spd_data.nvram_spd_match = 0;
+ }
+ 
+ static void mct_initDCT(struct MCTStatStruc *pMCTstat,
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index 5bb09b4..539ecc3 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -325,6 +325,10 @@ struct MCTStatStruc {
+ struct amd_spd_node_data {
+ 	uint8_t spd_bytes[MAX_DIMMS_SUPPORTED][256];	/* [DIMM][byte] */
+ 	uint8_t spd_address[MAX_DIMMS_SUPPORTED];	/* [DIMM] */
++	uint64_t spd_hash[MAX_DIMMS_SUPPORTED];		/* [DIMM] */
++	uint64_t nvram_spd_hash[MAX_DIMMS_SUPPORTED];	/* [DIMM] */
++	uint8_t nvram_spd_match;
++	uint8_t nvram_memclk[2];			/* [channel] */
+ } __attribute__((packed));
+ 
+ struct DCTStatStruc {		/* A per Node structure*/
+@@ -784,6 +788,8 @@ struct amd_s3_persistent_mct_channel_data {
+ 
+ struct amd_s3_persistent_node_data {
+ 	uint32_t node_present;
++	uint64_t spd_hash[MAX_DIMMS_SUPPORTED];
++	uint8_t memclk[2];
+ 	struct amd_s3_persistent_mct_channel_data channel[2];
+ } __attribute__((packed));
+ 
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index aa23951..fa1873a 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -26,8 +26,10 @@
+ #include <device/pci_ops.h>
+ #include <console/console.h>
+ #include <cbfs.h>
++#include <cbmem.h>
+ #include <spi-generic.h>
+ #include <spi_flash.h>
++#include <pc80/mc146818rtc.h>
+ 
+ #include "s3utils.h"
+ 
+@@ -124,6 +126,68 @@ static uint32_t read_amd_dct_index_register_dct(device_t dev, uint8_t node, uint
+ 	return read_amd_dct_index_register(dev, index_ctl_reg, index);
+ }
+ 
++/* Non-cryptographic 64-bit hash function taken from Stack Overflow:
++ * http://stackoverflow.com/a/13326345
++ * Any 64-bit hash with sufficiently low collision potential
++ * could be used instead.
++ */
++void calculate_spd_hash(uint8_t *spd_data, uint64_t *spd_hash)
++{
++	const unsigned long long prime = 2654435789ULL;
++	uint16_t byte;
++	*spd_hash = 104395301;
++
++	for (byte = 0; byte < 256; byte++)
++		*spd_hash += (spd_data[byte] * prime) ^ (*spd_hash >> 23);
++
++	*spd_hash = *spd_hash ^ (*spd_hash << 37);
++}
++
++static struct amd_s3_persistent_data * map_s3nv_in_nvram(void)
++{
++	ssize_t s3nv_offset;
++	ssize_t s3nv_file_offset;
++	void * s3nv_cbfs_file_ptr;
++	struct amd_s3_persistent_data *persistent_data;
++
++	/* Obtain CBFS file offset */
++	s3nv_offset = get_s3nv_file_offset();
++	if (s3nv_offset == -1)
++		return NULL;
++
++	/* Align flash pointer to nearest boundary */
++	s3nv_file_offset = s3nv_offset;
++	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
++	s3nv_offset += CONFIG_S3_DATA_SIZE;
++	s3nv_file_offset = s3nv_offset - s3nv_file_offset;
++
++	/* Map data structure in CBFS and restore settings */
++	s3nv_cbfs_file_ptr = cbfs_boot_map_with_leak(S3NV_FILE_NAME, CBFS_TYPE_RAW, NULL);
++	if (!s3nv_cbfs_file_ptr) {
++		printk(BIOS_DEBUG, "S3 state file could not be mapped: %s\n", S3NV_FILE_NAME);
++		return NULL;
++	}
++	persistent_data = (s3nv_cbfs_file_ptr + s3nv_file_offset);
++
++	return persistent_data;
++}
++
++#ifdef __PRE_RAM__
++int8_t load_spd_hashes_from_nvram(struct DCTStatStruc *pDCTstat)
++{
++	struct amd_s3_persistent_data *persistent_data;
++
++	persistent_data = map_s3nv_in_nvram();
++	if (!persistent_data)
++		return -1;
++
++	memcpy(pDCTstat->spd_data.nvram_spd_hash, persistent_data->node[pDCTstat->Node_ID].spd_hash, sizeof(pDCTstat->spd_data.nvram_spd_hash));
++	memcpy(pDCTstat->spd_data.nvram_memclk, persistent_data->node[pDCTstat->Node_ID].memclk, sizeof(pDCTstat->spd_data.nvram_memclk));
++
++	return 0;
++}
++#endif
++
+ #ifdef __RAMSTAGE__
+ static uint64_t rdmsr_uint64_t(unsigned long index) {
+ 	msr_t msr = rdmsr(index);
+@@ -149,6 +213,31 @@ static uint32_t read_config32_dct_nbpstate(device_t dev, uint8_t node, uint8_t d
+ 	return pci_read_config32(dev, reg);
+ }
+ 
++static void copy_cbmem_spd_data_to_save_variable(struct amd_s3_persistent_data* persistent_data)
++{
++	uint8_t node;
++	uint8_t dimm;
++	uint8_t channel;
++	struct amdmct_memory_info *mem_info;
++	mem_info = cbmem_find(CBMEM_ID_AMDMCT_MEMINFO);
++	if (mem_info == NULL) {
++		/* can't find amdmct information in cbmem */
++		for (node = 0; node < MAX_NODES_SUPPORTED; node++)
++			for (dimm = 0; dimm < MAX_DIMMS_SUPPORTED; dimm++)
++				persistent_data->node[node].spd_hash[dimm] = 0xffffffffffffffffULL;
++
++		return;
++	}
++
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++)
++		for (dimm = 0; dimm < MAX_DIMMS_SUPPORTED; dimm++)
++			calculate_spd_hash(mem_info->dct_stat[node].spd_data.spd_bytes[dimm], &persistent_data->node[node].spd_hash[dimm]);
++
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++)
++		for (channel = 0; channel < 2; channel++)
++			persistent_data->node[node].memclk[channel] = mem_info->dct_stat[node].Speed;
++}
++
+ void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_data)
+ {
+ 	uint8_t i;
+@@ -441,7 +530,7 @@ static void wrmsr_uint64_t(unsigned long index, uint64_t value) {
+ 	wrmsr(index, msr);
+ }
+ 
+-void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data)
++void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data, uint8_t training_only)
+ {
+ 	uint8_t i;
+ 	uint8_t j;
+@@ -451,6 +540,51 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ 	uint8_t dct_enabled;
+ 	uint32_t dword;
+ 
++	if (training_only) {
++		/* Only restore the Receiver Enable and DQS training registers */
++		for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++			for (channel = 0; channel < 2; channel++) {
++				struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++				if (!persistent_data->node[node].node_present)
++					continue;
++
++				/* Restore training parameters */
++				for (i=0; i<4; i++)
++					for (j=0; j<3; j++)
++						write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, (0x01 + i) + (0x100 * j), data->f2x9cx3_0_0_3_1[i][j]);
++				for (i=0; i<4; i++)
++					for (j=0; j<3; j++)
++						write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, (0x05 + i) + (0x100 * j), data->f2x9cx3_0_0_7_5[i][j]);
++
++				for (i=0; i<12; i++)
++					write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x10 + i, data->f2x9cx10[i]);
++				for (i=0; i<12; i++)
++					write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x20 + i, data->f2x9cx20[i]);
++
++				if (IS_ENABLED(CONFIG_DIMM_DDR3)) {
++					for (i=0; i<12; i++)
++						write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x30 + i, data->f2x9cx30[i]);
++					for (i=0; i<12; i++)
++						write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x40 + i, data->f2x9cx40[i]);
++				}
++
++				/* Restore MaxRdLatency */
++				if (is_fam15h()) {
++					for (i=0; i<4; i++)
++						write_config32_dct_nbpstate(PCI_DEV(0, 0x18 + node, 2), node, channel, i, 0x210, data->f2x210[i]);
++				}
++				else {
++					write_config32_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x78, data->f2x78);
++				}
++
++				/* Other timing control registers */
++				write_config32_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x8c, data->f2x8c);
++			}
++		}
++
++		return;
++	}
++
+ 	/* Load data from data structure into DCTs */
+ 	/* Stage 1 */
+ 	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
+@@ -501,7 +635,8 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ 			wrmsr_uint64_t(0x00000250, data->msr00000250);
+ 			wrmsr_uint64_t(0x00000258, data->msr00000258);
+ 			/* FIXME
+-			 * Restoring these MSRs causes a hang on resume
++			 * Restoring these MSRs causes a hang on resume due to
++			 * destroying CAR while still executing from CAR!
+ 			 * For now, skip restoration...
+ 			 */
+ 			// for (i=0; i<8; i++)
+@@ -890,6 +1025,8 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ #ifdef __RAMSTAGE__
+ int8_t save_mct_information_to_nvram(void)
+ {
++	uint8_t nvram;
++
+ 	if (acpi_is_wakeup_s3())
+ 		return 0;
+ 
+@@ -909,6 +1046,9 @@ int8_t save_mct_information_to_nvram(void)
+ 	/* Obtain MCT configuration data */
+ 	copy_mct_data_to_save_variable(persistent_data);
+ 
++	/* Save RAM SPD data at the same time */
++	copy_cbmem_spd_data_to_save_variable(persistent_data);
++
+ 	/* Obtain CBFS file offset */
+ 	s3nv_offset = get_s3nv_file_offset();
+ 	if (s3nv_offset == -1)
+@@ -949,36 +1089,23 @@ int8_t save_mct_information_to_nvram(void)
+ 	/* Restore SPI MMIO address */
+ 	pci_write_config32(lpc_dev, 0xa0, spi_mmio_prev);
+ 
++	/* Allow training bypass if DIMM configuration is unchanged on next boot */
++	nvram = 1;
++	set_option("allow_spd_nvram_cache_restore", &nvram);
++
+ 	return 0;
+ }
+ #endif
+ 
+-int8_t restore_mct_information_from_nvram(void)
++int8_t restore_mct_information_from_nvram(uint8_t training_only)
+ {
+-	ssize_t s3nv_offset;
+-	ssize_t s3nv_file_offset;
+-	void * s3nv_cbfs_file_ptr;
+ 	struct amd_s3_persistent_data *persistent_data;
+ 
+-	/* Obtain CBFS file offset */
+-	s3nv_offset = get_s3nv_file_offset();
+-	if (s3nv_offset == -1)
++	persistent_data = map_s3nv_in_nvram();
++	if (!persistent_data)
+ 		return -1;
+ 
+-	/* Align flash pointer to nearest boundary */
+-	s3nv_file_offset = s3nv_offset;
+-	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
+-	s3nv_offset += CONFIG_S3_DATA_SIZE;
+-	s3nv_file_offset = s3nv_offset - s3nv_file_offset;
+-
+-	/* Map data structure in CBFS and restore settings */
+-	s3nv_cbfs_file_ptr = cbfs_boot_map_with_leak(S3NV_FILE_NAME, CBFS_TYPE_RAW, NULL);
+-	if (!s3nv_cbfs_file_ptr) {
+-		printk(BIOS_DEBUG, "S3 state file could not be mapped: %s\n", S3NV_FILE_NAME);
+-		return -1;
+-	}
+-	persistent_data = (s3nv_cbfs_file_ptr + s3nv_file_offset);
+-	restore_mct_data_from_save_variable(persistent_data);
++	restore_mct_data_from_save_variable(persistent_data, training_only);
+ 
+ 	return 0;
+-}
+\ No newline at end of file
++}
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
+index dcddcad..82f73a7 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
+@@ -20,9 +20,15 @@
+ #include "../wrappers/mcti.h"
+ #include "mct_d.h"
+ 
++void calculate_spd_hash(uint8_t *spd_data, uint64_t *spd_hash);
++
++#ifdef __PRE_RAM__
++int8_t load_spd_hashes_from_nvram(struct DCTStatStruc *pDCTstat);
++#endif
++
+ #ifdef __RAMSTAGE__
+ int8_t save_mct_information_to_nvram(void);
+ #endif
+-int8_t restore_mct_information_from_nvram(void);
++int8_t restore_mct_information_from_nvram(uint8_t training_only);
+ void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_data);
+-void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data);
+\ No newline at end of file
++void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data, uint8_t training_only);
+\ No newline at end of file
+diff --git a/src/northbridge/amd/amdmct/wrappers/mcti_d.c b/src/northbridge/amd/amdmct/wrappers/mcti_d.c
+index 1d4eade..af34d3b 100644
+--- a/src/northbridge/amd/amdmct/wrappers/mcti_d.c
++++ b/src/northbridge/amd/amdmct/wrappers/mcti_d.c
+@@ -399,14 +399,18 @@ static void mctHookAfterCPU(void)
+ }
+ 
+ 
++#if IS_ENABLED(CONFIG_DIMM_DDR2)
+ static void mctSaveDQSSigTmg_D(void)
+ {
+ }
++#endif
+ 
+ 
++#if IS_ENABLED(CONFIG_DIMM_DDR2)
+ static void mctGetDQSSigTmg_D(void)
+ {
+ }
++#endif
+ 
+ 
+ static void mctHookBeforeECC(void)
+-- 
+1.9.1
+

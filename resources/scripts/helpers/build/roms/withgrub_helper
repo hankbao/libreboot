@@ -73,6 +73,13 @@ do
 					continue
 			fi
 	fi
+	if [ "${boardtarget}" = "kgpe-d16" ]; then
+		if [ "${romtype}" = "vesafb" ]; then
+			printf "Only text-mode is reported to work on KGPE-D16\n"
+			printf "TODO: get tpearson to fix it\n"
+			continue
+		fi
+	fi
 
 	# Build coreboot ROM image
 	make clean

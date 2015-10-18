@@ -1,0 +1,51 @@
+From 789bac438e1ab4c10ec6bbeb9f62a78d0abcd156 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 3 Jul 2015 17:16:22 -0500
+Subject: [PATCH 081/139] src/southbridge/amd/sr5650: Always configure lane
+ director on startup
+
+On the ASUS KGPE-D16 it was noted that the pin straps did not properly
+configure the lane director hardware, causing link training failure
+on NIC B.  Forcing coreboot to always reconfigure the lane director
+on startup resolves this problem.
+
+Change-Id: I5b78cef84960e0f42cc3e0406a7031d12d21f3ad
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sr5650/pcie.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
+
+diff --git a/src/southbridge/amd/sr5650/pcie.c b/src/southbridge/amd/sr5650/pcie.c
+index 79f2a5f..09ce217 100644
+--- a/src/southbridge/amd/sr5650/pcie.c
++++ b/src/southbridge/amd/sr5650/pcie.c
+@@ -862,8 +862,6 @@ void sr56x0_lock_hwinitreg(void)
+ void config_gpp_core(device_t nb_dev, device_t sb_dev)
+ {
+ 	u32 reg;
+-	struct southbridge_amd_sr5650_config *cfg =
+-		(struct southbridge_amd_sr5650_config *)nb_dev->chip_info;
+ 
+ 	reg = nbmisc_read_index(nb_dev, 0x20);
+ 	if (AtiPcieCfg.Config & PCIE_ENABLE_STATIC_DEV_REMAP)
+@@ -879,14 +877,9 @@ void config_gpp_core(device_t nb_dev, device_t sb_dev)
+ 	reg &= ~((1 << 31) | (1 << 15) | (1 << 13));	//De-asserts
+ 	nbmisc_write_index(nb_dev, 0x8, reg);
+ 
+-	reg = nbmisc_read_index(nb_dev, 0x67); /* get STRAP_BIF_LINK_CONFIG at bit 0-4 */
+-	if (cfg->gpp3a_configuration != (reg & 0x1F))
+-		switching_gpp3a_configurations(nb_dev, sb_dev);
+-	reg = nbmisc_read_index(nb_dev, 0x8);  /* get MULTIPORT_CONFIG_GPP1 MULTIPORT_CONFIG_CONFIG_GPP2 at bit 8,9 */
+-	if ((cfg->gpp1_configuration << 8) != (reg & (1 << 8)))
+-		switching_gpp1_configurations(nb_dev, sb_dev);
+-	if ((cfg->gpp2_configuration << 9) != (reg & (1 << 9)))
+-		switching_gpp2_configurations(nb_dev, sb_dev);
++	switching_gpp3a_configurations(nb_dev, sb_dev);
++	switching_gpp1_configurations(nb_dev, sb_dev);
++	switching_gpp2_configurations(nb_dev, sb_dev);
+ 	ValidatePortEn(nb_dev);
+ }
+ 
+-- 
+1.9.1
+

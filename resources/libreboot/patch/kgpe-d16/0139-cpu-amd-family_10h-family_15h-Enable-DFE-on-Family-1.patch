@@ -1,0 +1,32 @@
+From 43dd7e42cfd9e3af706dd28fc482921b54029496 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 13 Sep 2015 15:54:32 -0500
+Subject: [PATCH 139/139] cpu/amd/family_10h-family_15h: Enable DFE on Family
+ 15h HT3 links
+
+Change-Id: I5e719984ddd723f9e375ff1a9d4fa1ef042cf3eb
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/defaults.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index 7a84fcb..b906866 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -857,4 +857,12 @@ static const struct {
+ 	{ 0xC0, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_ALL,
+ 	  0x40040000, 0xe01F0000 },	/* [31:29] RttCtl = 02h,
+ 					   [20:16] RttIndex = 04h */
++
++	{ 0xc4, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x00013480, 0x0003fc80 },	/* [17:10] DCV = 0x4d,
++					       [7] DfeEn = 0x1 */
++
++	{ 0xd4, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x00013480, 0x0003fc80 },     /* [17:10] DCV = 0x4d,
++					       [7] DfeEn = 0x1 */
+ };
+-- 
+1.9.1
+

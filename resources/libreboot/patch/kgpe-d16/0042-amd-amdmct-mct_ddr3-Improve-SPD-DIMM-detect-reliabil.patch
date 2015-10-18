@@ -1,0 +1,49 @@
+From 32a016ee1dea33731b9994fe23a4c43421006f99 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 4 Jun 2015 00:10:03 -0500
+Subject: [PATCH 042/139] amd/amdmct/mct_ddr3: Improve SPD DIMM detect
+ reliability
+
+Change-Id: Ifab63eca2233c63a6a42ab8b7e742f8e47fb2a09
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 5344ff9..e60adb7 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -3657,6 +3657,7 @@ static u8 DIMMPresence_D(struct MCTStatStruc *pMCTstat,
+ 	u8 devwidth;
+ 	u16 DimmSlots;
+ 	u8 byte = 0, bytex;
++	uint8_t crc_status;
+ 
+ 	/* preload data structure with addrs */
+ 	mctGet_DIMMAddr(pDCTstat, pDCTstat->Node_ID);
+@@ -3677,10 +3678,20 @@ static u8 DIMMPresence_D(struct MCTStatStruc *pMCTstat,
+ 			int status;
+ 			smbaddr = Get_DIMMAddress_D(pDCTstat, i);
+ 			status = mctRead_SPD(smbaddr, SPD_ByteUse);
++			if (status >= 0) {
++				/* Verify result */
++				status = mctRead_SPD(smbaddr, SPD_ByteUse);
++			}
+ 			if (status >= 0) { /* SPD access is ok */
+ 				pDCTstat->DIMMPresent |= 1 << i;
+ 				read_spd_bytes(pMCTstat, pDCTstat, i);
+-				if (crcCheck(pDCTstat, i)) { /* CRC is OK */
++				crc_status = crcCheck(pDCTstat, i);
++				if (!crc_status) {
++					/* Try again in case there was a transient glitch */
++					read_spd_bytes(pMCTstat, pDCTstat, i);
++					crc_status = crcCheck(pDCTstat, i);
++				}
++				if (crc_status) { /* CRC is OK */
+ 					byte = pDCTstat->spd_data.spd_bytes[i][SPD_TYPE];
+ 					if (byte == JED_DDR3SDRAM) {
+ 						/*Dimm is 'Present'*/
+-- 
+1.9.1
+

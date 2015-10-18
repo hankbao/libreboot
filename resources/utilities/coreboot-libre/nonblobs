@@ -318,9 +318,6 @@
 ./src/mainboard/intel/strago/Kconfig
 ./src/mainboard/amd/bettong/mptable.c
 ./src/northbridge/amd/pi/00660F01/Kconfig
-./build/util/kconfig/zconf.tab.c
-./build/util/kconfig/zconf.lex.c
-./build/util/kconfig/zconf.hash.c
 ./util/crossgcc/patches/gcc-5.2.0_riscv.patch
 ./util/xcompile/xcompile
 ./src/northbridge/intel/sandybridge/raminit_mrc.c
@@ -353,3 +350,8 @@
 ./3rdparty/vboot/firmware/lib/cgptlib/crc32.c
 ./3rdparty/vboot/firmware/lib/cryptolib/padding.c
 ./3rdparty/vboot/tests/testcases/padding_test_vectors.inc
+./src/northbridge/intel/fsp_rangeley/fsp/Kconfig
+./src/drivers/intel/fsp1_1/car.c
+./src/mainboard/intel/mohonpeak/Kconfig
+./src/mainboard/apple/macbookair4_2/early_southbridge.c
+./src/cpu/intel/fsp_model_406dx/acpi.c

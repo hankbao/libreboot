@@ -1,0 +1,96 @@
+From 215348b2c83c3f1464b0c4d318e5ff6318d82a02 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 11 Aug 2015 17:52:31 -0500
+Subject: [PATCH 114/139] northbridge/amd/amdfam10: Fix gart setup not working
+ on Family 15h processors
+
+Change-Id: Ib78620c30502df6add9cc2ea1dbd4fb6dc89203e
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/misc_control.c | 34 ++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 8 deletions(-)
+
+diff --git a/src/northbridge/amd/amdfam10/misc_control.c b/src/northbridge/amd/amdfam10/misc_control.c
+index 1df570c..4b62c69 100644
+--- a/src/northbridge/amd/amdfam10/misc_control.c
++++ b/src/northbridge/amd/amdfam10/misc_control.c
+@@ -77,7 +77,7 @@ static void mcf3_read_resources(device_t dev)
+ 	}
+ }
+ 
+-static void set_agp_aperture(device_t dev)
++static void set_agp_aperture(device_t dev, uint32_t pci_id)
+ {
+ 	struct resource *resource;
+ 
+@@ -97,7 +97,7 @@ static void set_agp_aperture(device_t dev)
+ 
+ 		/* Update the other northbriges */
+ 		pdev = 0;
+-		while((pdev = dev_find_device(PCI_VENDOR_ID_AMD, 0x1203, pdev))) {
++		while ((pdev = dev_find_device(PCI_VENDOR_ID_AMD, pci_id, pdev))) {
+ 			/* Store the GART size but don't enable it */
+ 			pci_write_config32(pdev, 0x90, gart_acr);
+ 
+@@ -113,10 +113,19 @@ static void set_agp_aperture(device_t dev)
+ 	}
+ }
+ 
+-static void mcf3_set_resources(device_t dev)
++static void mcf3_set_resources_fam10h(device_t dev)
+ {
+ 	/* Set the gart apeture */
+-	set_agp_aperture(dev);
++	set_agp_aperture(dev, 0x1203);
++
++	/* Set the generic PCI resources */
++	pci_dev_set_resources(dev);
++}
++
++static void mcf3_set_resources_fam15h(device_t dev)
++{
++	/* Set the gart apeture */
++	set_agp_aperture(dev, 0x1603);
+ 
+ 	/* Set the generic PCI resources */
+ 	pci_dev_set_resources(dev);
+@@ -155,9 +164,18 @@ static void misc_control_init(struct device *dev)
+ }
+ 
+ 
+-static struct device_operations mcf3_ops  = {
++static struct device_operations mcf3_ops_fam10h  = {
++	.read_resources   = mcf3_read_resources,
++	.set_resources    = mcf3_set_resources_fam10h,
++	.enable_resources = pci_dev_enable_resources,
++	.init             = misc_control_init,
++	.scan_bus         = 0,
++	.ops_pci          = 0,
++};
++
++static struct device_operations mcf3_ops_fam15h  = {
+ 	.read_resources   = mcf3_read_resources,
+-	.set_resources    = mcf3_set_resources,
++	.set_resources    = mcf3_set_resources_fam15h,
+ 	.enable_resources = pci_dev_enable_resources,
+ 	.init             = misc_control_init,
+ 	.scan_bus         = 0,
+@@ -165,13 +183,13 @@ static struct device_operations mcf3_ops  = {
+ };
+ 
+ static const struct pci_driver mcf3_driver __pci_driver = {
+-	.ops    = &mcf3_ops,
++	.ops    = &mcf3_ops_fam10h,
+ 	.vendor = PCI_VENDOR_ID_AMD,
+ 	.device = 0x1203,
+ };
+ 
+ static const struct pci_driver mcf3_driver_fam15 __pci_driver = {
+-	.ops    = &mcf3_ops,
++	.ops    = &mcf3_ops_fam15h,
+ 	.vendor = PCI_VENDOR_ID_AMD,
+ 	.device = 0x1603,
+ };
+-- 
+1.9.1
+

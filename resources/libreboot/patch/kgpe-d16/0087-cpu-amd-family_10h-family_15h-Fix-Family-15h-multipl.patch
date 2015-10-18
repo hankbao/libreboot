@@ -1,0 +1,1931 @@
+From 0489e5c40921fd2ec7c7b5adb7ae69d180af8f9c Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 30 Jul 2015 14:07:15 -0500
+Subject: [PATCH 087/139] cpu/amd/family_10h-family_15h: Fix Family 15h
+ multiple package support
+
+TEST: Booted ASUS KGPE-D16 with two Opteron 6328 processors
+and several different RDIMM configurations.
+
+Change-Id: I171197c90f72d3496a385465937b7666cbf7e308
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/car/cache_as_ram.inc                   |  17 ++-
+ src/cpu/amd/family_10h-family_15h/defaults.h       | 101 +++++++++++++--
+ src/cpu/amd/family_10h-family_15h/fidvid.c         |  81 ++++++------
+ src/cpu/amd/family_10h-family_15h/init_cpus.c      |  66 +++++++++-
+ src/cpu/amd/quadcore/quadcore.c                    |  19 +--
+ src/cpu/amd/quadcore/quadcore_id.c                 |   1 -
+ src/mainboard/advansus/a785e-i/romstage.c          |   2 +-
+ src/mainboard/amd/bimini_fam10/romstage.c          |   2 +-
+ src/mainboard/amd/dbm690t/romstage.c               |   2 +-
+ src/mainboard/amd/mahogany/romstage.c              |   2 +-
+ src/mainboard/amd/mahogany_fam10/romstage.c        |   2 +-
+ src/mainboard/amd/pistachio/romstage.c             |   2 +-
+ src/mainboard/amd/serengeti_cheetah/romstage.c     |   2 +-
+ .../amd/serengeti_cheetah_fam10/romstage.c         |   2 +-
+ src/mainboard/amd/tilapia_fam10/romstage.c         |   2 +-
+ src/mainboard/arima/hdama/romstage.c               |   2 +-
+ src/mainboard/asrock/939a785gmh/romstage.c         |   2 +-
+ src/mainboard/asus/a8n_e/romstage.c                |   2 +-
+ src/mainboard/asus/a8v-e_deluxe/romstage.c         |   2 +-
+ src/mainboard/asus/a8v-e_se/romstage.c             |   2 +-
+ src/mainboard/asus/k8v-x/romstage.c                |   2 +-
+ src/mainboard/asus/kfsn4-dre/romstage.c            |   2 +-
+ src/mainboard/asus/kgpe-d16/romstage.c             |  46 +++++--
+ src/mainboard/asus/m2n-e/romstage.c                |   2 +-
+ src/mainboard/asus/m2v-mx_se/romstage.c            |   2 +-
+ src/mainboard/asus/m2v/romstage.c                  |   2 +-
+ src/mainboard/asus/m4a78-em/romstage.c             |   2 +-
+ src/mainboard/asus/m4a785-m/romstage.c             |   2 +-
+ src/mainboard/asus/m5a88-v/romstage.c              |   2 +-
+ src/mainboard/avalue/eax-785e/romstage.c           |   2 +-
+ src/mainboard/broadcom/blast/romstage.c            |   2 +-
+ src/mainboard/gigabyte/ga_2761gxdk/romstage.c      |   2 +-
+ src/mainboard/gigabyte/m57sli/romstage.c           |   2 +-
+ src/mainboard/gigabyte/ma785gm/romstage.c          |   2 +-
+ src/mainboard/gigabyte/ma785gmt/romstage.c         |   2 +-
+ src/mainboard/gigabyte/ma78gm/romstage.c           |   2 +-
+ src/mainboard/hp/dl145_g1/romstage.c               |   2 +-
+ src/mainboard/hp/dl145_g3/romstage.c               |   2 +-
+ src/mainboard/hp/dl165_g6_fam10/romstage.c         |   2 +-
+ src/mainboard/ibm/e325/romstage.c                  |   2 +-
+ src/mainboard/ibm/e326/romstage.c                  |   2 +-
+ src/mainboard/iei/kino-780am2-fam10/romstage.c     |   2 +-
+ src/mainboard/iwill/dk8_htx/romstage.c             |   2 +-
+ src/mainboard/iwill/dk8s2/romstage.c               |   2 +-
+ src/mainboard/iwill/dk8x/romstage.c                |   2 +-
+ src/mainboard/jetway/pa78vm5/romstage.c            |   2 +-
+ src/mainboard/kontron/kt690/romstage.c             |   2 +-
+ src/mainboard/msi/ms7135/romstage.c                |   2 +-
+ src/mainboard/msi/ms7260/romstage.c                |   2 +-
+ src/mainboard/msi/ms9185/romstage.c                |   2 +-
+ src/mainboard/msi/ms9282/romstage.c                |   2 +-
+ src/mainboard/msi/ms9652_fam10/romstage.c          |   2 +-
+ src/mainboard/newisys/khepri/romstage.c            |   2 +-
+ src/mainboard/nvidia/l1_2pvv/romstage.c            |   2 +-
+ src/mainboard/siemens/sitemp_g1p1/romstage.c       |   2 +-
+ src/mainboard/sunw/ultra40/romstage.c              |   2 +-
+ src/mainboard/supermicro/h8dme/romstage.c          |   2 +-
+ src/mainboard/supermicro/h8dmr/romstage.c          |   2 +-
+ src/mainboard/supermicro/h8dmr_fam10/romstage.c    |   2 +-
+ src/mainboard/supermicro/h8qme_fam10/romstage.c    |   2 +-
+ src/mainboard/supermicro/h8scm_fam10/romstage.c    |   2 +-
+ src/mainboard/technexion/tim5690/romstage.c        |   2 +-
+ src/mainboard/technexion/tim8690/romstage.c        |   2 +-
+ src/mainboard/tyan/s2850/romstage.c                |   2 +-
+ src/mainboard/tyan/s2875/romstage.c                |   2 +-
+ src/mainboard/tyan/s2880/romstage.c                |   2 +-
+ src/mainboard/tyan/s2881/romstage.c                |   2 +-
+ src/mainboard/tyan/s2882/romstage.c                |   2 +-
+ src/mainboard/tyan/s2885/romstage.c                |   2 +-
+ src/mainboard/tyan/s2891/romstage.c                |   2 +-
+ src/mainboard/tyan/s2892/romstage.c                |   2 +-
+ src/mainboard/tyan/s2895/romstage.c                |   2 +-
+ src/mainboard/tyan/s2912/romstage.c                |   2 +-
+ src/mainboard/tyan/s2912_fam10/romstage.c          |   2 +-
+ src/mainboard/tyan/s4880/romstage.c                |   2 +-
+ src/mainboard/tyan/s4882/romstage.c                |   2 +-
+ src/mainboard/winent/mb6047/romstage.c             |   2 +-
+ src/northbridge/amd/amdht/h3finit.c                |  57 ++++++++-
+ src/northbridge/amd/amdht/h3ncmn.c                 |  30 ++++-
+ src/northbridge/amd/amdht/ht_wrapper.c             | 141 +++++++++++++++++++--
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c        |   1 +
+ 81 files changed, 528 insertions(+), 172 deletions(-)
+
+diff --git a/src/cpu/amd/car/cache_as_ram.inc b/src/cpu/amd/car/cache_as_ram.inc
+index 5db9224..6bfb0e6 100644
+--- a/src/cpu/amd/car/cache_as_ram.inc
++++ b/src/cpu/amd/car/cache_as_ram.inc
+@@ -525,8 +525,23 @@ CAR_FAM10_ap:
+ 	/* Fam10h NB config bit 54 was not set */
+ 	rolb	%cl, %bl
+ roll_cfg:
++	jmp_if_not_fam15h(ap_apicid_ready)
++	cmp	$0x5, %ecx
++	jne	ap_apicid_ready
+ 
+-	/* Calculate stack pointer. */
++	/* This is a multi-node CPU
++	 * Adjust the maximum APIC ID to a more reasonable value
++	 * given that no 32-core Family 15h processors exist
++	 */
++	movl	%ebx, %ecx
++	and	$0x0f, %ecx		/* Get lower 4 bits of CPU number */
++	and	$0x60, %ebx		/* Get node ID */
++	shrl	$0x1, %ebx		/* Shift node ID part of APIC ID down by 1 */
++	or	%ecx, %ebx		/* Recombine node ID and CPU number */
++
++ap_apicid_ready:
++
++	/* Calculate stack pointer using adjusted APIC ID stored in ebx */
+ 	movl	$CacheSizeAPStack, %eax
+ 	mull	%ebx
+ 	movl	$(CacheBase + (CacheSize - (CacheSizeBSPStack + CacheSizeBSPSlush))), %esp
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index 24f87ba..513d169 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -244,18 +244,50 @@ static const struct {
+ 	{ 0, 0x68, (AMD_DR_B0 | AMD_DR_B1),
+ 	  AMD_PTYPE_SVR, 0x00200000, 0x00600000 },	/* [22:21] DsNpReqLmt0 = 01b */
+ 
+-	{ 0, 0x84, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,
++	{ 0, 0x84, AMD_FAM10_ALL, AMD_PTYPE_ALL,
+ 	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
+ 
+-	{ 0, 0xA4, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,
++	{ 0, 0xA4, AMD_FAM10_ALL, AMD_PTYPE_ALL,
+ 	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
+ 
+-	{ 0, 0xC4, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,
++	{ 0, 0xC4, AMD_FAM10_ALL, AMD_PTYPE_ALL,
+ 	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
+ 
+-	{ 0, 0xE4, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,
++	{ 0, 0xE4, AMD_FAM10_ALL, AMD_PTYPE_ALL,
+ 	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
+ 
++	/* FIXME
++	 * Non-C32 packages only
++	 */
++	{ 0, 0x84, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xA4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xC4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xE4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	/* FIXME
++	 * C32 package only
++	 */
++#if 0
++	{ 0, 0x84, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xA4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xC4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++
++	{ 0, 0xE4, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00002000, 0x00002000 },	/* [13] LdtStopTriEn = 1 */
++#endif
++
+ 	/* Link Global Retry Control Register */
+ 	{ 0, 0x150, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,
+ 	  0x00073900, 0x00073F00 },
+@@ -614,38 +646,79 @@ static const struct {
+ 	{ 0x530A, AMD_DR_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_ALL,
+ 	  0x00004400, 0x00006400 },	/* HT_PHY_DLL_REG */
+ 
+-	{ 0xCF, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	{ 0xCF, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x00000000, 0x000000FF },	/* Provide clear setting for logical
++					   completeness */
++
++	{ 0xDF, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x00000000, 0x000000FF },	/* Provide clear setting for logical
++					   completeness */
++
++	{ 0xCF, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	  0x0000006D, 0x000000FF },	/* HT_PHY_HT1_FIFO_PTR_OPT_VALUE */
++
++	{ 0xDF, AMD_FAM10_ALL, AMD_PTYPE_ALL,  HTPHY_LINKTYPE_HT1,
++	  0x0000006D, 0x000000FF }, 	/* HT_PHY_HT1_FIFO_PTR_OPT_VALUE */
++
++	/* Link Phy Receiver Loop Filter Registers */
++	{ 0xD1, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x08040000, 0x3FFFC000 },	/* [29:22] LfcMax = 20h,
++					   [21:14] LfcMin = 10h */
++
++	{ 0xC1, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	  0x08040000, 0x3FFFC000 },	/* [29:22] LfcMax = 20h,
++					   [21:14] LfcMin = 10h */
++
++	{ 0xD1, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	  0x04020000, 0x3FFFC000 },	/* [29:22] LfcMax = 10h,
++					   [21:14] LfcMin = 08h */
++
++	{ 0xC1, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	  0x04020000, 0x3FFFC000 },	/* [29:22] LfcMax = 10h,
++					   [21:14] LfcMin = 08h */
++
++	{ 0xC0, AMD_FAM10_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_ALL,
++	  0x40040000, 0xe01F0000 },	/* [31:29] RttCtl = 02h,
++					  [20:16] RttIndex = 04h */
++
++/* FIXME
++ * Causes lockups for some reason when more than one package is installed
++ * Debug and reactivate!
++ */
++// #if 0
++	{ 0xCF, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
+ 	  0x00000000, 0x000000FF },	/* Provide clear setting for logical
+ 					   completeness */
+ 
+-	{ 0xDF, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	{ 0xDF, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
+ 	  0x00000000, 0x000000FF },	/* Provide clear setting for logical
+ 					   completeness */
+ 
+-	{ 0xCF, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	{ 0xCF, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
+ 	  0x0000006D, 0x000000FF },	/* HT_PHY_HT1_FIFO_PTR_OPT_VALUE */
+ 
+-	{ 0xDF, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL,  HTPHY_LINKTYPE_HT1,
++	{ 0xDF, AMD_FAM15_ALL, AMD_PTYPE_ALL,  HTPHY_LINKTYPE_HT1,
+ 	  0x0000006D, 0x000000FF }, 	/* HT_PHY_HT1_FIFO_PTR_OPT_VALUE */
+ 
+ 	/* Link Phy Receiver Loop Filter Registers */
+-	{ 0xD1, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	{ 0xD1, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
+ 	  0x08040000, 0x3FFFC000 },	/* [29:22] LfcMax = 20h,
+ 					   [21:14] LfcMin = 10h */
+ 
+-	{ 0xC1, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
++	{ 0xC1, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT3,
+ 	  0x08040000, 0x3FFFC000 },	/* [29:22] LfcMax = 20h,
+ 					   [21:14] LfcMin = 10h */
+ 
+-	{ 0xD1, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	{ 0xD1, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
+ 	  0x04020000, 0x3FFFC000 },	/* [29:22] LfcMax = 10h,
+ 					   [21:14] LfcMin = 08h */
+ 
+-	{ 0xC1, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
++	{ 0xC1, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_HT1,
+ 	  0x04020000, 0x3FFFC000 },	/* [29:22] LfcMax = 10h,
+ 					   [21:14] LfcMin = 08h */
+ 
+-	{ 0xC0, (AMD_FAM10_ALL | AMD_FAM15_ALL), AMD_PTYPE_ALL, HTPHY_LINKTYPE_ALL,
++	{ 0xC0, AMD_FAM15_ALL, AMD_PTYPE_ALL, HTPHY_LINKTYPE_ALL,
+ 	  0x40040000, 0xe01F0000 },	/* [31:29] RttCtl = 02h,
+-								   [20:16] RttIndex = 04h */
++					  [20:16] RttIndex = 04h */
++// #endif
+ };
+diff --git a/src/cpu/amd/family_10h-family_15h/fidvid.c b/src/cpu/amd/family_10h-family_15h/fidvid.c
+index 0e870e3..471456a 100644
+--- a/src/cpu/amd/family_10h-family_15h/fidvid.c
++++ b/src/cpu/amd/family_10h-family_15h/fidvid.c
+@@ -633,44 +633,45 @@ static void prep_fid_change(void)
+ }
+ 
+ static void waitCurrentPstate(u32 target_pstate) {
+-  msr_t initial_msr = rdmsr(TSC_MSR);
+-  msr_t pstate_msr = rdmsr(CUR_PSTATE_MSR);
+-  msr_t tsc_msr;
+-  u8 timedout ;
+-
+-  /* paranoia ? I fear when we run fixPsNbVidBeforeWR we can enter a
+-   * P1 that is a copy of P0, therefore has the same NB DID but the
+-   * TSC will count twice per tick, so we have to wait for twice the
+-   * count to achieve the desired timeout. But I'm likely to
+-   * misunderstand this...
+-   */
+-  u32 corrected_timeout = (    (pstate_msr.lo==1)
+-			    && (!(rdmsr(0xC0010065).lo & NB_DID_M_ON)) ) ?
+-                          WAIT_PSTATE_TIMEOUT*2 : WAIT_PSTATE_TIMEOUT  ;
+-  msr_t timeout;
+-
+-  timeout.lo = initial_msr.lo + corrected_timeout ;
+-  timeout.hi = initial_msr.hi;
+-  if ( (((u32)0xffffffff) - initial_msr.lo) < corrected_timeout ) {
+-     timeout.hi++;
+-  }
+-
+-  // assuming TSC ticks at 1.25 ns per tick (800 MHz)
+-  do {
+-      pstate_msr = rdmsr(CUR_PSTATE_MSR);
+-      tsc_msr = rdmsr(TSC_MSR);
+-      timedout = (tsc_msr.hi > timeout.hi)
+-        	|| ((tsc_msr.hi == timeout.hi) && (tsc_msr.lo > timeout.lo ));
+-  } while ( (pstate_msr.lo != target_pstate) && (! timedout) ) ;
+-
+-  if (pstate_msr.lo != target_pstate) {
+-    msr_t limit_msr = rdmsr(0xc0010061);
+-    printk(BIOS_ERR, "*** Time out waiting for P-state %01x. Current P-state %01x P-state current limit MSRC001_0061=%08x %08x\n", target_pstate, pstate_msr.lo, limit_msr.hi, limit_msr.lo);
+-
+-    do { // should we just go on instead ?
+-      pstate_msr = rdmsr(CUR_PSTATE_MSR);
+-    } while ( pstate_msr.lo != target_pstate  ) ;
+-  }
++	msr_t initial_msr = rdmsr(TSC_MSR);
++	msr_t pstate_msr = rdmsr(CUR_PSTATE_MSR);
++	msr_t tsc_msr;
++	u8 timedout ;
++
++	/* paranoia ? I fear when we run fixPsNbVidBeforeWR we can enter a
++	* P1 that is a copy of P0, therefore has the same NB DID but the
++	* TSC will count twice per tick, so we have to wait for twice the
++	* count to achieve the desired timeout. But I'm likely to
++	* misunderstand this...
++	*/
++	u32 corrected_timeout = ((pstate_msr.lo==1)
++				&& (!(rdmsr(0xC0010065).lo & NB_DID_M_ON)) ) ?
++				WAIT_PSTATE_TIMEOUT*2 : WAIT_PSTATE_TIMEOUT;
++	msr_t timeout;
++
++	timeout.lo = initial_msr.lo + corrected_timeout ;
++	timeout.hi = initial_msr.hi;
++	if ( (((u32)0xffffffff) - initial_msr.lo) < corrected_timeout ) {
++		timeout.hi++;
++	}
++
++	// assuming TSC ticks at 1.25 ns per tick (800 MHz)
++	do {
++		pstate_msr = rdmsr(CUR_PSTATE_MSR);
++		tsc_msr = rdmsr(TSC_MSR);
++		timedout = (tsc_msr.hi > timeout.hi)
++			|| ((tsc_msr.hi == timeout.hi) && (tsc_msr.lo > timeout.lo ));
++	} while ( (pstate_msr.lo != target_pstate) && (! timedout) ) ;
++
++	if (pstate_msr.lo != target_pstate) {
++		msr_t limit_msr = rdmsr(0xc0010061);
++		printk(BIOS_ERR, "*** APIC ID %02x: timed out waiting for P-state %01x. Current P-state %01x P-state current limit MSRC001_0061=%08x %08x\n",
++			cpuid_ebx(0x00000001) >> 24, target_pstate, pstate_msr.lo, limit_msr.hi, limit_msr.lo);
++
++		do { // should we just go on instead ?
++			pstate_msr = rdmsr(CUR_PSTATE_MSR);
++		} while ( pstate_msr.lo != target_pstate  ) ;
++	}
+ }
+ 
+ static void set_pstate(u32 nonBoostedPState) {
+@@ -1063,13 +1064,13 @@ static int init_fidvid_bsp(u32 bsp_apicid, u32 nodes)
+ 	   APs and BSP */
+ 	ap_apicidx.num = 0;
+ 
+-	for_each_ap(bsp_apicid, CONFIG_SET_FIDVID_CORE_RANGE, store_ap_apicid, &ap_apicidx);
++	for_each_ap(bsp_apicid, CONFIG_SET_FIDVID_CORE_RANGE, -1, store_ap_apicid, &ap_apicidx);
+ 
+ 	for (i = 0; i < ap_apicidx.num; i++) {
+ 		init_fidvid_bsp_stage1(ap_apicidx.apicid[i], &fv);
+ 	}
+ #else
+-	for_each_ap(bsp_apicid, CONFIG_SET_FIDVID_CORE0_ONLY, init_fidvid_bsp_stage1, &fv);
++	for_each_ap(bsp_apicid, CONFIG_SET_FIDVID_CORE0_ONLY, -1, init_fidvid_bsp_stage1, &fv);
+ #endif
+ 
+ 	print_debug_fv("common_fid = ", fv.common_fid);
+diff --git a/src/cpu/amd/family_10h-family_15h/init_cpus.c b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+index 0044dc6..986c024 100644
+--- a/src/cpu/amd/family_10h-family_15h/init_cpus.c
++++ b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+@@ -59,6 +59,8 @@ static void set_EnableCf8ExtCfg(void)
+ static void set_EnableCf8ExtCfg(void) { }
+ #endif
+ 
++// #define DEBUG_HT_SETUP 1
++// #define FAM10_AP_NODE_SEQUENTIAL_START 1
+ 
+ typedef void (*process_ap_t) (u32 apicid, void *gp);
+ 
+@@ -143,8 +145,8 @@ uint32_t get_boot_apic_id(uint8_t node, uint32_t core) {
+ //core range = 1 : core 0 only
+ //core range = 2 : cores other than core0
+ 
+-static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+-			void *gp)
++static void for_each_ap(uint32_t bsp_apicid, uint32_t core_range, int8_t node,
++			process_ap_t process_ap, void *gp)
+ {
+ 	// here assume the OS don't change our apicid
+ 	u32 ap_apicid;
+@@ -165,6 +167,9 @@ static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+ 	}
+ 
+ 	for (i = 0; i < nodes; i++) {
++		if ((node >= 0) && (i != node))
++			continue;
++
+ 		cores_found = get_core_num_in_bsp(i);
+ 
+ 		u32 jstart, jend;
+@@ -280,7 +285,7 @@ void wait_all_other_cores_started(u32 bsp_apicid)
+ {
+ 	// all aps other than core0
+ 	printk(BIOS_DEBUG, "started ap apicid: ");
+-	for_each_ap(bsp_apicid, 2, wait_ap_started, (void *)0);
++	for_each_ap(bsp_apicid, 2, -1, wait_ap_started, (void *)0);
+ 	printk(BIOS_DEBUG, "\n");
+ }
+ 
+@@ -373,8 +378,10 @@ static u32 init_cpus(u32 cpu_init_detectedx, struct sys_info *sysinfo)
+ 	/* NB_CFG MSR is shared between cores, so we need make sure
+ 	   core0 is done at first --- use wait_all_core0_started  */
+ 	if (id.coreid == 0) {
+-		set_apicid_cpuid_lo();	/* only set it on core0 */
+-		set_EnableCf8ExtCfg();	/* only set it on core0 */
++		/* Set InitApicIdCpuIdLo / EnableCf8ExtCfg on core0 only */
++		if (!is_fam15h())
++			set_apicid_cpuid_lo();
++		set_EnableCf8ExtCfg();
+ #if CONFIG_ENABLE_APIC_EXT_ID
+ 		enable_apic_ext_id(id.nodeid);
+ #endif
+@@ -427,6 +434,7 @@ static u32 init_cpus(u32 cpu_init_detectedx, struct sys_info *sysinfo)
+ 	}
+ 	// Mark the core as started.
+ 	lapic_write(LAPIC_MSG_REG, (apicid << 24) | F10_APSTATE_STARTED);
++	printk(BIOS_DEBUG, "CPU APICID %02x start flag set\n", apicid);
+ 
+ 	if (apicid != bsp_apicid) {
+ 		/* Setup each AP's cores MSRs.
+@@ -588,6 +596,34 @@ static void setup_remote_node(u8 node)
+ }
+ #endif				/* CONFIG_MAX_PHYSICAL_CPUS > 1 */
+ 
++//it is running on core0 of node0
++static void start_other_cores(uint32_t bsp_apicid)
++{
++	u32 nodes;
++	u32 nodeid;
++
++	// disable multi_core
++	if (read_option(multi_core, 0) != 0)  {
++		printk(BIOS_DEBUG, "Skip additional core init\n");
++		return;
++	}
++
++	nodes = get_nodes();
++
++	for (nodeid = 0; nodeid < nodes; nodeid++) {
++		u32 cores = get_core_num_in_bsp(nodeid);
++		printk(BIOS_DEBUG, "init node: %02x  cores: %02x pass 1\n", nodeid, cores);
++		if (cores > 0) {
++			real_start_other_core(nodeid, cores);
++#ifdef FAM10_AP_NODE_SEQUENTIAL_START
++			printk(BIOS_DEBUG, "waiting for core start on node %d...\n", nodeid);
++			for_each_ap(bsp_apicid, 2, nodeid, wait_ap_started, (void *)0);
++			printk(BIOS_DEBUG, "...started\n");
++#endif
++		}
++	}
++}
++
+ static void AMD_Errata281(u8 node, uint64_t revision, u32 platform)
+ {
+ 	/* Workaround for Transaction Scheduling Conflict in
+@@ -847,6 +883,10 @@ static void AMD_SetHtPhyRegister(u8 node, u8 link, u8 entry)
+ 
+ 	phyBase = ((u32) link << 3) | 0x180;
+ 
++	/* Determine if link is connected and abort if not */
++	if (!(pci_read_config32(NODE_PCI(node, 0), 0x98 + (link * 0x20)) & 0x1))
++		return;
++
+ 	/* Get the portal control register's initial value
+ 	 * and update it to access the desired phy register
+ 	 */
+@@ -1008,10 +1048,11 @@ static void cpuSetAMDPCI(u8 node)
+ 	 * Hypertransport initialization has taken place.  Also note
+ 	 * that it is run for the first core on each node
+ 	 */
+-	u8 i, j;
++	uint8_t i;
++	uint8_t j;
+ 	u32 platform;
+ 	u32 val;
+-	u8 offset;
++	uint8_t offset;
+ 	uint32_t dword;
+ 	uint64_t revision;
+ 
+@@ -1038,6 +1079,17 @@ static void cpuSetAMDPCI(u8 node)
+ 		}
+ 	}
+ 
++#ifdef DEBUG_HT_SETUP
++	/* Dump link settings */
++	for (i = 0; i < 4; i++) {
++		for (j = 0; j < 4; j++) {
++			printk(BIOS_DEBUG, "Node %d link %d: type register: %08x control register: %08x extended control sublink 0: %08x 1: %08x\n", i, j,
++				pci_read_config32(NODE_PCI(i, 0), 0x98 + (j * 0x20)), pci_read_config32(NODE_PCI(i, 0), 0x84 + (j * 0x20)),
++				pci_read_config32(NODE_PCI(i, 0), 0x170 + (j * 0x4)), pci_read_config32(NODE_PCI(i, 0), 0x180 + (j * 0x4)));
++		}
++	}
++#endif
++
+ 	for (i = 0; i < ARRAY_SIZE(fam10_htphy_default); i++) {
+ 		if ((fam10_htphy_default[i].revision & revision) &&
+ 		    (fam10_htphy_default[i].platform & platform)) {
+diff --git a/src/cpu/amd/quadcore/quadcore.c b/src/cpu/amd/quadcore/quadcore.c
+index 8a9b5ed..9c31eac 100644
+--- a/src/cpu/amd/quadcore/quadcore.c
++++ b/src/cpu/amd/quadcore/quadcore.c
+@@ -31,21 +31,6 @@
+ uint32_t get_boot_apic_id(uint8_t node, uint32_t core);
+ uint32_t wait_cpu_state(uint32_t apicid, uint32_t state, uint32_t state2);
+ 
+-static inline uint8_t is_fam15h(void)
+-{
+-	uint8_t fam15h = 0;
+-	uint32_t family;
+-
+-	family = cpuid_eax(0x80000001);
+-	family = ((family & 0xf00000) >> 16) | ((family & 0xf00) >> 8);
+-
+-	if (family >= 0x6f)
+-		/* Family 15h or later */
+-		fam15h = 1;
+-
+-	return fam15h;
+-}
+-
+ static u32 get_core_num_in_bsp(u32 nodeid)
+ {
+ 	u32 dword;
+@@ -141,6 +126,7 @@ static void real_start_other_core(uint32_t nodeid, uint32_t cores)
+ 	}
+ }
+ 
++#if (!IS_ENABLED(CONFIG_CPU_AMD_MODEL_10XXX))
+ //it is running on core0 of node0
+ static void start_other_cores(void)
+ {
+@@ -157,9 +143,10 @@ static void start_other_cores(void)
+ 
+ 	for (nodeid = 0; nodeid < nodes; nodeid++) {
+ 		u32 cores = get_core_num_in_bsp(nodeid);
+-		printk(BIOS_DEBUG, "init node: %02x  cores: %02x pass 1 \n", nodeid, cores);
++		printk(BIOS_DEBUG, "init node: %02x  cores: %02x pass 1\n", nodeid, cores);
+ 		if (cores > 0) {
+ 			real_start_other_core(nodeid, cores);
+ 		}
+ 	}
+ }
++#endif
+diff --git a/src/cpu/amd/quadcore/quadcore_id.c b/src/cpu/amd/quadcore/quadcore_id.c
+index c0537b3..1f5cbd8 100644
+--- a/src/cpu/amd/quadcore/quadcore_id.c
++++ b/src/cpu/amd/quadcore/quadcore_id.c
+@@ -108,7 +108,6 @@ struct node_core_id get_node_core_id(u32 nb_cfg_54)
+ 			id.nodeid = apicid & 0x7;
+ 		}
+ 	}
+-
+ 	if (fam15h && dual_node) {
+ 		/* Coreboot expects each separate processor die to be on a different nodeid.
+ 		 * Since the code above returns nodeid 0 even on internal node 1 some fixup is needed...
+diff --git a/src/mainboard/advansus/a785e-i/romstage.c b/src/mainboard/advansus/a785e-i/romstage.c
+index ab717fd..591faab 100644
+--- a/src/mainboard/advansus/a785e-i/romstage.c
++++ b/src/mainboard/advansus/a785e-i/romstage.c
+@@ -155,7 +155,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/amd/bimini_fam10/romstage.c b/src/mainboard/amd/bimini_fam10/romstage.c
+index 5e2cf82..95384ac 100644
+--- a/src/mainboard/amd/bimini_fam10/romstage.c
++++ b/src/mainboard/amd/bimini_fam10/romstage.c
+@@ -147,7 +147,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/amd/dbm690t/romstage.c b/src/mainboard/amd/dbm690t/romstage.c
+index 1f77afa..29edf30 100644
+--- a/src/mainboard/amd/dbm690t/romstage.c
++++ b/src/mainboard/amd/dbm690t/romstage.c
+@@ -98,7 +98,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/amd/mahogany/romstage.c b/src/mainboard/amd/mahogany/romstage.c
+index 542ee60..a52a69f 100644
+--- a/src/mainboard/amd/mahogany/romstage.c
++++ b/src/mainboard/amd/mahogany/romstage.c
+@@ -99,7 +99,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/amd/mahogany_fam10/romstage.c b/src/mainboard/amd/mahogany_fam10/romstage.c
+index 025a8bb..aac6b4e 100644
+--- a/src/mainboard/amd/mahogany_fam10/romstage.c
++++ b/src/mainboard/amd/mahogany_fam10/romstage.c
+@@ -149,7 +149,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/amd/pistachio/romstage.c b/src/mainboard/amd/pistachio/romstage.c
+index ca2edae..3ba011e 100644
+--- a/src/mainboard/amd/pistachio/romstage.c
++++ b/src/mainboard/amd/pistachio/romstage.c
+@@ -97,7 +97,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/amd/serengeti_cheetah/romstage.c b/src/mainboard/amd/serengeti_cheetah/romstage.c
+index 7da7925..20a34bf 100644
+--- a/src/mainboard/amd/serengeti_cheetah/romstage.c
++++ b/src/mainboard/amd/serengeti_cheetah/romstage.c
+@@ -126,7 +126,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/amd/serengeti_cheetah_fam10/romstage.c b/src/mainboard/amd/serengeti_cheetah_fam10/romstage.c
+index 5063439..6d36575 100644
+--- a/src/mainboard/amd/serengeti_cheetah_fam10/romstage.c
++++ b/src/mainboard/amd/serengeti_cheetah_fam10/romstage.c
+@@ -255,7 +255,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/amd/tilapia_fam10/romstage.c b/src/mainboard/amd/tilapia_fam10/romstage.c
+index e37bc08..c9a9928 100644
+--- a/src/mainboard/amd/tilapia_fam10/romstage.c
++++ b/src/mainboard/amd/tilapia_fam10/romstage.c
+@@ -149,7 +149,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/arima/hdama/romstage.c b/src/mainboard/arima/hdama/romstage.c
+index d1e1c5f..0b6a833 100644
+--- a/src/mainboard/arima/hdama/romstage.c
++++ b/src/mainboard/arima/hdama/romstage.c
+@@ -91,7 +91,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	/* This is needed to be able to call udelay().  It could be moved to
+diff --git a/src/mainboard/asrock/939a785gmh/romstage.c b/src/mainboard/asrock/939a785gmh/romstage.c
+index 09c5b18..48862fd 100644
+--- a/src/mainboard/asrock/939a785gmh/romstage.c
++++ b/src/mainboard/asrock/939a785gmh/romstage.c
+@@ -164,7 +164,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/asus/a8n_e/romstage.c b/src/mainboard/asus/a8n_e/romstage.c
+index d1485bf..5c89a83 100644
+--- a/src/mainboard/asus/a8n_e/romstage.c
++++ b/src/mainboard/asus/a8n_e/romstage.c
+@@ -121,7 +121,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/asus/a8v-e_deluxe/romstage.c b/src/mainboard/asus/a8v-e_deluxe/romstage.c
+index dc1d6ff..cf713ee 100644
+--- a/src/mainboard/asus/a8v-e_deluxe/romstage.c
++++ b/src/mainboard/asus/a8v-e_deluxe/romstage.c
+@@ -181,7 +181,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	init_timer();
+diff --git a/src/mainboard/asus/a8v-e_se/romstage.c b/src/mainboard/asus/a8v-e_se/romstage.c
+index 0531cd3..eba2acf 100644
+--- a/src/mainboard/asus/a8v-e_se/romstage.c
++++ b/src/mainboard/asus/a8v-e_se/romstage.c
+@@ -181,7 +181,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	init_timer();
+diff --git a/src/mainboard/asus/k8v-x/romstage.c b/src/mainboard/asus/k8v-x/romstage.c
+index 45103fd..f1100dd 100644
+--- a/src/mainboard/asus/k8v-x/romstage.c
++++ b/src/mainboard/asus/k8v-x/romstage.c
+@@ -136,7 +136,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	init_timer();
+diff --git a/src/mainboard/asus/kfsn4-dre/romstage.c b/src/mainboard/asus/kfsn4-dre/romstage.c
+index dd5c7dc..1307e57 100644
+--- a/src/mainboard/asus/kfsn4-dre/romstage.c
++++ b/src/mainboard/asus/kfsn4-dre/romstage.c
+@@ -288,7 +288,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	if (IS_ENABLED(CONFIG_LOGICAL_CPUS)) {
+ 		/* Core0 on each node is configured. Now setup any additional cores. */
+ 		printk(BIOS_DEBUG, "start_other_cores()\n");
+-		start_other_cores();
++		start_other_cores(bsp_apicid);
+ 		post_code(0x37);
+ 		wait_all_other_cores_started(bsp_apicid);
+ 	}
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index 9ea7cec..3504126 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -97,7 +97,18 @@ static void switch_spd_mux(uint8_t channel)
+ 	pci_write_config8(PCI_DEV(0, 0x14, 0), 0x54, byte);
+ }
+ 
+-static const uint8_t spd_addr[] = {
++static const uint8_t spd_addr_fam15[] = {
++	// Socket 0 Node 0 ("Node 0")
++	RC00, DIMM0, DIMM1, 0, 0, DIMM2, DIMM3, 0, 0,
++	// Socket 0 Node 1 ("Node 1")
++	RC00, DIMM4, DIMM5, 0, 0, DIMM6, DIMM7, 0, 0,
++	// Socket 1 Node 0 ("Node 2")
++	RC01, DIMM0, DIMM1, 0, 0, DIMM2, DIMM3, 0, 0,
++	// Socket 1 Node 1 ("Node 3")
++	RC01, DIMM4, DIMM5, 0, 0, DIMM6, DIMM7, 0, 0,
++};
++
++static const uint8_t spd_addr_fam10[] = {
+ 	// Socket 0 Node 0 ("Node 0")
+ 	RC00, DIMM0, DIMM1, 0, 0, DIMM2, DIMM3, 0, 0,
+ 	// Socket 0 Node 1 ("Node 1")
+@@ -117,10 +128,10 @@ static void activate_spd_rom(const struct mem_controller *ctrl) {
+ 		switch_spd_mux(0x2);
+ 	} else if (ctrl->node_id == 1) {
+ 		printk(BIOS_DEBUG, "enable_spd_node1()\n");
+-		switch_spd_mux((sysinfo->nodes <= 2)?0x2:0x3);
++		switch_spd_mux((is_fam15h() || (sysinfo->nodes <= 2))?0x2:0x3);
+ 	} else if (ctrl->node_id == 2) {
+ 		printk(BIOS_DEBUG, "enable_spd_node2()\n");
+-		switch_spd_mux((sysinfo->nodes <= 2)?0x3:0x2);
++		switch_spd_mux((is_fam15h() || (sysinfo->nodes <= 2))?0x3:0x2);
+ 	} else if (ctrl->node_id == 3) {
+ 		printk(BIOS_DEBUG, "enable_spd_node3()\n");
+ 		switch_spd_mux(0x3);
+@@ -306,18 +317,25 @@ void initialize_romstage_console_lock(void)
+ 
+ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ {
++	uint32_t esp;
++	__asm__ volatile (
++		"movl %%esp, %0"
++		: "=r" (esp)
++		);
++
+ 	struct sys_info *sysinfo = &sysinfo_car;
+ 
+ 	uint32_t bsp_apicid = 0, val;
+ 	uint8_t byte;
+ 	msr_t msr;
+ 
+-	timestamp_init(timestamp_get());
+-	timestamp_add_now(TS_START_ROMSTAGE);
+-
+ 	int s3resume = acpi_is_wakeup_s3();
+ 
+ 	if (!cpu_init_detectedx && boot_cpu()) {
++		/* Initial timestamp */
++		timestamp_init(timestamp_get());
++		timestamp_add_now(TS_START_ROMSTAGE);
++
+ 		/* Initialize the printk spinlock */
+ 		initialize_romstage_console_lock();
+ 
+@@ -344,6 +362,8 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 		pci_write_config8(PCI_DEV(0, 0x14, 3), 0x78, byte);
+ 	}
+ 
++	printk(BIOS_SPEW, "Initial stack pointer: %08x\n", esp);
++
+ 	post_code(0x30);
+ 
+ 	if (bist == 0)
+@@ -397,7 +417,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	if (IS_ENABLED(CONFIG_LOGICAL_CPUS)) {
+ 		/* Core0 on each node is configured. Now setup any additional cores. */
+ 		printk(BIOS_DEBUG, "start_other_cores()\n");
+-		start_other_cores();
++		start_other_cores(bsp_apicid);
+ 		post_code(0x37);
+ 		wait_all_other_cores_started(bsp_apicid);
+ 	}
+@@ -455,7 +475,10 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 	/* It's the time to set ctrl in sysinfo now; */
+ 	printk(BIOS_DEBUG, "fill_mem_ctrl() detected %d nodes\n", sysinfo->nodes);
+-	fill_mem_ctrl(sysinfo->nodes, sysinfo->ctrl, spd_addr);
++	if (is_fam15h())
++		fill_mem_ctrl(sysinfo->nodes, sysinfo->ctrl, spd_addr_fam15);
++	else
++		fill_mem_ctrl(sysinfo->nodes, sysinfo->ctrl, spd_addr_fam10);
+ 	post_code(0x3D);
+ 
+ #if 0
+@@ -527,5 +550,12 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  */
+ BOOL AMD_CB_ManualBUIDSwapList (u8 node, u8 link, const u8 **List)
+ {
++	/* Force BUID to 0 */
++	static const u8 swaplist[] = {0, 0, 0xFF, 0, 0xFF};
++	if ((node == 0) && (link == 1)) {	/* BSP SB link */
++		*List = swaplist;
++		return 1;
++	}
++
+ 	return 0;
+ }
+\ No newline at end of file
+diff --git a/src/mainboard/asus/m2n-e/romstage.c b/src/mainboard/asus/m2n-e/romstage.c
+index 306c124..351a411 100644
+--- a/src/mainboard/asus/m2n-e/romstage.c
++++ b/src/mainboard/asus/m2n-e/romstage.c
+@@ -129,7 +129,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * started, esp for two way system (there may be APIC ID conflicts in
+ 	 * that case).
+ 	 */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/asus/m2v-mx_se/romstage.c b/src/mainboard/asus/m2v-mx_se/romstage.c
+index 89e24a4..4364c6c 100644
+--- a/src/mainboard/asus/m2v-mx_se/romstage.c
++++ b/src/mainboard/asus/m2v-mx_se/romstage.c
+@@ -147,7 +147,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	init_timer();
+diff --git a/src/mainboard/asus/m2v/romstage.c b/src/mainboard/asus/m2v/romstage.c
+index 8c99080..60cb1d4 100644
+--- a/src/mainboard/asus/m2v/romstage.c
++++ b/src/mainboard/asus/m2v/romstage.c
+@@ -247,7 +247,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched. */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	init_timer();
+diff --git a/src/mainboard/asus/m4a78-em/romstage.c b/src/mainboard/asus/m4a78-em/romstage.c
+index 82b96bf..75894d8 100644
+--- a/src/mainboard/asus/m4a78-em/romstage.c
++++ b/src/mainboard/asus/m4a78-em/romstage.c
+@@ -151,7 +151,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/asus/m4a785-m/romstage.c b/src/mainboard/asus/m4a785-m/romstage.c
+index 30975fa..f81cb95 100644
+--- a/src/mainboard/asus/m4a785-m/romstage.c
++++ b/src/mainboard/asus/m4a785-m/romstage.c
+@@ -151,7 +151,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/asus/m5a88-v/romstage.c b/src/mainboard/asus/m5a88-v/romstage.c
+index 4edaba2..9914025 100644
+--- a/src/mainboard/asus/m5a88-v/romstage.c
++++ b/src/mainboard/asus/m5a88-v/romstage.c
+@@ -152,7 +152,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/avalue/eax-785e/romstage.c b/src/mainboard/avalue/eax-785e/romstage.c
+index 447012b..c57454d 100644
+--- a/src/mainboard/avalue/eax-785e/romstage.c
++++ b/src/mainboard/avalue/eax-785e/romstage.c
+@@ -156,7 +156,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/broadcom/blast/romstage.c b/src/mainboard/broadcom/blast/romstage.c
+index d7ba383..a7c0a84 100644
+--- a/src/mainboard/broadcom/blast/romstage.c
++++ b/src/mainboard/broadcom/blast/romstage.c
+@@ -93,7 +93,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+         wait_all_core0_started();
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/gigabyte/ga_2761gxdk/romstage.c b/src/mainboard/gigabyte/ga_2761gxdk/romstage.c
+index 008a23f..8045164 100644
+--- a/src/mainboard/gigabyte/ga_2761gxdk/romstage.c
++++ b/src/mainboard/gigabyte/ga_2761gxdk/romstage.c
+@@ -150,7 +150,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+          * So here need to make sure last core0 is started, esp for two way system,
+          * (there may be apic id conflicts in that case)
+          */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/gigabyte/m57sli/romstage.c b/src/mainboard/gigabyte/m57sli/romstage.c
+index fe97e68..e1c2fe3 100644
+--- a/src/mainboard/gigabyte/m57sli/romstage.c
++++ b/src/mainboard/gigabyte/m57sli/romstage.c
+@@ -157,7 +157,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+          * So here need to make sure last core0 is started, esp for two way system,
+          * (there may be apic id conflicts in that case)
+          */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/gigabyte/ma785gm/romstage.c b/src/mainboard/gigabyte/ma785gm/romstage.c
+index 444e59d..ae661e8 100644
+--- a/src/mainboard/gigabyte/ma785gm/romstage.c
++++ b/src/mainboard/gigabyte/ma785gm/romstage.c
+@@ -146,7 +146,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/gigabyte/ma785gmt/romstage.c b/src/mainboard/gigabyte/ma785gmt/romstage.c
+index 705d7c5..968aa8f 100644
+--- a/src/mainboard/gigabyte/ma785gmt/romstage.c
++++ b/src/mainboard/gigabyte/ma785gmt/romstage.c
+@@ -146,7 +146,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/gigabyte/ma78gm/romstage.c b/src/mainboard/gigabyte/ma78gm/romstage.c
+index 5d21801..7e18724 100644
+--- a/src/mainboard/gigabyte/ma78gm/romstage.c
++++ b/src/mainboard/gigabyte/ma78gm/romstage.c
+@@ -149,7 +149,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/hp/dl145_g1/romstage.c b/src/mainboard/hp/dl145_g1/romstage.c
+index 8b5b428..e2b215b 100644
+--- a/src/mainboard/hp/dl145_g1/romstage.c
++++ b/src/mainboard/hp/dl145_g1/romstage.c
+@@ -129,7 +129,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/hp/dl145_g3/romstage.c b/src/mainboard/hp/dl145_g3/romstage.c
+index d8e8a16..d6e72d2 100644
+--- a/src/mainboard/hp/dl145_g3/romstage.c
++++ b/src/mainboard/hp/dl145_g3/romstage.c
+@@ -163,7 +163,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	*/
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/hp/dl165_g6_fam10/romstage.c b/src/mainboard/hp/dl165_g6_fam10/romstage.c
+index 26c0bb9..e70d274 100644
+--- a/src/mainboard/hp/dl165_g6_fam10/romstage.c
++++ b/src/mainboard/hp/dl165_g6_fam10/romstage.c
+@@ -160,7 +160,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/ibm/e325/romstage.c b/src/mainboard/ibm/e325/romstage.c
+index 48e7de8..960b46b 100644
+--- a/src/mainboard/ibm/e325/romstage.c
++++ b/src/mainboard/ibm/e325/romstage.c
+@@ -100,7 +100,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         // automatically set that for you, but you might meet tight space
+         needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/ibm/e326/romstage.c b/src/mainboard/ibm/e326/romstage.c
+index a27a218..1b88035 100644
+--- a/src/mainboard/ibm/e326/romstage.c
++++ b/src/mainboard/ibm/e326/romstage.c
+@@ -100,7 +100,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         // automatically set that for you, but you might meet tight space
+         needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/iei/kino-780am2-fam10/romstage.c b/src/mainboard/iei/kino-780am2-fam10/romstage.c
+index 321eea6..89cfe83 100644
+--- a/src/mainboard/iei/kino-780am2-fam10/romstage.c
++++ b/src/mainboard/iei/kino-780am2-fam10/romstage.c
+@@ -149,7 +149,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/iwill/dk8_htx/romstage.c b/src/mainboard/iwill/dk8_htx/romstage.c
+index 9b5b38d..a1e45f0 100644
+--- a/src/mainboard/iwill/dk8_htx/romstage.c
++++ b/src/mainboard/iwill/dk8_htx/romstage.c
+@@ -104,7 +104,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/iwill/dk8s2/romstage.c b/src/mainboard/iwill/dk8s2/romstage.c
+index 601c649..d140baf 100644
+--- a/src/mainboard/iwill/dk8s2/romstage.c
++++ b/src/mainboard/iwill/dk8s2/romstage.c
+@@ -105,7 +105,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/iwill/dk8x/romstage.c b/src/mainboard/iwill/dk8x/romstage.c
+index 273e9f1..bdac810 100644
+--- a/src/mainboard/iwill/dk8x/romstage.c
++++ b/src/mainboard/iwill/dk8x/romstage.c
+@@ -105,7 +105,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/jetway/pa78vm5/romstage.c b/src/mainboard/jetway/pa78vm5/romstage.c
+index 93dd2ce..6106b66 100644
+--- a/src/mainboard/jetway/pa78vm5/romstage.c
++++ b/src/mainboard/jetway/pa78vm5/romstage.c
+@@ -154,7 +154,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+  #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+  #endif
+diff --git a/src/mainboard/kontron/kt690/romstage.c b/src/mainboard/kontron/kt690/romstage.c
+index d8db6aa..7210dae 100644
+--- a/src/mainboard/kontron/kt690/romstage.c
++++ b/src/mainboard/kontron/kt690/romstage.c
+@@ -100,7 +100,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/msi/ms7135/romstage.c b/src/mainboard/msi/ms7135/romstage.c
+index 68cddad..34dbb8a 100644
+--- a/src/mainboard/msi/ms7135/romstage.c
++++ b/src/mainboard/msi/ms7135/romstage.c
+@@ -139,7 +139,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/msi/ms7260/romstage.c b/src/mainboard/msi/ms7260/romstage.c
+index 15f389a..be82fd0 100644
+--- a/src/mainboard/msi/ms7260/romstage.c
++++ b/src/mainboard/msi/ms7260/romstage.c
+@@ -146,7 +146,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * started, esp for two way system (there may be APIC ID conflicts in
+ 	 * that case).
+ 	 */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/msi/ms9185/romstage.c b/src/mainboard/msi/ms9185/romstage.c
+index 795a890..fc5cfd6 100644
+--- a/src/mainboard/msi/ms9185/romstage.c
++++ b/src/mainboard/msi/ms9185/romstage.c
+@@ -134,7 +134,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         * So here need to make sure last core0 is started, esp for two way system,
+         * (there may be apic id conflicts in that case)
+         */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ //bx_a010-     wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/msi/ms9282/romstage.c b/src/mainboard/msi/ms9282/romstage.c
+index f5b75cc..05d8aee 100644
+--- a/src/mainboard/msi/ms9282/romstage.c
++++ b/src/mainboard/msi/ms9282/romstage.c
+@@ -144,7 +144,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	//wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 	ht_setup_chains_x(sysinfo); // it will init sblnk and sbbusn, nodes, sbdn
+diff --git a/src/mainboard/msi/ms9652_fam10/romstage.c b/src/mainboard/msi/ms9652_fam10/romstage.c
+index 5da971f..f552db5 100644
+--- a/src/mainboard/msi/ms9652_fam10/romstage.c
++++ b/src/mainboard/msi/ms9652_fam10/romstage.c
+@@ -177,7 +177,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	printk(BIOS_DEBUG, "wait_all_other_cores_started()\n");
+ 	wait_all_other_cores_started(bsp_apicid);
+diff --git a/src/mainboard/newisys/khepri/romstage.c b/src/mainboard/newisys/khepri/romstage.c
+index bf8a0a2..5174f32 100644
+--- a/src/mainboard/newisys/khepri/romstage.c
++++ b/src/mainboard/newisys/khepri/romstage.c
+@@ -102,7 +102,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/nvidia/l1_2pvv/romstage.c b/src/mainboard/nvidia/l1_2pvv/romstage.c
+index b5731c8..3725c04 100644
+--- a/src/mainboard/nvidia/l1_2pvv/romstage.c
++++ b/src/mainboard/nvidia/l1_2pvv/romstage.c
+@@ -143,7 +143,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/siemens/sitemp_g1p1/romstage.c b/src/mainboard/siemens/sitemp_g1p1/romstage.c
+index 1b2501f..96cec72 100644
+--- a/src/mainboard/siemens/sitemp_g1p1/romstage.c
++++ b/src/mainboard/siemens/sitemp_g1p1/romstage.c
+@@ -127,7 +127,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/sunw/ultra40/romstage.c b/src/mainboard/sunw/ultra40/romstage.c
+index ecb7fe7..13aa272 100644
+--- a/src/mainboard/sunw/ultra40/romstage.c
++++ b/src/mainboard/sunw/ultra40/romstage.c
+@@ -127,7 +127,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/supermicro/h8dme/romstage.c b/src/mainboard/supermicro/h8dme/romstage.c
+index c10aba4..b9082a3 100644
+--- a/src/mainboard/supermicro/h8dme/romstage.c
++++ b/src/mainboard/supermicro/h8dme/romstage.c
+@@ -161,7 +161,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/supermicro/h8dmr/romstage.c b/src/mainboard/supermicro/h8dmr/romstage.c
+index 1e5582c..f31f586 100644
+--- a/src/mainboard/supermicro/h8dmr/romstage.c
++++ b/src/mainboard/supermicro/h8dmr/romstage.c
+@@ -138,7 +138,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+          * So here need to make sure last core0 is started, esp for two way system,
+          * (there may be apic id conflicts in that case)
+          */
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/supermicro/h8dmr_fam10/romstage.c b/src/mainboard/supermicro/h8dmr_fam10/romstage.c
+index 1425546..333a213 100644
+--- a/src/mainboard/supermicro/h8dmr_fam10/romstage.c
++++ b/src/mainboard/supermicro/h8dmr_fam10/romstage.c
+@@ -171,7 +171,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/supermicro/h8qme_fam10/romstage.c b/src/mainboard/supermicro/h8qme_fam10/romstage.c
+index 4721eba..8caf615 100644
+--- a/src/mainboard/supermicro/h8qme_fam10/romstage.c
++++ b/src/mainboard/supermicro/h8qme_fam10/romstage.c
+@@ -238,7 +238,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/supermicro/h8scm_fam10/romstage.c b/src/mainboard/supermicro/h8scm_fam10/romstage.c
+index 858aca0..0e5adcd 100644
+--- a/src/mainboard/supermicro/h8scm_fam10/romstage.c
++++ b/src/mainboard/supermicro/h8scm_fam10/romstage.c
+@@ -162,7 +162,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/technexion/tim5690/romstage.c b/src/mainboard/technexion/tim5690/romstage.c
+index 27c0024..f3f3117 100644
+--- a/src/mainboard/technexion/tim5690/romstage.c
++++ b/src/mainboard/technexion/tim5690/romstage.c
+@@ -105,7 +105,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/technexion/tim8690/romstage.c b/src/mainboard/technexion/tim8690/romstage.c
+index 4830bf9..368eb0e 100644
+--- a/src/mainboard/technexion/tim8690/romstage.c
++++ b/src/mainboard/technexion/tim8690/romstage.c
+@@ -100,7 +100,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* It is said that we should start core1 after all core0 launched */
+ 	wait_all_core0_started();
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ #endif
+ 	wait_all_aps_started(bsp_apicid);
+ 
+diff --git a/src/mainboard/tyan/s2850/romstage.c b/src/mainboard/tyan/s2850/romstage.c
+index bb91a2a..9b5aff6 100644
+--- a/src/mainboard/tyan/s2850/romstage.c
++++ b/src/mainboard/tyan/s2850/romstage.c
+@@ -88,7 +88,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         needs_reset |= ht_setup_chains_x();
+ 
+diff --git a/src/mainboard/tyan/s2875/romstage.c b/src/mainboard/tyan/s2875/romstage.c
+index e63734e..41ae094 100644
+--- a/src/mainboard/tyan/s2875/romstage.c
++++ b/src/mainboard/tyan/s2875/romstage.c
+@@ -97,7 +97,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         needs_reset |= ht_setup_chains_x();
+ 
+diff --git a/src/mainboard/tyan/s2880/romstage.c b/src/mainboard/tyan/s2880/romstage.c
+index dba58f2..c632b62 100644
+--- a/src/mainboard/tyan/s2880/romstage.c
++++ b/src/mainboard/tyan/s2880/romstage.c
+@@ -97,7 +97,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         // automatically set that for you, but you might meet tight space
+         needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/tyan/s2881/romstage.c b/src/mainboard/tyan/s2881/romstage.c
+index b97ba18..c134f2d 100644
+--- a/src/mainboard/tyan/s2881/romstage.c
++++ b/src/mainboard/tyan/s2881/romstage.c
+@@ -91,7 +91,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/tyan/s2882/romstage.c b/src/mainboard/tyan/s2882/romstage.c
+index dba58f2..c632b62 100644
+--- a/src/mainboard/tyan/s2882/romstage.c
++++ b/src/mainboard/tyan/s2882/romstage.c
+@@ -97,7 +97,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+         // automatically set that for you, but you might meet tight space
+         needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/tyan/s2885/romstage.c b/src/mainboard/tyan/s2885/romstage.c
+index fdf9606..81e3817 100644
+--- a/src/mainboard/tyan/s2885/romstage.c
++++ b/src/mainboard/tyan/s2885/romstage.c
+@@ -91,7 +91,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/tyan/s2891/romstage.c b/src/mainboard/tyan/s2891/romstage.c
+index 93189f1..7d170b5 100644
+--- a/src/mainboard/tyan/s2891/romstage.c
++++ b/src/mainboard/tyan/s2891/romstage.c
+@@ -112,7 +112,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/tyan/s2892/romstage.c b/src/mainboard/tyan/s2892/romstage.c
+index 881972d..460c909 100644
+--- a/src/mainboard/tyan/s2892/romstage.c
++++ b/src/mainboard/tyan/s2892/romstage.c
+@@ -103,7 +103,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/tyan/s2895/romstage.c b/src/mainboard/tyan/s2895/romstage.c
+index 086df63..5f3169a 100644
+--- a/src/mainboard/tyan/s2895/romstage.c
++++ b/src/mainboard/tyan/s2895/romstage.c
+@@ -130,7 +130,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	wait_all_core0_started();
+ 
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ 
+ 	needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/tyan/s2912/romstage.c b/src/mainboard/tyan/s2912/romstage.c
+index c608bb9..bbe2e43 100644
+--- a/src/mainboard/tyan/s2912/romstage.c
++++ b/src/mainboard/tyan/s2912/romstage.c
+@@ -141,7 +141,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	 * So here need to make sure last core0 is started, esp for two way system,
+ 	 * (there may be apic id conflicts in that case)
+ 	 */
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/tyan/s2912_fam10/romstage.c b/src/mainboard/tyan/s2912_fam10/romstage.c
+index cdf51b1..0fe004e 100644
+--- a/src/mainboard/tyan/s2912_fam10/romstage.c
++++ b/src/mainboard/tyan/s2912_fam10/romstage.c
+@@ -173,7 +173,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ #if CONFIG_LOGICAL_CPUS
+ 	/* Core0 on each node is configured. Now setup any additional cores. */
+ 	printk(BIOS_DEBUG, "start_other_cores()\n");
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	post_code(0x37);
+ 	wait_all_other_cores_started(bsp_apicid);
+ #endif
+diff --git a/src/mainboard/tyan/s4880/romstage.c b/src/mainboard/tyan/s4880/romstage.c
+index 5c0b128..fcf9568 100644
+--- a/src/mainboard/tyan/s4880/romstage.c
++++ b/src/mainboard/tyan/s4880/romstage.c
+@@ -132,7 +132,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+ #endif
+ 	// automatically set that for you, but you might meet tight space
+         needs_reset |= ht_setup_chains_x();
+diff --git a/src/mainboard/tyan/s4882/romstage.c b/src/mainboard/tyan/s4882/romstage.c
+index ed84ab6..f2ea852 100644
+--- a/src/mainboard/tyan/s4882/romstage.c
++++ b/src/mainboard/tyan/s4882/romstage.c
+@@ -108,7 +108,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+         wait_all_core0_started();
+ #if CONFIG_LOGICAL_CPUS
+         // It is said that we should start core1 after all core0 launched
+-        start_other_cores();
++        start_other_cores(bsp_apicid);
+         wait_all_other_cores_started(bsp_apicid);
+ #endif
+ 
+diff --git a/src/mainboard/winent/mb6047/romstage.c b/src/mainboard/winent/mb6047/romstage.c
+index 20eb92e..76e6393 100644
+--- a/src/mainboard/winent/mb6047/romstage.c
++++ b/src/mainboard/winent/mb6047/romstage.c
+@@ -99,7 +99,7 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 	wait_all_core0_started();
+ 	// It is said that we should start core1 after all core0 launched
+-	start_other_cores();
++	start_other_cores(bsp_apicid);
+ 	wait_all_other_cores_started(bsp_apicid);
+ 
+ #if CONFIG_SET_FIDVID
+diff --git a/src/northbridge/amd/amdht/h3finit.c b/src/northbridge/amd/amdht/h3finit.c
+index 849f4a8..82bf885 100644
+--- a/src/northbridge/amd/amdht/h3finit.c
++++ b/src/northbridge/amd/amdht/h3finit.c
+@@ -389,13 +389,49 @@ static u8 convertNodeToLink(u8 srcNode, u8 targetNode, sMainData *pDat)
+  */
+ static void htDiscoveryFloodFill(sMainData *pDat)
+ {
+-	u8 currentNode = 0;
+-	u8 currentLink;
++	uint8_t currentNode = 0;
++	uint8_t currentLink;
++	uint8_t currentLinkID;
++
++	/* NOTE
++	 * Each node inside a dual node (socket G34) processor must share
++	 * an adjacent node ID.  Alter the link scan order such that the
++	 * other internal node is always scanned first...
++	 */
++	uint8_t currentLinkScanOrder_Default[8] = {0, 1, 2, 3, 4, 5, 6, 7};
++	uint8_t currentLinkScanOrder_G34_Fam10[8] = {1, 0, 2, 3, 4, 5, 6, 7};
++	uint8_t currentLinkScanOrder_G34_Fam15[8] = {2, 0, 1, 3, 4, 5, 6, 7};
++
++	uint8_t fam15h = 0;
++	uint8_t rev_gte_d = 0;
++	uint8_t dual_node = 0;
++	uint32_t f3xe8;
++	uint32_t family;
++	uint32_t model;
++
++	f3xe8 = pci_read_config32(NODE_PCI(0, 3), 0xe8);
++
++	family = model = cpuid_eax(0x80000001);
++	model = ((model & 0xf0000) >> 12) | ((model & 0xf0) >> 4);
++	family = ((family & 0xf00000) >> 16) | ((family & 0xf00) >> 8);
++
++	if (family >= 0x6f) {
++		/* Family 15h or later */
++		fam15h = 1;
++	}
++
++	if ((model >= 0x8) || fam15h)
++		/* Revision D or later */
++		rev_gte_d = 1;
++
++	if (rev_gte_d)
++		 /* Check for dual node capability */
++		if (f3xe8 & 0x20000000)
++			dual_node = 1;
+ 
+ 	/* Entries are always added in pairs, the even indices are the 'source'
+ 	 * side closest to the BSP, the odd indices are the 'destination' side
+ 	 */
+-
+ 	while (currentNode <= pDat->NodesDiscovered)
+ 	{
+ 		u32 temp;
+@@ -423,11 +459,24 @@ static void htDiscoveryFloodFill(sMainData *pDat)
+ 		/* Enable routing tables on currentNode*/
+ 		pDat->nb->enableRoutingTables(currentNode, pDat->nb);
+ 
+-		for (currentLink = 0; currentLink < pDat->nb->maxLinks; currentLink++)
++		for (currentLinkID = 0; currentLinkID < pDat->nb->maxLinks; currentLinkID++)
+ 		{
+ 			BOOL linkfound;
+ 			u8 token;
+ 
++			if (currentLinkID < 8) {
++				if (dual_node) {
++					if (fam15h)
++						currentLink = currentLinkScanOrder_G34_Fam15[currentLinkID];
++					else
++						currentLink = currentLinkScanOrder_G34_Fam10[currentLinkID];
++				} else {
++					currentLink = currentLinkScanOrder_Default[currentLinkID];
++				}
++			} else {
++				currentLink = currentLinkID;
++			}
++
+ 			if (pDat->HtBlock->AMD_CB_IgnoreLink && pDat->HtBlock->AMD_CB_IgnoreLink(currentNode, currentLink))
+ 				continue;
+ 
+diff --git a/src/northbridge/amd/amdht/h3ncmn.c b/src/northbridge/amd/amdht/h3ncmn.c
+index 8f9177f..1026d0e 100644
+--- a/src/northbridge/amd/amdht/h3ncmn.c
++++ b/src/northbridge/amd/amdht/h3ncmn.c
+@@ -51,8 +51,9 @@
+ #define REG_NODE_ID_0X60		0x60
+ #define REG_UNIT_ID_0X64		0x64
+ #define REG_LINK_TRANS_CONTROL_0X68	0x68
+-#define REG_LINK_INIT_CONTROL_0X6C	0x6C
++#define REG_LINK_INIT_CONTROL_0X6C	0x6c
+ #define REG_HT_CAP_BASE_0X80		0x80
++#define REG_NORTHBRIDGE_CFG_3X8C	0x8c
+ #define REG_HT_LINK_RETRY0_0X130	0x130
+ #define REG_HT_TRAFFIC_DIST_0X164	0x164
+ #define REG_HT_LINK_EXT_CONTROL0_0X170	0x170
+@@ -91,6 +92,21 @@
+  ***			FAMILY/NORTHBRIDGE SPECIFIC FUNCTIONS		***
+  ***************************************************************************/
+ 
++static inline uint8_t is_fam15h(void)
++{
++	uint8_t fam15h = 0;
++	uint32_t family;
++
++	family = cpuid_eax(0x80000001);
++	family = ((family & 0xf00000) >> 16) | ((family & 0xf00) >> 8);
++
++	if (family >= 0x6f)
++		/* Family 15h or later */
++		fam15h = 1;
++
++	return fam15h;
++}
++
+ /***************************************************************************//**
+  *
+  * SBDFO
+@@ -219,8 +235,18 @@ static void writeRoutingTable(u8 node, u8 target, u8 link, cNorthBridge *nb)
+ 
+ static void writeNodeID(u8 node, u8 nodeID, cNorthBridge *nb)
+ {
+-	u32 temp = nodeID;
++	u32 temp;
+ 	ASSERT((node < nb->maxNodes) && (nodeID < nb->maxNodes));
++	if (is_fam15h()) {
++		temp = 1;
++		AmdPCIWriteBits(MAKE_SBDFO(makePCISegmentFromNode(node),
++					makePCIBusFromNode(node),
++					makePCIDeviceFromNode(node),
++					CPU_NB_FUNC_03,
++					REG_NORTHBRIDGE_CFG_3X8C),
++					22, 22, &temp);
++	}
++	temp = nodeID;
+ 	AmdPCIWriteBits(MAKE_SBDFO(makePCISegmentFromNode(node),
+ 				makePCIBusFromNode(node),
+ 				makePCIDeviceFromNode(node),
+diff --git a/src/northbridge/amd/amdht/ht_wrapper.c b/src/northbridge/amd/amdht/ht_wrapper.c
+index c0ccc69..a4aaa12 100644
+--- a/src/northbridge/amd/amdht/ht_wrapper.c
++++ b/src/northbridge/amd/amdht/ht_wrapper.c
+@@ -92,16 +92,132 @@ static  u32 get_nodes(void)
+  */
+ static void AMD_CB_EventNotify (u8 evtClass, u16 event, const u8 *pEventData0)
+ {
+-	u8 i;
++	uint8_t i;
++	uint8_t log_level;
++	uint8_t dump_event_detail;
+ 
+-	printk(BIOS_DEBUG, "AMD_CB_EventNotify()\n");
+-	printk(BIOS_DEBUG, " event class: %02x\n event: %04x\n data: ", evtClass, event);
++	printk(BIOS_DEBUG, "AMD_CB_EventNotify(): ");
+ 
+-	for (i = 0; i < *pEventData0; i++) {
+-		printk(BIOS_DEBUG, " %02x ", *(pEventData0 + i));
++	/* Decode event */
++	dump_event_detail = 1;
++	switch (evtClass) {
++		case HT_EVENT_CLASS_CRITICAL:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "CRITICAL");
++			break;
++		case HT_EVENT_CLASS_ERROR:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "ERROR");
++			break;
++		case HT_EVENT_CLASS_HW_FAULT:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "HARDWARE FAULT");
++			break;
++		case HT_EVENT_CLASS_WARNING:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "WARNING");
++			break;
++		case HT_EVENT_CLASS_INFO:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "INFO");
++			break;
++		default:
++			log_level = BIOS_DEBUG;
++			printk(log_level, "UNKNOWN");
++			break;
+ 	}
+-	printk(BIOS_DEBUG, "\n");
++	printk(log_level, ": ");
+ 
++	switch(event) {
++		case HT_EVENT_COH_EVENTS:
++			printk(log_level, "HT_EVENT_COH_EVENTS");
++			break;
++		case HT_EVENT_COH_NO_TOPOLOGY:
++			printk(log_level, "HT_EVENT_COH_NO_TOPOLOGY");
++			break;
++		case HT_EVENT_COH_LINK_EXCEED:
++			printk(log_level, "HT_EVENT_COH_LINK_EXCEED");
++			break;
++		case HT_EVENT_COH_FAMILY_FEUD:
++			printk(log_level, "HT_EVENT_COH_FAMILY_FEUD");
++			break;
++		case HT_EVENT_COH_NODE_DISCOVERED:
++			{
++				printk(log_level, "HT_EVENT_COH_NODE_DISCOVERED");
++				sHtEventCohNodeDiscovered *evt = (sHtEventCohNodeDiscovered*)pEventData0;
++				printk(log_level, ": node %d link %d new node: %d",
++					evt->node, evt->link, evt->newNode);
++				dump_event_detail = 0;
++				break;
++			}
++		case HT_EVENT_COH_MPCAP_MISMATCH:
++			printk(log_level, "HT_EVENT_COH_MPCAP_MISMATCH");
++			break;
++		case HT_EVENT_NCOH_EVENTS:
++			printk(log_level, "HT_EVENT_NCOH_EVENTS");
++			break;
++		case HT_EVENT_NCOH_BUID_EXCEED:
++			printk(log_level, "HT_EVENT_NCOH_BUID_EXCEED");
++			break;
++		case HT_EVENT_NCOH_LINK_EXCEED:
++			printk(log_level, "HT_EVENT_NCOH_LINK_EXCEED");
++			break;
++		case HT_EVENT_NCOH_BUS_MAX_EXCEED:
++			printk(log_level, "HT_EVENT_NCOH_BUS_MAX_EXCEED");
++			break;
++		case HT_EVENT_NCOH_CFG_MAP_EXCEED:
++			printk(log_level, "HT_EVENT_NCOH_CFG_MAP_EXCEED");
++			break;
++		case HT_EVENT_NCOH_DEVICE_FAILED:
++			{
++				printk(log_level, "HT_EVENT_NCOH_DEVICE_FAILED");
++				sHtEventNcohDeviceFailed *evt = (sHtEventNcohDeviceFailed*)pEventData0;
++				printk(log_level, ": node %d link %d depth: %d attemptedBUID: %d",
++					evt->node, evt->link, evt->depth, evt->attemptedBUID);
++				dump_event_detail = 0;
++				break;
++			}
++		case HT_EVENT_NCOH_AUTO_DEPTH:
++			{
++				printk(log_level, "HT_EVENT_NCOH_AUTO_DEPTH");
++				sHtEventNcohAutoDepth *evt = (sHtEventNcohAutoDepth*)pEventData0;
++				printk(log_level, ": node %d link %d depth: %d",
++					evt->node, evt->link, evt->depth);
++				dump_event_detail = 0;
++				break;
++			}
++		case HT_EVENT_OPT_EVENTS:
++			printk(log_level, "HT_EVENT_OPT_EVENTS");
++			break;
++		case HT_EVENT_OPT_REQUIRED_CAP_RETRY:
++			printk(log_level, "HT_EVENT_OPT_REQUIRED_CAP_RETRY");
++			break;
++		case HT_EVENT_OPT_REQUIRED_CAP_GEN3:
++			printk(log_level, "HT_EVENT_OPT_REQUIRED_CAP_GEN3");
++			break;
++		case HT_EVENT_HW_EVENTS:
++			printk(log_level, "HT_EVENT_HW_EVENTS");
++			break;
++		case HT_EVENT_HW_SYNCHFLOOD:
++			printk(log_level, "HT_EVENT_HW_SYNCHFLOOD");
++			break;
++		case HT_EVENT_HW_HTCRC:
++			printk(log_level, "HT_EVENT_HW_HTCRC");
++			break;
++		default:
++			printk(log_level, "HT_EVENT_UNKNOWN");
++			break;
++	}
++	printk(log_level, "\n");
++
++	if (dump_event_detail) {
++		printk(BIOS_DEBUG, " event class: %02x\n event: %04x\n data: ", evtClass, event);
++
++		for (i = 0; i < *pEventData0; i++) {
++			printk(BIOS_DEBUG, " %02x ", *(pEventData0 + i));
++		}
++		printk(BIOS_DEBUG, "\n");
++	}
+ }
+ 
+ /**
+@@ -210,9 +326,10 @@ void amd_ht_fixup(struct sys_info *sysinfo) {
+ 				for (node = 0; node < node_count; node++) {
+ 					f3xe8 = pci_read_config32(NODE_PCI(node, 3), 0xe8);
+ 					uint8_t internal_node_number = ((f3xe8 & 0xc0000000) >> 30);
+-					printk(BIOS_DEBUG, "amd_ht_fixup(): node %d (internal node ID %d): disabling defective HT link\n", node, internal_node_number);
++					printk(BIOS_DEBUG, "amd_ht_fixup(): node %d (internal node ID %d): disabling defective HT link", node, internal_node_number);
+ 					if (internal_node_number == 0) {
+ 						uint8_t package_link_3_connected = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0x98:0xd8) & 0x1;
++						printk(BIOS_DEBUG, " (L3 connected: %d)\n", package_link_3_connected);
+ 						if (package_link_3_connected) {
+ 							/* Set WidthIn and WidthOut to 0 */
+ 							dword = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0x84:0xc4);
+@@ -234,15 +351,21 @@ void amd_ht_fixup(struct sys_info *sysinfo) {
+ 						}
+ 					} else if (internal_node_number == 1) {
+ 						uint8_t package_link_3_connected = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0xf8:0xb8) & 0x1;
++						printk(BIOS_DEBUG, " (L3 connected: %d)\n", package_link_3_connected);
+ 						if (package_link_3_connected) {
+ 							/* Set WidthIn and WidthOut to 0 */
+ 							dword = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0xe4:0xa4);
+ 							dword &= ~0x77000000;
+ 							pci_write_config32(NODE_PCI(node, 0), (fam15h)?0xe4:0xa4, dword);
+ 							/* Set Ganged to 1 */
+-							dword = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0x18c:0x174);
++							/* WARNING
++							 * The Family 15h BKDG states that 0x18c should be set,
++							 * however this is in error.  0x17c is the correct control
++							 * register (sublink 0) for these processors...
++							 */
++							dword = pci_read_config32(NODE_PCI(node, 0), (fam15h)?0x17c:0x174);
+ 							dword |= 0x00000001;
+-							pci_write_config32(NODE_PCI(node, 0), (fam15h)?0x18c:0x174, dword);
++							pci_write_config32(NODE_PCI(node, 0), (fam15h)?0x17c:0x174, dword);
+ 						} else {
+ 							/* Set ConnDly to 1 */
+ 							dword = pci_read_config32(NODE_PCI(node, 0), 0x16c);
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 5a57dc0..0b61106 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -5441,6 +5441,7 @@ static void mct_InitialMCT_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc
+ 		cpu_divisor = (0x1 << cpu_did);
+ 		pMCTstat->TSCFreq = (100 * (cpu_fid + 0x10)) / cpu_divisor;
+ 
++		printk(BIOS_DEBUG, "mct_InitialMCT_D: mct_ForceNBPState0_En_Fam15\n");
+ 		mct_ForceNBPState0_En_Fam15(pMCTstat, pDCTstat);
+ 	} else {
+ 		/* K10 BKDG v3.62 section 2.8.9.2 */
+-- 
+1.9.1
+

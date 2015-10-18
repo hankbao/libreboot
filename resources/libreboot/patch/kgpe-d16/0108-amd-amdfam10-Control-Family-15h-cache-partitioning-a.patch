@@ -1,0 +1,177 @@
+From 4e4d10b69d13a3b15065bb2ee8f8c9b6a7d9ac89 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 9 Aug 2015 02:47:51 -0500
+Subject: [PATCH 108/139] amd/amdfam10: Control Family 15h cache partitioning
+ and memory performance via nvram
+
+Change-Id: I3dd5d7f3640aee0395a68645c0242307605d3ce7
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/defaults.h  |  5 ++---
+ src/cpu/amd/family_10h-family_15h/init_cpus.c | 13 +++++++++++++
+ src/mainboard/asus/kgpe-d16/cmos.default      |  3 +++
+ src/mainboard/asus/kgpe-d16/cmos.layout       |  9 +++++++--
+ src/northbridge/amd/amdfam10/northbridge.c    | 22 ++++++++++++++++++++++
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c   | 11 ++++++++++-
+ 6 files changed, 57 insertions(+), 6 deletions(-)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index ce25b25..af59120 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -139,9 +139,8 @@ static const struct {
+ 	  0x00000000, 1 << (42-32)},	/* Bx [PwcDisableWalkerSharing]=1 */
+ 
+ 	{ BU_CFG3, AMD_OR_C0, AMD_PTYPE_ALL,
+-	  (0x3 << 20) | (0x1 << 22), 0x00000000,
+-	  (0x3 << 20) | (0x1 << 22), 0x00000000},	/* C0 or above [PfcDoubleStride]=1,
+-	  						   PfcStrideMul]=0x3 */
++	  1 << 22, 0x00000000,
++	  1 << 22, 0x00000000},		/* C0 or above [PfcDoubleStride]=1 */
+ 
+ 	{ EX_CFG, AMD_OR_C0, AMD_PTYPE_ALL,
+ 	  0x00000000, 1 << (54-32),
+diff --git a/src/cpu/amd/family_10h-family_15h/init_cpus.c b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+index 115338e..2234197 100644
+--- a/src/cpu/amd/family_10h-family_15h/init_cpus.c
++++ b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+@@ -981,6 +981,13 @@ void cpuSetAMDMSR(uint8_t node_id)
+ 
+ 	/* Revision C0 and above */
+ 	if (revision & AMD_OR_C0) {
++		uint8_t enable_experimental_memory_speed_boost;
++
++		/* Check to see if cache partitioning is allowed */
++		enable_experimental_memory_speed_boost = 0;
++		if (get_option(&nvram, "experimental_memory_speed_boost") == CB_SUCCESS)
++			enable_experimental_memory_speed_boost = !!nvram;
++
+ 		uint32_t f3x1fc = pci_read_config32(NODE_PCI(node_id, 3), 0x1fc);
+ 		msr = rdmsr(FP_CFG);
+ 		msr.hi &= ~(0x7 << (42-32));			/* DiDtCfg4 */
+@@ -1000,6 +1007,12 @@ void cpuSetAMDMSR(uint8_t node_id)
+ 		msr.lo &= ~(0x1 << 16);				/* DiDtMode */
+ 		msr.lo |= ((f3x1fc & 0x1) << 16);
+ 		wrmsr(FP_CFG, msr);
++
++		if (enable_experimental_memory_speed_boost) {
++			msr = rdmsr(BU_CFG3);
++			msr.lo |= (0x3 << 20);			/* PfcStrideMul = 0x3 */
++			wrmsr(BU_CFG3, msr);
++		}
+ 	}
+ 
+ #if IS_ENABLED(CONFIG_SOUTHBRIDGE_AMD_SB700) || IS_ENABLED(CONFIG_SOUTHBRIDGE_AMD_SB800)
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.default b/src/mainboard/asus/kgpe-d16/cmos.default
+index 9b30b00..0a898bd 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.default
++++ b/src/mainboard/asus/kgpe-d16/cmos.default
+@@ -20,6 +20,9 @@ cpu_cc6_state = Enable
+ sata_ahci_mode = Enable
+ sata_alpm = Disable
+ maximum_p_state_limit = 0xf
++probe_filter = Auto
++l3_cache_partitioning = Disable
+ ieee1394 = Enable
++experimental_memory_speed_boost = Disable
+ power_on_after_fail = On
+ boot_option = Fallback
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.layout b/src/mainboard/asus/kgpe-d16/cmos.layout
+index ec803b6..010d4db 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.layout
++++ b/src/mainboard/asus/kgpe-d16/cmos.layout
+@@ -49,8 +49,11 @@ entries
+ 468          1       e       1        sata_alpm
+ 469          4       h       0        maximum_p_state_limit
+ 473          2       e       13       dimm_spd_checksum
+-475          1       r       0        allow_spd_nvram_cache_restore
+-477          1       e       1        ieee1394
++475          1       e       14       probe_filter
++476          1       e       1        l3_cache_partitioning
++477          1       e       1        experimental_memory_speed_boost
++478          1       r       0        allow_spd_nvram_cache_restore
++479          1       e       1        ieee1394
+ 728        256       h       0        user_data
+ 984         16       h       0        check_sum
+ # Reserve the extended AMD configuration registers
+@@ -147,6 +150,8 @@ enumerations
+ 13    0     Enforce
+ 13    1     Ignore
+ 13    2     Override
++14    0     Disable
++14    1     Auto
+ 
+ checksums
+ 
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index 8ad5200..58b0079 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -1654,6 +1654,17 @@ static void detect_and_enable_probe_filter(device_t dev)
+ {
+ 	uint32_t dword;
+ 
++	uint8_t nvram;
++	uint8_t enable_probe_filter;
++
++	/* Check to see if the probe filter is allowed */
++	enable_probe_filter = 1;
++	if (get_option(&nvram, "probe_filter") == CB_SUCCESS)
++		enable_probe_filter = !!nvram;
++
++	if (!enable_probe_filter)
++		return;
++
+ 	uint8_t fam15h = 0;
+ 	uint8_t rev_gte_d = 0;
+ 	uint8_t dual_node = 0;
+@@ -1814,6 +1825,17 @@ static void detect_and_enable_cache_partitioning(device_t dev)
+ 	uint8_t i;
+ 	uint32_t dword;
+ 
++	uint8_t nvram;
++	uint8_t enable_l3_cache_partitioning;
++
++	/* Check to see if cache partitioning is allowed */
++	enable_l3_cache_partitioning = 0;
++	if (get_option(&nvram, "l3_cache_partitioning") == CB_SUCCESS)
++		enable_l3_cache_partitioning = !!nvram;
++
++	if (!enable_l3_cache_partitioning)
++		return;
++
+ 	if (is_fam15h()) {
+ 		printk(BIOS_DEBUG, "Enabling L3 cache partitioning\n");
+ 
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index de6c79c..42630b9 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -5550,6 +5550,14 @@ static void mct_FinalMCT_D(struct MCTStatStruc *pMCTstat,
+ 				mct_ExtMCTConfig_Dx(pDCTstat);
+ 			} else {
+ 				/* Family 15h CPUs */
++				uint8_t nvram;
++				uint8_t enable_experimental_memory_speed_boost;
++
++				/* Check to see if cache partitioning is allowed */
++				enable_experimental_memory_speed_boost = 0;
++				if (get_option(&nvram, "experimental_memory_speed_boost") == CB_SUCCESS)
++					enable_experimental_memory_speed_boost = !!nvram;
++
+ 				val = 0x0ce00f00;		/* FlushWrOnStpGnt = 0x0 */
+ 				val |= 0x10 << 2;		/* MctWrLimit = 0x10 */
+ 				val |= 0x1;			/* DctWrLimit = 0x1 */
+@@ -5563,7 +5571,8 @@ static void mct_FinalMCT_D(struct MCTStatStruc *pMCTstat,
+ 				val &= ~(0x7 << 8);		/* CohPrefPrbLmt = 0x1 */
+ 				val |= (0x1 << 8);
+ 				val |= (0x1 << 12);		/* EnSplitDctLimits = 0x1 */
+-				val |= (0x1 << 20);		/* DblPrefEn = 0x1 */
++				if (enable_experimental_memory_speed_boost)
++					val |= (0x1 << 20);	/* DblPrefEn = 0x1 */
+ 				val |= (0x7 << 22);		/* PrefFourConf = 0x7 */
+ 				val |= (0x7 << 25);		/* PrefFiveConf = 0x7 */
+ 				val &= ~(0xf << 28);		/* DcqBwThrotWm = 0x0 */
+-- 
+1.9.1
+

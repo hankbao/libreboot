@@ -1,0 +1,71 @@
+From fbb842e25841100adff123f3154c3149d241fd30 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 12 Jun 2015 20:08:29 -0500
+Subject: [PATCH 058/139] southbridge/amd/sr5650: Add optional delay after link
+ training
+
+Certain devices (such as the LSI SAS 2008 controller) do not
+respond to PCI probes immediately after link training.  If it
+is known that such a device is likely to be installed allow the
+mainboard to insert an appropriate delay.
+
+Change-Id: Ibcd9426628cacd6f88e6e3fcbc2b3eb7e3a92081
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sr5650/chip.h   | 4 ++++
+ src/southbridge/amd/sr5650/sr5650.c | 3 +++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/src/southbridge/amd/sr5650/chip.h b/src/southbridge/amd/sr5650/chip.h
+index 8a68998..d23c614 100644
+--- a/src/southbridge/amd/sr5650/chip.h
++++ b/src/southbridge/amd/sr5650/chip.h
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -27,6 +28,9 @@ struct southbridge_amd_sr5650_config
+ 	u8 gpp2_configuration;		/* The configuration of General Purpose Port. */
+ 	u8 gpp3a_configuration;		/* The configuration of General Purpose Port. */
+ 	u16 port_enable;		/* Which port is enabled? GPP(2,3,4,5,6,7,9,10,11,12,13) */
++	uint32_t pcie_settling_time;	/* How long to wait after link training for PCI-e devices to
++					 * initialize before probing PCI-e busses (in microseconds).
++					 */
+ };
+ 
+ #endif /* SR5650_CHIP_H */
+diff --git a/src/southbridge/amd/sr5650/sr5650.c b/src/southbridge/amd/sr5650/sr5650.c
+index 75383de..6db1eb1 100644
+--- a/src/southbridge/amd/sr5650/sr5650.c
++++ b/src/southbridge/amd/sr5650/sr5650.c
+@@ -345,6 +345,7 @@ void sr5650_enable(device_t dev)
+ {
+ 	device_t nb_dev = 0, sb_dev = 0;
+ 	int dev_ind;
++	struct southbridge_amd_sr5650_config *cfg;
+ 
+ 	printk(BIOS_INFO, "sr5650_enable: dev=%p, VID_DID=0x%x\n", dev, get_vid_did(dev));
+ 	nb_dev = dev_find_slot(0, PCI_DEVFN(0, 0));
+@@ -352,6 +353,7 @@ void sr5650_enable(device_t dev)
+ 		die("sr5650_enable: CAN NOT FIND SR5650 DEVICE, HALT!\n");
+ 		/* NOT REACHED */
+ 	}
++	cfg = (struct southbridge_amd_sr5650_config *)nb_dev->chip_info;
+ 
+ 	/* sb_dev (dev 8) is a bridge that links to southbridge. */
+ 	sb_dev = dev_find_slot(0, PCI_DEVFN(8, 0));
+@@ -432,6 +434,7 @@ void sr5650_enable(device_t dev)
+ 	/* Lock HWInit Register after the last device was done */
+ 	if (dev_ind == 13) {
+ 		sr56x0_lock_hwinitreg();
++		udelay(cfg->pcie_settling_time);
+ 	}
+ }
+ 
+-- 
+1.9.1
+

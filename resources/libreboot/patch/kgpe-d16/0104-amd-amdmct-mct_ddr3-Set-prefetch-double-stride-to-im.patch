@@ -1,0 +1,27 @@
+From bcdb6fab80939ee9b9d599343460edcb31fd386f Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 8 Aug 2015 20:29:55 -0500
+Subject: [PATCH 104/139] amd/amdmct/mct_ddr3: Set prefetch double stride to
+ improve performance
+
+Change-Id: I34ad85388c6b71f0d44bee13afd663e0b84545cd
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 330f37f..de6c79c 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -5563,6 +5563,7 @@ static void mct_FinalMCT_D(struct MCTStatStruc *pMCTstat,
+ 				val &= ~(0x7 << 8);		/* CohPrefPrbLmt = 0x1 */
+ 				val |= (0x1 << 8);
+ 				val |= (0x1 << 12);		/* EnSplitDctLimits = 0x1 */
++				val |= (0x1 << 20);		/* DblPrefEn = 0x1 */
+ 				val |= (0x7 << 22);		/* PrefFourConf = 0x7 */
+ 				val |= (0x7 << 25);		/* PrefFiveConf = 0x7 */
+ 				val &= ~(0xf << 28);		/* DcqBwThrotWm = 0x0 */
+-- 
+1.9.1
+

@@ -1,0 +1,198 @@
+From 4cc0cdf4b04ba705d302a60a7f5905c17fe9bffe Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 18:56:05 -0500
+Subject: [PATCH 023/139] northbridge/amd/amdfam10: Set DIMM voltage based on
+ SPD data
+
+Change-Id: I67a76cf0e4ebc33fbd7dd151bb68dce1fc6ba680
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/Kconfig        |  4 ++
+ src/northbridge/amd/amdfam10/acpi.c         |  3 +-
+ src/northbridge/amd/amdfam10/northbridge.c  | 75 ++++++++++++++++++++++++-----
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c |  8 +++
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h |  6 +++
+ 5 files changed, 81 insertions(+), 15 deletions(-)
+
+diff --git a/src/northbridge/amd/amdfam10/Kconfig b/src/northbridge/amd/amdfam10/Kconfig
+index ff92fca..ada5b9f 100644
+--- a/src/northbridge/amd/amdfam10/Kconfig
++++ b/src/northbridge/amd/amdfam10/Kconfig
+@@ -83,6 +83,10 @@ config DIMM_REGISTERED
+ 	bool
+ 	default n
+ 
++config DIMM_VOLTAGE_SET_SUPPORT
++	bool
++	default n
++
+ if DIMM_FBDIMM
+ 	config DIMM_SUPPORT
+ 		hex
+diff --git a/src/northbridge/amd/amdfam10/acpi.c b/src/northbridge/amd/amdfam10/acpi.c
+index 4b86e96..92433bb 100644
+--- a/src/northbridge/amd/amdfam10/acpi.c
++++ b/src/northbridge/amd/amdfam10/acpi.c
+@@ -307,8 +307,7 @@ void northbridge_acpi_write_vars(device_t device)
+ 	} else {
+ 		if((sysconf.pci1234[0] >> 12) & 0xff) { //sb chain on  other than bus 0
+ 			CBST = (u8) (0x0f);
+-		}
+-		else {
++		} else {
+ 			CBST = (u8) (0x00);
+ 		}
+ 	}
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index 9cc3d96..3b302e8 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -950,19 +950,38 @@ static int amdfam10_get_smbios_data16(int* count, int handle, unsigned long *cur
+ 
+ static uint16_t amdmct_mct_speed_enum_to_mhz(uint8_t speed)
+ {
+-	switch (speed) {
+-		case 1:
+-			return 200;
+-		case 2:
+-			return 266;
+-		case 3:
+-			return 333;
+-		case 4:
+-			return 400;
+-		case 5:
+-			return 533;
+-		default:
+-			return 0;
++	if (IS_ENABLED(CONFIG_DIMM_DDR2)) {
++		switch (speed) {
++			case 1:
++				return 200;
++			case 2:
++				return 266;
++			case 3:
++				return 333;
++			case 4:
++				return 400;
++			case 5:
++				return 533;
++			default:
++				return 0;
++		}
++	} else if (IS_ENABLED(CONFIG_DIMM_DDR3)) {
++		switch (speed) {
++			case 3:
++				return 333;
++			case 4:
++				return 400;
++			case 5:
++				return 533;
++			case 6:
++				return 667;
++			case 7:
++				return 800;
++			default:
++				return 0;
++		}
++	} else {
++		return 0;
+ 	}
+ }
+ 
+@@ -1048,6 +1067,36 @@ static int amdfam10_get_smbios_data17(int* count, int handle, int parent_handle,
+ 					snprintf(string_buffer, sizeof (string_buffer), "%08X", mem_info->dct_stat[node].DimmSerialNumber[slot]);
+ 					t->serial_number = smbios_add_string(t->eos, string_buffer);
+ 				}
++				if (IS_ENABLED(CONFIG_DIMM_DDR2)) {
++					/* JEDEC specifies 1.8V only, so assume that the memory is configured for 1.8V */
++					t->minimum_voltage = 1800;
++					t->maximum_voltage = 1800;
++					t->configured_voltage = 1800;
++				} else if (IS_ENABLED(CONFIG_DIMM_DDR3)) {
++#if IS_ENABLED(CONFIG_DIMM_DDR3)
++					/* Find the maximum and minimum supported voltages */
++					uint8_t supported_voltages = mem_info->dct_stat[node].DimmSupportedVoltages[slot];
++					if (supported_voltages & 0x8)
++						t->minimum_voltage = 1150;
++					else if (supported_voltages & 0x4)
++						t->minimum_voltage = 1250;
++					else if (supported_voltages & 0x2)
++						t->minimum_voltage = 1350;
++					else if (supported_voltages & 0x1)
++						t->minimum_voltage = 1500;
++
++					if (supported_voltages & 0x1)
++						t->maximum_voltage = 1500;
++					else if (supported_voltages & 0x2)
++						t->maximum_voltage = 1350;
++					else if (supported_voltages & 0x4)
++						t->maximum_voltage = 1250;
++					else if (supported_voltages & 0x8)
++						t->maximum_voltage = 1150;
++
++					t->configured_voltage = mem_info->dct_stat[node].DimmConfiguredVoltage[slot];
++#endif
++				}
+ 				t->memory_error_information_handle = 0xFFFE;	/* no error information handle available */
+ 				single_len = t->length + smbios_string_table_len(t->eos);
+ 				len += single_len;
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index a8212c5..12dfff1 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -330,6 +330,11 @@ restartinit:
+ 			goto fatalexit;
+ 		}
+ 
++#if IS_ENABLED(DIMM_VOLTAGE_SET_SUPPORT)
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: DIMMSetVoltage\n");
++		DIMMSetVoltages(pMCTstat, pDCTstatA);	/* Set the DIMM voltages (mainboard specific) */
++#endif
++
+ 		printk(BIOS_DEBUG, "mctAutoInitMCT_D: SyncDCTsReady_D\n");
+ 		SyncDCTsReady_D(pMCTstat, pDCTstatA);	/* Make sure DCTs are ready for accesses.*/
+ 
+@@ -2122,6 +2127,9 @@ static u8 DIMMPresence_D(struct MCTStatStruc *pMCTstat,
+ 					pDCTstat->DimmBanks[i] = 1ULL << (((mctRead_SPD(smbaddr, SPD_Density) & 0x70) >> 4) + 3);
+ 					pDCTstat->DimmWidth[i] = 1ULL << ((mctRead_SPD(smbaddr, SPD_BusWidth) & 0x7) + 3);
+ 				}
++				/* Check supported voltage(s) */
++				pDCTstat->DimmSupportedVoltages[i] = mctRead_SPD(smbaddr, SPD_Voltage) & 0x7;
++				pDCTstat->DimmSupportedVoltages[i] ^= 0x1;	/* Invert LSB to convert from SPD format to internal bitmap format */
+ 				/* Check module type */
+ 				byte = mctRead_SPD(smbaddr, SPD_DIMMTYPE) & 0x7;
+ 				if (byte == JED_RDIMM || byte == JED_MiniRDIMM) {
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index c790d7e..a947c2d 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -206,6 +206,7 @@
+ 	#define JED_MiniRDIMM	0x5	/* Mini-RDIMM */
+ #define SPD_Density	4		/* Bank address bits,SDRAM capacity */
+ #define SPD_Addressing	5		/* Row/Column address bits */
++#define SPD_Voltage	6		/* Supported voltage bitfield */
+ #define SPD_Organization	7		/* rank#,Device width */
+ #define SPD_BusWidth	8		/* ECC, Bus width */
+ 	#define JED_ECC		8	/* ECC capability */
+@@ -585,6 +586,10 @@ struct DCTStatStruc {		/* A per Node structure*/
+ 	struct _sDCTStruct s_C_DCTPtr[2];
+ 	/* struct _sDCTStruct s_C_DCT1Ptr[8]; */
+ 
++	/* DIMM supported voltage bitmap ([2:0]: 1.25V, 1.35V, 1.5V) */
++	uint8_t DimmSupportedVoltages[MAX_DIMMS_SUPPORTED];
++	uint32_t DimmConfiguredVoltage[MAX_DIMMS_SUPPORTED];	/* mV */
++
+ 	uint8_t DimmRows[MAX_DIMMS_SUPPORTED];
+ 	uint8_t DimmCols[MAX_DIMMS_SUPPORTED];
+ 	uint8_t DimmRanks[MAX_DIMMS_SUPPORTED];
+@@ -905,6 +910,7 @@ u32 procOdtWorkaround(struct DCTStatStruc *pDCTstat, u32 dct, u32 val);
+ void mct_BeforeDramInit_D(struct DCTStatStruc *pDCTstat, u32 dct);
+ void mctGet_DIMMAddr(struct DCTStatStruc *pDCTstat, u32 node);
+ void mctSMBhub_Init(u32 node);
++void DIMMSetVoltages(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+ int mctRead_SPD(u32 smaddr, u32 reg);
+ void InterleaveNodes_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+ void InterleaveChannels_D(struct MCTStatStruc *pMCTstat, struct DCTStatStruc *pDCTstatA);
+-- 
+1.9.1
+

@@ -1,0 +1,58 @@
+From 473fa0658e73ccdc92d376b8855d3e38e2592d3a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 20 Aug 2015 12:49:49 -0500
+Subject: [PATCH 120/139] northbridge/amd/amdmct/mct_ddr3: Add cc6 setup
+ information messages
+
+Change-Id: I17660ce5429431e08476b7bba15e381636b64c7d
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 42630b9..1c3f5a3 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -1496,6 +1496,8 @@ static void set_up_cc6_storage_fam15(struct MCTStatStruc *pMCTstat,
+ 	if (pMCTstat->GStatus & (1 << GSB_NodeIntlv))
+ 		interleaved = 1;
+ 
++	printk(BIOS_INFO, "%s: Initializing CC6 DRAM storage area for node %d (interleaved: %d)\n", __func__, pDCTstat->Node_ID, interleaved);
++
+ 	/* Find highest DRAM range (DramLimitAddr) */
+ 	max_node = 0;
+ 	max_range = -1;
+@@ -1519,6 +1521,9 @@ static void set_up_cc6_storage_fam15(struct MCTStatStruc *pMCTstat,
+ 	}
+ 
+ 	if (max_range >= 0) {
++		printk(BIOS_INFO, "%s:\toriginal (node %d) max_range_limit: %16llx DRAM limit: %16llx\n", __func__, max_node, max_range_limit,
++						(((uint64_t)(Get_NB32(pDCTstat->dev_map, 0x124) & 0x1fffff)) << 27) | 0x7ffffff);
++
+ 		if (interleaved)
+ 			/* Move upper limit down by 16M * the number of nodes */
+ 			max_range_limit -= (0x1000000 * num_nodes);
+@@ -1526,6 +1531,8 @@ static void set_up_cc6_storage_fam15(struct MCTStatStruc *pMCTstat,
+ 			/* Move upper limit down by 16M */
+ 			max_range_limit -= 0x1000000;
+ 
++		printk(BIOS_INFO, "%s:\tnew max_range_limit: %16llx\n", __func__, max_range_limit);
++
+ 		/* Disable the range */
+ 		dword = Get_NB32(pDCTstat->dev_map, 0x40 + (max_range * 0x8));
+ 		byte = dword & 0x3;
+@@ -1560,6 +1567,10 @@ static void set_up_cc6_storage_fam15(struct MCTStatStruc *pMCTstat,
+ 	dword &= ~(0x3f << 12);				/* CoreSaveStateDestNode = destination_node */
+ 	dword |= (destination_node & 0x3f) << 12;
+ 	Set_NB32(pDCTstat->dev_link, 0x128, dword);
++
++	printk(BIOS_INFO, "%s:\tTarget node: %d\n", __func__, destination_node);
++
++	printk(BIOS_INFO, "%s:\tDone\n", __func__);
+ }
+ 
+ static void lock_dram_config(struct MCTStatStruc *pMCTstat,
+-- 
+1.9.1
+

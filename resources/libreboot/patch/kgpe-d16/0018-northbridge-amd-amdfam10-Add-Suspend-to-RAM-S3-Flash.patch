@@ -1,0 +1,135 @@
+From 38e3b0862f6e914b010c004ff03cb9063452e26c Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 18:39:34 -0500
+Subject: [PATCH 018/139] northbridge/amd/amdfam10: Add Suspend to RAM (S3)
+ Flash data storage area
+
+Change-Id: I169fafc3a61e11c3e4781190053e57bf34502d7b
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/Kconfig          |  6 ++++
+ src/northbridge/amd/amdfam10/Makefile.inc     | 19 ++++++++++
+ src/northbridge/amd/amdfam10/raminit_amdmct.c | 50 +++++++++++++++------------
+ 3 files changed, 53 insertions(+), 22 deletions(-)
+
+diff --git a/src/northbridge/amd/amdfam10/Kconfig b/src/northbridge/amd/amdfam10/Kconfig
+index 4d7147d..ff92fca 100644
+--- a/src/northbridge/amd/amdfam10/Kconfig
++++ b/src/northbridge/amd/amdfam10/Kconfig
+@@ -89,6 +89,12 @@ if DIMM_FBDIMM
+ 		default 0x0110
+ endif
+ 
++if HAVE_ACPI_RESUME
++	config S3_DATA_SIZE
++		int
++		default 16384
++endif
++
+ if DIMM_DDR2
+ 	if DIMM_REGISTERED
+ 	config DIMM_SUPPORT
+diff --git a/src/northbridge/amd/amdfam10/Makefile.inc b/src/northbridge/amd/amdfam10/Makefile.inc
+index 8a105fd..b4097b4 100644
+--- a/src/northbridge/amd/amdfam10/Makefile.inc
++++ b/src/northbridge/amd/amdfam10/Makefile.inc
+@@ -15,4 +15,23 @@ ramstage-y += get_pci1234.c
+ # Call show_all_routes() anywhere amdfam10.h is included.
+ #ramstage-y += util.c
+ 
++ifeq ($(CONFIG_HAVE_ACPI_RESUME), y)
++
++$(obj)/coreboot_s3nv.rom: $(obj)/config.h
++	echo "    S3 NVRAM   $(CONFIG_S3_DATA_POS) (S3 storage area)"
++	# force C locale, so cygwin awk doesn't try to interpret the 0xff below as UTF-8 (or worse)
++	printf %d $(CONFIG_S3_DATA_SIZE) | LC_ALL=C awk '{for (i=0; i<$$1*2; i++) {printf "%c", 255}}' > $@.tmp
++	mv $@.tmp $@
++
++cbfs-files-y += s3nv
++s3nv-file := $(obj)/coreboot_s3nv.rom
++s3nv-position := $(CONFIG_S3_DATA_POS)
++s3nv-type := raw
++
++ifeq ($(CONFIG_DIMM_DDR3), y)
++ramstage-y += ../amdmct/mct_ddr3/s3utils.c
++endif
++
++endif
++
+ endif
+diff --git a/src/northbridge/amd/amdfam10/raminit_amdmct.c b/src/northbridge/amd/amdfam10/raminit_amdmct.c
+index 3f33eba..5068e7a 100644
+--- a/src/northbridge/amd/amdfam10/raminit_amdmct.c
++++ b/src/northbridge/amd/amdfam10/raminit_amdmct.c
+@@ -110,6 +110,10 @@ static uint16_t mct_MaxLoadFreq(uint8_t count, uint8_t registered, uint16_t freq
+ #include "../amdmct/mct_ddr3/mct_d.h"
+ #include "../amdmct/mct_ddr3/mct_d_gcc.h"
+ 
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
++#include "../amdmct/mct_ddr3/s3utils.c"
++#endif
++
+ #include "../amdmct/wrappers/mcti_d.c"
+ #include "../amdmct/mct_ddr3/mct_d.c"
+ 
+@@ -249,33 +253,35 @@ static void amdmct_cbmem_store_info(struct sys_info *sysinfo)
+ 	size_t i;
+ 	struct DCTStatStruc *pDCTstatA = NULL;
+ 
+-	/* Allocate memory */
+-	struct amdmct_memory_info* mem_info;
+-	mem_info = cbmem_add(CBMEM_ID_AMDMCT_MEMINFO, sizeof(struct amdmct_memory_info));
+-	if (!mem_info)
+-		return;
++	if (!acpi_is_wakeup_s3()) {
++		/* Allocate memory */
++		struct amdmct_memory_info* mem_info;
++		mem_info = cbmem_add(CBMEM_ID_AMDMCT_MEMINFO, sizeof(struct amdmct_memory_info));
++		if (!mem_info)
++			return;
+ 
+-	printk(BIOS_DEBUG, "%s: Storing AMDMCT configuration in CBMEM\n", __func__);
++		printk(BIOS_DEBUG, "%s: Storing AMDMCT configuration in CBMEM\n", __func__);
+ 
+-	/* Initialize memory */
+-	memset(mem_info, 0,  sizeof(struct amdmct_memory_info));
++		/* Initialize memory */
++		memset(mem_info, 0,  sizeof(struct amdmct_memory_info));
+ 
+-	/* Copy data */
+-	memcpy(&mem_info->mct_stat, &(sysinfo->MCTstat), sizeof(struct MCTStatStruc));
+-	for (i = 0; i < MAX_NODES_SUPPORTED; i++) {
+-		pDCTstatA = sysinfo->DCTstatA + i;
+-		memcpy(&mem_info->dct_stat[i], pDCTstatA, sizeof(struct DCTStatStruc));
+-	}
+-	mem_info->ecc_enabled = mctGet_NVbits(NV_ECC_CAP);
+-	mem_info->ecc_scrub_rate = mctGet_NVbits(NV_DramBKScrub);
++		/* Copy data */
++		memcpy(&mem_info->mct_stat, &(sysinfo->MCTstat), sizeof(struct MCTStatStruc));
++		for (i = 0; i < MAX_NODES_SUPPORTED; i++) {
++			pDCTstatA = sysinfo->DCTstatA + i;
++			memcpy(&mem_info->dct_stat[i], pDCTstatA, sizeof(struct DCTStatStruc));
++		}
++		mem_info->ecc_enabled = mctGet_NVbits(NV_ECC_CAP);
++		mem_info->ecc_scrub_rate = mctGet_NVbits(NV_DramBKScrub);
+ 
+-	/* Zero out invalid/unused pointers */
++		/* Zero out invalid/unused pointers */
+ #if IS_ENABLED(CONFIG_DIMM_DDR3)
+-	for (i = 0; i < MAX_NODES_SUPPORTED; i++) {
+-		mem_info->dct_stat[i].C_MCTPtr = NULL;
+-		mem_info->dct_stat[i].C_DCTPtr[0] = NULL;
+-		mem_info->dct_stat[i].C_DCTPtr[1] = NULL;
+-	}
++		for (i = 0; i < MAX_NODES_SUPPORTED; i++) {
++			mem_info->dct_stat[i].C_MCTPtr = NULL;
++			mem_info->dct_stat[i].C_DCTPtr[0] = NULL;
++			mem_info->dct_stat[i].C_DCTPtr[1] = NULL;
++		}
+ #endif
++	}
+ }
+ #endif
+-- 
+1.9.1
+

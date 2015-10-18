@@ -44,7 +44,7 @@ git clone http://review.coreboot.org/coreboot
 cd "coreboot/"
 
 # reset to previously tested revision
-git reset --hard a2bed346a1a45c822bc255e90a0bf6a6ae1d1d50
+git reset --hard d98471ccb412f61d7da2c5eb5ca8eeb8fece384a
 
 # vboot submodule is needed
 git submodule update --init --checkout -- 3rdparty/vboot/
@@ -53,7 +53,7 @@ git submodule update --init --checkout -- 3rdparty/vboot/
 cd "3rdparty/vboot/"
 
 # reset vboot to last known good revision
-git reset --hard 82db93d5fc924860e4f1fb4cf24f29b5b335a480
+git reset --hard fbf631c845c08299f0bcbae3f311c5807d34c0d6
 
 # Patch vboot
 # ------------------------------------------------------------------------------
@@ -86,111 +86,62 @@ cd "../../"
 # Get patches from review.coreboot.org
 # ------------------------------------------------------------------------------
 
-# TODO! Merge this patch:
-# http://review.coreboot.org/gitweb?p=coreboot.git;a=commitdiff;h=551cff08d540ced6817cfe230750a311d573c209
-
-# ----
-
-# check on coreboot mailing list (see "favourites" in mail client):
-# [coreboot] macbook21: broken by 10385 (Make DSDT a file in CBFS rather than embedding it into ramstage.)
-# -- probably affects the X60 and T60 as well, if this is not already fixed.
-# seems to be related to normal/fallback payload mechanism
-
-# KEEP ON EYE ON:
-# http://review.coreboot.org/#/c/7549
-
-# ----
-
-# Had issues building with. This patch isn't even used, anyway.
-# printf "southbridge/intel/common/spi: Add Flash lockdown option\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/70/9370/4 && git cherry-pick FETCH_HEAD
-# git am "../resources/libreboot/patch/0001-southbridge-intel-common-spi-Add-Flash-lockdown-opti.patch"
-
-# This patch doesn't actually work...
-# printf "mainboards/lenovo/t400: Enable serial debug option for use with dock\n"
-# printf "NOTE: doesn't actually work at the moment. see docs/tasks.html\n"
-# printf "Only including so that .config doesn't have to change\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/17/9317/13 && git cherry-pick FETCH_HEAD
-# git am "../resources/libreboot/patch/0002-mainboards-lenovo-t400-Enable-serial-debug-option-fo.patch"
-
 printf "mainboard/lenovo/t400: Add initial hybrid graphics support\n"
+git am "../resources/libreboot/patch/misc/0001-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/19/9319/18 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0002-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch"
 
 # not included, but keep an eye on it:
 # printf "mainboard/lenovo/t400: Increase backlight frequency to reduce flicker\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/31/9331/14 && git cherry-pick FETCH_HEAD
 
 printf "NOTFORMERGE: lenovo/t400: hard-code enable integrated-only video\n"
+git am "../resources/libreboot/patch/misc/0002-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/50/10550/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0003-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch"
-
-# ----
 
 printf "lenovo/x60: use correct BLC_PWM_CTL value\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/24/10624/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0004-lenovo-x60-use-correct-BLC_PWM_CTL-value.patch"
-
-# NOTE: this patch has been merged upstream. Delete it from libreboot the next time you re-base
-printf "Enable T60 native graphics\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/45/5345/10 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0005-lenovo-t60-Enable-native-intel-gfx-init.patch"
-
-printf "lenovo/t60: Enable VESA framebuffer mode (native graphics)\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/51/10551/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0006-lenovo-t60-Enable-VESA-framebuffer-mode-native-graph.patch"
+git am "../resources/libreboot/patch/misc/0003-lenovo-x60-use-correct-BLC_PWM_CTL-value.patch"
+# git fetch http://review.coreboot.org/coreboot refs/changes/24/10624/2 && git cherry-pick FETCH_HEAD
 
 printf "lenovo/t60: Enable brightness controls (native graphics)\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/52/10552/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0007-lenovo-t60-Enable-brightness-controls-native-graphic.patch"
+git am "../resources/libreboot/patch/misc/0004-lenovo-t60-Enable-brightness-controls-native-graphic.patch"
+# git fetch http://review.coreboot.org/coreboot refs/changes/52/10552/2 && git cherry-pick FETCH_HEAD
 
 printf "ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan\n"
+git am "../resources/libreboot/patch/misc/0005-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/9 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0008-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch"
-
-# printf "i945: permanently set tft_brightness to 0xff. this fixes the issue with X60 and 'scrolling' backlight\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/61/7561/2 && git cherry-pick FETCH_HEAD
-# The patch was accidentally merged in coreboot. See 
-# http://review.coreboot.org/#/c/8697/ for the revert commit. rebase 7561 and re-include it in
-# libreboot, once 8697 is merged in coreboot.
 
 printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/86/7786/11 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0009-northbridge-gm45-raminit.c-enable-GS45-high-performa.patch"
-# NOTE: 7786 is abandoned. See: http://review.coreboot.org/#/c/11135/ <-- that's the new one
+git am "../resources/libreboot/patch/misc/0006-northbridge-gm45-raminit.c-enable-GS45-high-performa.patch"
+# git fetch http://review.coreboot.org/coreboot refs/changes/35/11135/3 && git cherry-pick FETCH_HEAD
 
-printf "fix uneven backlight on X200 (when setting brightness low)\n"
+# Patch removed for now, affected by this patch:
+# http://review.coreboot.org/#/c/11702/
+# printf "fix uneven backlight on X200 (when setting brightness low)\n"
 # git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/2 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0010-gm45-fix-uneven-backlight-native-gfx-init.patch"
 
 printf "ThinkPad R400 support (clone of the T400)\n"
+git am "../resources/libreboot/patch/misc/0007-lenovo-r400-Add-clone-of-Lenovo-T400.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/93/8393/5 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0011-lenovo-r400-Add-clone-of-Lenovo-T400.patch"
 
 printf "ThinkPad T500 (depends on T400 patch)\n"
+git am "../resources/libreboot/patch/misc/0008-lenovo-t500-Add-clone-of-Lenovo-T400.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/45/10545/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0012-lenovo-t500-Add-clone-of-Lenovo-T400.patch"
-
-# Misc:
-
-printf "ec/lenovo/h8: re-factor handling of power_management_beeps\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/31/10531/8 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/0013-ec-lenovo-h8-re-factor-handling-of-power_management_.patch"
 
 # Chromebook:
 
-printf "armv7: Word-sized/half-word-sized memory operations for 32/16 bit read/write\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/98/11698/6 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/chromebook/0001-armv7-Word-sized-half-word-sized-memory-operations-f.patch"
-
 printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
-git am "../resources/libreboot/patch/chromebook/0002-chromeos-Allow-disabling-vboot-firmware-verification.patch"
+git am "../resources/libreboot/patch/misc/0009-chromeos-Allow-disabling-vboot-firmware-verification.patch"
+# git fetch http://review.coreboot.org/coreboot refs/changes/43/11143/2 && git cherry-pick FETCH_HEAD
 
 # KGPE-D16 patches
-# note: this is also being upstreamed
+# note: current top patch is http://review.coreboot.org/#/c/12072/6
 for i in ../resources/libreboot/patch/kgpe-d16/*; do
 	git am "${i}"
 done
+# Temporary fix (TODO: get tpearson to fix properly):
+# Remove code from coreboot that adds microcode updates
+# git fetch http://review.coreboot.org/coreboot refs/changes/90/12090/1 && git cherry-pick FETCH_HEAD
+git am "../resources/libreboot/patch/tmpfix/0001-NOTFORMERGE-don-t-add-CPU-microcode-on-fam10h-to-fam.patch"
 
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------

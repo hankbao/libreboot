@@ -1,0 +1,43 @@
+From c4c97a2bf72bf0547a6c587a7096620a0e28773d Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 8 Aug 2015 20:31:03 -0500
+Subject: [PATCH 106/139] cpu/amd/family_10h-family_15h: Set up cache controls
+ on Family 15h to improve performance
+
+Change-Id: I3df571d8091c07ac1ee29bf16b5a68585fa9eed4
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/defaults.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index 5ab4335..ce25b25 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -139,8 +139,9 @@ static const struct {
+ 	  0x00000000, 1 << (42-32)},	/* Bx [PwcDisableWalkerSharing]=1 */
+ 
+ 	{ BU_CFG3, AMD_OR_C0, AMD_PTYPE_ALL,
+-	  1 << 22, 0x00000000,
+-	  1 << 22, 0x00000000},		/* C0 or above [PfcDoubleStride]=1 */
++	  (0x3 << 20) | (0x1 << 22), 0x00000000,
++	  (0x3 << 20) | (0x1 << 22), 0x00000000},	/* C0 or above [PfcDoubleStride]=1,
++	  						   PfcStrideMul]=0x3 */
+ 
+ 	{ EX_CFG, AMD_OR_C0, AMD_PTYPE_ALL,
+ 	  0x00000000, 1 << (54-32),
+@@ -646,6 +647,11 @@ static const struct {
+ 	 * System software should set F5x88[14] to 1b. */
+ 	{ 5, 0x88, AMD_OR_B2, AMD_PTYPE_ALL,
+ 	  1 << 14, 1 << 14 },
++
++	/* L3 Control 2 */
++	{ 3, 0x1b8, AMD_FAM15_ALL, AMD_PTYPE_ALL,
++	  0x00000090, 0x000001d0 },	/* ImplRdProjDelayThresh = 0x2,
++					   ImplRdAnySubUnavail = 0x1 */
+ };
+ 
+ 
+-- 
+1.9.1
+

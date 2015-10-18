@@ -1,0 +1,72 @@
+From 7137414550b7ef1d1f1d90e31c73eda392ab663d Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 11 Aug 2015 18:38:06 -0500
+Subject: [PATCH 014/139] mainboard/asus/kgpe-d16: Add nvram option to
+ enable/disable the IEEE1394 controller
+
+Change-Id: I4f0f6c1cb1fad5b65f196dc6b443252a0ecc70a1
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/cmos.default |  1 +
+ src/mainboard/asus/kgpe-d16/cmos.layout  |  1 +
+ src/mainboard/asus/kgpe-d16/romstage.c   | 21 +++++++++++++++++----
+ 3 files changed, 19 insertions(+), 4 deletions(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.default b/src/mainboard/asus/kgpe-d16/cmos.default
+index cffdd03..e920297 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.default
++++ b/src/mainboard/asus/kgpe-d16/cmos.default
+@@ -12,5 +12,6 @@ ecc_scrub_rate = 1.28us
+ interleave_chip_selects = Enable
+ interleave_nodes = Disable
+ interleave_memory_channels = Enable
++ieee1394 = Enable
+ power_on_after_fail = On
+ boot_option = Fallback
+diff --git a/src/mainboard/asus/kgpe-d16/cmos.layout b/src/mainboard/asus/kgpe-d16/cmos.layout
+index bcf9cd3..b9266dc 100644
+--- a/src/mainboard/asus/kgpe-d16/cmos.layout
++++ b/src/mainboard/asus/kgpe-d16/cmos.layout
+@@ -41,6 +41,7 @@ entries
+ 456          1       e       1        ECC_memory
+ 457          1       e       1        ECC_redirection
+ 458          4       e       11       hypertransport_speed_limit
++477          1       e       1        ieee1394
+ 728        256       h       0        user_data
+ 984         16       h       0        check_sum
+ # Reserve the extended AMD configuration registers
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index 9964cfe..616fdfb 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -165,10 +165,23 @@ static void set_ddr3_voltage(uint8_t node, uint8_t index) {
+ 
+ static void set_peripheral_control_lines(void) {
+ 	uint8_t byte;
+-
+-	/* Enable PCICLK5 (onboard FireWire device) */
+-	outb(0x41, 0xcd6);
+-	outb(0x02, 0xcd7);
++	uint8_t nvram;
++	uint8_t enable_ieee1394;
++
++	enable_ieee1394 = 1;
++
++	if (get_option(&nvram, "ieee1394") == CB_SUCCESS)
++		enable_ieee1394 = nvram & 0x1;
++
++	if (enable_ieee1394) {
++		/* Enable PCICLK5 (onboard FireWire device) */
++		outb(0x41, 0xcd6);
++		outb(0x02, 0xcd7);
++	} else {
++		/* Disable PCICLK5 (onboard FireWire device) */
++		outb(0x41, 0xcd6);
++		outb(0x00, 0xcd7);
++	}
+ 
+ 	/* Enable the RTC AltCentury register */
+ 	outb(0x41, 0xcd6);
+-- 
+1.9.1
+

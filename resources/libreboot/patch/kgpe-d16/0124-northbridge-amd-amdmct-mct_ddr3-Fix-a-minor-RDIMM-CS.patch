@@ -1,0 +1,37 @@
+From 352de00766d75d9b88a6021bfe5558a36923cc40 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 27 Aug 2015 13:18:53 -0500
+Subject: [PATCH 124/139] northbridge/amd/amdmct/mct_ddr3: Fix a minor RDIMM CS
+ select error
+
+Change-Id: I4cdfeec887813c17edcdee8858222414fb19b72c
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mctrci.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctrci.c b/src/northbridge/amd/amdmct/mct_ddr3/mctrci.c
+index 624a543..8fd2523 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctrci.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctrci.c
+@@ -236,7 +236,7 @@ void mct_DramControlReg_Init_D(struct MCTStatStruc *pMCTstat,
+ 	for (MrsChipSel = 0; MrsChipSel < 8; MrsChipSel ++, MrsChipSel ++) {
+ 		if (pDCTstat->CSPresent & (1 << MrsChipSel)) {
+ 			val = Get_NB32_DCT(dev, dct, 0xa8);
+-			val &= ~(0xf << 8);
++			val &= ~(0xff << 8);
+ 
+ 			switch (MrsChipSel) {
+ 				case 0:
+@@ -283,7 +283,7 @@ void FreqChgCtrlWrd(struct MCTStatStruc *pMCTstat,
+ 			/* 2. Program F2x[1, 0]A8[CtrlWordCS]=bit mask for target chip selects. */
+ 			val = Get_NB32_DCT(dev, dct, 0xa8);
+ 			val &= ~(0xff << 8);
+-			val |= (0x3 << (MrsChipSel & 0xfe)) << 8;
++			val |= (0x3 << (MrsChipSel & ~0x1)) << 8;
+ 			Set_NB32_DCT(dev, dct, 0xa8, val);
+ 
+ 			/* Resend control word 10 */
+-- 
+1.9.1
+
