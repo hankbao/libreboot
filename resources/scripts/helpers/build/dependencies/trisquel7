@@ -68,7 +68,7 @@ apt-get -y install build-essential
 # Coreboot build dependencies (also requires build-essential and git)
 # ------------------------------------------------------------
 
-apt-get -y install libncurses5-dev doxygen iasl gdb flex bison build-essential git
+apt-get -y install libncurses5-dev doxygen iasl gdb flex bison build-essential git libssl-dev
 
 # For cross-compiling i686 target on x86_64 host.
 if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
