@@ -44,25 +44,15 @@
 			Current workaround:
 		</h1>
 			<p>
-				T500/R400 are clones of the T400. See <b>coreboot/src/mainboard/lenovo/t400/devicetree.cb</b> in libreboot,
-				and note that <b>register "gfx.lvds_dual_channel" = "0"</b> - in other words, single channel LVDS mode is
-				enforced. This works on the lower resolution panels (1280x800), but not on the higher ones.
-			</p>
-			<p>
-				For the high-res panels, re-compiling with <b>register "gfx.lvds_dual_channel" = "1"</b> partially solves
-				the problem for those displays; there is still no display in GRUB, but once the kernel takes over, there
-				is a display.
-			</p>
-			<p>
-				Linux (kernel) has its own init code (including EDID parsing). The current suspicion is that coreboot's
-				own initialization code has buggy EDID parsing in some way, such that the proper settings for the panel
-				are not used, leading to the failure. The actual graphics initialization does work.
+				Libreboot (git, and releases after 20150518) now automatically detect whether
+				to use single or dual link LVDS configuration. If you're using an older version,
+				use the instructions below.
 			</p>
 
 			<p>
 				The i915 module in the Linux kernel also provides an option to set the LVDS link configuration.
 				lvds_channel_mode:Specify LVDS channel mode (0=probe BIOS [default], 1=single-channel, 2=dual-channel) (int)
-				- from /sbin/modinfo i915
+				- from /sbin/modinfo i915 - use <b>lvds_channel_mode=2</b> as a kernel option in grub.cfg.
 			</p>
 	</div>
 
