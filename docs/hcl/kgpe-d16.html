@@ -61,6 +61,16 @@
 	</div>
 	
 	<div class="section">
+		<h1 id="ipmi">IPMI iKVM module add-on</h1>
+			<p>
+				Don't use it. It uses proprietary firmware and adds a backdoor (remote out-of-band management chip,
+				similar to the <a href="http://libreboot.org/faq/#intelme">Intel Management Engine</a>. Fortunately,
+				the firmware is unsigned (possibly to replace) and physically separate from the mainboard since it's
+				on the add-on module, which you don't have to install.
+			</p>
+	</div>
+	
+	<div class="section">
 		<h1 id="flashchips">Flash chips</h1>
 			<p>
 				2MiB flash chips are included by default, on these boards. It's on a P-DIP 8 slot (SPI chip).
