@@ -53,81 +53,40 @@
 				</li>
 				<li>
 					Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
+
 					<ul>
 						<li>
-							<b>ASUS KGPE-D16</b>: this is a very modern board. It has support for both Fam10h and Fam15h AMD CPUs. The board is still
-							new, and still in production. See
-							these coreboot mailing list posts:<br/>
-							<a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">post 1</a> and
-							<a href="http://www.coreboot.org/pipermail/coreboot/2015-April/079773.html">post 2</a><br/><br/>
-							
-							The board is fully functional (blobs not required), and will be an instant addition to libreboot.
-							See <a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a><br/><br/>
-							
-							<a href="http://raptorengineeringinc.com/content/base/main.htm">Raptor Engineering Inc</a> (USA) has ported
-							this board to coreboot, and is using the port internally on their computing cluster, for
-							the research that they do. This is the same company that ported 
-							the <a href="hcl/kfsn4-dre.html">ASUS KFSN4-DRE</a> which is supported in libreboot.
-							The owner (and the
-							person who ported the board to coreboot), Timothy Pearson (tpearson on freenode IRC) has reached out to the community,
-							in request for funding. This funding will pay for the many months of work (at least 4-5 months, for over 10000 
-							lines of code any many patches that will need to be split up) to get the code
-							upstreamed into coreboot. This is not as simple as just releasing the code; coreboot has a very strict code
-							review process (in place to ensure quality control). The patches will have to be split up, with people's
-							concerns and comments addressed over a long period, with patches constantly rebased to keep up with the
-							latest coreboot master branch. In order to get this done in a decent enough time frame, Raptor Engineering will need
-							to work on a more-or-less full-time basis.:
-						</li>
-						<li>
-							Francis Rowe (lead developer of libreboot) is paying for this privately, and will have it
-							ready in libreboot as soon as possible.
-						</li>
-						<li>
-							Although Raptor will be working for many months to get this upstreamed (merged in coreboot's master branch
-							in the git repository), libreboot will merge it more or less instantly, probably in the same week that the
-							code is released for review. Raptor would also of course be rebasing the patches on a regular basis, as part
-							of the review process, so even if it takes longer for the patches to be merged in coreboot, libreboot would have
-							support for this board.<br/><br/>
-							
-							This is a <b>very</b> high-end board, making for a powerful server or workstation (desktop) system
-							that should easily be more than powerful enough for almost everyone. Timothy has replaced the AGESA
-							source in coreboot with native initialization code for AMD. The work that he has done can easily be
-							extended to support more hardware, so getting this code out and upstreamed is very important.<br/><br/>
+							TYAN S8230 is very similar, and could probably be ported based on the KGPE-D16. Same GPU too.
+							<a href="http://tyan.com/product_SKU_spec.aspx?ProductType=MB&pid=665&SKU=600000194">http://tyan.com/product_SKU_spec.aspx?ProductType=MB&amp;pid=665&amp;SKU=600000194</a>
 							<ul>
 								<li>
-									TYAN S8230 is very similar, and could probably be ported based on the KGPE-D16. Same GPU too.
-									<a href="http://tyan.com/product_SKU_spec.aspx?ProductType=MB&pid=665&SKU=600000194">http://tyan.com/product_SKU_spec.aspx?ProductType=MB&amp;pid=665&amp;SKU=600000194</a>
-									<ul>
-										<li>
-											W83627 (SuperIO) might have a public datasheet.
-											Board-specific wiring (PCI interrupts, DIMM voltage selection). etc.
-											Board seems to use socketed SOIC-8 SPI flash according to tpearson, based on photos available online - looks like a ZIF socket or something else, a clip retaining the chip.
-										</li>
-										<li>
-											tpearson says: Tyan seems to have done the same thing as Asus did and built a whole lot of custom power control circuitry out of FETs.
-											According to him, this will take much effort to reverse engineer.
-										</li>
-										<li>
-											IPMI firmware is non-free but optional (for iKVM feature, remote management like Intel ME).  Not sure if add-on module or baked in.
-											In either case, it might be removed or otherwise excluded because it's a HUGE backdoor. Unlike Intel ME, this isn't signed so can be
-											removed, and also replaced theoretically. Is the protocol standard public? If so, might be easy/feasible to replace with free code.
-											<a href="https://github.com/facebook/openbmc">https://github.com/facebook/openbmc</a> - also linked from
-											<a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a>
-											- might be possible adapt this.
-											- You
-											 might need to use the vendor tools running from under the proprietary BIOS to wipe the Flash chip holding the IPMI firmware,
-											 if it's baked in. (on KGPE-D16, it's an <a href="http://www.servethehome.com/wp-content/uploads/2013/03/ASUS-ASMB6-iKVM-Module.png">add-on card</a> so just don't add the add-on card - also SOIC-16 according to tpearson. but not sure what form factor used on S8230 - it better not be bl***y WSON).
-										</li>
-										<li>
-											SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine.
-											NOTE: SAS firmware is already flashed onto the SAS controller, to a dedicated chip. Not uploaded/handled by coreboot or linux kernel.
-										</li>
-										<li>
-											tpearson says: power control circuits are a potential issue, not a definite one. it all depends on how Tyan decided to wire things up
-											if they engineered things properly, it should actually be transparent.
-											ASUS did not, and required work to get it going (see the notes document)
-										</li>
-									</ul>
+									W83627 (SuperIO) might have a public datasheet.
+									Board-specific wiring (PCI interrupts, DIMM voltage selection). etc.
+									Board seems to use socketed SOIC-8 SPI flash according to tpearson, based on photos available online - looks like a ZIF socket or something else, a clip retaining the chip.
+								</li>
+								<li>
+									tpearson says: Tyan seems to have done the same thing as Asus did and built a whole lot of custom power control circuitry out of FETs.
+									According to him, this will take much effort to reverse engineer.
+								</li>
+								<li>
+									IPMI firmware is non-free but optional (for iKVM feature, remote management like Intel ME).  Not sure if add-on module or baked in.
+									In either case, it might be removed or otherwise excluded because it's a HUGE backdoor. Unlike Intel ME, this isn't signed so can be
+									removed, and also replaced theoretically. Is the protocol standard public? If so, might be easy/feasible to replace with free code.
+									<a href="https://github.com/facebook/openbmc">https://github.com/facebook/openbmc</a> - also linked from
+									<a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a>
+									- might be possible adapt this.
+									- You
+									 might need to use the vendor tools running from under the proprietary BIOS to wipe the Flash chip holding the IPMI firmware,
+									 if it's baked in. (on KGPE-D16, it's an <a href="http://www.servethehome.com/wp-content/uploads/2013/03/ASUS-ASMB6-iKVM-Module.png">add-on card</a> so just don't add the add-on card - also SOIC-16 according to tpearson. but not sure what form factor used on S8230 - it better not be bl***y WSON).
+								</li>
+								<li>
+									SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine.
+									NOTE: SAS firmware is already flashed onto the SAS controller, to a dedicated chip. Not uploaded/handled by coreboot or linux kernel.
+								</li>
+								<li>
+									tpearson says: power control circuits are a potential issue, not a definite one. it all depends on how Tyan decided to wire things up
+									if they engineered things properly, it should actually be transparent.
+									ASUS did not, and required work to get it going (see the notes document)
 								</li>
 							</ul>
 						</li>
