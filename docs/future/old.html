@@ -78,7 +78,7 @@
 			<h2>Further notes</h2>
 				<p>
 					Reading <b>0xe4361254</b> (address) in Lenovo BIOS always yields FFFFFFFF, even when writing to it (and writing to it doesn't affect brightness controls). 
-					'mtjm' on IRC found that the buttons (Fn keys) control /sys/class/backlight/acpi_video0 which has no affect on 61254 (BLC_PWM_CTL). He says
+					'mtjm' on IRC found that the buttons (Fn keys) control /sys/class/backlight/acpi_video0 which has no affect on 61254 (BLC_PWM_CTL). This person says
 					intel_backlight has different values and uses the register. devmem2 works, needs checking <b>lspci -vv</b> for where the memory is mapped,
 					which is different than on coreboot; mtjm found that it was 0xec061254 on his system (X60 Tablet), and the register value is different too.
 					<b>This is relevant, because we still don't know how backlight controls are actually handled. We got it working by accident. We need to know more.</b>.
@@ -93,7 +93,7 @@
 				<p>
 					What we want to do is calculate a good value, instead of setting it in devicetree.cb. mtjm says about backlight physics:
 					it has a light source , uses pulse width modulation (PWM) to turn it on/off, dimming is done by spending less time on. 
-					<b>Note: this may not be correct; he says his understanding is based on how the Lenote yeeloong works</b>.
+					<b>Note: this may not be correct; this person says that their understanding is based on how the Lenote yeeloong works</b>.
 				</p>
 				<p>
 					mtjm goes on to say, that the register specifies the frequency used for PWM in its depending on the GPU core frequency, so it
