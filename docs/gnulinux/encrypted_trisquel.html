@@ -47,6 +47,10 @@
 		</p>
 
 		<p>
+			Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
+		</p>
+
+		<p>
 			when the installer asks you to set up
 			encryption (ecryptfs) for your home directory, select 'Yes' if you want to: <b>LUKS is already secure and performs well. Having ecryptfs on top of it
 			will add noticeable performance penalty, for little security gain in most use cases. This is therefore optional, and not recommended.
@@ -76,7 +80,7 @@
 							<li>Encryption: aes</li>
 							<li>key size: 256</li>
 							<li>IV algorithm: xts-plain64</li>
-							<li>Encryption key: passphrase</li>
+							<li>Encryption key: passphrase</li> (<i>diceware method</i> recommended for choosing password)
 							<li>erase data: Yes (only choose 'No' if it's a new drive that doesn't contain your private data)</li>
 						</ul>
 					</li>
@@ -294,6 +298,9 @@
 				Additionally, you should set a GRUB password. This is not your LUKS password, but it's a password that you have to enter to see
 				GRUB. This protects your system from an attacker simply booting a live USB and re-flashing your firmware. <b>This should be different than your LUKS passphrase and user password.</b>
 			</p>
+			<p>
+				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
+			</p>
 
 			<p>
 				The GRUB utility can be used like so:<br/>
@@ -303,6 +310,9 @@
 			<p>
 				Give it a password (remember, it has to be secure) and it'll output something like:<br/>
 				<b>grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
+			</p>
+			<p>
+				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
 			</p>
 
 			<p>
