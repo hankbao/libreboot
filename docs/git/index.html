@@ -32,13 +32,7 @@
 					<ul>
 						<li><a href="#config_dmidecode">dmidecode</a></li>
 						<li>
-							<a href="#configdepthcharge">Depthcharge payload</a>
-							<ul>
-								<li><a href="#config_c201">ASUS Chromebook C201</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#configgrub">GRUB payload</a>
+							<a href="#config_grub">GRUB payload</a>
 							<ul>
 								<li><a href="#config_kfsn4-dre">ASUS KFSN4-DRE</a></li>
 								<li><a href="#config_x60">ThinkPad X60, X60S and X60 Tablet</a></li>
@@ -51,6 +45,12 @@
 								<li><a href="#config_macbook21">MacBook2,1</a></li>
 								<li><a href="#config_qemu_i440fx_piix4">QEMU (x86 i440fx/piix4)</a></li>
 								<li><a href="#config_qemu_q35_ich9">QEMU (x86 q35/ich9)</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#config_depthcharge">Depthcharge payload</a>
+							<ul>
+								<li><a href="#config_c201">ASUS Chromebook C201</a></li>
 							</ul>
 						</li>
 					</ul>
@@ -330,25 +330,7 @@
 					</p>
 			</div>
 
-			<h2 id="configdepthcharge">Depthcharge payload</h2>
-				<p>
-					Depthcharge is one of the payloads that libreboot targets.
-				</p>
-				<p>
-					Configurations are then saved as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
-					for each system type by the libreboot build scripts are stored in resources/libreboot/config/depthcharge/
-				</p>
-				<div class="subsection">
-					<h3 id="config_c201">
-						ASUS Chromebook C201 configuration (file: resources/libreboot/config/depthcharge/veyron_speedy/config)
-					</h3>
-						<p>
-							TODO: write this section.
-						</p>
-				</div>
-				<p><a href="#pagetop">Back to top of page.</a></p>
-
-			<h2 id="configgrub">GRUB payload</h2>
+			<h2 id="config_grub">GRUB payload</h2>
 
 				<p>
 					GRUB is one of the payloads that libreboot targets.
@@ -836,7 +818,32 @@
 						</p>
 				</div>
 
-			<p><a href="#pagetop">Back to top of page.</a></p>
+			<h2 id="config_depthcharge">Depthcharge payload</h2>
+				<p>
+					Depthcharge is one of the payloads that libreboot targets.
+				</p>
+				<p>
+					Configurations are then saved as files called <b>&quot;.config&quot;</b>. Copies of each configuration used
+					for each system type by the libreboot build scripts are stored in resources/libreboot/config/depthcharge/
+				</p>
+				<div class="subsection">
+					<h3 id="config_c201">
+						ASUS Chromebook C201 configuration (file: resources/libreboot/config/depthcharge/veyron_speedy/config)
+					</h3>
+						<ul>
+							<li>Mainboard / Mainboard vendor = <i>Google</i></li>
+							<li>Mainboard / Mainboard model = <i>Veyron_Speedy</i></li>
+							<li>Chipset / ChromeOS / Build for ChromeOS = <i>enable</i></li>
+							<li>Chipset / ChromeOS / Verify firmware with vboot. = <i>disable</i></li>
+							<li>Payload / Add a payload = <i>An ELF executable payload</i></li>
+							<li>Payload / Payload path and filename = <i>depthcharge.elf</i></li>
+						</ul>
+						<p>
+							The resulting .config file was saved as resources/libreboot/config/<b>depthcharge/veyron_speedy/config</b> and is used by the build
+							scripts for this system.
+						</p>
+				</div>
+				<p><a href="#pagetop">Back to top of page.</a></p>
 			
 	</div>
 
@@ -898,7 +905,7 @@
 
 			<p>
 				The ROM images will be stored under <b>bin/<i>payload</i>/</b>,
-				where <i>payload</i> could be <i>grub</i>, <i>seabios</i>, or
+				where <i>payload</i> could be <i>grub</i>, <i>depthcharge</i>, <i>seabios</i>, or
 				whatever other payload those images were built for.
 			</p>
 
