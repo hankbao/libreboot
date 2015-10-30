@@ -51,10 +51,10 @@
 
 	<div class="section">
 		<ul>
-			<li><a href="#googlebastards">Google is bad. We do not endorse them.</a></li>
-			<li><a href="#os">Replace ChromeOS immediately!</a></li>
-			<li><a href="#videoblobs">Caution: Video acceleration requires a blob. Do not install it. Use software rendering.</a></li>
-			<li><a href="#wifiblobs">Caution: WiFi requires a blob. Do not install it. Use a USB dongle.</a></li>
+			<li><a href="#googlesintent">Google's intent with Chromebooks</a></li>
+			<li><a href="#os">Considerations about ChromeOS and free operating systems</a></li>
+			<li><a href="#videoblobs">Caution: Video acceleration requires a non-free blob, software rendering can be used instead.</a></li>
+			<li><a href="#wifiblobs">Caution: WiFi requires a non-free blob, a USB dongle can be used instead.</a></li>
 			<li><a href="#ec">EC firmware is free software!</a></li>
 			<li><a href="#microcode">No microcode!</a></li>
 			<li><a href="#depthcharge">Depthcharge payload</a></li>
@@ -63,11 +63,14 @@
 	</div>
 	
 	<div class="section">
-		<h1 id="googlebastards">Google is bad. We do not endorse them.</h1>
+		<h1 id="googlesintent">Google's intent with Chromebooks</h1>
 			<p>
-				It's merely a coincidence that libreboot can support this hardware, with some issues (see sections below).
-				While Google does hire a lot of coreboot developers, it's not the case that these laptops can be used
-				in freedom (libreboot) because Google cares about user freedom. It's just a lucky coincidence. Nothing more.
+				Chromebooks were not designed with the intent of bringing more freedom to users.
+				However, Chromebooks run with a lot of free software at the boot software and embedded controller levels,
+				since free software gives Google enough flexibility to optimize various aspects such as boot time
+				and most importantly, to implement the Chromebook security system, that involves various aspects of the software.
+				Google does hire a lot of Coreboot developers, who are generally friendly to the free software movement
+				and try to be good members of the free software community, by contributing code back.
 			</p>
 			<p>
 				Chromebooks are designed (from the factory) to actually coax the user into using
@@ -90,10 +93,10 @@
 	</div>
 
 	<div class="section">
-		<h1 id="os">Replace ChromeOS immediately!</h1>
+		<h1 id="os">Considerations about ChromeOS and free operating systems</h1>
 			<p>
 				This laptop comes preinstalled (from the factory) with Google ChromeOS. This is a GNU/Linux distribution, but it's not general purpose
-				and it comes with proprietary software. It's designed for <i><a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">SaaSS</a></i>. Libreboot recommends that all users of this laptop replace it with another distribution.
+				and it comes with proprietary software. It's designed for <i><a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">SaaSS</a></i>. Libreboot recommends that users of this laptop replace it with another distribution.
 			</p>
 			<h2>No FSF-endorsed distros available</h2>
 				<p>
@@ -114,7 +117,7 @@
 	</div>
 
 	<div class="section">
-		<h1 id="videoblobs">Caution: Video acceleration requires a blob. Do not install it. Use software rendering.</h1>
+		<h1 id="videoblobs">Caution: Video acceleration requires a non-free blob, software rendering can be used instead.</h1>
 			<p>
 				The lima driver source code for the onboard Mali GPU is not released. The developer withheld it for personal reasons.
 				Until that is released, the only way to use video (in freedom) on this laptop is to not have video acceleration, by
@@ -123,7 +126,7 @@
 			</p>
 			<p>
 				In practise, this means that certain things like games, blender and GNOME shell (or other fancy desktops) won't work well.
-				The libreboot project recommends a lightweight desktop which does not need video acceleration, such as <i>LXDE</i>.
+				The libreboot project recommends a lightweight desktop which does not need video acceleration, such as <i>XFCE</i> or <i>LXDE</i>.
 			</p>
 			<p>
 				The lima developer wrote this blog post, which sheds light on the story:
@@ -134,13 +137,13 @@
 			</p>
 	</div>
 	<div class="section">
-		<h1 id="wifiblobs">Caution: WiFi requires a blob. Do not install it. Use a USB dongle.</h1>
+		<h1 id="wifiblobs">Caution: WiFi requires a non-free blob, a USB dongle can be used instead.</h1>
 			<p>
 				These laptops have non-removeable (soldered on) WiFi chips, which require non-free firmware in the Linux kernel
 				in order to work.
 			</p>
 			<p>
-				The libreboot project recommends that you use an external USB wifi dongle that works
+				The libreboot project recommends using an external USB wifi dongle that works
 				with free software. See <a href="index.html#recommended_wifi">index.html#recommended_wifi</a>.
 			</p>
 			<p>
