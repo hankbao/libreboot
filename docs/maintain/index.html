@@ -49,7 +49,7 @@
 					</ul>
 				</li>
 				<li>
-					<a href="#updating_depthcharge">Updating depthcharge</a> (TODO)
+					<a href="#updating_depthcharge">Updating depthcharge</a>
 				</li>
 				<li>
 					<a href="#updating_flashrom">Updating flashrom</a>
@@ -526,13 +526,27 @@
 	</div>
 
 	<div class="section">
-		<h1 id="updating_depthcharge">Updating depthcharge (TODO)</h1>
+
+		<h1 id="updating_depthcharge">Updating depthcharge</h1>
+
 			<p>
-				TODO: write this section.
+				The script to download depthcharge is: <i>resources/scripts/helpers/download/depthcharge</i>.
 			</p>
+
+			<p>
+				Patches are in <i>resources/depthcharge/patch/</i>.
+			</p>
+
+			<p>
+				The configuration used for depthcharge is located in <i>depthcharge/board</i>.
+				Each board has a <i>defconfig</i> Kconfig configuration and a </i>fmap.dts</i> FMAP device-tree configuration.
+				Those shouldn't need much attention, but when needed, it's best to modify them in the depthcharge tree (with patches) to keep things in one place.
+			</p>
+
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
 			</p>
+
 	</div>
 	
 	<div class="section">
