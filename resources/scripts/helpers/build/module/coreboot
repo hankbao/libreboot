@@ -20,7 +20,7 @@
 #
 
 # This script assumes that the working directory is the root
-# of libreboot_src or git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
@@ -30,20 +30,11 @@ set -u -e
 
 printf "Building the utilities in coreboot\n"
 
-cd "coreboot/"
+# crossgcc
+# coreboot is 32-bit, so only build for i386
+make -j$(nproc) -BC coreboot crossgcc-i386
 
-# -----------------------------------------
-# Build the utilities required by libreboot
-# -----------------------------------------
-
-# cbfstool
-cd "util/cbfstool/"
-make -j"$(nproc)"
-
-# done. go back to coreboot dir
-cd "../../"
-
-# done. go back to main libreboot_src directory
-cd "../"
-
-printf "\n\n"
+# cbfstool, ifdtool, cbmem, nvramtool
+for util in {cbfs,ifd,nvram}tool cbmem; do
+   make -j$(nproc) -BC coreboot/util/${util}
+done

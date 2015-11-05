@@ -20,25 +20,14 @@
 #
 
 # This script assumes that the working directory is the root
-# of libreboot_src or git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build MemTest86+ payload (for GRUB)
+# Build MemTest86+ payload
 # --------------------------------------------------------------------
 
 printf "Building MemTest86+\n"
 
-cd "memtest86plus/"
-
-# clean it first
-make clean
-
-# build memtest86+
-make -j"$(nproc)"
-
-# done. go back to main directory
-cd "../"
-
-printf "\n\n"
+make -j$(nproc) -BC memtest86plus

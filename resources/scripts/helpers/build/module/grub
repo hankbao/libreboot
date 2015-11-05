@@ -20,12 +20,12 @@
 #
 
 # This script assumes that the working directory is the root
-# of libreboot_src or git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build utilies needed for building GRUB payloads
+# Build GRUB as coreboot payload
 # ---------------------------------------------------------------------
 
 printf "Building GRUB\n"
@@ -33,14 +33,9 @@ printf "Building GRUB\n"
 cd "grub/"
 
 # clean it first
-[ -f Makefile ] && make distclean
+make distclean
 
 # build grub
 ./autogen.sh
 ./configure --with-platform=coreboot
-make -j"$(nproc)"
-
-printf "\n\n"
-
-# done. go back to main directory
-cd "../"
+make -j$(nproc)

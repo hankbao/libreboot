@@ -20,12 +20,12 @@
 #
 
 # This script assumes that the working directory is the root
-# of libreboot_src or git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build "flashrom" (utility for flashing/dumping ROM's)
+# Build "flashrom" (utility for flashing/dumping ROMs)
 # --------------------------------------------------------------------
 
 printf "Building flashrom\n"
@@ -80,5 +80,3 @@ done
 mv "flashrom_normal" "flashrom"
 
 cd "../"
-
-printf "\n\n"
