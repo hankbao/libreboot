@@ -21,7 +21,7 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-if (( $# != 1 )); then
+if [ $# != 1 ]; then
 	printf "Usage: ./gen.sh mode\n"
 	printf "Example: ./gen.sh vesafb\n"
 	printf "Example: ./gen.sh txtmode\n"
