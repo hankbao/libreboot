@@ -28,26 +28,26 @@ set -u -e
 
 printf "Building ROM images with the GRUB payload\n"
 
-[ -d bin ] || mkdir bin
+[ -d bin ] || mkdir "bin/"
 
 # Put GRUB payloads and config files
 # in the coreboot directory, ready for next step
-cd coreboot
+cd "coreboot/"
 for romtype in txtmode vesafb; do
 	cd ../resources/utilities/grub-assemble
 	./gen.sh ${romtype}
-	rm -f ../../../coreboot/grub_${romtype}.elf
-	mv grub_${romtype}.elf ../../../coreboot/
-	cd ../../../coreboot
+	rm -f "../../../coreboot/grub_${romtype}.elf"
+	mv "grub_${romtype}.elf" "../../../coreboot/"
+	cd "../../../coreboot"
 
 	# GRUB configuration files
 	for keylayout in ../resources/utilities/grub-assemble/keymap/original/*; do
-		keymap=${keylayout##*/}
-		cat ../resources/grub/config/extra/{common,${romtype}}.cfg > grub_${keymap}_${romtype}.cfg
-		printf "keymap %s\n" ${keymap} >> grub_${keymap}_${romtype}.cfg
-		cat ../resources/grub/config/menuentries/{common,${romtype}}.cfg >> grub_${keymap}_${romtype}.cfg
+		keymap="${keylayout##*/}"
+		cat "../resources/grub/config/extra/{common,${romtype}}.cfg" > "grub_${keymap}_${romtype}.cfg"
+		printf "keymap %s\n" "${keymap}" >> "grub_${keymap}_${romtype}.cfg"
+		cat "../resources/grub/config/menuentries/{common,${romtype}}.cfg" >> "grub_${keymap}_${romtype}.cfg"
 		# grubtest.cfg should be able to switch back to grub.cfg
-		sed 's/grubtest.cfg/grub.cfg/' grub_${keymap}_${romtype}.cfg > grub_${keymap}_${romtype}_test.cfg
+		sed "s/grubtest.cfg/grub.cfg/" < "grub_${keymap}_${romtype}.cfg" > "grub_${keymap}_${romtype}_test.cfg"
 	done
 done
 cd ..
@@ -61,12 +61,12 @@ buildrom() {
 }
 
 if [ $# -gt 0 ]; then
-	for board in ${@}; do
-		buildrom ${board}
+	for board in "${@}"; do
+		buildrom "${board}"
 	done
 else
 	for board in resources/libreboot/config/grub/*; do
-		buildrom ${board##*/}
+		buildrom "${board##*/}"
 	done
 fi
 
@@ -130,6 +130,6 @@ if [ -d "bin/grub/" ]; then
 fi
 
 # The GRUB files are no longer needed
-rm -f coreboot/grub*.{elf,cfg}
+rm -f "coreboot/grub"*.{elf,cfg}
 
 printf "\n\n"
