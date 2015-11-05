@@ -35,8 +35,7 @@ grubdir="../../../grub"
 source "modules.conf"
 
 list_keymaps () {
-	for keylayout in keymap/original/*
-	do
+	for keylayout in keymap/original/*; do
 		keymap="${keylayout##*/}"
 		printf "/boot/grub/layouts/%s.gkb=keymap/%s.gkb " "${keymap}" "${keymap}"
 	done
@@ -44,8 +43,7 @@ list_keymaps () {
 keymaps=$(list_keymaps)
 
 printf "Creating GRUB ELF executable for configuration '%s'\n" "${1}"
-if [ "${1}" = "vesafb" ]
-then
+if [ "${1}" = "vesafb" ]; then
 	# Generate the grub.elf (vesafb)
 	$grubdir/grub-mkstandalone \
 	  --grub-mkimage="${grubdir}/grub-mkimage" \
