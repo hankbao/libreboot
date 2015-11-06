@@ -1,0 +1,43 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title ThinkPad X60: Change keyboard
+@end titlepage
+
+@node Top
+@top ThinkPad X60: Change keyboard
+
+@menu
+* Thinkpad X60/X60s/X60t Change keyboard::
+* Just follow these steps and then reverse::
+@end menu
+
+@node Thinkpad X60/X60s/X60t Change keyboard
+@chapter Thinkpad X60/X60s/X60t: Change keyboard
+@anchor{#thinkpad-x60x60sx60t-change-keyboard}
+Use this guide to replace the keyboard on your ThinkPad X60. Also works for X60s and X60 Tablet.
+
+Although slightly different, this guide can also be followed for the ThinkPad X200, X200S and X200 Tablet. The screws are in more or less the same place, and it's the same procedure.
+
+@uref{index.html,Back to previous index}
+
+@node Just follow these steps and then reverse
+@chapter Just follow these steps, and then reverse
+@anchor{#just-follow-these-steps-and-then-reverse}
+@image{../images/x60_keyboard/1,,,,JPG}@* @image{../images/x60_keyboard/2,,,,JPG}@* @image{../images/x60_keyboard/3,,,,JPG}@* @image{../images/x60_keyboard/4,,,,JPG}@* @image{../images/x60_keyboard/5,,,,JPG}
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../gfdl-1.3.txt,../gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

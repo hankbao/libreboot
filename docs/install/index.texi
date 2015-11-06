@@ -1,0 +1,274 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Installing libreboot
+@end titlepage
+
+@node Top
+@top Installing libreboot
+
+@menu
+* Installing libreboot::
+* List of ROM images in libreboot::
+* How to update or install libreboot if you are already running libreboot or coreboot::
+* ThinkPad X60/T60 Initial installation guide if running the proprietary firmware::
+* MacBook21 Initial installation guide if running the proprietary firmware::
+@end menu
+
+@node Installing libreboot
+@chapter Installing libreboot
+@anchor{#installing-libreboot}
+This section relates to installing libreboot on supported targets.
+
+@uref{../index.html,Back to previous index}
+@menu
+* Software methods::
+* Hardware methods::
+@end menu
+
+@node Software methods
+@section Software methods
+@anchor{#software-methods}
+@itemize
+@item
+@ref{#rom,List of ROM images in libreboot}
+@item
+@ref{#flashrom,How to update or install libreboot (if you are already running libreboot or coreboot)}
+@item
+@ref{#flashrom,KFSN4-DRE: initial installation guide (if running the proprietary firmware or libreboot)}
+@item
+@ref{#flashrom_lenovobios,ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware)}
+@item
+@ref{#flashrom_macbook21,MacBook2,1: Initial installation guide (if running the proprietary firmware)}
+@item
+@uref{c201.html,ASUS Chromebook C201 installation guide} (Installing Libreboot internally, from the device)
+@end itemize
+
+@node Hardware methods
+@section Hardware methods
+@anchor{#hardware-methods}
+@itemize
+@item
+@uref{bbb_setup.html,How to program an SPI flash chip with the BeagleBone Black}
+@item
+@uref{bbb_ehci.html,How to configure EHCI debugging on the BeagleBone Black}
+@item
+@uref{kgpe-d16.html,KGPE-D16 (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{x60_unbrick.html,ThinkPad X60: Recovery guide}
+@item
+@uref{x60tablet_unbrick.html,ThinkPad X60 Tablet: Recovery guide}
+@item
+@uref{t60_unbrick.html,ThinkPad T60: Recovery guide}
+@item
+@uref{x200_external.html,ThinkPad X200/X200S/X200T (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{r400_external.html,ThinkPad R400 (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{r500_external.html,ThinkPad R500 (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{t400_external.html,ThinkPad T400 (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{t500_external.html,ThinkPad T500 (needed if running the proprietary firmware, or to unbrick)}
+@item
+@uref{c201.html,ASUS Chromebook C201 installation guide} (Installing Libreboot externally, with a SPI flash programmer)
+@end itemize
+
+@node List of ROM images in libreboot
+@chapter List of ROM images in libreboot
+@anchor{#list-of-rom-images-in-libreboot}
+Libreboot distributes pre-compiled ROM images, built from the libreboot source code. These images are provided for user convenience, so that they don't have to build anything from source on their own.
+
+The ROM images in each archive use the following at the end of the file name, if they are built with the GRUB payload: @strong{_@emph{keymap}_@emph{mode}.rom}
+
+Available @emph{modes}: @strong{vesafb} or @strong{txtmode}. The @emph{vesafb} ROM images are recommended, in most cases; @emph{txtmode} ROM images come with MemTest86+, which requires text-mode instead of the usual framebuffer used by coreboot native graphics initialization.
+
+@emph{keymap} can be one of several keymaps that keyboard supports (there are quite a few), which affects the keyboard layout configuration that is used in GRUB. It doesn't matter which ROM image you choose here, as far as the keymap in GNU/Linux is concerned.
+
+Keymaps are named appropriately according to each keyboard layout support in GRUB. To learn how these keymaps are created, see @uref{../grub/index.html#grub_keyboard,../grub/index.html#grub_keyboard}
+@menu
+* QEMU::
+@end menu
+
+@node QEMU
+@section QEMU
+@anchor{#qemu}
+Libreboot comes with ROM images built for QEMU, by default:
+
+Examples of how to use libreboot ROM images in QEMU:
+
+@itemize
+@item
+$ @strong{qemu-system-i386 -M q35 -m 512 -bios qemu_q35_ich9_keymap_mode.rom}
+@item
+$ @strong{qemu-system-i386 -M pc -m 512 -bios qemu_i440fx_piix4_keymap_mode.rom}
+@end itemize
+
+You can optionally specify the @strong{-serial stdio} argument, so that QEMU will emulate a serial terminal on the standard input/output (most likely your terminal emulator or TTY).
+
+Other arguments are available for QEMU. The manual will contain more information.
+
+@ref{#pagetop,Back to top of page.}
+
+@node How to update or install libreboot if you are already running libreboot or coreboot
+@chapter How to update or install libreboot (if you are already running libreboot or coreboot)
+@anchor{#how-to-update-or-install-libreboot-if-you-are-already-running-libreboot-or-coreboot}
+On all current targets, updating libreboot can be accomplished without disassembly and, therefore, without having to externally re-flash using any dedicated hardware. In other words, you can do everything entirely in software, directly from the OS that is running on your libreboot system.
+
+@strong{If you are using libreboot_src or git, then make sure that you built the sources first (see @uref{../git/index.html#build,../git/index.html#build}).}
+
+Look at the @ref{#rom,list of ROM images} to see which image is compatible with your device.
+@menu
+* Are you currently running the original proprietary firmware?::
+* ASUS KFSN4-DRE?::
+* ASUS KGPE-D16?::
+* Are you currently running libreboot or coreboot?::
+* MAC address on GM45 X200/R400/T400/T500::
+* Flash chip size::
+* All good?::
+@end menu
+
+@node Are you currently running the original proprietary firmware?
+@section Are you currently running the original, proprietary firmware?
+@anchor{#are-you-currently-running-the-original-proprietary-firmware}
+If you are currently running the proprietary firmware (not libreboot or coreboot), then the flashing instructions for your system are going to be different.
+
+X60/T60 users running the proprietary firmware should refer to @ref{#flashrom_lenovobios,#flashrom_lenovobios}. MacBook2,1 users running Apple EFI should refer to @ref{#flashrom_macbook21,#flashrom_macbook21}
+
+X200 users, refer to @uref{x200_external.html,x200_external.html}, R400 users refer to @uref{r400_external.html,r400_external.html}, R500 users refer to @uref{r500_external.html,r500_external.html}, T400 users refer to @uref{t400_external.html,t400_external.html}, T500 users refer to @uref{t500_external.html,t500_external.html}
+
+@node ASUS KFSN4-DRE?
+@section ASUS KFSN4-DRE?
+@anchor{#asus-kfsn4-dre}
+Internal flashing should work just fine, even if you are currently booting the proprietary firmware.
+
+Libreboot currently lacks documentation for externally re-flashing an LPC flash chip. However, these boards have the flash chip inside of a PLCC socket, and it is possible to hot-swap the chips. If you want to back up your known-working image, simply hot-swap the chip for one that is the same capacity, after having dumped a copy of the current firmware (flashrom -p internal -r yourchosenname.rom), and then flash that chip with the known-working image. Check whether the system still boots, and if it does, then it should be safe to flash the new image (because you now have a backup of the old image).
+
+Keeping at least one spare LPC PLCC chip with working firmware on it is highly recommended, in case of bricks.
+
+@strong{DO NOT hot-swap the chip with your bare hands. Use a PLCC chip extractor. These can be found online. See @uref{http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools,http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools}}
+
+Do check the HCL entry: @uref{../hcl/kfsn4-dre.html,../hcl/kfsn4-dre.html}
+
+@node ASUS KGPE-D16?
+@section ASUS KGPE-D16?
+@anchor{#asus-kgpe-d16}
+If you have the proprietary BIOS, you need to flash libreboot externally. See @uref{kgpe-d16.html,kgpe-d16.html}.
+
+If you already have coreboot or libreboot installed, without write protection on the flash chip, then you can do it in software (otherwise, see link above).
+
+@strong{DO NOT hot-swap the chip with your bare hands. Use a PDIP-8 chip extractor. These can be found online. See @uref{http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools,http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools}}
+
+Do check the HCL entry: @uref{../hcl/kgpe-d16.html,../hcl/kgpe-d16.html}
+
+@node Are you currently running libreboot or coreboot?
+@section Are you currently running libreboot (or coreboot)?
+@anchor{#are-you-currently-running-libreboot-or-coreboot}
+X60/T60 users should be fine with this guide. If you write-protected the flash chip, please refer to @uref{x60_unbrick.html,x60_unbrick.html}, @uref{x60tablet_unbrick.html,x60tablet_unbrick.html} or @uref{t60_unbrick.html,t60_unbrick.html}. @emph{This probably does not apply to you. Most people do not write-protect the flash chip, so you probably didn't either.}
+
+Similarly, it is possible to write-protect the flash chip in coreboot or libreboot on GM45 laptops (X200/R400/R500/T400/T500). If you did this, then you will need to use the links above for flashing, treating your laptop as though it currently has the proprietary firmware (because write-protected SPI flash requires external re-flashing, as is also the case when running the proprietary firmware).
+
+If you did not write-protect the flash chip, or it came to you without any write-protection (@strong{@emph{libreboot does not write-protect the flash chip by default, so this probably applies to you}}), read on!
+
+@node MAC address on GM45 X200/R400/T400/T500
+@section MAC address on GM45 (X200/R400/T400/T500)
+@anchor{#mac-address-on-gm45-x200r400t400t500}
+@strong{Users of the X200/R400/T400/T500 take note:} The MAC address for the onboard ethernet chipset is located inside the flash chip. Libreboot ROM images for these laptops contain a generic MAC address by default (00:F5:F0:40:71:FE), but this is not what you want. @emph{Make sure to change the MAC address inside the ROM image, before flashing it. The instructions on @uref{../hcl/gm45_remove_me.html#ich9gen,../hcl/gm45_remove_me.html#ich9gen} show how to do this.}
+
+It is important that you change the default MAC address, before flashing. It will be printed on a sticker at the bottom of the laptop, or it will be printed on a sticker next to or underneath the RAM. Alternatively, and assuming that your current firmware has the correct MAC address in it, you can get it from your OS.
+
+@strong{R500 users: your laptop lacks a GbE region, because it has a different NIC. You do not need to change the MAC address on this laptop; it will already be correct. You can simply flash the available ROM images for the R500, as-is. See @uref{../hcl/r500.html#nogbe,../hcl/r500.html#nogbe}.}
+
+@node Flash chip size
+@section Flash chip size
+@anchor{#flash-chip-size}
+Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
+
+@node All good?
+@section All good?
+@anchor{#all-good}
+Excellent! Moving on...
+
+Download the @emph{libreboot_util.tar.xz} archive, and extract it. Inside, you will find a directory called @emph{flashrom}. This contains statically compiled executable files of the @emph{flashrom} utility, which you will use to re-flash your libreboot system.
+
+Simply use @emph{cd} on your terminal, to switch to the @emph{libreboot_util} directory. Inside, there is a script called @emph{flash}, which will detect what CPU architecture you have (e.g. i686, x86_64) and use the appropriate executable. It is also possible for you to build these executables from the libreboot source code archives.
+
+How to update the flash chip contents:@* $ @strong{sudo ./flash update @ref{#rom,yourrom.rom}}
+
+Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but you are sure that you chose the correct ROM image, then run this alternative command:@* $ @strong{sudo ./flash forceupdate @ref{#rom,yourrom.rom}}
+
+You should see @strong{"Verifying flash... VERIFIED."} written at the end of the flashrom output. @strong{Shut down} after you see this, and then boot up again after a few seconds.
+
+@ref{#pagetop,Back to top of page}
+
+@node ThinkPad X60/T60 Initial installation guide if running the proprietary firmware
+@chapter ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware)
+@anchor{#thinkpad-x60t60-initial-installation-guide-if-running-the-proprietary-firmware}
+@strong{This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you already have coreboot or libreboot running, then go to @ref{#flashrom,#flashrom} instead!}
+
+@strong{If you are flashing a Lenovo ThinkPad T60, be sure to read @uref{../hcl/index.html#supported_t60_list,../hcl/index.html#supported_t60_list}}
+
+@strong{If you are using libreboot_src or git, then make sure that you built the sources first (see @uref{../git/index.html#build,../git/index.html#build}).}
+
+@strong{Warning: this guide will not instruct the user how to backup the original Lenovo BIOS firmware. These backups are tied to each system, and will not work on any other. For that, please refer to @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.}
+
+@strong{If you're using libreboot 20150518, note that there is a mistake in the flashing script. Apply this patch to the BASH script named @emph{flash} (this is the script for flashing libreboot into your X60): @uref{x60flashscript.patch,x60flashscript.patch}. This patch is merged in the main git repository, and in all releases after 20150518.}
+
+The first half of the procedure is as follows:@* $ @strong{sudo ./flash i945lenovo_firstflash @ref{#rom,yourrom.rom}.}
+
+You should see within the output the following:@* @strong{"Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000 are swapped"}.
+
+You should also see within the output the following:@* @strong{"Your flash chip is in an unknown state"}, @strong{"FAILED"} and @strong{"DO NOT REBOOT OR POWEROFF"}@* Seeing this means that the operation was a @strong{resounding} success! @strong{DON'T PANIC}.
+
+See this link for more details: @uref{http://thread.gmane.org/gmane.linux.bios.flashrom/575,http://thread.gmane.org/gmane.linux.bios.flashrom/575}.
+
+If the above is what you see, then @strong{SHUT DOWN}. Wait a few seconds, and then boot; libreboot is running, but there is a 2nd procedure @strong{*needed*} (see below).
+
+When you have booted up again, you must also do this:@* $ @strong{sudo ./flash i945lenovo_secondflash @ref{#rom,yourrom.rom}}
+
+If flashing fails at this stage, try the following:@* $ @strong{sudo ./flashrom/i686/flashrom -p internal:laptop=force_I_want_a_brick -w @ref{#rom,yourrom.rom}}
+
+You should see within the output the following:@* @strong{"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is untranslated"}
+
+You should also see within the output the following:@* @strong{"Verifying flash... VERIFIED."}
+
+@ref{#pagetop,Back to top of page.}
+
+@node MacBook21 Initial installation guide if running the proprietary firmware
+@chapter MacBook2,1: Initial installation guide (if running the proprietary firmware)
+@anchor{#macbook21-initial-installation-guide-if-running-the-proprietary-firmware}
+@strong{If you have a MacBook1,1, refer to @uref{../hcl/index.html#macbook11,../hcl/index.html#macbook11} for flashing instructions.}
+
+@strong{This is for the MacBook2,1 while running Apple EFI firmware. If you already have coreboot or libreboot running, then go to @ref{#flashrom,#flashrom} instead!}
+
+Be sure to read the information in @uref{../hcl/index.html#macbook21,../hcl/index.html#macbook21}.
+
+@strong{Warning: this guide will not instruct the user how to backup the original Apple EFI firmware. For that, please refer to @uref{http://www.coreboot.org/Board:apple/macbook21,http://www.coreboot.org/Board:apple/macbook21}.}
+
+@strong{If you are using libreboot_src or git, then make sure that you built the sources first (see @uref{../git/index.html#build,../git/index.html#build}).}
+
+Look at the @ref{#rom,list of ROM images} to see which image is compatible with your device.
+
+Use this flashing script, to install libreboot:@* $ @strong{sudo ./flash i945apple_firstflash @ref{#rom,yourrom.rom}}
+
+You should also see within the output the following:@* @strong{"Verifying flash... VERIFIED."}
+
+Shut down.
+
+@ref{#pagetop,Back to top of page.}
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../gfdl-1.3.txt,../gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

@@ -1,0 +1,157 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title How to install GNU/Linux on a libreboot system
+@end titlepage
+
+@node Top
+@top How to install GNU/Linux on a libreboot system
+
+@menu
+* How to install GNU/Linux on a libreboot system::
+* Troubleshooting::
+@end menu
+
+@node How to install GNU/Linux on a libreboot system
+@chapter How to install GNU/Linux on a libreboot system
+@anchor{#how-to-install-gnulinux-on-a-libreboot-system}
+This section relates to preparing, booting and installing a GNU/Linux distribution on your libreboot system, using nothing more than a USB flash drive (and @emph{dd}).
+
+@itemize
+@item
+@ref{#prepare,Prepare the USB drive (in GNU/Linux)}
+@item
+@ref{#encryption,Installing GNU/Linux with full disk encryption}
+@item
+@ref{#guix,GNU Guix System Distribution?}
+@item
+@ref{#trisquel_netinstall,Trisquel net install?}
+@item
+@ref{#parse_isolinux,Booting ISOLINUX images (automatic method)}
+@item
+@ref{#manual_isolinux,Booting ISOLINUX images (manual method)}
+@item
+@ref{#troubleshooting,Troubleshooting}
+@end itemize
+
+@uref{index.html,Back to previous index}
+
+@strong{This section is only for the GRUB payload. For depthcharge (used on CrOS devices in libreboot), instructions have yet to be written in the libreboot documentation.}
+@menu
+* Prepare the USB drive in GNU/Linux::
+* Installing GNU/Linux with full disk encryption::
+* GNU Guix System Distribution?::
+* Trisquel net install?::
+* Booting ISOLINUX images automatic method::
+* Booting ISOLINUX images manual method::
+@end menu
+
+@node Prepare the USB drive in GNU/Linux
+@section Prepare the USB drive (in GNU/Linux)
+@anchor{#prepare-the-usb-drive-in-gnulinux}
+Connect the USB drive. Check dmesg:@* @strong{$ dmesg}@* Check lsblk to confirm which drive it is:@* @strong{$ lsblk}
+
+Check that it wasn't automatically mounted. If it was, unmount it. For example:@* @strong{$ sudo umount /dev/sdX*}@* @strong{# umount /dev/sdX*}
+
+dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:@* @strong{$ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync}@* @strong{# dd if=gnulinux.iso of=/dev/sdX bs=8M; sync}
+
+You should now be able to boot the installer from your USB drive. Continue reading, for information about how to do that.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Installing GNU/Linux with full disk encryption
+@section Installing GNU/Linux with full disk encryption
+@anchor{#installing-gnulinux-with-full-disk-encryption}
+@itemize
+@item
+@uref{encrypted_trisquel.html,Installing Trisquel GNU/Linux with full disk encryption (including /boot)}
+@item
+@uref{encrypted_parabola.html,Installing Parabola GNU/Linux with full disk encryption (including /boot)}
+@end itemize
+
+@ref{#pagetop,Back to top of page}.
+
+@node GNU Guix System Distribution?
+@section GNU Guix System Distribution?
+@anchor{#gnu-guix-system-distribution}
+The Guix installers uses the GRUB bootloader, unlike most GNU/Linux installers which will likely use ISOLINUX.
+
+To boot the Guix live USB install, select @strong{@emph{Search for GRUB configuration (grub.cfg) outside of CBFS}} from the GRUB payload menu. After you have done that, a new menuentry will appear at the very bottom with text like @strong{@emph{Load Config from (usb0)}}; select that, and it should boot.
+
+Once you have installed Guix onto the main storage device, check @uref{grub_cbfs.html#option1_dont_reflash,grub_cbfs.html#option1_dont_reflash} for hints on how to boot it.
+
+GuixSD (Guix System Distribution) is highly recommended; it's part of GNU, and @uref{https://www.gnu.org/distros/free-distros.html,endorsed} by the Free Software Foundation.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Trisquel net install?
+@section Trisquel net install?
+@anchor{#trisquel-net-install}
+Tip: don't use the official net install image. Download the full GNOME ISO (the ~1.5GiB one). In this ISO, there is still the capability to boot the net install, while it also provides an easy to use live system (which you can boot from USB). This ISO also works using @emph{syslinux_configfile -i} (the @emph{Parse ISOLINUX} menu entries in the default GRUB configuration that libreboot uses).
+
+@ref{#pagetop,Back to top of page}.
+
+@node Booting ISOLINUX images automatic method
+@section Booting ISOLINUX images (automatic method)
+@anchor{#booting-isolinux-images-automatic-method}
+Boot it in GRUB using the @emph{Parse ISOLINUX config (USB)} option. A new menu should appear in GRUB, showing the boot options for that distro; this is a GRUB menu, converted from the usual ISOLINUX menu provided by that distro.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Booting ISOLINUX images manual method
+@section Booting ISOLINUX images (manual method)
+@anchor{#booting-isolinux-images-manual-method}
+@emph{These are generic instructions. They may or may not be correct for your distribution. You must adapt them appropriately, for whatever GNU/Linux distribution it is that you are trying to install.}
+
+If the ISOLINUX parser or @emph{Search for GRUB configuration} options won't work, then press C in GRUB to access the command line.@* grub> @strong{ls}@* Get the device from above output, eg (usb0). Example:@* grub> @strong{cat (usb0)/isolinux/isolinux.cfg}@* Either this will show the ISOLINUX menuentries for that ISO, or link to other .cfg files, for example /isolinux/foo.cfg.@* If it did that, then you do:@* grub> @strong{cat (usb0)/isolinux/foo.cfg}@* And so on, until you find the correct menuentries for ISOLINUX. @strong{The file @emph{/isolinux/foo.cfg} is a fictional example. Do not actually use this example, unless you actually have that file, if it is appropriate.}
+
+For Trisquel (and other debian-based distros), there are typically menuentries listed in @emph{/isolinux/txt.cfg} or @emph{/isolinux/gtk.cfg}. For dual-architecture ISO images (i686 and x86_64), there may be separate files/directories for each architecture. Just keep searching through the image, until you find the correct ISOLINUX configuration file.
+
+Now look at the ISOLINUX menuentry. It'll look like:@* @strong{kernel /path/to/kernel@* append PARAMETERS initrd=/path/to/initrd MAYBE_MORE_PARAMETERS@*} GRUB works the same way, but in it's own way. Example GRUB commands:@* grub> @strong{set root='usb0'}@* grub> @strong{linux /path/to/kernel PARAMETERS MAYBE_MORE_PARAMETERS}@* grub> @strong{initrd /path/to/initrd}@* grub> @strong{boot}@* Note: @emph{usb0} may be incorrect. Check the output of the @emph{ls} command in GRUB, to see a list of USB devices/partitions. Of course this will vary from distro to distro. If you did all of that correctly, then it should now be booting your USB drive in the way that you specified.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Troubleshooting
+@chapter Troubleshooting
+@anchor{#troubleshooting}
+Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer. This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU/Linux distributions it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
+
+In most cases, you should use the vesafb ROM images. Example filename: libreboot_ukdvorak_vesafb.rom.
+@menu
+* parabola won't boot in text-mode::
+* debian-installer trisquel net install graphical corruption in text-mode::
+@end menu
+
+@node parabola won't boot in text-mode
+@section parabola won't boot in text-mode
+@anchor{#parabola-wont-boot-in-text-mode}
+Use one of the ROM images with vesafb in the filename (uses coreboot framebuffer instead of text-mode).
+
+@node debian-installer trisquel net install graphical corruption in text-mode
+@section debian-installer (trisquel net install) graphical corruption in text-mode
+@anchor{#debian-installer-trisquel-net-install-graphical-corruption-in-text-mode}
+When using the ROM images that use coreboot's "text mode" instead of the coreboot framebuffer, booting the Trisquel net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't exist. Use that kernel parameter on the 'linux' line when booting it:@* @strong{vga=normal fb=false}
+
+Tested in Trisquel 6 (and 7). This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
+
+If selecting text-mode from a GRUB menu created using the ISOLINUX parser, you can press E on the menu entry to add this. Or, if you are booting manually (from GRUB terminal) then just add the parameters.
+
+This workaround was found on the page: @uref{https://www.debian.org/releases/stable/i386/ch05s04.html,https://www.debian.org/releases/stable/i386/ch05s04.html}. It should also work for gNewSense, Debian and any other apt-get distro that provides debian-installer (text mode) net install method.
+
+@ref{#pagetop,Back to top of page}.
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../gfdl-1.3.txt,../gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye
