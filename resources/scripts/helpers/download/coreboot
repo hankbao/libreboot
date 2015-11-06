@@ -134,7 +134,7 @@ git am "../resources/libreboot/patch/misc/0009-chromeos-Allow-disabling-vboot-fi
 # git fetch http://review.coreboot.org/coreboot refs/changes/43/11143/2 && git cherry-pick FETCH_HEAD
 
 # KGPE-D16 patches
-# note: current top patch is http://review.coreboot.org/#/c/12072/6
+# new versions can be found at https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php
 for i in ../resources/libreboot/patch/kgpe-d16/*; do
 	git am "${i}"
 done
