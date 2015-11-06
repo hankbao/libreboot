@@ -148,4 +148,7 @@ rm -f "lbversion"
 # go back to main source directory
 cd "../"
 
+# create ROM image layout to allow flashing specific regions only
+./coreboot/util/ifdtool/ifdtool -f bin/grub/${boardtarget}/rom.layout $(find bin/grub/${boardtarget} -type f -name "*.rom" -print -quit)
+
 printf "\n\n"
