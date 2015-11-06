@@ -1,0 +1,49 @@
+From b67e436ab3de506fe4421ccd2bd2e50f0e3ad652 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 9 Jun 2015 18:57:23 -0500
+Subject: [PATCH 050/143] mainboard/asus/kgpe-d16: Properly initialize SB700
+ SATA PHYs
+
+Change-Id: I5323462dcb8a4e84786be38cc85070eb48d4a31d
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/mainboard.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/src/mainboard/asus/kgpe-d16/mainboard.c b/src/mainboard/asus/kgpe-d16/mainboard.c
+index 47ede34..8de6f26 100644
+--- a/src/mainboard/asus/kgpe-d16/mainboard.c
++++ b/src/mainboard/asus/kgpe-d16/mainboard.c
+@@ -76,6 +76,29 @@ static void mainboard_enable(device_t dev)
+ 	/* get_ide_dma66(); */
+ }
+ 
++/* override the default SATA PHY setup */
++void sb7xx_51xx_setup_sata_phys(struct device *dev)
++{
++	/* RPR7.6.1 Program the PHY Global Control to 0x2C00 */
++	pci_write_config16(dev, 0x86, 0x2c00);
++
++	/* RPR7.6.2 SATA GENI PHY ports setting */
++	pci_write_config32(dev, 0x88, 0x01b48016);
++	pci_write_config32(dev, 0x8c, 0x01b48016);
++	pci_write_config32(dev, 0x90, 0x01b48016);
++	pci_write_config32(dev, 0x94, 0x01b48016);
++	pci_write_config32(dev, 0x98, 0x01b48016);
++	pci_write_config32(dev, 0x9c, 0x01b48016);
++
++	/* RPR7.6.3 SATA GEN II PHY port setting for port [0~5]. */
++	pci_write_config16(dev, 0xa0, 0xa07a);
++	pci_write_config16(dev, 0xa2, 0xa07a);
++	pci_write_config16(dev, 0xa4, 0xa07a);
++	pci_write_config16(dev, 0xa6, 0xa07a);
++	pci_write_config16(dev, 0xa8, 0xa07a);
++	pci_write_config16(dev, 0xaa, 0xa07a);
++}
++
+ struct chip_operations mainboard_ops = {
+ 	.enable_dev = mainboard_enable,
+ };
+-- 
+1.7.9.5
+

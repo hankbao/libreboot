@@ -1,0 +1,28 @@
+From 9b2c0953c5b51968d3ec9a41585196adb743a177 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 8 Aug 2015 02:40:58 -0500
+Subject: [PATCH 104/143] northbridge/amd/amdfam10: Fix invalid NUMA table
+
+Change-Id: I99c200382b52a99687daf266a84873d9ae2df025
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/acpi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/northbridge/amd/amdfam10/acpi.c b/src/northbridge/amd/amdfam10/acpi.c
+index 92433bb..23cf086 100644
+--- a/src/northbridge/amd/amdfam10/acpi.c
++++ b/src/northbridge/amd/amdfam10/acpi.c
+@@ -106,7 +106,8 @@ static void set_srat_mem(void *gp, struct device *dev, struct resource *res)
+ 	}
+ 
+ 	// need to figure out NV
+-	state->current += acpi_create_srat_mem((acpi_srat_mem_t *)state->current, (res->index & 0xf), basek, sizek, 1);
++	if (res->index > 0xf)
++		state->current += acpi_create_srat_mem((acpi_srat_mem_t *)state->current, (res->index & 0xf), basek, sizek, 1);
+ }
+ 
+ static unsigned long acpi_fill_srat(unsigned long current)
+-- 
+1.7.9.5
+

@@ -44,7 +44,7 @@ git clone http://review.coreboot.org/coreboot
 cd "coreboot/"
 
 # reset to previously tested revision
-git reset --hard d98471ccb412f61d7da2c5eb5ca8eeb8fece384a
+git reset --hard 33fb4cf0ffb01be8bcb6b488872c87eb50e7d77f
 
 # vboot submodule is needed
 git submodule update --init --checkout -- 3rdparty/vboot/

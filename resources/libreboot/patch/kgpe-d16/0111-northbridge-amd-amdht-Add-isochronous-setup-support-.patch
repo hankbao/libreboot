@@ -1,0 +1,279 @@
+From c6a6d7b4fc613a18511d8aeb0040a350d61920e7 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 11 Aug 2015 17:47:48 -0500
+Subject: [PATCH 111/143] northbridge/amd/amdht: Add isochronous setup support
+ for coherent fabric
+
+Change-Id: Idd7c9b94a65f856b0059e1d45f8719d9475771b6
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/init_cpus.c |   61 +++++++++++++++++++++++++
+ src/northbridge/amd/amdht/h3ffeat.h           |    3 ++
+ src/northbridge/amd/amdht/h3finit.c           |   35 +++++++++++++-
+ src/northbridge/amd/amdht/h3finit.h           |    4 +-
+ src/northbridge/amd/amdht/h3ncmn.c            |   30 +++++++++++-
+ 5 files changed, 129 insertions(+), 4 deletions(-)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/init_cpus.c b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+index 7dffcc0..da6424f 100644
+--- a/src/cpu/amd/family_10h-family_15h/init_cpus.c
++++ b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+@@ -1697,6 +1697,67 @@ static void cpuSetAMDPCI(u8 node)
+ 		pci_write_config32(NODE_PCI(node, 3), 0x140, dword);
+ 	}
+ 
++	uint8_t link;
++	uint8_t isochronous;
++	uint8_t isochronous_link_present;
++
++	/* Set up isochronous buffers if needed */
++	isochronous_link_present = 0;
++	if (revision & AMD_FAM15_ALL) {
++		for (link = 0; link < 4; link++) {
++			if (AMD_CpuFindCapability(node, link, &offset)) {
++				isochronous = (pci_read_config32(NODE_PCI(node, 0), (link * 0x20) + 0x84) >> 12) & 0x1;
++
++				if (isochronous)
++					isochronous_link_present = 1;
++			}
++		}
++	}
++
++	uint8_t free_tok;
++	uint8_t up_rsp_cbc;
++	uint8_t isoc_preq_cbc;
++	uint8_t isoc_preq_tok;
++	uint8_t xbar_to_sri_free_list_cbc;
++	if (isochronous_link_present) {
++		/* Adjust buffer counts */
++		dword = pci_read_config32(NODE_PCI(node, 3), 0x70);
++		isoc_preq_cbc = (dword >> 24) & 0x7;
++		up_rsp_cbc = (dword >> 16) & 0x7;
++		up_rsp_cbc--;
++		isoc_preq_cbc++;
++		dword &= ~(0x7 << 24);			/* IsocPreqCBC = isoc_preq_cbc */
++		dword |= ((isoc_preq_cbc & 0x7) << 24);
++		dword &= ~(0x7 << 16);			/* UpRspCBC = up_rsp_cbc */
++		dword |= ((up_rsp_cbc & 0x7) << 16);
++		pci_write_config32(NODE_PCI(node, 3), 0x70, dword);
++
++		dword = pci_read_config32(NODE_PCI(node, 3), 0x74);
++		isoc_preq_cbc = (dword >> 24) & 0x7;
++		isoc_preq_cbc++;
++		dword &= ~(0x7 << 24);			/* IsocPreqCBC = isoc_preq_cbc */
++		dword |= (isoc_preq_cbc & 0x7) << 24;
++		pci_write_config32(NODE_PCI(node, 3), 0x74, dword);
++
++		dword = pci_read_config32(NODE_PCI(node, 3), 0x7c);
++		xbar_to_sri_free_list_cbc = dword & 0x1f;
++		xbar_to_sri_free_list_cbc--;
++		dword &= ~0x1f;				/* Xbar2SriFreeListCBC = xbar_to_sri_free_list_cbc */
++		dword |= xbar_to_sri_free_list_cbc & 0x1f;
++		pci_write_config32(NODE_PCI(node, 3), 0x7c, dword);
++
++		dword = pci_read_config32(NODE_PCI(node, 3), 0x140);
++		free_tok = (dword >> 20) & 0xf;
++		isoc_preq_tok = (dword >> 14) & 0x3;
++		free_tok--;
++		isoc_preq_tok++;
++		dword &= ~(0xf << 20);			/* FreeTok = free_tok */
++		dword |= ((free_tok & 0xf) << 20);
++		dword &= ~(0x3 << 14);			/* IsocPreqTok = isoc_preq_tok */
++		dword |= ((isoc_preq_tok & 0x3) << 14);
++		pci_write_config32(NODE_PCI(node, 3), 0x140, dword);
++	}
++
+ 	printk(BIOS_DEBUG, " done\n");
+ }
+ 
+diff --git a/src/northbridge/amd/amdht/h3ffeat.h b/src/northbridge/amd/amdht/h3ffeat.h
+index 5dc9916..c523b12 100644
+--- a/src/northbridge/amd/amdht/h3ffeat.h
++++ b/src/northbridge/amd/amdht/h3ffeat.h
+@@ -79,6 +79,7 @@
+ #define HTSLAVE_LINK01_OFFSET			4
+ #define HTSLAVE_LINK_CONTROL_0_REG		4
+ #define HTSLAVE_FREQ_REV_0_REG			0xC
++#define HTSLAVE_FEATURE_CAP_REG		0x10
+ 
+ /* HT3 gen Capability */
+ #define IS_HT_GEN3_CAPABILITY(reg) \
+@@ -126,10 +127,12 @@ typedef struct
+ 	u8 SelWidthIn;
+ 	u8 SelWidthOut;
+ 	u8 SelFrequency;
++	uint8_t enable_isochronous_mode;
+ 
+ 	/* This section is for keeping track of capabilities and possible configurations */
+ 	BOOL RegangCap;
+ 	uint32_t PrvFrequencyCap;
++	uint32_t PrvFeatureCap;
+ 	u8 PrvWidthInCap;
+ 	u8 PrvWidthOutCap;
+ 	uint32_t CompositeFrequencyCap;
+diff --git a/src/northbridge/amd/amdht/h3finit.c b/src/northbridge/amd/amdht/h3finit.c
+index 14f348f..6b53d34 100644
+--- a/src/northbridge/amd/amdht/h3finit.c
++++ b/src/northbridge/amd/amdht/h3finit.c
+@@ -1419,6 +1419,38 @@ static void regangLinks(sMainData *pDat)
+ #endif /* HT_BUILD_NC_ONLY */
+ }
+ 
++static void detectIoLinkIsochronousCapable(sMainData *pDat)
++{
++	uint8_t i;
++	unsigned char iommu;
++	uint8_t isochronous_capable = 0;
++
++	iommu = 1;
++	get_option(&iommu, "iommu");
++
++	for (i = 0; i < pDat->TotalLinks*2; i += 2) {
++		if ((pDat->PortList[i].Type == PORTLIST_TYPE_CPU) && (pDat->PortList[i+1].Type == PORTLIST_TYPE_IO)) {
++			if ((pDat->PortList[i].PrvFeatureCap & 0x1) && (pDat->PortList[i+1].PrvFeatureCap & 0x1)) {
++				pDat->PortList[i].enable_isochronous_mode = 1;
++				pDat->PortList[i+1].enable_isochronous_mode = 1;
++				isochronous_capable = 1;
++			} else {
++				pDat->PortList[i].enable_isochronous_mode = 0;
++				pDat->PortList[i+1].enable_isochronous_mode = 0;
++			}
++		}
++	}
++
++	if (isochronous_capable && iommu) {
++		printk(BIOS_DEBUG, "Forcing HT links to isochronous mode due to enabled IOMMU\n");
++		/* Isochronous mode must be set on all links if the IOMMU is enabled */
++		for (i = 0; i < pDat->TotalLinks*2; i += 2) {
++			pDat->PortList[i].enable_isochronous_mode = 1;
++			pDat->PortList[i+1].enable_isochronous_mode = 1;
++		}
++	}
++}
++
+ /*----------------------------------------------------------------------------------------
+  * void
+  * selectOptimalWidthAndFrequency(sMainData *pDat)
+@@ -1539,7 +1571,6 @@ static void selectOptimalWidthAndFrequency(sMainData *pDat)
+ 			temp = cbPCBBAUpstreamWidth;
+ 		pDat->PortList[i].SelWidthIn = (u8)temp;
+ 		pDat->PortList[i+1].SelWidthOut = (u8)temp;
+-
+ 	}
+ }
+ 
+@@ -1701,6 +1732,8 @@ static void linkOptimization(sMainData *pDat)
+ {
+ 	pDat->nb->gatherLinkData(pDat, pDat->nb);
+ 	regangLinks(pDat);
++	if (is_fam15h())
++		detectIoLinkIsochronousCapable(pDat);
+ 	selectOptimalWidthAndFrequency(pDat);
+ 	hammerSublinkFixup(pDat);
+ 	pDat->nb->setLinkData(pDat, pDat->nb);
+diff --git a/src/northbridge/amd/amdht/h3finit.h b/src/northbridge/amd/amdht/h3finit.h
+index 462f3e3..eef8fe7 100644
+--- a/src/northbridge/amd/amdht/h3finit.h
++++ b/src/northbridge/amd/amdht/h3finit.h
+@@ -231,6 +231,7 @@ typedef struct {
+ 	 *	@param[in,out] u8*  LinkWidthIn  = modify to change the Link Witdh In
+ 	 *	@param[in,out] u8*  LinkWidthOut  = modify to change the Link Witdh Out
+ 	 *	@param[in,out] u32* FreqCap = modify to change the link's frequency capability
++	 *	@param[in,out] u32* FeatureCap = modify to change the link's feature capability
+ 	 *
+ 	 * ---------------------------------------------------------------------------------------
+ 	 */
+@@ -245,7 +246,8 @@ typedef struct {
+ 		u8 Link,
+ 		u8 *LinkWidthIn,
+ 		u8 *LinkWidthOut,
+-		u32 *FreqCap
++		u32 *FreqCap,
++		u32 *FeatureCap
+ 	);
+ 
+ 	/**----------------------------------------------------------------------------------------
+diff --git a/src/northbridge/amd/amdht/h3ncmn.c b/src/northbridge/amd/amdht/h3ncmn.c
+index e377ff2..369ce3e 100644
+--- a/src/northbridge/amd/amdht/h3ncmn.c
++++ b/src/northbridge/amd/amdht/h3ncmn.c
+@@ -1433,12 +1433,15 @@ static void gatherLinkData(sMainData *pDat, cNorthBridge *nb)
+ 				temp &= 0x7;	/* Mask off reserved values */
+ 				pDat->PortList[i].PrvFrequencyCap |= (temp << 17);
+ 			}
++
++			AmdPCIReadBits(linkBase + HTHOST_FEATURE_CAP_REG, 9, 0, &temp);
++			pDat->PortList[i].PrvFeatureCap = (u16)temp;
+ 		}
+ 		else
+ 		{
+ 			linkBase = pDat->PortList[i].Pointer;
+ 			if (pDat->PortList[i].Link == 1)
+-			 linkBase += HTSLAVE_LINK01_OFFSET;
++				linkBase += HTSLAVE_LINK01_OFFSET;
+ 
+ 			AmdPCIReadBits(linkBase + HTSLAVE_LINK_CONTROL_0_REG, 22, 20, &temp);
+ 			pDat->PortList[i].PrvWidthOutCap = convertBitsToWidth((u8)temp, pDat->nb);
+@@ -1449,6 +1452,9 @@ static void gatherLinkData(sMainData *pDat, cNorthBridge *nb)
+ 			AmdPCIReadBits(linkBase + HTSLAVE_FREQ_REV_0_REG, 31, 16, &temp);
+ 			pDat->PortList[i].PrvFrequencyCap = (u16)temp;
+ 
++			AmdPCIReadBits(linkBase + HTSLAVE_FEATURE_CAP_REG, 7, 0, &temp);
++			pDat->PortList[i].PrvFeatureCap = (u16)temp;
++
+ 			if (pDat->HtBlock->AMD_CB_DeviceCapOverride)
+ 			{
+ 				linkBase &= 0xFFFFF000;
+@@ -1465,7 +1471,8 @@ static void gatherLinkData(sMainData *pDat, cNorthBridge *nb)
+ 					pDat->PortList[i].Link,
+ 					&(pDat->PortList[i].PrvWidthInCap),
+ 					&(pDat->PortList[i].PrvWidthOutCap),
+-					&(pDat->PortList[i].PrvFrequencyCap));
++					&(pDat->PortList[i].PrvFrequencyCap),
++					&(pDat->PortList[i].PrvFeatureCap));
+ 			}
+ 		}
+ 	}
+@@ -1566,6 +1573,16 @@ static void setLinkData(sMainData *pDat, cNorthBridge *nb)
+ 			if (is_gt_rev_d())
+ 				AmdPCIWriteBits(linkBase + HTHOST_FREQ_REV_REG_2, 0, 0, &temp2);
+ 			AmdPCIWriteBits(linkBase + HTHOST_FREQ_REV_REG, 11, 8, &temp);
++
++			/* Enable isochronous flow control mode if supported by chipset */
++			if (is_fam15h()) {
++				if (pDat->PortList[i].enable_isochronous_mode)
++					temp = 1;
++				else
++					temp = 0;
++				setHtControlRegisterBits(linkBase + HTHOST_LINK_CONTROL_REG, 12, 12, &temp);
++			}
++
+ 			if (frequency_index > HT_FREQUENCY_1000M) /*  Gen1 = 200MHz -> 1000MHz, Gen3 = 1200MHz -> 3200MHz */
+ 			{
+ 				/* Enable  for Gen3 frequencies */
+@@ -1583,6 +1600,7 @@ static void setLinkData(sMainData *pDat, cNorthBridge *nb)
+ 						CPU_HTNB_FUNC_00,
+ 						REG_HT_LINK_RETRY0_0X130 + 4*pDat->PortList[i].Link),
+ 						0, 0, &temp);
++
+ 			/* and Scrambling enable / disable */
+ 			AmdPCIWriteBits(MAKE_SBDFO(makePCISegmentFromNode(pDat->PortList[i].NodeID),
+ 					makePCIBusFromNode(pDat->PortList[i].NodeID),
+@@ -1621,6 +1639,14 @@ static void setLinkData(sMainData *pDat, cNorthBridge *nb)
+ 				bits = 0;
+ 			}
+ 
++			/* Enable isochronous flow control mode if supported by chipset */
++			if (is_fam15h()) {
++				if (pDat->PortList[i].enable_isochronous_mode)
++					temp = 1;
++				else
++					temp = 0;
++			}
++
+ 			/* Retry Enable */
+ 			isFound = FALSE;
+ 			currentPtr = linkBase & (u32)0xFFFFF000; /* Set PCI Offset to 0 */
+-- 
+1.7.9.5
+

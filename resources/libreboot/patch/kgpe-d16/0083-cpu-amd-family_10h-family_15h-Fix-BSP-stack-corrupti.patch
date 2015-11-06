@@ -1,0 +1,40 @@
+From dbc09e431b4023385d3733a1b157053ff6e8c9f0 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 24 Jul 2015 17:34:29 -0500
+Subject: [PATCH 083/143] cpu/amd/family_10h-family_15h: Fix BSP stack
+ corruption on 32-core Fam10 systems
+
+Change-Id: I72ae8f7abeb9a83b57505469922818f9ec5bdf3f
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/Kconfig |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/Kconfig b/src/cpu/amd/family_10h-family_15h/Kconfig
+index 81b1d1e..bfb6751 100644
+--- a/src/cpu/amd/family_10h-family_15h/Kconfig
++++ b/src/cpu/amd/family_10h-family_15h/Kconfig
+@@ -15,6 +15,12 @@ config CPU_AMD_MODEL_10XXX
+ 
+ if CPU_AMD_MODEL_10XXX
+ 
++config USE_LARGE_DCACHE
++	bool
++	default y if CPU_AMD_SOCKET_G34_NON_AGESA
++	default y if CPU_AMD_SOCKET_C32_NON_AGESA
++	default n
++
+ config NUM_IPI_STARTS
+ 	int
+ 	default 1
+@@ -37,6 +43,7 @@ config DCACHE_BSP_STACK_SIZE
+ 
+ config DCACHE_BSP_STACK_SLUSH
+ 	hex
++	default 0x4000 if USE_LARGE_DCACHE
+ 	default 0x1000
+ 
+ config DCACHE_AP_STACK_SIZE
+-- 
+1.7.9.5
+

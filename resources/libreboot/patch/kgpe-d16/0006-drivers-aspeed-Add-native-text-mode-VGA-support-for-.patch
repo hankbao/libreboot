@@ -1,0 +1,3675 @@
+From 913f5fe9e0107c27e0029fe76f62b37f88ccb221 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 17:38:09 -0500
+Subject: [PATCH 006/143] drivers/aspeed: Add native text mode VGA support for
+ the AST2050
+
+Change-Id: I37763a59d2546cd0c0e57b31fdb7aa77c2c50bee
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/drivers/aspeed/Kconfig                  |    2 +
+ src/drivers/aspeed/Makefile.inc             |    1 +
+ src/drivers/aspeed/ast2050/Kconfig          |   14 +
+ src/drivers/aspeed/ast2050/Makefile.inc     |    1 +
+ src/drivers/aspeed/ast2050/ast2050.c        |   83 ++
+ src/drivers/aspeed/common/Kconfig           |   10 +
+ src/drivers/aspeed/common/Makefile.inc      |    1 +
+ src/drivers/aspeed/common/aspeed_coreboot.h |  210 ++++
+ src/drivers/aspeed/common/ast_dp501.c       |  443 +++++++
+ src/drivers/aspeed/common/ast_dram_tables.h |  165 +++
+ src/drivers/aspeed/common/ast_drv.h         |  223 ++++
+ src/drivers/aspeed/common/ast_main.c        |  393 +++++++
+ src/drivers/aspeed/common/ast_post.c        | 1679 +++++++++++++++++++++++++++
+ src/drivers/aspeed/common/ast_tables.h      |  305 +++++
+ src/include/device/pci_ids.h                |    3 +
+ 15 files changed, 3533 insertions(+)
+ create mode 100644 src/drivers/aspeed/Kconfig
+ create mode 100644 src/drivers/aspeed/Makefile.inc
+ create mode 100644 src/drivers/aspeed/ast2050/Kconfig
+ create mode 100644 src/drivers/aspeed/ast2050/Makefile.inc
+ create mode 100644 src/drivers/aspeed/ast2050/ast2050.c
+ create mode 100644 src/drivers/aspeed/common/Kconfig
+ create mode 100644 src/drivers/aspeed/common/Makefile.inc
+ create mode 100644 src/drivers/aspeed/common/aspeed_coreboot.h
+ create mode 100644 src/drivers/aspeed/common/ast_dp501.c
+ create mode 100644 src/drivers/aspeed/common/ast_dram_tables.h
+ create mode 100644 src/drivers/aspeed/common/ast_drv.h
+ create mode 100644 src/drivers/aspeed/common/ast_main.c
+ create mode 100644 src/drivers/aspeed/common/ast_post.c
+ create mode 100644 src/drivers/aspeed/common/ast_tables.h
+
+diff --git a/src/drivers/aspeed/Kconfig b/src/drivers/aspeed/Kconfig
+new file mode 100644
+index 0000000..27469b5
+--- /dev/null
++++ b/src/drivers/aspeed/Kconfig
+@@ -0,0 +1,2 @@
++source src/drivers/aspeed/common/Kconfig
++source src/drivers/aspeed/ast2050/Kconfig
+\ No newline at end of file
+diff --git a/src/drivers/aspeed/Makefile.inc b/src/drivers/aspeed/Makefile.inc
+new file mode 100644
+index 0000000..955a213
+--- /dev/null
++++ b/src/drivers/aspeed/Makefile.inc
+@@ -0,0 +1 @@
++subdirs-y += common ast2050
+\ No newline at end of file
+diff --git a/src/drivers/aspeed/ast2050/Kconfig b/src/drivers/aspeed/ast2050/Kconfig
+new file mode 100644
+index 0000000..f110d58
+--- /dev/null
++++ b/src/drivers/aspeed/ast2050/Kconfig
+@@ -0,0 +1,14 @@
++config DRIVERS_ASPEED_AST2050
++	bool
++
++if DRIVERS_ASPEED_AST2050
++
++config DEVICE_SPECIFIC_OPTIONS # dummy
++	def_bool y
++	select DRIVERS_ASPEED_AST_COMMON
++
++config NATIVE_VGA_INIT_USE_EDID
++	bool
++	default n
++
++endif # DRIVERS_ASPEED_AST2050
+diff --git a/src/drivers/aspeed/ast2050/Makefile.inc b/src/drivers/aspeed/ast2050/Makefile.inc
+new file mode 100644
+index 0000000..3ba9dde
+--- /dev/null
++++ b/src/drivers/aspeed/ast2050/Makefile.inc
+@@ -0,0 +1 @@
++ramstage-$(CONFIG_DRIVERS_ASPEED_AST2050) += ast2050.c
+\ No newline at end of file
+diff --git a/src/drivers/aspeed/ast2050/ast2050.c b/src/drivers/aspeed/ast2050/ast2050.c
+new file mode 100644
+index 0000000..809e9de
+--- /dev/null
++++ b/src/drivers/aspeed/ast2050/ast2050.c
+@@ -0,0 +1,83 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++#include <delay.h>
++#include <stdlib.h>
++#include <string.h>
++#include <arch/io.h>
++#include <edid.h>
++
++#include <console/console.h>
++#include <device/device.h>
++#include <device/pci.h>
++#include <device/pci_ids.h>
++#include <device/pci_ops.h>
++
++#include <pc80/vga.h>
++
++#include "../common/aspeed_coreboot.h"
++#include "../common/ast_drv.h"
++
++static void aspeed_ast2050_set_resources(device_t dev)
++{
++	/* Reserve VGA regions */
++	mmio_resource(dev, 3, 0xa0000 >> 10, 0x1ffff >> 10);
++
++	/* Run standard resource set routine */
++	pci_dev_set_resources(dev);
++}
++
++static void aspeed_ast2050_init(struct device *dev)
++{
++	u8 ret;
++	struct drm_device drm_dev;
++
++	drm_dev.pdev = dev;
++
++	printk(BIOS_INFO, "ASpeed AST2050: initializing video device\n");
++	ret = ast_driver_load(&drm_dev, 0);
++
++	/* Unlock extended configuration registers */
++	outb(0x80, 0x3d4); outb(0xa8, 0x3d5);
++
++	/* Set CRT Request Threshold */
++	outb(0xa6, 0x3d4); outb(0x2f, 0x3d5);
++	outb(0xa7, 0x3d4); outb(0x3f, 0x3d5);
++
++	/* Initialize standard VGA text mode */
++	vga_io_init();
++	vga_textmode_init();
++	printk(BIOS_INFO, "ASpeed VGA text mode initialized\n");
++
++	/* if we don't have console, at least print something... */
++	vga_line_write(0, "ASpeed VGA text mode initialized");
++}
++
++static struct device_operations aspeed_ast2050_ops  = {
++	.read_resources   = pci_dev_read_resources,
++	.set_resources    = aspeed_ast2050_set_resources,
++	.enable_resources = pci_dev_enable_resources,
++	.init             = aspeed_ast2050_init,
++	.scan_bus         = 0,
++};
++
++static const struct pci_driver aspeed_ast2050_driver __pci_driver = {
++        .ops    = &aspeed_ast2050_ops,
++        .vendor = PCI_VENDOR_ID_ASPEED,
++        .device = PCI_DEVICE_ID_ASPEED_AST2050_VGA,
++};
+diff --git a/src/drivers/aspeed/common/Kconfig b/src/drivers/aspeed/common/Kconfig
+new file mode 100644
+index 0000000..0f7056b
+--- /dev/null
++++ b/src/drivers/aspeed/common/Kconfig
+@@ -0,0 +1,10 @@
++config DRIVERS_ASPEED_AST_COMMON
++	bool
++
++if !MAINBOARD_DO_NATIVE_VGA_INIT
++
++config DEVICE_SPECIFIC_OPTIONS # dummy
++	def_bool y
++	select VGA
++
++endif # MAINBOARD_DO_NATIVE_VGA_INIT
+diff --git a/src/drivers/aspeed/common/Makefile.inc b/src/drivers/aspeed/common/Makefile.inc
+new file mode 100644
+index 0000000..75f8b48
+--- /dev/null
++++ b/src/drivers/aspeed/common/Makefile.inc
+@@ -0,0 +1 @@
++ramstage-$(CONFIG_DRIVERS_ASPEED_AST_COMMON) += ast_dp501.c ast_main.c ast_post.c
+diff --git a/src/drivers/aspeed/common/aspeed_coreboot.h b/src/drivers/aspeed/common/aspeed_coreboot.h
+new file mode 100644
+index 0000000..237c23f
+--- /dev/null
++++ b/src/drivers/aspeed/common/aspeed_coreboot.h
+@@ -0,0 +1,210 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++#ifndef _ASPEED_COREBOOT_
++#define _ASPEED_COREBOOT_
++
++#include <delay.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
++#include <arch/io.h>
++
++#include <console/console.h>
++#include <device/device.h>
++#include <device/pci.h>
++#include <device/pci_ids.h>
++#include <device/pci_ops.h>
++
++/* coreboot <--> kernel code interface */
++#define __iomem
++typedef u64 phys_addr_t;
++#define pci_dev device
++
++#define SZ_16M 0x01000000
++
++#define min_t(type, x, y) ({			\
++	type __min1 = (x);			\
++	type __min2 = (y);			\
++	__min1 < __min2 ? __min1 : __min2; })
++
++#define dev_info(dev, format, arg...) printk(BIOS_INFO, "ASpeed VGA: " format, ##arg)
++#define dev_dbg(dev, format, arg...) printk(BIOS_DEBUG, "ASpeed VGA: " format, ##arg)
++#define dev_err(dev, format, arg...) printk(BIOS_ERR, "ASpeed VGA: " format, ##arg)
++
++#define pr_info(format, arg...) printk(BIOS_INFO, "ASpeed VGA: " format, ##arg)
++#define pr_debug(format, arg...) printk(BIOS_INFO, "ASpeed VGA: " format, ##arg)
++#define pr_err(format, arg...) printk(BIOS_ERR, "ASpeed VGA: " format, ##arg)
++
++#define DRM_INFO pr_info
++
++#define GFP_KERNEL 0
++#define GFP_ATOMIC 1
++#define kfree(address) free(address)
++
++#define EIO 5
++#define ENOMEM 12
++
++struct firmware {
++	size_t size;
++	const u8 *data;
++	struct page **pages;
++
++	/* firmware loader private fields */
++	void *priv;
++};
++
++struct drm_device {
++	struct pci_dev *pdev;
++	void *dev_private;
++};
++
++static inline void *kzalloc(size_t size, int flags) {
++	void* ptr = malloc(size);
++	memset(ptr, 0, size);
++	return ptr;
++}
++
++static inline void writel(u32 val, volatile void *addr) {
++	*(u32*)addr = val;
++}
++
++static inline u32 readl(const volatile void *addr) {
++	return *(u32*)addr;
++}
++
++static inline void writew(u16 val, volatile void *addr) {
++	*(u16*)addr = val;
++}
++
++static inline u16 readw(const volatile void *addr) {
++	return *(u16*)addr;
++}
++
++static inline void writeb(u8 val, volatile void *addr) {
++	*(u8*)addr = val;
++}
++
++static inline u8 readb(const volatile void *addr) {
++	return *(u8*)addr;
++}
++
++static inline int pci_read_config_dword(struct pci_dev *dev, int where,
++	u32 *val)
++{
++	*val = pci_read_config32(dev, where);
++	return 0;
++}
++
++static inline int pci_write_config_dword(struct pci_dev *dev, int where,
++	u32 val)
++{
++	pci_write_config32(dev, where, val);
++	return 0;
++}
++
++static inline int pci_read_config_byte(struct pci_dev *dev, int where,
++	u8 *val)
++{
++	*val = pci_read_config8(dev, where);
++	return 0;
++}
++
++static inline struct resource* resource_at_bar(struct pci_dev *dev, u8 bar) {
++	struct resource *res = dev->resource_list;
++	int i;
++	for (i = 0; i < bar; i++) {
++		res = res->next;
++		if (res == NULL)
++			return NULL;
++	}
++
++	return res;
++}
++
++static inline resource_t pci_resource_len(struct pci_dev *dev, u8 bar) {
++	struct resource *res = resource_at_bar(dev, bar);
++	if (res)
++		return res->size;
++	else
++		return 0;
++}
++
++static inline resource_t pci_resource_start(struct pci_dev *dev, u8 bar) {
++	struct resource *res = resource_at_bar(dev, bar);
++	if (res)
++		return res->base;
++	else
++		return 0;
++}
++
++static inline unsigned int ioread32(void __iomem *p) {
++	return readl(p);
++}
++
++static inline void iowrite32(u32 val, void __iomem *p) {
++	writel(val, p);
++}
++
++static inline unsigned int ioread16(void __iomem *p) {
++	return readw(p);
++}
++
++static inline void iowrite16(u16 val, void __iomem *p) {
++	writew(val, p);
++}
++
++static inline unsigned int ioread8(void __iomem *p) {
++	return readb(p);
++}
++
++static inline void iowrite8(u8 val, void __iomem *p) {
++	writeb(val, p);
++}
++
++static inline unsigned int ioread_cbio32(void __iomem *p) {
++	return inl((uint16_t)((intptr_t)p));
++}
++
++static inline void iowrite_cbio32(u32 val, void __iomem *p) {
++	outl(val, (uint16_t)((intptr_t)p));
++}
++
++static inline unsigned int ioread_cbio16(void __iomem *p) {
++	return inw((uint16_t)((intptr_t)p));
++}
++
++static inline void iowrite_cbio16(u16 val, void __iomem *p) {
++	outw(val, (uint16_t)((intptr_t)p));
++}
++
++static inline unsigned int ioread_cbio8(void __iomem *p) {
++	return inb((uint16_t)((intptr_t)p));
++}
++
++static inline void iowrite_cbio8(u8 val, void __iomem *p) {
++	outb(val, (uint16_t)((intptr_t)p));
++}
++
++static inline void msleep(unsigned int msecs) {
++	udelay(msecs * 1000);
++}
++
++#endif
+\ No newline at end of file
+diff --git a/src/drivers/aspeed/common/ast_dp501.c b/src/drivers/aspeed/common/ast_dp501.c
+new file mode 100644
+index 0000000..5be8ec3
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_dp501.c
+@@ -0,0 +1,443 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * File taken from the Linux ast driver (v3.18.5)
++ * Coreboot-specific includes added at top and/or contents modified
++ * as needed to function within the coreboot environment.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc.
++ */
++
++#include "ast_drv.h"
++
++static void send_ack(struct ast_private *ast)
++{
++	u8 sendack;
++	sendack = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, 0xff);
++	sendack |= 0x80;
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, 0x00, sendack);
++}
++
++static void send_nack(struct ast_private *ast)
++{
++	u8 sendack;
++	sendack = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, 0xff);
++	sendack &= ~0x80;
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, 0x00, sendack);
++}
++
++static bool wait_ack(struct ast_private *ast)
++{
++	u8 waitack;
++	u32 retry = 0;
++	do {
++		waitack = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd2, 0xff);
++		waitack &= 0x80;
++		udelay(100);
++	} while ((!waitack) && (retry++ < 1000));
++
++	if (retry < 1000)
++		return true;
++	else
++		return false;
++}
++
++static bool wait_nack(struct ast_private *ast)
++{
++	u8 waitack;
++	u32 retry = 0;
++	do {
++		waitack = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd2, 0xff);
++		waitack &= 0x80;
++		udelay(100);
++	} while ((waitack) && (retry++ < 1000));
++
++	if (retry < 1000)
++		return true;
++	else
++		return false;
++}
++
++static void set_cmd_trigger(struct ast_private *ast)
++{
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, ~0x40, 0x40);
++}
++
++static void clear_cmd_trigger(struct ast_private *ast)
++{
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9b, ~0x40, 0x00);
++}
++
++#if 0
++static bool wait_fw_ready(struct ast_private *ast)
++{
++	u8 waitready;
++	u32 retry = 0;
++	do {
++		waitready = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd2, 0xff);
++		waitready &= 0x40;
++		udelay(100);
++	} while ((!waitready) && (retry++ < 1000));
++
++	if (retry < 1000)
++		return true;
++	else
++		return false;
++}
++#endif
++
++static bool ast_write_cmd(struct drm_device *dev, u8 data)
++{
++	struct ast_private *ast = dev->dev_private;
++	int retry = 0;
++	if (wait_nack(ast)) {
++		send_nack(ast);
++		ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9a, 0x00, data);
++		send_ack(ast);
++		set_cmd_trigger(ast);
++		do {
++			if (wait_ack(ast)) {
++				clear_cmd_trigger(ast);
++				send_nack(ast);
++				return true;
++			}
++		} while (retry++ < 100);
++	}
++	clear_cmd_trigger(ast);
++	send_nack(ast);
++	return false;
++}
++
++static bool ast_write_data(struct drm_device *dev, u8 data)
++{
++	struct ast_private *ast = dev->dev_private;
++
++	if (wait_nack(ast)) {
++		send_nack(ast);
++		ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9a, 0x00, data);
++		send_ack(ast);
++		if (wait_ack(ast)) {
++			send_nack(ast);
++			return true;
++		}
++	}
++	send_nack(ast);
++	return false;
++}
++
++#if 0
++static bool ast_read_data(struct drm_device *dev, u8 *data)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 tmp;
++
++	*data = 0;
++
++	if (wait_ack(ast) == false)
++		return false;
++	tmp = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd3, 0xff);
++	*data = tmp;
++	if (wait_nack(ast) == false) {
++		send_nack(ast);
++		return false;
++	}
++	send_nack(ast);
++	return true;
++}
++
++static void clear_cmd(struct ast_private *ast)
++{
++	send_nack(ast);
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x9a, 0x00, 0x00);
++}
++#endif
++
++void ast_set_dp501_video_output(struct drm_device *dev, u8 mode)
++{
++	ast_write_cmd(dev, 0x40);
++	ast_write_data(dev, mode);
++
++	msleep(10);
++}
++
++static u32 get_fw_base(struct ast_private *ast)
++{
++	return ast_mindwm(ast, 0x1e6e2104) & 0x7fffffff;
++}
++
++bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size)
++{
++	struct ast_private *ast = dev->dev_private;
++	u32 i, data;
++	u32 boot_address;
++
++	data = ast_mindwm(ast, 0x1e6e2100) & 0x01;
++	if (data) {
++		boot_address = get_fw_base(ast);
++		for (i = 0; i < size; i += 4)
++			*(u32 *)(addr + i) = ast_mindwm(ast, boot_address + i);
++		return true;
++	}
++	return false;
++}
++
++bool ast_launch_m68k(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u32 i, data, len = 0;
++	u32 boot_address;
++	u8 *fw_addr = NULL;
++	u8 jreg;
++
++	data = ast_mindwm(ast, 0x1e6e2100) & 0x01;
++	if (!data) {
++
++		if (ast->dp501_fw_addr) {
++			fw_addr = ast->dp501_fw_addr;
++			len = 32*1024;
++		} else if (ast->dp501_fw) {
++			fw_addr = (u8 *)ast->dp501_fw->data;
++			len = ast->dp501_fw->size;
++		}
++		/* Get BootAddress */
++		ast_moutdwm(ast, 0x1e6e2000, 0x1688a8a8);
++		data = ast_mindwm(ast, 0x1e6e0004);
++		switch (data & 0x03) {
++		case 0:
++			boot_address = 0x44000000;
++			break;
++		default:
++		case 1:
++			boot_address = 0x48000000;
++			break;
++		case 2:
++			boot_address = 0x50000000;
++			break;
++		case 3:
++			boot_address = 0x60000000;
++			break;
++		}
++		boot_address -= 0x200000; /* -2MB */
++
++		/* copy image to buffer */
++		for (i = 0; i < len; i += 4) {
++			data = *(u32 *)(fw_addr + i);
++			ast_moutdwm(ast, boot_address + i, data);
++		}
++
++		/* Init SCU */
++		ast_moutdwm(ast, 0x1e6e2000, 0x1688a8a8);
++
++		/* Launch FW */
++		ast_moutdwm(ast, 0x1e6e2104, 0x80000000 + boot_address);
++		ast_moutdwm(ast, 0x1e6e2100, 1);
++
++		/* Update Scratch */
++		data = ast_mindwm(ast, 0x1e6e2040) & 0xfffff1ff;		/* D[11:9] = 100b: UEFI handling */
++		data |= 0x800;
++		ast_moutdwm(ast, 0x1e6e2040, data);
++
++		jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x99, 0xfc); /* D[1:0]: Reserved Video Buffer */
++		jreg |= 0x02;
++		ast_set_index_reg(ast, AST_IO_CRTC_PORT, 0x99, jreg);
++	}
++	return true;
++}
++
++u8 ast_get_dp501_max_clk(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u32 boot_address, offset, data;
++	u8 linkcap[4], linkrate, linklanes, maxclk = 0xff;
++
++	boot_address = get_fw_base(ast);
++
++	/* validate FW version */
++	offset = 0xf000;
++	data = ast_mindwm(ast, boot_address + offset);
++	if ((data & 0xf0) != 0x10) /* version: 1x */
++		return maxclk;
++
++	/* Read Link Capability */
++	offset  = 0xf014;
++	data = ast_mindwm(ast, boot_address + offset);
++	linkcap[0] = (data & 0xff000000) >> 24;
++	linkcap[1] = (data & 0x00ff0000) >> 16;
++	linkcap[2] = (data & 0x0000ff00) >> 8;
++	linkcap[3] = (data & 0x000000ff);
++	if (linkcap[2] == 0) {
++		linkrate = linkcap[0];
++		linklanes = linkcap[1];
++		data = (linkrate == 0x0a) ? (90 * linklanes) : (54 * linklanes);
++		if (data > 0xff)
++			data = 0xff;
++		maxclk = (u8)data;
++	}
++	return maxclk;
++}
++
++bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata)
++{
++	struct ast_private *ast = dev->dev_private;
++	u32 i, boot_address, offset, data;
++
++	boot_address = get_fw_base(ast);
++
++	/* validate FW version */
++	offset = 0xf000;
++	data = ast_mindwm(ast, boot_address + offset);
++	if ((data & 0xf0) != 0x10)
++		return false;
++
++	/* validate PnP Monitor */
++	offset = 0xf010;
++	data = ast_mindwm(ast, boot_address + offset);
++	if (!(data & 0x01))
++		return false;
++
++	/* Read EDID */
++	offset = 0xf020;
++	for (i = 0; i < 128; i += 4) {
++		data = ast_mindwm(ast, boot_address + offset + i);
++		*(u32 *)(ediddata + i) = data;
++	}
++
++	return true;
++}
++
++static bool ast_init_dvo(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 jreg;
++	u32 data;
++	ast_write32(ast, 0xf004, 0x1e6e0000);
++	ast_write32(ast, 0xf000, 0x1);
++	ast_write32(ast, 0x12000, 0x1688a8a8);
++
++	jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++	if (!(jreg & 0x80)) {
++		/* Init SCU DVO Settings */
++		data = ast_read32(ast, 0x12008);
++		/* delay phase */
++		data &= 0xfffff8ff;
++		data |= 0x00000500;
++		ast_write32(ast, 0x12008, data);
++
++		if (ast->chip == AST2300) {
++			data = ast_read32(ast, 0x12084);
++			/* multi-pins for DVO single-edge */
++			data |= 0xfffe0000;
++			ast_write32(ast, 0x12084, data);
++
++			data = ast_read32(ast, 0x12088);
++			/* multi-pins for DVO single-edge */
++			data |= 0x000fffff;
++			ast_write32(ast, 0x12088, data);
++
++			data = ast_read32(ast, 0x12090);
++			/* multi-pins for DVO single-edge */
++			data &= 0xffffffcf;
++			data |= 0x00000020;
++			ast_write32(ast, 0x12090, data);
++		} else { /* AST2400 */
++			data = ast_read32(ast, 0x12088);
++			/* multi-pins for DVO single-edge */
++			data |= 0x30000000;
++			ast_write32(ast, 0x12088, data);
++
++			data = ast_read32(ast, 0x1208c);
++			/* multi-pins for DVO single-edge */
++			data |= 0x000000cf;
++			ast_write32(ast, 0x1208c, data);
++
++			data = ast_read32(ast, 0x120a4);
++			/* multi-pins for DVO single-edge */
++			data |= 0xffff0000;
++			ast_write32(ast, 0x120a4, data);
++
++			data = ast_read32(ast, 0x120a8);
++			/* multi-pins for DVO single-edge */
++			data |= 0x0000000f;
++			ast_write32(ast, 0x120a8, data);
++
++			data = ast_read32(ast, 0x12094);
++			/* multi-pins for DVO single-edge */
++			data |= 0x00000002;
++			ast_write32(ast, 0x12094, data);
++		}
++	}
++
++	/* Force to DVO */
++	data = ast_read32(ast, 0x1202c);
++	data &= 0xfffbffff;
++	ast_write32(ast, 0x1202c, data);
++
++	/* Init VGA DVO Settings */
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa3, 0xcf, 0x80);
++	return true;
++}
++
++
++static void ast_init_analog(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u32 data;
++
++	/*
++	 * Set DAC source to VGA mode in SCU2C via the P2A
++	 * bridge. First configure the P2U to target the SCU
++	 * in case it isn't at this stage.
++	 */
++	ast_write32(ast, 0xf004, 0x1e6e0000);
++	ast_write32(ast, 0xf000, 0x1);
++
++	/* Then unlock the SCU with the magic password */
++	ast_write32(ast, 0x12000, 0x1688a8a8);
++	ast_write32(ast, 0x12000, 0x1688a8a8);
++	ast_write32(ast, 0x12000, 0x1688a8a8);
++
++	/* Finally, clear bits [17:16] of SCU2c */
++	data = ast_read32(ast, 0x1202c);
++	data &= 0xfffcffff;
++	ast_write32(ast, 0, data);
++
++	/* Disable DVO */
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa3, 0xcf, 0x00);
++}
++
++void ast_init_3rdtx(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 jreg;
++
++	if (ast->chip == AST2300 || ast->chip == AST2400) {
++		jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd1, 0xff);
++		switch (jreg & 0x0e) {
++		case 0x04:
++			ast_init_dvo(dev);
++			break;
++		case 0x08:
++			ast_launch_m68k(dev);
++			break;
++		case 0x0c:
++			ast_init_dvo(dev);
++			break;
++		default:
++			if (ast->tx_chip_type == AST_TX_SIL164)
++				ast_init_dvo(dev);
++			else
++				ast_init_analog(dev);
++		}
++	}
++}
+diff --git a/src/drivers/aspeed/common/ast_dram_tables.h b/src/drivers/aspeed/common/ast_dram_tables.h
+new file mode 100644
+index 0000000..4884cba
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_dram_tables.h
+@@ -0,0 +1,165 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * File taken from the Linux ast driver (v3.18.5)
++ * Coreboot-specific includes added at top and/or contents modified
++ * as needed to function within the coreboot environment.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc.
++ */
++
++#ifndef AST_DRAM_TABLES_H
++#define AST_DRAM_TABLES_H
++
++/* DRAM timing tables */
++struct ast_dramstruct {
++	u16 index;
++	u32 data;
++};
++
++static const struct ast_dramstruct ast2000_dram_table_data[] = {
++	{ 0x0108, 0x00000000 },
++	{ 0x0120, 0x00004a21 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0000, 0xFFFFFFFF },
++	{ 0x0004, 0x00000089 },
++	{ 0x0008, 0x22331353 },
++	{ 0x000C, 0x0d07000b },
++	{ 0x0010, 0x11113333 },
++	{ 0x0020, 0x00110350 },
++	{ 0x0028, 0x1e0828f0 },
++	{ 0x0024, 0x00000001 },
++	{ 0x001C, 0x00000000 },
++	{ 0x0014, 0x00000003 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0018, 0x00000131 },
++	{ 0x0014, 0x00000001 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0018, 0x00000031 },
++	{ 0x0014, 0x00000001 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0028, 0x1e0828f1 },
++	{ 0x0024, 0x00000003 },
++	{ 0x002C, 0x1f0f28fb },
++	{ 0x0030, 0xFFFFFE01 },
++	{ 0xFFFF, 0xFFFFFFFF }
++};
++
++static const struct ast_dramstruct ast1100_dram_table_data[] = {
++	{ 0x2000, 0x1688a8a8 },
++	{ 0x2020, 0x000041f0 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0000, 0xfc600309 },
++	{ 0x006C, 0x00909090 },
++	{ 0x0064, 0x00050000 },
++	{ 0x0004, 0x00000585 },
++	{ 0x0008, 0x0011030f },
++	{ 0x0010, 0x22201724 },
++	{ 0x0018, 0x1e29011a },
++	{ 0x0020, 0x00c82222 },
++	{ 0x0014, 0x01001523 },
++	{ 0x001C, 0x1024010d },
++	{ 0x0024, 0x00cb2522 },
++	{ 0x0038, 0xffffff82 },
++	{ 0x003C, 0x00000000 },
++	{ 0x0040, 0x00000000 },
++	{ 0x0044, 0x00000000 },
++	{ 0x0048, 0x00000000 },
++	{ 0x004C, 0x00000000 },
++	{ 0x0050, 0x00000000 },
++	{ 0x0054, 0x00000000 },
++	{ 0x0058, 0x00000000 },
++	{ 0x005C, 0x00000000 },
++	{ 0x0060, 0x032aa02a },
++	{ 0x0064, 0x002d3000 },
++	{ 0x0068, 0x00000000 },
++	{ 0x0070, 0x00000000 },
++	{ 0x0074, 0x00000000 },
++	{ 0x0078, 0x00000000 },
++	{ 0x007C, 0x00000000 },
++	{ 0x0034, 0x00000001 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x002C, 0x00000732 },
++	{ 0x0030, 0x00000040 },
++	{ 0x0028, 0x00000005 },
++	{ 0x0028, 0x00000007 },
++	{ 0x0028, 0x00000003 },
++	{ 0x0028, 0x00000001 },
++	{ 0x000C, 0x00005a08 },
++	{ 0x002C, 0x00000632 },
++	{ 0x0028, 0x00000001 },
++	{ 0x0030, 0x000003c0 },
++	{ 0x0028, 0x00000003 },
++	{ 0x0030, 0x00000040 },
++	{ 0x0028, 0x00000003 },
++	{ 0x000C, 0x00005a21 },
++	{ 0x0034, 0x00007c03 },
++	{ 0x0120, 0x00004c41 },
++	{ 0xffff, 0xffffffff },
++};
++
++static const struct ast_dramstruct ast2100_dram_table_data[] = {
++	{ 0x2000, 0x1688a8a8 },
++	{ 0x2020, 0x00004120 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x0000, 0xfc600309 },
++	{ 0x006C, 0x00909090 },
++	{ 0x0064, 0x00070000 },
++	{ 0x0004, 0x00000489 },
++	{ 0x0008, 0x0011030f },
++	{ 0x0010, 0x32302926 },
++	{ 0x0018, 0x274c0122 },
++	{ 0x0020, 0x00ce2222 },
++	{ 0x0014, 0x01001523 },
++	{ 0x001C, 0x1024010d },
++	{ 0x0024, 0x00cb2522 },
++	{ 0x0038, 0xffffff82 },
++	{ 0x003C, 0x00000000 },
++	{ 0x0040, 0x00000000 },
++	{ 0x0044, 0x00000000 },
++	{ 0x0048, 0x00000000 },
++	{ 0x004C, 0x00000000 },
++	{ 0x0050, 0x00000000 },
++	{ 0x0054, 0x00000000 },
++	{ 0x0058, 0x00000000 },
++	{ 0x005C, 0x00000000 },
++	{ 0x0060, 0x0f2aa02a },
++	{ 0x0064, 0x003f3005 },
++	{ 0x0068, 0x02020202 },
++	{ 0x0070, 0x00000000 },
++	{ 0x0074, 0x00000000 },
++	{ 0x0078, 0x00000000 },
++	{ 0x007C, 0x00000000 },
++	{ 0x0034, 0x00000001 },
++	{ 0xFF00, 0x00000043 },
++	{ 0x002C, 0x00000942 },
++	{ 0x0030, 0x00000040 },
++	{ 0x0028, 0x00000005 },
++	{ 0x0028, 0x00000007 },
++	{ 0x0028, 0x00000003 },
++	{ 0x0028, 0x00000001 },
++	{ 0x000C, 0x00005a08 },
++	{ 0x002C, 0x00000842 },
++	{ 0x0028, 0x00000001 },
++	{ 0x0030, 0x000003c0 },
++	{ 0x0028, 0x00000003 },
++	{ 0x0030, 0x00000040 },
++	{ 0x0028, 0x00000003 },
++	{ 0x000C, 0x00005a21 },
++	{ 0x0034, 0x00007c03 },
++	{ 0x0120, 0x00005061 },
++	{ 0xffff, 0xffffffff },
++};
++
++#endif
+diff --git a/src/drivers/aspeed/common/ast_drv.h b/src/drivers/aspeed/common/ast_drv.h
+new file mode 100644
+index 0000000..53640f1
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_drv.h
+@@ -0,0 +1,223 @@
++/*
++ * Copyright 2012 Red Hat Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sub license, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDERS, AUTHORS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM,
++ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++ * USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ */
++/*
++ * Authors: Dave Airlie <airlied@redhat.com>
++ */
++#ifndef __AST_DRV_H__
++#define __AST_DRV_H__
++
++#include "aspeed_coreboot.h"
++
++#define PCI_CHIP_AST2000 0x2000
++#define PCI_CHIP_AST2100 0x2010
++#define PCI_CHIP_AST1180 0x1180
++
++
++enum ast_chip {
++	AST2000,
++	AST2100,
++	AST1100,
++	AST2200,
++	AST2150,
++	AST2300,
++	AST2400,
++	AST1180,
++};
++
++enum ast_tx_chip {
++	AST_TX_NONE,
++	AST_TX_SIL164,
++	AST_TX_ITE66121,
++	AST_TX_DP501,
++};
++
++#define AST_DRAM_512Mx16 0
++#define AST_DRAM_1Gx16   1
++#define AST_DRAM_512Mx32 2
++#define AST_DRAM_1Gx32   3
++#define AST_DRAM_2Gx16   6
++#define AST_DRAM_4Gx16   7
++
++struct ast_fbdev;
++
++struct ast_private {
++	struct drm_device *dev;
++
++	void __iomem *regs;
++	void __iomem *ioregs;
++	bool io_space_uses_mmap;
++
++	enum ast_chip chip;
++	bool vga2_clone;
++	uint32_t dram_bus_width;
++	uint32_t dram_type;
++	uint32_t mclk;
++	uint32_t vram_size;
++
++	struct ast_fbdev *fbdev;
++
++	int fb_mtrr;
++
++	struct drm_gem_object *cursor_cache;
++	uint64_t cursor_cache_gpu_addr;
++
++	int next_cursor;
++	bool support_wide_screen;
++
++	enum ast_tx_chip tx_chip_type;
++	u8 dp501_maxclk;
++	u8 *dp501_fw_addr;
++	const struct firmware *dp501_fw;	/* dp501 fw */
++};
++
++int ast_driver_load(struct drm_device *dev, unsigned long flags);
++int ast_driver_unload(struct drm_device *dev);
++
++#define AST_IO_AR_PORT_WRITE		(0x40)
++#define AST_IO_MISC_PORT_WRITE		(0x42)
++#define AST_IO_VGA_ENABLE_PORT		(0x43)
++#define AST_IO_SEQ_PORT			(0x44)
++#define AST_IO_DAC_INDEX_READ		(0x47)
++#define AST_IO_DAC_INDEX_WRITE		(0x48)
++#define AST_IO_DAC_DATA		        (0x49)
++#define AST_IO_GR_PORT			(0x4E)
++#define AST_IO_CRTC_PORT		(0x54)
++#define AST_IO_INPUT_STATUS1_READ	(0x5A)
++#define AST_IO_MISC_PORT_READ		(0x4C)
++
++#define AST_IO_MM_OFFSET		(0x380)
++
++#define __ast_read(x) \
++static inline u##x ast_read##x(struct ast_private *ast, u32 reg) { \
++u##x val = 0;\
++val = ioread##x(ast->regs + reg); \
++return val;\
++}
++
++__ast_read(8);
++__ast_read(16);
++__ast_read(32)
++
++#define __ast_io_read(x) \
++static inline u##x ast_io_read##x(struct ast_private *ast, u32 reg) { \
++u##x val = 0;\
++if (ast->io_space_uses_mmap) \
++val = ioread##x(ast->regs + reg); \
++else \
++val = ioread_cbio##x(ast->ioregs + reg); \
++return val;\
++}
++
++__ast_io_read(8);
++__ast_io_read(16);
++__ast_io_read(32);
++
++#define __ast_write(x) \
++static inline void ast_write##x(struct ast_private *ast, u32 reg, u##x val) {\
++	iowrite##x(val, ast->regs + reg);\
++	}
++
++__ast_write(8);
++__ast_write(16);
++__ast_write(32);
++
++#define __ast_io_write(x) \
++static inline void ast_io_write##x(struct ast_private *ast, u32 reg, u##x val) {\
++	if (ast->io_space_uses_mmap) \
++	iowrite##x(val, ast->regs + reg);\
++	else \
++	iowrite_cbio##x(val, ast->ioregs + reg);\
++	}
++
++__ast_io_write(8);
++__ast_io_write(16);
++#undef __ast_io_write
++
++static inline void ast_set_index_reg(struct ast_private *ast,
++				     uint32_t base, uint8_t index,
++				     uint8_t val)
++{
++	ast_io_write16(ast, base, ((u16)val << 8) | index);
++}
++
++void ast_set_index_reg_mask(struct ast_private *ast,
++			    uint32_t base, uint8_t index,
++			    uint8_t mask, uint8_t val);
++uint8_t ast_get_index_reg(struct ast_private *ast,
++			  uint32_t base, uint8_t index);
++uint8_t ast_get_index_reg_mask(struct ast_private *ast,
++			       uint32_t base, uint8_t index, uint8_t mask);
++
++static inline void ast_open_key(struct ast_private *ast)
++{
++	ast_set_index_reg(ast, AST_IO_CRTC_PORT, 0x80, 0xA8);
++}
++
++#define AST_VIDMEM_SIZE_8M    0x00800000
++#define AST_VIDMEM_SIZE_16M   0x01000000
++#define AST_VIDMEM_SIZE_32M   0x02000000
++#define AST_VIDMEM_SIZE_64M   0x04000000
++#define AST_VIDMEM_SIZE_128M  0x08000000
++
++#define AST_VIDMEM_DEFAULT_SIZE AST_VIDMEM_SIZE_8M
++
++#define AST_MAX_HWC_WIDTH 64
++#define AST_MAX_HWC_HEIGHT 64
++
++#define AST_HWC_SIZE                (AST_MAX_HWC_WIDTH*AST_MAX_HWC_HEIGHT*2)
++#define AST_HWC_SIGNATURE_SIZE      32
++
++#define AST_DEFAULT_HWC_NUM 2
++/* define for signature structure */
++#define AST_HWC_SIGNATURE_CHECKSUM  0x00
++#define AST_HWC_SIGNATURE_SizeX     0x04
++#define AST_HWC_SIGNATURE_SizeY     0x08
++#define AST_HWC_SIGNATURE_X         0x0C
++#define AST_HWC_SIGNATURE_Y         0x10
++#define AST_HWC_SIGNATURE_HOTSPOTX  0x14
++#define AST_HWC_SIGNATURE_HOTSPOTY  0x18
++
++#define AST_MM_ALIGN_SHIFT 4
++#define AST_MM_ALIGN_MASK ((1 << AST_MM_ALIGN_SHIFT) - 1)
++
++#define DRM_FILE_PAGE_OFFSET (0x100000000ULL >> PAGE_SHIFT)
++
++/* ast post */
++void ast_enable_vga(struct drm_device *dev);
++void ast_enable_mmio(struct drm_device *dev);
++bool ast_is_vga_enabled(struct drm_device *dev);
++void ast_post_gpu(struct drm_device *dev);
++u32 ast_mindwm(struct ast_private *ast, u32 r);
++void ast_moutdwm(struct ast_private *ast, u32 r, u32 v);
++/* ast dp501 */
++int ast_load_dp501_microcode(struct drm_device *dev);
++void ast_set_dp501_video_output(struct drm_device *dev, u8 mode);
++bool ast_launch_m68k(struct drm_device *dev);
++bool ast_backup_fw(struct drm_device *dev, u8 *addr, u32 size);
++bool ast_dp501_read_edid(struct drm_device *dev, u8 *ediddata);
++u8 ast_get_dp501_max_clk(struct drm_device *dev);
++void ast_init_3rdtx(struct drm_device *dev);
++#endif
+diff --git a/src/drivers/aspeed/common/ast_main.c b/src/drivers/aspeed/common/ast_main.c
+new file mode 100644
+index 0000000..2939442
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_main.c
+@@ -0,0 +1,393 @@
++/*
++ * Copyright 2012 Red Hat Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sub license, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDERS, AUTHORS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM,
++ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++ * USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ */
++/*
++ * Authors: Dave Airlie <airlied@redhat.com>
++ */
++#include "ast_drv.h"
++
++#include "ast_dram_tables.h"
++
++void ast_set_index_reg_mask(struct ast_private *ast,
++			    uint32_t base, uint8_t index,
++			    uint8_t mask, uint8_t val)
++{
++	u8 tmp;
++	ast_io_write8(ast, base, index);
++	tmp = (ast_io_read8(ast, base + 1) & mask) | val;
++	ast_set_index_reg(ast, base, index, tmp);
++}
++
++uint8_t ast_get_index_reg(struct ast_private *ast,
++			  uint32_t base, uint8_t index)
++{
++	uint8_t ret;
++	ast_io_write8(ast, base, index);
++	ret = ast_io_read8(ast, base + 1);
++	return ret;
++}
++
++uint8_t ast_get_index_reg_mask(struct ast_private *ast,
++			       uint32_t base, uint8_t index, uint8_t mask)
++{
++	uint8_t ret;
++	ast_io_write8(ast, base, index);
++	ret = ast_io_read8(ast, base + 1) & mask;
++	return ret;
++}
++
++
++static int ast_detect_chip(struct drm_device *dev, bool *need_post)
++{
++	struct ast_private *ast = dev->dev_private;
++	uint32_t data, jreg;
++	ast_open_key(ast);
++
++	if (dev->pdev->device == PCI_CHIP_AST1180) {
++		ast->chip = AST1100;
++		DRM_INFO("AST 1180 detected\n");
++	} else {
++		pci_read_config_dword(ast->dev->pdev, 0x08, &data);
++		uint8_t revision = data & 0xff;
++
++		if (revision >= 0x30) {
++			ast->chip = AST2400;
++			DRM_INFO("AST 2400 detected\n");
++		} else if (revision >= 0x20) {
++			ast->chip = AST2300;
++			DRM_INFO("AST 2300 detected\n");
++		} else if (revision >= 0x10) {
++			ast_write32(ast, 0xf004, 0x1e6e0000);
++			ast_write32(ast, 0xf000, 0x1);
++
++			data = ast_read32(ast, 0x1207c);
++			switch (data & 0x0300) {
++			case 0x0200:
++				ast->chip = AST1100;
++				DRM_INFO("AST 1100 detected\n");
++				break;
++			case 0x0100:
++				ast->chip = AST2200;
++				DRM_INFO("AST 2200 detected\n");
++				break;
++			case 0x0000:
++				ast->chip = AST2150;
++				DRM_INFO("AST 2150 detected\n");
++				break;
++			default:
++				ast->chip = AST2100;
++				DRM_INFO("AST 2100 detected\n");
++				break;
++			}
++			ast->vga2_clone = false;
++		} else {
++			ast->chip = AST2000;
++			DRM_INFO("AST 2000 detected\n");
++		}
++	}
++
++	/*
++	 * If VGA isn't enabled, we need to enable now or subsequent
++	 * access to the scratch registers will fail. We also inform
++	 * our caller that it needs to POST the chip
++	 * (Assumption: VGA not enabled -> need to POST)
++	 */
++	if (!ast_is_vga_enabled(dev)) {
++		ast_enable_vga(dev);
++		ast_enable_mmio(dev);
++		DRM_INFO("VGA not enabled on entry, requesting chip POST\n");
++		*need_post = true;
++	} else
++		*need_post = false;
++
++	/* Check if we support wide screen */
++	switch (ast->chip) {
++	case AST1180:
++		ast->support_wide_screen = true;
++		break;
++	case AST2000:
++		ast->support_wide_screen = false;
++		break;
++	default:
++		jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++		if (!(jreg & 0x80))
++			ast->support_wide_screen = true;
++		else if (jreg & 0x01)
++			ast->support_wide_screen = true;
++		else {
++			ast->support_wide_screen = false;
++			/* Read SCU7c (silicon revision register) */
++			ast_write32(ast, 0xf004, 0x1e6e0000);
++			ast_write32(ast, 0xf000, 0x1);
++			data = ast_read32(ast, 0x1207c);
++			data &= 0x300;
++			if (ast->chip == AST2300 && data == 0x0) /* ast1300 */
++				ast->support_wide_screen = true;
++			if (ast->chip == AST2400 && data == 0x100) /* ast1400 */
++				ast->support_wide_screen = true;
++		}
++		break;
++	}
++
++	/* Check 3rd Tx option (digital output afaik) */
++	ast->tx_chip_type = AST_TX_NONE;
++
++	/*
++	 * VGACRA3 Enhanced Color Mode Register, check if DVO is already
++	 * enabled, in that case, assume we have a SIL164 TMDS transmitter
++	 *
++	 * Don't make that assumption if we the chip wasn't enabled and
++	 * is at power-on reset, otherwise we'll incorrectly "detect" a
++	 * SIL164 when there is none.
++	 */
++	if (!*need_post) {
++		jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa3, 0xff);
++		if (jreg & 0x80)
++			ast->tx_chip_type = AST_TX_SIL164;
++	}
++
++	if ((ast->chip == AST2300) || (ast->chip == AST2400)) {
++		/*
++		 * On AST2300 and 2400, look the configuration set by the SoC in
++		 * the SOC scratch register #1 bits 11:8 (interestingly marked
++		 * as "reserved" in the spec)
++		 */
++		jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd1, 0xff);
++		switch (jreg) {
++		case 0x04:
++			ast->tx_chip_type = AST_TX_SIL164;
++			break;
++		case 0x08:
++			ast->dp501_fw_addr = kzalloc(32*1024, GFP_KERNEL);
++			if (ast->dp501_fw_addr) {
++				/* backup firmware */
++				if (ast_backup_fw(dev, ast->dp501_fw_addr, 32*1024)) {
++					kfree(ast->dp501_fw_addr);
++					ast->dp501_fw_addr = NULL;
++				}
++			}
++			/* fallthrough */
++		case 0x0c:
++			ast->tx_chip_type = AST_TX_DP501;
++		}
++	}
++
++	/* Print stuff for diagnostic purposes */
++	switch(ast->tx_chip_type) {
++	case AST_TX_SIL164:
++		DRM_INFO("Using Sil164 TMDS transmitter\n");
++		break;
++	case AST_TX_DP501:
++		DRM_INFO("Using DP501 DisplayPort transmitter\n");
++		break;
++	default:
++		DRM_INFO("Analog VGA only\n");
++	}
++	return 0;
++}
++
++static int ast_get_dram_info(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	uint8_t i;
++	uint32_t data, data2;
++	uint32_t denum, num, div, ref_pll;
++
++	ast_write32(ast, 0xf004, 0x1e6e0000);
++	ast_write32(ast, 0xf000, 0x1);
++
++
++	ast_write32(ast, 0x10000, 0xfc600309);
++
++	/* Wait up to 2.5 seconds for device initialization / register unlock */
++	for (i = 0; i < 250; i++) {
++		if (ast_read32(ast, 0x10000) == 0x01)
++			break;
++		mdelay(10);
++	}
++	if (ast_read32(ast, 0x10000) != 0x01)
++		dev_err(dev->pdev, "Unable to unlock SDRAM control registers\n");
++
++	data = ast_read32(ast, 0x10004);
++
++	if (data & 0x400)
++		ast->dram_bus_width = 16;
++	else
++		ast->dram_bus_width = 32;
++
++	if (ast->chip == AST2300 || ast->chip == AST2400) {
++		switch (data & 0x03) {
++		case 0:
++			ast->dram_type = AST_DRAM_512Mx16;
++			break;
++		default:
++		case 1:
++			ast->dram_type = AST_DRAM_1Gx16;
++			break;
++		case 2:
++			ast->dram_type = AST_DRAM_2Gx16;
++			break;
++		case 3:
++			ast->dram_type = AST_DRAM_4Gx16;
++			break;
++		}
++	} else {
++		switch (data & 0x0c) {
++		case 0:
++		case 4:
++			ast->dram_type = AST_DRAM_512Mx16;
++			break;
++		case 8:
++			if (data & 0x40)
++				ast->dram_type = AST_DRAM_1Gx16;
++			else
++				ast->dram_type = AST_DRAM_512Mx32;
++			break;
++		case 0xc:
++			ast->dram_type = AST_DRAM_1Gx32;
++			break;
++		}
++	}
++
++	data = ast_read32(ast, 0x10120);
++	data2 = ast_read32(ast, 0x10170);
++	if (data2 & 0x2000)
++		ref_pll = 14318;
++	else
++		ref_pll = 12000;
++
++	denum = data & 0x1f;
++	num = (data & 0x3fe0) >> 5;
++	data = (data & 0xc000) >> 14;
++	switch (data) {
++	case 3:
++		div = 0x4;
++		break;
++	case 2:
++	case 1:
++		div = 0x2;
++		break;
++	default:
++		div = 0x1;
++		break;
++	}
++	ast->mclk = ref_pll * (num + 2) / (denum + 2) * (div * 1000);
++	return 0;
++}
++
++static u32 ast_get_vram_info(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 jreg;
++	u32 vram_size;
++	ast_open_key(ast);
++
++	vram_size = AST_VIDMEM_DEFAULT_SIZE;
++	jreg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xaa, 0xff);
++	switch (jreg & 3) {
++	case 0: vram_size = AST_VIDMEM_SIZE_8M; break;
++	case 1: vram_size = AST_VIDMEM_SIZE_16M; break;
++	case 2: vram_size = AST_VIDMEM_SIZE_32M; break;
++	case 3: vram_size = AST_VIDMEM_SIZE_64M; break;
++	}
++
++	return vram_size;
++}
++
++int ast_driver_load(struct drm_device *dev, unsigned long flags)
++{
++	struct ast_private *ast;
++	bool need_post;
++	int ret = 0;
++	struct resource *res;
++
++	ast = kzalloc(sizeof(struct ast_private), GFP_KERNEL);
++	if (!ast)
++		return -ENOMEM;
++
++	dev->dev_private = ast;
++	ast->dev = dev;
++
++	/* PCI BAR 1 */
++        res = find_resource(dev->pdev, 0x14);
++	if (!res) {
++		dev_err(dev->pdev, "BAR1 resource not found.\n");
++		ret = -EIO;
++		goto out_free;
++	}
++	ast->regs = res2mmio(res, 0, 0);
++	if (!ast->regs) {
++		ret = -EIO;
++		goto out_free;
++	}
++
++	/* PCI BAR 2 */
++	ast->io_space_uses_mmap = false;
++	res = find_resource(dev->pdev, 0x18);
++	if (!res) {
++		dev_err(dev->pdev, "BAR2 resource not found.\n");
++		ret = -EIO;
++		goto out_free;
++	}
++
++	/*
++	 * If we don't have IO space at all, use MMIO now and
++	 * assume the chip has MMIO enabled by default (rev 0x20
++	 * and higher).
++	 */
++	if (!(res->flags & IORESOURCE_IO)) {
++		DRM_INFO("platform has no IO space, trying MMIO\n");
++		ast->ioregs = ast->regs + AST_IO_MM_OFFSET;
++		ast->io_space_uses_mmap = true;
++	}
++
++	/* "map" IO regs if the above hasn't done so already */
++	if (!ast->ioregs) {
++		ast->ioregs = res2mmio(res, 0, 0);
++		if (!ast->ioregs) {
++			ret = -EIO;
++			goto out_free;
++		}
++		/* Adjust the I/O space location to match expectations (the code expects offset 0x0 to be I/O location 0x380) */
++		ast->ioregs = (void *)AST_IO_MM_OFFSET;
++	}
++
++	ast_detect_chip(dev, &need_post);
++
++	if (ast->chip != AST1180) {
++		ast_get_dram_info(dev);
++		ast->vram_size = ast_get_vram_info(dev);
++		DRM_INFO("dram %d %d %d %08x\n", ast->mclk, ast->dram_type, ast->dram_bus_width, ast->vram_size);
++	}
++
++	if (need_post)
++		ast_post_gpu(dev);
++
++	return 0;
++out_free:
++	kfree(ast);
++	dev->dev_private = NULL;
++	return ret;
++}
+diff --git a/src/drivers/aspeed/common/ast_post.c b/src/drivers/aspeed/common/ast_post.c
+new file mode 100644
+index 0000000..7d31845
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_post.c
+@@ -0,0 +1,1679 @@
++/*
++ * Copyright 2012 Red Hat Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining a
++ * copy of this software and associated documentation files (the
++ * "Software"), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sub license, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++ * FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++ * THE COPYRIGHT HOLDERS, AUTHORS AND/OR ITS SUPPLIERS BE LIABLE FOR ANY CLAIM,
++ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
++ * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
++ * USE OR OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * The above copyright notice and this permission notice (including the
++ * next paragraph) shall be included in all copies or substantial portions
++ * of the Software.
++ *
++ */
++/*
++ * Authors: Dave Airlie <airlied@redhat.com>
++ */
++
++#include "ast_drv.h"
++
++#include "ast_dram_tables.h"
++
++static void ast_init_dram_2300(struct drm_device *dev);
++
++void ast_enable_vga(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++
++	ast_io_write8(ast, AST_IO_VGA_ENABLE_PORT, 0x01);
++	ast_io_write8(ast, AST_IO_MISC_PORT_WRITE, 0x01);
++}
++
++void ast_enable_mmio(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xa1, 0xff, 0x04);
++}
++
++
++bool ast_is_vga_enabled(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 ch;
++
++	if (ast->chip == AST1180) {
++		/* TODO 1180 */
++	} else {
++		ch = ast_io_read8(ast, AST_IO_VGA_ENABLE_PORT);
++		if (ch) {
++			ast_open_key(ast);
++			ch = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xb6, 0xff);
++			return ch & 0x04;
++		}
++	}
++	return 0;
++}
++
++static const u8 extreginfo[] = { 0x0f, 0x04, 0x1c, 0xff };
++static const u8 extreginfo_ast2300a0[] = { 0x0f, 0x04, 0x1c, 0xff };
++static const u8 extreginfo_ast2300[] = { 0x0f, 0x04, 0x1f, 0xff };
++
++static void
++ast_set_def_ext_reg(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 i, index, reg;
++	uint32_t data;
++	const u8 *ext_reg_info;
++
++	pci_read_config_dword(ast->dev->pdev, 0x08, &data);
++	uint8_t revision = data & 0xff;
++
++	/* reset scratch */
++	for (i = 0x81; i <= 0x8f; i++)
++		ast_set_index_reg(ast, AST_IO_CRTC_PORT, i, 0x00);
++
++	if (ast->chip == AST2300 || ast->chip == AST2400) {
++		if (revision >= 0x20)
++			ext_reg_info = extreginfo_ast2300;
++		else
++			ext_reg_info = extreginfo_ast2300a0;
++	} else
++		ext_reg_info = extreginfo;
++
++	index = 0xa0;
++	while (*ext_reg_info != 0xff) {
++		ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, index, 0x00, *ext_reg_info);
++		index++;
++		ext_reg_info++;
++	}
++
++	/* disable standard IO/MEM decode if secondary */
++	/* ast_set_index_reg-mask(ast, AST_IO_CRTC_PORT, 0xa1, 0xff, 0x3); */
++
++	/* Set Ext. Default */
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0x8c, 0x00, 0x01);
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xb7, 0x00, 0x00);
++
++	/* Enable RAMDAC for A1 */
++	reg = 0x04;
++	if (ast->chip == AST2300 || ast->chip == AST2400)
++		reg |= 0x20;
++	ast_set_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xb6, 0xff, reg);
++}
++
++u32 ast_mindwm(struct ast_private *ast, u32 r)
++{
++	uint32_t data;
++
++	ast_write32(ast, 0xf004, r & 0xffff0000);
++	ast_write32(ast, 0xf000, 0x1);
++
++	do {
++		data = ast_read32(ast, 0xf004) & 0xffff0000;
++	} while (data != (r & 0xffff0000));
++	return ast_read32(ast, 0x10000 + (r & 0x0000ffff));
++}
++
++void ast_moutdwm(struct ast_private *ast, u32 r, u32 v)
++{
++	uint32_t data;
++	ast_write32(ast, 0xf004, r & 0xffff0000);
++	ast_write32(ast, 0xf000, 0x1);
++	do {
++		data = ast_read32(ast, 0xf004) & 0xffff0000;
++	} while (data != (r & 0xffff0000));
++	ast_write32(ast, 0x10000 + (r & 0x0000ffff), v);
++}
++
++/*
++ * AST2100/2150 DLL CBR Setting
++ */
++#define CBR_SIZE_AST2150	     ((16 << 10) - 1)
++#define CBR_PASSNUM_AST2150          5
++#define CBR_THRESHOLD_AST2150        10
++#define CBR_THRESHOLD2_AST2150       10
++#define TIMEOUT_AST2150              5000000
++
++#define CBR_PATNUM_AST2150           8
++
++static const u32 pattern_AST2150[14] = {
++	0xFF00FF00,
++	0xCC33CC33,
++	0xAA55AA55,
++	0xFFFE0001,
++	0x683501FE,
++	0x0F1929B0,
++	0x2D0B4346,
++	0x60767F02,
++	0x6FBE36A6,
++	0x3A253035,
++	0x3019686D,
++	0x41C6167E,
++	0x620152BF,
++	0x20F050E0
++};
++
++static u32 mmctestburst2_ast2150(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000001 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x40;
++		if (++timeout > TIMEOUT_AST2150) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++			return 0xffffffff;
++		}
++	} while (!data);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000003 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x40;
++		if (++timeout > TIMEOUT_AST2150) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++			return 0xffffffff;
++		}
++	} while (!data);
++	data = (ast_mindwm(ast, 0x1e6e0070) & 0x80) >> 7;
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	return data;
++}
++
++#if 0 /* unused in DDX driver - here for completeness */
++static u32 mmctestsingle2_ast2150(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000005 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x40;
++		if (++timeout > TIMEOUT_AST2150) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++			return 0xffffffff;
++		}
++	} while (!data);
++	data = (ast_mindwm(ast, 0x1e6e0070) & 0x80) >> 7;
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	return data;
++}
++#endif
++
++static int cbrtest_ast2150(struct ast_private *ast)
++{
++	int i;
++
++	for (i = 0; i < 8; i++)
++		if (mmctestburst2_ast2150(ast, i))
++			return 0;
++	return 1;
++}
++
++static int cbrscan_ast2150(struct ast_private *ast, int busw)
++{
++	u32 patcnt, loop;
++
++	for (patcnt = 0; patcnt < CBR_PATNUM_AST2150; patcnt++) {
++		ast_moutdwm(ast, 0x1e6e007c, pattern_AST2150[patcnt]);
++		for (loop = 0; loop < CBR_PASSNUM_AST2150; loop++) {
++			if (cbrtest_ast2150(ast))
++				break;
++		}
++		if (loop == CBR_PASSNUM_AST2150)
++			return 0;
++	}
++	return 1;
++}
++
++
++static void cbrdlli_ast2150(struct ast_private *ast, int busw)
++{
++	u32 dll_min[4], dll_max[4], dlli, data, passcnt;
++
++cbr_start:
++	dll_min[0] = dll_min[1] = dll_min[2] = dll_min[3] = 0xff;
++	dll_max[0] = dll_max[1] = dll_max[2] = dll_max[3] = 0x0;
++	passcnt = 0;
++
++	for (dlli = 0; dlli < 100; dlli++) {
++		ast_moutdwm(ast, 0x1e6e0068, dlli | (dlli << 8) | (dlli << 16) | (dlli << 24));
++		data = cbrscan_ast2150(ast, busw);
++		if (data != 0) {
++			if (data & 0x1) {
++				if (dll_min[0] > dlli)
++					dll_min[0] = dlli;
++				if (dll_max[0] < dlli)
++					dll_max[0] = dlli;
++			}
++			passcnt++;
++		} else if (passcnt >= CBR_THRESHOLD_AST2150)
++			goto cbr_start;
++	}
++	if (dll_max[0] == 0 || (dll_max[0]-dll_min[0]) < CBR_THRESHOLD_AST2150)
++		goto cbr_start;
++
++	dlli = dll_min[0] + (((dll_max[0] - dll_min[0]) * 7) >> 4);
++	ast_moutdwm(ast, 0x1e6e0068, dlli | (dlli << 8) | (dlli << 16) | (dlli << 24));
++}
++
++
++
++static void ast_init_dram_reg(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	u8 j;
++	u32 data, temp, i;
++	const struct ast_dramstruct *dram_reg_info;
++
++	j = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++
++	if ((j & 0x80) == 0) { /* VGA only */
++		if (ast->chip == AST2000) {
++			dram_reg_info = ast2000_dram_table_data;
++			ast_write32(ast, 0xf004, 0x1e6e0000);
++			ast_write32(ast, 0xf000, 0x1);
++			ast_write32(ast, 0x10100, 0xa8);
++
++			do {
++				;
++			} while (ast_read32(ast, 0x10100) != 0xa8);
++		} else {/* AST2100/1100 */
++			if (ast->chip == AST2100 || ast->chip == 2200)
++				dram_reg_info = ast2100_dram_table_data;
++			else
++				dram_reg_info = ast1100_dram_table_data;
++
++			ast_write32(ast, 0xf004, 0x1e6e0000);
++			ast_write32(ast, 0xf000, 0x1);
++			ast_write32(ast, 0x12000, 0x1688A8A8);
++
++			/* Wait up to 2.5 seconds for device initialization / register unlock */
++			for (i = 0; i < 250; i++) {
++				if (ast_read32(ast, 0x12000) == 0x01)
++					break;
++				mdelay(10);
++			}
++			if (ast_read32(ast, 0x12000) != 0x01)
++				dev_err(dev->pdev, "Unable to unlock SCU registers\n");
++
++			ast_write32(ast, 0x10000, 0xfc600309);
++
++			/* Wait up to 2.5 seconds for device initialization / register unlock */
++			for (i = 0; i < 250; i++) {
++				if (ast_read32(ast, 0x10000) == 0x01)
++					break;
++				mdelay(10);
++			}
++			if (ast_read32(ast, 0x10000) != 0x01)
++				dev_err(dev->pdev, "Unable to unlock SDRAM control registers\n");
++		}
++
++		while (dram_reg_info->index != 0xffff) {
++			if (dram_reg_info->index == 0xff00) {/* delay fn */
++				for (i = 0; i < 15; i++)
++					udelay(dram_reg_info->data);
++			} else if (dram_reg_info->index == 0x4 && ast->chip != AST2000) {
++				data = dram_reg_info->data;
++				if (ast->dram_type == AST_DRAM_1Gx16)
++					data = 0x00000d89;
++				else if (ast->dram_type == AST_DRAM_1Gx32)
++					data = 0x00000c8d;
++
++				temp = ast_read32(ast, 0x12070);
++				temp &= 0xc;
++				temp <<= 2;
++				ast_write32(ast, 0x10000 + dram_reg_info->index, data | temp);
++			} else
++				ast_write32(ast, 0x10000 + dram_reg_info->index, dram_reg_info->data);
++			dram_reg_info++;
++		}
++
++		/* AST 2100/2150 DRAM calibration */
++		data = ast_read32(ast, 0x10120);
++		if (data == 0x5061) { /* 266Mhz */
++			data = ast_read32(ast, 0x10004);
++			if (data & 0x40)
++				cbrdlli_ast2150(ast, 16); /* 16 bits */
++			else
++				cbrdlli_ast2150(ast, 32); /* 32 bits */
++		}
++
++		switch (ast->chip) {
++		case AST2000:
++			temp = ast_read32(ast, 0x10140);
++			ast_write32(ast, 0x10140, temp | 0x40);
++			break;
++		case AST1100:
++		case AST2100:
++		case AST2200:
++		case AST2150:
++			temp = ast_read32(ast, 0x1200c);
++			ast_write32(ast, 0x1200c, temp & 0xfffffffd);
++			temp = ast_read32(ast, 0x12040);
++			ast_write32(ast, 0x12040, temp | 0x40);
++			break;
++		default:
++			break;
++		}
++	}
++
++	/* wait ready */
++	/* Wait up to 2.5 seconds for device to become ready */
++	for (i = 0; i < 250; i++) {
++		j = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++		mdelay(10);
++		if ((j & 0x40) != 0)
++			break;
++	}
++	if ((j & 0x40) == 0)
++		dev_err(dev->pdev, "Timeout while waiting for device to signal ready\n");
++}
++
++void ast_post_gpu(struct drm_device *dev)
++{
++	u32 reg;
++	struct ast_private *ast = dev->dev_private;
++
++	pci_read_config_dword(ast->dev->pdev, 0x04, &reg);
++	reg |= 0x3;
++	pci_write_config_dword(ast->dev->pdev, 0x04, reg);
++
++	ast_enable_vga(dev);
++	ast_enable_mmio(dev);
++	ast_open_key(ast);
++	ast_set_def_ext_reg(dev);
++
++	if (ast->chip == AST2300 || ast->chip == AST2400)
++		ast_init_dram_2300(dev);
++	else
++		ast_init_dram_reg(dev);
++
++	ast_init_3rdtx(dev);
++}
++
++/* AST 2300 DRAM settings */
++#define AST_DDR3 0
++#define AST_DDR2 1
++
++struct ast2300_dram_param {
++	u32 dram_type;
++	u32 dram_chipid;
++	u32 dram_freq;
++	u32 vram_size;
++	u32 odt;
++	u32 wodt;
++	u32 rodt;
++	u32 dram_config;
++	u32 reg_PERIOD;
++	u32 reg_MADJ;
++	u32 reg_SADJ;
++	u32 reg_MRS;
++	u32 reg_EMRS;
++	u32 reg_AC1;
++	u32 reg_AC2;
++	u32 reg_DQSIC;
++	u32 reg_DRV;
++	u32 reg_IOZ;
++	u32 reg_DQIDLY;
++	u32 reg_FREQ;
++	u32 madj_max;
++	u32 dll2_finetune_step;
++};
++
++/*
++ * DQSI DLL CBR Setting
++ */
++#define CBR_SIZE0            ((1  << 10) - 1)
++#define CBR_SIZE1            ((4  << 10) - 1)
++#define CBR_SIZE2            ((64 << 10) - 1)
++#define CBR_PASSNUM          5
++#define CBR_PASSNUM2         5
++#define CBR_THRESHOLD        10
++#define CBR_THRESHOLD2       10
++#define TIMEOUT              5000000
++#define CBR_PATNUM           8
++
++static const u32 pattern[8] = {
++	0xFF00FF00,
++	0xCC33CC33,
++	0xAA55AA55,
++	0x88778877,
++	0x92CC4D6E,
++	0x543D3CDE,
++	0xF1E843C7,
++	0x7C61D253
++};
++
++static int mmc_test_burst(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x000000c1 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x3000;
++		if (data & 0x2000) {
++			return 0;
++		}
++		if (++timeout > TIMEOUT) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++			return 0;
++		}
++	} while (!data);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	return 1;
++}
++
++static int mmc_test_burst2(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000041 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x1000;
++		if (++timeout > TIMEOUT) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x0);
++			return -1;
++		}
++	} while (!data);
++	data = ast_mindwm(ast, 0x1e6e0078);
++	data = (data | (data >> 16)) & 0xffff;
++	ast_moutdwm(ast, 0x1e6e0070, 0x0);
++	return data;
++}
++
++static int mmc_test_single(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x000000c5 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x3000;
++		if (data & 0x2000)
++			return 0;
++		if (++timeout > TIMEOUT) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x0);
++			return 0;
++		}
++	} while (!data);
++	ast_moutdwm(ast, 0x1e6e0070, 0x0);
++	return 1;
++}
++
++static int mmc_test_single2(struct ast_private *ast, u32 datagen)
++{
++	u32 data, timeout;
++
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000000);
++	ast_moutdwm(ast, 0x1e6e0070, 0x00000005 | (datagen << 3));
++	timeout = 0;
++	do {
++		data = ast_mindwm(ast, 0x1e6e0070) & 0x1000;
++		if (++timeout > TIMEOUT) {
++			ast_moutdwm(ast, 0x1e6e0070, 0x0);
++			return -1;
++		}
++	} while (!data);
++	data = ast_mindwm(ast, 0x1e6e0078);
++	data = (data | (data >> 16)) & 0xffff;
++	ast_moutdwm(ast, 0x1e6e0070, 0x0);
++	return data;
++}
++
++static int cbr_test(struct ast_private *ast)
++{
++	u32 data;
++	int i;
++	data = mmc_test_single2(ast, 0);
++	if ((data & 0xff) && (data & 0xff00))
++		return 0;
++	for (i = 0; i < 8; i++) {
++		data = mmc_test_burst2(ast, i);
++		if ((data & 0xff) && (data & 0xff00))
++			return 0;
++	}
++	if (!data)
++		return 3;
++	else if (data & 0xff)
++		return 2;
++	return 1;
++}
++
++static int cbr_scan(struct ast_private *ast)
++{
++	u32 data, data2, patcnt, loop;
++
++	data2 = 3;
++	for (patcnt = 0; patcnt < CBR_PATNUM; patcnt++) {
++		ast_moutdwm(ast, 0x1e6e007c, pattern[patcnt]);
++		for (loop = 0; loop < CBR_PASSNUM2; loop++) {
++			if ((data = cbr_test(ast)) != 0) {
++				data2 &= data;
++				if (!data2)
++					return 0;
++				break;
++			}
++		}
++		if (loop == CBR_PASSNUM2)
++			return 0;
++	}
++	return data2;
++}
++
++static u32 cbr_test2(struct ast_private *ast)
++{
++	u32 data;
++
++	data = mmc_test_burst2(ast, 0);
++	if (data == 0xffff)
++		return 0;
++	data |= mmc_test_single2(ast, 0);
++	if (data == 0xffff)
++		return 0;
++
++	return ~data & 0xffff;
++}
++
++static u32 cbr_scan2(struct ast_private *ast)
++{
++	u32 data, data2, patcnt, loop;
++
++	data2 = 0xffff;
++	for (patcnt = 0; patcnt < CBR_PATNUM; patcnt++) {
++		ast_moutdwm(ast, 0x1e6e007c, pattern[patcnt]);
++		for (loop = 0; loop < CBR_PASSNUM2; loop++) {
++			if ((data = cbr_test2(ast)) != 0) {
++				data2 &= data;
++				if (!data2)
++					return 0;
++				break;
++			}
++		}
++		if (loop == CBR_PASSNUM2)
++			return 0;
++	}
++	return data2;
++}
++
++static u32 cbr_test3(struct ast_private *ast)
++{
++	if (!mmc_test_burst(ast, 0))
++		return 0;
++	if (!mmc_test_single(ast, 0))
++		return 0;
++	return 1;
++}
++
++static u32 cbr_scan3(struct ast_private *ast)
++{
++	u32 patcnt, loop;
++
++	for (patcnt = 0; patcnt < CBR_PATNUM; patcnt++) {
++		ast_moutdwm(ast, 0x1e6e007c, pattern[patcnt]);
++		for (loop = 0; loop < 2; loop++) {
++			if (cbr_test3(ast))
++				break;
++		}
++		if (loop == 2)
++			return 0;
++	}
++	return 1;
++}
++
++static bool finetuneDQI_L(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 gold_sadj[2], dllmin[16], dllmax[16], dlli, data, cnt, mask, passcnt, retry = 0;
++	bool status = false;
++FINETUNE_START:
++	for (cnt = 0; cnt < 16; cnt++) {
++		dllmin[cnt] = 0xff;
++		dllmax[cnt] = 0x0;
++	}
++	passcnt = 0;
++	for (dlli = 0; dlli < 76; dlli++) {
++		ast_moutdwm(ast, 0x1E6E0068, 0x00001400 | (dlli << 16) | (dlli << 24));
++		ast_moutdwm(ast, 0x1E6E0074, CBR_SIZE1);
++		data = cbr_scan2(ast);
++		if (data != 0) {
++			mask = 0x00010001;
++			for (cnt = 0; cnt < 16; cnt++) {
++				if (data & mask) {
++					if (dllmin[cnt] > dlli) {
++						dllmin[cnt] = dlli;
++					}
++					if (dllmax[cnt] < dlli) {
++						dllmax[cnt] = dlli;
++					}
++				}
++				mask <<= 1;
++			}
++			passcnt++;
++		} else if (passcnt >= CBR_THRESHOLD2) {
++			break;
++		}
++	}
++	gold_sadj[0] = 0x0;
++	passcnt = 0;
++	for (cnt = 0; cnt < 16; cnt++) {
++		if ((dllmax[cnt] > dllmin[cnt]) && ((dllmax[cnt] - dllmin[cnt]) >= CBR_THRESHOLD2)) {
++			gold_sadj[0] += dllmin[cnt];
++			passcnt++;
++		}
++	}
++	if (retry++ > 10)
++		goto FINETUNE_DONE;
++	if (passcnt != 16) {
++		goto FINETUNE_START;
++	}
++	status = true;
++FINETUNE_DONE:
++	gold_sadj[0] = gold_sadj[0] >> 4;
++	gold_sadj[1] = gold_sadj[0];
++
++	data = 0;
++	for (cnt = 0; cnt < 8; cnt++) {
++		data >>= 3;
++		if ((dllmax[cnt] > dllmin[cnt]) && ((dllmax[cnt] - dllmin[cnt]) >= CBR_THRESHOLD2)) {
++			dlli = dllmin[cnt];
++			if (gold_sadj[0] >= dlli) {
++				dlli = ((gold_sadj[0] - dlli) * 19) >> 5;
++				if (dlli > 3) {
++					dlli = 3;
++				}
++			} else {
++				dlli = ((dlli - gold_sadj[0]) * 19) >> 5;
++				if (dlli > 4) {
++					dlli = 4;
++				}
++				dlli = (8 - dlli) & 0x7;
++			}
++			data |= dlli << 21;
++		}
++	}
++	ast_moutdwm(ast, 0x1E6E0080, data);
++
++	data = 0;
++	for (cnt = 8; cnt < 16; cnt++) {
++		data >>= 3;
++		if ((dllmax[cnt] > dllmin[cnt]) && ((dllmax[cnt] - dllmin[cnt]) >= CBR_THRESHOLD2)) {
++			dlli = dllmin[cnt];
++			if (gold_sadj[1] >= dlli) {
++				dlli = ((gold_sadj[1] - dlli) * 19) >> 5;
++				if (dlli > 3) {
++					dlli = 3;
++				} else {
++					dlli = (dlli - 1) & 0x7;
++				}
++			} else {
++				dlli = ((dlli - gold_sadj[1]) * 19) >> 5;
++				dlli += 1;
++				if (dlli > 4) {
++					dlli = 4;
++				}
++				dlli = (8 - dlli) & 0x7;
++			}
++			data |= dlli << 21;
++		}
++	}
++	ast_moutdwm(ast, 0x1E6E0084, data);
++	return status;
++} /* finetuneDQI_L */
++
++static void finetuneDQSI(struct ast_private *ast)
++{
++	u32 dlli, dqsip, dqidly;
++	u32 reg_mcr18, reg_mcr0c, passcnt[2], diff;
++	u32 g_dqidly, g_dqsip, g_margin, g_side;
++	u16 pass[32][2][2];
++	char tag[2][76];
++
++	/* Disable DQI CBR */
++	reg_mcr0c  = ast_mindwm(ast, 0x1E6E000C);
++	reg_mcr18  = ast_mindwm(ast, 0x1E6E0018);
++	reg_mcr18 &= 0x0000ffff;
++	ast_moutdwm(ast, 0x1E6E0018, reg_mcr18);
++
++	for (dlli = 0; dlli < 76; dlli++) {
++		tag[0][dlli] = 0x0;
++		tag[1][dlli] = 0x0;
++	}
++	for (dqidly = 0; dqidly < 32; dqidly++) {
++		pass[dqidly][0][0] = 0xff;
++		pass[dqidly][0][1] = 0x0;
++		pass[dqidly][1][0] = 0xff;
++		pass[dqidly][1][1] = 0x0;
++	}
++	for (dqidly = 0; dqidly < 32; dqidly++) {
++		passcnt[0] = passcnt[1] = 0;
++		for (dqsip = 0; dqsip < 2; dqsip++) {
++			ast_moutdwm(ast, 0x1E6E000C, 0);
++			ast_moutdwm(ast, 0x1E6E0018, reg_mcr18 | (dqidly << 16) | (dqsip << 23));
++			ast_moutdwm(ast, 0x1E6E000C, reg_mcr0c);
++			for (dlli = 0; dlli < 76; dlli++) {
++				ast_moutdwm(ast, 0x1E6E0068, 0x00001300 | (dlli << 16) | (dlli << 24));
++				ast_moutdwm(ast, 0x1E6E0070, 0);
++				ast_moutdwm(ast, 0x1E6E0074, CBR_SIZE0);
++				if (cbr_scan3(ast)) {
++					if (dlli == 0)
++						break;
++					passcnt[dqsip]++;
++					tag[dqsip][dlli] = 'P';
++					if (dlli < pass[dqidly][dqsip][0])
++						pass[dqidly][dqsip][0] = (u16) dlli;
++					if (dlli > pass[dqidly][dqsip][1])
++						pass[dqidly][dqsip][1] = (u16) dlli;
++				} else if (passcnt[dqsip] >= 5)
++					break;
++				else {
++					pass[dqidly][dqsip][0] = 0xff;
++					pass[dqidly][dqsip][1] = 0x0;
++				}
++			}
++		}
++		if (passcnt[0] == 0 && passcnt[1] == 0)
++			dqidly++;
++	}
++	/* Search margin */
++	g_dqidly = g_dqsip = g_margin = g_side = 0;
++
++	for (dqidly = 0; dqidly < 32; dqidly++) {
++		for (dqsip = 0; dqsip < 2; dqsip++) {
++			if (pass[dqidly][dqsip][0] > pass[dqidly][dqsip][1])
++				continue;
++			diff = pass[dqidly][dqsip][1] - pass[dqidly][dqsip][0];
++			if ((diff+2) < g_margin)
++				continue;
++			passcnt[0] = passcnt[1] = 0;
++			for (dlli = pass[dqidly][dqsip][0]; dlli > 0  && tag[dqsip][dlli] != 0; dlli--, passcnt[0]++);
++			for (dlli = pass[dqidly][dqsip][1]; dlli < 76 && tag[dqsip][dlli] != 0; dlli++, passcnt[1]++);
++			if (passcnt[0] > passcnt[1])
++				passcnt[0] = passcnt[1];
++			passcnt[1] = 0;
++			if (passcnt[0] > g_side)
++				passcnt[1] = passcnt[0] - g_side;
++			if (diff > (g_margin+1) && (passcnt[1] > 0 || passcnt[0] > 8)) {
++				g_margin = diff;
++				g_dqidly = dqidly;
++				g_dqsip  = dqsip;
++				g_side   = passcnt[0];
++			} else if (passcnt[1] > 1 && g_side < 8) {
++				if (diff > g_margin)
++					g_margin = diff;
++				g_dqidly = dqidly;
++				g_dqsip  = dqsip;
++				g_side   = passcnt[0];
++			}
++		}
++	}
++	reg_mcr18 = reg_mcr18 | (g_dqidly << 16) | (g_dqsip << 23);
++	ast_moutdwm(ast, 0x1E6E0018, reg_mcr18);
++
++}
++static bool cbr_dll2(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 dllmin[2], dllmax[2], dlli, data, passcnt, retry = 0;
++	bool status = false;
++
++	finetuneDQSI(ast);
++	if (finetuneDQI_L(ast, param) == false)
++		return status;
++
++CBR_START2:
++	dllmin[0] = dllmin[1] = 0xff;
++	dllmax[0] = dllmax[1] = 0x0;
++	passcnt = 0;
++	for (dlli = 0; dlli < 76; dlli++) {
++		ast_moutdwm(ast, 0x1E6E0068, 0x00001300 | (dlli << 16) | (dlli << 24));
++		ast_moutdwm(ast, 0x1E6E0074, CBR_SIZE2);
++		data = cbr_scan(ast);
++		if (data != 0) {
++			if (data & 0x1) {
++				if (dllmin[0] > dlli) {
++					dllmin[0] = dlli;
++				}
++				if (dllmax[0] < dlli) {
++					dllmax[0] = dlli;
++				}
++			}
++			if (data & 0x2) {
++				if (dllmin[1] > dlli) {
++					dllmin[1] = dlli;
++				}
++				if (dllmax[1] < dlli) {
++					dllmax[1] = dlli;
++				}
++			}
++			passcnt++;
++		} else if (passcnt >= CBR_THRESHOLD) {
++			break;
++		}
++	}
++	if (retry++ > 10)
++		goto CBR_DONE2;
++	if (dllmax[0] == 0 || (dllmax[0]-dllmin[0]) < CBR_THRESHOLD) {
++		goto CBR_START2;
++	}
++	if (dllmax[1] == 0 || (dllmax[1]-dllmin[1]) < CBR_THRESHOLD) {
++		goto CBR_START2;
++	}
++	status = true;
++CBR_DONE2:
++	dlli  = (dllmin[1] + dllmax[1]) >> 1;
++	dlli <<= 8;
++	dlli += (dllmin[0] + dllmax[0]) >> 1;
++	ast_moutdwm(ast, 0x1E6E0068, ast_mindwm(ast, 0x1E720058) | (dlli << 16));
++	return status;
++} /* CBRDLL2 */
++
++static void get_ddr3_info(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 trap, trap_AC2, trap_MRS;
++
++	ast_moutdwm(ast, 0x1E6E2000, 0x1688A8A8);
++
++	/* Ger trap info */
++	trap = (ast_mindwm(ast, 0x1E6E2070) >> 25) & 0x3;
++	trap_AC2  = 0x00020000 + (trap << 16);
++	trap_AC2 |= 0x00300000 + ((trap & 0x2) << 19);
++	trap_MRS  = 0x00000010 + (trap << 4);
++	trap_MRS |= ((trap & 0x2) << 18);
++
++	param->reg_MADJ       = 0x00034C4C;
++	param->reg_SADJ       = 0x00001800;
++	param->reg_DRV        = 0x000000F0;
++	param->reg_PERIOD     = param->dram_freq;
++	param->rodt           = 0;
++
++	switch (param->dram_freq) {
++	case 336:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0190);
++		param->wodt          = 0;
++		param->reg_AC1       = 0x22202725;
++		param->reg_AC2       = 0xAA007613 | trap_AC2;
++		param->reg_DQSIC     = 0x000000BA;
++		param->reg_MRS       = 0x04001400 | trap_MRS;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_IOZ       = 0x00000023;
++		param->reg_DQIDLY    = 0x00000074;
++		param->reg_FREQ      = 0x00004DC0;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 3;
++		switch (param->dram_chipid) {
++		default:
++		case AST_DRAM_512Mx16:
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xAA007613 | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xAA00761C | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xAA007636 | trap_AC2;
++			break;
++		}
++		break;
++	default:
++	case 396:
++		ast_moutdwm(ast, 0x1E6E2020, 0x03F1);
++		param->wodt          = 1;
++		param->reg_AC1       = 0x33302825;
++		param->reg_AC2       = 0xCC009617 | trap_AC2;
++		param->reg_DQSIC     = 0x000000E2;
++		param->reg_MRS       = 0x04001600 | trap_MRS;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_DQIDLY    = 0x00000089;
++		param->reg_FREQ      = 0x00005040;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 4;
++
++		switch (param->dram_chipid) {
++		default:
++		case AST_DRAM_512Mx16:
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xCC009617 | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xCC009622 | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xCC00963F | trap_AC2;
++			break;
++		}
++		break;
++
++	case 408:
++		ast_moutdwm(ast, 0x1E6E2020, 0x01F0);
++		param->wodt          = 1;
++		param->reg_AC1       = 0x33302825;
++		param->reg_AC2       = 0xCC009617 | trap_AC2;
++		param->reg_DQSIC     = 0x000000E2;
++		param->reg_MRS       = 0x04001600 | trap_MRS;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_IOZ       = 0x00000023;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_DQIDLY    = 0x00000089;
++		param->reg_FREQ      = 0x000050C0;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 4;
++
++		switch (param->dram_chipid) {
++		default:
++		case AST_DRAM_512Mx16:
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xCC009617 | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xCC009622 | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xCC00963F | trap_AC2;
++			break;
++		}
++
++		break;
++	case 456:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0230);
++		param->wodt          = 0;
++		param->reg_AC1       = 0x33302926;
++		param->reg_AC2       = 0xCD44961A;
++		param->reg_DQSIC     = 0x000000FC;
++		param->reg_MRS       = 0x00081830;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_IOZ       = 0x00000045;
++		param->reg_DQIDLY    = 0x00000097;
++		param->reg_FREQ      = 0x000052C0;
++		param->madj_max      = 88;
++		param->dll2_finetune_step = 4;
++		break;
++	case 504:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0270);
++		param->wodt          = 1;
++		param->reg_AC1       = 0x33302926;
++		param->reg_AC2       = 0xDE44A61D;
++		param->reg_DQSIC     = 0x00000117;
++		param->reg_MRS       = 0x00081A30;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_IOZ       = 0x070000BB;
++		param->reg_DQIDLY    = 0x000000A0;
++		param->reg_FREQ      = 0x000054C0;
++		param->madj_max      = 79;
++		param->dll2_finetune_step = 4;
++		break;
++	case 528:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0290);
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x33302926;
++		param->reg_AC2       = 0xEF44B61E;
++		param->reg_DQSIC     = 0x00000125;
++		param->reg_MRS       = 0x00081A30;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x000000F5;
++		param->reg_IOZ       = 0x00000023;
++		param->reg_DQIDLY    = 0x00000088;
++		param->reg_FREQ      = 0x000055C0;
++		param->madj_max      = 76;
++		param->dll2_finetune_step = 3;
++		break;
++	case 576:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0140);
++		param->reg_MADJ      = 0x00136868;
++		param->reg_SADJ      = 0x00004534;
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x33302A37;
++		param->reg_AC2       = 0xEF56B61E;
++		param->reg_DQSIC     = 0x0000013F;
++		param->reg_MRS       = 0x00101A50;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_IOZ       = 0x00000023;
++		param->reg_DQIDLY    = 0x00000078;
++		param->reg_FREQ      = 0x000057C0;
++		param->madj_max      = 136;
++		param->dll2_finetune_step = 3;
++		break;
++	case 600:
++		ast_moutdwm(ast, 0x1E6E2020, 0x02E1);
++		param->reg_MADJ      = 0x00136868;
++		param->reg_SADJ      = 0x00004534;
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x32302A37;
++		param->reg_AC2       = 0xDF56B61F;
++		param->reg_DQSIC     = 0x0000014D;
++		param->reg_MRS       = 0x00101A50;
++		param->reg_EMRS      = 0x00000004;
++		param->reg_DRV       = 0x000000F5;
++		param->reg_IOZ       = 0x00000023;
++		param->reg_DQIDLY    = 0x00000078;
++		param->reg_FREQ      = 0x000058C0;
++		param->madj_max      = 132;
++		param->dll2_finetune_step = 3;
++		break;
++	case 624:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0160);
++		param->reg_MADJ      = 0x00136868;
++		param->reg_SADJ      = 0x00004534;
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x32302A37;
++		param->reg_AC2       = 0xEF56B621;
++		param->reg_DQSIC     = 0x0000015A;
++		param->reg_MRS       = 0x02101A50;
++		param->reg_EMRS      = 0x00000004;
++		param->reg_DRV       = 0x000000F5;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x00000078;
++		param->reg_FREQ      = 0x000059C0;
++		param->madj_max      = 128;
++		param->dll2_finetune_step = 3;
++		break;
++	} /* switch freq */
++
++	switch (param->dram_chipid) {
++	case AST_DRAM_512Mx16:
++		param->dram_config = 0x130;
++		break;
++	default:
++	case AST_DRAM_1Gx16:
++		param->dram_config = 0x131;
++		break;
++	case AST_DRAM_2Gx16:
++		param->dram_config = 0x132;
++		break;
++	case AST_DRAM_4Gx16:
++		param->dram_config = 0x133;
++		break;
++	} /* switch size */
++
++	switch (param->vram_size) {
++	default:
++	case AST_VIDMEM_SIZE_8M:
++		param->dram_config |= 0x00;
++		break;
++	case AST_VIDMEM_SIZE_16M:
++		param->dram_config |= 0x04;
++		break;
++	case AST_VIDMEM_SIZE_32M:
++		param->dram_config |= 0x08;
++		break;
++	case AST_VIDMEM_SIZE_64M:
++		param->dram_config |= 0x0c;
++		break;
++	}
++
++}
++
++static void ddr3_init(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 data, data2, retry = 0;
++
++ddr3_init_start:
++	ast_moutdwm(ast, 0x1E6E0000, 0xFC600309);
++	ast_moutdwm(ast, 0x1E6E0018, 0x00000100);
++	ast_moutdwm(ast, 0x1E6E0024, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0034, 0x00000000);
++	udelay(10);
++	ast_moutdwm(ast, 0x1E6E0064, param->reg_MADJ);
++	ast_moutdwm(ast, 0x1E6E0068, param->reg_SADJ);
++	udelay(10);
++	ast_moutdwm(ast, 0x1E6E0064, param->reg_MADJ | 0xC0000);
++	udelay(10);
++
++	ast_moutdwm(ast, 0x1E6E0004, param->dram_config);
++	ast_moutdwm(ast, 0x1E6E0008, 0x90040f);
++	ast_moutdwm(ast, 0x1E6E0010, param->reg_AC1);
++	ast_moutdwm(ast, 0x1E6E0014, param->reg_AC2);
++	ast_moutdwm(ast, 0x1E6E0020, param->reg_DQSIC);
++	ast_moutdwm(ast, 0x1E6E0080, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0084, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0088, param->reg_DQIDLY);
++	ast_moutdwm(ast, 0x1E6E0018, 0x4000A170);
++	ast_moutdwm(ast, 0x1E6E0018, 0x00002370);
++	ast_moutdwm(ast, 0x1E6E0038, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0040, 0xFF444444);
++	ast_moutdwm(ast, 0x1E6E0044, 0x22222222);
++	ast_moutdwm(ast, 0x1E6E0048, 0x22222222);
++	ast_moutdwm(ast, 0x1E6E004C, 0x00000002);
++	ast_moutdwm(ast, 0x1E6E0050, 0x80000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0054, 0);
++	ast_moutdwm(ast, 0x1E6E0060, param->reg_DRV);
++	ast_moutdwm(ast, 0x1E6E006C, param->reg_IOZ);
++	ast_moutdwm(ast, 0x1E6E0070, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0074, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0078, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E007C, 0x00000000);
++	/* Wait MCLK2X lock to MCLK */
++	do {
++		data = ast_mindwm(ast, 0x1E6E001C);
++	} while (!(data & 0x08000000));
++	data = ast_mindwm(ast, 0x1E6E001C);
++	data = (data >> 8) & 0xff;
++	while ((data & 0x08) || ((data & 0x7) < 2) || (data < 4)) {
++		data2 = (ast_mindwm(ast, 0x1E6E0064) & 0xfff3ffff) + 4;
++		if ((data2 & 0xff) > param->madj_max) {
++			break;
++		}
++		ast_moutdwm(ast, 0x1E6E0064, data2);
++		if (data2 & 0x00100000) {
++			data2 = ((data2 & 0xff) >> 3) + 3;
++		} else {
++			data2 = ((data2 & 0xff) >> 2) + 5;
++		}
++		data = ast_mindwm(ast, 0x1E6E0068) & 0xffff00ff;
++		data2 += data & 0xff;
++		data = data | (data2 << 8);
++		ast_moutdwm(ast, 0x1E6E0068, data);
++		udelay(10);
++		ast_moutdwm(ast, 0x1E6E0064, ast_mindwm(ast, 0x1E6E0064) | 0xC0000);
++		udelay(10);
++		data = ast_mindwm(ast, 0x1E6E0018) & 0xfffff1ff;
++		ast_moutdwm(ast, 0x1E6E0018, data);
++		data = data | 0x200;
++		ast_moutdwm(ast, 0x1E6E0018, data);
++		do {
++			data = ast_mindwm(ast, 0x1E6E001C);
++		} while (!(data & 0x08000000));
++
++		data = ast_mindwm(ast, 0x1E6E001C);
++		data = (data >> 8) & 0xff;
++	}
++	ast_moutdwm(ast, 0x1E720058, ast_mindwm(ast, 0x1E6E0068) & 0xffff);
++	data = ast_mindwm(ast, 0x1E6E0018) | 0xC00;
++	ast_moutdwm(ast, 0x1E6E0018, data);
++
++	ast_moutdwm(ast, 0x1E6E0034, 0x00000001);
++	ast_moutdwm(ast, 0x1E6E000C, 0x00000040);
++	udelay(50);
++	/* Mode Register Setting */
++	ast_moutdwm(ast, 0x1E6E002C, param->reg_MRS | 0x100);
++	ast_moutdwm(ast, 0x1E6E0030, param->reg_EMRS);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000005);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000007);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000003);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000001);
++	ast_moutdwm(ast, 0x1E6E002C, param->reg_MRS);
++	ast_moutdwm(ast, 0x1E6E000C, 0x00005C08);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000001);
++
++	ast_moutdwm(ast, 0x1E6E000C, 0x00005C01);
++	data = 0;
++	if (param->wodt) {
++		data = 0x300;
++	}
++	if (param->rodt) {
++		data = data | 0x3000 | ((param->reg_AC2 & 0x60000) >> 3);
++	}
++	ast_moutdwm(ast, 0x1E6E0034, data | 0x3);
++
++	/* Calibrate the DQSI delay */
++	if ((cbr_dll2(ast, param) == false) && (retry++ < 10))
++		goto ddr3_init_start;
++
++	ast_moutdwm(ast, 0x1E6E0120, param->reg_FREQ);
++	/* ECC Memory Initialization */
++#ifdef ECC
++	ast_moutdwm(ast, 0x1E6E007C, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0070, 0x221);
++	do {
++		data = ast_mindwm(ast, 0x1E6E0070);
++	} while (!(data & 0x00001000));
++	ast_moutdwm(ast, 0x1E6E0070, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x80000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x00000000);
++#endif
++
++
++}
++
++static void get_ddr2_info(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 trap, trap_AC2, trap_MRS;
++
++	ast_moutdwm(ast, 0x1E6E2000, 0x1688A8A8);
++
++	/* Ger trap info */
++	trap = (ast_mindwm(ast, 0x1E6E2070) >> 25) & 0x3;
++	trap_AC2  = (trap << 20) | (trap << 16);
++	trap_AC2 += 0x00110000;
++	trap_MRS  = 0x00000040 | (trap << 4);
++
++
++	param->reg_MADJ       = 0x00034C4C;
++	param->reg_SADJ       = 0x00001800;
++	param->reg_DRV        = 0x000000F0;
++	param->reg_PERIOD     = param->dram_freq;
++	param->rodt           = 0;
++
++	switch (param->dram_freq) {
++	case 264:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0130);
++		param->wodt          = 0;
++		param->reg_AC1       = 0x11101513;
++		param->reg_AC2       = 0x78117011;
++		param->reg_DQSIC     = 0x00000092;
++		param->reg_MRS       = 0x00000842;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_DRV       = 0x000000F0;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x0000005A;
++		param->reg_FREQ      = 0x00004AC0;
++		param->madj_max      = 138;
++		param->dll2_finetune_step = 3;
++		break;
++	case 336:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0190);
++		param->wodt          = 1;
++		param->reg_AC1       = 0x22202613;
++		param->reg_AC2       = 0xAA009016 | trap_AC2;
++		param->reg_DQSIC     = 0x000000BA;
++		param->reg_MRS       = 0x00000A02 | trap_MRS;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x00000074;
++		param->reg_FREQ      = 0x00004DC0;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 3;
++		switch (param->dram_chipid) {
++		default:
++		case AST_DRAM_512Mx16:
++			param->reg_AC2   = 0xAA009012 | trap_AC2;
++			break;
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xAA009016 | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xAA009023 | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xAA00903B | trap_AC2;
++			break;
++		}
++		break;
++	default:
++	case 396:
++		ast_moutdwm(ast, 0x1E6E2020, 0x03F1);
++		param->wodt          = 1;
++		param->rodt          = 0;
++		param->reg_AC1       = 0x33302714;
++		param->reg_AC2       = 0xCC00B01B | trap_AC2;
++		param->reg_DQSIC     = 0x000000E2;
++		param->reg_MRS       = 0x00000C02 | trap_MRS;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x00000089;
++		param->reg_FREQ      = 0x00005040;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 4;
++
++		switch (param->dram_chipid) {
++		case AST_DRAM_512Mx16:
++			param->reg_AC2   = 0xCC00B016 | trap_AC2;
++			break;
++		default:
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xCC00B01B | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xCC00B02B | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xCC00B03F | trap_AC2;
++			break;
++		}
++
++		break;
++
++	case 408:
++		ast_moutdwm(ast, 0x1E6E2020, 0x01F0);
++		param->wodt          = 1;
++		param->rodt          = 0;
++		param->reg_AC1       = 0x33302714;
++		param->reg_AC2       = 0xCC00B01B | trap_AC2;
++		param->reg_DQSIC     = 0x000000E2;
++		param->reg_MRS       = 0x00000C02 | trap_MRS;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x000000FA;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x00000089;
++		param->reg_FREQ      = 0x000050C0;
++		param->madj_max      = 96;
++		param->dll2_finetune_step = 4;
++
++		switch (param->dram_chipid) {
++		case AST_DRAM_512Mx16:
++			param->reg_AC2   = 0xCC00B016 | trap_AC2;
++			break;
++		default:
++		case AST_DRAM_1Gx16:
++			param->reg_AC2   = 0xCC00B01B | trap_AC2;
++			break;
++		case AST_DRAM_2Gx16:
++			param->reg_AC2   = 0xCC00B02B | trap_AC2;
++			break;
++		case AST_DRAM_4Gx16:
++			param->reg_AC2   = 0xCC00B03F | trap_AC2;
++			break;
++		}
++
++		break;
++	case 456:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0230);
++		param->wodt          = 0;
++		param->reg_AC1       = 0x33302815;
++		param->reg_AC2       = 0xCD44B01E;
++		param->reg_DQSIC     = 0x000000FC;
++		param->reg_MRS       = 0x00000E72;
++		param->reg_EMRS      = 0x00000000;
++		param->reg_DRV       = 0x00000000;
++		param->reg_IOZ       = 0x00000034;
++		param->reg_DQIDLY    = 0x00000097;
++		param->reg_FREQ      = 0x000052C0;
++		param->madj_max      = 88;
++		param->dll2_finetune_step = 3;
++		break;
++	case 504:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0261);
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x33302815;
++		param->reg_AC2       = 0xDE44C022;
++		param->reg_DQSIC     = 0x00000117;
++		param->reg_MRS       = 0x00000E72;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x0000000A;
++		param->reg_IOZ       = 0x00000045;
++		param->reg_DQIDLY    = 0x000000A0;
++		param->reg_FREQ      = 0x000054C0;
++		param->madj_max      = 79;
++		param->dll2_finetune_step = 3;
++		break;
++	case 528:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0120);
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x33302815;
++		param->reg_AC2       = 0xEF44D024;
++		param->reg_DQSIC     = 0x00000125;
++		param->reg_MRS       = 0x00000E72;
++		param->reg_EMRS      = 0x00000004;
++		param->reg_DRV       = 0x000000F9;
++		param->reg_IOZ       = 0x00000045;
++		param->reg_DQIDLY    = 0x000000A7;
++		param->reg_FREQ      = 0x000055C0;
++		param->madj_max      = 76;
++		param->dll2_finetune_step = 3;
++		break;
++	case 552:
++		ast_moutdwm(ast, 0x1E6E2020, 0x02A1);
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x43402915;
++		param->reg_AC2       = 0xFF44E025;
++		param->reg_DQSIC     = 0x00000132;
++		param->reg_MRS       = 0x00000E72;
++		param->reg_EMRS      = 0x00000040;
++		param->reg_DRV       = 0x0000000A;
++		param->reg_IOZ       = 0x00000045;
++		param->reg_DQIDLY    = 0x000000AD;
++		param->reg_FREQ      = 0x000056C0;
++		param->madj_max      = 76;
++		param->dll2_finetune_step = 3;
++		break;
++	case 576:
++		ast_moutdwm(ast, 0x1E6E2020, 0x0140);
++		param->wodt          = 1;
++		param->rodt          = 1;
++		param->reg_AC1       = 0x43402915;
++		param->reg_AC2       = 0xFF44E027;
++		param->reg_DQSIC     = 0x0000013F;
++		param->reg_MRS       = 0x00000E72;
++		param->reg_EMRS      = 0x00000004;
++		param->reg_DRV       = 0x000000F5;
++		param->reg_IOZ       = 0x00000045;
++		param->reg_DQIDLY    = 0x000000B3;
++		param->reg_FREQ      = 0x000057C0;
++		param->madj_max      = 76;
++		param->dll2_finetune_step = 3;
++		break;
++	}
++
++	switch (param->dram_chipid) {
++	case AST_DRAM_512Mx16:
++		param->dram_config = 0x100;
++		break;
++	default:
++	case AST_DRAM_1Gx16:
++		param->dram_config = 0x121;
++		break;
++	case AST_DRAM_2Gx16:
++		param->dram_config = 0x122;
++		break;
++	case AST_DRAM_4Gx16:
++		param->dram_config = 0x123;
++		break;
++	} /* switch size */
++
++	switch (param->vram_size) {
++	default:
++	case AST_VIDMEM_SIZE_8M:
++		param->dram_config |= 0x00;
++		break;
++	case AST_VIDMEM_SIZE_16M:
++		param->dram_config |= 0x04;
++		break;
++	case AST_VIDMEM_SIZE_32M:
++		param->dram_config |= 0x08;
++		break;
++	case AST_VIDMEM_SIZE_64M:
++		param->dram_config |= 0x0c;
++		break;
++	}
++}
++
++static void ddr2_init(struct ast_private *ast, struct ast2300_dram_param *param)
++{
++	u32 data, data2, retry = 0;
++
++ddr2_init_start:
++	ast_moutdwm(ast, 0x1E6E0000, 0xFC600309);
++	ast_moutdwm(ast, 0x1E6E0018, 0x00000100);
++	ast_moutdwm(ast, 0x1E6E0024, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0064, param->reg_MADJ);
++	ast_moutdwm(ast, 0x1E6E0068, param->reg_SADJ);
++	udelay(10);
++	ast_moutdwm(ast, 0x1E6E0064, param->reg_MADJ | 0xC0000);
++	udelay(10);
++
++	ast_moutdwm(ast, 0x1E6E0004, param->dram_config);
++	ast_moutdwm(ast, 0x1E6E0008, 0x90040f);
++	ast_moutdwm(ast, 0x1E6E0010, param->reg_AC1);
++	ast_moutdwm(ast, 0x1E6E0014, param->reg_AC2);
++	ast_moutdwm(ast, 0x1E6E0020, param->reg_DQSIC);
++	ast_moutdwm(ast, 0x1E6E0080, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0084, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0088, param->reg_DQIDLY);
++	ast_moutdwm(ast, 0x1E6E0018, 0x4000A130);
++	ast_moutdwm(ast, 0x1E6E0018, 0x00002330);
++	ast_moutdwm(ast, 0x1E6E0038, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0040, 0xFF808000);
++	ast_moutdwm(ast, 0x1E6E0044, 0x88848466);
++	ast_moutdwm(ast, 0x1E6E0048, 0x44440008);
++	ast_moutdwm(ast, 0x1E6E004C, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x80000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0054, 0);
++	ast_moutdwm(ast, 0x1E6E0060, param->reg_DRV);
++	ast_moutdwm(ast, 0x1E6E006C, param->reg_IOZ);
++	ast_moutdwm(ast, 0x1E6E0070, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0074, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0078, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E007C, 0x00000000);
++
++	/* Wait MCLK2X lock to MCLK */
++	do {
++		data = ast_mindwm(ast, 0x1E6E001C);
++	} while (!(data & 0x08000000));
++	data = ast_mindwm(ast, 0x1E6E001C);
++	data = (data >> 8) & 0xff;
++	while ((data & 0x08) || ((data & 0x7) < 2) || (data < 4)) {
++		data2 = (ast_mindwm(ast, 0x1E6E0064) & 0xfff3ffff) + 4;
++		if ((data2 & 0xff) > param->madj_max) {
++			break;
++		}
++		ast_moutdwm(ast, 0x1E6E0064, data2);
++		if (data2 & 0x00100000) {
++			data2 = ((data2 & 0xff) >> 3) + 3;
++		} else {
++			data2 = ((data2 & 0xff) >> 2) + 5;
++		}
++		data = ast_mindwm(ast, 0x1E6E0068) & 0xffff00ff;
++		data2 += data & 0xff;
++		data = data | (data2 << 8);
++		ast_moutdwm(ast, 0x1E6E0068, data);
++		udelay(10);
++		ast_moutdwm(ast, 0x1E6E0064, ast_mindwm(ast, 0x1E6E0064) | 0xC0000);
++		udelay(10);
++		data = ast_mindwm(ast, 0x1E6E0018) & 0xfffff1ff;
++		ast_moutdwm(ast, 0x1E6E0018, data);
++		data = data | 0x200;
++		ast_moutdwm(ast, 0x1E6E0018, data);
++		do {
++			data = ast_mindwm(ast, 0x1E6E001C);
++		} while (!(data & 0x08000000));
++
++		data = ast_mindwm(ast, 0x1E6E001C);
++		data = (data >> 8) & 0xff;
++	}
++	ast_moutdwm(ast, 0x1E720058, ast_mindwm(ast, 0x1E6E0008) & 0xffff);
++	data = ast_mindwm(ast, 0x1E6E0018) | 0xC00;
++	ast_moutdwm(ast, 0x1E6E0018, data);
++
++	ast_moutdwm(ast, 0x1E6E0034, 0x00000001);
++	ast_moutdwm(ast, 0x1E6E000C, 0x00000000);
++	udelay(50);
++	/* Mode Register Setting */
++	ast_moutdwm(ast, 0x1E6E002C, param->reg_MRS | 0x100);
++	ast_moutdwm(ast, 0x1E6E0030, param->reg_EMRS);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000005);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000007);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000003);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000001);
++
++	ast_moutdwm(ast, 0x1E6E000C, 0x00005C08);
++	ast_moutdwm(ast, 0x1E6E002C, param->reg_MRS);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000001);
++	ast_moutdwm(ast, 0x1E6E0030, param->reg_EMRS | 0x380);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000003);
++	ast_moutdwm(ast, 0x1E6E0030, param->reg_EMRS);
++	ast_moutdwm(ast, 0x1E6E0028, 0x00000003);
++
++	ast_moutdwm(ast, 0x1E6E000C, 0x7FFF5C01);
++	data = 0;
++	if (param->wodt) {
++		data = 0x500;
++	}
++	if (param->rodt) {
++		data = data | 0x3000 | ((param->reg_AC2 & 0x60000) >> 3);
++	}
++	ast_moutdwm(ast, 0x1E6E0034, data | 0x3);
++	ast_moutdwm(ast, 0x1E6E0120, param->reg_FREQ);
++
++	/* Calibrate the DQSI delay */
++	if ((cbr_dll2(ast, param) == false) && (retry++ < 10))
++		goto ddr2_init_start;
++
++	/* ECC Memory Initialization */
++#ifdef ECC
++	ast_moutdwm(ast, 0x1E6E007C, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0070, 0x221);
++	do {
++		data = ast_mindwm(ast, 0x1E6E0070);
++	} while (!(data & 0x00001000));
++	ast_moutdwm(ast, 0x1E6E0070, 0x00000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x80000000);
++	ast_moutdwm(ast, 0x1E6E0050, 0x00000000);
++#endif
++
++}
++
++static void ast_init_dram_2300(struct drm_device *dev)
++{
++	struct ast_private *ast = dev->dev_private;
++	struct ast2300_dram_param param;
++	u32 temp;
++	u8 reg;
++
++	reg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++	if ((reg & 0x80) == 0) {/* vga only */
++		ast_write32(ast, 0xf004, 0x1e6e0000);
++		ast_write32(ast, 0xf000, 0x1);
++		ast_write32(ast, 0x12000, 0x1688a8a8);
++		do {
++			;
++		} while (ast_read32(ast, 0x12000) != 0x1);
++
++		ast_write32(ast, 0x10000, 0xfc600309);
++		do {
++			;
++		} while (ast_read32(ast, 0x10000) != 0x1);
++
++		/* Slow down CPU/AHB CLK in VGA only mode */
++		temp = ast_read32(ast, 0x12008);
++		temp |= 0x73;
++		ast_write32(ast, 0x12008, temp);
++
++		param.dram_type = AST_DDR3;
++		if (temp & 0x01000000)
++			param.dram_type = AST_DDR2;
++		param.dram_chipid = ast->dram_type;
++		param.dram_freq = ast->mclk;
++		param.vram_size = ast->vram_size;
++
++		if (param.dram_type == AST_DDR3) {
++			get_ddr3_info(ast, &param);
++			ddr3_init(ast, &param);
++		} else {
++			get_ddr2_info(ast, &param);
++			ddr2_init(ast, &param);
++		}
++
++		temp = ast_mindwm(ast, 0x1e6e2040);
++		ast_moutdwm(ast, 0x1e6e2040, temp | 0x40);
++	}
++
++	/* wait ready */
++	do {
++		reg = ast_get_index_reg_mask(ast, AST_IO_CRTC_PORT, 0xd0, 0xff);
++	} while ((reg & 0x40) == 0);
++}
++
+diff --git a/src/drivers/aspeed/common/ast_tables.h b/src/drivers/aspeed/common/ast_tables.h
+new file mode 100644
+index 0000000..3608d5a
+--- /dev/null
++++ b/src/drivers/aspeed/common/ast_tables.h
+@@ -0,0 +1,305 @@
++/*
++ * Copyright (c) 2005 ASPEED Technology Inc.
++ *
++ * Permission to use, copy, modify, distribute, and sell this software and its
++ * documentation for any purpose is hereby granted without fee, provided that
++ * the above copyright notice appear in all copies and that both that
++ * copyright notice and this permission notice appear in supporting
++ * documentation, and that the name of the authors not be used in
++ * advertising or publicity pertaining to distribution of the software without
++ * specific, written prior permission.  The authors makes no representations
++ * about the suitability of this software for any purpose.  It is provided
++ * "as is" without express or implied warranty.
++ *
++ * THE AUTHORS DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
++ * INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
++ * EVENT SHALL THE AUTHORS BE LIABLE FOR ANY SPECIAL, INDIRECT OR
++ * CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE,
++ * DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
++ * TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
++ * PERFORMANCE OF THIS SOFTWARE.
++ */
++/* Ported from xf86-video-ast driver */
++
++#ifndef AST_TABLES_H
++#define AST_TABLES_H
++
++/* Std. Table Index Definition */
++#define TextModeIndex		0
++#define EGAModeIndex		1
++#define VGAModeIndex		2
++#define HiCModeIndex		3
++#define TrueCModeIndex		4
++
++#define Charx8Dot               0x00000001
++#define HalfDCLK                0x00000002
++#define DoubleScanMode          0x00000004
++#define LineCompareOff          0x00000008
++#define HBorder                 0x00000020
++#define VBorder                 0x00000010
++#define WideScreenMode		0x00000100
++#define NewModeInfo		0x00000200
++#define NHSync			0x00000400
++#define PHSync			0x00000800
++#define NVSync			0x00001000
++#define PVSync			0x00002000
++#define SyncPP			(PVSync | PHSync)
++#define SyncPN			(PVSync | NHSync)
++#define SyncNP			(NVSync | PHSync)
++#define SyncNN			(NVSync | NHSync)
++
++/* DCLK Index */
++#define VCLK25_175     		0x00
++#define VCLK28_322     		0x01
++#define VCLK31_5       		0x02
++#define VCLK36         		0x03
++#define VCLK40         		0x04
++#define VCLK49_5       		0x05
++#define VCLK50         		0x06
++#define VCLK56_25      		0x07
++#define VCLK65		 	0x08
++#define VCLK75	        	0x09
++#define VCLK78_75      		0x0A
++#define VCLK94_5       		0x0B
++#define VCLK108        		0x0C
++#define VCLK135        		0x0D
++#define VCLK157_5      		0x0E
++#define VCLK162        		0x0F
++/* #define VCLK193_25     		0x10 */
++#define VCLK154     		0x10
++#define VCLK83_5    		0x11
++#define VCLK106_5   		0x12
++#define VCLK146_25  		0x13
++#define VCLK148_5   		0x14
++#define VCLK71      		0x15
++#define VCLK88_75   		0x16
++#define VCLK119     		0x17
++#define VCLK85_5     		0x18
++#define VCLK97_75     		0x19
++#define VCLK118_25			0x1A
++
++static struct ast_vbios_dclk_info dclk_table[] = {
++	{0x2C, 0xE7, 0x03},					/* 00: VCLK25_175	*/
++	{0x95, 0x62, 0x03},				        /* 01: VCLK28_322	*/
++	{0x67, 0x63, 0x01},				        /* 02: VCLK31_5         */
++	{0x76, 0x63, 0x01},				        /* 03: VCLK36         	*/
++	{0xEE, 0x67, 0x01},				        /* 04: VCLK40          	*/
++	{0x82, 0x62, 0x01}, 			        /* 05: VCLK49_5        	*/
++	{0xC6, 0x64, 0x01},                        	        /* 06: VCLK50          	*/
++	{0x94, 0x62, 0x01},                        	        /* 07: VCLK56_25       	*/
++	{0x80, 0x64, 0x00},                        	        /* 08: VCLK65		*/
++	{0x7B, 0x63, 0x00},                        	        /* 09: VCLK75	        */
++	{0x67, 0x62, 0x00},				        /* 0A: VCLK78_75       	*/
++	{0x7C, 0x62, 0x00},                        	        /* 0B: VCLK94_5        	*/
++	{0x8E, 0x62, 0x00},                        	        /* 0C: VCLK108         	*/
++	{0x85, 0x24, 0x00},                        	        /* 0D: VCLK135         	*/
++	{0x67, 0x22, 0x00},                        	        /* 0E: VCLK157_5       	*/
++	{0x6A, 0x22, 0x00},				        /* 0F: VCLK162         	*/
++	{0x4d, 0x4c, 0x80},				        /* 10: VCLK154      	*/
++	{0xa7, 0x78, 0x80},					/* 11: VCLK83.5         */
++	{0x28, 0x49, 0x80},					/* 12: VCLK106.5        */
++	{0x37, 0x49, 0x80},					/* 13: VCLK146.25       */
++	{0x1f, 0x45, 0x80},					/* 14: VCLK148.5        */
++	{0x47, 0x6c, 0x80},					/* 15: VCLK71       */
++	{0x25, 0x65, 0x80},					/* 16: VCLK88.75    */
++	{0x77, 0x58, 0x80},					/* 17: VCLK119      */
++	{0x32, 0x67, 0x80},				    /* 18: VCLK85_5     */
++	{0x6a, 0x6d, 0x80},					/* 19: VCLK97_75	*/
++	{0x3b, 0x2c, 0x81},					/* 1A: VCLK118_25	*/
++};
++
++static struct ast_vbios_stdtable vbios_stdtable[] = {
++	/* MD_2_3_400 */
++	{
++		0x67,
++		{0x00,0x03,0x00,0x02},
++		{0x5f,0x4f,0x50,0x82,0x55,0x81,0xbf,0x1f,
++		 0x00,0x4f,0x0d,0x0e,0x00,0x00,0x00,0x00,
++		 0x9c,0x8e,0x8f,0x28,0x1f,0x96,0xb9,0xa3,
++		 0xff},
++		{0x00,0x01,0x02,0x03,0x04,0x05,0x14,0x07,
++		 0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
++		 0x0c,0x00,0x0f,0x08},
++		{0x00,0x00,0x00,0x00,0x00,0x10,0x0e,0x00,
++		 0xff}
++	},
++	/* Mode12/ExtEGATable */
++	{
++		0xe3,
++		{0x01,0x0f,0x00,0x06},
++		{0x5f,0x4f,0x50,0x82,0x55,0x81,0x0b,0x3e,
++		 0x00,0x40,0x00,0x00,0x00,0x00,0x00,0x00,
++		 0xe9,0x8b,0xdf,0x28,0x00,0xe7,0x04,0xe3,
++		 0xff},
++		{0x00,0x01,0x02,0x03,0x04,0x05,0x14,0x07,
++		 0x38,0x39,0x3a,0x3b,0x3c,0x3d,0x3e,0x3f,
++		 0x01,0x00,0x0f,0x00},
++		{0x00,0x00,0x00,0x00,0x00,0x00,0x05,0x0f,
++		 0xff}
++	},
++	/* ExtVGATable */
++	{
++		0x2f,
++		{0x01,0x0f,0x00,0x0e},
++		{0x5f,0x4f,0x50,0x82,0x54,0x80,0x0b,0x3e,
++		 0x00,0x40,0x00,0x00,0x00,0x00,0x00,0x00,
++		 0xea,0x8c,0xdf,0x28,0x40,0xe7,0x04,0xa3,
++		 0xff},
++		{0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
++		 0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
++		 0x01,0x00,0x00,0x00},
++		{0x00,0x00,0x00,0x00,0x00,0x40,0x05,0x0f,
++		 0xff}
++	},
++	/* ExtHiCTable */
++	{
++		0x2f,
++		{0x01,0x0f,0x00,0x0e},
++		{0x5f,0x4f,0x50,0x82,0x54,0x80,0x0b,0x3e,
++		 0x00,0x40,0x00,0x00,0x00,0x00,0x00,0x00,
++		 0xea,0x8c,0xdf,0x28,0x40,0xe7,0x04,0xa3,
++		 0xff},
++		{0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
++		 0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
++		 0x01,0x00,0x00,0x00},
++		{0x00,0x00,0x00,0x00,0x00,0x00,0x05,0x0f,
++		 0xff}
++	},
++	/* ExtTrueCTable */
++	{
++		0x2f,
++		{0x01,0x0f,0x00,0x0e},
++		{0x5f,0x4f,0x50,0x82,0x54,0x80,0x0b,0x3e,
++		 0x00,0x40,0x00,0x00,0x00,0x00,0x00,0x00,
++		 0xea,0x8c,0xdf,0x28,0x40,0xe7,0x04,0xa3,
++		 0xff},
++		{0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
++		 0x08,0x09,0x0a,0x0b,0x0c,0x0d,0x0e,0x0f,
++		 0x01,0x00,0x00,0x00},
++		{0x00,0x00,0x00,0x00,0x00,0x00,0x05,0x0f,
++		 0xff}
++	},
++};
++
++static struct ast_vbios_enhtable res_640x480[] = {
++	{ 800, 640, 8, 96, 525, 480, 2, 2, VCLK25_175,	/* 60Hz */
++	  (SyncNN | HBorder | VBorder | Charx8Dot), 60, 1, 0x2E },
++	{ 832, 640, 16, 40, 520, 480, 1, 3, VCLK31_5,	/* 72Hz */
++	  (SyncNN | HBorder | VBorder | Charx8Dot), 72, 2, 0x2E  },
++	{ 840, 640, 16, 64, 500, 480, 1, 3, VCLK31_5,	/* 75Hz */
++	  (SyncNN | Charx8Dot) , 75, 3, 0x2E },
++	{ 832, 640, 56, 56, 509, 480, 1, 3, VCLK36,		/* 85Hz */
++	  (SyncNN | Charx8Dot) , 85, 4, 0x2E },
++	{ 832, 640, 56, 56, 509, 480, 1, 3, VCLK36,		/* end */
++	  (SyncNN | Charx8Dot) , 0xFF, 4, 0x2E },
++};
++
++static struct ast_vbios_enhtable res_800x600[] = {
++	{1024, 800, 24, 72, 625, 600, 1, 2, VCLK36,		/* 56Hz */
++	 (SyncPP | Charx8Dot), 56, 1, 0x30 },
++	{1056, 800, 40, 128, 628, 600, 1, 4, VCLK40,	/* 60Hz */
++	 (SyncPP | Charx8Dot), 60, 2, 0x30 },
++	{1040, 800, 56, 120, 666, 600, 37, 6, VCLK50,	/* 72Hz */
++	 (SyncPP | Charx8Dot), 72, 3, 0x30 },
++	{1056, 800, 16, 80, 625, 600, 1, 3, VCLK49_5,	/* 75Hz */
++	 (SyncPP | Charx8Dot), 75, 4, 0x30 },
++	{1048, 800, 32, 64, 631, 600, 1, 3, VCLK56_25,	/* 85Hz */
++	 (SyncPP | Charx8Dot), 84, 5, 0x30 },
++	{1048, 800, 32, 64, 631, 600, 1, 3, VCLK56_25,	/* end */
++	 (SyncPP | Charx8Dot), 0xFF, 5, 0x30 },
++};
++
++
++static struct ast_vbios_enhtable res_1024x768[] = {
++	{1344, 1024, 24, 136, 806, 768, 3, 6, VCLK65,	/* 60Hz */
++	 (SyncNN | Charx8Dot), 60, 1, 0x31 },
++	{1328, 1024, 24, 136, 806, 768, 3, 6, VCLK75,	/* 70Hz */
++	 (SyncNN | Charx8Dot), 70, 2, 0x31 },
++	{1312, 1024, 16, 96, 800, 768, 1, 3, VCLK78_75,	/* 75Hz */
++	 (SyncPP | Charx8Dot), 75, 3, 0x31 },
++	{1376, 1024, 48, 96, 808, 768, 1, 3, VCLK94_5,	/* 85Hz */
++	 (SyncPP | Charx8Dot), 84, 4, 0x31 },
++	{1376, 1024, 48, 96, 808, 768, 1, 3, VCLK94_5,	/* end */
++	 (SyncPP | Charx8Dot), 0xFF, 4, 0x31 },
++};
++
++static struct ast_vbios_enhtable res_1280x1024[] = {
++	{1688, 1280, 48, 112, 1066, 1024, 1, 3, VCLK108,	/* 60Hz */
++	 (SyncPP | Charx8Dot), 60, 1, 0x32 },
++	{1688, 1280, 16, 144, 1066, 1024, 1, 3, VCLK135,	/* 75Hz */
++	 (SyncPP | Charx8Dot), 75, 2, 0x32 },
++	{1728, 1280, 64, 160, 1072, 1024, 1, 3, VCLK157_5,	/* 85Hz */
++	 (SyncPP | Charx8Dot), 85, 3, 0x32 },
++	{1728, 1280, 64, 160, 1072, 1024, 1, 3, VCLK157_5,	/* end */
++	 (SyncPP | Charx8Dot), 0xFF, 3, 0x32 },
++};
++
++static struct ast_vbios_enhtable res_1600x1200[] = {
++	{2160, 1600, 64, 192, 1250, 1200, 1, 3, VCLK162,	/* 60Hz */
++	 (SyncPP | Charx8Dot), 60, 1, 0x33 },
++	{2160, 1600, 64, 192, 1250, 1200, 1, 3, VCLK162,	/* end */
++	 (SyncPP | Charx8Dot), 0xFF, 1, 0x33 },
++};
++
++/* 16:9 */
++static struct ast_vbios_enhtable res_1360x768[] = {
++	{1792, 1360, 64,112, 795,  768, 3, 6, VCLK85_5,	         /* 60Hz */
++	 (SyncPP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x39 },
++	{1792, 1360, 64,112, 795,  768, 3, 6, VCLK85_5,	         /* end */
++	 (SyncPP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 1, 0x39 },
++};
++
++static struct ast_vbios_enhtable res_1600x900[] = {
++	{1760, 1600, 48, 32, 926,  900, 3, 5, VCLK97_75,	/* 60Hz CVT RB */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x3A },
++	{2112, 1600, 88,168, 934,  900, 3, 5, VCLK118_25,	/* 60Hz CVT */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 2, 0x3A },
++	{2112, 1600, 88,168, 934,  900, 3, 5, VCLK118_25,	/* 60Hz CVT */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 2, 0x3A },
++};
++
++static struct ast_vbios_enhtable res_1920x1080[] = {
++	{2200, 1920, 88, 44, 1125, 1080, 4, 5, VCLK148_5,	/* 60Hz */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x38 },
++	{2200, 1920, 88, 44, 1125, 1080, 4, 5, VCLK148_5,	/* 60Hz */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 1, 0x38 },
++};
++
++
++/* 16:10 */
++static struct ast_vbios_enhtable res_1280x800[] = {
++	{1440, 1280, 48, 32,  823,  800, 3, 6, VCLK71,	/* 60Hz RB */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x35 },
++	{1680, 1280, 72,128,  831,  800, 3, 6, VCLK83_5,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 2, 0x35 },
++	{1680, 1280, 72,128,  831,  800, 3, 6, VCLK83_5,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 2, 0x35 },
++
++};
++
++static struct ast_vbios_enhtable res_1440x900[] = {
++	{1600, 1440, 48, 32,  926,  900, 3, 6, VCLK88_75,	/* 60Hz RB */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x36 },
++	{1904, 1440, 80,152,  934,  900, 3, 6, VCLK106_5,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 2, 0x36 },
++	{1904, 1440, 80,152,  934,  900, 3, 6, VCLK106_5,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 2, 0x36 },
++};
++
++static struct ast_vbios_enhtable res_1680x1050[] = {
++	{1840, 1680, 48, 32, 1080, 1050, 3, 6, VCLK119,	/* 60Hz RB */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x37 },
++	{2240, 1680,104,176, 1089, 1050, 3, 6, VCLK146_25,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 2, 0x37 },
++	{2240, 1680,104,176, 1089, 1050, 3, 6, VCLK146_25,	/* 60Hz */
++	 (SyncPN | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 2, 0x37 },
++};
++
++static struct ast_vbios_enhtable res_1920x1200[] = {
++	{2080, 1920, 48, 32, 1235, 1200, 3, 6, VCLK154,	/* 60Hz RB*/
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 60, 1, 0x34 },
++	{2080, 1920, 48, 32, 1235, 1200, 3, 6, VCLK154,	/* 60Hz RB */
++	 (SyncNP | Charx8Dot | LineCompareOff | WideScreenMode | NewModeInfo), 0xFF, 1, 0x34 },
++};
++
++#endif
+diff --git a/src/include/device/pci_ids.h b/src/include/device/pci_ids.h
+index dcb8a42..fcaf4aa 100644
+--- a/src/include/device/pci_ids.h
++++ b/src/include/device/pci_ids.h
+@@ -1991,6 +1991,9 @@
+ #define PCI_DEVICE_ID_XGI_20		0x0020
+ #define PCI_DEVICE_ID_XGI_40		0x0040
+ 
++#define PCI_VENDOR_ID_ASPEED		0x1a03
++#define PCI_DEVICE_ID_ASPEED_AST2050_VGA	0x2000
++
+ #define PCI_VENDOR_ID_SYMPHONY		0x1c1c
+ #define PCI_DEVICE_ID_SYMPHONY_101	0x0001
+ 
+-- 
+1.7.9.5
+

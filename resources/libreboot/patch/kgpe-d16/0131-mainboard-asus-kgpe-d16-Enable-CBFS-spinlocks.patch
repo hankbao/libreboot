@@ -1,0 +1,61 @@
+From 3bae76eb132ce6b35542e7727397556b457d6d77 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 28 Aug 2015 20:02:45 -0500
+Subject: [PATCH 131/143] mainboard/asus/kgpe-d16: Enable CBFS spinlocks
+
+Change-Id: I8f6226d3e74ac5c7f29f708128a7502ced1287bf
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/Kconfig    |    1 +
+ src/mainboard/asus/kgpe-d16/romstage.c |   15 ++++++++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/Kconfig b/src/mainboard/asus/kgpe-d16/Kconfig
+index 084a412..a9261f9 100644
+--- a/src/mainboard/asus/kgpe-d16/Kconfig
++++ b/src/mainboard/asus/kgpe-d16/Kconfig
+@@ -15,6 +15,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select SUPERIO_NUVOTON_NCT5572D
+ 	select PARALLEL_CPU_INIT
+ 	select HAVE_ROMSTAGE_CONSOLE_SPINLOCK
++	select HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK
+ 	select HAVE_HARD_RESET
+ 	select HAVE_OPTION_TABLE
+ 	select HAVE_CMOS_DEFAULT
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index cbda9ca..9998359 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -315,6 +315,18 @@ void initialize_romstage_console_lock(void)
+ 	car_get_var(printk_spinlock) = SPIN_LOCK_UNLOCKED;
+ }
+ 
++static spinlock_t nvram_cbfs_spinlock CAR_GLOBAL;
++
++spinlock_t* romstage_nvram_cbfs_lock(void)
++{
++	return car_get_var_ptr(&nvram_cbfs_spinlock);
++}
++
++void initialize_romstage_nvram_cbfs_lock(void)
++{
++	car_get_var(nvram_cbfs_spinlock) = SPIN_LOCK_UNLOCKED;
++}
++
+ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ {
+ 	uint32_t esp;
+@@ -336,8 +348,9 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 		timestamp_init(timestamp_get());
+ 		timestamp_add_now(TS_START_ROMSTAGE);
+ 
+-		/* Initialize the printk spinlock */
++		/* Initialize the printk and nvram CBFS spinlocks */
+ 		initialize_romstage_console_lock();
++		initialize_romstage_nvram_cbfs_lock();
+ 
+ 		/* Nothing special needs to be done to find bus 0 */
+ 		/* Allow the HT devices to be found */
+-- 
+1.7.9.5
+

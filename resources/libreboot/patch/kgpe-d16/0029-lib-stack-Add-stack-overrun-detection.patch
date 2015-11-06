@@ -1,12 +1,12 @@
-From aa92a6ff110c9fd77f6b157fa509988d597ad2e0 Mon Sep 17 00:00:00 2001
+From 1d4b434ed93ad03bd97152310fc24f60342e6b9b Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Sat, 5 Sep 2015 19:31:03 -0500
-Subject: [PATCH 029/139] lib/stack: Add stack overrun detection
+Subject: [PATCH 029/143] lib/stack: Add stack overrun detection
 
 Change-Id: I9a59fcb7cf221ae590a047c520e7aff99e23ecf1
 Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
 ---
- src/lib/stack.c | 5 +++--
+ src/lib/stack.c |    5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/src/lib/stack.c b/src/lib/stack.c
@@ -34,5 +34,5 @@ index 52dd723..bebeea2 100644
  		return -1;
  	}
 -- 
-1.9.1
+1.7.9.5
 

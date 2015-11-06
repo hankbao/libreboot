@@ -1,12 +1,12 @@
-From e30acf3fb35f09d788f29f9603124bcbc24723fb Mon Sep 17 00:00:00 2001
+From 626b7adfbc9c50a5e078075635efddf5707ef9a2 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Sat, 5 Sep 2015 19:31:20 -0500
-Subject: [PATCH 030/139] cpu/x86/lapic: Add stack overrun detection
+Subject: [PATCH 030/143] cpu/x86/lapic: Add stack overrun detection
 
 Change-Id: I03e43f38e0d2e51141208ebb169ad8deba77ab78
 Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
 ---
- src/cpu/x86/lapic/lapic_cpu_init.c | 2 ++
+ src/cpu/x86/lapic/lapic_cpu_init.c |    2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/cpu/x86/lapic/lapic_cpu_init.c b/src/cpu/x86/lapic/lapic_cpu_init.c
@@ -30,5 +30,5 @@ index 7fedd00..faa1f1f 100644
  		checkstack((void *)stacks[i] + CONFIG_STACK_SIZE, i);
  }
 -- 
-1.9.1
+1.7.9.5
 

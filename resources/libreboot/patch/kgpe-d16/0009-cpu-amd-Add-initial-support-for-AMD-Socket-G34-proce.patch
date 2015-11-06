@@ -1,0 +1,832 @@
+From 9c3c40d0b53a338e7ed153b933155db1bc0cae08 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 17:50:29 -0500
+Subject: [PATCH 009/143] cpu/amd: Add initial support for AMD Socket G34
+ processors
+
+Change-Id: Iccd034f32c26513edd52ca3a11a30f61c362682d
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/Kconfig                        |    1 +
+ src/cpu/amd/Makefile.inc                   |    1 +
+ src/cpu/amd/car/post_cache_as_ram.c        |   19 ++++-
+ src/cpu/amd/model_10xxx/init_cpus.c        |   34 ++++++++-
+ src/cpu/amd/model_10xxx/model_10xxx_init.c |    2 +
+ src/cpu/amd/model_10xxx/processor_name.c   |   23 ++++++
+ src/cpu/amd/model_10xxx/ram_calc.c         |    2 +
+ src/cpu/amd/quadcore/quadcore_id.c         |   77 +++++++++++++++-----
+ src/cpu/amd/socket_G34/Kconfig             |   29 ++++++++
+ src/cpu/amd/socket_G34/Makefile.inc        |   14 ++++
+ src/cpu/amd/socket_G34/socket_G34.c        |   25 +++++++
+ src/northbridge/amd/amdfam10/northbridge.c |  102 +++++++++++++++++++++-----
+ src/northbridge/amd/amdht/ht_wrapper.c     |  107 +++++++++++++++++++++++++++-
+ src/northbridge/amd/amdht/ht_wrapper.h     |   25 +++++++
+ 14 files changed, 417 insertions(+), 44 deletions(-)
+ create mode 100644 src/cpu/amd/socket_G34/Kconfig
+ create mode 100644 src/cpu/amd/socket_G34/Makefile.inc
+ create mode 100644 src/cpu/amd/socket_G34/socket_G34.c
+ create mode 100644 src/northbridge/amd/amdht/ht_wrapper.h
+
+diff --git a/src/cpu/amd/Kconfig b/src/cpu/amd/Kconfig
+index 8286b2a..3a02043 100644
+--- a/src/cpu/amd/Kconfig
++++ b/src/cpu/amd/Kconfig
+@@ -5,6 +5,7 @@ source src/cpu/amd/socket_AM2/Kconfig
+ source src/cpu/amd/socket_AM2r2/Kconfig
+ source src/cpu/amd/socket_AM3/Kconfig
+ source src/cpu/amd/socket_C32/Kconfig
++source src/cpu/amd/socket_G34/Kconfig
+ source src/cpu/amd/socket_ASB2/Kconfig
+ source src/cpu/amd/socket_F/Kconfig
+ source src/cpu/amd/socket_F_1207/Kconfig
+diff --git a/src/cpu/amd/Makefile.inc b/src/cpu/amd/Makefile.inc
+index a73e25f..e532aba 100644
+--- a/src/cpu/amd/Makefile.inc
++++ b/src/cpu/amd/Makefile.inc
+@@ -8,6 +8,7 @@ subdirs-$(CONFIG_CPU_AMD_SOCKET_AM2R2) += socket_AM2r2
+ subdirs-$(CONFIG_CPU_AMD_SOCKET_AM3) += socket_AM3
+ subdirs-$(CONFIG_CPU_AMD_SOCKET_ASB2) += socket_ASB2
+ subdirs-$(CONFIG_CPU_AMD_SOCKET_C32_NON_AGESA) += socket_C32
++subdirs-$(CONFIG_CPU_AMD_SOCKET_G34_NON_AGESA) += socket_G34
+ subdirs-$(CONFIG_CPU_AMD_GEODE_GX2) += geode_gx2
+ subdirs-$(CONFIG_CPU_AMD_GEODE_LX) += geode_lx
+ subdirs-$(CONFIG_CPU_AMD_SOCKET_S1G1) += socket_S1G1
+diff --git a/src/cpu/amd/car/post_cache_as_ram.c b/src/cpu/amd/car/post_cache_as_ram.c
+index 96df3e7..230d1aa 100644
+--- a/src/cpu/amd/car/post_cache_as_ram.c
++++ b/src/cpu/amd/car/post_cache_as_ram.c
+@@ -1,4 +1,5 @@
+-/* 2005.6 by yhlu
++/* Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ * 2005.6 by yhlu
+  * 2006.3 yhlu add copy data from CAR to ram
+  */
+ #include <string.h>
+@@ -46,6 +47,15 @@ static void memset_(void *d, int val, size_t len)
+ 	memset(d, val, len);
+ }
+ 
++static int memcmp_(void *d, const void *s, size_t len)
++{
++#if PRINTK_IN_CAR
++	printk(BIOS_SPEW, " Compare [%08x-%08x] with [%08x - %08x] ... ",
++		(u32) s, (u32) (s + len - 1), (u32) d, (u32) (d + len - 1));
++#endif
++	return memcmp(d, s, len);
++}
++
+ static void prepare_romstage_ramstack(void *resume_backup_memory)
+ {
+ 	size_t backup_top = backup_size();
+@@ -110,6 +120,12 @@ void post_cache_as_ram(void)
+ 	memcpy_(migrated_car, &_car_data_start[0], car_size);
+ 	print_car_debug("Done\n");
+ 
++	print_car_debug("Verifying data integrity in RAM... ");
++	if (memcmp_(migrated_car, &_car_data_start[0], car_size) == 0)
++		print_car_debug("Done\n");
++	else
++		print_car_debug("FAILED\n");
++
+ 	/* New stack grows right below migrated_car. */
+ 	print_car_debug("Switching to use RAM as stack... ");
+ 	cache_as_ram_switch_stack(migrated_car);
+@@ -128,6 +144,7 @@ void cache_as_ram_new_stack (void)
+ 	disable_cache_as_ram_bsp();
+ 
+ 	disable_cache();
++	/* Enable cached access to RAM in the range 1M to CONFIG_RAMTOP */
+ 	set_var_mtrr(0, 0x00000000, CONFIG_RAMTOP, MTRR_TYPE_WRBACK);
+ 	enable_cache();
+ 
+diff --git a/src/cpu/amd/model_10xxx/init_cpus.c b/src/cpu/amd/model_10xxx/init_cpus.c
+index 4c72848..8de6d25 100644
+--- a/src/cpu/amd/model_10xxx/init_cpus.c
++++ b/src/cpu/amd/model_10xxx/init_cpus.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2007-2008 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -67,6 +68,9 @@ static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+ 	u32 nb_cfg_54;
+ 	int i, j;
+ 	u32 ApicIdCoreIdSize;
++	uint8_t rev_gte_d = 0;
++	uint8_t dual_node = 0;
++	uint32_t f3xe8;
+ 
+ 	/* get_nodes define in ht_wrapper.c */
+ 	nodes = get_nodes();
+@@ -81,6 +85,16 @@ static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+ 	/* Assume that all node are same stepping, otherwise we can use use
+ 	   nb_cfg_54 from bsp for all nodes */
+ 	nb_cfg_54 = read_nb_cfg_54();
++	f3xe8 = pci_read_config32(NODE_PCI(0, 3), 0xe8);
++
++	if (cpuid_eax(0x80000001) >= 0x8)
++		/* Revision D or later */
++		rev_gte_d = 1;
++
++	if (rev_gte_d)
++		 /* Check for dual node capability */
++		if (f3xe8 & 0x20000000)
++			dual_node = 1;
+ 
+ 	ApicIdCoreIdSize = (cpuid_ecx(0x80000008) >> 12 & 0xf);
+ 	if (ApicIdCoreIdSize) {
+@@ -91,6 +105,8 @@ static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+ 
+ 	for (i = 0; i < nodes; i++) {
+ 		cores_found = get_core_num_in_bsp(i);
++		if (siblings > cores_found)
++			siblings = cores_found;
+ 
+ 		u32 jstart, jend;
+ 
+@@ -107,9 +123,21 @@ static void for_each_ap(u32 bsp_apicid, u32 core_range, process_ap_t process_ap,
+ 		}
+ 
+ 		for (j = jstart; j <= jend; j++) {
+-			ap_apicid =
+-			    i * (nb_cfg_54 ? (siblings + 1) : 1) +
+-			    j * (nb_cfg_54 ? 1 : 64);
++			if (dual_node) {
++				ap_apicid = 0;
++				if (nb_cfg_54) {
++					ap_apicid |= ((i >> 1) & 0x3) << 4;			/* Node ID */
++					ap_apicid |= ((i & 0x1) * (siblings + 1)) + j;		/* Core ID */
++				} else {
++					ap_apicid |= i & 0x3;					/* Node ID */
++					ap_apicid |= (((i & 0x1) * (siblings + 1)) + j) << 4;	/* Core ID */
++				}
++			} else {
++				ap_apicid =
++				i * (nb_cfg_54 ? (siblings + 1) : 1) +
++				j * (nb_cfg_54 ? 1 : 64);
++			}
++
+ 
+ #if CONFIG_ENABLE_APIC_EXT_ID && (CONFIG_APIC_ID_OFFSET > 0)
+ #if !CONFIG_LIFT_BSP_APIC_ID
+diff --git a/src/cpu/amd/model_10xxx/model_10xxx_init.c b/src/cpu/amd/model_10xxx/model_10xxx_init.c
+index 590b89d..b942c1a 100644
+--- a/src/cpu/amd/model_10xxx/model_10xxx_init.c
++++ b/src/cpu/amd/model_10xxx/model_10xxx_init.c
+@@ -2,6 +2,7 @@
+  * This file is part of the coreboot project.
+  *
+  * Copyright (C) 2007 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  *
+  * This program is free software; you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+@@ -153,6 +154,7 @@ static struct cpu_device_id cpu_table[] = {
+ 	{ X86_VENDOR_AMD, 0x100F63 },           /* DA-C3 */
+ 	{ X86_VENDOR_AMD, 0x100F80 },           /* HY-D0 */
+ 	{ X86_VENDOR_AMD, 0x100F81 },           /* HY-D1 */
++	{ X86_VENDOR_AMD, 0x100F91 },           /* HY-D1 */
+ 	{ X86_VENDOR_AMD, 0x100FA0 },           /* PH-E0 */
+ 	{ 0, 0 },
+ };
+diff --git a/src/cpu/amd/model_10xxx/processor_name.c b/src/cpu/amd/model_10xxx/processor_name.c
+index a25e3a9..12c45c9 100644
+--- a/src/cpu/amd/model_10xxx/processor_name.c
++++ b/src/cpu/amd/model_10xxx/processor_name.c
+@@ -157,6 +157,24 @@ static const struct str_s String2_socket_AM2[] = {
+ 	{0, 0, 0, NULL}
+ };
+ 
++static const struct str_s String1_socket_G34[] = {
++	{0x00, 0x07, 0x00, "AMD Opteron(tm) Processor 61"},
++	{0x00, 0x0B, 0x00, "AMD Opteron(tm) Processor 61"},
++	{0x01, 0x07, 0x01, "Embedded AMD Opteron(tm) Processor "},
++	{0, 0, 0, NULL}
++};
++
++static const struct str_s String2_socket_G34[] = {
++	{0x00, 0x07, 0x00, " HE"},
++	{0x00, 0x07, 0x01, " SE"},
++	{0x00, 0x0B, 0x00, " HE"},
++	{0x00, 0x0B, 0x01, " SE"},
++	{0x00, 0x0B, 0x0F, ""},
++	{0x01, 0x07, 0x01, " QS"},
++	{0x01, 0x07, 0x02, " KS"},
++	{0, 0, 0, NULL}
++};
++
+ static const struct str_s String1_socket_C32[] = {
+ 	{0x00, 0x03, 0x00, "AMD Opteron(tm) Processor 41"},
+ 	{0x00, 0x05, 0x00, "AMD Opteron(tm) Processor 41"},
+@@ -240,6 +258,11 @@ int init_processor_name(void)
+ 		str = String1_socket_AM2;
+ 		str2 = String2_socket_AM2;
+ 		break;
++	case 3:		/* G34 */
++		str = String1_socket_G34;
++		str2 = String2_socket_G34;
++		str2_checkNC = 0;
++		break;
+ 	case 5:		/* C32 */
+ 		str = String1_socket_C32;
+ 		str2 = String2_socket_C32;
+diff --git a/src/cpu/amd/model_10xxx/ram_calc.c b/src/cpu/amd/model_10xxx/ram_calc.c
+index c8637c9..46ccdbd 100644
+--- a/src/cpu/amd/model_10xxx/ram_calc.c
++++ b/src/cpu/amd/model_10xxx/ram_calc.c
+@@ -26,6 +26,7 @@
+ 
+ #include "ram_calc.h"
+ 
++#if !IS_ENABLED(CONFIG_LATE_CBMEM_INIT)
+ uint64_t get_uma_memory_size(uint64_t topmem)
+ {
+ 	uint64_t uma_size = 0;
+@@ -50,3 +51,4 @@ void *cbmem_top(void)
+ 
+ 	return (void *) topmem - get_uma_memory_size(topmem);
+ }
++#endif
+diff --git a/src/cpu/amd/quadcore/quadcore_id.c b/src/cpu/amd/quadcore/quadcore_id.c
+index cf45196..c5921de 100644
+--- a/src/cpu/amd/quadcore/quadcore_id.c
++++ b/src/cpu/amd/quadcore/quadcore_id.c
+@@ -1,6 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  * Copyright (C) 2007 Advanced Micro Devices, Inc.
+  *
+  * This program is free software; you can redistribute it and/or modify
+@@ -37,33 +38,71 @@ u32 get_initial_apicid(void)
+ 	return ((cpuid_ebx(1) >> 24) & 0xff);
+ }
+ 
+-//called by amd_siblings too
+-#define CORE_ID_BIT 2
+-#define NODE_ID_BIT 6
++/* Called by amd_siblings (ramstage) as well */
+ struct node_core_id get_node_core_id(u32 nb_cfg_54)
+ {
+ 	struct node_core_id id;
+-	u32 core_id_bits;
++	uint8_t apicid;
++	uint8_t rev_gte_d = 0;
++	uint8_t dual_node = 0;
++	uint32_t f3xe8;
+ 
+-	u32 ApicIdCoreIdSize = (cpuid_ecx(0x80000008)>>12 & 0xf);
+-	if(ApicIdCoreIdSize) {
+-		core_id_bits = ApicIdCoreIdSize;
+-	} else {
+-		core_id_bits = CORE_ID_BIT; //quad core
+-	}
++#ifdef __PRE_RAM__
++	f3xe8 = pci_read_config32(NODE_PCI(0, 3), 0xe8);
++#else
++	f3xe8 = pci_read_config32(get_node_pci(0, 3), 0xe8);
++#endif
++
++	if (cpuid_eax(0x80000001) >= 0x8)
++		/* Revision D or later */
++		rev_gte_d = 1;
+ 
+-	// get the apicid via cpuid(1) ebx[31:24]
++	if (rev_gte_d)
++		 /* Check for dual node capability */
++		if (f3xe8 & 0x20000000)
++			dual_node = 1;
++
++	/* Get the apicid via cpuid(1) ebx[31:24]
++	 * The apicid format varies based on processor revision
++	 */
++	apicid = (cpuid_ebx(1) >> 24) & 0xff;
+ 	if( nb_cfg_54) {
+-		// when NB_CFG[54] is set, nodeid = ebx[31:26], coreid = ebx[25:24]
+-		id.coreid = (cpuid_ebx(1) >> 24) & 0xff;
+-		id.nodeid = (id.coreid>>core_id_bits);
+-		id.coreid &= ((1<<core_id_bits)-1);
++		if (rev_gte_d && dual_node) {
++			id.coreid = apicid & 0xf;
++			id.nodeid = (apicid & 0x30) >> 4;
++		} else if (rev_gte_d && !dual_node) {
++			id.coreid = apicid & 0x7;
++			id.nodeid = (apicid & 0x38) >> 3;
++		} else {
++			id.coreid = apicid & 0x3;
++			id.nodeid = (apicid & 0x1c) >> 2;
++		}
+ 	} else {
+-		// when NB_CFG[54] is clear, nodeid = ebx[29:24], coreid = ebx[31:30]
+-		id.nodeid = (cpuid_ebx(1) >> 24) & 0xff;
+-		id.coreid = (id.nodeid>>NODE_ID_BIT);
+-		id.nodeid &= ((1<<NODE_ID_BIT)-1);
++		if (rev_gte_d && dual_node) {
++			id.coreid = (apicid & 0xf0) >> 4;
++			id.nodeid = apicid & 0x3;
++		} else if (rev_gte_d && !dual_node) {
++			id.coreid = (apicid & 0xe0) >> 5;
++			id.nodeid = apicid & 0x7;
++		} else {
++			id.coreid = (apicid & 0x60) >> 5;
++			id.nodeid = apicid & 0x7;
++		}
+ 	}
++
++	if (rev_gte_d && dual_node) {
++		/* Coreboot expects each separate processor die to be on a different nodeid.
++		 * Since the code above returns nodeid 0 even on internal node 1 some fixup is needed...
++		 */
++		uint8_t core_count = (((f3xe8 & 0x00008000) >> 13) | ((f3xe8 & 0x00003000) >> 12)) + 1;
++
++		id.nodeid = id.nodeid * 2;
++		if (id.coreid >= core_count) {
++			id.nodeid += 1;
++			id.coreid = id.coreid - core_count;
++		}
++	}
++
+ 	return id;
+ }
+ 
+diff --git a/src/cpu/amd/socket_G34/Kconfig b/src/cpu/amd/socket_G34/Kconfig
+new file mode 100644
+index 0000000..abc9726
+--- /dev/null
++++ b/src/cpu/amd/socket_G34/Kconfig
+@@ -0,0 +1,29 @@
++config CPU_AMD_SOCKET_G34_NON_AGESA
++	bool
++	select CPU_AMD_MODEL_10XXX
++	select PCI_IO_CFG_EXT
++	select X86_AMD_FIXED_MTRRS
++
++if CPU_AMD_SOCKET_G34_NON_AGESA
++
++config CPU_SOCKET_TYPE
++	hex
++	default 0x15
++
++config EXT_RT_TBL_SUPPORT
++	bool
++	default n
++
++config CBB
++	hex
++	default 0x0
++
++config CDB
++	hex
++	default 0x18
++
++config XIP_ROM_SIZE
++	hex
++	default 0x80000
++
++endif
+diff --git a/src/cpu/amd/socket_G34/Makefile.inc b/src/cpu/amd/socket_G34/Makefile.inc
+new file mode 100644
+index 0000000..a8e1333
+--- /dev/null
++++ b/src/cpu/amd/socket_G34/Makefile.inc
+@@ -0,0 +1,14 @@
++ramstage-y += socket_G34.c
++subdirs-y += ../model_10xxx
++subdirs-y += ../quadcore
++subdirs-y += ../mtrr
++subdirs-y += ../microcode
++subdirs-y += ../../x86/tsc
++subdirs-y += ../../x86/lapic
++subdirs-y += ../../x86/cache
++subdirs-y += ../../x86/pae
++subdirs-y += ../../x86/mtrr
++subdirs-y += ../../x86/smm
++subdirs-y += ../smm
++
++cpu_incs-y += $(src)/cpu/amd/car/cache_as_ram.inc
+diff --git a/src/cpu/amd/socket_G34/socket_G34.c b/src/cpu/amd/socket_G34/socket_G34.c
+new file mode 100644
+index 0000000..90f7b8c
+--- /dev/null
++++ b/src/cpu/amd/socket_G34/socket_G34.c
+@@ -0,0 +1,25 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2010 Advanced Micro Devices, Inc.
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
++ */
++
++#include <device/device.h>
++
++struct chip_operations cpu_amd_socket_G34_ops = {
++	CHIP_NAME("socket G34")
++};
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index 6d91cbd..74cecc8 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -187,6 +187,43 @@ static void ht_route_link(struct bus *link, scan_state mode)
+ 	}
+ }
+ 
++static void amd_g34_fixup(struct bus *link, device_t dev)
++{
++	uint32_t nodeid = amdfam10_nodeid(dev);
++	uint8_t rev_gte_d = 0;
++	uint8_t dual_node = 0;
++	uint32_t f3xe8;
++
++	if (cpuid_eax(0x80000001) >= 0x8)
++		/* Revision D or later */
++		rev_gte_d = 1;
++
++	if (rev_gte_d) {
++		f3xe8 = pci_read_config32(get_node_pci(0, 3), 0xe8);
++
++		/* Check for dual node capability */
++		if (f3xe8 & 0x20000000)
++			dual_node = 1;
++
++		if (dual_node) {
++			/* Each G34 processor contains a defective HT link.
++			* See the BKDG Rev 3.62 section 2.7.1.5 for details.
++			*/
++			f3xe8 = pci_read_config32(get_node_pci(nodeid, 3), 0xe8);
++			uint8_t internal_node_number = ((f3xe8 & 0xc0000000) >> 30);
++			if (internal_node_number == 0) {
++				/* Node 0 */
++				if (link->link_num == 6)	/* Link 2 Sublink 1 */
++					printk(BIOS_DEBUG, "amdfam10_scan_chain(): node %d (internal node ID %d): skipping defective HT link\n", nodeid, internal_node_number);
++			} else {
++				/* Node 1 */
++				if (link->link_num == 5)	/* Link 1 Sublink 1 */
++					printk(BIOS_DEBUG, "amdfam10_scan_chain(): node %d (internal node ID %d): skipping defective HT link\n", nodeid, internal_node_number);
++			}
++		}
++	}
++}
++
+ static void amdfam10_scan_chain(struct bus *link)
+ {
+ 		unsigned int next_unitid;
+@@ -277,8 +314,11 @@ static void amdfam10_scan_chains(device_t dev)
+ 	trim_ht_chain(dev);
+ 
+ 	for (link = dev->link_list; link; link = link->next) {
+-		if (link->ht_link_up)
++		if (link->ht_link_up) {
++			if (IS_ENABLED(CONFIG_CPU_AMD_MODEL_10XXX))
++				amd_g34_fixup(link, dev);
+ 			amdfam10_scan_chain(link);
++		}
+ 	}
+ }
+ 
+@@ -323,8 +363,7 @@ static struct resource *amdfam10_find_iopair(device_t dev, unsigned nodeid, unsi
+ 		if (result == 1) {
+ 			/* I have been allocated this one */
+ 			break;
+-		}
+-		else if (result > 1) {
++		} else if (result > 1) {
+ 			/* I have a free register pair */
+ 			free_reg = reg;
+ 		}
+@@ -357,8 +396,7 @@ static struct resource *amdfam10_find_mempair(device_t dev, u32 nodeid, u32 link
+ 		if (result == 1) {
+ 			/* I have been allocated this one */
+ 			break;
+-		}
+-		else if (result > 1) {
++		} else if (result > 1) {
+ 			/* I have a free register pair */
+ 			free_reg = reg;
+ 		}
+@@ -473,8 +511,7 @@ static void amdfam10_set_resource(device_t dev, struct resource *resource,
+ 
+ 		set_io_addr_reg(dev, nodeid, link_num, reg, rbase>>8, rend>>8);
+ 		store_conf_io_addr(nodeid, link_num, reg, (resource->index >> 24), rbase>>8, rend>>8);
+-	}
+-	else if (resource->flags & IORESOURCE_MEM) {
++	} else if (resource->flags & IORESOURCE_MEM) {
+ 		set_mmio_addr_reg(nodeid, link_num, reg, (resource->index >>24), rbase>>8, rend>>8, sysconf.nodes) ;// [39:8]
+ 		store_conf_mmio_addr(nodeid, link_num, reg, (resource->index >>24), rbase>>8, rend>>8);
+ 	}
+@@ -799,8 +836,7 @@ static void amdfam10_domain_set_resources(device_t dev)
+ 			}
+ 			if ((basek + sizek) <= 4*1024*1024) {
+ 				sizek = 0;
+-			}
+-			else {
++			} else {
+ 				basek = 4*1024*1024;
+ 				sizek -= (4*1024*1024 - mmio_basek);
+ 			}
+@@ -977,8 +1013,7 @@ static int amdfam10_get_smbios_data17(int* count, int handle, int parent_handle,
+ 				if (dimm_size_bytes > 0x800000000) {
+ 					t->size = 0x7FFF;
+ 					t->extended_size = dimm_size_bytes;
+-				}
+-				else {
++				} else {
+ 					t->size = dimm_size_bytes / (1024*1024);
+ 					t->size &= (~0x8000);	/* size specified in megabytes */
+ 				}
+@@ -1005,8 +1040,7 @@ static int amdfam10_get_smbios_data17(int* count, int handle, int parent_handle,
+ 				t->part_number = smbios_add_string(t->eos, mem_info->dct_stat[node].DimmPartNumber[slot]);
+ 				if (mem_info->dct_stat[node].DimmSerialNumber[slot] == 0) {
+ 					t->serial_number = smbios_add_string(t->eos, "None");
+-				}
+-				else {
++				} else {
+ 					snprintf(string_buffer, sizeof (string_buffer), "%08X", mem_info->dct_stat[node].DimmSerialNumber[slot]);
+ 					t->serial_number = smbios_add_string(t->eos, string_buffer);
+ 				}
+@@ -1108,8 +1142,7 @@ static void add_more_links(device_t dev, unsigned total_links)
+ 			memset(link, 0, links*sizeof(*link));
+ 			last->next = link;
+ 		}
+-	}
+-	else {
++	} else {
+ 		link = malloc(total_links*sizeof(*link));
+ 		memset(link, 0, total_links*sizeof(*link));
+ 		dev->link_list = link;
+@@ -1244,6 +1277,10 @@ static void cpu_bus_scan(device_t dev)
+ 		unsigned busn, devn;
+ 		struct bus *pbus;
+ 
++		uint8_t rev_gte_d = 0;
++		uint8_t dual_node = 0;
++		uint32_t f3xe8;
++
+ 		busn = CONFIG_CBB;
+ 		devn = CONFIG_CDB+i;
+ 		pbus = dev_mc->bus;
+@@ -1268,6 +1305,7 @@ static void cpu_bus_scan(device_t dev)
+ 			}
+ 		}
+ 
++
+ 		/* Ok, We need to set the links for that device.
+ 		 * otherwise the device under it will not be scanned
+ 		 */
+@@ -1279,6 +1317,17 @@ static void cpu_bus_scan(device_t dev)
+ 		if (cdb_dev)
+ 			add_more_links(cdb_dev, 4);
+ 
++		f3xe8 = pci_read_config32(get_node_pci(0, 3), 0xe8);
++
++		if (cpuid_eax(0x80000001) >= 0x8)
++			/* Revision D or later */
++			rev_gte_d = 1;
++
++		if (rev_gte_d)
++			/* Check for dual node capability */
++			if (f3xe8 & 0x20000000)
++				dual_node = 1;
++
+ 		cores_found = 0; // one core
+ 		cdb_dev = dev_find_slot(busn, PCI_DEVFN(devn, 3));
+ 		int enable_node = cdb_dev && cdb_dev->enabled;
+@@ -1290,6 +1339,9 @@ static void cpu_bus_scan(device_t dev)
+ 			printk(BIOS_DEBUG, "  %s siblings=%d\n", dev_path(cdb_dev), cores_found);
+ 		}
+ 
++		if (siblings > cores_found)
++			siblings = cores_found;
++
+ 		u32 jj;
+ 		if(disable_siblings) {
+ 			jj = 0;
+@@ -1299,7 +1351,20 @@ static void cpu_bus_scan(device_t dev)
+ 		}
+ 
+ 		for (j = 0; j <=jj; j++ ) {
+-			u32 apic_id = i * (nb_cfg_54?(siblings+1):1) + j * (nb_cfg_54?1:64); // ?
++			u32 apic_id;
++
++			if (dual_node) {
++				apic_id = 0;
++				if (nb_cfg_54) {
++					apic_id |= ((i >> 1) & 0x3) << 4;			/* Node ID */
++					apic_id |= ((i & 0x1) * (siblings + 1)) + j;		/* Core ID */
++				} else {
++					apic_id |= i & 0x3;					/* Node ID */
++					apic_id |= (((i & 0x1) * (siblings + 1)) + j) << 4;	/* Core ID */
++				}
++			} else {
++				apic_id = i * (nb_cfg_54?(siblings+1):1) + j * (nb_cfg_54?1:64); // ?
++			}
+ 
+ #if CONFIG_ENABLE_APIC_EXT_ID && (CONFIG_APIC_ID_OFFSET>0)
+ 			if(sysconf.enabled_apic_ext_id) {
+@@ -1311,7 +1376,7 @@ static void cpu_bus_scan(device_t dev)
+ 			device_t cpu = add_cpu_device(cpu_bus, apic_id, enable_node);
+ 			if (cpu)
+ 				amd_cpu_topology(cpu, i, j);
+-		} //j
++		}
+ 	}
+ }
+ 
+@@ -1356,8 +1421,7 @@ static void root_complex_enable_dev(struct device *dev)
+ 	/* Set the operations if it is a special bus type */
+ 	if (dev->path.type == DEVICE_PATH_DOMAIN) {
+ 		dev->ops = &pci_domain_ops;
+-	}
+-	else if (dev->path.type == DEVICE_PATH_CPU_CLUSTER) {
++	} else if (dev->path.type == DEVICE_PATH_CPU_CLUSTER) {
+ 		dev->ops = &cpu_bus_ops;
+ 	}
+ }
+diff --git a/src/northbridge/amd/amdht/ht_wrapper.c b/src/northbridge/amd/amdht/ht_wrapper.c
+index 36fe60b..389b1b1 100644
+--- a/src/northbridge/amd/amdht/ht_wrapper.c
++++ b/src/northbridge/amd/amdht/ht_wrapper.c
+@@ -22,6 +22,8 @@
+ #include <console/console.h>
+ #include <northbridge/amd/amdfam10/amdfam10.h>
+ 
++#include "ht_wrapper.h"
++
+ /*----------------------------------------------------------------------------
+  *			TYPEDEFS, DEFINITIONS AND MACROS
+  *
+@@ -113,6 +115,20 @@ void getAmdTopolist(u8 ***p)
+ 	*p = (u8 **)amd_topo_list;
+ }
+ 
++/**
++ * BOOL AMD_CB_IgnoreLink(u8 Node, u8 Link)
++ * Description:
++ *	This routine is used to ignore connected yet faulty HT links,
++ *	such as those present in a G34 processor package.
++ *
++ * Parameters:
++ *	@param[in]  node   = The node on which this chain is located
++ *	@param[in]  link   = The link on the host for this chain
++ */
++static BOOL AMD_CB_IgnoreLink (u8 node, u8 link)
++{
++	return 0;
++}
+ 
+ /**
+  * void amd_ht_init(struct sys_info *sysinfo)
+@@ -128,7 +144,7 @@ static void amd_ht_init(struct sys_info *sysinfo)
+ 		0,	// u8 AutoBusStart;
+ 		32,	// u8 AutoBusMax;
+ 		6,	// u8 AutoBusIncrement;
+-		NULL,	// BOOL (*AMD_CB_IgnoreLink)();
++		AMD_CB_IgnoreLink,		// BOOL (*AMD_CB_IgnoreLink)();
+ 		NULL,	// BOOL (*AMD_CB_OverrideBusNumbers)();
+ 		AMD_CB_ManualBUIDSwapList,	// BOOL (*AMD_CB_ManualBUIDSwapList)();
+ 		NULL,	// void (*AMD_CB_DeviceCapOverride)();
+@@ -146,6 +162,93 @@ static void amd_ht_init(struct sys_info *sysinfo)
+ 	printk(BIOS_DEBUG, "Enter amd_ht_init()\n");
+ 	amdHtInitialize(&ht_wrapper);
+ 	printk(BIOS_DEBUG, "Exit amd_ht_init()\n");
++}
+ 
+-
++/**
++ * void amd_ht_fixup(struct sys_info *sysinfo)
++ *
++ *  AMD HT fixup
++ *
++ */
++void amd_ht_fixup(struct sys_info *sysinfo) {
++	printk(BIOS_DEBUG, "amd_ht_fixup()\n");
++	if (IS_ENABLED(CONFIG_CPU_AMD_MODEL_10XXX)) {
++		uint8_t rev_gte_d = 0;
++		uint8_t dual_node = 0;
++		uint32_t f3xe8;
++		uint32_t family;
++		uint32_t model;
++
++		family = model = cpuid_eax(0x80000001);
++		model = ((model & 0xf0000) >> 16) | ((model & 0xf0) >> 4);
++
++		if (model >= 0x8)
++			/* Revision D or later */
++			rev_gte_d = 1;
++
++		if (rev_gte_d) {
++			f3xe8 = pci_read_config32(NODE_PCI(0, 3), 0xe8);
++
++			/* Check for dual node capability */
++			if (f3xe8 & 0x20000000)
++				dual_node = 1;
++
++			if (dual_node) {
++				/* Each G34 processor contains a defective HT link.
++				* See the BKDG Rev 3.62 section 2.7.1.5 for details.
++				*/
++				uint8_t node;
++				uint8_t node_count = get_nodes();
++				uint32_t dword;
++				for (node = 0; node < node_count; node++) {
++					f3xe8 = pci_read_config32(NODE_PCI(node, 3), 0xe8);
++					uint8_t internal_node_number = ((f3xe8 & 0xc0000000) >> 30);
++					printk(BIOS_DEBUG, "amd_ht_fixup(): node %d (internal node ID %d): disabling defective HT link\n", node, internal_node_number);
++					if (internal_node_number == 0) {
++						uint8_t package_link_3_connected = pci_read_config32(NODE_PCI(node, 0), 0xd8) & 0x1;
++						if (package_link_3_connected) {
++							/* Set WidthIn and WidthOut to 0 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0xc4);
++							dword &= ~0x77000000;
++							pci_write_config32(NODE_PCI(node, 0), 0xc4, dword);
++							/* Set Ganged to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0x178);
++							dword |= 0x00000001;
++							pci_write_config32(NODE_PCI(node, 0), 0x178, dword);
++						} else {
++							/* Set ConnDly to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0x16c);
++							dword |= 0x00000100;
++							pci_write_config32(NODE_PCI(node, 0), 0x16c, dword);
++							/* Set TransOff and EndOfChain to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 4), 0xc4);
++							dword |= 0x000000c0;
++							pci_write_config32(NODE_PCI(node, 4), 0xc4, dword);
++						}
++					} else if (internal_node_number == 1) {
++						uint8_t package_link_3_connected = pci_read_config32(NODE_PCI(node, 0), 0xb8) & 0x1;
++						if (package_link_3_connected) {
++							/* Set WidthIn and WidthOut to 0 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0xa4);
++							dword &= ~0x77000000;
++							pci_write_config32(NODE_PCI(node, 0), 0xa4, dword);
++							/* Set Ganged to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0x174);
++							dword |= 0x00000001;
++							pci_write_config32(NODE_PCI(node, 0), 0x174, dword);
++						} else {
++							/* Set ConnDly to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 0), 0x16c);
++							dword |= 0x00000100;
++							pci_write_config32(NODE_PCI(node, 0), 0x16c, dword);
++							/* Set TransOff and EndOfChain to 1 */
++							dword = pci_read_config32(NODE_PCI(node, 4), 0xa4);
++							dword |= 0x000000c0;
++							pci_write_config32(NODE_PCI(node, 4), 0xa4, dword);
++						}
++					}
++				}
++			}
++		}
++	}
+ }
+diff --git a/src/northbridge/amd/amdht/ht_wrapper.h b/src/northbridge/amd/amdht/ht_wrapper.h
+new file mode 100644
+index 0000000..3e9d957
+--- /dev/null
++++ b/src/northbridge/amd/amdht/ht_wrapper.h
+@@ -0,0 +1,25 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc.
++ */
++
++#ifndef AMD_HT_WRAPPER_H
++#define AMD_HT_WRAPPER_H
++
++void amd_ht_fixup(struct sys_info *sysinfo);
++
++#endif
+-- 
+1.7.9.5
+

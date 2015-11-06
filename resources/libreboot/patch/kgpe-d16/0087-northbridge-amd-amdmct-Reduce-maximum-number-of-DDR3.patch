@@ -1,0 +1,41 @@
+From e262fc3ee190bafb58adfab926cc24ff9cbd239c Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 20 Oct 2015 21:32:09 -0500
+Subject: [PATCH 087/143] northbridge/amd/amdmct: Reduce maximum number of
+ DDR3 DIMMs
+
+CAR space on certain platforms is nearly full.  This prevents the
+addition of necessary RAM initialization features such as x4 DIMM
+support.  As the DIMM SPD cache uses a sizeable amount of CAR RAM,
+reducing it would free up a significant amount of CAR RAM.
+
+DDR3-based AMD platforms only support up to 3 physical DIMMs on
+each channel (6 per node).  Reduce the maximum number of DIMMs
+on a node from 8 to 6 accordingly.
+
+Change-Id: I38def86da76fc622785318c825670209b2ac9017
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/wrappers/mcti.h |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/northbridge/amd/amdmct/wrappers/mcti.h b/src/northbridge/amd/amdmct/wrappers/mcti.h
+index 2aba377..ef6e3dc 100644
+--- a/src/northbridge/amd/amdmct/wrappers/mcti.h
++++ b/src/northbridge/amd/amdmct/wrappers/mcti.h
+@@ -51,7 +51,11 @@ UPDATE AS NEEDED
+ #endif
+ 
+ #ifndef MAX_DIMMS_SUPPORTED
+-#define MAX_DIMMS_SUPPORTED		8
++#if IS_ENABLED(CONFIG_DIMM_DDR3)
++ #define MAX_DIMMS_SUPPORTED		6
++#else
++ #define MAX_DIMMS_SUPPORTED		8
++#endif
+ #endif
+ 
+ #ifndef MAX_CS_SUPPORTED
+-- 
+1.7.9.5
+

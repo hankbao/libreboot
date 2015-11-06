@@ -355,3 +355,10 @@
 ./src/mainboard/intel/mohonpeak/Kconfig
 ./src/mainboard/apple/macbookair4_2/early_southbridge.c
 ./src/cpu/intel/fsp_model_406dx/acpi.c
+./src/northbridge/intel/fsp_sandybridge/fsp/Kconfig
+./src/drivers/aspeed/common/ast_dram_tables.h
+./src/drivers/aspeed/common/ast_tables.h
+./src/mainboard/intel/cougar_canyon2/Kconfig
+./src/cpu/amd/family_10h-family_15h/processor_name.c
+./src/cpu/amd/family_10h-family_15h/init_cpus.c
+./src/cpu/intel/fsp_model_206ax/acpi.c

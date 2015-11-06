@@ -1,0 +1,1017 @@
+From e0f5bb37ad0aacb69044c70bb61483cb1df72d08 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sat, 5 Sep 2015 18:40:31 -0500
+Subject: [PATCH 021/143] northbridge/amd/amdmct/mct_ddr3: Add initial Suspend
+ to RAM (S3) support
+
+Change-Id: Ic97567851fa40295bc21cefd7537407b99d71709
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/northbridge.c    |    8 +
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c   |  154 +++---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h   |  112 +++++
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c |  620 +++++++++++++++++++++++++
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.h |   28 ++
+ 5 files changed, 850 insertions(+), 72 deletions(-)
+ create mode 100644 src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+ create mode 100644 src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
+
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index 74cecc8..d4fe986 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -54,6 +54,10 @@
+ #include <sb_cimx.h>
+ #endif
+ 
++#if IS_ENABLED(CONFIG_DIMM_DDR3)
++#include "../amdmct/mct_ddr3/s3utils.h"
++#endif
++
+ struct amdfam10_sysconf_t sysconf;
+ 
+ #define FX_DEVS NODE_NUMS
+@@ -1413,6 +1417,10 @@ static void root_complex_enable_dev(struct device *dev)
+ 	/* Do not delay UMA setup, as a device on the PCI bus may evaluate
+ 	   the global uma_memory variables already in its enable function. */
+ 	if (!done) {
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME) && IS_ENABLED(CONFIG_DIMM_DDR3)
++		save_mct_information_to_nvram();
++#endif
++
+ 		setup_bsp_ramtop();
+ 		setup_uma_memory();
+ 		done = 1;
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index fa59d71..a8212c5 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -272,91 +272,101 @@ static void mctAutoInitMCT_D(struct MCTStatStruc *pMCTstat,
+ 	u8 Node, NodesWmem;
+ 	u32 node_sys_base;
+ 
++	uint8_t s3resume = acpi_is_wakeup_s3();
++
+ restartinit:
+ 	mctInitMemGPIOs_A_D();		/* Set any required GPIOs*/
+-	NodesWmem = 0;
+-	node_sys_base = 0;
+-	for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+-		struct DCTStatStruc *pDCTstat;
+-		pDCTstat = pDCTstatA + Node;
++	if (s3resume) {
++#if IS_ENABLED(CONFIG_HAVE_ACPI_RESUME)
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: Restoring DCT configuration from NVRAM\n");
++		restore_mct_information_from_nvram();
++#endif
++	} else {
++		NodesWmem = 0;
++		node_sys_base = 0;
++		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
++			struct DCTStatStruc *pDCTstat;
++			pDCTstat = pDCTstatA + Node;
+ 
+-		/* Zero out data structures to avoid false detection of DIMMs */
+-		memset(pDCTstat, 0, sizeof(struct DCTStatStruc));
+-
+-		/* Initialize data structures */
+-		pDCTstat->Node_ID = Node;
+-		pDCTstat->dev_host = PA_HOST(Node);
+-		pDCTstat->dev_map = PA_MAP(Node);
+-		pDCTstat->dev_dct = PA_DCT(Node);
+-		pDCTstat->dev_nbmisc = PA_NBMISC(Node);
+-		pDCTstat->NodeSysBase = node_sys_base;
+-
+-		printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_init Node %d\n", Node);
+-		mct_init(pMCTstat, pDCTstat);
+-		mctNodeIDDebugPort_D();
+-		pDCTstat->NodePresent = NodePresent_D(Node);
+-		if (pDCTstat->NodePresent) {		/* See if Node is there*/
+-			printk(BIOS_DEBUG, "mctAutoInitMCT_D: clear_legacy_Mode\n");
+-			clear_legacy_Mode(pMCTstat, pDCTstat);
+-			pDCTstat->LogicalCPUID = mctGetLogicalCPUID_D(Node);
+-
+-			printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_InitialMCT_D\n");
+-			mct_InitialMCT_D(pMCTstat, pDCTstat);
+-
+-			printk(BIOS_DEBUG, "mctAutoInitMCT_D: mctSMBhub_Init\n");
+-			mctSMBhub_Init(Node);		/* Switch SMBUS crossbar to proper node*/
+-
+-			printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_initDCT\n");
+-			mct_initDCT(pMCTstat, pDCTstat);
+-			if (pDCTstat->ErrCode == SC_FatalErr) {
+-				goto fatalexit;		/* any fatal errors?*/
+-			} else if (pDCTstat->ErrCode < SC_StopError) {
+-				NodesWmem++;
+-			}
+-		}	/* if Node present */
+-		node_sys_base = pDCTstat->NodeSysBase;
+-		node_sys_base += (pDCTstat->NodeSysLimit + 2) & ~0x0F;
+-	}
+-	if (NodesWmem == 0) {
+-		printk(BIOS_DEBUG, "No Nodes?!\n");
+-		goto fatalexit;
+-	}
++			/* Zero out data structures to avoid false detection of DIMMs */
++			memset(pDCTstat, 0, sizeof(struct DCTStatStruc));
++
++			/* Initialize data structures */
++			pDCTstat->Node_ID = Node;
++			pDCTstat->dev_host = PA_HOST(Node);
++			pDCTstat->dev_map = PA_MAP(Node);
++			pDCTstat->dev_dct = PA_DCT(Node);
++			pDCTstat->dev_nbmisc = PA_NBMISC(Node);
++			pDCTstat->NodeSysBase = node_sys_base;
++
++			printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_init Node %d\n", Node);
++			mct_init(pMCTstat, pDCTstat);
++			mctNodeIDDebugPort_D();
++			pDCTstat->NodePresent = NodePresent_D(Node);
++			if (pDCTstat->NodePresent) {		/* See if Node is there*/
++				printk(BIOS_DEBUG, "mctAutoInitMCT_D: clear_legacy_Mode\n");
++				clear_legacy_Mode(pMCTstat, pDCTstat);
++				pDCTstat->LogicalCPUID = mctGetLogicalCPUID_D(Node);
++
++				printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_InitialMCT_D\n");
++				mct_InitialMCT_D(pMCTstat, pDCTstat);
++
++				printk(BIOS_DEBUG, "mctAutoInitMCT_D: mctSMBhub_Init\n");
++				mctSMBhub_Init(Node);		/* Switch SMBUS crossbar to proper node*/
++
++				printk(BIOS_DEBUG, "mctAutoInitMCT_D: mct_initDCT\n");
++				mct_initDCT(pMCTstat, pDCTstat);
++				if (pDCTstat->ErrCode == SC_FatalErr) {
++					goto fatalexit;		/* any fatal errors?*/
++				} else if (pDCTstat->ErrCode < SC_StopError) {
++					NodesWmem++;
++				}
++			}	/* if Node present */
++			node_sys_base = pDCTstat->NodeSysBase;
++			node_sys_base += (pDCTstat->NodeSysLimit + 2) & ~0x0F;
++		}
++		if (NodesWmem == 0) {
++			printk(BIOS_DEBUG, "No Nodes?!\n");
++			goto fatalexit;
++		}
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: SyncDCTsReady_D\n");
+-	SyncDCTsReady_D(pMCTstat, pDCTstatA);	/* Make sure DCTs are ready for accesses.*/
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: SyncDCTsReady_D\n");
++		SyncDCTsReady_D(pMCTstat, pDCTstatA);	/* Make sure DCTs are ready for accesses.*/
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: HTMemMapInit_D\n");
+-	HTMemMapInit_D(pMCTstat, pDCTstatA);	/* Map local memory into system address space.*/
+-	mctHookAfterHTMap();
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: HTMemMapInit_D\n");
++		HTMemMapInit_D(pMCTstat, pDCTstatA);	/* Map local memory into system address space.*/
++		mctHookAfterHTMap();
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: CPUMemTyping_D\n");
+-	CPUMemTyping_D(pMCTstat, pDCTstatA);	/* Map dram into WB/UC CPU cacheability */
+-	mctHookAfterCPU();			/* Setup external northbridge(s) */
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: CPUMemTyping_D\n");
++		CPUMemTyping_D(pMCTstat, pDCTstatA);	/* Map dram into WB/UC CPU cacheability */
++		mctHookAfterCPU();			/* Setup external northbridge(s) */
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: DQSTiming_D\n");
+-	DQSTiming_D(pMCTstat, pDCTstatA);	/* Get Receiver Enable and DQS signal timing*/
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: DQSTiming_D\n");
++		DQSTiming_D(pMCTstat, pDCTstatA);	/* Get Receiver Enable and DQS signal timing*/
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: UMAMemTyping_D\n");
+-	UMAMemTyping_D(pMCTstat, pDCTstatA);	/* Fix up for UMA sizing */
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: UMAMemTyping_D\n");
++		UMAMemTyping_D(pMCTstat, pDCTstatA);	/* Fix up for UMA sizing */
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: :OtherTiming\n");
+-	mct_OtherTiming(pMCTstat, pDCTstatA);
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: :OtherTiming\n");
++		mct_OtherTiming(pMCTstat, pDCTstatA);
+ 
+-	if (ReconfigureDIMMspare_D(pMCTstat, pDCTstatA)) { /* RESET# if 1st pass of DIMM spare enabled*/
+-		goto restartinit;
+-	}
+ 
+-	InterleaveNodes_D(pMCTstat, pDCTstatA);
+-	InterleaveChannels_D(pMCTstat, pDCTstatA);
++		if (ReconfigureDIMMspare_D(pMCTstat, pDCTstatA)) { /* RESET# if 1st pass of DIMM spare enabled*/
++			goto restartinit;
++		}
+ 
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D: ECCInit_D\n");
+-	if (ECCInit_D(pMCTstat, pDCTstatA)) {		/* Setup ECC control and ECC check-bits*/
+-		printk(BIOS_DEBUG, "mctAutoInitMCT_D: MCTMemClr_D\n");
+-		MCTMemClr_D(pMCTstat,pDCTstatA);
+-	}
++		InterleaveNodes_D(pMCTstat, pDCTstatA);
++		InterleaveChannels_D(pMCTstat, pDCTstatA);
++
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D: ECCInit_D\n");
++		if (ECCInit_D(pMCTstat, pDCTstatA)) {		/* Setup ECC control and ECC check-bits*/
++			printk(BIOS_DEBUG, "mctAutoInitMCT_D: MCTMemClr_D\n");
++			MCTMemClr_D(pMCTstat,pDCTstatA);
++		}
+ 
+-	mct_FinalMCT_D(pMCTstat, pDCTstatA);
+-	printk(BIOS_DEBUG, "mctAutoInitMCT_D Done: Global Status: %x\n", pMCTstat->GStatus);
++		mct_FinalMCT_D(pMCTstat, pDCTstatA);
++		printk(BIOS_DEBUG, "mctAutoInitMCT_D Done: Global Status: %x\n", pMCTstat->GStatus);
++	}
+ 
+ 	return;
+ 
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index 219aa42..c790d7e 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -24,6 +24,8 @@
+ #ifndef MCT_D_H
+ #define MCT_D_H
+ 
++#include <cpu/x86/msr.h>
++
+ /*===========================================================================
+ 	CPU - K8/FAM10
+ ===========================================================================*/
+@@ -596,6 +598,116 @@ struct DCTStatStruc {		/* A per Node structure*/
+ 	uint32_t DimmSerialNumber[MAX_DIMMS_SUPPORTED];
+ } __attribute__((packed));
+ 
++struct amd_s3_persistent_mct_channel_data {
++	/* Stage 1 (1 dword) */
++	uint32_t f2x110;
++
++	/* Stage 2 (88 dwords) */
++	uint32_t f1x40;
++	uint32_t f1x44;
++	uint32_t f1x48;
++	uint32_t f1x4c;
++	uint32_t f1x50;
++	uint32_t f1x54;
++	uint32_t f1x58;
++	uint32_t f1x5c;
++	uint32_t f1x60;
++	uint32_t f1x64;
++	uint32_t f1x68;
++	uint32_t f1x6c;
++	uint32_t f1x70;
++	uint32_t f1x74;
++	uint32_t f1x78;
++	uint32_t f1x7c;
++	uint32_t f1xf0;
++	uint32_t f1x120;
++	uint32_t f1x124;
++	uint32_t f2x10c;
++	uint32_t f2x114;
++	uint32_t f2x118;
++	uint32_t f2x11c;
++	uint32_t f2x1b0;
++	uint32_t f3x44;
++	uint64_t msr0000020[16];
++	uint64_t msr00000250;
++	uint64_t msr00000258;
++	uint64_t msr0000026[8];
++	uint64_t msr000002ff;
++	uint64_t msrc0010010;
++	uint64_t msrc001001a;
++	uint64_t msrc001001d;
++	uint64_t msrc001001f;
++
++	/* Stage 3 (21 dwords) */
++	uint32_t f2x40;
++	uint32_t f2x44;
++	uint32_t f2x48;
++	uint32_t f2x4c;
++	uint32_t f2x50;
++	uint32_t f2x54;
++	uint32_t f2x58;
++	uint32_t f2x5c;
++	uint32_t f2x60;
++	uint32_t f2x64;
++	uint32_t f2x68;
++	uint32_t f2x6c;
++	uint32_t f2x78;
++	uint32_t f2x7c;
++	uint32_t f2x80;
++	uint32_t f2x84;
++	uint32_t f2x88;
++	uint32_t f2x8c;
++	uint32_t f2x90;
++	uint32_t f2xa4;
++	uint32_t f2xa8;
++
++	/* Stage 4 (1 dword) */
++	uint32_t f2x94;
++
++	/* Stage 6 (33 dwords) */
++	uint32_t f2x9cx0d0f0_f_8_0_0_8_4_0[9][3];	/* [lane][setting] */
++	uint32_t f2x9cx00;
++	uint32_t f2x9cx0a;
++	uint32_t f2x9cx0c;
++
++	/* Stage 7 (1 dword) */
++	uint32_t f2x9cx04;
++
++	/* Stage 9 (2 dwords) */
++	uint32_t f2x9cx0d0fe006;
++	uint32_t f2x9cx0d0fe007;
++
++	/* Stage 10 (78 dwords) */
++	uint32_t f2x9cx10[12];
++	uint32_t f2x9cx20[12];
++	uint32_t f2x9cx3_0_0_3_1[4][3];		/* [dimm][setting] */
++	uint32_t f2x9cx3_0_0_7_5[4][3];		/* [dimm][setting] */
++	uint32_t f2x9cx0d;
++	uint32_t f2x9cx0d0f0_f_0_13[9];		/* [lane] */
++	uint32_t f2x9cx0d0f0_f_0_30[9];		/* [lane] */
++	uint32_t f2x9cx0d0f2_f_0_30[4];		/* [pad select] */
++	uint32_t f2x9cx0d0f8_8_4_0[2][3];	/* [offset][pad select] */
++	uint32_t f2x9cx0d0f812f;
++
++	/* Stage 11 (24 dwords) */
++	uint32_t f2x9cx30[12];
++	uint32_t f2x9cx40[12];
++
++	/* Other (1 dword) */
++	uint32_t f3x58;
++
++	/* TOTAL: 250 dwords */
++} __attribute__((packed));
++
++struct amd_s3_persistent_node_data {
++	uint32_t node_present;
++	struct amd_s3_persistent_mct_channel_data channel[2];
++} __attribute__((packed));
++
++struct amd_s3_persistent_data {
++	struct amd_s3_persistent_node_data node[MAX_NODES_SUPPORTED];
++} __attribute__((packed));
++
+ /*===============================================================================
+ 	Local Error Status Codes (DCTStatStruc.ErrCode)
+ ===============================================================================*/
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+new file mode 100644
+index 0000000..a49499f
+--- /dev/null
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -0,0 +1,620 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,  MA 02110-1301 USA
++ */
++
++#include <string.h>
++#include <arch/acpi.h>
++#include <cpu/x86/msr.h>
++#include <device/device.h>
++#include <device/pci_def.h>
++#include <device/pci_ops.h>
++#include <console/console.h>
++#include <cbfs.h>
++#include <spi-generic.h>
++#include <spi_flash.h>
++
++#include "s3utils.h"
++
++#define S3NV_FILE_NAME "s3nv"
++
++static ssize_t get_s3nv_file_offset(void);
++
++ssize_t get_s3nv_file_offset(void)
++{
++	struct region_device s3nv_region;
++	struct cbfsf s3nv_cbfs_file;
++	if (cbfs_boot_locate(&s3nv_cbfs_file, S3NV_FILE_NAME, NULL)) {
++		printk(BIOS_DEBUG, "S3 state file not found in CBFS: %s\n", S3NV_FILE_NAME);
++		return -1;
++	}
++	cbfs_file_data(&s3nv_region, &s3nv_cbfs_file);
++
++	return s3nv_region.region.offset;
++}
++
++static uint32_t read_amd_dct_index_register(device_t dev, uint32_t index_ctl_reg, uint32_t index)
++{
++	uint32_t dword;
++
++	index &= ~(1 << 30);
++	pci_write_config32(dev, index_ctl_reg, index);
++	do {
++		dword = pci_read_config32(dev, index_ctl_reg);
++	} while (!(dword & (1 << 31)));
++	dword = pci_read_config32(dev, index_ctl_reg + 0x04);
++
++	return dword;
++}
++
++#ifdef __RAMSTAGE__
++static uint64_t rdmsr_uint64_t(unsigned long index) {
++	msr_t msr = rdmsr(index);
++	return (((uint64_t)msr.hi) << 32) | ((uint64_t)msr.lo);
++}
++
++void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_data)
++{
++	uint8_t i;
++	uint8_t j;
++	uint8_t node;
++	uint8_t channel;
++
++	/* Zero out data structure */
++	memset(persistent_data, 0, sizeof(struct amd_s3_persistent_data));
++
++	/* Load data from DCTs into data structure */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		device_t dev_fn1 = dev_find_slot(0, PCI_DEVFN(0x18 + node, 1));
++		device_t dev_fn2 = dev_find_slot(0, PCI_DEVFN(0x18 + node, 2));
++		device_t dev_fn3 = dev_find_slot(0, PCI_DEVFN(0x18 + node, 3));
++		if ((!dev_fn1) || (!dev_fn2) || (!dev_fn3)) {
++			persistent_data->node[node].node_present = 0;
++			continue;
++		}
++		persistent_data->node[node].node_present = 1;
++
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++
++			/* Stage 1 */
++			data->f2x110 = pci_read_config32(dev_fn2, 0x110);
++
++			/* Stage 2 */
++			data->f1x40 = pci_read_config32(dev_fn1, 0x40 + (0x100 * channel));
++			data->f1x44 = pci_read_config32(dev_fn1, 0x44 + (0x100 * channel));
++			data->f1x48 = pci_read_config32(dev_fn1, 0x48 + (0x100 * channel));
++			data->f1x4c = pci_read_config32(dev_fn1, 0x4c + (0x100 * channel));
++			data->f1x50 = pci_read_config32(dev_fn1, 0x50 + (0x100 * channel));
++			data->f1x54 = pci_read_config32(dev_fn1, 0x54 + (0x100 * channel));
++			data->f1x58 = pci_read_config32(dev_fn1, 0x58 + (0x100 * channel));
++			data->f1x5c = pci_read_config32(dev_fn1, 0x5c + (0x100 * channel));
++			data->f1x60 = pci_read_config32(dev_fn1, 0x60 + (0x100 * channel));
++			data->f1x64 = pci_read_config32(dev_fn1, 0x64 + (0x100 * channel));
++			data->f1x68 = pci_read_config32(dev_fn1, 0x68 + (0x100 * channel));
++			data->f1x6c = pci_read_config32(dev_fn1, 0x6c + (0x100 * channel));
++			data->f1x70 = pci_read_config32(dev_fn1, 0x70 + (0x100 * channel));
++			data->f1x74 = pci_read_config32(dev_fn1, 0x74 + (0x100 * channel));
++			data->f1x78 = pci_read_config32(dev_fn1, 0x78 + (0x100 * channel));
++			data->f1x7c = pci_read_config32(dev_fn1, 0x7c + (0x100 * channel));
++			data->f1xf0 = pci_read_config32(dev_fn1, 0xf0);
++			data->f1x120 = pci_read_config32(dev_fn1, 0x120);
++			data->f1x124 = pci_read_config32(dev_fn1, 0x124);
++			data->f2x10c = pci_read_config32(dev_fn2, 0x10c);
++			data->f2x114 = pci_read_config32(dev_fn2, 0x114);
++			data->f2x118 = pci_read_config32(dev_fn2, 0x118);
++			data->f2x11c = pci_read_config32(dev_fn2, 0x11c);
++			data->f2x1b0 = pci_read_config32(dev_fn2, 0x1b0);
++			data->f3x44 = pci_read_config32(dev_fn3, 0x44);
++			for (i=0; i<16; i++) {
++				data->msr0000020[i] = rdmsr_uint64_t(0x00000200 | i);
++			}
++			data->msr00000250 = rdmsr_uint64_t(0x00000250);
++			data->msr00000258 = rdmsr_uint64_t(0x00000258);
++			for (i=0; i<8; i++)
++				data->msr0000026[i] = rdmsr_uint64_t(0x00000260 | (i + 8));
++			data->msr000002ff = rdmsr_uint64_t(0x000002ff);
++			data->msrc0010010 = rdmsr_uint64_t(0xc0010010);
++			data->msrc001001a = rdmsr_uint64_t(0xc001001a);
++			data->msrc001001d = rdmsr_uint64_t(0xc001001d);
++			data->msrc001001f = rdmsr_uint64_t(0xc001001f);
++
++			/* Stage 3 */
++			data->f2x40 = pci_read_config32(dev_fn2, 0x40 + (0x100 * channel));
++			data->f2x44 = pci_read_config32(dev_fn2, 0x44 + (0x100 * channel));
++			data->f2x48 = pci_read_config32(dev_fn2, 0x48 + (0x100 * channel));
++			data->f2x4c = pci_read_config32(dev_fn2, 0x4c + (0x100 * channel));
++			data->f2x50 = pci_read_config32(dev_fn2, 0x50 + (0x100 * channel));
++			data->f2x54 = pci_read_config32(dev_fn2, 0x54 + (0x100 * channel));
++			data->f2x58 = pci_read_config32(dev_fn2, 0x58 + (0x100 * channel));
++			data->f2x5c = pci_read_config32(dev_fn2, 0x5c + (0x100 * channel));
++			data->f2x60 = pci_read_config32(dev_fn2, 0x60 + (0x100 * channel));
++			data->f2x64 = pci_read_config32(dev_fn2, 0x64 + (0x100 * channel));
++			data->f2x68 = pci_read_config32(dev_fn2, 0x68 + (0x100 * channel));
++			data->f2x6c = pci_read_config32(dev_fn2, 0x6c + (0x100 * channel));
++			data->f2x78 = pci_read_config32(dev_fn2, 0x78 + (0x100 * channel));
++			data->f2x7c = pci_read_config32(dev_fn2, 0x7c + (0x100 * channel));
++			data->f2x80 = pci_read_config32(dev_fn2, 0x80 + (0x100 * channel));
++			data->f2x84 = pci_read_config32(dev_fn2, 0x84 + (0x100 * channel));
++			data->f2x88 = pci_read_config32(dev_fn2, 0x88 + (0x100 * channel));
++			data->f2x8c = pci_read_config32(dev_fn2, 0x8c + (0x100 * channel));
++			data->f2x90 = pci_read_config32(dev_fn2, 0x90 + (0x100 * channel));
++			data->f2xa4 = pci_read_config32(dev_fn2, 0xa4 + (0x100 * channel));
++			data->f2xa8 = pci_read_config32(dev_fn2, 0xa8 + (0x100 * channel));
++
++			/* Stage 4 */
++			data->f2x94 = pci_read_config32(dev_fn2, 0x94 + (0x100 * channel));
++
++			/* Stage 6 */
++			for (i=0; i<9; i++)
++				for (j=0; j<3; j++)
++					data->f2x9cx0d0f0_f_8_0_0_8_4_0[i][j] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f0000 | (i << 8) | (j * 4));
++			data->f2x9cx00 = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x00);
++			data->f2x9cx0a = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0a);
++			data->f2x9cx0c = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0c);
++
++			/* Stage 7 */
++			data->f2x9cx04 = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x04);
++
++			/* Stage 9 */
++			data->f2x9cx0d0fe006 = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0fe006);
++			data->f2x9cx0d0fe007 = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0fe007);
++
++			/* Stage 10 */
++			for (i=0; i<12; i++)
++				data->f2x9cx10[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x10 + i);
++			for (i=0; i<12; i++)
++				data->f2x9cx20[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x20 + i);
++			for (i=0; i<4; i++)
++				for (j=0; j<3; j++)
++					data->f2x9cx3_0_0_3_1[i][j] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), (0x01 + i) + (0x100 * j));
++			for (i=0; i<4; i++)
++				for (j=0; j<3; j++)
++					data->f2x9cx3_0_0_7_5[i][j] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), (0x05 + i) + (0x100 * j));
++			data->f2x9cx0d = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d);
++			for (i=0; i<9; i++)
++				data->f2x9cx0d0f0_f_0_13[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f0013 | (i << 8));
++			for (i=0; i<9; i++)
++				data->f2x9cx0d0f0_f_0_30[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f0030 | (i << 8));
++			for (i=0; i<4; i++)
++				data->f2x9cx0d0f2_f_0_30[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f2030 | (i << 8));
++			for (i=0; i<2; i++)
++				for (j=0; j<3; j++)
++					data->f2x9cx0d0f8_8_4_0[i][j] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f0000 | (i << 8) | (j * 4));
++			data->f2x9cx0d0f812f = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x0d0f812f);
++
++			/* Stage 11 */
++			if (IS_ENABLED(CONFIG_DIMM_DDR3)) {
++				for (i=0; i<12; i++)
++					data->f2x9cx30[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x30 + i);
++				for (i=0; i<12; i++)
++					data->f2x9cx40[i] = read_amd_dct_index_register(dev_fn2, 0x98 + (0x100 * channel), 0x40 + i);
++			}
++
++			/* Other */
++			/* ECC scrub rate control */
++			data->f3x58 = pci_read_config32(dev_fn3, 0x58);
++		}
++	}
++}
++#else
++static void write_amd_dct_index_register(device_t dev, uint32_t index_ctl_reg, uint32_t index, uint32_t value)
++{
++	uint32_t dword;
++
++	pci_write_config32(dev, index_ctl_reg + 0x04, value);
++	index |= (1 << 30);
++	pci_write_config32(dev, index_ctl_reg, index);
++	do {
++		dword = pci_read_config32(dev, index_ctl_reg);
++	} while (!(dword & (1 << 31)));
++}
++#endif
++
++#ifdef __PRE_RAM__
++static void wrmsr_uint64_t(unsigned long index, uint64_t value) {
++	msr_t msr;
++	msr.hi = (value & 0xffffffff00000000ULL) >> 32;
++	msr.lo = (value & 0xffffffff);
++	wrmsr(index, msr);
++}
++
++void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data)
++{
++	uint8_t i;
++	uint8_t j;
++	uint8_t node;
++	uint8_t channel;
++	uint8_t ganged;
++	uint8_t dct_enabled;
++	uint32_t dword;
++
++	/* Load data from data structure into DCTs */
++	/* Stage 1 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x110, data->f2x110);
++		}
++	}
++
++	/* Stage 2 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x40 + (0x100 * channel), data->f1x40);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x44 + (0x100 * channel), data->f1x44);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x48 + (0x100 * channel), data->f1x48);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x4c + (0x100 * channel), data->f1x4c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x50 + (0x100 * channel), data->f1x50);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x54 + (0x100 * channel), data->f1x54);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x58 + (0x100 * channel), data->f1x58);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x5c + (0x100 * channel), data->f1x5c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x60 + (0x100 * channel), data->f1x60);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x64 + (0x100 * channel), data->f1x64);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x68 + (0x100 * channel), data->f1x68);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x6c + (0x100 * channel), data->f1x6c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x70 + (0x100 * channel), data->f1x70);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x74 + (0x100 * channel), data->f1x74);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x78 + (0x100 * channel), data->f1x78);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x7c + (0x100 * channel), data->f1x7c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0xf0 + (0x100 * channel), data->f1xf0);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x120 + (0x100 * channel), data->f1x120);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 1), 0x124 + (0x100 * channel), data->f1x124);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x10c + (0x100 * channel), data->f2x10c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x114 + (0x100 * channel), data->f2x114);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x118 + (0x100 * channel), data->f2x118);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x11c + (0x100 * channel), data->f2x11c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x1b0 + (0x100 * channel), data->f2x1b0);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 3), 0x44 + (0x100 * channel), data->f3x44);
++			for (i=0; i<16; i++) {
++				wrmsr_uint64_t(0x00000200 | i, data->msr0000020[i]);
++			}
++			wrmsr_uint64_t(0x00000250, data->msr00000250);
++			wrmsr_uint64_t(0x00000258, data->msr00000258);
++			/* FIXME
++			 * Restoring these MSRs causes a hang on resume
++			 * For now, skip restoration...
++			 */
++			// for (i=0; i<8; i++)
++			// 	wrmsr_uint64_t(0x00000260 | (i + 8), data->msr0000026[i]);
++			wrmsr_uint64_t(0x000002ff, data->msr000002ff);
++			wrmsr_uint64_t(0xc0010010, data->msrc0010010);
++			wrmsr_uint64_t(0xc001001a, data->msrc001001a);
++			wrmsr_uint64_t(0xc001001d, data->msrc001001d);
++			wrmsr_uint64_t(0xc001001f, data->msrc001001f);
++		}
++	}
++
++	/* Stage 3 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			ganged = !!(data->f2x110 & 0x10);
++			if ((ganged == 1) && (channel > 0))
++				continue;
++
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x40 + (0x100 * channel), data->f2x40);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x44 + (0x100 * channel), data->f2x44);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x48 + (0x100 * channel), data->f2x48);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x4c + (0x100 * channel), data->f2x4c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x50 + (0x100 * channel), data->f2x50);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x54 + (0x100 * channel), data->f2x54);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x58 + (0x100 * channel), data->f2x58);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x5c + (0x100 * channel), data->f2x5c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x60 + (0x100 * channel), data->f2x60);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x64 + (0x100 * channel), data->f2x64);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x68 + (0x100 * channel), data->f2x68);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x6c + (0x100 * channel), data->f2x6c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x78 + (0x100 * channel), data->f2x78);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x7c + (0x100 * channel), data->f2x7c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x80 + (0x100 * channel), data->f2x80);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x84 + (0x100 * channel), data->f2x84);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x88 + (0x100 * channel), data->f2x88);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x8c + (0x100 * channel), data->f2x8c);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x90 + (0x100 * channel), data->f2x90);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0xa4 + (0x100 * channel), data->f2xa4);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0xa8 + (0x100 * channel), data->f2xa8);
++		}
++	}
++
++	/* Stage 4 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			ganged = !!(data->f2x110 & 0x10);
++			if ((ganged == 1) && (channel > 0))
++				continue;
++
++			/* Disable PHY auto-compensation engine */
++			dword = read_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x08);
++			if (!(dword & (1 << 30))) {
++				dword |= (1 << 30);
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x08, dword);
++
++				/* Wait for 5us */
++				mct_Wait(100);
++			}
++
++			/* Restore DRAM Configuration High Register */
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x94 + (0x100 * channel), data->f2x94);
++
++			/* Enable PHY auto-compensation engine */
++			dword = read_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x08);
++			dword &= ~(1 << 30);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x08, dword);
++		}
++	}
++
++	/* Wait for 750us */
++	mct_Wait(15000);
++
++	/* Stage 5 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			ganged = !!(data->f2x110 & 0x10);
++			if ((ganged == 1) && (channel > 0))
++				continue;
++
++			/* Wait for any pending PHY frequency changes to complete */
++			do {
++				dword = read_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x08);
++			} while (dword & (1 << 21));
++		}
++	}
++
++	/* Stage 6 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			for (i=0; i<9; i++)
++				for (j=0; j<3; j++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f0000 | (i << 8) | (j * 4), data->f2x9cx0d0f0_f_8_0_0_8_4_0[i][j]);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x00, data->f2x9cx00);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0a, data->f2x9cx0a);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0c, data->f2x9cx0c);
++		}
++	}
++
++	/* Stage 7 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			ganged = !!(data->f2x110 & 0x10);
++			if ((ganged == 1) && (channel > 0))
++				continue;
++
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x04, data->f2x9cx04);
++		}
++	}
++
++	/* Stage 8 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			dct_enabled = !(data->f2x94 & (1 << 14));
++			if (!dct_enabled)
++				continue;
++
++			ganged = !!(data->f2x110 & 0x10);
++			if ((ganged == 1) && (channel > 0))
++				continue;
++
++			printk(BIOS_SPEW, "Taking DIMMs out of self refresh node: %d channel: %d\n", node, channel);
++
++			/* Exit self refresh mode */
++			dword = pci_read_config32(PCI_DEV(0, 0x18 + node, 2), 0x90 + (0x100 * channel));
++			dword |= (1 << 1);
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 2), 0x90 + (0x100 * channel), dword);
++		}
++	}
++
++	/* Stage 9 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			dct_enabled = !(data->f2x94 & (1 << 14));
++			if (!dct_enabled)
++				continue;
++
++			printk(BIOS_SPEW, "Waiting for DIMMs to exit self refresh node: %d channel: %d\n", node, channel);
++
++			/* Wait for transition from self refresh mode to complete */
++			do {
++				dword = pci_read_config32(PCI_DEV(0, 0x18 + node, 2), 0x90 + (0x100 * channel));
++			} while (dword & (1 << 1));
++
++			/* Restore registers */
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0fe006, data->f2x9cx0d0fe006);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0fe007, data->f2x9cx0d0fe007);
++		}
++	}
++
++	/* Stage 10 */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			for (i=0; i<12; i++)
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x10 + i, data->f2x9cx10[i]);
++			for (i=0; i<12; i++)
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x20 + i, data->f2x9cx20[i]);
++			for (i=0; i<4; i++)
++				for (j=0; j<3; j++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), (0x01 + i) + (0x100 * j), data->f2x9cx3_0_0_3_1[i][j]);
++			for (i=0; i<4; i++)
++				for (j=0; j<3; j++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), (0x05 + i) + (0x100 * j), data->f2x9cx3_0_0_7_5[i][j]);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d, data->f2x9cx0d);
++			for (i=0; i<9; i++)
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f0013 | (i << 8), data->f2x9cx0d0f0_f_0_13[i]);
++			for (i=0; i<9; i++)
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f0030 | (i << 8), data->f2x9cx0d0f0_f_0_30[i]);
++			for (i=0; i<4; i++)
++				write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f2030 | (i << 8), data->f2x9cx0d0f2_f_0_30[i]);
++			for (i=0; i<2; i++)
++				for (j=0; j<3; j++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f0000 | (i << 8) | (j * 4), data->f2x9cx0d0f8_8_4_0[i][j]);
++			write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x0d0f812f, data->f2x9cx0d0f812f);
++		}
++	}
++
++	/* Stage 11 */
++	if (IS_ENABLED(CONFIG_DIMM_DDR3)) {
++		for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++			for (channel = 0; channel < 2; channel++) {
++				struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++				if (!persistent_data->node[node].node_present)
++					continue;
++
++				for (i=0; i<12; i++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x30 + i, data->f2x9cx30[i]);
++				for (i=0; i<12; i++)
++					write_amd_dct_index_register(PCI_DEV(0, 0x18 + node, 2), 0x98 + (0x100 * channel), 0x40 + i, data->f2x9cx40[i]);
++			}
++		}
++	}
++
++	/* Other */
++	for (node = 0; node < MAX_NODES_SUPPORTED; node++) {
++		for (channel = 0; channel < 2; channel++) {
++			struct amd_s3_persistent_mct_channel_data* data = &persistent_data->node[node].channel[channel];
++			if (!persistent_data->node[node].node_present)
++				continue;
++
++			/* ECC scrub rate control */
++			pci_write_config32(PCI_DEV(0, 0x18 + node, 3), 0x58, data->f3x58);
++		}
++	}
++}
++#endif
++
++#ifdef __RAMSTAGE__
++int8_t save_mct_information_to_nvram(void)
++{
++	if (acpi_is_wakeup_s3())
++		return 0;
++
++	printk(BIOS_DEBUG, "Writing AMD DCT configuration to Flash\n");
++
++	struct spi_flash *flash;
++	ssize_t s3nv_offset;
++	struct amd_s3_persistent_data persistent_data;
++
++	/* Obtain MCT configuration data */
++	copy_mct_data_to_save_variable(&persistent_data);
++
++	/* Obtain CBFS file offset */
++	s3nv_offset = get_s3nv_file_offset();
++	if (s3nv_offset == -1)
++		return -1;
++
++	/* Align flash pointer to nearest boundary */
++	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
++	s3nv_offset += CONFIG_S3_DATA_SIZE;
++
++	/* Set temporary SPI MMIO address */
++	device_t lpc_dev = dev_find_slot(0, PCI_DEVFN(0x14, 3));
++	uint32_t spi_mmio_prev = pci_read_config32(lpc_dev, 0xa0);
++	pci_write_config32(lpc_dev, 0xa0, (spi_mmio_prev & 0x1f) | 0xf0000000);
++
++	/* Initialize SPI and detect devices */
++	spi_init();
++	flash = spi_flash_probe(0, 0);
++	if (!flash) {
++		printk(BIOS_DEBUG, "Could not find SPI device\n");
++		return -1;
++	}
++
++	/* Set up SPI flash access */
++	flash->spi->rw = SPI_WRITE_FLAG;
++	spi_claim_bus(flash->spi);
++
++	/* Erase and write data structure */
++	flash->erase(flash, s3nv_offset, CONFIG_S3_DATA_SIZE);
++	flash->write(flash, s3nv_offset, sizeof(struct amd_s3_persistent_data), &persistent_data);
++
++	/* Tear down SPI flash access */
++	flash->spi->rw = SPI_WRITE_FLAG;
++	spi_release_bus(flash->spi);
++
++	/* Restore SPI MMIO address */
++	pci_write_config32(lpc_dev, 0xa0, spi_mmio_prev);
++
++	return 0;
++}
++#endif
++
++int8_t restore_mct_information_from_nvram(void)
++{
++	ssize_t s3nv_offset;
++	ssize_t s3nv_file_offset;
++	void * s3nv_cbfs_file_ptr;
++	struct amd_s3_persistent_data *persistent_data;
++
++	/* Obtain CBFS file offset */
++	s3nv_offset = get_s3nv_file_offset();
++	if (s3nv_offset == -1)
++		return -1;
++
++	/* Align flash pointer to nearest boundary */
++	s3nv_file_offset = s3nv_offset;
++	s3nv_offset &= ~(CONFIG_S3_DATA_SIZE-1);
++	s3nv_offset += CONFIG_S3_DATA_SIZE;
++	s3nv_file_offset = s3nv_offset - s3nv_file_offset;
++
++	/* Map data structure in CBFS and restore settings */
++	s3nv_cbfs_file_ptr = cbfs_boot_map_with_leak(S3NV_FILE_NAME, CBFS_TYPE_RAW, NULL);
++	if (!s3nv_cbfs_file_ptr) {
++		printk(BIOS_DEBUG, "S3 state file could not be mapped: %s\n", S3NV_FILE_NAME);
++		return -1;
++	}
++	persistent_data = (s3nv_cbfs_file_ptr + s3nv_file_offset);
++	restore_mct_data_from_save_variable(persistent_data);
++
++	return 0;
++}
+\ No newline at end of file
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
+new file mode 100644
+index 0000000..dcddcad
+--- /dev/null
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.h
+@@ -0,0 +1,28 @@
++/*
++ * This file is part of the coreboot project.
++ *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; version 2 of the License.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston,  MA 02110-1301 USA
++ */
++
++#include "../wrappers/mcti.h"
++#include "mct_d.h"
++
++#ifdef __RAMSTAGE__
++int8_t save_mct_information_to_nvram(void);
++#endif
++int8_t restore_mct_information_from_nvram(void);
++void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_data);
++void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persistent_data);
+\ No newline at end of file
+-- 
+1.7.9.5
+

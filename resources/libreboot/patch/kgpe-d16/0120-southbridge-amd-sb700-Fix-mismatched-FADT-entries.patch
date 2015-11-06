@@ -1,0 +1,36 @@
+From 26689886278806df6859ca47cc7bb632daf8f3c0 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 18 Aug 2015 17:45:48 -0500
+Subject: [PATCH 120/143] southbridge/amd/sb700: Fix mismatched FADT entries
+
+Change-Id: Ifa0b61678fe362481891fc015cebe08485b66fc1
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sb700/fadt.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/southbridge/amd/sb700/fadt.c b/src/southbridge/amd/sb700/fadt.c
+index e860016..ec5d9bf 100644
+--- a/src/southbridge/amd/sb700/fadt.c
++++ b/src/southbridge/amd/sb700/fadt.c
+@@ -131,7 +131,7 @@ void acpi_create_fadt(acpi_fadt_t * fadt, acpi_facs_t * facs, void *dsdt)
+ 	fadt->x_pm1b_cnt_blk.addrh = 0x0;
+ 
+ 	fadt->x_pm2_cnt_blk.space_id = 1;
+-	fadt->x_pm2_cnt_blk.bit_width = 0;
++	fadt->x_pm2_cnt_blk.bit_width = 8;
+ 	fadt->x_pm2_cnt_blk.bit_offset = 0;
+ 	fadt->x_pm2_cnt_blk.resv = 0;
+ 	fadt->x_pm2_cnt_blk.addrl = ACPI_PMA_CNT_BLK;
+@@ -145,7 +145,7 @@ void acpi_create_fadt(acpi_fadt_t * fadt, acpi_facs_t * facs, void *dsdt)
+ 	fadt->x_pm_tmr_blk.addrh = 0x0;
+ 
+ 	fadt->x_gpe0_blk.space_id = 1;
+-	fadt->x_gpe0_blk.bit_width = 32;
++	fadt->x_gpe0_blk.bit_width = 64;
+ 	fadt->x_gpe0_blk.bit_offset = 0;
+ 	fadt->x_gpe0_blk.resv = 0;
+ 	fadt->x_gpe0_blk.addrl = ACPI_GPE0_BLK;
+-- 
+1.7.9.5
+

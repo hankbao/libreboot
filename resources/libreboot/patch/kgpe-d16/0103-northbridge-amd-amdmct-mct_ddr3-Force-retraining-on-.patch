@@ -1,0 +1,36 @@
+From d43547a64111da6fb4cba322c8675176bddf8622 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 7 Aug 2015 23:59:33 -0500
+Subject: [PATCH 103/143] northbridge/amd/amdmct/mct_ddr3: Force retraining on
+ every boot
+
+Change-Id: I017e0dd5120110124d5b5d5276befef6f7740614
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+index 2ca65ca..330f37f 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.c
+@@ -1735,6 +1735,16 @@ restartinit:
+ 					allow_config_restore = 0;
+ 		}
+ 
++		/* FIXME
++		 * Stability issues have arisen on multiple Family 15h systems
++		 * when configuration restoration is enabled.  In all cases these
++		 * stability issues resolved by allowing the RAM to go through a
++		 * full training cycle.
++		 *
++		 * Debug and reenable this!
++		 */
++		allow_config_restore = 0;
++
+ 		for (Node = 0; Node < MAX_NODES_SUPPORTED; Node++) {
+ 			struct DCTStatStruc *pDCTstat;
+ 			pDCTstat = pDCTstatA + Node;
+-- 
+1.7.9.5
+

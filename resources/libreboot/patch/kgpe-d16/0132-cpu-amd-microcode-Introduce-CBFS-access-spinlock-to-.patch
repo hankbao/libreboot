@@ -1,0 +1,155 @@
+From 150c1d37f6b42233ae47a9289563164b8685825a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 28 Aug 2015 20:48:17 -0500
+Subject: [PATCH 132/143] cpu/amd/microcode: Introduce CBFS access spinlock to
+ avoid IOMMU failure
+
+Change-Id: Ib7e8cb171f44833167053ca98a85cca23021dfba
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/Kconfig                              |    4 ++++
+ src/arch/x86/include/arch/smp/spinlock.h |    7 ++++++-
+ src/cpu/amd/microcode/microcode.c        |   24 +++++++++++++++++++++++-
+ src/mainboard/asus/kgpe-d16/Kconfig      |    1 +
+ src/mainboard/asus/kgpe-d16/romstage.c   |   15 ++++++++++++++-
+ 5 files changed, 48 insertions(+), 3 deletions(-)
+
+diff --git a/src/Kconfig b/src/Kconfig
+index 70f3cf2..353eede 100644
+--- a/src/Kconfig
++++ b/src/Kconfig
+@@ -454,6 +454,10 @@ config HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK
+ 	bool
+ 	default n
+ 
++config HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK
++	bool
++	default n
++
+ config HAVE_MONOTONIC_TIMER
+ 	def_bool n
+ 	help
+diff --git a/src/arch/x86/include/arch/smp/spinlock.h b/src/arch/x86/include/arch/smp/spinlock.h
+index 74f8ece..a9dcfcd 100644
+--- a/src/arch/x86/include/arch/smp/spinlock.h
++++ b/src/arch/x86/include/arch/smp/spinlock.h
+@@ -1,7 +1,10 @@
+ #ifndef ARCH_SMP_SPINLOCK_H
+ #define ARCH_SMP_SPINLOCK_H
+ 
+-#if !defined(__PRE_RAM__) || defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK) || defined(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)
++#if !defined(__PRE_RAM__) \
++	|| defined(CONFIG_HAVE_ROMSTAGE_CONSOLE_SPINLOCK)	\
++	|| defined(CONFIG_HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK)	\
++	|| defined(CONFIG_HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK)
+ 
+ /*
+  * Your basic SMP spinlocks, allowing only a single CPU anywhere
+@@ -16,6 +19,8 @@ spinlock_t *romstage_console_lock(void);
+ void initialize_romstage_console_lock(void);
+ spinlock_t* romstage_nvram_cbfs_lock(void);
+ void initialize_romstage_nvram_cbfs_lock(void);
++spinlock_t* romstage_microcode_cbfs_lock(void);
++void initialize_romstage_microcode_cbfs_lock(void);
+ #endif
+ 
+ #define SPIN_LOCK_UNLOCKED (spinlock_t) { 1 }
+diff --git a/src/cpu/amd/microcode/microcode.c b/src/cpu/amd/microcode/microcode.c
+index badd3b7..bf644ab 100644
+--- a/src/cpu/amd/microcode/microcode.c
++++ b/src/cpu/amd/microcode/microcode.c
+@@ -25,6 +25,12 @@
+ #include <cbfs.h>
+ #include <arch/io.h>
+ 
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK)
++#include <smp/spinlock.h>
++#endif
++#endif
++
+ #define UCODE_DEBUG(fmt, args...)	\
+ 	do { printk(BIOS_DEBUG, "[microcode] "fmt, ##args); } while(0)
+ 
+@@ -201,14 +207,30 @@ void amd_update_microcode_from_cbfs(uint32_t equivalent_processor_rev_id)
+ 			return;
+ 		}
+ 
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK)
++		spin_lock(romstage_microcode_cbfs_lock());
++#endif
++#endif
++
+ 		ucode = cbfs_boot_map_with_leak(microcode_cbfs_file[i],
+ 						CBFS_TYPE_MICROCODE, &ucode_len);
+ 		if (!ucode) {
+ 			UCODE_DEBUG("microcode file not found. Skipping updates.\n");
+-
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK)
++			spin_unlock(romstage_microcode_cbfs_lock());
++#endif
++#endif
+ 			return;
+ 		}
+ 
+ 		amd_update_microcode(ucode, ucode_len, equivalent_processor_rev_id);
++
++#ifdef __PRE_RAM__
++#if IS_ENABLED(CONFIG_HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK)
++		spin_unlock(romstage_microcode_cbfs_lock());
++#endif
++#endif
+ 	}
+ }
+diff --git a/src/mainboard/asus/kgpe-d16/Kconfig b/src/mainboard/asus/kgpe-d16/Kconfig
+index a9261f9..ff9afd3 100644
+--- a/src/mainboard/asus/kgpe-d16/Kconfig
++++ b/src/mainboard/asus/kgpe-d16/Kconfig
+@@ -16,6 +16,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select PARALLEL_CPU_INIT
+ 	select HAVE_ROMSTAGE_CONSOLE_SPINLOCK
+ 	select HAVE_ROMSTAGE_NVRAM_CBFS_SPINLOCK
++	select HAVE_ROMSTAGE_MICROCODE_CBFS_SPINLOCK
+ 	select HAVE_HARD_RESET
+ 	select HAVE_OPTION_TABLE
+ 	select HAVE_CMOS_DEFAULT
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index 9998359..d1b75b6 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -327,6 +327,18 @@ void initialize_romstage_nvram_cbfs_lock(void)
+ 	car_get_var(nvram_cbfs_spinlock) = SPIN_LOCK_UNLOCKED;
+ }
+ 
++static spinlock_t microcode_cbfs_spinlock CAR_GLOBAL;
++
++spinlock_t* romstage_microcode_cbfs_lock(void)
++{
++	return car_get_var_ptr(&microcode_cbfs_spinlock);
++}
++
++void initialize_romstage_microcode_cbfs_lock(void)
++{
++	car_get_var(microcode_cbfs_spinlock) = SPIN_LOCK_UNLOCKED;
++}
++
+ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ {
+ 	uint32_t esp;
+@@ -348,9 +360,10 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 		timestamp_init(timestamp_get());
+ 		timestamp_add_now(TS_START_ROMSTAGE);
+ 
+-		/* Initialize the printk and nvram CBFS spinlocks */
++		/* Initialize the printk, nvram CBFS, and microcode CBFS spinlocks */
+ 		initialize_romstage_console_lock();
+ 		initialize_romstage_nvram_cbfs_lock();
++		initialize_romstage_microcode_cbfs_lock();
+ 
+ 		/* Nothing special needs to be done to find bus 0 */
+ 		/* Allow the HT devices to be found */
+-- 
+1.7.9.5
+

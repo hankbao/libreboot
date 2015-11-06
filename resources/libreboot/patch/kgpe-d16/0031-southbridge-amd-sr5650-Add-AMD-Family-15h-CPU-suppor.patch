@@ -1,13 +1,13 @@
-From 7102e3001406f8eedbfbbeefafb2f27b62b47d03 Mon Sep 17 00:00:00 2001
+From 89f0d8276a64d05d7cf091ac41402bdf7f71f4ba Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Sat, 5 Sep 2015 19:30:38 -0500
-Subject: [PATCH 031/139] southbridge/amd/sr5650: Add AMD Family 15h CPU
+Subject: [PATCH 031/143] southbridge/amd/sr5650: Add AMD Family 15h CPU
  support
 
 Change-Id: I88203907270db1a268bd377151f15c24fca1efdc
 Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
 ---
- src/southbridge/amd/sr5650/early_setup.c | 2 ++
+ src/southbridge/amd/sr5650/early_setup.c |    2 ++
  1 file changed, 2 insertions(+)
 
 diff --git a/src/southbridge/amd/sr5650/early_setup.c b/src/southbridge/amd/sr5650/early_setup.c
@@ -24,5 +24,5 @@ index 664f60a..62b0dab 100644
  		printk(BIOS_INFO, "CPU Rev is not recognized.\n");
  }
 -- 
-1.9.1
+1.7.9.5
 

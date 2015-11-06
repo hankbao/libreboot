@@ -1,0 +1,47 @@
+From 49e08c434dc1b0a608496f0187c18d2ce83a59e0 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 28 Aug 2015 15:31:31 -0500
+Subject: [PATCH 121/143] southbridge/amd/sb700: Fix drifting system clock
+
+Change-Id: I1698c9b9b1840d254115821f3c0e76b7211e9056
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sb700/early_setup.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/src/southbridge/amd/sb700/early_setup.c b/src/southbridge/amd/sb700/early_setup.c
+index da03961..fe8824f 100644
+--- a/src/southbridge/amd/sb700/early_setup.c
++++ b/src/southbridge/amd/sb700/early_setup.c
+@@ -431,10 +431,10 @@ static void sb700_devices_por_init(void)
+ 
+ 	/* Configure HPET Counter CLK period */
+ 	byte = pci_read_config8(dev, 0x43);
+-	byte &= 0xF7;	/* unhide HPET regs */
++	byte &= 0xF7;				/* Unhide HPET regs */
+ 	pci_write_config8(dev, 0x43, byte);
+-	pci_write_config32(dev, 0x34, 0x0429B17E ); /* Counter CLK period */
+-	byte |= 0x08;	/* hide HPET regs */
++	pci_write_config32(dev, 0x34, 0xb0);	/* HPET_CNTRL = 0xb0 */
++	byte |= 0x08;				/* Hide HPET regs */
+ 	pci_write_config8(dev, 0x43, byte);
+ 
+ 	/* Features Enable */
+@@ -669,6 +669,14 @@ static void sb700_pmio_por_init(void)
+ 	byte = pmio_read(0xbb);
+ 	byte |= 0xc0;
+ 	pmio_write(0xbb, byte);
++
++#if CONFIG_SOUTHBRIDGE_AMD_SUBTYPE_SP5100
++	/* Work around system clock drift issues */
++	byte = pmio_read(0xd4);
++	byte |= 0x1 << 6;	/* Enable alternate 14MHz clock source */
++	byte |= 0x1 << 7;	/* Disable 25MHz oscillator buffer */
++	pmio_write(0xd4, byte);
++#endif
+ }
+ 
+ /*
+-- 
+1.7.9.5
+

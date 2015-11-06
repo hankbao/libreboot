@@ -1,0 +1,72 @@
+From 718c44eb4a990acd5aedd7a57bacf43ebb7c76a6 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 7 Aug 2015 19:06:09 -0500
+Subject: [PATCH 100/143] northbridge/amd/amdfam10: Fix poor performance on
+ Family 15h CPUs
+
+Change-Id: I193749bc767b7c1139de7cd67622a7b03298009b
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdfam10/nb_control.c  |    4 ++--
+ src/northbridge/amd/amdfam10/northbridge.c |   21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+), 2 deletions(-)
+
+diff --git a/src/northbridge/amd/amdfam10/nb_control.c b/src/northbridge/amd/amdfam10/nb_control.c
+index f95b6f8..8e8dd57 100644
+--- a/src/northbridge/amd/amdfam10/nb_control.c
++++ b/src/northbridge/amd/amdfam10/nb_control.c
+@@ -60,10 +60,10 @@ static void nb_control_init(struct device *dev)
+ 	pci_write_config32(dev, 0xe0, dword);
+ 
+ 	/* Configure northbridge P-states */
+-	dword = pci_read_config32(dev, 0xe0);
++	dword = pci_read_config32(dev, 0x170);
+ 	dword &= ~(0x7 << 9);			/* NbPstateThreshold = compute_unit_count */
+ 	dword |= (compute_unit_count & 0x7) << 9;
+-	pci_write_config32(dev, 0xe0, dword);
++	pci_write_config32(dev, 0x170, dword);
+ 
+ 	printk(BIOS_DEBUG, "done.\n");
+ }
+diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
+index 808cd3a..3a899c8 100644
+--- a/src/northbridge/amd/amdfam10/northbridge.c
++++ b/src/northbridge/amd/amdfam10/northbridge.c
+@@ -1759,6 +1759,8 @@ static void detect_and_enable_probe_filter(device_t dev)
+ 
+ 		disable_cache();
+ 		asm("wbinvd");
++
++		/* Enable probe filter */
+ 		for (i = 0; i < sysconf.nodes; i++) {
+ 			device_t f3x_dev = dev_find_slot(0, PCI_DEVFN(0x18 + i, 3));
+ 
+@@ -1775,6 +1777,25 @@ static void detect_and_enable_probe_filter(device_t dev)
+ 			do {
+ 			} while (!(pci_read_config32(f3x_dev, 0x1d4) & (0x1 << 19)));
+ 		}
++
++		if (is_fam15h()) {
++			printk(BIOS_DEBUG, "Enabling ATM mode\n");
++
++			/* Enable ATM mode */
++			for (i = 0; i < sysconf.nodes; i++) {
++				device_t f0x_dev = dev_find_slot(0, PCI_DEVFN(0x18 + i, 0));
++				device_t f3x_dev = dev_find_slot(0, PCI_DEVFN(0x18 + i, 3));
++
++				dword = pci_read_config32(f0x_dev, 0x68);
++				dword |= (0x1 << 12);	/* ATMModeEn = 1 */
++				pci_write_config32(f0x_dev, 0x68, dword);
++
++				dword = pci_read_config32(f3x_dev, 0x1b8);
++				dword |= (0x1 << 27);	/* L3ATMModeEn = 1 */
++				pci_write_config32(f3x_dev, 0x1b8, dword);
++			}
++		}
++
+ 		enable_cache();
+ 
+ 		/* Reenable L3 and DRAM scrubbers */
+-- 
+1.7.9.5
+

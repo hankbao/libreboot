@@ -1,0 +1,28 @@
+From 0f5bc1acfc0274968095f9fc7c68299632788f1d Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Sun, 2 Aug 2015 21:28:31 -0500
+Subject: [PATCH 093/143] mainboard/asus/kgpe-d16: Fix I/O link detection
+
+Change-Id: Ibefc9dc2e1e0267389eb8d716408bae6026ce084
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/romstage.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index f80fb8c..5d4005d 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -552,7 +552,8 @@ BOOL AMD_CB_ManualBUIDSwapList (u8 node, u8 link, const u8 **List)
+ {
+ 	/* Force BUID to 0 */
+ 	static const u8 swaplist[] = {0, 0, 0xFF, 0, 0xFF};
+-	if ((node == 0) && (link == 1)) {	/* BSP SB link */
++	if ((is_fam15h() && (node == 0) && (link == 1))			/* Family 15h BSP SB link */
++		|| (!is_fam15h() && (node == 0) && (link == 3))) {	/* Family 10h BSP SB link */
+ 		*List = swaplist;
+ 		return 1;
+ 	}
+-- 
+1.7.9.5
+

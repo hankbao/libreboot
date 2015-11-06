@@ -1,0 +1,38 @@
+From 8249f770fd166cc1ce8d6c033c01103d36763977 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Wed, 21 Oct 2015 15:27:02 -0500
+Subject: [PATCH 019/143] mainboard/asrock/e350m1: Update CMOS layout to match
+ SIO changes
+
+Change-Id: I3f1f33b50f788b6d57f1a7986c4bdb912426e4f0
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asrock/e350m1/cmos.layout |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/mainboard/asrock/e350m1/cmos.layout b/src/mainboard/asrock/e350m1/cmos.layout
+index 996160e..bc8de75 100644
+--- a/src/mainboard/asrock/e350m1/cmos.layout
++++ b/src/mainboard/asrock/e350m1/cmos.layout
+@@ -29,7 +29,7 @@ entries
+ 396          1       e       1        interleave_chip_selects
+ 397          2       e       8        max_mem_clock
+ 399          1       e       2        multi_core
+-400          1       e       1        power_on_after_fail
++400          2       e       3        power_on_after_fail
+ 412          4       e       6        debug_level
+ 440          4       e       9        slow_cpu
+ 444          1       e       1        nmi
+@@ -49,6 +49,9 @@ enumerations
+ 1     1     Enable
+ 2     0     Enable
+ 2     1     Disable
++3     0     Off
++3     1     On
++3     2     Last
+ 4     0     Fallback
+ 4     1     Normal
+ 5     0     115200
+-- 
+1.7.9.5
+

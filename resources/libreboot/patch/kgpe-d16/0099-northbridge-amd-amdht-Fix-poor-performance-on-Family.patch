@@ -1,0 +1,30 @@
+From e17ac6e74b96102528fa4915d6cebcb55f8e5db0 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Fri, 7 Aug 2015 19:05:45 -0500
+Subject: [PATCH 099/143] northbridge/amd/amdht: Fix poor performance on
+ Family 15h CPUs
+
+Change-Id: I37db191c144c81aba5d4a1e6291db5669a35a31a
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdht/h3ncmn.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/northbridge/amd/amdht/h3ncmn.c b/src/northbridge/amd/amdht/h3ncmn.c
+index e03e5eb..e377ff2 100644
+--- a/src/northbridge/amd/amdht/h3ncmn.c
++++ b/src/northbridge/amd/amdht/h3ncmn.c
+@@ -1559,6 +1559,10 @@ static void setLinkData(sMainData *pDat, cNorthBridge *nb)
+ 			} else {
+ 				temp2 = 0x0;
+ 			}
++			/* NOTE
++			 * The Family 15h BKDG Rev. 3.14 is wrong
++			 * Freq[4] must be set before Freq[3:0], otherwise the register writes will be ignored!
++			 */
+ 			if (is_gt_rev_d())
+ 				AmdPCIWriteBits(linkBase + HTHOST_FREQ_REV_REG_2, 0, 0, &temp2);
+ 			AmdPCIWriteBits(linkBase + HTHOST_FREQ_REV_REG, 11, 8, &temp);
+-- 
+1.7.9.5
+

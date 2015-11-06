@@ -1,7 +1,7 @@
-From 54b88ab6e8f0b5a48bf8b0df168a6d12d44b09df Mon Sep 17 00:00:00 2001
+From a9c46688fdefebdf70848b4aba0021d747baee16 Mon Sep 17 00:00:00 2001
 From: Timothy Pearson <tpearson@raptorengineeringinc.com>
 Date: Fri, 16 Oct 2015 14:24:06 -0500
-Subject: [PATCH 032/139] cpu/amd: Move model_10xxx to family_10h-family_15h
+Subject: [PATCH 032/143] cpu/amd: Move model_10xxx to family_10h-family_15h
 
 Change-Id: I34501d3fc68b71db7781dad11d5b883868932a60
 Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
@@ -10,7 +10,7 @@ Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
  src/cpu/amd/family_10h-family_15h/Kconfig          |   88 ++
  src/cpu/amd/family_10h-family_15h/Makefile.inc     |   14 +
  src/cpu/amd/family_10h-family_15h/defaults.h       |  479 +++++++++
- src/cpu/amd/family_10h-family_15h/fidvid.c         | 1049 ++++++++++++++++++++
+ src/cpu/amd/family_10h-family_15h/fidvid.c         | 1048 ++++++++++++++++++++
  src/cpu/amd/family_10h-family_15h/init_cpus.c      |  968 ++++++++++++++++++
  .../amd/family_10h-family_15h/model_10xxx_init.c   |  165 +++
  .../amd/family_10h-family_15h/monotonic_timer.c    |   98 ++
@@ -22,7 +22,7 @@ Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
  src/cpu/amd/model_10xxx/Kconfig                    |   88 --
  src/cpu/amd/model_10xxx/Makefile.inc               |   14 -
  src/cpu/amd/model_10xxx/defaults.h                 |  479 ---------
- src/cpu/amd/model_10xxx/fidvid.c                   | 1049 --------------------
+ src/cpu/amd/model_10xxx/fidvid.c                   | 1048 --------------------
  src/cpu/amd/model_10xxx/init_cpus.c                |  968 ------------------
  src/cpu/amd/model_10xxx/model_10xxx_init.c         |  165 ---
  src/cpu/amd/model_10xxx/monotonic_timer.c          |   98 --
@@ -60,7 +60,7 @@ Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
  src/mainboard/supermicro/h8scm_fam10/romstage.c    |    2 +-
  src/mainboard/tyan/s2912_fam10/romstage.c          |    2 +-
  src/northbridge/amd/amdfam10/northbridge.c         |    2 +-
- 54 files changed, 3675 insertions(+), 3675 deletions(-)
+ 54 files changed, 3674 insertions(+), 3674 deletions(-)
  create mode 100644 src/cpu/amd/family_10h-family_15h/Kconfig
  create mode 100644 src/cpu/amd/family_10h-family_15h/Makefile.inc
  create mode 100644 src/cpu/amd/family_10h-family_15h/defaults.h
@@ -700,15 +700,14 @@ index 0000000..6fd1a7e
 +};
 diff --git a/src/cpu/amd/family_10h-family_15h/fidvid.c b/src/cpu/amd/family_10h-family_15h/fidvid.c
 new file mode 100644
-index 0000000..99ffcc8
+index 0000000..5b1c581
 --- /dev/null
 +++ b/src/cpu/amd/family_10h-family_15h/fidvid.c
-@@ -0,0 +1,1049 @@
+@@ -0,0 +1,1048 @@
 +/*
 + * This file is part of the coreboot project.
 + *
 + * Copyright (C) 2007 Advanced Micro Devices, Inc.
-+ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
 + *
 + * This program is free software; you can redistribute it and/or modify
 + * it under the terms of the GNU General Public License as published by
@@ -4417,15 +4416,14 @@ index 6fd1a7e..0000000
 -};
 diff --git a/src/cpu/amd/model_10xxx/fidvid.c b/src/cpu/amd/model_10xxx/fidvid.c
 deleted file mode 100644
-index 99ffcc8..0000000
+index 5b1c581..0000000
 --- a/src/cpu/amd/model_10xxx/fidvid.c
 +++ /dev/null
-@@ -1,1049 +0,0 @@
+@@ -1,1048 +0,0 @@
 -/*
 - * This file is part of the coreboot project.
 - *
 - * Copyright (C) 2007 Advanced Micro Devices, Inc.
-- * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
 - *
 - * This program is free software; you can redistribute it and/or modify
 - * it under the terms of the GNU General Public License as published by
@@ -7881,7 +7879,7 @@ index 1049014..0030619 100644
  
  static void sio_setup(void)
 diff --git a/src/northbridge/amd/amdfam10/northbridge.c b/src/northbridge/amd/amdfam10/northbridge.c
-index 3b302e8..adcfdf0 100644
+index ff324cd..fb3b2f7 100644
 --- a/src/northbridge/amd/amdfam10/northbridge.c
 +++ b/src/northbridge/amd/amdfam10/northbridge.c
 @@ -34,7 +34,7 @@
@@ -7894,5 +7892,5 @@ index 3b302e8..adcfdf0 100644
  #if CONFIG_LOGICAL_CPUS
  #include <cpu/amd/multicore.h>
 -- 
-1.9.1
+1.7.9.5
 
