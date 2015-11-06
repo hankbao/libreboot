@@ -38,6 +38,11 @@ apt-get -y install wget
 
 apt-get -y install git
 
+# For building the documentation
+# ------------------------------------------------------------
+
+apt-get -y pandoc
+
 # For building source code:
 # ------------------------------------------------------------
 

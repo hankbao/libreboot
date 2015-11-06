@@ -42,6 +42,11 @@ pacman -S --needed wget
 printf "Source Code: In order to download the it, git is needed\n"
 pacman -S --needed git
 
+# For building the documentation
+# ------------------------------------------------------------
+
+pacman -S --needed pandoc
+
 # For building source code:
 # ------------------------------------------------------------
 
