@@ -31,8 +31,10 @@ set -u -e
 printf "Building the utilities in coreboot\n"
 
 # crossgcc
-# coreboot is 32-bit, so only build for i386
-make -j$(nproc) -BC coreboot crossgcc-i386
+# coreboot on x86 is 32-bit, so only build for i386. Also build for ARM
+for architecture in i386 arm; do
+	make -j$(nproc) -BC coreboot crossgcc-${architecture}
+done
 
 # cbfstool, ifdtool, cbmem, nvramtool
 for util in {cbfs,ifd,nvram}tool cbmem; do

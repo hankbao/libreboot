@@ -395,25 +395,18 @@
 			
 			<p>
 				Finally, re-build the parts from coreboot that are used
-				by the build system:<br/>
+				by the build system (also builds GCC):<br/>
 				$ <b>./build module coreboot</b>
-			</p>
-
-			<p>
-				You also need to build crossgcc:<br/>
-				$ <b>cd coreboot/</b><br/>
-				$ <b>make crossgcc-i386</b><br/>
-				$ <b>make crossgcc-arm</b><br/>
-				$ <b>cd ../</b>
 			</p>
 			
 			<p>
-				Instead of running the above command, you can save time
+				Before running the above command, you can save time
 				by copying out the crossgcc that you compiled before
 				(from coreboot/util/crossgcc/) and then putting it back.
 				After you've done that, run everything in
 				<i>resources/scripts/helpers/build/module/coreboot</i>
 				except for the part that builds GCC.
+				<b>Only do this if the version is correct.</b>
 			</p>
 			
 			<p>
