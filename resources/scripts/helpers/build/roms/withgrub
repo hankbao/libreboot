@@ -32,6 +32,7 @@ printf "Building ROM images with the GRUB payload\n"
 
 # Put GRUB payloads and config files
 # in the coreboot directory, ready for next step
+(
 cd "coreboot/"
 for romtype in txtmode vesafb; do
 	cd ../resources/utilities/grub-assemble
@@ -50,7 +51,7 @@ for romtype in txtmode vesafb; do
 		sed "s/grubtest.cfg/grub.cfg/" < "grub_${keymap}_${romtype}.cfg" > "grub_${keymap}_${romtype}_test.cfg"
 	done
 done
-cd ..
+)
 
 # Build ROM images for supported boards
 buildrom() {
