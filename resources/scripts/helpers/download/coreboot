@@ -54,7 +54,7 @@ git submodule update --init --checkout -- 3rdparty/vboot/
 cd "3rdparty/vboot/"
 
 # reset vboot to last known good revision
-git reset --hard 82db93d5fc924860e4f1fb4cf24f29b5b335a480
+git reset --hard fbf631c845c08299f0bcbae3f311c5807d34c0d6
 
 # Patch vboot
 # ------------------------------------------------------------------------------
@@ -131,8 +131,7 @@ git am "../resources/libreboot/patch/misc/0008-lenovo-t500-Add-clone-of-Lenovo-T
 # Chromebook:
 
 printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
-git am "../resources/libreboot/patch/misc/0009-chromeos-Allow-disabling-vboot-firmware-verification.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/43/11143/2 && git cherry-pick FETCH_HEAD
+git am "../resources/libreboot/patch/chromebook/0001-chromeos-Allow-disabling-vboot-firmware-verification.patch"
 
 # KGPE-D16 patches
 # new versions can be found at https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php

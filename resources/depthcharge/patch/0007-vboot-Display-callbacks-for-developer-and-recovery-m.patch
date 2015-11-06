@@ -1,4 +1,4 @@
-From dc7421b033667ccbad3429e6ed118c849f3b05ca Mon Sep 17 00:00:00 2001
+From 541a3f09ecb062e3f0778eb9846732cfabcbfbba Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Tue, 11 Aug 2015 11:22:54 +0200
 Subject: [PATCH 7/7] vboot: Display callbacks for developer and recovery mode
@@ -9,14 +9,14 @@ free software (Chrome OS), so this implements a text-based interface instead.
 
 Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
 ---
- src/vboot/callbacks/display.c | 157 ++++++++++++++++++++++++++++++++++++++----
- 1 file changed, 145 insertions(+), 12 deletions(-)
+ src/vboot/callbacks/display.c | 168 +++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 156 insertions(+), 12 deletions(-)
 
 diff --git a/src/vboot/callbacks/display.c b/src/vboot/callbacks/display.c
-index efa0691..2341621 100644
+index efa0691..b659f7b 100644
 --- a/src/vboot/callbacks/display.c
 +++ b/src/vboot/callbacks/display.c
-@@ -84,9 +84,16 @@ void print_on_center(const char *msg)
+@@ -84,9 +84,17 @@ void print_on_center(const char *msg)
  	print_string(msg);
  }
  
@@ -27,6 +27,7 @@ index efa0691..2341621 100644
 +	unsigned int rows, cols;
 +	uint32_t boot_signed_only = 0;
 +	uint32_t boot_usb = 0;
++	uint32_t boot_legacy = 0;
 +	const char *fw_id;
 +	int fw_index;
 +	void *blob = NULL;
@@ -35,7 +36,7 @@ index efa0691..2341621 100644
  
  	/*
  	 * Show the debug messages for development. It is a backup method
-@@ -98,31 +105,157 @@ VbError_t VbExDisplayScreen(uint32_t screen_type)
+@@ -98,31 +106,167 @@ VbError_t VbExDisplayScreen(uint32_t screen_type)
  		video_console_clear();
  		break;
  	case VB_SCREEN_DEVELOPER_WARNING:
@@ -48,33 +49,43 @@ index efa0691..2341621 100644
 +				&boot_signed_only);
 +
 +			VbNvGet(vnc, VBNV_DEV_BOOT_USB, &boot_usb);
++			VbNvGet(vnc, VBNV_DEV_BOOT_LEGACY, &boot_legacy);
 +		}
 +
 +		print_string(
 +			"Welcome to developer mode!\n\n"
 +			"Useful key combinations:\n"
 +			"- Ctrl + H: Hold developer mode\n"
-+			"- Ctrl + D: Continue booting\n");
++			"- Ctrl + D: Boot from internal storage\n");
 +
 +		if (boot_usb)
 +			print_string("- Ctrl + U: Boot from external media\n");
 +
++		if (boot_legacy)
++			print_string("- Ctrl + L: Boot from legacy payload\n");
++
 +		print_string(
-+			"- Ctrl + L: Boot from legacy media\n"
 +			"- Ctrl + I: Show device information\n"
 +			"- Space: Disable developer mode\n\n"
-+			"This screen is shown for 3 seconds (if not held).\n\n");
++			"This screen is shown for 3 seconds (if not held)."
++			"\n\n");
 +
 +		if (vnc != NULL) {
 +			if (!boot_signed_only)
 +				print_string(
-+					"Warning: this device will boot "
-+					"unsigned kernels!\n");
++					"Warning: this device will boot kernels"
++					" without verifying their signature!"
++					"\n");
 +
 +			if (boot_usb)
 +				print_string(
 +					"Warning: this device will boot from "
 +					"external media!\n");
++
++			if (boot_legacy)
++				print_string(
++					"Warning: this device will boot legacy "
++					"payloads!\n");
 +
 +			if (!boot_signed_only || boot_usb)
 +				print_string("\n");
@@ -130,7 +141,7 @@ index efa0691..2341621 100644
 +		print_string(
 +			"Welcome to recovery mode!\n\n"
 +			"Useful key combinations:\n"
-+			"- Ctrl + D: Enable developer mode\n\n");
++			"- Ctrl + D: Enable developer mode (if possible)\n\n");
 +
 +		if (screen_type == VB_SCREEN_RECOVERY_NO_GOOD)
 +			print_on_center(

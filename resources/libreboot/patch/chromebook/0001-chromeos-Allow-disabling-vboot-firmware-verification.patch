@@ -1,8 +1,8 @@
-From a5dba25113e8bd989b74763baabd7a07931fa314 Mon Sep 17 00:00:00 2001
+From 2178bea1fbef28afbb9ffa2d95673407fac1907e Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Sun, 9 Aug 2015 10:23:38 +0200
-Subject: [PATCH 9/9] chromeos: Allow disabling vboot firmware verification
- when ChromeOS is enabled
+Subject: [PATCH] chromeos: Allow disabling vboot firmware verification when
+ ChromeOS is enabled
 
 Some ChromeOS bindings might be wanted without using vboot verification, for
 instance to boot up depthcharge from the version of Coreboot installed in the
@@ -20,10 +20,40 @@ enabled separately.
 Change-Id: Ia4057a56838aa05dcf3cb250ae1a27fd91402ddb
 Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
 ---
+ src/lib/bootmode.c                            | 2 ++
+ src/soc/rockchip/rk3288/Kconfig               | 2 +-
  src/vendorcode/google/chromeos/Kconfig        | 2 +-
  src/vendorcode/google/chromeos/vboot2/Kconfig | 4 ++++
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ 4 files changed, 8 insertions(+), 2 deletions(-)
 
+diff --git a/src/lib/bootmode.c b/src/lib/bootmode.c
+index f2ff72a..13c0130 100644
+--- a/src/lib/bootmode.c
++++ b/src/lib/bootmode.c
+@@ -80,8 +80,10 @@ void gfx_set_init_done(int done)
+ int display_init_required(void)
+ {
+ 	/* For Chrome OS always honor vboot_skip_display_init(). */
++#if CONFIG_VBOOT_VERIFY_FIRMWARE
+ 	if (IS_ENABLED(CONFIG_CHROMEOS))
+ 		return !vboot_skip_display_init();
++#endif
+ 
+ 	/* By default always initialize display. */
+ 	return 1;
+diff --git a/src/soc/rockchip/rk3288/Kconfig b/src/soc/rockchip/rk3288/Kconfig
+index bc484e3..74a63e7 100644
+--- a/src/soc/rockchip/rk3288/Kconfig
++++ b/src/soc/rockchip/rk3288/Kconfig
+@@ -35,7 +35,7 @@ config SOC_ROCKCHIP_RK3288
+ 
+ if SOC_ROCKCHIP_RK3288
+ 
+-config CHROMEOS
++config VBOOT_VERIFY_FIRMWARE
+ 	select VBOOT_STARTS_IN_BOOTBLOCK
+ 	select SEPARATE_VERSTAGE
+ 	select RETURN_FROM_VERSTAGE
 diff --git a/src/vendorcode/google/chromeos/Kconfig b/src/vendorcode/google/chromeos/Kconfig
 index 8309d19..694e0d7 100644
 --- a/src/vendorcode/google/chromeos/Kconfig
