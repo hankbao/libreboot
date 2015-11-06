@@ -128,10 +128,10 @@ printf "ThinkPad T500 (depends on T400 patch)\n"
 git am "../resources/libreboot/patch/misc/0008-lenovo-t500-Add-clone-of-Lenovo-T400.patch"
 # git fetch http://review.coreboot.org/coreboot refs/changes/45/10545/1 && git cherry-pick FETCH_HEAD
 
-# Chromebook:
+# CrOS:
 
 printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
-git am "../resources/libreboot/patch/chromebook/0001-chromeos-Allow-disabling-vboot-firmware-verification.patch"
+git am "../resources/libreboot/patch/cros/0001-chromeos-Allow-disabling-vboot-firmware-verification.patch"
 
 # KGPE-D16 patches
 # new versions can be found at https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php

@@ -112,7 +112,7 @@ buildcoreboot() {
 	mv "coreboot.img" "$board/"
 	mv "ro-frid.img" "$board/"
 	# copy the scripts too
-	cp "../resources/libreboot/install/depthcharge/chromebook-flash-replace" "$board/"
+	cp "../resources/libreboot/install/depthcharge/cros-flash-replace" "$board/"
 	cp "../resources/libreboot/install/depthcharge/${board}/layout.txt" "$board/"
 	# delete the old images from ../bin
 	rm -Rf "../bin/depthcharge/${board}/"

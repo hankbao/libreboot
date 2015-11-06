@@ -17,7 +17,7 @@
 		<h1 id="pagetop">ASUS Chromebook C201</h1>
 
 			<p>
-				This is a chromebook, using the Rockchip RK3288 SoC. It uses
+				This is a Chromebook, using the Rockchip RK3288 SoC. It uses
 				an ARM CPU, and has free EC firmware (unlike some other laptops).
 				More RK3288-based laptops will be added to libreboot at a later date.
 			</p>
@@ -51,7 +51,7 @@
 
 	<div class="section">
 		<ul>
-			<li><a href="#googlesintent">Google's intent with Chromebooks</a></li>
+			<li><a href="#googlesintent">Google's intent with CrOS devices</a></li>
 			<li><a href="#os">Considerations about ChromeOS and free operating systems</a></li>
 			<li><a href="#videoblobs">Caution: Video acceleration requires a non-free blob, software rendering can be used instead.</a></li>
 			<li><a href="#wifiblobs">Caution: WiFi requires a non-free blob, a USB dongle can be used instead.</a></li>
@@ -63,17 +63,17 @@
 	</div>
 	
 	<div class="section">
-		<h1 id="googlesintent">Google's intent with Chromebooks</h1>
+		<h1 id="googlesintent">Google's intent with CrOS devices</h1>
 			<p>
-				Chromebooks were not designed with the intent of bringing more freedom to users.
-				However, Chromebooks run with a lot of free software at the boot software and embedded controller levels,
+				CrOS (Chromium OS/Chrome OS) devices, such as Chromebooks, were not designed with the intent of bringing more freedom to users.
+				However, they run with a lot of free software at the boot software and embedded controller levels,
 				since free software gives Google enough flexibility to optimize various aspects such as boot time
-				and most importantly, to implement the Chromebook security system, that involves various aspects of the software.
+				and most importantly, to implement the CrOS security system, that involves various aspects of the software.
 				Google does hire a lot of Coreboot developers, who are generally friendly to the free software movement
 				and try to be good members of the free software community, by contributing code back.
 			</p>
 			<p>
-				Chromebooks are designed (from the factory) to actually coax the user into using
+				CrOS devices are designed (from the factory) to actually coax the user into using
 				<a href="https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html">proprietary web services</a>
 				(SaaSS) that invade the user's privacy (ChromeOS is literally just the Google Chrome browser when you boot up, itself proprietary
 				and comes with proprietary add-ons like flash. It's only intended for SaaSS, not actual, real computing).
@@ -101,7 +101,7 @@
 			<h2>No FSF-endorsed distros available</h2>
 				<p>
 					The FSF has a <a href="https://www.gnu.org/distros/free-distros.html">list of distributions</a> that are 100% free software. None of these
-					are confirmed to work on ARM chromebooks yet. Parabola looks hopeful:
+					are confirmed to work on ARM CrOS devices yet. Parabola looks hopeful:
 					<a href="https://www.parabola.nu/news/parabola-supports-armv7/">https://www.parabola.nu/news/parabola-supports-armv7/</a>
 				</p>
 				<p>
@@ -199,7 +199,7 @@
 		<h1 id="depthcharge">Depthcharge payload</h1>
 			<p>
 				These systems do not use the GRUB payload. Instead, they use a payload called depthcharge,
-				which is common on Chromebooks. This is free software, maintained by Google.
+				which is common on CrOS devices. This is free software, maintained by Google.
 			</p>
 	</div>
 
@@ -219,8 +219,8 @@
 			<p>
 				Write protection is useful, because it prevents the firmware from being re-flashed by any malicious software that
 				might become executed on your GNU/Linux system, as root. In other words, it can prevent a firmware-level <i>evil maid</i> attack. It's
-				possible to write protect on all current libreboot systems, but chromebooks make it easy. The screw is such a stupidly
-				simple idea, which all laptop designs should implement.
+				possible to write protect on all current libreboot systems, but CrOS devices make it easy. The screw is such a stupidly
+				simple idea, which all designs should implement.
 			</p>
 	</div>
 
