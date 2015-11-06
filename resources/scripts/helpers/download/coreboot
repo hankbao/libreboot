@@ -53,7 +53,7 @@ git submodule update --init --checkout -- 3rdparty/vboot/
 cd "3rdparty/vboot/"
 
 # reset vboot to last known good revision
-git reset --hard fbf631c845c08299f0bcbae3f311c5807d34c0d6
+git reset --hard 82db93d5fc924860e4f1fb4cf24f29b5b335a480
 
 # Patch vboot
 # ------------------------------------------------------------------------------
