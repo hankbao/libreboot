@@ -36,7 +36,7 @@ for architecture in i386 arm; do
 	make -j$(nproc) -BC coreboot crossgcc-${architecture}
 done
 
-# cbfstool, ifdtool, cbmem, nvramtool
-for util in {cbfs,ifd,nvram}tool cbmem; do
+# cbfstool, cbmem, nvramtool
+for util in {cbfs,nvram}tool cbmem; do
    make -j$(nproc) -BC coreboot/util/${util}
 done
