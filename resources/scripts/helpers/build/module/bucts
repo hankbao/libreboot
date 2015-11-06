@@ -25,7 +25,7 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build BUC.TS utility (needed for flashing ROM's on X60/T60 while Lenovo BIOS is running)
+# Build BUC.TS utility (needed for flashing ROM images on X60/T60 while Lenovo BIOS is running)
 # --------------------------------------------------------------------
 
 printf "Building bucts\n"

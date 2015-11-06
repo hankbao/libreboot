@@ -133,12 +133,12 @@ done
 # prepare directory for new ROM images
 rm -Rf "${boardtarget:?}/"
 mkdir "${boardtarget}/"
-# move the ROM's into the newly created directory
+# move the ROM images into the newly created directory
 mv "${boardtarget}"*.rom "${boardtarget}/"
 
-# delete the old ROM's from ../bin
+# delete the old ROM images from ../bin
 rm -Rf "../bin/grub/${boardtarget}/"
-# now put the new ROM's in ./bin/grub/
+# now put the new ROM images in ./bin/grub/
 [ ! -d "../bin/grub/" ] && mkdir -p "../bin/grub/"
 mv "${boardtarget}/" "../bin/grub/"
 
