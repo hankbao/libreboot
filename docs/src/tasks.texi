@@ -1,0 +1,308 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Libreboot task list
+@end titlepage
+
+@node Top
+@top Libreboot task list
+
+@menu
+* Libreboot task list::
+* Important tasks for the libreboot project::
+* Special news that affects libreboot::
+* Board ports::
+* Platform-specific bugs::
+* Flashing from lenovobios to libreboot and vice versa::
+* Build system::
+* Improvements to the utilities::
+* Documentation improvements::
+* Project institutional improvements::
+* EC firmware::
+@end menu
+
+@node Libreboot task list
+@chapter Libreboot task list
+@anchor{#libreboot-task-list}
+Back to @uref{index.html,index.html}.
+
+@node Important tasks for the libreboot project
+@chapter Important tasks for the libreboot project
+@anchor{#important-tasks-for-the-libreboot-project}
+This page is part of the git repository, so feel free to submit patches adding to or removing from this list. (adapting the HTML should be simple enough)
+
+@node Special news that affects libreboot
+@chapter Special news that affects libreboot
+@anchor{#special-news-that-affects-libreboot}
+@itemize
+@item
+Coreboot (upstream) is adopting a new release model. See @uref{http://www.coreboot.org/pipermail/coreboot/2015-July/080120.html,http://www.coreboot.org/pipermail/coreboot/2015-July/080120.html} - TODO: think about how this affects libreboot, and see what can be done to make effective use of this policy change.
+@end itemize
+
+@node Board ports
+@chapter Board ports
+@anchor{#board-ports}
+@itemize
+@item
+Someone linked to @uref{https://www.phoronix.com/scan.php?page=news_item&px=XGI-Coreboot-FB-Port,this news post} about a PCI-E graphics card for which a free VBIOS replacement exists. This card uses the same chipset as the onboard GPU in the ASUS KFSN4-DRE mainboard, which is already supported in libreboot. This graphics card will allow certain desktop motherboards to be viable in libreboot.
+@item
+@uref{https://lkml.org/lkml/2014/9/4/172,patch for linux (kernel) to add coreboot framebuffer support}
+@item
+Libreboot has so far been biased towards Intel. This needs to end (the sooner, the better). A nice start:
+@itemize
+@item
+TYAN S8230 is very similar to KGPE-D16, and could probably be ported based on the KGPE-D16. Same GPU too. @uref{http://tyan.com/product_SKU_spec.aspx?ProductType=MB&pid=665&SKU=600000194,http://tyan.com/product_SKU_spec.aspx?ProductType=MB&pid=665&SKU=600000194}
+@itemize
+@item
+W83627 (SuperIO) might have a public datasheet. Board-specific wiring (PCI interrupts, DIMM voltage selection). etc. Board seems to use socketed SOIC-8 SPI flash according to tpearson, based on photos available online - looks like a ZIF socket or something else, a clip retaining the chip.
+@item
+tpearson says: Tyan seems to have done the same thing as Asus did and built a whole lot of custom power control circuitry out of FETs. According to this person, this will take much effort to reverse engineer.
+@item
+IPMI firmware is non-free but optional (for iKVM feature, remote management like Intel ME). Not sure if add-on module or baked in. In either case, it might be removed or otherwise excluded because it's a HUGE backdoor. Unlike Intel ME, this isn't signed so can be removed, and also replaced theoretically. Is the protocol standard public? If so, might be easy/feasible to replace with free code. @uref{https://github.com/facebook/openbmc,https://github.com/facebook/openbmc} - also linked from @uref{https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php,https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php} - might be possible adapt this. - You might need to use the vendor tools running from under the proprietary BIOS to wipe the Flash chip holding the IPMI firmware, if it's baked in. (on KGPE-D16, it's an @uref{http://www.servethehome.com/wp-content/uploads/2013/03/ASUS-ASMB6-iKVM-Module.png,add-on card} so just don't add the add-on card - also SOIC-16 according to tpearson. but not sure what form factor used on S8230 - it better not be bl***y WSON).
+@item
+SAS controller requires firmware, but optional. (same thing on KGPE-D16). Board also has SATA, so it's fine. NOTE: SAS firmware is already flashed onto the SAS controller, to a dedicated chip. Not uploaded/handled by coreboot or linux kernel.
+@item
+tpearson says: power control circuits are a potential issue, not a definite one. it all depends on how Tyan decided to wire things up if they engineered things properly, it should actually be transparent. ASUS did not, and required work to get it going (see the notes document)
+@end itemize
+
+@item
+Lenovo G505S (works without CPU microcode updates). Videos BIOS is not yet fully replaced (openatom doesn't have a working framebuffer, yet, but it can draw a bitmap in user space, using a special utility) - @uref{https://github.com/alterapraxisptyltd/openatom,openatom in github}. SMU needs replacing (ruik/funfuctor/patrickg/mrnuke might be able to help).
+@item
+F2A85-M and E350M1 (libreboot_*_headless.rom). Test openatom (video BIOS replacement). SMU firmware is a problem. XHCI firmware is a problem.
+@item
+@itemize
+@item
+ASUS Chromebook C201 was added, but there are also other RK3288 based devices in coreboot. Port them all!
+@item
+Other ARM based systems; tegra124 chromebooks, Jetson TK1 (non-free GPU microcode in kernel needs replacing. also xhci firmware, but optional (can still use ehci, we think))
+@end itemize
+
+@item
+@strong{This list needs to expand!}
+@end itemize
+
+@item
+That doesn't mean Intel is off the table just yet:
+@itemize
+@item
+Intel D510MO motherboard (desktop), pineview chipset. damo22 got raminit working, and is working on finishing the port for coreboot. southbridge NM10 (basically rebranded ich7). not sure about video init (does it have native graphics initialization?). TODO: review it for libreboot once damo22 pushes the code to coreboot for review. damo22 says it should work with several CPUs (Atom D510 D525 N5x etc - but he's unsure). TODO: find other boards similar that could be ported. damo22's one has an Intel Atom D510 CPU.
+@item
+ThinkPad W500: they all use switchable graphics (ATI+Intel). Unknown if PM45 is compatible with GM45.
+@item
+ThinkPad X61: ICH8, i965 lubko in #coreboot. @uref{https://github.com/lkundrak/coreboot/tree/x61,https://github.com/lkundrak/coreboot/tree/x61} - raminit still isn't done, there might be other parts that need to be finished (probably EC). This system comes with a ME, but it's optional like in GM45, and can be removed.
+@itemize
+@item
+T61: @uref{http://review.coreboot.org/#/c/8482/,http://review.coreboot.org/#/c/8482/}
+@end itemize
+
+@item
+ThinkPad R60, Z61 - probably very similar to X60/T60, with few modifications required (probably only the changes based on logs acquired by following @uref{http://www.coreboot.org/Motherboard_Porting_Guide,http://www.coreboot.org/Motherboard_Porting_Guide})
+@item
+Non-lenovo GM45 laptops:
+@itemize
+@end itemize
+
+@item
+@strong{Desktop} system: Dell Optiplex 755. There are @strong{lots} of these available online. ICH9. DDR2 RAM (needs work in coreboot). No EC (it's a desktop). It will require quite a bit of work in coreboot, but this is a very good candidate. The ME can probably be removed and disabled, using ich9gen without any modifications (or with few modifications). Where are the datasheets? Schematics?
+@end itemize
+
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Platform-specific bugs
+@chapter Platform-specific bugs
+@anchor{#platform-specific-bugs}
+@itemize
+@item
+GM45: suspend stopped working recently in libreboot.git, but worked in 20150518. Do a git bisect of coreboot for the relevant commit IDs, then implement a fix.
+@item
+Several serious bugs exist on the ThinkPad R500, which makes the system virtually unusable. See @uref{hcl/r500/index.html#issues,hcl/r500/index.html#issues}.
+@item
+GM45: investigate S3/raminit on all models (CPU stepping/cpuid). See @uref{hcl/x200.html#ram_s3_microcode,hcl/x200.html#ram_s3_microcode}
+@item
+all thinkpads: When the system is running, plugging in an ethernet cable doesn't always work (no network), you have to try several times. Booting with an ethernet cable attached is reliable. Debug this and fix it.
+@item
+KFSN4-DRE: investigate the 30 second bootblock delay. @uref{hcl/kfsn4-dre.html#issues,More info}
+@item
+KFSN4-DRE: jittery text-mode graphics. @uref{hcl/kfsn4-dre.html#issues,More info}
+@item
+Fix these issues on GM45/GS45 targets:
+@itemize
+@item
+X200: text-mode is broken. only framebuffer graphics work. 880101121e0cef5df3afda075809e2fbacf68ffe is the commit in coreboot that added native graphics initialization for GM45. The commit message says that text mode should work. tpearson tested with this revision, and it didn't work in text mode, so it looks like text mode never worked at all. It could be that it did work before phcoder submitted it, but then they made more changes that broke text mode, and didn't realize this. This means that a bisect is not possible.
+@item
+X60: on the latest coreboot-libre update lately (during June 2015), keyboard works intermittently. Bisect and fix.
+@item
+X200/X60: battery drained even while system is "off" on some systems. investigate. Could just be the Ethernet controller waiting for a Wake-on-LAN frame. 'ethtool -s net0 wol d' disables wake on lan until the next boot. There are a lot of ways to make it permanent: netctl. systemd, udev, cron - wake on lan was tested, and isn't the issue. It is probably how coreboot handles power off state (see the code that handles power_on_after_fail)
+@item
+Sound (internal speaker) broken on T500 (works in lenovobios). external speaker/headphones work. - probably a different hda_verb - @strong{different HDA verbs are now used, test this again} - worked while system was disassambled, but booted (loose), stopped working when re-assembling. Not sure what's going on here.
+@item
+Fix remaining incompatible LCD panels in native graphics on T500 and T400. See @uref{hcl/gm45_lcd.html,hcl/gm45_lcd.html}. - EDID related, or difference in how VGA ROM does init. Investigate.
+@item
+T400/T500/R400 (tested on T400): UART (serial port) doesn't work. Investigate. (already tried enabling early h8 dock option. some RE with superiotool is needed). - kmalkki has an R400. This person said they can be contracted for it.
+@end itemize
+
+@item
+@strong{Finish all work listed in @uref{future/index.html,future/index.html}}
+@item
+Fix these issues on i945 targets (X60/T60/macbook21)
+@itemize
+@item
+i945: fix VRAM size (currently 8MB. should be 64MB). See @uref{future/index.html#i945_vram_size,future/index.html#i945_vram_size}.
+@item
+Fix remaining incompatible LCD panels in native graphics on T60. See @uref{future/index.html#lcd_i945_incompatibility,future/index.html#lcd_i945_incompatibility}. - EDID related, or difference in how VGA ROM does init. Investigate.
+@item
+i945: the intel video driver used to initialize the display without native graphics initialization and without the extracted video BIOS. It no longer does, so investigate why it does not, and fix the regression (fix has to be done in the kernel, Linux). See @uref{http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html,http://www.coreboot.org/pipermail/coreboot/2014-June/078104.html} and @uref{http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html,http://www.coreboot.org/pipermail/coreboot/2014-June/078105.html}
+@item
+Add fake_vbt tables on i945 systems (also GM45).
+@item
+Commit 26ca08caf81ad2dcc9c8246a743d82ffb464c767 in coreboot, see the while (1) loop that waits for the panel to power up on i945. This is an infinite loop if the panel doesn't power up. Fix it. Also, are there panels that don't power up? Test this, and fix it.
+@end itemize
+
+@item
+Look into the notes an @uref{http://www.thinkwiki.org/wiki/Problem_with_high_pitch_noises,http://www.thinkwiki.org/wiki/Problem_with_high_pitch_noises}
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Flashing from lenovobios to libreboot and vice versa
+@chapter Flashing from lenovobios to libreboot (and vice versa)
+@anchor{#flashing-from-lenovobios-to-libreboot-and-vice-versa}
+@itemize
+@item
+mtjm says: francis7: please add this issue to your current tasks list (inspired by what GNUtoo-irssi wrote): have the script for flashing from Lenovo BIOS verify that the image is swapped (i.e. last 64 KiB is just 0xff bytes, second to last 64 KiB isn't) and fail before writing to flash if it isn't
+@item
+Implement everything outlined in @uref{hcl/gm45_remove_me.html#demefactory,hcl/gm45_remove_me.html#demefactory} and test it.
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Build system
+@chapter Build system
+@anchor{#build-system}
+@itemize
+@item
+Patch the coreboot build system, so that version information is still reliably generated (e.g. in the logs), which is currently lacking because libreboot deletes the .git directory (because the git history contains the deleted blobs, so libreboot has to delete it). It could just be a small patch that hardcodes the coreboot version information, for that coreboot version, each time libreboot rebases on a new version of coreboot.@*@* patrickg says: francis7: we have you covered: have your libreboot script add a file ".coreboot-version" to the top-level directory, containing the appropriate version number information. that will be used if git describe doesn't work (eg. because .git is missing)
+@item
+Make memtest86+ build using coreboot's own crossgcc toolchain. Currently, memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7
+@item
+Make libreboot (all of it!) build reproducibly. This is very important.
+@itemize
+@item
+Talk to h01ger in coreboot about the coreboot part (he did reproducible.debian.net/coreboot/coreboot.html
+@item
+h01ger says ------ fchmmr: please keep the reproducible-builds@@lists.alioth.debian.org mailing list posted - i'm aware of http://projects.mtjm.eu/work_packages/16 :-)
+@item
+@uref{https://reproducible.debian.net/coreboot/coreboot.html,https://reproducible.debian.net/coreboot/coreboot.html}
+@item
+check coreboot mailing list, eg: @uref{http://www.coreboot.org/pipermail/coreboot/2015-June/079994.html,http://www.coreboot.org/pipermail/coreboot/2015-June/079994.html}
+@item
+Check GRUB in Debian (or GRUB upstream) for how to make that reproducible if Debian has done this already (they are working on reproducible builds) - @strong{h01ger says reproducible.debian.net/grub2}
+@item
+@uref{https://wiki.debian.org/ReproducibleBuilds,https://wiki.debian.org/ReproducibleBuilds}
+@item
+Join #debian-reproducible on OFTC IRC.
+@item
+merged in master (coreboot) - pay attention to these, especially the fact that the reproducibility relies on git (libreboot uses coreboot without git, and the reason makes this unavoidable): @uref{http://review.coreboot.org/#/c/8616/,http://review.coreboot.org/#/c/8616/} @uref{http://review.coreboot.org/#/c/8617/,http://review.coreboot.org/#/c/8617/} @uref{http://review.coreboot.org/#/c/8618/,http://review.coreboot.org/#/c/8618/} @uref{http://review.coreboot.org/#/c/8619/,http://review.coreboot.org/#/c/8619/}
+@item
+not yet merged in master (coreboot: @uref{http://review.coreboot.org/#/c/10515/,http://review.coreboot.org/#/c/10515/} -- not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
+@end itemize
+
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Improvements to the utilities
+@chapter Improvements to the utilities
+@anchor{#improvements-to-the-utilities}
+@itemize
+@item
+Make ich9gen/ich9deblob portable. They both rely extensively on bitfields, and they assume little-endian; for instance, mapping a little endian file directly to a struct, instead of serializing/deserializing. Re-factor both utilities and make them fully portable.
+@item
+Make ich9gen/ich9deblob/demefactory show GPL license info via @emph{--version} argument.
+@item
+Adapt linux-libre deblob scripts for use with coreboot. Libreboot is already deblobbed using its own script, but updating it is still a bit too manual. linux-libre's deblob scripts do an excellent job and (adapted) will make it much easier to maintain coreboot-libre.
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Documentation improvements
+@chapter Documentation improvements
+@anchor{#documentation-improvements}
+@itemize
+@item
+Next release after 20150518, relating to the ASUS KFSN4-DRE:
+@itemize
+@item
+Remove the notes in release.html that say @emph{NOTE: not in libreboot 20150518. Only in git, for now.}
+@item
+Remove the note in hcl/kfsn4-dre.html that says @emph{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
+@item
+Remove the note in hcl/r500.html that says @emph{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
+@end itemize
+
+@item
+Next release after 20150518: note, mention that ACPI brightness methods for X60/T60 work again.
+@item
+Get /proc/ioports for all hw logs. (this was added to Motherboard Porting Guide recently) - other instructions were also added there. basically, get whatever extra logs are desirable, for all systems.
+@item
+Add info about FTDI FT232H usbdebug (BBB could be used for this): @uref{http://review.coreboot.org/#/c/10063,http://review.coreboot.org/#/c/10063}
+@item
+Add information from hw registers on all boards. Get them for the following remaining boards: X60, T60, macbook21, R400
+@item
+Add guides for GM45 laptops in security/
+@item
+Add guides for GM45 laptops in hardware/
+@item
+Convert documentation to use Latex (or whatever the GNU project requires) as source.
+@item
+LPC (eg PLCC socket) flashing guide is needed: @uref{http://blogs.coreboot.org/files/2013/07/vultureprog_shuttle_sbs.jpg,image}, @uref{http://blogs.coreboot.org/files/2013/08/vultureprog_probing.jpg,image}, @uref{http://blogs.coreboot.org/files/2013/06/superboosted2.jpg,image} - work with mrnuke on getting info about vultureprog PLCC flashing into libreboot. Libreboot needs server boards. @uref{https://github.com/mrnuke/vultureprog,https://github.com/mrnuke/vultureprog}, @uref{https://github.com/mrnuke/qiprog,https://github.com/mrnuke/qiprog}, @uref{https://github.com/mrnuke/vultureprog-hardware,https://github.com/mrnuke/vultureprog-hardware}. He also uses the sigrok logic analyzer (free/libre): @uref{http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945,http://www.dx.com/p/logic-analyzer-w-dupont-lines-and-usb-cable-for-scm-black-148945}
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node Project institutional improvements
+@chapter Project (institutional) improvements
+@anchor{#project-institutional-improvements}
+@itemize
+@item
+Add proper guidelines for contributions, like @emph{Development Guidelines} on the coreboot wiki. For instance, require @emph{Sign-off-by} in all commits for libreboot. Consulting with the FSF about this (licensing@@fsf.org).
+@item
+@strong{Libreboot needs to be factory firmware, not the replacement. It needs to be *the* firmware. Consult with the openlunchbox project (and maybe others) on getting hardware manufactured with libreboot support (out of the box, from the factory).} - rhombus tech might be interesting to contact (also projects like novena, and so on). eg @uref{http://rhombus-tech.net/community_ideas/laptop_15in/news/,http://rhombus-tech.net/community_ideas/laptop_15in/news/} - also see @uref{http://elinux.org/Embedded_Open_Modular_Architecture/EOMA-68,http://elinux.org/Embedded_Open_Modular_Architecture/EOMA-68}
+@item
+Set up a routine (project-wise) for testing each system with the latest kernel version.
+@item
+Define properly how to maintain libreboot (things to look out for, things to do on a release). It's somewhat documented now, but it's not perfect. Delegate tasks (to people that are reliable).
+@end itemize
+
+@ref{#pagetop,Back to top of page.}
+
+@node EC firmware
+@chapter EC firmware
+@anchor{#ec-firmware}
+@uref{http://www.coreboot.org/Embedded_controller,http://www.coreboot.org/Embedded_controller} Replace this on all libreboot targets. Some laptops use an extra SPI flash chip for the EC, some have EC in the main chip, some don't use SPI flash at all but have the firmware inside the EC chip itself. If the EC has integrated flash then you need to be able to get to the pins on the chip or be able to program them over LPC or SPI (if they have that feature). The lenovo laptops currently supported in libreboot all use H8 EC chips (contains flash inside the chip). Read the datasheets on how to externally flash the EC. Most CrOS devices run with a free EC firmware (@uref{https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/,https://chromium.googlesource.com/chromiumos/platform/ec/+/master/chip/}). - see @uref{http://blogs.coreboot.org/blog/2015/05/28/progress-gsoc-week-1/,http://blogs.coreboot.org/blog/2015/05/28/progress-gsoc-week-1/} (H8S EC, applies to thinkpads)
+
+@uref{https://github.com/lynxis/h8s-ec,https://github.com/lynxis/h8s-ec} @uref{https://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html,https://events.ccc.de/congress/2010/Fahrplan/events/4174.en.html}
+
+@uref{https://archive.org/details/27c3-4174-en-the_hidden_nemesis,https://archive.org/details/27c3-4174-en-the_hidden_nemesis}
+
+T60? @uref{http://ec.gnost.info/ec-18s/ec.html,http://ec.gnost.info/ec-18s/ec.html}
+
+@ref{#pagetop,Back to top of page.}
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

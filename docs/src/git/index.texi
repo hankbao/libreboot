@@ -1,0 +1,947 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Building libreboot from source
+@end titlepage
+
+@node Top
+@top Building libreboot from source
+
+@menu
+* Building libreboot from source::
+* Install build dependencies::
+* Get the full source code from metadata git clone::
+* How to build "bucts" for LenovoBIOS X60/X60S/X60T/T60::
+* How to build "flashrom"::
+* Configuring libreboot::
+* How to build the ROM images::
+@end menu
+
+@node Building libreboot from source
+@chapter Building libreboot from source
+@anchor{#building-libreboot-from-source}
+This section relates to building libreboot from source, and working with the git repository.
+
+Or @uref{../index.html,Back to main index}.
+
+@itemize
+@item
+@ref{#build_dependencies,Install build dependencies}
+@item
+@ref{#build_meta,Get the full source code from metadata (git clone)}
+@item
+@ref{#build_bucts,How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60)}
+@item
+@ref{#build_flashrom,How to build "flashrom"}
+@item
+@ref{#config,Configuring libreboot}
+@itemize
+@item
+@ref{#config_dmidecode,dmidecode}
+@item
+@ref{#config_grub,GRUB payload}
+@itemize
+@item
+@ref{#config_kfsn4-dre,ASUS KFSN4-DRE}
+@item
+@ref{#config_x60,ThinkPad X60, X60S and X60 Tablet}
+@item
+@ref{#config_t60,ThinkPad T60}
+@item
+@ref{#config_x200,ThinkPad X200}
+@item
+@ref{#config_r400,ThinkPad R400}
+@item
+@ref{#config_r500,ThinkPad R500}
+@item
+@ref{#config_t400,ThinkPad T400}
+@item
+@ref{#config_t500,ThinkPad T500}
+@item
+@ref{#config_macbook21,MacBook2,1}
+@item
+@ref{#config_qemu_i440fx_piix4,QEMU (x86 i440fx/piix4)}
+@item
+@ref{#config_qemu_q35_ich9,QEMU (x86 q35/ich9)}
+@end itemize
+
+@item
+@ref{#config_depthcharge,Depthcharge payload}
+@itemize
+@item
+@ref{#config_c201,ASUS Chromebook C201}
+@end itemize
+
+@end itemize
+
+@item
+@ref{#build,How to build the ROM images}
+@end itemize
+
+@node Install build dependencies
+@chapter Install build dependencies
+@anchor{#install-build-dependencies}
+Before doing anything, you need the dependencies first. This is true if you want to build libreboot from source, with either libreboot_src.tar.xz or git. @strong{If you are using libreboot_util.tar.xz (binary archive) then you can ignore this, because ROM images and statically compiled executables for the utilities are included.}
+
+For Trisquel 7, you can run the following command:@* $ @strong{sudo ./build dependencies trisquel7}
+
+For Parabola, you can run the following command:@* $ @strong{sudo ./build dependencies parabola}@* or:@* # @strong{./build dependencies parabola}
+
+For other GNU/Linux distributions, you can adapt the existing scripts.
+
+@ref{#pagetop,Back to top of page}
+
+@node Get the full source code from metadata git clone
+@chapter Get the full source code from metadata (git clone)
+@anchor{#get-the-full-source-code-from-metadata-git-clone}
+If you downloaded libreboot from git, then there are some steps to download and patch the source code for all relevant dependencies. The archive in the git repository used to be available as a tarball called 'libreboot_meta.tar.gz'. It contains 'metadata' (scripts) which define how the source was created (where it came from).
+
+You can use the scripts included to download everything.
+
+First, @ref{#build_dependencies,install the build dependencies}.
+
+Since libreboot makes extensive use of git, you need to configure git properly. If you have not yet configured git, then the minimum requirement is:@* $ @strong{git config --global user.name "Your Name"}@* $ @strong{git config --global user.email your@@emailaddress.com}@* This is what will also appear in git logs if you ever commit your own changes to a given repository. For more information, see @uref{http://git-scm.com/doc,http://git-scm.com/doc}.
+
+Another nice config for you (optional, but recommended):@* $ @strong{git config --global core.editor nano}@* $ @strong{git config --global color.status auto}@* $ @strong{git config --global color.branch auto}@* $ @strong{git config --global color.interactive auto}@* $ @strong{git config --global color.diff auto}
+
+After that, run the script:@* $ @strong{./download all}
+
+What this did was download everything (grub, coreboot, memtest86+, bucts, flashrom) at the versions last tested for this release, and patch them. Read the script in a text editor to learn more.
+
+To build the ROM images, see @ref{#build,#build}.
+
+@ref{#pagetop,Back to top of page.}
+
+@node How to build "bucts" for LenovoBIOS X60/X60S/X60T/T60
+@chapter How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60)
+@anchor{#how-to-build-bucts-for-lenovobios-x60x60sx60tt60}
+@strong{This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and T60. If you have coreboot or libreboot running already, ignore this.}
+
+BUC.TS isn't really specific to these laptops, but is a bit inside the a register in the chipset on some Intel systems.
+
+Bucts is needed when flashing in software the X60/X60S/X60T/T60 ROM while Lenovo BIOS is running; external flashing will be safe regardless. Each ROM contains identical data inside the two final 64K region in the file*. This corresponds to the final two 64K regions in the flash chip. Lenovo BIOS will prevent you from writing the final one, so running "@strong{bucts 1}" will set the system to boot from the other block instead (which is writeable along with everything beneath it when using a patched flashrom. see @ref{#build_flashrom,#build_flashrom}). After shutting down and booting up after the first flash of libreboot, the final 64K block is writeable so you flash the ROM again with an unpatched flashrom and run "@strong{bucts 0}" to make the system boot from the normal (highest) block again.
+
+*Libreboot ROM images have identical data in those two 64KiB regions because dd is used to do that, by the build system. If you're building from upstream (coreboot), you have to do it manually.
+
+BUC.TS is backed up (powered) by the NVRAM battery (or CMOS battery, as some people call it). On thinkpads, this is typically in a yellow plastic package with the battery inside, connected via power lines to the mainboard. Removing that battery removes power to BUC.TS, resetting the bit back to 0 (if you previously set it to 1).
+
+BUC.TS utility is included in libreboot_src.tar.xz and libreboot_util.tar.xz.@* @strong{If you downloaded from git, follow @ref{#build_meta,#build_meta} before you proceed.}
+
+"BUC" means "@strong{B}ack@strong{u}p @strong{C}ontrol" (it's a register) and "TS" means "@strong{T}op @strong{S}wap" (it's a status bit). Hence "bucts" (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
+
+If you have the binary release archive, you'll find executables under ./bucts/. Otherwise if you need to build from source, continue reading.
+
+First, @ref{#build_dependencies,install the build dependencies}.
+
+To build bucts, do this in the main directory:@* $ @strong{./build module bucts}
+
+To statically compile it, do this:@* $ @strong{./build module bucts static}
+
+The "builddeps" script in libreboot_src also makes use of builddeps-bucts.
+
+@ref{#pagetop,Back to top of page.}
+
+@node How to build "flashrom"
+@chapter How to build "flashrom"
+@anchor{#how-to-build-flashrom}
+Flashrom is the utility for flashing/dumping ROM images. This is what you will use to install libreboot.
+
+Flashrom source code is included in libreboot_src.tar.xz and libreboot_util.tar.xz.@* @strong{If you downloaded from git, follow @ref{#build_meta,#build_meta} before you proceed.}
+
+If you are using the binary release archive, then there are already binaries included under ./flashrom/. The flashing scripts will try to choose the correct one for you. Otherwise if you wish to re-build flashrom from source, continue reading.
+
+First, @ref{#build_dependencies,install the build dependencies}.
+
+To build it, do the following in the main directory:@* $ @strong{./build module flashrom}
+
+To statically compile it, do the following in the main directory:@* $ @strong{./build module flashrom static}
+
+After you've done that, under ./flashrom/ you will find the following executables:
+
+@itemize
+@item
+@strong{flashrom}
+@itemize
+@item
+For flashing while coreboot or libreboot is running.
+@end itemize
+
+@item
+@strong{flashrom_lenovobios_sst}
+@itemize
+@item
+This is patched for flashing while Lenovo BIOS is running on an X60 or T60 with the SST25VF016B (SST) flash chip.
+@end itemize
+
+@item
+@strong{flashrom_lenovobios_macronix}
+@itemize
+@item
+This is patched for flashing while Lenovo BIOS is running on an X60 or T60 with the MX25L1605D (Macronix) flash chip.
+@end itemize
+
+@end itemize
+
+The "builddeps" script in libreboot_src also makes use of builddeps-flashrom.
+
+@ref{#pagetop,Back to top of page.}
+
+@node Configuring libreboot
+@chapter Configuring libreboot
+@anchor{#configuring-libreboot}
+Before building a ROM in libreboot (or coreboot, for that matter), you need to configure it. Configuration files should already be included, so you don't need to do anything. This information is only for reference. If you are updating or modifying coreboot-libre, and need to update the configs in any way, refer to @uref{../maintain/index.html#newboard_libreboot,../maintain/index.html#newboard_libreboot}.
+
+If you've already built a kernel before, you know how to use this interface.
+@menu
+* dmidecode::
+* GRUB payload::
+* Depthcharge payload::
+@end menu
+
+@node dmidecode
+@section dmidecode
+@anchor{#dmidecode}
+There is certain information that can be useful to enter in particular:
+
+@itemize
+@item
+Local version string
+@item
+SMBIOS Serial Number
+@item
+SMBIOS Manufacturer
+@item
+SMBIOS Version
+@item
+SMBIOS Product name
+@end itemize
+
+This information can be obtained using:@* @strong{$ sudo dmidecode}@* @strong{# dmidecode}
+
+Specifically, it's good practise to enter the same information for libreboot that you found when running this with the original BIOS or firmware. @strong{libreboot has already done this for you. This information is for reference, in the hope that it will be useful.}
+
+In practise, this information is useless and you can just leave it on the defaults that coreboot uses (this is what libreboot does, on most boards).
+
+@node GRUB payload
+@section GRUB payload
+@anchor{#grub-payload}
+GRUB is one of the payloads that libreboot targets.
+
+Configurations are then saved as files called @strong{".config"}. Copies of each configuration used for each system type by the libreboot build scripts are stored in resources/libreboot/config/grub/
+@menu
+* ASUS KFSN4-DRE configuration file resources/libreboot/config/grub/kfsn4-dre/config::
+* ThinkPad X60 X60S and X60 Tablet configuration file resources/libreboot/config/grub/x60/config::
+* ThinkPad T60 configuration file resources/libreboot/config/grub/t60/config::
+* ThinkPad X200 configuration file resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config::
+* ThinkPad R400 configuration file resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config::
+* ThinkPad R500 configuration file resources/libreboot/config/grub/r500_4mb/config::
+* ThinkPad T400 configuration file resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config::
+* ThinkPad T500 configuration file resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config::
+* MacBook21 configuration file resources/libreboot/config/grub/macbook21/config::
+* QEMU x86 i440fx/piix4 configuration file resources/libreboot/config/grub/qemu_i440fx_piix4/config::
+* QEMU x86 q35/ich9 configuration file resources/libreboot/config/grub/qemu_q35_ich9/config::
+@end menu
+
+@node ASUS KFSN4-DRE configuration file resources/libreboot/config/grub/kfsn4-dre/config
+@subsection ASUS KFSN4-DRE configuration (file: resources/libreboot/config/grub/kfsn4-dre/config)
+@anchor{#asus-kfsn4-dre-configuration-file-resourceslibrebootconfiggrubkfsn4-dreconfig}
+@itemize
+@item
+General setup / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{ASUS}
+@item
+Mainboard / Mainboard model = @emph{KFSN4-DRE}
+@item
+Mainboard / ROM chip size = @emph{1024 KB (1 MB)}
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Generic Drivers / Digitizer = @emph{Present}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Now go back into Devices:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/kfsn4-dre/config} and is used by the build scripts for this system.
+
+@node ThinkPad X60 X60S and X60 Tablet configuration file resources/libreboot/config/grub/x60/config
+@subsection ThinkPad X60, X60S and X60 Tablet configuration (file: resources/libreboot/config/grub/x60/config)
+@anchor{#thinkpad-x60-x60s-and-x60-tablet-configuration-file-resourceslibrebootconfiggrubx60config}
+@itemize
+@item
+General setup / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad X60 / X60s / X60t}
+@item
+Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Generic Drivers / Digitizer = @emph{Present}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Now go back into Devices:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/x60/config} and is used by the build scripts for this system.
+
+This configuration is used on all variants: X60, X60S and X60 Tablet.
+
+@node ThinkPad T60 configuration file resources/libreboot/config/grub/t60/config
+@subsection ThinkPad T60 configuration (file: resources/libreboot/config/grub/t60/config)
+@anchor{#thinkpad-t60-configuration-file-resourceslibrebootconfiggrubt60config}
+@itemize
+@item
+General setup / Expert mode = @emph{enable}
+@item
+General setup / Local version string = @emph{79ETE7WW (2.27 )}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad T60 / T60p}
+@item
+Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
+@item
+System tables / SMBIOS Serial Number = @emph{L3DKE06}
+@item
+System tables / SMBIOS Version Number = @emph{ThinkPad T60}
+@item
+System tables / SMBIOS Manufacturer = @emph{LENOVO}
+@item
+System tables / SMBIOS Product name = @emph{1951FEG}
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back into Devices:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/t60/config} and is used by the build scripts for this system.
+
+It is believed that the motherboards on 14.1" and 15.1" T60s are the same, so the same configuration is used on both the 14.1" and 15.1" T60s.
+
+@node ThinkPad X200 configuration file resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config
+@subsection ThinkPad X200 configuration (file: resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config)
+@anchor{#thinkpad-x200-configuration-file-resourceslibrebootconfiggrubx200_4mbconfig-and-resourceslibrebootconfiggrubx200_8mbconfig}
+These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
+
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad X200}
+@item
+Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Generic Drivers / Digitizer = @emph{Present}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/x200_8mb/config} and resources/libreboot/config/@strong{grub/x200_4mb/config} and is used by the build scripts for this system.
+
+@node ThinkPad R400 configuration file resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config
+@subsection ThinkPad R400 configuration (file: resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config)
+@anchor{#thinkpad-r400-configuration-file-resourceslibrebootconfiggrubr400_4mbconfig-and-resourceslibrebootconfiggrubr400_8mbconfig}
+These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
+
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad R400}
+@item
+Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/r400_8mb/config} and resources/libreboot/config/@strong{grub/r400_4mb/config} and is used by the build scripts for this system.
+
+@node ThinkPad R500 configuration file resources/libreboot/config/grub/r500_4mb/config
+@subsection ThinkPad R500 configuration (file: resources/libreboot/config/grub/r500_4mb/config)
+@anchor{#thinkpad-r500-configuration-file-resourceslibrebootconfiggrubr500_4mbconfig}
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad R500}
+@item
+Mainboard / ROM chip size = @emph{4096 KB (4 MB)}
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Chipset / Size of CBFS filesystem in ROM = @emph{0x3FF000}
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/r500_4mb/config} and is used by the build scripts for this system.
+
+@node ThinkPad T400 configuration file resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config
+@subsection ThinkPad T400 configuration (file: resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config)
+@anchor{#thinkpad-t400-configuration-file-resourceslibrebootconfiggrubt400_4mbconfig-and-resourceslibrebootconfiggrubt400_8mbconfig}
+These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
+
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad T400}
+@item
+Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/t400_8mb/config} and resources/libreboot/config/@strong{grub/t400_4mb/config} and is used by the build scripts for this system.
+
+@node ThinkPad T500 configuration file resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config
+@subsection ThinkPad T500 configuration (file: resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config)
+@anchor{#thinkpad-t500-configuration-file-resourceslibrebootconfiggrubt500_4mbconfig-and-resourceslibrebootconfiggrubt500_8mbconfig}
+These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
+
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Lenovo}
+@item
+Mainboard / Mainboard model = @emph{ThinkPad T500}
+@item
+Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/t500_8mb/config} and resources/libreboot/config/@strong{grub/t500_4mb/config} and is used by the build scripts for this system.
+
+@node MacBook21 configuration file resources/libreboot/config/grub/macbook21/config
+@subsection MacBook2,1 configuration (file: resources/libreboot/config/grub/macbook21/config)
+@anchor{#macbook21-configuration-file-resourceslibrebootconfiggrubmacbook21config}
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+General / Local version string = @emph{"@ @ @ @ MB21.88Z.00A5.B07.0706270922"} (without the quotes)
+@item
+General / Use CMOS for configuration values = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Apple}
+@item
+Mainboard / Mainboard model = @emph{Macbook2,1 ICH7 TESTING}
+@item
+Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
+@item
+System tables / SMBIOS Serial Number = @emph{W8724XXXXXX}
+@item
+System tables / SMBIOS Version Number = @emph{1.0}
+@item
+System tables / SMBIOS Manufacturer = @emph{Apple Inc.}
+@item
+System tables / SMBIOS Product Name = @emph{MacBook2,1}
+@item
+Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
+@item
+Devices / Use native graphics initialization = @emph{enable}
+@item
+Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
+@item
+Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
+@item
+Generic Drivers / Type of dongle = @emph{}
+@item
+Console / USB dongle console output = @emph{enable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/macbook21/config} and is used by the build scripts for this system. @strong{This config is also used for the MacBook1,1}.
+
+@node QEMU x86 i440fx/piix4 configuration file resources/libreboot/config/grub/qemu_i440fx_piix4/config
+@subsection QEMU (x86 i440fx/piix4) configuration (file: resources/libreboot/config/grub/qemu_i440fx_piix4/config)
+@anchor{#qemu-x86-i440fxpiix4-configuration-file-resourceslibrebootconfiggrubqemu_i440fx_piix4config}
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Emulation}
+@item
+Mainboard / Mainboard model = @emph{QEMU x86 i440fx/piix4 (aka qemu -M pc)}
+@item
+Mainboard / ROM chip size = @emph{8192 KB (8 MB)}
+@item
+Devices / Use native graphics initialization = @emph{enable} (should already be enabled)
+@item
+Display / Keep VESA framebuffer = @emph{enable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time to enable coreboot text-mode for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/qemu_i440fx_piix4/config} and is used by the build scripts for this system.
+
+@node QEMU x86 q35/ich9 configuration file resources/libreboot/config/grub/qemu_q35_ich9/config
+@subsection QEMU (x86 q35/ich9) configuration (file: resources/libreboot/config/grub/qemu_q35_ich9/config)
+@anchor{#qemu-x86-q35ich9-configuration-file-resourceslibrebootconfiggrubqemu_q35_ich9config}
+@itemize
+@item
+General / Expert mode = @emph{enable}
+@item
+Mainboard / Mainboard vendor = @emph{Emulation}
+@item
+Mainboard / Mainboard model = @emph{QEMU x86 q35/ich9 (aka qemu -M q35)}
+@item
+Mainboard / ROM chip size = @emph{8192 KB (8 MB)}
+@item
+Devices / Use native graphics initialization = @emph{enable} (should already be enabled)
+@item
+Display / Keep VESA framebuffer = @emph{enable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
+@itemize
+@item
+Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time to enable coreboot text-mode for a separate set of ROM images, in each system.
+@end itemize
+
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{grub.elf}
+@end itemize
+
+Go back and disable option ROMs:
+
+@itemize
+@item
+Devices / Run VGA Option ROMs = @emph{disable}
+@item
+Devices / Run Option ROMs on PCI devices = @emph{disable}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{grub/qemu_q35_ich9/config} and is used by the build scripts for this system.
+
+@node Depthcharge payload
+@section Depthcharge payload
+@anchor{#depthcharge-payload}
+Depthcharge is one of the payloads that libreboot targets.
+
+Configurations are then saved as files called @strong{".config"}. Copies of each configuration used for each system type by the libreboot build scripts are stored in resources/libreboot/config/depthcharge/
+@menu
+* ASUS Chromebook C201 configuration file resources/libreboot/config/depthcharge/veyron_speedy/config::
+@end menu
+
+@node ASUS Chromebook C201 configuration file resources/libreboot/config/depthcharge/veyron_speedy/config
+@subsection ASUS Chromebook C201 configuration (file: resources/libreboot/config/depthcharge/veyron_speedy/config)
+@anchor{#asus-chromebook-c201-configuration-file-resourceslibrebootconfigdepthchargeveyron_speedyconfig}
+@itemize
+@item
+Mainboard / Mainboard vendor = @emph{Google}
+@item
+Mainboard / Mainboard model = @emph{Veyron_Speedy}
+@item
+Chipset / ChromeOS / Build for ChromeOS = @emph{enable}
+@item
+Chipset / ChromeOS / Verify firmware with vboot. = @emph{disable}
+@item
+Payload / Add a payload = @emph{An ELF executable payload}
+@item
+Payload / Payload path and filename = @emph{depthcharge.elf}
+@end itemize
+
+The resulting .config file was saved as resources/libreboot/config/@strong{depthcharge/veyron_speedy/config} and is used by the build scripts for this system.
+
+@ref{#pagetop,Back to top of page.}
+
+@node How to build the ROM images
+@chapter How to build the ROM images
+@anchor{#how-to-build-the-rom-images}
+You don't need to do much, as there are scripts already written for you that can build everything automatically.
+
+You can build libreboot from source on a 32-bit (i686) or 64-bit (x86_64) system. Recommended (if possible): x86_64. ASUS KFSN4-DRE has 64-bit CPUs. On a ThinkPad T60, you can replace the CPU (Core 2 Duo T5600, T7200 or T7600. T5600 recommended) for 64-bit support. On an X60s, you can replace the board with one that has a Core 2 Duo L7400 (you could also use an X60 Tablet board with the same CPU). On an X60, you can replace the board with one that has a Core 2 Duo T5600 or T7200 (T5600 is recommended). All MacBook2,1 laptops are 64-bit, as are all ThinkPad X200, X200S, X200 Tablet, R400, T400 and T500 laptops. Warning: MacBook1,1 laptops are all 32-bit only.
+
+First, @ref{#build_dependencies,install the build dependencies}.
+
+If you downloaded libreboot from git, refer to @ref{#build_meta,#build_meta}.
+
+Build all of the components used in libreboot:@* $ @strong{./build module all}
+
+You can also build each modules separately, using @emph{./build module modulename}. To see the possible values for @emph{modulename}, use:@* $ @strong{./build module list}
+
+After that, build the ROM images (for all boards):@* $ @strong{./build roms withgrub}@* Alternatively, you can build for a specific board or set of boards. For example:@* $ @strong{./build roms withgrub x60}@* $ @strong{./build roms withgrub x200_8mb}@* $ @strong{./build roms withgrub x60 x200_8mb}@* The list of board options can be found by looking at the directory names in @strong{resources/libreboot/config/grub/}.
+
+For those boards which use the depcharge payload, you must use: $ @strong{./build roms withdepthcharge}@* You can also build for a specific board or set of boards. For example:@* $ @strong{./build roms withdepthcharge veyron_speedy}
+
+To clean (reverse) everything, do the following:@* $ @strong{./build clean all}
+
+The ROM images will be stored under @strong{bin/@emph{payload}/}, where @emph{payload} could be @emph{grub}, @emph{depthcharge}, @emph{seabios}, or whatever other payload those images were built for.
+@menu
+* Preparing release archives optional::
+@end menu
+
+@node Preparing release archives optional
+@section Preparing release archives (optional)
+@anchor{#preparing-release-archives-optional}
+@strong{This is only confirmed to work (tested) in Trisquel 7. Parabola *fails* at this stage (for now). For all other distros, YMMV.}
+
+This is mainly intended for use with the git repository. These commands will work in the release archive (_src), unless otherwise noted below.
+
+The archives will appear under @emph{release/$@{version@}/}; $@{version@} will either be set using @emph{git describe} or, if a @emph{version} file already exists (_src release archive), then it will simply re-use that.
+
+Tag the current commit, and that version will appear in both the $@{version@} string on the directory under @emph{release/}, and in the file names of the archives. Otherwise, whatever git uses for @emph{git describe --tags HEAD} will be used.
+
+Utilities (static executables):@* $ @strong{./build release util}
+
+Archive containing flashrom and bucts source code:@* $ @strong{./build release tobuild}
+
+Documentation archive (@strong{does not work on _src release archive, only git}):@* $ @strong{./build release docs}
+
+ROM image archives:@* $ @strong{./build release roms}
+
+Source code archive:@* $ @strong{./build release src}
+
+SHA512 sums of all other release archives that have been generated:@* $ @strong{./build release sha512sums}
+
+If you are building on an i686 host, this will build statically linked 32-bit binaries in the binary release archive that you created, for: @strong{nvramtool, cbfstool, ich9deblob, cbmem}.
+
+If you are building on an x86_64 host, this will build statically linked 32- *and* 64-bit binaries for @strong{cbmem}, @strong{ich9deblob}, @strong{cbfstool} and @strong{nvramtool}.
+
+@strong{To include statically linked i686 and x86_64 binaries for bucts and flashrom, you will need to build them on a chroot, a virtual system or a real system where the host uses each given architecture. These packages are difficult to cross-compile, and the libreboot project is still figuring out how to deal with them.}
+
+The same applies if you want to include statically linked flashrom binaries for ARM.
+
+armv7l binaries (tested on a BeagleBone Black) are also included in libreboot_util, for:
+
+@itemize
+@item
+cbfstool
+@item
+ich9gen
+@item
+ich9deblob
+@item
+flashrom
+@end itemize
+
+If you are building binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:@* $ @strong{./build module flashrom static}@* $ @strong{./build module bucts static}
+
+The same conditions as above apply for ARM (except, building bucts on ARM is pointless, and for flashrom you only need the normal executable since the lenovobios_sst and _macronix executables are meant to run on an X60/T60 while lenovo bios is present, working around the security restrictions).
+
+The command that you used for generating the release archives will also run the following command:@* $ @strong{./build release tobuild}@* The archive @strong{tobuild.tar.xz} will have been created under @strong{release/}, containing bucts, flashrom and all other required resources for building them.
+
+You'll find that the files libreboot_util.tar.xz and libreboot_src.tar.xz have been created, under @strong{release/}.
+
+The ROM images will be stored in separate archives for each system, under @strong{release/rom/}.
+
+@ref{#pagetop,Back to top of page}
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

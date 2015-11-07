@@ -1,0 +1,284 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Libreboot documentation: Security on the ThinkPad T60
+@end titlepage
+
+@node Top
+@top Libreboot documentation: Security on the ThinkPad T60
+
+@menu
+* Security on the ThinkPad T60::
+* Table of Contents::
+* Hardware requirements::
+* Software requirements::
+* Rationale::
+* Disassembly::
+* Extra notes::
+* Further reading material software security::
+* References::
+@end menu
+
+@node Security on the ThinkPad T60
+@chapter Security on the ThinkPad T60
+@anchor{#security-on-the-thinkpad-t60}
+Hardware modifications to enhance security on the ThinkPad T60. This tutorial is @strong{incomplete} at the time of writing.
+
+@uref{index.html,Back to previous index}
+
+@node Table of Contents
+@chapter Table of Contents
+@anchor{#table-of-contents}
+@itemize
+@item
+@ref{#hardware_requirements,Hardware Requirements}
+@item
+@ref{#software_requirements,Software Requirements}
+@item
+@ref{#procedure,The procedure}
+@end itemize
+
+@node Hardware requirements
+@chapter Hardware requirements
+@anchor{#hardware-requirements}
+@itemize
+@item
+A T60
+@item
+screwdriver
+@item
+Rubbing or isopropyl alcohol, and thermal compound.
+@item
+(in a later version of this tutorial: soldering iron and scalpel)
+@end itemize
+
+@node Software requirements
+@chapter Software requirements
+@anchor{#software-requirements}
+@itemize
+@item
+none (at least in the scope of the article as-is)
+@item
+You probably want to encrypt your GNU/Linux install using LUKS
+@end itemize
+
+@node Rationale
+@chapter Rationale
+@anchor{#rationale}
+Most people think of security on the software side: the hardware is important aswell.
+
+This tutorial deals with reducing the number of devices that have direct memory access that could communicate with inputs/outputs that could be used to remotely command the system (or leak data). All of this is purely theoretical for the time being.
+
+@node Disassembly
+@chapter Disassembly
+@anchor{#disassembly}
+Remove those screws and remove the HDD:@* @image{../resources/images/t60_dev/0001,,,,JPG} @image{../resources/images/t60_dev/0002,,,,JPG}
+
+Lift off the palm rest:@* @image{../resources/images/t60_dev/0003,,,,JPG}
+
+Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{../resources/images/t60_dev/0004,,,,JPG} @image{../resources/images/t60_dev/0005,,,,JPG} @image{../resources/images/t60_dev/0006,,,,JPG}
+
+Gently wedge both sides loose:@* @image{../resources/images/t60_dev/0007,,,,JPG} @image{../resources/images/t60_dev/0008,,,,JPG}
+
+Remove that cable from the position:@* @image{../resources/images/t60_dev/0009,,,,JPG} @image{../resources/images/t60_dev/0010,,,,JPG}
+
+Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):@* @image{../resources/images/t60_dev/0011,,,,JPG}@* Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.@* @strong{Wifi:} The ath5k/ath9k cards might not have firmware at all. They might safe but could have access to the computer's RAM trough DMA. If people have an intel card(most T60 laptops come with Intel wifi by default, until you change it),then that card runs a non-free firwamre and has access to the computer's RAM trough DMA! So the risk-level is very high.
+
+Remove those screws:@* @image{../resources/images/t60_dev/0012,,,,JPG}
+
+Disconnect the power jack:@* @image{../resources/images/t60_dev/0013,,,,JPG}
+
+Remove nvram battery (we will put it back later):@* @image{../resources/images/t60_dev/0014,,,,JPG}
+
+Disconnect cable (for 56k modem) and disconnect the other cable:@* @image{../resources/images/t60_dev/0015,,,,JPG} @image{../resources/images/t60_dev/0016,,,,JPG}
+
+Disconnect speaker cable:@* @image{../resources/images/t60_dev/0017,,,,JPG}
+
+Disconnect the other end of the 56k modem cable:@* @image{../resources/images/t60_dev/0018,,,,JPG}
+
+Make sure you removed it:@* @image{../resources/images/t60_dev/0019,,,,JPG}
+
+Unscrew those:@* @image{../resources/images/t60_dev/0020,,,,JPG}
+
+Make sure you removed those:@* @image{../resources/images/t60_dev/0021,,,,JPG}
+
+Disconnect LCD cable from board:@* @image{../resources/images/t60_dev/0022,,,,JPG}
+
+Remove those screws then remove the LCD assembly:@* @image{../resources/images/t60_dev/0023,,,,JPG} @image{../resources/images/t60_dev/0024,,,,JPG} @image{../resources/images/t60_dev/0025,,,,JPG}
+
+Once again, make sure you removed those:@* @image{../resources/images/t60_dev/0026,,,,JPG}
+
+Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{../resources/images/t60_dev/0027,,,,JPG} @image{../resources/images/t60_dev/0028,,,,JPG} @image{../resources/images/t60_dev/0029,,,,JPG} @image{../resources/images/t60_dev/0031,,,,JPG} @image{../resources/images/t60_dev/0032,,,,JPG} @image{../resources/images/t60_dev/0033,,,,JPG}
+
+Remove microphone (soldering iron not needed. Just wedge it out gently):@* @image{../resources/images/t60_dev/0039,,,,JPG}@* @strong{Rationale:}@* Another reason to remove the microphone: If your computer gets@ref{#ref1,[1]} compromised, it can record what you say, and use it to receive data from nearby devices if they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically be programmed to accept remote commands from some speaker somewhere (remote security hole). @strong{In other words, the system could already be compromised from the factory.}
+
+Remove infrared:@* @image{../resources/images/t60_dev/0040,,,,JPG} @image{../resources/images/t60_dev/0042,,,,JPG}
+
+Remove cardbus (it's in a socket, no need to disable. Just remove the port itself):@* @image{../resources/images/t60_dev/0041,,,,JPG}@* @strong{Rationale:}@* It has direct memory access and can be used to extract sensitive details (such as LUKS keys). See 'GoodBIOS' video linked at the end (speaker is Peter Stuge, a coreboot hacker). The video covers X60 but the same topics apply to T60.
+
+Before re-installing the upper chassis, remove the speaker:@* @image{../resources/images/t60_dev/0043,,,,JPG} @image{../resources/images/t60_dev/0044,,,,JPG}@* Reason: combined with the microphone issue, this could be used to leak data.@* If your computer gets@ref{#ref1,[1]} compromised, it can be used to transmit data to nearby compromised devices. It's unknown if it can be turned into a microphone@ref{#ref2,[2]}.@* Replacement: headphones/speakers (line-out) or external DAC (USB).
+
+Remove the wwan:@* @image{../resources/images/t60_dev/0045,,,,JPG}@* @strong{Wwan (3g modem):} They run proprietary software! It's like AMT but over the GSM network which is probably even worse.@* Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
+
+This is where the simcard connector is soldered. See notes above about wwan. Remove simcard by removing battery and then it's accessible (so, remember to do this when you re-assemble. or you could do it now?)@* @image{../resources/images/t60_dev/0046,,,,JPG}
+
+Put those screws back:@* @image{../resources/images/t60_dev/0047,,,,JPG}
+
+Put it back into lower chassis:@* @image{../resources/images/t60_dev/0048,,,,JPG}
+
+Attach LCD and insert screws (also, attach the lcd cable to the board):@* @image{../resources/images/t60_dev/0049,,,,JPG}
+
+Insert those screws:@* @image{../resources/images/t60_dev/0050,,,,JPG}
+
+On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{../resources/images/t60_dev/0051,,,,JPG}
+
+Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{../resources/images/t60_dev/0052,,,,JPG}
+
+Reinstall that upper bezel:@* @image{../resources/images/t60_dev/0053,,,,JPG}
+
+Do that:@* @image{../resources/images/t60_dev/0054,,,,JPG} @image{../resources/images/t60_dev/0055,,,,JPG}
+
+Attach keyboard and install nvram battery:@* @image{../resources/images/t60_dev/0056,,,,JPG} @image{../resources/images/t60_dev/0057,,,,JPG}
+
+Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{../resources/images/t60_dev/0058,,,,JPG}
+
+Remove those covers and unscrew:@* @image{../resources/images/t60_dev/0059,,,,JPG} @image{../resources/images/t60_dev/0060,,,,JPG} @image{../resources/images/t60_dev/0061,,,,JPG}
+
+Gently pry off the front bezel (sorry, forgot to take pics).
+
+Remove bluetooth module:@* @image{../resources/images/t60_dev/0062,,,,JPG} @image{../resources/images/t60_dev/0063,,,,JPG}
+
+Re-attach the front bezel and re-insert the screws (sorry, forgot to take pics).
+
+It lives!@* @image{../resources/images/t60_dev/0071,,,,JPG} @image{../resources/images/t60_dev/0072,,,,JPG} @image{../resources/images/t60_dev/0073,,,,JPG}
+
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{../resources/images/t60_dev/0074,,,,JPG}
+@menu
+* Not covered yet::
+* Also not covered yet::
+@end menu
+
+@node Not covered yet
+@section Not covered yet:
+@anchor{#not-covered-yet}
+@itemize
+@item
+Disable flashing the ethernet firmware
+@item
+Disable SPI flash writes (can be re-enabled by unsoldering two parts)
+@item
+Disable use of xrandr/edid on external monitor (cut 2 pins on VGA)
+@item
+Disable docking station (might be possible to do it in software, in coreboot upstream as a Kconfig option)
+@end itemize
+
+Go to @uref{http://media.ccc.de/browse/congress/2013/30C3_-_5529_-_en_-_saal_2_-_201312271830_-_hardening_hardware_and_choosing_a_goodbios_-_peter_stuge.html,http://media.ccc.de/browse/congress/2013/30C3_-_5529_-_en_-_saal_2_-_201312271830_-_hardening_hardware_and_choosing_a_goodbios_-_peter_stuge.html} or directly to the video: @uref{http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm,http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm}.
+
+A lot of this tutorial is based on that video. Look towards the second half of the video to see how to do the above.
+
+@node Also not covered yet
+@section Also not covered yet:
+@anchor{#also-not-covered-yet}
+@itemize
+@item
+Intrusion detection: randomized seal on screws@* Just put nail polish with lot of glider on the important screws, take some good pictures. Keep the pictueres and make sure of their integrity. Compare the nail polish with the pictures before powering on the laptop.
+@item
+Tips about preventing/mitigating risk of cold boot attack.
+@itemize
+@item
+soldered RAM?
+@item
+wipe all RAM at boot/power-off/power-on? (patch in coreboot upstream?)
+@item
+ask gnutoo about fallback patches (counts number of boots)
+@end itemize
+
+@item
+General tips/advice and web links showing how to detect physical intrusions.
+@item
+For example: @uref{http://cs.tau.ac.il/~tromer/acoustic/,http://cs.tau.ac.il/~tromer/acoustic/} or @uref{http://cyber.bgu.ac.il/content/how-leak-sensitive-data-isolated-computer-air-gap-near-mobile-phone-airhopper,http://cyber.bgu.ac.il/content/how-leak-sensitive-data-isolated-computer-air-gap-near-mobile-phone-airhopper}.
+@item
+@uref{https://en.wikipedia.org/wiki/Tempest_%28codename%29,https://en.wikipedia.org/wiki/Tempest_%28codename%29}
+@item
+https://gitorious.org/gnutoo-for-coreboot/grub-assemble/source/a61f636797777a742f65f4c9c58032aa6a9b23c3:
+@end itemize
+
+@node Extra notes
+@chapter Extra notes
+@anchor{#extra-notes}
+EC: Cannot be removed but can be mitigated: it contains non-free non-loadable code, but it has no access to the computer's RAM. It has access to the on-switch of the wifi, bluetooth, modem and some other power management features. The issue is that it has access to the keyboard, however if the software security howto @strong{(not yet written)} is followed correctly, it won't be able to leak data to a local attacker. It has no network access but it may still be able to leak data remotely, but that requires someone to be nearby to recover the data with the help of an SDR and some directional antennas@ref{#ref3,[3]}.
+
+@uref{http://www.coreboot.org/Intel_82573_Ethernet_controller,Intel 82573 Ethernet controller} on the X60 seems safe, according to Denis.
+@menu
+* Risk level::
+@end menu
+
+@node Risk level
+@section Risk level
+@anchor{#risk-level}
+@itemize
+@item
+Modem (3g/wwan): highest
+@item
+Intel wifi: Near highest
+@item
+Atheros PCI wifi: unknown, but lower than intel wifi.
+@item
+Microphone: only problematic if the computer gets compromised.
+@item
+Speakers: only problematic if the computer gets compromised.
+@item
+EC: can be mitigated if following the guide on software security.
+@end itemize
+
+@node Further reading material software security
+@chapter Further reading material (software security)
+@anchor{#further-reading-material-software-security}
+@itemize
+@item
+@uref{../gnulinux/encrypted_trisquel.html,Installing Trisquel GNU/Linux with full disk encryption (including /boot)}
+@item
+@uref{../gnulinux/encrypted_parabola.html,Installing Parabola GNU/Linux with full disk encryption (including /boot)}
+@item
+@uref{dock.html,Notes about DMA access and the docking station}
+@end itemize
+
+@node References
+@chapter References
+@anchor{#references}
+@menu
+* [1] physical access::
+* [2] microphone::
+* [3] Video CCC::
+@end menu
+
+@node [1] physical access
+@section [1] physical access
+@anchor{#physical-access}
+Explain that black hats, TAO, and so on might use a 0day to get in, and explain that in this case it mitigates what the attacker can do. Also the TAO do some evaluation before launching an attack: they take the probability of beeing caught into account, along with the kind of target. A 0day costs a lot of money, I heard that it was from 100000$ to 400000$, some other websites had prices 10 times lower but that but it was probably a typo. So if people increase their security it makes it more risky and more costly to attack people.
+
+@node [2] microphone
+@section [2] microphone
+@anchor{#microphone}
+It's possible to turn headphones into a microphone, you could try yourself, however they don't record loud at all. Also intel cards have the capability to change a connector's function, for instance the microphone jack can now become a headphone plug, that's called retasking. There is some support for it in GNU/Linux but it's not very well known.
+
+@node [3] Video CCC
+@section [3] Video (CCC)
+@anchor{#video-ccc}
+30c3-5356-en-Firmware_Fat_Camp_webm.webm from the 30th CCC. While their demo is experimental(their hardware also got damaged during the transport), the spies probably already have that since a long time. @uref{http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm,http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm}
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

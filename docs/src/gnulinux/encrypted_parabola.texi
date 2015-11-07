@@ -1,0 +1,414 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Installing Parabola GNU/Linux with full disk encryption (including /boot)
+@end titlepage
+
+@node Top
+@top Installing Parabola GNU/Linux with full disk encryption (including /boot)
+
+@menu
+* Installing Parabola GNU/Linux with full disk encryption including /boot::
+* Troubleshooting::
+@end menu
+
+@node Installing Parabola GNU/Linux with full disk encryption including /boot
+@chapter Installing Parabola GNU/Linux with full disk encryption (including /boot)
+@anchor{#installing-parabola-gnulinux-with-full-disk-encryption-including-boot}
+Libreboot on x86 uses the GRUB @uref{http://www.coreboot.org/Payloads#GRUB_2,payload} by default, which means that the GRUB configuration file (where your GRUB menu comes from) is stored directly alongside libreboot and it's GRUB payload executable, inside the flash chip. In context, this means that installing distributions and managing them is handled slightly differently compared to traditional BIOS systems.
+
+On most systems, the /boot partition has to be left unencrypted while the others are encrypted. This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical access to the system.
+
+@strong{This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.}
+
+@uref{index.html,Back to previous index}
+
+Boot Parabola's install environment. @uref{grub_boot_installer.html,How to boot a GNU/Linux installer}.
+
+For this guide I used the 2015 08 01 image to boot the live installer and install the system. This is available at @uref{https://wiki.parabola.nu/Get_Parabola#Main_live_ISO,this page}.
+
+This guide will go through the installation steps taken at the time of writing, which may or may not change due to the volatile nature of Parabola (it changes all the time). In general most of it should remain the same. If you spot mistakes, please say so! This guide will be ported to the Parabola wiki at a later date. For up to date Parabola install guide, go to the Parabola wiki. This guide essentially cherry picks the useful information (valid at the time of writing: 2015-08-25).
+
+This section deals with wiping the storage device on which you plan to install Parabola GNU/Linux. Follow these steps, but if you use an SSD, also:
+
+- beware there are issues with TRIM (not enabled through luks) and security issues if you do enable it. See @uref{https://wiki.archlinux.org/index.php/Dm-crypt/Specialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29,this page} for more info.
+
+- make sure it's brand-new (or barely used). Or, otherwise, be sure that it never previously contained plaintext copies of your data.
+
+- make sure to read @uref{https://wiki.archlinux.org/index.php/Solid_State_Drives,this article}. Edit /etc/fstab later on when chrooted into your install. Also, read the whole article and keep all points in mind, adapting them for this guide.
+
+Wipe the MBR (if you use MBR):@* # @strong{lsblk}@* Your storage is probably /dev/sda, but be very sure to double check this or you WILL lose your data!@* # @strong{dd if=/dev/zero of=/dev/sda bs=446 count=1; sync}@* Never use SeaBIOS! The MBR section can easily be changed with malicious code, which SeaBIOS will blindly execute. This guide is for libreboot with GRUB-as-payload only.
+
+Securely wipe the drive:@* # @strong{dd if=/dev/urandom of=/dev/sda; sync}@* NOTE: If you have an SSD, only do this the first time. If it was already LUKS-encrypted before, use the info below to wipe the LUKS header. Also, check online for your SSD what the recommended erase block size is. For example if it was 2MiB:@* # @strong{dd if=/dev/urandom of=/dev/sda bs=2M; sync}
+
+If your drive was already LUKS encrypted (maybe you are re-installing your distro) then it is already 'wiped'. You should just wipe the LUKS header. @uref{https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/,https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/} showed me how to do this. It recommends doing the first 3MiB. Now, that guide is recommending putting zero there. I'm going to use urandom. Do this:@* # @strong{head -c 3145728 /dev/urandom > /dev/sda; sync}@* (Wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
+@menu
+* Change keyboard layout::
+* Establish an internet connection::
+* Getting started::
+* dm-mod::
+* Create LUKS partition::
+* Create LVM::
+* Create / and swap partitions and mount::
+* Continue with Parabola installation::
+* Configure the system::
+* Extra security tweaks::
+* Unmount reboot!::
+* Booting from GRUB::
+* Follow-up tutorial configuring Parabola::
+* Modify grubcfg inside the ROM::
+* Bonus Using a key file to unlock /boot/::
+* Further security tips::
+@end menu
+
+@node Change keyboard layout
+@section Change keyboard layout
+@anchor{#change-keyboard-layout}
+Parabola live shell assumes US Qwerty. If you have something different, list the available keymaps and use yours:@* # @strong{localectl list-keymaps}@* # @strong{loadkeys LAYOUT}@* For me, LAYOUT would have been dvorak-uk.
+
+@node Establish an internet connection
+@section Establish an internet connection
+@anchor{#establish-an-internet-connection}
+Refer to @uref{https://wiki.parabola.nu/Beginners%27_guide#Establish_an_internet_connection,this guide}. Wired is recommended, but wireless is also explained there.
+
+@node Getting started
+@section Getting started
+@anchor{#getting-started}
+The beginning is based on @uref{https://wiki.parabolagnulinux.org/Installation_Guide,https://wiki.parabolagnulinux.org/Installation_Guide}. Then I referred to @uref{https://wiki.archlinux.org/index.php/Partitioning,https://wiki.archlinux.org/index.php/Partitioning} at first.
+
+@node dm-mod
+@section dm-mod
+@anchor{#dm-mod}
+device-mapper will be used - a lot. Make sure that the kernel module is loaded:@* # @strong{modprobe dm-mod}
+
+@node Create LUKS partition
+@section Create LUKS partition
+@anchor{#create-luks-partition}
+I am using MBR partitioning, so I use cfdisk:@* # @strong{cfdisk /dev/sda}
+
+I create a single large sda1 filling the whole drive, leaving it as the default type 'Linux' (83).
+
+Now I refer to @uref{https://wiki.archlinux.org/index.php/Dm-crypt/Drive_preparation#Partitioning,https://wiki.archlinux.org/index.php/Dm-crypt/Drive_preparation#Partitioning}:@* I am then directed to @uref{https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption,https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption}.
+
+Parabola forces you to RTFM. Do that.
+
+It tells me to run:@* # @strong{cryptsetup benchmark} (for making sure the list below is populated)@* Then:@* # @strong{cat /proc/crypto}@* This gives me crypto options that I can use. It also provides a representation of the best way to set up LUKS (in this case, security is a priority; speed, a distant second). To gain a better understanding, I am also reading:@* # @strong{man cryptsetup}
+
+Following that page, based on my requirements, I do the following based on @uref{https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode,https://wiki.archlinux.org/index.php/Dm-crypt/Device_encryption#Encryption_options_for_LUKS_mode}. Reading through, it seems like Serpent (encryption) and Whirlpool (hash) is the best option.
+
+I am initializing LUKS with the following:@* # @strong{cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash whirlpool --use-random --verify-passphrase luksFormat /dev/sda1} Choose a @strong{secure} passphrase here. Ideally lots of lowercase/uppercase numbers, letters, symbols etc all in a random pattern. The password length should be as long as you are able to handle without writing it down or storing it anywhere.
+
+Use of the @emph{diceware method} is recommended, for generating secure passphrases (instead of passwords).
+
+@node Create LVM
+@section Create LVM
+@anchor{#create-lvm}
+Now I refer to @uref{https://wiki.archlinux.org/index.php/LVM,https://wiki.archlinux.org/index.php/LVM}.
+
+Open the LUKS partition:@* # @strong{cryptsetup luksOpen /dev/sda1 lvm}@* (it will be available at /dev/mapper/lvm)
+
+Create LVM partition:@* # @strong{pvcreate /dev/mapper/lvm}@* Show that you just created it:@* # @strong{pvdisplay}
+
+Now I create the volume group, inside of which the logical volumes will be created:@* # @strong{vgcreate matrix /dev/mapper/lvm}@* (volume group name is 'matrix' - choose your own name, if you like) Show that you created it:@* # @strong{vgdisplay}
+
+Now create the logical volumes:@* # @strong{lvcreate -L 2G matrix -n swapvol} (2G swap partition, named swapvol)@* Again, choose your own name if you like. Also, make sure to choose a swap size of your own needs. It basically depends on how much RAM you have installed. I refer to @uref{http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space,http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space}.@* # @strong{lvcreate -l +100%FREE matrix -n rootvol} (single large partition in the rest of the space, named rootvol)@* You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example, if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system). For a home/laptop system (typical use case), a root and a swap will do (really).
+
+Verify that the logical volumes were created, using the following command:@* # @strong{lvdisplay}
+
+@node Create / and swap partitions and mount
+@section Create / and swap partitions, and mount
+@anchor{#create-and-swap-partitions-and-mount}
+For the swapvol LV I use:@* # @strong{mkswap /dev/mapper/matrix-swapvol}@* Activate swap:@* # @strong{swapon /dev/matrix/swapvol}
+
+For the rootvol LV I use:@* # @strong{mkfs.ext4 /dev/mapper/matrix-rootvol}
+
+Mount the root (/) partition:@* # @strong{mount /dev/matrix/rootvol /mnt}
+
+@node Continue with Parabola installation
+@section Continue with Parabola installation
+@anchor{#continue-with-parabola-installation}
+This guide is really about GRUB, Parabola and cryptomount. I have to show how to install Parabola so that the guide can continue.
+
+Now I am following the rest of @uref{https://wiki.parabolagnulinux.org/Installation_Guide,https://wiki.parabolagnulinux.org/Installation_Guide}. I also cross referenced @uref{https://wiki.archlinux.org/index.php/Installation_guide,https://wiki.archlinux.org/index.php/Installation_guide}.
+
+Create /home and /boot on rootvol mountpoint:@* # @strong{mkdir -p /mnt/home}@* # @strong{mkdir -p /mnt/boot}
+
+Once all the remaining partitions, if any, have been mounted, the devices are ready to install Parabola.
+
+In @strong{/etc/pacman.d/mirrorlist}, comment out all lines except the Server line closest to where you are (I chose the UK Parabola server (main server)) and then did:@* # @strong{pacman -Syy}@* # @strong{pacman -Syu}@* # @strong{pacman -Sy pacman} (and then I did the other 2 steps above, again)@* In my case I did the steps in the next paragraph, and followed the steps in this paragraph again.
+
+<troubleshooting>@* @ @ @ The following is based on 'Verification of package signatures' in the Parabola install guide.@* @ @ @ Check there first to see if steps differ by now.@* @ @ @ Now you have to update the default Parabola keyring. This is used for signing and verifying packages:@* @ @ @ # @strong{pacman -Sy parabola-keyring}@* @ @ @ It says that if you get GPG errors, then it's probably an expired key and, therefore, you should do:@* @ @ @ # @strong{pacman-key --populate parabola}@* @ @ @ # @strong{pacman-key --refresh-keys}@* @ @ @ # @strong{pacman -Sy parabola-keyring}@* @ @ @ To be honest, you should do the above anyway. Parabola has a lot of maintainers, and a lot of keys. Really!@* @ @ @ If you get an error mentioning dirmngr, do:@* @ @ @ # @strong{dirmngr </dev/null}@* @ @ @ Also, it says that if the clock is set incorrectly then you have to manually set the correct time @* @ @ @ (if keys are listed as expired because of it):@* @ @ @ # @strong{date MMDDhhmm[[CC]YY][.ss]}@* @ @ @ I also had to install:@* @ @ @ # @strong{pacman -S archlinux-keyring}@* @ @ @ # @strong{pacman-key --populate archlinux}@* @ @ @ In my case I saw some conflicting files reported in pacman, stopping me from using it.@* @ @ @ I deleted the files that it mentioned and then it worked. Specifically, I had this error:@* @ @ @ @emph{licenses: /usr/share/licenses/common/MPS exists in filesystem}@* @ @ @ I rm -Rf'd the file and then pacman worked. I'm told that the following would have also made it work:@* @ @ @ # @strong{pacman -Sf licenses}@* </troubleshooting>@*
+
+I also like to install other packages (base-devel, compilers and so on) and wpa_supplicant/dialog/iw/wpa_actiond are needed for wireless after the install:@* # @strong{pacstrap /mnt base base-devel wpa_supplicant dialog iw wpa_actiond}
+
+@node Configure the system
+@section Configure the system
+@anchor{#configure-the-system}
+Generate an fstab - UUIDs are used because they have certain advantages (see @uref{https://wiki.parabola.nu/Fstab#Identifying_filesystems,https://wiki.parabola.nu/Fstab#Identifying_filesystems}. If you prefer labels instead, replace the -U option with -L):@* # @strong{genfstab -U -p /mnt >> /mnt/etc/fstab}@* Check the created file:@* # @strong{cat /mnt/etc/fstab}@* (If there are any errors, edit the file. Do @strong{NOT} run the genfstab command again!)
+
+Chroot into new system:@* # @strong{arch-chroot /mnt /bin/bash}
+
+It's a good idea to have this installed:@* # @strong{pacman -S linux-libre-lts}
+
+It was also suggested that you should install this kernel (read up on what GRSEC is):@* # @strong{pacman -S linux-libre-grsec}
+
+This is another kernel that sits inside /boot, which you can use. LTS means 'long-term support'. These are so-called 'stable' kernels that can be used as a fallback during updates, if a bad kernel causes issues for you.
+
+Parabola does not have wget. This is sinister. Install it:@* # @strong{pacman -S wget}
+
+Locale:@* # @strong{nano /etc/locale.gen}@* Uncomment your needed localisations. For example en_GB.UTF-8 (UTF-8 is highly recommended over other options).@* # @strong{locale-gen}@* # @strong{echo LANG=en_GB.UTF-8 > /etc/locale.conf}@* # @strong{export LANG=en_GB.UTF-8}
+
+Console font and keymap:@* # @strong{nano /etc/vconsole.conf}@* In my case:
+
+@verbatim
+KEYMAP=dvorak-uk
+FONT=Lat9w-16
+@end verbatim
+
+Time zone:@* # @strong{ln -s /usr/share/zoneinfo/Europe/London /etc/localtime}@* (Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
+
+Hardware clock:@* # @strong{hwclock --systohc --utc}
+
+Hostname: Write your hostname to /etc/hostname. For example, if your hostname is parabola:@* # @strong{echo parabola > /etc/hostname}@* Add the same hostname to /etc/hosts:@* # @strong{nano /etc/hosts}@*
+
+@verbatim
+#<ip-address> <hostname.domain.org> <hostname>
+127.0.0.1   localhost.localdomain   localhost   parabola
+::1     localhost.localdomain   localhost   parabola
+@end verbatim
+
+Configure the network: Refer to @uref{https://wiki.parabola.nu/Beginners%27_guide#Configure_the_network,https://wiki.parabola.nu/Beginners%27_guide#Configure_the_network}.
+
+Mkinitcpio: Configure /etc/mkinitcpio.conf as needed (see @uref{https://wiki.parabola.nu/Mkinitcpio,https://wiki.parabola.nu/Mkinitcpio}). Runtime modules can be found in /usr/lib/initcpio/hooks, and build hooks can be found in /usr/lib/initcpio/install. (# @strong{mkinitcpio -H hookname} gives information about each hook.) Specifically, for this use case:@* # @strong{nano /etc/mkinitcpio.conf}@* Then modify the file like so:
+
+@itemize
+@item
+MODULES="i915"
+@item
+This forces the driver to load earlier, so that the console font isn't wiped out after getting to login)
+@item
+HOOKS="base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown"
+@item
+Explanation:
+@item
+keymap adds to initramfs the keymap that you specified in /etc/vconsole.conf
+@item
+consolefont adds to initramfs the font that you specified in /etc/vconsole.conf
+@item
+encrypt adds LUKS support to the initramfs - needed to unlock your disks at boot time
+@item
+lvm2 adds LVM support to the initramfs - needed to mount the LVM partitions at boot time
+@item
+shutdown is needed according to Parabola wiki for unmounting devices (such as LUKS/LVM) during shutdown)
+@end itemize
+
+Now using mkinitcpio, you can create the kernel and ramdisk for booting with (this is different from Arch, specifying linux-libre instead of linux):@* # @strong{mkinitcpio -p linux-libre}@* Also do it for linux-libre-lts:@* # @strong{mkinitcpio -p linux-libre-lts}@* Also do it for linux-libre-grsec:@* # @strong{mkinitcpio -p linux-libre-grsec}
+
+Set the root password: At the time of writing, Parabola used SHA512 by default for its password hashing. I referred to @uref{https://wiki.archlinux.org/index.php/SHA_password_hashes,https://wiki.archlinux.org/index.php/SHA_password_hashes}.@* # @strong{nano /etc/pam.d/passwd}@* Add rounds=65536 at the end of the uncommented 'password' line.@* # @strong{passwd root}@* Make sure to set a secure password! Also, it must never be the same as your LUKS password.
+
+Use of the @emph{diceware method} is recommended, for generating secure passphrases (instead of passwords).
+
+@node Extra security tweaks
+@section Extra security tweaks
+@anchor{#extra-security-tweaks}
+Based on @uref{https://wiki.archlinux.org/index.php/Security,https://wiki.archlinux.org/index.php/Security}.
+
+Restrict access to important directories:@* # @strong{chmod 700 /boot /etc/@{iptables,arptables@}}
+
+Lockout user after three failed login attempts:@* Edit the file /etc/pam.d/system-login and comment out that line:@* @emph{# auth required pam_tally.so onerr=succeed file=/var/log/faillog}@* Or just delete it. Above it, put:@* @emph{auth required pam_tally.so deny=2 unlock_time=600 onerr=succeed file=/var/log/faillog}@* To unlock a user manually (if a password attempt is failed 3 times), do:@* # @strong{pam_tally --user @emph{theusername} --reset} What the above configuration does is lock the user out for 10 minutes, if they make 3 failed login attempts.
+
+Configure sudo - not covered here. Will be covered post-installation in another tutorial, at a later date. If this is a single-user system, you don't really need sudo.
+
+@node Unmount reboot!
+@section Unmount, reboot!
+@anchor{#unmount-reboot}
+Exit from chroot:@* # @strong{exit}
+
+unmount:@* # @strong{umount -R /mnt}@* # @strong{swapoff -a}
+
+deactivate the lvm lv's:@* # @strong{lvchange -an /dev/matrix/rootvol}@* # @strong{lvchange -an /dev/matrix/swapvol}@*
+
+Lock the encrypted partition (close it):@* # @strong{cryptsetup luksClose lvm}
+
+# @strong{shutdown -h now}@* Remove the installation media, then boot up again.
+
+@node Booting from GRUB
+@section Booting from GRUB
+@anchor{#booting-from-grub}
+Initially you will have to boot manually. Press C to get to the GRUB command line. The underlined parts are optional (using those 2 underlines will boot lts kernel instead of normal).
+
+grub> @strong{cryptomount -a}@* grub> @strong{set root='lvm/matrix-rootvol'}@* grub> @strong{linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root}@* grub> @strong{initrd /boot/initramfs-linux-libre-lts.img}@* grub> @strong{boot}@*
+
+You could also make it load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
+
+@node Follow-up tutorial configuring Parabola
+@section Follow-up tutorial: configuring Parabola
+@anchor{#follow-up-tutorial-configuring-parabola}
+We will modify grub.config inside the ROM and do all kinds of fun stuff, but I recommend that you first transform the current bare-bones Parabola install into a more useable system. Doing so will make the upcoming ROM modifications MUCH easier to perform and less risky! @uref{configuring_parabola.html,configuring_parabola.html} shows my own notes post-installation. Using these, you can get a basic system similar to the one that I chose for myself. You can also cherry pick useful notes and come up with your own system. Parabola is user-centric, which means that you are in control. For more information, read @uref{https://wiki.archlinux.org/index.php/The_Arch_Way,The Arch Way} (Parabola also follows it).
+
+@node Modify grubcfg inside the ROM
+@section Modify grub.cfg inside the ROM
+@anchor{#modify-grub.cfg-inside-the-rom}
+(Re-)log in to your system, pressing C, so booting manually from GRUB (see above). You need to modify the ROM, so that Parabola can boot automatically with this configuration. @uref{grub_cbfs.html,grub_cbfs.html} shows you how. Follow that guide, using the configuration details below. If you go for option 2 (re-flash), promise to do this on grubtest.cfg first! We can't emphasise this enough. This is to reduce the possibility of bricking your device!
+
+I will go for the re-flash option here. Firstly, cd to the libreboot_util/cbfstool/@{armv7l i686 x86_64@} directory. Dump the current firmware - where @emph{libreboot.rom} is an example: make sure to adapt:@* # @strong{flashrom -p internal -r libreboot.rom}@* If flashrom complains about multiple flash chips detected, add a @emph{-c} option at the end, with the name of your chosen chip is quotes.@* You can check if everything is in there (@emph{grub.cfg} and @emph{grubtest.cfg} would be really nice):@* $ @strong{./cbfstool libreboot.rom print}@* Extract grubtest.cfg:@* $ @strong{./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg}@* And modify:@* $ @strong{nano grubtest.cfg}
+
+In grubtest.cfg, inside the 'Load Operating System' menu entry, change the contents to:
+
+@verbatim
+cryptomount -a
+set root='lvm/matrix-rootvol'
+linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root
+initrd /boot/initramfs-linux-libre-lts.img
+@end verbatim
+
+Note: the underlined parts above (-lts) can also be removed, to boot the latest kernel instead of LTS (long-term support) kernels. You could also copy the menu entry and in one have -lts, and without in the other menuentry. You could also create a menu entry to load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img The first entry will load by default.
+
+Without specifying a device, the @emph{-a} parameter tries to unlock all detected LUKS volumes. You can also specify -u UUID or -a (device).
+
+Now, to protect your system from an attacker simply booting a live usb distro and re-flashing the boot firmware, we are going to add a password for GRUB. In a new terminal window, if you are not yet online, start dhcp on ethernet:@* # @strong{systemctl start dhcpcd.service} Or make sure to get connected to the internet in any other way you prefer, at least.
+
+Use of the @emph{diceware method} is recommended, for generating secure passphrases (instead of passwords).
+
+AGAIN: MAKE SURE TO DO THIS WHOLE SECTION ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg. (When we get there, upon reboot, select the menu entry that says @emph{Switch to grubtest.cfg} and test that it works. Only once you are satisfied, copy that to grub.cfg. Only a few steps to go, though.) WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+
+(emphasis added, because it's needed: this is a common roadblock for users.)
+
+We need a utility that comes with GRUB, so we will download it temporarily. (Remember that GRUB isn't needed for booting, since it's already included as a payload in libreboot.) Also, we will use flashrom, and I installed dmidecode. You only need base-devel (compilers and so on) to build and use cbfstool. It was already installed if you followed this tutorial, but here it is:@* # @strong{pacman -S grub flashrom dmidecode base-devel}@* Next, do:@* # @strong{grub-mkpasswd-pbkdf2}@* Enter your chosen password at the prompt and your hash will be shown. Copy this string - you will add it to your grubtest.cfg.
+
+The password below (it's @strong{password}, by the way) after @emph{'password_pbkdf2 root'} @emph{should be changed} to your own. Make sure to specify a password that is different from both your LUKS *and* your root/user password. Obviously, do not simply copy and paste the examples shown here...
+
+Next, back in grubtest.cfg, above the first 'Load Operating System' menu entry, you should now add your GRUB password, like so (replace with your own name (I used @strong{root} on both lines, feel free to choose another one) and the password hash which you copied):
+
+@verbatim
+set superusers="root"
+password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711
+@end verbatim
+
+Save your changes in grubtest.cfg, then delete the unmodified config from the ROM image:@* $ @strong{./cbfstool libreboot.rom remove -n grubtest.cfg}@* and insert the modified grubtest.cfg:@* $ @strong{./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw}@*
+
+Now refer to @uref{http://libreboot.org/install/index.html#flashrom,http://libreboot.org/install/index.html#flashrom}. Cd (up) to the libreboot_util directory and update the flash chip contents:@* # @strong{./flash update libreboot.rom}@* Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but you are sure that you chose the correct ROM image, then run this alternative command:@* # @strong{./flash forceupdate libreboot.rom}@* You should see "Verifying flash... VERIFIED." written at the end of the flashrom output.
+
+With this new configuration, Parabola can boot automatically and you will have to enter a password at boot time, in GRUB, before being able to use any of the menu entries or switch to the terminal. Let's test it out: reboot and choose grubtest.cfg from the GRUB menu, using the arrow keys on your keyboard. Enter the name you chose, the GRUB password, your LUKS passphrase and login as root/your user. All went well? Great!
+
+If it does not work like you want it to, if you are unsure or sceptical in any way, don't despair: you have been wise and did not brick your device! Reboot and login the default way, and then modify your grubtest.cfg until you get it right! @strong{Do *not* proceed past this point unless you are 100% sure that your new configuration is safe (or desirable) to use.}
+
+Now, we can easily and safely create a copy of grubtest.cfg, called grub.cfg. This will be the same except for one difference: the menuentry 'Switch to grub.cfg' is changed to 'Switch to grubtest.cfg' and, inside it, all instances of grub.cfg to grubtest.cfg. This is so that the main config still links (in the menu) to grubtest.cfg, so that you don't have to manually switch to it, in case you ever want to follow this guide again in the future (modifying the already modified config). Inside libreboot_util/cbfstool/@{armv7l i686 x86_64@}, we can do this with the following command:@* $ @strong{sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg > grub.cfg}@* Delete the grub.cfg that remained inside the ROM:@* $ @strong{./cbfstool libreboot.rom remove -n grub.cfg}@* Add the modified version that you just made:@* $ @strong{./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw}@*
+
+Now you have a modified ROM. Once more, refer to @uref{http://libreboot.org/install/index.html#flashrom,http://libreboot.org/install/index.html#flashrom}. Cd to the libreboot_util directory and update the flash chip contents:@* # @strong{./flash update libreboot.rom}@* And wait for the "Verifying flash... VERIFIED." Once you have done that, shut down and then boot up with your new configuration.
+
+When done, delete GRUB (remember, we only needed it for the @emph{grub-mkpasswd-pbkdf2} utility; GRUB is already part of libreboot, flashed alongside it as a @emph{payload}):@* # @strong{pacman -R grub}
+
+If you followed all that correctly, you should now have a fully encrypted Parabola installation. Refer to the wiki for how to do the rest.
+
+@node Bonus Using a key file to unlock /boot/
+@section Bonus: Using a key file to unlock /boot/
+@anchor{#bonus-using-a-key-file-to-unlock-boot}
+By default, you will have to enter your LUKS passphrase twice; once in GRUB, and once when booting the kernel. GRUB unlocks the encrypted partition and then loads the kernel, but the kernel is not aware of the fact that it is being loaded from an encrypted volume. Therefore, you will be asked to enter your passphrase a second time. A workaround is to put a keyfile inside initramfs, with instructions for the kernel to use it when booting. This is safe, because /boot/ is encrypted (otherwise, putting a keyfile inside initramfs would be a bad idea).@* Boot up and login as root or your user. Then generate the key file:@* # @strong{dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile iflag=fullblock}@* Insert it into the luks volume:@* # @strong{cryptsetup luksAddKey /dev/sdX /etc/mykeyfile}@* and enter your LUKS passphrase when prompted. Add the keyfile to the initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:@* # @strong{FILES="/etc/mykeyfile"}@* Create the initramfs image from scratch:@* # @strong{mkinitcpio -p linux-libre}@* # @strong{mkinitcpio -p linux-libre-lts}@* # @strong{mkinitcpio -p linux-libre-grsec}@* Add the following to your grub.cfg - you are now able to do that, see above! -, or add it in the kernel command line for GRUB:@* # @strong{cryptkey=rootfs:/etc/mykeyfile}@* @* You can also place this inside the grub.cfg that exists in CBFS: @uref{grub_cbfs.html,grub_cbfs.html}.
+
+@node Further security tips
+@section Further security tips
+@anchor{#further-security-tips}
+@uref{https://wiki.archlinux.org/index.php/Security,https://wiki.archlinux.org/index.php/Security}.@* @uref{https://wiki.parabolagnulinux.org/User:GNUtoo/laptop,https://wiki.parabolagnulinux.org/User:GNUtoo/laptop}
+
+@node Troubleshooting
+@chapter Troubleshooting
+@anchor{#troubleshooting}
+A user reported issues when booting with a docking station attached on an X200, when decrypting the disk in GRUB. The error @emph{AHCI transfer timed out} was observed. The workaround was to remove the docking station.
+
+Further investigation revealed that it was the DVD drive causing problems. Removing that worked around the issue.
+
+@verbatim
+
+"sudo wodim -prcap" shows information about the drive:
+Device was not specified. Trying to find an appropriate drive...
+Detected CD-R drive: /dev/sr0
+Using /dev/cdrom of unknown capabilities
+Device type    : Removable CD-ROM
+Version        : 5
+Response Format: 2
+Capabilities   : 
+Vendor_info    : 'HL-DT-ST'
+Identification : 'DVDRAM GU10N    '
+Revision       : 'MX05'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW.
+
+Drive capabilities, per MMC-3 page 2A:
+
+  Does read CD-R media
+  Does write CD-R media
+  Does read CD-RW media
+  Does write CD-RW media
+  Does read DVD-ROM media
+  Does read DVD-R media
+  Does write DVD-R media
+  Does read DVD-RAM media
+  Does write DVD-RAM media
+  Does support test writing
+
+  Does read Mode 2 Form 1 blocks
+  Does read Mode 2 Form 2 blocks
+  Does read digital audio blocks
+  Does restart non-streamed digital audio reads accurately
+  Does support Buffer-Underrun-Free recording
+  Does read multi-session CDs
+  Does read fixed-packet CD media using Method 2
+  Does not read CD bar code
+  Does not read R-W subcode information
+  Does read raw P-W subcode data from lead in
+  Does return CD media catalog number
+  Does return CD ISRC information
+  Does support C2 error pointers
+  Does not deliver composite A/V data
+
+  Does play audio CDs
+  Number of volume control levels: 256
+  Does support individual volume control setting for each channel
+  Does support independent mute setting for each channel
+  Does not support digital output on port 1
+  Does not support digital output on port 2
+
+  Loading mechanism type: tray
+  Does support ejection of CD via START/STOP command
+  Does not lock media on power up via prevent jumper
+  Does allow media to be locked in the drive via PREVENT/ALLOW command
+  Is not currently in a media-locked state
+  Does not support changing side of disk
+  Does not have load-empty-slot-in-changer feature
+  Does not support Individual Disk Present feature
+
+  Maximum read  speed:  4234 kB/s (CD  24x, DVD  3x)
+  Current read  speed:  4234 kB/s (CD  24x, DVD  3x)
+  Maximum write speed:  4234 kB/s (CD  24x, DVD  3x)
+  Current write speed:  4234 kB/s (CD  24x, DVD  3x)
+  Rotational control selected: CLV/PCAV
+  Buffer size in KB: 1024
+  Copy management revision supported: 1
+  Number of supported write speeds: 4
+  Write speed # 0:  4234 kB/s CLV/PCAV (CD  24x, DVD  3x)
+  Write speed # 1:  2822 kB/s CLV/PCAV (CD  16x, DVD  2x)
+  Write speed # 2:  1764 kB/s CLV/PCAV (CD  10x, DVD  1x)
+  Write speed # 3:   706 kB/s CLV/PCAV (CD   4x, DVD  0x)
+
+Supported CD-RW media types according to MMC-4 feature 0x37:
+  Does write multi speed       CD-RW media
+  Does write high  speed       CD-RW media
+  Does write ultra high speed  CD-RW media
+  Does not write ultra high speed+ CD-RW media
+@end verbatim
+
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Copyright © 2015 Jeroen Quint <jezza@@diplomail.ch>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

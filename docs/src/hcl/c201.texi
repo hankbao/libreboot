@@ -1,0 +1,161 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title ASUS Chromebook C201
+@end titlepage
+
+@node Top
+@top ASUS Chromebook C201
+
+@menu
+* ASUS Chromebook C201::
+* Google's intent with CrOS devices::
+* Considerations about ChromeOS and free operating systems::
+* Caution Video acceleration requires a non-free blob software rendering can be used instead::
+* Caution WiFi requires a non-free blob a USB dongle can be used instead::
+* EC firmware is free software!::
+* No microcode!::
+* Depthcharge payload::
+* Flash chip write protection the screw::
+@end menu
+
+@node ASUS Chromebook C201
+@chapter ASUS Chromebook C201
+@anchor{#asus-chromebook-c201}
+This is a Chromebook, using the Rockchip RK3288 SoC. It uses an ARM CPU, and has free EC firmware (unlike some other laptops). More RK3288-based laptops will be added to libreboot at a later date.
+
+Paul Kocialkowski, a @uref{http://www.replicant.us/,Replicant} developer, ported this laptop to libreboot. Thank you, Paul!
+
+@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. Note that we recommend building for it from an x86 host, until libreboot's build system is modified accordingly.}
+
+@strong{More info will be added later, including build/installation instructions. The board is supported in libreboot, however, and has been confirmed to work.}
+
+Flashing instructions can be found at @uref{../install/index.html#flashrom,../install/index.html#flashrom}
+
+@uref{index.html,Back to previous index}.
+
+@itemize
+@item
+@ref{#googlesintent,Google's intent with CrOS devices}
+@item
+@ref{#os,Considerations about ChromeOS and free operating systems}
+@item
+@ref{#videoblobs,Caution: Video acceleration requires a non-free blob, software rendering can be used instead.}
+@item
+@ref{#wifiblobs,Caution: WiFi requires a non-free blob, a USB dongle can be used instead.}
+@item
+@ref{#ec,EC firmware is free software!}
+@item
+@ref{#microcode,No microcode!}
+@item
+@ref{#depthcharge,Depthcharge payload}
+@item
+@ref{#thescrew,Flash chip write protection: the screw}
+@end itemize
+
+@node Google's intent with CrOS devices
+@chapter Google's intent with CrOS devices
+@anchor{#googles-intent-with-cros-devices}
+CrOS (Chromium OS/Chrome OS) devices, such as Chromebooks, were not designed with the intent of bringing more freedom to users. However, they run with a lot of free software at the boot software and embedded controller levels, since free software gives Google enough flexibility to optimize various aspects such as boot time and most importantly, to implement the CrOS security system, that involves various aspects of the software. Google does hire a lot of Coreboot developers, who are generally friendly to the free software movement and try to be good members of the free software community, by contributing code back.
+
+CrOS devices are designed (from the factory) to actually coax the user into using @uref{https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html,proprietary web services} (SaaSS) that invade the user's privacy (ChromeOS is literally just the Google Chrome browser when you boot up, itself proprietary and comes with proprietary add-ons like flash. It's only intended for SaaSS, not actual, real computing). Google is even a member of the @emph{PRISM} program, as outlined by Edward Snowden. See notes about ChromeOS below. The libreboot project recommends that the user replace the default @emph{ChromeOS} with a distribution that can be used in freedom, without invading the user's privacy.
+
+We also use a similar argument for the MacBook and the ThinkPads that are supported in libreboot. Those laptops are supported, in spite of Apple and Lenovo, companies which are actually @emph{hostile} to the free software movement.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Considerations about ChromeOS and free operating systems
+@chapter Considerations about ChromeOS and free operating systems
+@anchor{#considerations-about-chromeos-and-free-operating-systems}
+This laptop comes preinstalled (from the factory) with Google ChromeOS. This is a GNU/Linux distribution, but it's not general purpose and it comes with proprietary software. It's designed for @emph{@uref{https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html,SaaSS}}. Libreboot recommends that users of this laptop replace it with another distribution.
+@menu
+* No FSF-endorsed distros available::
+@end menu
+
+@node No FSF-endorsed distros available
+@section No FSF-endorsed distros available
+@anchor{#no-fsf-endorsed-distros-available}
+The FSF has a @uref{https://www.gnu.org/distros/free-distros.html,list of distributions} that are 100% free software. None of these are confirmed to work on ARM CrOS devices yet. Parabola looks hopeful: @uref{https://www.parabola.nu/news/parabola-supports-armv7/,https://www.parabola.nu/news/parabola-supports-armv7/}
+
+The libreboot project would like to see all FSF-endorsed distro projects port to these laptops. This includes Trisquel, GuixSD and others. And ProteanOS. Maybe even LibreCMC. The more the merrier. We need them, badly.
+
+@strong{We need these distributions to be ported as soon as possible.}
+
+@ref{#pagetop,Back to top of page}.
+
+@node Caution Video acceleration requires a non-free blob software rendering can be used instead
+@chapter Caution: Video acceleration requires a non-free blob, software rendering can be used instead.
+@anchor{#caution-video-acceleration-requires-a-non-free-blob-software-rendering-can-be-used-instead.}
+The lima driver source code for the onboard Mali GPU is not released. The developer withheld it for personal reasons. Until that is released, the only way to use video (in freedom) on this laptop is to not have video acceleration, by making sure not to install the relevant blob. Most tasks can still be performed without video acceleration, without any noticeable performance penalty.
+
+In practise, this means that certain things like games, blender and GNOME shell (or other fancy desktops) won't work well. The libreboot project recommends a lightweight desktop which does not need video acceleration, such as @emph{XFCE} or @emph{LXDE}.
+
+The lima developer wrote this blog post, which sheds light on the story: @uref{http://libv.livejournal.com/27461.html,http://libv.livejournal.com/27461.html}
+
+@ref{#pagetop,Back to top of page}.
+
+@node Caution WiFi requires a non-free blob a USB dongle can be used instead
+@chapter Caution: WiFi requires a non-free blob, a USB dongle can be used instead.
+@anchor{#caution-wifi-requires-a-non-free-blob-a-usb-dongle-can-be-used-instead.}
+These laptops have non-removeable (soldered on) WiFi chips, which require non-free firmware in the Linux kernel in order to work.
+
+The libreboot project recommends using an external USB wifi dongle that works with free software. See @uref{index.html#recommended_wifi,index.html#recommended_wifi}.
+
+There are 2 companies (endorsed by the Free Software Foundation, under their @emph{Respects your Freedom} guidelines), that sell USB WiFi dongles guaranteed to work with free software (i.e. linux-libre kernel):
+
+@itemize
+@item
+@uref{https://www.thinkpenguin.com/gnu-linux/penguin-wireless-n-usb-adapter-gnu-linux-tpe-n150usb,ThinkPenguin sells them} (company based in USA)
+@item
+@uref{https://tehnoetic.com/tehnoetic-wireless-adapter-gnu-linux-libre-tet-n150,Tehnoetic sells them} (company based in Europe)
+@end itemize
+
+These wifi dongles use the AR9271 (atheros) chipset, supported by the free @emph{ath9k_htc} driver in the Linux kernel. They work in @emph{linux-libre} too.
+
+@node EC firmware is free software!
+@chapter EC firmware is free software!
+@anchor{#ec-firmware-is-free-software}
+It's free software. Google provides the source. Build scripts will be added later, with EC sources provided in libreboot, and builds of the EC firmware.
+
+This is unlike the other current libreboot laptops (Intel based). In practise, you can (if you do without the video/wifi blobs, and replace ChromeOS with a distribution that respects your freedom) be more free when using one of these laptops.
+
+The libreboot FAQ briefly describes what an @emph{EC} is: @uref{http://libreboot.org/faq/#firmware-ec,http://libreboot.org/faq/#firmware-ec}
+
+@node No microcode!
+@chapter No microcode!
+@anchor{#no-microcode}
+Unlike x86 (e.g. Intel/AMD) CPUs, ARM CPUs do not use microcode, not even built in. On the Intel/AMD based libreboot systems, there is still microcode in the CPU (not considered problematic by the FSF, provided that it is reasonably trusted to not be malicious, since it's part of the hardware and read-only), but we exclude microcode updates (volatile updates which are uploaded at boot time by the boot firmware, if present), which are proprietary software.
+
+On ARM CPUs, the instruction set is implemented in circuitry, without microcode.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Depthcharge payload
+@chapter Depthcharge payload
+@anchor{#depthcharge-payload}
+These systems do not use the GRUB payload. Instead, they use a payload called depthcharge, which is common on CrOS devices. This is free software, maintained by Google.
+
+@node Flash chip write protection the screw
+@chapter Flash chip write protection: the screw
+@anchor{#flash-chip-write-protection-the-screw}
+It's next to the flash chip. Unscrew it, and the flash chip is read-write. Screw it back in, and the flash chip is read-only. It's called the screw.
+
+@emph{The screw} is accessible by removing other screws and gently prying off the upper shell, where the flash chip and the screw are then directly accessible. User flashing from software is possible, without having to externally re-flash, but the flash chip is SPI (SOIC-8 form factor) so you can also externally re-flash if you want to. In practise, you only need to externally re-flash if you brick the laptop; read @uref{../install/bbb_setup.html,../install/bbb_setup.html} for an example of how to set up an SPI programmer.
+
+Write protection is useful, because it prevents the firmware from being re-flashed by any malicious software that might become executed on your GNU/Linux system, as root. In other words, it can prevent a firmware-level @emph{evil maid} attack. It's possible to write protect on all current libreboot systems, but CrOS devices make it easy. The screw is such a stupidly simple idea, which all designs should implement.
+
+Copyright © 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye

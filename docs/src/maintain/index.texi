@@ -1,0 +1,315 @@
+\input texinfo
+@documentencoding UTF-8
+
+@ifnottex
+@paragraphindent 0
+@end ifnottex
+@titlepage
+@title Maintaining libreboot
+@end titlepage
+
+@node Top
+@top Maintaining libreboot
+
+@menu
+* Maintaining libreboot::
+* Overview::
+* Updating coreboot-libre::
+* Adding a new board to libreboot::
+* Add/remove/modify patches in coreboot-libre::
+* Updating GRUB::
+* Change how the GRUB payload grubelf is built utility grub-assemble::
+* Modify the configuration used in GRUB::
+* Updating depthcharge::
+* Updating flashrom::
+* Updating bucts::
+* Updating MemTest86+::
+* SeaBIOS::
+@end menu
+
+@node Maintaining libreboot
+@chapter Maintaining libreboot
+@anchor{#maintaining-libreboot}
+This section relates to maintaining libreboot.
+
+Do not follow anything here to the letter; is it only a rough guide representing how libreboot is maintained (for reference).
+
+This section of the documentation applies mainly to the development version of libreboot, which is hosted in a git repository. It is not intended for the release versions of libreboot.
+
+@itemize
+@item
+@ref{#overview,Overview}
+@item
+@ref{#updating_coreboot,Updating coreboot-libre}
+@itemize
+@item
+@ref{#newboard_libreboot,Adding a new board to libreboot}
+@item
+@ref{#newpatch_libreboot,Add/remove/modify patches in coreboot-libre}
+@end itemize
+
+@item
+@ref{#updating_grub,Updating GRUB}
+@itemize
+@item
+@ref{#altbuild_grub_payload,Change how the GRUB payload (grub.elf) is built (utility: grub-assemble)}
+@item
+@ref{#newconfig_grub,Modify the configuration used in GRUB}
+@item
+@uref{../grub/index.html,Other maintenance-related tasks in GRUB}
+@end itemize
+
+@item
+@ref{#updating_depthcharge,Updating depthcharge}
+@item
+@ref{#updating_flashrom,Updating flashrom}
+@item
+@ref{#updating_bucts,Updating bucts}
+@item
+@ref{#updating_memtest86plus,Updating MemTest86+}
+@item
+@ref{#seabios,SeaBIOS}
+@end itemize
+
+Or @uref{../index.html,Back to main index}.
+
+@node Overview
+@chapter Overview
+@anchor{#overview}
+The way the libreboot project is run is very similar to how a GNU/Linux distribution project is run (but for the boot firmware, not your operating system). Thus, libreboot is a @emph{coreboot distribution}.
+
+This page demonstrates on a high level how libreboot is maintained, how the project is run, how everything goes together, etc. For a more detailed guide, refer to each subsection for the various components/modules used in libreboot.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating coreboot-libre
+@chapter Updating coreboot-libre
+@anchor{#updating-coreboot-libre}
+NOTE: it helps to own all libreboot-compatible systems here, or have reliable (and fast) access to a team of testers.
+
+Coreboot-libre is the name of the deblobbed coreboot sources used in libreboot. It is also the name of the collection of scripts used for deblobbing coreboot, on each new update.
+
+This section shows an example of how to update (re-base) to the latest version of coreboot, how to update the deblobbing scripts, and so on. @strong{This does not teach you how to change what custom patches are used, nor does it tell you how to add new boards to libreboot. It assumes that you simply want to re-base to the latest version (for instance, there could be bug fixes that you want). For those things not listed in this section, you can refer to other sections on this page instead.}
+
+Open these files in your editor (you will most likely be editing them):
+
+@itemize
+@item
+resources/scripts/helpers/download/coreboot
+@item
+resources/scripts/helpers/build/module/coreboot
+@item
+resources/utilities/coreboot-libre/deblob
+@item
+resources/utilities/coreboot-libre/nonblobs
+@item
+resources/utilities/coreboot-libre/nonblobs_notes
+@item
+resources/scripts/helpers/build/roms/helper
+@item
+resources/scripts/helpers/build/roms/withgrub
+@end itemize
+
+If you already had a coreboot/ directory in your libreboot tree, delete it:@* $ @strong{rm -Rf coreboot/}
+
+Firstly, download coreboot. Do @strong{not} use @strong{./download coreboot} for this, just clone coreboot, as it does in that script, like so:@* $ @strong{git clone http://review.coreboot.org/coreboot}
+
+$ @strong{cd coreboot/}@* Get the ID of the latest commit in this clone, by reading the commit ID using e.g.:@* $ @strong{git log}@* In @emph{resources/scripts/helpers/download/coreboot} you will find a line that says @emph{@strong{git reset --hard}} and then a commit ID next to it. Replace this with the commit ID of the latest commit from the coreboot version that you just downloaded.
+
+You must also checkout the @emph{vboot} submodule:@* $ @strong{git submodule update --init --checkout -- 3rdparty/vboot/}
+
+Delete the .git* resources. For example:@* $ @strong{rm -Rf .git* 3rdparty/*/.git*}@* ...this is to avoid the deblobbing script from picking up files in there as blobs, which would be only false positives and increase the amount of time taken. Now come out of coreboot:@* $ @strong{cd ../}
+
+Check all coreboot file names/paths in @emph{deblob}; if any of them no longer exist at that name/path in the coreboot tree that you downloaded, delete the reference(s) in @emph{deblob}.
+
+Check all coreboot file names/paths in @emph{nonblobs}; if any of them no longer exist at that name/path in the coreboot tree that you downloaded, delete the reference in @emph{nonblobs}.
+
+Now, back in the main root directory of libreboot (git repository), run the deblob script. This is to prevent the @emph{findblobs} scripts from finding the blobs that are already deleted when running the @emph{deblob} script. Like so:@* $ @strong{./resources/utilities/coreboot-libre/deblob}
+
+Now search for new blobs:@* $ @strong{cd resources/utilities/coreboot-libre/}@* $ @strong{./findblobs}@* WARNING: this will take a @strong{*long*} time. Be patient! What this will do is look through the coreboot source directory, looking for blobs. It will not find the blobs that you deleted before (because they no longer exist), and it will ignore any files listed in @emph{nonblobs}.
+
+Once the @emph{findblobs} script has finished, check the file @emph{tocheck} (from the root, this will be @emph{resources/utilities/coreboot-libre/tocheck}). These are the files detected as blobs; some might be blobs, some not. The @emph{findblobs} script doesn't know how to determine between blobs and non-blobs, it only knows patterns. Distinguishing between blobs and non-blobs must be performed by you, the human being.
+
+@itemize
+@item
+Files in @emph{tocheck} that you identify as blobs, should be added appropriately to @emph{resources/utilities/coreboot-libre/deblob}
+@item
+Files in @emph{tocheck} that you identify as non-blobs, should be added appropriately to @emph{resources/utilities/coreboot-libre/nonblobs} - also, if you feel it necessary, add an explanation of it in @emph{resources/utilities/coreboot-libre/nonblobs_notes}
+@end itemize
+
+Now come back to the main libreboot root directory (root of the git clone). If you are still in resources/utilities/coreboot-libre/ for instance, you would do something like:@* $ @strong{cd ../../../}
+
+Now delete the coreboot directory:@* $ @strong{rm -Rf coreboot/}
+
+Download coreboot again, only this time, using the download script. The download script also applies custom patches to coreboot (see resources/scripts/helpers/download/coreboot); if they do not apply anymore, you will have to re-base them and then update @emph{resources/scripts/helpers/download/coreboot} accordingly. Anyway, download coreboot like so:@* $ @strong{./download coreboot}
+
+If the custom patches no longer apply, and you have to re-base (or replace?) some patches, please do this in coreboot upstream, not in libreboot. Then re-include new patches from upstream, into libreboot. Here is coreboot's guide for contributing patches:@* @uref{http://www.coreboot.org/Git,http://www.coreboot.org/Git}.
+
+Update all configs:@* $ @strong{./build config grubupdate}@* $ @strong{./build config dcupdate}@* This simply takes all of the coreboot @strong{.config} files from @emph{resources/libreboot/config/} and does @strong{make oldconfig} on them. It usually works. If it doesn't, you'll need to recreate those configs from scratch using @strong{./build config grubreplace} or @strong{./build config dcreplace} (optionally add a config name), or @strong{./build config grubmodify} or @strong{./build config dcmodify} (ditto) (see @uref{../git/index.html#config,../git/index.html#config})
+
+Finally, build *all* ROM images using the instructions at @uref{../git/index.html,../git/index.html}, to verify that everything still builds.
+
+Once you've verified that building isn't broken, test *all* boards (you don't need to test all ROM images, only one vesafb and one txtmode image for each configuration). If you do not have all systems supported in libreboot, then you will need to get other testers for those boards.
+
+If you have established a build issue, or a board no longer works (booting issues, bugs during/after boot, etc), you'll need to fix it upstream: @uref{http://www.coreboot.org/Git,http://www.coreboot.org/Git} and then re-update coreboot (or apply patches from upstream).
+
+You should also test the resulting ROM images from building with the new or modified coreboot revision.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Adding a new board to libreboot
+@chapter Adding a new board to libreboot
+@anchor{#adding-a-new-board-to-libreboot}
+Make sure that the board is supported, and that the patches are included (if there are custom patches that you need). Add configs for it like so (for GRUB payload):@* $ @strong{./build config grubreplace @emph{payload}/@emph{boardname}}@* Alternatively, for depthcharge payload:@* $ @strong{./build config dcreplace @emph{payload}/@emph{boardname}}
+
+This can also be used for replacing an existing config.
+
+Configure the board. Make sure to add the steps to the config section in @uref{../git/index.html,../git/index.html}.
+
+When you're done, the config will be stored in @emph{resources/libreboot/config/}. Now build-test it and then check that it actually works.
+
+The following scripts may also need to be modified before building: @emph{resources/scripts/helpers/build/roms/withgrub} and @emph{resources/scripts/helpers/build/roms/helper}
+
+The following can be used when updating coreboot-libre (GRUB payload):@* $ @strong{./build config grubupdate}@* You must also do this for boards that use the depthcharge payload:@* $ @strong{./build config dcupdate}@* (adding a board name on the end is optional, for either of these)
+
+The following can be used if you want to modify an existing configuration (GRUB payload):@* $ @strong{./build config grubmodify}@* For those boards which use the depthcharge payload:@* $ @strong{./build config dcmodify}@* (adding a board name on the end is optional)
+
+Examples (GRUB payload):@* $ @strong{./build config grubmodify x60}@* $ @strong{./build config grubreplace x60}@* $ @strong{./build config grubupdate x60}@* $ @strong{./build config grubmodify kfsn4-dre}@* $ @strong{./build config grubreplace kfsn4-dre}@* $ @strong{./build config grubupdate kfsn4-dre}@*
+
+Examples (depthcharge payload):@* $ @strong{./build config dcmodify veyron_speedy}@* $ @strong{./build config dcreplace veyron_speedy}@* $ @strong{./build config dcupdate veyron_speedy}
+
+@ref{#pagetop,Back to top of page}.
+
+@node Add/remove/modify patches in coreboot-libre
+@chapter Add/remove/modify patches in coreboot-libre
+@anchor{#addremovemodify-patches-in-coreboot-libre}
+Under @strong{resources/scripts/helpers/download/coreboot} you can find the instructions used for patching coreboot.
+
+Modify the commit ID on the @emph{git reset --hard} line accordingly, and update the list of patches used accordingly. Do not cherry-pick from review.coreboot.org directly; instead, include the diff in resources/libreboot/patch/ and use @emph{git am} (you can get the diff by using git-format-patch).
+
+When you're done, simply download coreboot again:@* $ @strong{./download coreboot}
+
+Finally, re-build the parts from coreboot that are used by the build system (also builds GCC):@* $ @strong{./build module coreboot}
+
+Before running the above command, you can save time by copying out the crossgcc that you compiled before (from coreboot/util/crossgcc/) and then putting it back. After you've done that, run everything in @emph{resources/scripts/helpers/build/module/coreboot} except for the part that builds GCC. @strong{Only do this if the version is correct.}
+
+You should also test the resulting ROM images from building with the new or modified coreboot revision.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating GRUB
+@chapter Updating GRUB
+@anchor{#updating-grub}
+$ @strong{rm -Rf grub/}@* $ @strong{git clone git://git.savannah.gnu.org/grub.git}@* $ @strong{cd grub/}@* $ @strong{git log}
+
+Open the file @emph{resources/scripts/helpers/download/grub} and replace the commit ID on the line that performs @emph{git reset --hard} with the commit ID of the GRUB revision that you just downloaded.
+
+$ @strong{cd ../}@* $ @strong{./download grub}
+
+If it fails because of merge conflicts, you'll need to re-base or (as appropriate) remove the offending patch(es) in @emph{resources/scripts/helpers/download/grub}.
+
+Finally, verify that it will build:@* $ @strong{./build module grub}
+
+Since GRUB is the payload in libreboot, you should also build the ROM images and test them, with this different GRUB version that you have prepared.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Change how the GRUB payload grubelf is built utility grub-assemble
+@chapter Change how the GRUB payload (grub.elf) is built (utility: grub-assemble)
+@anchor{#change-how-the-grub-payload-grub.elf-is-built-utility-grub-assemble}
+Look in @emph{resources/utilities/grub-assemble/}.
+
+@emph{gen.sh} creates ELF executables of GRUB with different configurations: text-mode or framebuffer mode in coreboot. Essentially, the text-mode version has no background nor any custom fonts, and contains MemTest86+. You probably don't need to modify these files at all.
+
+@emph{modules.conf} defines which modules will be included in the GRUB ELF executable.
+
+Since GRUB is the payload in libreboot, you should also build the ROM images and test them, with this different GRUB version that you have prepared.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Modify the configuration used in GRUB
+@chapter Modify the configuration used in GRUB
+@anchor{#modify-the-configuration-used-in-grub}
+Look in @emph{resources/scripts/helpers/build/roms/withgrub} to see how the GRUB configuration files are generated.
+
+You might need to modify this. You can also modify the default configuration by making changes to the files under @emph{resources/grub/config/}
+
+Since GRUB is the payload in libreboot, you should also build the ROM images and test them, with this different GRUB version that you have prepared.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating depthcharge
+@chapter Updating depthcharge
+@anchor{#updating-depthcharge}
+The script to download depthcharge is: @emph{resources/scripts/helpers/download/depthcharge}.
+
+Patches are in @emph{resources/depthcharge/patch/}.
+
+The configuration used for depthcharge is located in @emph{depthcharge/board}. Each board has a @emph{defconfig} Kconfig configuration and a fmap.dts FMAP device-tree configuration. Those shouldn't need much attention, but when needed, it's best to modify them in the depthcharge tree (with patches) to keep things in one place.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating flashrom
+@chapter Updating flashrom
+@anchor{#updating-flashrom}
+Modify these files: @emph{resources/scripts/helpers/download/flashrom} and @emph{resources/scripts/helpers/build/module/flashrom}.
+
+Patches are in @emph{resources/flashrom/patch/}
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating bucts
+@chapter Updating bucts
+@anchor{#updating-bucts}
+bucts doesn't really need updating, but the patches are in @emph{resources/bucts/patch}, the download script is @emph{resources/scripts/helpers/download/bucts} and the build script is @emph{resources/scripts/helpers/build/module/bucts}.
+
+@ref{#pagetop,Back to top of page}.
+
+@node Updating MemTest86+
+@chapter Updating MemTest86+
+@anchor{#updating-memtest86}
+MemTest86+ doesn't really need updating, but the patches are in @emph{resources/memtest86plus/patch}, the download script is @emph{resources/scripts/helpers/download/memtest86plus} and the build script is @emph{resources/scripts/helpers/build/module/memtest86plus}.
+
+In the download script for memtest86plus, make sure to update the checksum that it matches for the downloaded source tarball.
+
+@ref{#pagetop,Back to top of page}.
+
+@node SeaBIOS
+@chapter SeaBIOS
+@anchor{#seabios}
+Create the SeaBIOS config like so (changed from defaults):@* $ @strong{./build config seabiosmodify}
+
+@verbatim
+General Features -> Build Target -> Build for coreboot (enable)
+VGA ROM -> VGA Hardware Type -> coreboot linear framebuffer (enable)
+Debugging -> Serial port debugging (enable)
+@end verbatim
+
+When updating SeaBIOS, run the following:@* $ @strong{./build config seabiosupdate}@* (this will run @strong{make oldconfig} on seabios)
+
+Relevant scripts:
+
+@itemize
+@item
+resources/scripts/helpers/build/config/seabiosmodify
+@item
+resources/scripts/helpers/build/config/seabiosupdate
+@item
+resources/scripts/helpers/download/seabios (change patches used, revision, etc)
+@item
+resources/scripts/helpers/build/clean/seabios
+@item
+resources/scripts/helpers/build/module/seabios
+@end itemize
+
+Copyright © 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+
+Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above shall be interpreted in a manner that, to the extent possible, most closely approximates an absolute disclaimer and waiver of all liability.
+
+@bye
