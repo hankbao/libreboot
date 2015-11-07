@@ -45,7 +45,7 @@ pacman -S --needed git
 # For building the documentation
 # ------------------------------------------------------------
 
-pacman -S --needed pandoc
+pacman -S --needed pandoc texi2html
 
 # For building source code:
 # ------------------------------------------------------------
