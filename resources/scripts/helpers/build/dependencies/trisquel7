@@ -41,7 +41,7 @@ apt-get -y install git
 # For building the documentation
 # ------------------------------------------------------------
 
-apt-get -y pandoc texi2html
+apt-get -y install pandoc texi2html
 
 # For building source code:
 # ------------------------------------------------------------
