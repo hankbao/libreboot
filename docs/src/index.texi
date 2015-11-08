@@ -23,10 +23,6 @@
 @anchor{#libreboot-project-documentation}
 Information about this release can be found at @uref{release.html,release.html}. Always check @uref{http://libreboot.org,libreboot.org} for updates.
 
-@ref{#why,What is libreboot?}
-
-@ref{#version,How do I know what version I'm running?}
-
 @node Table of contents
 @chapter Table of contents
 @anchor{#table-of-contents}
@@ -105,7 +101,7 @@ Coreboot uses the @uref{https://en.wikipedia.org/wiki/Rolling_release,rolling re
 Libreboot freezes on a particular revision of coreboot, making sure that everything works properly, making fixes on top of that and repeating this during each subsequent update to a later version of coreboot. By doing this, it provides a stronger guarantee to the user that the firmware will be reliable, and not break their system.
 @end itemize
 
-@ref{#pagetop,Back to top of page.}
+@pxref{Top,Back to top of page.}
 
 @node How do I know what version I'm running?
 @chapter How do I know what version I'm running?

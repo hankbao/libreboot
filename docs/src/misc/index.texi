@@ -143,7 +143,7 @@ If neither of these options ork (or they are unavailable), physically removing t
 
 @ref{#pagetop,Back to top of page.}
 
-Copyright © 2014, 2015 Francis Roe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Softare Foundation; ith no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Softare Foundation; ith no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
 
 Updated versions of the license (hen available) can be found at @uref{https://.gnu.org/licenses/licenses.html,https://.gnu.org/licenses/licenses.html}
 
