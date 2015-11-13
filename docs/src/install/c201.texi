@@ -119,7 +119,7 @@ All the files from the @strong{veyron_speedy} release (or build) have to be tran
 
 The SPI flash has to be read first:@* # @strong{flashrom -p host -r flash.img}@* @strong{Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.}
 
-Then, the @strong{cros-flash-replace} script has to be executed as such:@* # @strong{./cros-firmware-replace flash.img coreboot ro-frid}@* If any error is shown, it is definitely a bad idea to go further than this point.
+Then, the @strong{cros-flash-replace} script has to be executed as such:@* # @strong{./cros-flash-replace flash.img coreboot ro-frid}@* If any error is shown, it is definitely a bad idea to go further than this point.
 
 The resulting flash image can then be flashed back:@* # @strong{flashrom -p host -w flash.img}@*
 
@@ -140,7 +140,7 @@ All the files from the @strong{veyron_speedy} release (or build) have to be tran
 
 The SPI flash has to be read first (using the right spi programmer):@* # @strong{flashrom -p @emph{programmer} -r flash.img}@* @strong{Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.}
 
-Then, the @strong{cros-flash-replace} script has to be executed as such:@* # @strong{./cros-firmware-replace flash.img coreboot ro-frid}@* If any error is shown, it is definitely a bad idea to go further than this point.
+Then, the @strong{cros-flash-replace} script has to be executed as such:@* # @strong{./cros-flash-replace flash.img coreboot ro-frid}@* If any error is shown, it is definitely a bad idea to go further than this point.
 
 The resulting flash image can then be flashed back (using the right spi programmer):@* # @strong{flashrom -p @emph{programmer} -w flash.img}@*
 
