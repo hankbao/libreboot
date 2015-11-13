@@ -95,7 +95,7 @@ Those changes can be reverted later, when the device is known to be in a working
 @anchor{#removing-the-write-protect-screw}
 Since part of the SPI flash is write-protected by a screw, it is necessary to remove the screw to remove the write protection and allow writing Libreboot to the @emph{read-only} part of the flash.
 
-To access the screw, the device has to be opened. There are 7 screws to remove from the bottom of the device, as shown on the picture below. One is hidden under the top right pad. After removing the screws, the keyboard plastic part can be carefully detached from the rest. @strong{Beware: there are cables attached to it!} It is advised to flip the keyboard plastic part over, as shown on the picture below. The write protect screw is located next to the SPI flash chip, circled in red in the picture below. It has to be removed.
+To access the screw, the device has to be opened. There are 8 screws to remove from the bottom of the device, as shown on the picture below. Two are hidden under the top pads. After removing the screws, the keyboard plastic part can be carefully detached from the rest. @strong{Beware: there are cables attached to it!} It is advised to flip the keyboard plastic part over, as shown on the picture below. The write protect screw is located next to the SPI flash chip, circled in red in the picture below. It has to be removed.
 
 @uref{../resources/images/c201/screws.jpg,@image{../resources/images/c201/screws,,,Screws,jpg}} @uref{../resources/images/c201/wp-screw.jpg,@image{../resources/images/c201/wp-screw,,,WP screw,jpg}}
 
