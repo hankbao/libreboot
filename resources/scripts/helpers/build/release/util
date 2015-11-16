@@ -61,6 +61,15 @@ rm -f "${distdir}.tar.xz"
 # this is where they will go
 mkdir -p "${distdir}/"
 
+# this has to be done before generating
+# the "version" file
+if [ ! -f "version" ]; then
+	# generate ChangeLog and NEWS files
+	rm -f "ChangeLog" "NEWS"
+	git log > "${distdir}/ChangeLog"
+	cp "${distdir}/ChangeLog" "${distdir}/NEWS"
+fi
+
 # include version information
 printf '%s\n' "${version}" >"${distdir}/version"
 

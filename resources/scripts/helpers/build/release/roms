@@ -60,6 +60,15 @@ for payload in *; do
 
 		cp -R "${board}/" "${archivename}/"
 
+		# this has to be done before generating
+		# the "version" file
+		if [ ! -f "version" ]; then
+			# generate ChangeLog and NEWS files
+			rm -f "ChangeLog" "NEWS"
+			git log > "${archivename}/ChangeLog"
+			cp "${archivename}/ChangeLog" "${archivename}/NEWS"
+		fi
+
 		# Put the version string in the archive.
 		printf '%s\n' "${version}" >"${archivename}/version"
 
