@@ -58,23 +58,14 @@ rm -f "memtest86+-5.01.tar.gz"
 # make direcotory name consistent
 mv "memtest86+-5.01/" "memtest86plus/"
 
-# there are modifications required
-cd "memtest86plus/"
-
 # Apply necessary patches
 # ------------------------------------------------------------------------------
 
-# place the right config
-rm -f "config.h"
-cp "../resources/memtest86plus/patch/config.h" .
-
-# place the right Makefile
-rm -f "Makefile"
-cp "../resources/memtest86plus/patch/Makefile" .
-
-# (diff them with defaults to see what changed)
-
-# we're done
-cd "../"
+(
+cd "memtest86plus/"
+for patch in ../resources/memtest86plus/patch/*; do
+	patch < "${patch}"
+done
+)
 
 printf "\n\n"
