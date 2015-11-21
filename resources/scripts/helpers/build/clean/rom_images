@@ -3,6 +3,7 @@
 #  helper script: delete the ROM images
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#       Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,15 +20,12 @@
 #
 
 # This script assumes that the current working directory is the root
-# of libreboot_src or libreboot git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
 # Delete the ROM images
-# --------------------------------------------------------
-
-# delete the bin/ directory
 rm -Rf "bin/"
 
 printf "Deleted the bin/ directory containing the ROM images.\n\n"

@@ -3,6 +3,7 @@
 #  helper script: clean the dependencies that were built in flashrom
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#       Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,24 +20,16 @@
 #
 
 # This script assumes that the current working directory is the root
-# of libreboot_src or libreboot git
+# of git or release archive
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# clean flashrom
-# --------------------------------------------------------
-
 printf "Cleaning the previous build of flashrom\n"
 
-cd "flashrom/"
-
-make clean
-# remove patched binaries
-rm -f "flashrom_lenovobios_sst"
-rm -f "flashrom_lenovobios_macronix"
-
-# done. go back to main directory
-cd "../"
+# clean flashrom
+make -C flashrom clean
+rm -f "flashrom/flashrom_lenovobios_sst"
+rm -f "flashrom/flashrom_lenovobios_macronix"
 
 printf "\n\n"

@@ -3,6 +3,7 @@
 #  helper script: clean the dependencies that were built in coreboot
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#       Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -19,40 +20,21 @@
 #
 
 # This script assumes that the current working directory is the root
-# of libreboot_src or libreboot git
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
 # clean coreboot utilities (dependencies for 'build'):
-# -------------------------------------------------------
 
-printf "Cleaning the previous build of the utilities in coreboot\n"
+printf "Cleaning the previous build of coreboot and its utilities\n"
 
-cd "coreboot/"
+# clean coreboot and crossgcc (source archives preserved)
+make -C coreboot clean
+make -C coreboot crossgcc-clean
 
-# ----------------------
-# clean coreboot itself:
-# ----------------------
-make clean
-
-# -------------------
-# clean the utilities
-# -------------------
-# clean cbfstool
-cd "util/cbfstool/"
-make clean
-
-# go back to coreboot dir
-cd "../../"
-
-# -------------------------------------
-# clean reference crossGCC for coreboot
-# source archive not deleted (intended)
-# -------------------------------------
-make crossgcc-clean
-
-# done. go back to main directory
-cd "../"
+# Clean its utilities as well
+for util in {cbfs,ifd,nvram}tool cbmem; do
+   make -C coreboot/util/"${util}" clean
+done
 
 printf "\n\n"
