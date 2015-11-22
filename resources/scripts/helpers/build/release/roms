@@ -67,6 +67,10 @@ for payload in *; do
 			rm -f "ChangeLog" "NEWS"
 			git log > "${archivename}/ChangeLog"
 			cp "${archivename}/ChangeLog" "${archivename}/NEWS"
+		else
+			# building from release archive
+			cp "ChangeLog" "${archivename}/"
+			cp "NEWS" "${archivename}/"
 		fi
 
 		# Put the version string in the archive.

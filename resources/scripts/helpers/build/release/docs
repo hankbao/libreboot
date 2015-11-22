@@ -52,6 +52,10 @@ if [ ! -f "version" ]; then
 	rm -f "ChangeLog" "NEWS"
 	git log > "${distdir}/ChangeLog"
 	cp "${distdir}/ChangeLog" "${distdir}/NEWS"
+else
+	# building from release archive
+	cp "ChangeLog" "${distdir}/"
+	cp "NEWS" "${distdir}/"
 fi
 
 # include version information
