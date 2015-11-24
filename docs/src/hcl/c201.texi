@@ -73,13 +73,13 @@ We also use a similar argument for the MacBook and the ThinkPads that are suppor
 @anchor{#considerations-about-chromeos-and-free-operating-systems}
 This laptop comes preinstalled (from the factory) with Google ChromeOS. This is a GNU/Linux distribution, but it's not general purpose and it comes with proprietary software. It's designed for @emph{@uref{https://www.gnu.org/philosophy/who-does-that-server-really-serve.en.html,SaaSS}}. Libreboot recommends that users of this laptop replace it with another distribution.
 @menu
-* No FSF-endorsed distros available::
+* FSF endorsed distros::
 @end menu
 
-@node No FSF-endorsed distros available
-@section No FSF-endorsed distros available
-@anchor{#no-fsf-endorsed-distros-available}
-The FSF has a @uref{https://www.gnu.org/distros/free-distros.html,list of distributions} that are 100% free software. None of these are confirmed to work on ARM CrOS devices yet. Parabola looks hopeful: @uref{https://www.parabola.nu/news/parabola-supports-armv7/,https://www.parabola.nu/news/parabola-supports-armv7/}
+@node FSF endorsed distros
+@section FSF endorsed distros
+@anchor{#fsf-endorsed-distros}
+The FSF has a @uref{https://www.gnu.org/distros/free-distros.html,list of distributions} that are 100% free software. Only one of them is confirmed to work on ARM CrOS devices. Parabola looks hopeful: @uref{https://www.parabola.nu/news/parabola-supports-armv7/,https://www.parabola.nu/news/parabola-supports-armv7/}
 
 The libreboot project would like to see all FSF-endorsed distro projects port to these laptops. This includes Trisquel, GuixSD and others. And ProteanOS. Maybe even LibreCMC. The more the merrier. We need them, badly.
 
