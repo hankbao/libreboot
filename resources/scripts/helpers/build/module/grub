@@ -33,7 +33,7 @@ printf "Building GRUB\n"
 cd "grub/"
 
 # clean it first
-make distclean
+[ -d Makefile ] && make distclean
 
 # build grub
 ./autogen.sh

@@ -27,6 +27,6 @@ set -u -e
 
 printf "Cleaning the previous build of GRUB\n"
 # clean GURB
-make -C grub distclean
+[ -d grub/Makefile ] && make -C grub distclean
 
 printf "\n\n"
