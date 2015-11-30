@@ -1,7 +1,7 @@
-From 802a23fc503a3c09f167883f05c759471243b4d3 Mon Sep 17 00:00:00 2001
+From 2883046688f91bd86cfc2d2c38ca53b65e201795 Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 13:37:10 +0100
-Subject: [PATCH 2/5] Cryptomount support key files
+Subject: [PATCH 2/6] Cryptomount support key files
 
 ---
  grub-core/disk/cryptodisk.c | 46 ++++++++++++++++++++++++++++++++++++++++++++-
@@ -11,10 +11,10 @@ Subject: [PATCH 2/5] Cryptomount support key files
  4 files changed, 82 insertions(+), 17 deletions(-)
 
 diff --git a/grub-core/disk/cryptodisk.c b/grub-core/disk/cryptodisk.c
-index 6f596a0..a27e70c 100644
+index dd8870d..0e7ced8 100644
 --- a/grub-core/disk/cryptodisk.c
 +++ b/grub-core/disk/cryptodisk.c
-@@ -41,6 +41,9 @@ static const struct grub_arg_option options[] =
+@@ -42,6 +42,9 @@ static const struct grub_arg_option options[] =
      {"all", 'a', 0, N_("Mount all."), 0, 0},
      {"boot", 'b', 0, N_("Mount all volumes with `boot' flag set."), 0, 0},
      {"header", 'H', 0, N_("Read LUKS header from file"), 0, ARG_TYPE_STRING},
@@ -24,7 +24,7 @@ index 6f596a0..a27e70c 100644
      {0, 0, 0, 0, 0, 0}
    };
  
-@@ -805,6 +808,8 @@ grub_util_cryptodisk_get_uuid (grub_disk_t disk)
+@@ -810,6 +813,8 @@ grub_util_cryptodisk_get_uuid (grub_disk_t disk)
  static int check_boot, have_it;
  static char *search_uuid;
  static grub_file_t hdr;
@@ -33,7 +33,7 @@ index 6f596a0..a27e70c 100644
  
  static void
  cryptodisk_close (grub_cryptodisk_t dev)
-@@ -835,7 +840,7 @@ grub_cryptodisk_scan_device_real (const char *name, grub_disk_t source)
+@@ -840,7 +845,7 @@ grub_cryptodisk_scan_device_real (const char *name, grub_disk_t source)
      if (!dev)
        continue;
      
@@ -42,7 +42,7 @@ index 6f596a0..a27e70c 100644
      if (err)
      {
        cryptodisk_close (dev);
-@@ -943,6 +948,45 @@ grub_cmd_cryptomount (grub_extcmd_context_t ctxt, int argc, char **args)
+@@ -948,6 +953,45 @@ grub_cmd_cryptomount (grub_extcmd_context_t ctxt, int argc, char **args)
      hdr = NULL;
  
    have_it = 0;
@@ -178,7 +178,7 @@ index 66e64c0..5882368 100644
  				     sizeof (header.keyblock[i].passwordSalt),
  				     grub_be_to_cpu32 (header.keyblock[i].
 diff --git a/include/grub/cryptodisk.h b/include/grub/cryptodisk.h
-index 16dee3c..0299625 100644
+index 4e6e89a..67f6b0b 100644
 --- a/include/grub/cryptodisk.h
 +++ b/include/grub/cryptodisk.h
 @@ -55,6 +55,8 @@ typedef enum
@@ -190,7 +190,7 @@ index 16dee3c..0299625 100644
  struct grub_cryptodisk;
  
  typedef gcry_err_code_t
-@@ -108,7 +110,8 @@ struct grub_cryptodisk_dev
+@@ -109,7 +111,8 @@ struct grub_cryptodisk_dev
  
    grub_cryptodisk_t (*scan) (grub_disk_t disk, const char *check_uuid,
  			     int boot_only, grub_file_t hdr);
@@ -201,5 +201,5 @@ index 16dee3c..0299625 100644
  typedef struct grub_cryptodisk_dev *grub_cryptodisk_dev_t;
  
 -- 
-2.1.2
+1.9.1
 

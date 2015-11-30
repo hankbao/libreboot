@@ -41,7 +41,7 @@ git clone git://git.savannah.gnu.org/grub.git
 cd "grub/"
 
 # reset to known revision
-git reset --hard 7a210304ebfd6d704b4fc08fe496a0c417441879
+git reset --hard 346a494d7c92fe7c2a89f01be84a7be67bcfbfe7
 
 # Apply patches
 # ------------------------------------------------------------------------------
@@ -49,13 +49,13 @@ git reset --hard 7a210304ebfd6d704b4fc08fe496a0c417441879
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
 
-# GRUB enhancement patches from grub.johnlane.ie
+# GRUB enhancement patches from grub.johnlane.ie (rebased in libreboot's GRUB, unofficially, on 30 November 2015)
 git am "../resources/grub/patch/grub.johnlane.ie/0001-Cryptomount-support-LUKS-detached-header.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0002-Cryptomount-support-key-files.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0003-Cryptomount-luks-allow-multiple-passphrase-attempts.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0004-Cryptomount-support-plain-dm-crypt.patch"
 git am "../resources/grub/patch/grub.johnlane.ie/0005-Cryptomount-support-for-hyphens-in-UUID.patch"
-# hotfix from kl3 (merged from autoboot)
+# hotfix from kl3 (merged from autoboot) (ditto)
 git am "../resources/grub/patch/grub.johnlane.ie/0006-grub-core-disk-cryptodisk.c-Point-to-const-char.patch"
 
 cd "../"

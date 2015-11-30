@@ -1,7 +1,7 @@
-From f723c22cb7d8a5a6633eaa0682e024e667fb581a Mon Sep 17 00:00:00 2001
+From ec936adca3370995a5ed5c6e5e99c6e8fa5c25ef Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 22:48:03 +0100
-Subject: [PATCH 5/5] Cryptomount support for hyphens in UUID
+Subject: [PATCH 5/6] Cryptomount support for hyphens in UUID
 
 ---
  grub-core/disk/cryptodisk.c | 20 +++++++++++++++++---
@@ -10,10 +10,10 @@ Subject: [PATCH 5/5] Cryptomount support for hyphens in UUID
  3 files changed, 27 insertions(+), 21 deletions(-)
 
 diff --git a/grub-core/disk/cryptodisk.c b/grub-core/disk/cryptodisk.c
-index cd5cfc9..d36d16b 100644
+index 57fb904..5430b2e 100644
 --- a/grub-core/disk/cryptodisk.c
 +++ b/grub-core/disk/cryptodisk.c
-@@ -113,6 +113,20 @@ gf_mul_be (grub_uint8_t *o, const grub_uint8_t *a, const grub_uint8_t *b)
+@@ -114,6 +114,20 @@ gf_mul_be (grub_uint8_t *o, const grub_uint8_t *a, const grub_uint8_t *b)
      }
  }
  
@@ -34,7 +34,7 @@ index cd5cfc9..d36d16b 100644
  static gcry_err_code_t
  grub_crypto_pcbc_decrypt (grub_crypto_cipher_handle_t cipher,
  			 void *out, void *in, grub_size_t size,
-@@ -507,8 +521,8 @@ grub_cryptodisk_open (const char *name, grub_disk_t disk)
+@@ -508,8 +522,8 @@ grub_cryptodisk_open (const char *name, grub_disk_t disk)
    if (grub_memcmp (name, "cryptouuid/", sizeof ("cryptouuid/") - 1) == 0)
      {
        for (dev = cryptodisk_list; dev != NULL; dev = dev->next)
@@ -45,7 +45,7 @@ index cd5cfc9..d36d16b 100644
      }
    else
      {
-@@ -739,7 +753,7 @@ grub_cryptodisk_get_by_uuid (const char *uuid)
+@@ -741,7 +755,7 @@ grub_cryptodisk_get_by_uuid (const char *uuid)
  {
    grub_cryptodisk_t dev;
    for (dev = cryptodisk_list; dev != NULL; dev = dev->next)
@@ -107,10 +107,10 @@ index 4ebe21b..80a7606 100644
    newdev = grub_cryptodisk_create (disk, uuid, ciphername, ciphermode, hashspec);
  
 diff --git a/include/grub/cryptodisk.h b/include/grub/cryptodisk.h
-index 4076412..a564f2c 100644
+index bb25ab7..01c0269 100644
 --- a/include/grub/cryptodisk.h
 +++ b/include/grub/cryptodisk.h
-@@ -167,4 +167,6 @@ grub_cryptodisk_t grub_cryptodisk_get_by_source_disk (grub_disk_t disk);
+@@ -168,4 +168,6 @@ grub_cryptodisk_t grub_cryptodisk_get_by_source_disk (grub_disk_t disk);
  grub_cryptodisk_t grub_cryptodisk_create (grub_disk_t disk, char *uuid,
  				   char *ciphername, char *ciphermode, char *digest);
  
@@ -118,5 +118,5 @@ index 4076412..a564f2c 100644
 +grub_cryptodisk_uuidcmp(char *uuid_a, char *uuid_b);
  #endif
 -- 
-2.1.2
+1.9.1
 
