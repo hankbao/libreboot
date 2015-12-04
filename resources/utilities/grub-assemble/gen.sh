@@ -29,14 +29,6 @@ if [ $# != 1 ]; then
 	exit 1
 fi
 
-if [ -f "../../../versiondate" ]; then
-	# _src release archive is being used
-	versiondate="$(cat ../../../versiondate)"
-else
-	# git repo is being used
-	versiondate="$(git show -s --format=%ct)"
-fi
-
 # This is where GRUB is expected to be (outside of the grub-assemble, instead in main checkout)
 grubdir="../../../grub"
 
@@ -59,7 +51,6 @@ if [ "${1}" = "vesafb" ]; then
 	  -o "grub_vesafb.elf" \
 	  -d "${grubdir}/grub-core/" \
 	  --fonts= --themes= --locales=  \
-	  --fixed-time ${versiondate} \
 	  --modules="${grub_modules}" \
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
@@ -74,7 +65,6 @@ then
 	  -o "grub_txtmode.elf" \
 	  -d "${grubdir}/grub-core/" \
 	  --fonts= --themes= --locales=  \
-	  --fixed-time ${versiondate} \
 	  --modules="${grub_modules}" \
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \

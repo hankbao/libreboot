@@ -28,11 +28,9 @@ printf 'Building the documentation release archive\n'
 if [ -f "version" ]; then
 	# _src release archive is being used
 	version="$(cat version)"
-	versiondate="$(cat versiondate)"
 else
 	# git repo is being used
 	version="$(git describe --tags HEAD)"
-	versiondate="$(git show -s --format=%ct)"
 fi
 versiondir="release/${version}"
 distname="libreboot_${version}_docs"
@@ -62,8 +60,6 @@ fi
 
 # include version information
 printf '%s\n' "${version}" >"${distdir}/version"
-# include version date information
-printf '%s\n' "${versiondate}" >"${distdir}/versiondate"
 
 printf 'Creating compressed documentation archive at %s\n' "${distdir}.tar.xz"
 (cd "${versiondir}/" && tar -c "${distname}/" | xz -9e >"${distname}.tar.xz")

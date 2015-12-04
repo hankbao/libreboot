@@ -25,11 +25,9 @@ set -u -e
 if [ -f "version" ]; then
 	# _src release archive is being used
 	version="$(cat version)"
-	versiondate="$(cat versiondate)"
 else
 	# git repo is being used
 	version="$(git describe --tags HEAD)"
-	versiondate="$(git show -s --format=%ct)"
 fi
 versiondir="release/${version}"
 sha512filename="SHA512SUMS"
