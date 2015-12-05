@@ -66,7 +66,7 @@ Once developer mode is enabled, the device will boot to the @uref{../depthcharge
 
 After the system has booted, root access can be enabled by clicking on the @strong{Enable debugging features} link. A confirmation dialog will ask whether to proceed.@* After confirming by clicking @strong{Proceed}, the device will reboot and ask for the root password to set. Finally, the operation has to be confirmed by clicking @strong{Enable}.
 
-After setting the root password, it becomes possible to log-in as root. A tty prompt can be obtained by pressing @strong{Ctrl}+@strong{Alt}+@strong{Previous}. The @strong{Previous} key is the one on the top left of the keyboard.
+After setting the root password, it becomes possible to log-in as root. A tty prompt can be obtained by pressing @strong{Ctrl + Alt + Next}. The @strong{Next} key is the one on the top left of the keyboard.
 
 Preparing the device for the installation
 
