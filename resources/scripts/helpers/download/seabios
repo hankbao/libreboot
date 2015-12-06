@@ -45,7 +45,7 @@ cd seabios/
 # Reset to the last commit that was tested
 # ------------------------------------------------------------------------------
 
-git reset --hard 6bcacf7d19b1dc7fcd99f55491e93514f1f19279
+git reset --hard 948f3c9b5f74f265bd171ee367a632a8f7c81f68
 
 # Apply patches
 # ------------------------------------------------------------------------------
