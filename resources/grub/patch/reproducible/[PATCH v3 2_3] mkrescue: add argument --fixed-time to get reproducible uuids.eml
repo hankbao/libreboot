@@ -1,0 +1,136 @@
+Return-path: <grub-devel-bounces+info=gluglug.org.uk@gnu.org>
+Envelope-to: info@gluglug.org.uk
+Delivery-date: Fri, 04 Dec 2015 19:32:23 +0100
+Received: from lists.gnu.org ([2001:4830:134:3::11])
+	by web006.ispnoc.net with esmtps (TLSv1:AES256-SHA:256)
+	(Exim 4.85)
+	(envelope-from <grub-devel-bounces+info=gluglug.org.uk@gnu.org>)
+	id 1a4v9b-00031k-C8
+	for info@gluglug.org.uk; Fri, 04 Dec 2015 19:32:23 +0100
+Received: from localhost ([::1]:42383 helo=lists.gnu.org)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <grub-devel-bounces+info=gluglug.org.uk@gnu.org>)
+	id 1a4vAK-0001dX-UT
+	for info@gluglug.org.uk; Fri, 04 Dec 2015 13:33:08 -0500
+Received: from eggs.gnu.org ([2001:4830:134:3::10]:47323)
+	by lists.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lynxis@fe80.eu>) id 1a4v9w-0001Aj-CB
+	for grub-devel@gnu.org; Fri, 04 Dec 2015 13:32:45 -0500
+Received: from Debian-exim by eggs.gnu.org with spam-scanned (Exim 4.71)
+	(envelope-from <lynxis@fe80.eu>) id 1a4v9v-0005SE-Ei
+	for grub-devel@gnu.org; Fri, 04 Dec 2015 13:32:44 -0500
+Received: from mail.base45.de ([2001:67c:2050:310::a:2]:41968)
+	by eggs.gnu.org with esmtp (Exim 4.71)
+	(envelope-from <lynxis@fe80.eu>) id 1a4v9v-0005SA-8Z
+	for grub-devel@gnu.org; Fri, 04 Dec 2015 13:32:43 -0500
+Received: from [2001:1a80:2259:2b1a:6042:6096:1de7:42c6] (helo=lazus.yip)
+	by mail.base45.de with esmtpsa (TLS1.2:RSA_AES_128_CBC_SHA256:128)
+	(Exim 4.82) (envelope-from <lynxis@fe80.eu>)
+	id 1a4v9p-0005Bc-Qw; Fri, 04 Dec 2015 19:32:38 +0100
+From: Alexander Couzens <lynxis@fe80.eu>
+To: grub-devel@gnu.org
+Subject: [PATCH v3 2/3] mkrescue: add argument --fixed-time to get
+	reproducible uuids
+Date: Fri,  4 Dec 2015 19:32:21 +0100
+Message-Id: <1449253942-29510-3-git-send-email-lynxis@fe80.eu>
+X-Mailer: git-send-email 2.6.3
+In-Reply-To: <1449253942-29510-1-git-send-email-lynxis@fe80.eu>
+References: <1449253942-29510-1-git-send-email-lynxis@fe80.eu>
+In-Reply-To: <1449245444-17579-1-git-send-email-lynxis@fe80.eu>
+References: <1449245444-17579-1-git-send-email-lynxis@fe80.eu>
+X-detected-operating-system: by eggs.gnu.org: GNU/Linux 2.2.x-3.x [generic]
+X-Received-From: 2001:67c:2050:310::a:2
+Cc: Alexander Couzens <lynxis@fe80.eu>
+X-BeenThere: grub-devel@gnu.org
+X-Mailman-Version: 2.1.14
+Precedence: list
+Reply-To: The development of GNU GRUB <grub-devel@gnu.org>
+List-Id: The development of GNU GRUB <grub-devel.gnu.org>
+List-Unsubscribe: <https://lists.gnu.org/mailman/options/grub-devel>,
+	<mailto:grub-devel-request@gnu.org?subject=unsubscribe>
+List-Archive: <http://lists.gnu.org/archive/html/grub-devel>
+List-Post: <mailto:grub-devel@gnu.org>
+List-Help: <mailto:grub-devel-request@gnu.org?subject=help>
+List-Subscribe: <https://lists.gnu.org/mailman/listinfo/grub-devel>,
+	<mailto:grub-devel-request@gnu.org?subject=subscribe>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+Errors-To: grub-devel-bounces+info=gluglug.org.uk@gnu.org
+Sender: grub-devel-bounces+info=gluglug.org.uk@gnu.org
+
+The uuid generation is based on the time.
+---
+ util/grub-mkrescue.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/util/grub-mkrescue.c b/util/grub-mkrescue.c
+index 4511826..1af1da2 100644
+--- a/util/grub-mkrescue.c
++++ b/util/grub-mkrescue.c
+@@ -52,6 +52,7 @@ static int xorriso_arg_alloc;
+ static char **xorriso_argv;
+ static char *iso_uuid;
+ static char *iso9660_dir;
++static time_t fixed_time;
+ 
+ static void
+ xorriso_push (const char *val)
+@@ -110,6 +111,7 @@ static struct argp_option options[] = {
+   {"product-version", OPTION_PRODUCT_VERSION, N_("STRING"), 0, N_("use STRING as product version"), 2},
+   {"sparc-boot", OPTION_SPARC_BOOT, 0, 0, N_("enable sparc boot. Disables HFS+, APM, ARCS and boot as disk image for i386-pc"), 2},
+   {"arcs-boot", OPTION_ARCS_BOOT, 0, 0, N_("enable ARCS (big-endian mips machines, mostly SGI) boot. Disables HFS+, APM, sparc64 and boot as disk image for i386-pc"), 2},
++  {"fixed-time", 0, N_("TIMEEPOCH"), 0, N_("use a fixed timestamp for uuid generation"), 2},
+   {0, 0, 0, 0, 0, 0}
+ };
+ 
+@@ -153,6 +155,8 @@ enum {
+ static error_t 
+ argp_parser (int key, char *arg, struct argp_state *state)
+ {
++  char *b;
++
+   if (grub_install_parse (key, arg))
+     return 0;
+   switch (key)
+@@ -212,6 +216,15 @@ argp_parser (int key, char *arg, struct argp_state *state)
+       xorriso = xstrdup (arg);
+       return 0;
+ 
++    case 't':
++      fixed_time = strtoll (arg, &b, 10);
++      if (*b !='\0') {
++        printf (_("invalid fixed time number: %s\n"), arg);
++        argp_usage (state);
++        exit (1);
++      }
++      return 0;
++
+     default:
+       return ARGP_ERR_UNKNOWN;
+     }
+@@ -431,6 +444,7 @@ main (int argc, char *argv[])
+ 
+   pkgdatadir = grub_util_get_pkgdatadir ();
+ 
++  fixed_time = -1;
+   product_name = xstrdup (PACKAGE_NAME);
+   product_version = xstrdup (PACKAGE_VERSION);
+   xorriso = xstrdup ("xorriso");
+@@ -541,7 +555,7 @@ main (int argc, char *argv[])
+   {
+     time_t tim;
+     struct tm *tmm;
+-    tim = time (NULL);
++    tim = fixed_time != -1 ? fixed_time : time (NULL);
+     tmm = gmtime (&tim);
+     iso_uuid = xmalloc (55);
+     grub_snprintf (iso_uuid, 50,
+-- 
+2.6.3
+
+
+_______________________________________________
+Grub-devel mailing list
+Grub-devel@gnu.org
+https://lists.gnu.org/mailman/listinfo/grub-devel
