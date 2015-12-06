@@ -209,6 +209,8 @@ Join #debian-reproducible on OFTC IRC.
 merged in master (coreboot) - pay attention to these, especially the fact that the reproducibility relies on git (libreboot uses coreboot without git, and the reason makes this unavoidable): @uref{http://review.coreboot.org/#/c/8616/,http://review.coreboot.org/#/c/8616/} @uref{http://review.coreboot.org/#/c/8617/,http://review.coreboot.org/#/c/8617/} @uref{http://review.coreboot.org/#/c/8618/,http://review.coreboot.org/#/c/8618/} @uref{http://review.coreboot.org/#/c/8619/,http://review.coreboot.org/#/c/8619/}
 @item
 not yet merged in master (coreboot: @uref{http://review.coreboot.org/#/c/10515/,http://review.coreboot.org/#/c/10515/} -- not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
+@item
+NOTE: see build/release/* commands for coreboot/.coreboot-version in libreboot
 @end itemize
 
 @end itemize

@@ -46,6 +46,7 @@ else
 	version="$(git describe --tags HEAD)"
 fi
 printf '%s\n' "${version}" >"lbversion"
+printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
 # Build ROM images with text-mode and corebootfb modes.
 
