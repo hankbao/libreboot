@@ -30,4 +30,4 @@ set -u -e
 
 printf "Building MemTest86+\n"
 
-make -j$(nproc) -BC memtest86plus
+make -BC memtest86plus
