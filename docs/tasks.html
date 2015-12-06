@@ -290,7 +290,7 @@
 				patrickg says: francis7: we have you covered: have your libreboot script add a file ".coreboot-version" to the top-level directory, containing the appropriate version number information. that will be used if git describe doesn't work (eg. because .git is missing)
 				</li>
 				<li>
-					Make libreboot (all of it!) build reproducibly. This is very important.
+					Make libreboot (all of it!) build reproducibly. This is very important. 
 					<ul>
 						<li>Talk to h01ger in coreboot about the coreboot part (he did reproducible.debian.net/coreboot/coreboot.html</li>
 						<li>
@@ -327,6 +327,9 @@
 							not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
 						</li>
 						<li>NOTE: see build/release/* commands for coreboot/.coreboot-version in libreboot</li>
+						<li>NOTE: GRUB ELF executable (payload) is built reproducibly in libreboot now</li>
+						<li>NOTE: MemTest86+ seems to be built reproducibly, but we're not sure. @uref{https://reproducible.debian.net/rb-pkg/testing/amd64/memtest86+.html,this link}</li>
+						<li>NOTE: SeaBIOS version used is based on 1.8, we need to use the latest version based on 1.9 (or just use 1.9) which is much better according to lynxisyes</li>
 					</ul>
 				</li>
 			</ul>
