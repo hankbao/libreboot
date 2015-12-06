@@ -117,7 +117,7 @@ Before installing Libreboot to the SPI flash internally, the device has to be re
 
 All the files from the @strong{veyron_speedy} release (or build) have to be transferred to the device.
 
-The following operations have to be executed with root privileges on the device (e.g. using the @emph{root} account).
+The following operations have to be executed with root privileges on the device (e.g. using the @emph{root} account). In addition, the @strong{cros-flash-replace} script has to be made executable:@* # @strong{chmod a+x cros-flash-replace}@*
 
 The SPI flash has to be read first:@* # @strong{flashrom -p host -r flash.img}@* @strong{Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.}
 
@@ -140,7 +140,7 @@ The SPI flash is located next to the write protect screw. Its layout is indicate
 
 All the files from the @strong{veyron_speedy} release (or build) have to be transferred to the host.
 
-The following operations have to be executed with root privileges on the host (e.g. using the @emph{root} account).
+The following operations have to be executed with root privileges on the host (e.g. using the @emph{root} account). In addition, the @strong{cros-flash-replace} script has to be made executable:@* # @strong{chmod a+x cros-flash-replace}@*
 
 The SPI flash has to be read first (using the right spi programmer):@* # @strong{flashrom -p @emph{programmer} -r flash.img}@* @strong{Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.}
 
