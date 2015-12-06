@@ -46,10 +46,10 @@ mkdir -p "${distdir}/"
 
 printf 'Copying sources to %s/\n' "${distdir}"
 for resource in *; do
-	case "${resource}" in
-		release | docs);;
-		*) cp -R "${resource}" "${distdir}/";;
-	esac
+	if [ "${resource}" = "release" ]; then
+		continue
+	fi
+	cp -R "${resource}" "${distdir}/"
 done
 
 # this has to be done before generating
@@ -97,10 +97,6 @@ rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 # in the src release archive
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
-
-# The release archive for _src does not include docs, so it
-# is nonsense to include the script for it there
-rm -f "${distdir}/resources/scripts/helpers/build/release/docs"
 
 # Patches are not needed, because they are already applied to coreboot sources.
 rm -Rf "${distdir}/resources/libreboot/patch/"
