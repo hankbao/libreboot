@@ -113,7 +113,11 @@ if [ -d "bin/grub/" ]; then
 		do	
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"
-				../../../resources/utilities/ich9deblob/ich9gen
+				if [ -f "gm45macaddress" ]; then
+					../../../resources/utilities/ich9deblob/ich9gen --macaddress $(cat gm45macaddress)
+				else
+					../../../resources/utilities/ich9deblob/ich9gen
+				fi
 				for rom in *
 				do
 					if [ "${board}" = "r500" ]; then
