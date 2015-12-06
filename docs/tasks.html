@@ -289,8 +289,6 @@
 				each time libreboot rebases on a new version of coreboot.<br/><br/>
 				patrickg says: francis7: we have you covered: have your libreboot script add a file ".coreboot-version" to the top-level directory, containing the appropriate version number information. that will be used if git describe doesn't work (eg. because .git is missing)
 				</li>
-				<li>Make memtest86+ build using coreboot's own crossgcc toolchain. Currently,
-				memtest86+ doesn't even work at all when cross-compiled using the toolchain in x86-64 trisquel7</li>
 				<li>
 					Make libreboot (all of it!) build reproducibly. This is very important.
 					<ul>
