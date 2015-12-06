@@ -45,7 +45,6 @@ else
 	# git repo is being used
 	version="$(git describe --tags HEAD)"
 fi
-printf '%s\n' "${version}" >"lbversion"
 printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
 # Build ROM images with text-mode and corebootfb modes.
@@ -92,7 +91,7 @@ do
 	rm -f ".config"
 
 	# Add version information to this image
-	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f lbversion -n lbversion -t raw
+	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f .coreboot-version -n lbversion -t raw
 
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
@@ -141,7 +140,7 @@ rm -Rf "../bin/grub/${boardtarget}/"
 mv "${boardtarget}/" "../bin/grub/"
 
 # version info file no longer needed
-rm -f "lbversion"
+rm -f ".coreboot-version"
 
 # go back to main source directory
 cd "../"

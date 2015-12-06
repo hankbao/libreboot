@@ -78,7 +78,7 @@ buildcoreboot() {
 	cd "coreboot/"
 
 	make distclean
-	rm -f "lbversion"
+	rm -f ".coreboot-version"
 	rm -f *.img
 
 	if [ -f "../version" ]; then
@@ -88,7 +88,6 @@ buildcoreboot() {
 		# git repo is being used
 		version="$(git describe --tags HEAD)" # note: in libreboot, coreboot/.git doesn't exist, this uses libreboot .git
 	fi
-	printf '%s\n' "${version}" > "lbversion"
 	printf 'libreboot-%s' "${version}" > "ro-frid"
 	printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
@@ -96,7 +95,7 @@ buildcoreboot() {
 	make -j"$(nproc)"
 
 	# Add version information to this image
-	./util/cbfstool/cbfstool "build/coreboot.rom" add -f lbversion -n lbversion -t raw
+	./util/cbfstool/cbfstool "build/coreboot.rom" add -f .coreboot-version -n lbversion -t raw
 
 	cbfs_size=$( grep CONFIG_CBFS_SIZE ".config" | sed "s/.*[[:space:]]*=[[:space:]]*//g" )
 	cbfs_size=$( printf "%d\n" "$cbfs_size" )
