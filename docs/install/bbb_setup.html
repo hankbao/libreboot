@@ -17,8 +17,8 @@
 		<h1 id="pagetop">How to program an SPI flash chip with the BeagleBone Black</h1>
 			<p>
 				This document exists as a guide for reading from or writing to an SPI flash chip with the BeagleBone Black,
-				using the <a href="http://flashrom.org/Flashrom">flashrom</a> software. 
-				BeagleBone Black rev. C was used when creating this guide, but earlier revisions
+				using the <a href="http://flashrom.org/Flashrom">flashrom</a> software.  
+				A BeagleBone Black, rev. C was used when creating this guide, but earlier revisions
 				may also work.
 			</p>
 			<p><a href="index.html">Back to previous index</a></p>
@@ -33,74 +33,64 @@
 			</p>
 				<ul>
 					<li>
-						External SPI programmer: <b>BeagleBone Black</b> (rev. C)
-						is highly recommended. Sometimes referred to as 'BBB'.
-						<a href="http://beagleboard.org/black">This page</a> contains a list of distributors.
-						farnell sells them - <a href="http://farnell.com/">http://farnell.com/</a>
-						- If you can't get a BBB, there are other programmers listed on flashrom.org, but
-						not all of them will be suitable for libreboot's purpose. (some may also require blobs. all BBs and BBBs though can be used without blobs).
-						There are also some programmers not listed on flashrom.org, that can also work.
-						A BB (original beaglebone) should work as well, though you might have to replace the distro
-						that it came with.
+						A <a href="http://flashrom.org">Flashrom</a>-compatible external SPI programmer: 
+						<strong>BeagleBone Black</strong>, sometimes referred to as 'BBB', (rev. C) is highly recommended. 
+						You can buy one from <a href="https://www.adafruit.com">Adafruit</a> (USA), <a href="http://electrokit.com">ElectroKit</a> (Sweden)
+						or any of the distributors listed <a href="http://beagleboard.org/black">here</a> (look below 'Purchase').  
+						We recommend this product because we know that it works well for our purposes and doesn't require any non-free software.
 					</li>
 					<li>
-						Electrical/insulative tape: cover the entire bottom surface of the BBB (the part that
-						rests on a surface). This is important, when placing the BBB on top of a board
-						so that nothing shorts. - easy to find in most hardware/electronics stores
+						Electrical/insulative tape: cover the entire bottom surface of the BBB (the part that rests on a surface). 
+						This is important, when placing the BBB on top of a board so that nothing shorts.
+						Most hardware/electronics stores have this.  Optionally, you can use the bottom half of a
+						<a href="http://www.hammondmfg.com/1593HAM.htm#BeagleBoneBlack">hammond plastic enclosure</a>.
 					</li>
 					<li>
-						Clip for connecting to the flash chip: if you have a SOIC-16
-						flash chip (16 pins), you will need the <b>Pomona 5252</b>
-						or equivalent. For SOIC-8 flash chips (8 pins), you will
-						need the <b>Pomona 5250</b> or equivalent. Do check which chip you have,
-						before ordering a clip. Also, make sure to buy at least two clips
-						(they break easily).
-						- Farnell sells these, and ships to many countries. <a href="http://farnell.com/">http://farnell.com/</a>
-						- Some people find these difficult to get, especially in South America. If you have more links to suppliers, 
-						please contact the libreboot project with the relevant information.
-						- <b>if you can't get a pomona clip, some other clips might work (eg 3M) but are not always reliable. You can also
-						directly solder the wires to the chip, if that suits you. The clip is just for convenience, really.</b>
+						Clip for connecting to the flash chip: if you have a SOIC-16 flash chip (16 pins), you will need the
+						<strong>Pomona 5252</strong> or equivalent.  For SOIC-8 flash chips (8 pins), you will need the <strong>Pomona 5250</strong> 
+						or equivalent.  Do check which chip you have, before ordering a clip.  Also, you might as well buy two clips or more since they break easily.
+						<a href="http://farnell.com/">Farnell element 14</a> sells these and ships to many countries.  Some people find these clips difficult to
+						get hold of, especially in South America.  If you know of any good suppliers, please contact the libreboot project with the relevant information.
+						<strong>If you can't get hold of a pomona clip, some other clips might work, e.g. 3M, but they are not always reliable.
+						You can also directly solder the wires to the chip, if that suits you; the clip is just for convenience, really.</strong>
 					</li>
 					<li>
-						<b>External 3.3V DC power supply</b>, for powering the flash chip.
-						An ATX power supply / PSU (common on Intel/AMD desktop computers) will work for this.
-						A lab PSU (DC) will also work (adjusted to 3.3V). Etc.
+						<strong>External 3.3V DC power supply</strong>, for powering the flash chip: an ATX power supply / PSU (common on Intel/AMD desktop
+						computers) will work for this.  A lab PSU (DC) will also work (adjusted to 3.3V).
 						<ul>
-							<li>Getting a multimeter might be worthwhile, to verify that it's supplying 3.3V</li>
+							<li>Getting a multimeter might be worthwhile, to verify that it's supplying 3.3V.</li>
 						</ul>
 					</li>
 					<li>
-						<b>External 5V DC power supply</b> (barrel connector), for powering the BBB.
-						The BeagleBone can have power supplied via USB, but a
-						dedicated power supply is recommended.  These should be easy to find in most places
-						that sell electronics. - <b>OPTIONAL. Only needed if not powering with the USB cable, or if you want
-						to use <a href="bbb_ehci.html">EHCI debug</a></b>
+						<strong>External 5V DC power supply</strong> (barrel connector), for powering the BBB:
+						the latter can have power supplied via USB, but a dedicated power supply is recommended.
+						These should be easy to find in most places that sell electronics.  <strong>OPTIONAL. 
+						Only needed if not powering with the USB cable, or if you want to use <a href="bbb_ehci.html">EHCI debug</a></strong>.
 					</li>
 					<li>
-						<b>Pin header / jumper cables</b> (2.54mm / 0.1&quot; headers)
-						You should get male-male, male-female and female-female
-						cables in 10cm size. Just get a load of them.
-						other possible names for these cables:
+						<strong>Pin header / jumper cables</strong> (2.54mm / 0.1" headers): you should get male--male,
+						 male--female and female--female cables in 10cm size.  Just get a load of them.  
+						 Other possible names for these cables/wires/leads are as follows:
 						<ul>
 							<li>flying leads</li>
-							<li>dupont (this is just one possible brand name)</li>
-							<li>Often used on breadboards, so they might be called breadboard cables</li>
-							<li>Maybe they are called <b>wires</b> instead of cables or leads</li>
-							<li>They are also the same cables used on the GPIOs on the RPi</li>
-							<li><b>adafruit.com</b> sells them, and there are others</li>
-							<li><b>Some people find these difficult to buy. Contact the libreboot project if you have more links to sellers.</b></li>
+							<li>breadboard cables (since they are often used on breadboards).</li>
 							<li>You might also be able to make these cables yourself.</li>
 						</ul>
-						For PSU connections, long cables (e.g. 20cm) is fine, and you can extend it longer than that if needed.
+						<a href="https://www.adafruit.com">Adafruit</a> sell them, as do many others.
+						<strong>Some people find them difficult to buy.  Please contact the libreboot project if you know of any good sellers.</strong>
+						You might also be able to make these cables yourself.  For PSU connections, using long cables, e.g. 20cm, is fine, and you can extend them longer than that if needed.
 					</li>
 					<li>
 						<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
 						with one.) - <b>OPTIONAL - only needed for <a href="bbb_ehci.html">EHCI debug</a> or for serial/ssh access without ethernet cable (g_multi kernel module)</b>
+						
+						<strong>Mini USB A-B cable</strong>: the BBB probably already comes with one.  <strong>OPTIONAL---only needed for
+						<a href="bbb_ehci.html">EHCI debug</a> or for serial/SSH access without ethernet cable (g_multi kernel module)</strong>.
 					</li>
 					<li>
-						<b>FTDI TTL cable or debug board</b>, for accessing the serial console on your BBB.
-						<a href="http://elinux.org/Beagleboard:BeagleBone_Black_Serial">This page</a> contains
-						a list. - <b>OPTIONAL - only needed for serial console on the BBB, if not using SSH via ethernet cable</b>
+						<strong>FTDI TTL cable or debug board</strong>: used for accessing the serial console on the BBB.
+						<a href="http://elinux.org/Beagleboard:BeagleBone_Black_Serial">This page</a> contains a list. 
+						<strong>OPTIONAL---only needed for serial console on the BBB, if not using SSH via ethernet cable.</strong>
 					</li>
 				</ul>
 		
@@ -115,21 +105,19 @@
 		<h1>Setting up the 3.3V DC PSU</h1>
 
 			<p>
-				ATX PSU pinouts are on <a href="https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diagrams">wikipedia</a>
+				ATX PSU pinouts can be read on <a href="https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diagrams">this Wikipedia page</a>.
 			</p>
 			<p>
-				You can use pin 1 or 2 (orange wire) on a 20-pin or 24-pin ATX PSU for 3.3V, 
-				and any of the ground/earth sources (black cables) for ground.
-				Short PS_ON# / Power on (green wire. pin 16 on 24-pin ATX PSU, or pin 14 on a 20-pin ATX PSU) to a ground 
-				(black. there is one right next to it) using a wire/paperclip/jumper then
-				power on the PSU by grounding PS_ON# (this is also how an ATX motherboard turns on a PSU).
+				You can use pin 1 or 2 (orange wire) on a 20-pin or 24-pin ATX PSU for 3.3V, and any of the ground/earth sources (black cables) for ground. 
+				Short PS_ON# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin 14 on a 20-pin ATX PSU) to a ground
+				(black; there is one right next to it) using a wire/paperclip/jumper, then power on the PSU by grounding PS_ON#
+				(this is also how an ATX motherboard turns on a PSU).
 			</p>
 			<p>
-				<b>DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a 20-pin ATX PSU), and
-				DO **NOT** use pin 21, 22 or 23 (on a 24-pin ATX PSU). Those wires (the red ones) are 5V, and they **WILL**
-				kill your flash chip. ***NEVER*** supply more than 3.3V to your flash chip.
-				(that is, if it's a 3.3V flash chip. 5V and 1.8V SPI flash chips do exist, but they are rare. always
-				check what voltage your chip takes. most take 3.3V)</b>
+				<strong>DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a 20-pin ATX PSU), and DO **NOT** use pin
+				21, 22 or 23 (on a 24-pin ATX PSU).  Those wires (the red ones) are 5V, and they **WILL** kill your flash chip.
+				***NEVER*** supply more than 3.3V to your flash chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI
+				flash chips do exist, but they are rare.  Always check what voltage your chip takes.  Most of them take 3.3V).</strong>
 			</p>
 			<p>
 				You only need one 3.3V supply and one ground for the flash chip, after grounding PS_ON#.
@@ -421,6 +409,7 @@ GND	4-5	MOSI
 		<p>
 			Copyright &copy;  2014, 2015 Francis Rowe &lt;info@gluglug.org.uk&gt;<br/>
 			Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt;<br/>
+			Copyright &copy; 2015 Albin Söderqvist<br/>
 			Permission is granted to copy, distribute and/or modify this document
 			under the terms of the GNU Free Documentation License, Version 1.3
 			or any later version published by the Free Software Foundation;
