@@ -59,9 +59,9 @@ git am "../resources/grub/patch/grub.johnlane.ie/0005-Cryptomount-support-for-hy
 git am "../resources/grub/patch/grub.johnlane.ie/0006-grub-core-disk-cryptodisk.c-Point-to-const-char.patch"
 
 # Needed for reproducible builds in GRUB
-git am "../resources/grub/patch/reproducible/"\[PATCH\ 1_3\]\ mkstandalone\:\ add\ argument\ --fixed-time\ to\ override\ mtime\ of\ files.eml
-git am "../resources/grub/patch/reproducible/"\[PATCH\ 2_3\]\ mkrescue\:\ add\ argument\ --fixed-time\ to\ get\ reproducible\ uuids.eml
-git am "../resources/grub/patch/reproducible/"\[PATCH\ 3_3\]\ Makefile\:\ use\ FIXED_TIMESTAMP\ for\ mkstandalone\ if\ set.eml
+git am "../resources/grub/patch/reproducible/0001-mkstandalone-add-argument-fixed-time-to-override-mti.patch"
+git am "../resources/grub/patch/reproducible/0002-mkrescue-add-argument-fixed-time-to-get-reproducible.patch"
+git am "../resources/grub/patch/reproducible/0003-Makefile-use-FIXED_TIMESTAMP-for-mkstandalone-if-set.patch"
 
 cd "../"
 printf "\n\n"
