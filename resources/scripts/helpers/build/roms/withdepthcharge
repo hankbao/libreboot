@@ -94,9 +94,6 @@ buildcoreboot() {
 	make KBUILD_DEFCONFIG="$(pwd)/../resources/libreboot/config/depthcharge/${board}/config" defconfig
 	make -j"$(nproc)"
 
-	# Add version information to this image
-	./util/cbfstool/cbfstool "build/coreboot.rom" add -f .coreboot-version -n lbversion -t raw
-
 	cbfs_size=$( grep CONFIG_CBFS_SIZE ".config" | sed "s/.*[[:space:]]*=[[:space:]]*//g" )
 	cbfs_size=$( printf "%d\n" "$cbfs_size" )
 	cbfs_size=$(( $cbfs_size / 1024 ))

@@ -90,9 +90,6 @@ do
 	# .config no longer needed
 	rm -f ".config"
 
-	# Add version information to this image
-	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f .coreboot-version -n lbversion -t raw
-
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
