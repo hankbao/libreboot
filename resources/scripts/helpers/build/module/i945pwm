@@ -34,7 +34,7 @@ cd "resources/utilities/i945-pwm/"
 
 make clean
 # build it
-make -j"$(nproc)"
+make
 
 # done. go back to main directory
 cd "../../../"
