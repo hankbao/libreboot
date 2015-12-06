@@ -38,5 +38,5 @@ done
 
 # cbfstool, cbmem, nvramtool
 for util in {cbfs,nvram}tool cbmem; do
-   make -j$(nproc) -BC coreboot/util/${util}
+   make -BC coreboot/util/${util}
 done
