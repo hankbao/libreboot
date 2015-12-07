@@ -113,8 +113,8 @@ if [ -d "bin/grub/" ]; then
 		do	
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"
-				if [ -f "gm45macaddress" ]; then
-					../../../resources/utilities/ich9deblob/ich9gen --macaddress $(cat gm45macaddress)
+				if [ -f "../../../gm45macaddress" ]; then
+					../../../resources/utilities/ich9deblob/ich9gen --macaddress $(cat ../../../gm45macaddress)
 				else
 					../../../resources/utilities/ich9deblob/ich9gen
 				fi
