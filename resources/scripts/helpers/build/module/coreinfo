@@ -31,9 +31,9 @@ cd coreboot/
 
 # Build libpayload first
 cp ../resources/libreboot/config/libpayload/config payloads/libpayload/.config
-make -j"$(nproc)" -BC payloads/libpayload install
+make -j"$(nproc)" -BC payloads/libpayload install LIB_CONFIG=../resources/libreboot/config/libpayload/config
 
 # Build coreinfo itself
-cp ../resources/libreboot/config/coreinfo/config payloads/coreinfo/.config
-make -j"$(nproc)" -BC payloads/coreinfo
+cp ../resources/libreboot/config/coreinfo/config payloads/coreinfo/.config 
+make -j"$(nproc)" -BC payloads/coreinfo KBUILD_DEFCONFIG='configs/defconfig-tinycurses'
 )
