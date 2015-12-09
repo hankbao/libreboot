@@ -105,6 +105,9 @@ do
 	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../seabios/out/bios.bin.elf -n bios.bin.elf -t raw
 	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
 
+	# Path to coreinfo payload
+	coreinfo=payloads/coreinfo/build/coreinfo.elf
+
 	# Add the correct GRUB configuration file for this image.
 	for keylayout in ../resources/utilities/grub-assemble/keymap/original/*
 	do
@@ -117,6 +120,9 @@ do
 		./util/cbfstool/cbfstool "${boardtarget}_${keymap}_${romtype}.rom" add -f "grub_${keymap}_${romtype}.cfg" -n grub.cfg -t raw
 		# Insert grub test config into the image (for the user to test modifications to before modifying the main one)
 		./util/cbfstool/cbfstool "${boardtarget}_${keymap}_${romtype}.rom" add -f "grub_${keymap}_${romtype}_test.cfg" -n grubtest.cfg -t raw
+
+		# Add coreinfo payload in case it was built before
+		[ -f "${coreinfo}" ] && ./util/cbfstool/cbfstool "${boardtarget}"_"${keymap}"_"${romtype}".rom add-payload -f "${coreinfo}" -n coreinfo.elf
 	done
 
 	# This config-less ROM is no longer needed
