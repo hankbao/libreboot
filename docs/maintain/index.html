@@ -60,9 +60,6 @@
 				<li>
 					<a href="#updating_memtest86plus">Updating MemTest86+</a>
 				</li>
-				<li>
-					<a href="#seabios">SeaBIOS</a>
-				</li>
 			</ul>
 
 			<p>
@@ -605,39 +602,6 @@
 				<a href="#pagetop">Back to top of page</a>.
 			</p>
 
-	</div>
-	
-	<div class="section">
-	
-		<h1 id="seabios">SeaBIOS</h1>
-		
-			<p>
-				Create the SeaBIOS config like so (changed from defaults):<br/>
-				$ <b>./build config seabiosmodify</b>
-			</p>
-<pre>
-General Features -&gt; Build Target -&gt; Build for coreboot (enable)
-VGA ROM -&gt; VGA Hardware Type -&gt; coreboot linear framebuffer (enable)
-Debugging -&gt; Serial port debugging (enable)
-</pre>
-
-			<p>
-				When updating SeaBIOS, run the following:<br/>
-				$ <b>./build config seabiosupdate</b><br/>
-				(this will run <b>make oldconfig</b> on seabios)
-			</p>
-			
-			<p>
-				Relevant scripts:
-			</p>
-				<ul>
-					<li>resources/scripts/helpers/build/config/seabiosmodify</li>
-					<li>resources/scripts/helpers/build/config/seabiosupdate</li>
-					<li>resources/scripts/helpers/download/seabios (change patches used, revision, etc)</li>
-					<li>resources/scripts/helpers/build/clean/seabios</li>
-					<li>resources/scripts/helpers/build/module/seabios</li>
-				</ul>
-	
 	</div>
 
 	<div class="section">
