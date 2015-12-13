@@ -24,7 +24,6 @@
 * Updating flashrom::
 * Updating bucts::
 * Updating MemTest86+::
-* SeaBIOS::
 @end menu
 
 @node Maintaining libreboot
@@ -67,8 +66,6 @@ This section of the documentation applies mainly to the development version of l
 @ref{#updating_bucts,Updating bucts}
 @item
 @ref{#updating_memtest86plus,Updating MemTest86+}
-@item
-@ref{#seabios,SeaBIOS}
 @end itemize
 
 Or @uref{../index.html,Back to main index}.
@@ -273,34 +270,6 @@ MemTest86+ doesn't really need updating, but the patches are in @emph{resources/
 In the download script for memtest86plus, make sure to update the checksum that it matches for the downloaded source tarball.
 
 @ref{#pagetop,Back to top of page}.
-
-@node SeaBIOS
-@chapter SeaBIOS
-@anchor{#seabios}
-Create the SeaBIOS config like so (changed from defaults):@* $ @strong{./build config seabiosmodify}
-
-@verbatim
-General Features -> Build Target -> Build for coreboot (enable)
-VGA ROM -> VGA Hardware Type -> coreboot linear framebuffer (enable)
-Debugging -> Serial port debugging (enable)
-@end verbatim
-
-When updating SeaBIOS, run the following:@* $ @strong{./build config seabiosupdate}@* (this will run @strong{make oldconfig} on seabios)
-
-Relevant scripts:
-
-@itemize
-@item
-resources/scripts/helpers/build/config/seabiosmodify
-@item
-resources/scripts/helpers/build/config/seabiosupdate
-@item
-resources/scripts/helpers/download/seabios (change patches used, revision, etc)
-@item
-resources/scripts/helpers/build/clean/seabios
-@item
-resources/scripts/helpers/build/module/seabios
-@end itemize
 
 Copyright © 2015 Francis Rowe <info@@gluglug.org.uk>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
 

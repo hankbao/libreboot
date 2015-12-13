@@ -101,10 +101,6 @@ do
 		fi
 	fi
 
-	# Add SeaBIOS to the image
-	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../seabios/out/bios.bin.elf -n bios.bin.elf -t raw
-	./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
-
 	# Path to coreinfo payload
 	coreinfo=payloads/coreinfo/build/coreinfo.elf
 

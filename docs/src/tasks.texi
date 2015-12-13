@@ -208,15 +208,11 @@ Join #debian-reproducible on OFTC IRC.
 @item
 merged in master (coreboot) - pay attention to these, especially the fact that the reproducibility relies on git (libreboot uses coreboot without git, and the reason makes this unavoidable): @uref{http://review.coreboot.org/#/c/8616/,http://review.coreboot.org/#/c/8616/} @uref{http://review.coreboot.org/#/c/8617/,http://review.coreboot.org/#/c/8617/} @uref{http://review.coreboot.org/#/c/8618/,http://review.coreboot.org/#/c/8618/} @uref{http://review.coreboot.org/#/c/8619/,http://review.coreboot.org/#/c/8619/}
 @item
-not yet merged in master (coreboot: @uref{http://review.coreboot.org/#/c/10515/,http://review.coreboot.org/#/c/10515/} -- not really relevant yet, but will be in the future. (libreboot currently ignores SeaBIOS)
-@item
 NOTE: see build/release/* commands for coreboot/.coreboot-version in libreboot
 @item
 NOTE: GRUB ELF executable (payload) is built reproducibly in libreboot now
 @item
 NOTE: MemTest86+ seems to be built reproducibly, but we're not sure. @uref{https://reproducible.debian.net/rb-pkg/testing/amd64/memtest86+.html,this link}
-@item
-NOTE: SeaBIOS version used is based on 1.8, we need to use the latest version based on 1.9 (or just use 1.9) which is much better according to lynxis
 @end itemize
 
 @end itemize
