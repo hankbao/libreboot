@@ -63,5 +63,9 @@ git am "../resources/grub/patch/reproducible/0001-mkstandalone-add-argument-fixe
 git am "../resources/grub/patch/reproducible/0002-mkrescue-add-argument-fixed-time-to-get-reproducible.patch"
 git am "../resources/grub/patch/reproducible/0003-Makefile-use-FIXED_TIMESTAMP-for-mkstandalone-if-set.patch"
 
+# Patch security vulnerability in GRUB
+# See: http://hmarco.org/bugs/CVE-2015-8370-Grub2-authentication-bypass.html
+git am "../resources/grub/patch/secfix/0001-Fix-CVE-2015-8370-Grub2-user-pass-vulnerability.patch"
+
 cd "../"
 printf "\n\n"
