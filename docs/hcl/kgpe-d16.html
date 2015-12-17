@@ -133,11 +133,16 @@
 					<li>2 CPU sockets (G34 compatible)</li>
 					<li>HyperTransport™ Technology 3.0</li>
 					<li>
-						CPUs supported (not provided by Minifree, yet):
+						CPUs supported:
 						<ul>
-							<li>AMD Opteron 6100 series (Fam10h. No IOMMU support. <b>Not</b> recommended)</li>
-							<li>AMD Opteron 6200 series (Fam15h, with full IOMMU support in libreboot)</li>
-							<li>AMD Opteron 6300 series (Fam15h, with full IOMMU support in libreboot. <b>Recommended</b></li>
+							<li>AMD Opteron 6100 series (Fam10h. No IOMMU support. <b>Not</b> recommended - old. View errata datasheet here: <a href="http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf">http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf</a>)</li>
+							<li>AMD Opteron 6200 series (Fam15h, with full IOMMU support in libreboot - <strong>highly recommended - fast, and works well without microcode updates, including virtualization</strong>)</li>
+							<li>AMD Opteron 6300 series (Fam15h, with full IOMMU support in libreboot. <b>AVOID LIFE THE PLAGUE - virtualization is broken without microcode updates.</b></li>
+							<li>
+								NOTE: 6300 series CPUs have buggy microcode built-in, and libreboot recommends avoiding the updates. The 6200 series CPUs have more reliable microcode.
+								Look at this errata datasheet: <a href="http://support.amd.com/TechDocs/48063_15h_Mod_00h-0Fh_Rev_Guide.pdf">http://support.amd.com/TechDocs/48063_15h_Mod_00h-0Fh_Rev_Guide.pdf</a>
+								(see Errata 734 - this is what kills the 6300 series)
+							</li>
 						</ul>
 					</li>
 					<li>6.4 GT/s per link (triple link)</li>
