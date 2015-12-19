@@ -216,7 +216,7 @@ You should see @strong{"Verifying flash... VERIFIED."} written at the end of the
 
 @strong{Warning: this guide will not instruct the user how to backup the original Lenovo BIOS firmware. These backups are tied to each system, and will not work on any other. For that, please refer to @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.}
 
-@strong{If you're using libreboot 20150518, note that there is a mistake in the flashing script. do this: @em{rm -f patch && wget -O flash http://git.savannah.gnu.org/cgit/libreboot.git/plain/flash?id=910b212e90c6f9c57025e1c7b0c08897af787496}}
+@strong{If you're using libreboot 20150518, note that there is a mistake in the flashing script. do this: @em{rm -f patch && wget -O flash http://git.savannah.gnu.org/cgit/libreboot.git/plain/flash?id=910b212e90c6f9c57025e1c7b0c08897af787496 && chmod +x flash}}
 
 The first half of the procedure is as follows:@* $ @strong{sudo ./flash i945lenovo_firstflash @ref{#rom,yourrom.rom}.}
 
