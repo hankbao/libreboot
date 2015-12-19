@@ -26,6 +26,8 @@
 @node ASUS Chromebook C201
 @chapter ASUS Chromebook C201
 @anchor{#asus-chromebook-c201}
+@strong{DO NOT BUY THIS LAPTOP YET!!!!!!!!!!! This laptop currently has @em{zero} support from libre distros. Parabola theoretically supports it, by installing Arch first and then migrating to Parabola using the migration guide on the Parabola wiki, but it's not very well tested and does not have many package - in our opinion, Parabola does not really support this laptop. There are also several issues. Read this page for more information. This laptop can still be used reasonably, in freedom, but it requires a lot of work. Most users will be disappointed.}
+
 This is a Chromebook, using the Rockchip RK3288 SoC. It uses an ARM CPU, and has free EC firmware (unlike some other laptops). More RK3288-based laptops will be added to libreboot at a later date.
 
 Paul Kocialkowski, a @uref{http://www.replicant.us/,Replicant} developer, ported this laptop to libreboot. Thank you, Paul!
