@@ -21,7 +21,7 @@
 @anchor{#asus-chromebook-c201-installation-guide}
 These instructions are for installing Libreboot to the ASUS Chromebook C201. Since the device ships with Coreboot, the installation instructions are the same before and after flashing Libreboot for the first time.
 
-@strong{DO NOT BUY THIS LAPTOP YET!!!!!!!!!!! This laptop currently has @em{zero} support from libre distros. Parabola theoretically supports it, by installing Arch first and then migrating to Parabola using the migration guide on the Parabola wiki, but it's not very well tested and does not have many package - in our opinion, Parabola does not really support this laptop. There are also several issues. Read @uref{../hcl/c201.html,this page} for more information. This laptop can still be used reasonably, in freedom, but it requires a lot of work. Most users will be disappointed.}
+@strong{DO NOT BUY THIS LAPTOP YET!!!!!!!!!!! This is intended mainly for developers at the moment (libreboot developers, and developers of libre GNU/Linux distributions). This laptop currently has @em{zero} support from libre distros. Parabola theoretically supports it, by installing Arch first and then migrating to Parabola using the migration guide on the Parabola wiki, but it's not very well tested and does not have many package - in our opinion, Parabola does not really support this laptop. There are also several issues. Read @uref{../hcl/c201.html,this page} for more information. This laptop can still be used reasonably, in freedom, but it requires a lot of work. Most users will be disappointed.}
 
 @strong{If you are using libreboot_src or git, then make sure that you built the sources first (see @uref{../git/index.html#build,../git/index.html#build}).}
 
