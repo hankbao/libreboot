@@ -36,7 +36,7 @@ rm -Rf "flashrom/"
 # Get flashrom
 # ------------------------------------------------------------------------------
 
-# download it using subversion
+# download it using git
 git clone https://github.com/stefanct/flashrom.git
 
 cd "flashrom/"
