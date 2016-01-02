@@ -118,7 +118,7 @@ if [ -d "bin/grub/" ]; then
 				else
 					../../../resources/utilities/ich9deblob/ich9gen
 				fi
-				for rom in *
+				for rom in *.rom
 				do
 					if [ "${board}" = "r500" ]; then
 						dd if="ich9fdnogbe_${romsize}.bin" of="${rom}" bs=1 count=4k conv=notrunc
