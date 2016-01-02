@@ -2,7 +2,7 @@
 
 #  DEBLOB script: deblobs the version of coreboot used for this release.
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -26,127 +26,49 @@ set -u -e
 
 printf "Deleting blobs in coreboot\n"
 
-cd "coreboot/"
+if [ ! -d "coreboot/" ]; then
+	printf "coreboot-libre deblob: no coreboot directory exists, so there is nothing to deblob\n"
+fi
 
-# ---------------------
-# AMD: CPU microcode updates
-# ---------------------
-rm -f \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000085.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c6.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c8.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000d9.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c5.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x10/RevE/F10MicrocodePatch010000bf.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x15/OR/F15OrMicrocodePatch06000624_Enc.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x15/OR/F15OrMicrocodePatch0600050D_Enc.c" \
-"src/vendorcode/amd/agesa/f15/Proc/CPU/Family/0x15/OR/F15OrMicrocodePatch06000425.c" \
-"src/vendorcode/amd/agesa/f15tn/Proc/CPU/Family/0x15/TN/F15TnMicrocodePatch0600110F_Enc.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000085.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c6.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c8.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c4.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c5.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x10/RevE/F10MicrocodePatch010000bf.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch0500000B.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch0500001A.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000085.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c6.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c8.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c4.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c5.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevE/F10MicrocodePatch010000bf.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x12/F12MicrocodePatch03000002.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x12/F12MicrocodePatch0300000f.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x12/F12MicrocodePatch0300000e.c" \
-"src/vendorcode/amd/agesa/f12/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000c7.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000085.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch010000b6.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000098.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevC/F10MicrocodePatch01000086.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c4.c" \
-"src/vendorcode/amd/agesa/f10/Proc/CPU/Family/0x10/RevD/F10MicrocodePatch010000c5.c" \
-"src/vendorcode/amd/agesa/f16kb/Proc/CPU/Family/0x16/KB/F16KbId7001MicrocodePatch.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch05000029.c" \
-"src/vendorcode/amd/agesa/f14/Proc/CPU/Family/0x14/F14MicrocodePatch05000119.c"
+for payloads in "coreboot/"*; do
 
-# -------------------------------------
-# AMD AGESA: SMU firmware
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/agesa/f12/Proc/GNB/Nb/Family/LN/F12NbSmuFirmware.h" \
-"src/vendorcode/amd/agesa/f14/Proc/GNB/Nb/Family/0x14/F14NbSmuFirmware.h" \
-"src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/GnbSmuFirmwareKB.h" \
-"src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/GnbSmuFirmwareTN.h"
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
 
-# -------------------------------------
-# AMD vendorcode: SCS Binary
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/excel925.h"
+	payload="${payloads##*/}"
 
-# -------------------------------------
-# AMD vendorcode: GNB CAC weights table <-- TODO: Is this really a blob? Does it really need to be deleted by libreboot?
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/GnbCacWeightsTN.h"
+	for boards in "coreboot/${payload}/"*; do
 
-# -------------------------------------
-# AMD vendorcode: SAMU firmware
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/GnbSamuPatchKB.h"
+		if [ ! -d "${boards}/" ]; then
+			continue
+		fi
 
-# -------------------------------------
-# AMD vendorcode: Hotplug firmware
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/cimx/rd890/HotplugFirmware.h"
+		board="${boards##*/}"
+		boardpath="coreboot/${payload}/${board}"
+		if [ "${payload}" = "crossgcc" ]; then
+			cbrevision="${board}"
+		else
+			cbrevision="$(cat "resources/libreboot/config/${payload}/${board}/cbrevision")"
+		fi
 
-# -------------------------------------
-# keyboard controller firmware (8051 assembly)
-# for the DMP Vortex86ex SoC
-# -------------------------------------
-rm -f \
-"src/cpu/dmp/vortex86ex/dmp_kbd_fw_part1.inc"
+		# deblob coreboot
+		for blob in $(cat "resources/utilities/coreboot-libre/blobs/coreboot/${cbrevision}/blobs.list"); do
+			rm -f "${boardpath}/${blob}"
+		done
 
-# -------------------------------------
-# DSDT/SSDT (pre-coreboot/compiled blobs)
-# -------------------------------------
-rm -f \
-"src/vendorcode/amd/agesa/f14/Proc/GNB/PCIe/Family/0x14/F14PcieAlibSsdt.h" \
-"src/vendorcode/amd/agesa/f12/Proc/GNB/PCIe/Family/LN/F12PcieAlibSsdt.h" \
-"src/vendorcode/amd/agesa/f16kb/Proc/GNB/Modules/GnbInitKB/AlibSsdtKB.h" \
-"src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFM2.h" \
-"src/vendorcode/amd/agesa/f15tn/Proc/GNB/Modules/GnbInitTN/PcieAlibSsdtTNFS1.h"
+		# deblob 3rdparty
+		# only non-crossgcc archives have 3rdparty (vboot) present.
+		if [ "${payload}" != "crossgcc" ]; then
+			vbootrevision="$(cat "resources/libreboot/config/${payload}/${board}/vbootrevision")"
+			# deblob 3rdparty
+			for blob in $(cat "resources/utilities/coreboot-libre/blobs/vboot/${vbootrevision}/blobs.list"); do
+				rm -f "${boardpath}/${blob}"
+			done
+		fi
 
-# ------------------------
-# Blobs in 3rdparty/vboot/
-# ------------------------
-
-rm -f \
-"3rdparty/vboot/tests/futility/data/bios_link_mp.bin"  \
-"3rdparty/vboot/tests/futility/data/bios_mario_mp.bin"  \
-"3rdparty/vboot/tests/futility/data/bios_peppy_mp.bin"  \
-"3rdparty/vboot/tests/futility/data/bios_zgb_mp.bin"  \
-"3rdparty/vboot/tests/futility/data/dingdong.signed"  \
-"3rdparty/vboot/tests/futility/data/dingdong.unsigned"  \
-"3rdparty/vboot/tests/futility/data/fw_gbb.bin"  \
-"3rdparty/vboot/tests/futility/data/fw_vblock.bin"  \
-"3rdparty/vboot/tests/futility/data/hoho.signed"  \
-"3rdparty/vboot/tests/futility/data/hoho.unsigned"  \
-"3rdparty/vboot/tests/futility/data/kern_preamble.bin"  \
-"3rdparty/vboot/tests/futility/data/minimuffin.signed"  \
-"3rdparty/vboot/tests/futility/data/minimuffin.unsigned"  \
-"3rdparty/vboot/tests/futility/data/rec_kernel_part.bin"  \
-"3rdparty/vboot/tests/futility/data/vmlinuz-amd64.bin"  \
-"3rdparty/vboot/tests/futility/data/vmlinuz-arm.bin"  \
-"3rdparty/vboot/tests/futility/data/zinger_mp_image.bin"  \
-"3rdparty/vboot/tests/futility/data/zinger.signed"  \
-"3rdparty/vboot/tests/futility/data/zinger.unsigned"
+	done
+done
 
 printf "\n\n"
 
-cd "../"

@@ -3,7 +3,7 @@
 #
 #  helper script: run "make menuconfig" on config(s) to modify them
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,25 +25,28 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-configpath="resources/libreboot/config/depthcharge"
+payload="depthcharge"
+configpath="resources/libreboot/config/${payload}"
 
 hackconfig () {
-	cd "coreboot/"
+	board="${1}"
 
-	printf "Modifying config for %s\n" "${1}"
+	cd "coreboot/${payload}/${board}/"
+
+	printf "Modifying config for %s (%s payload)\n" "${board}" "${payload}"
 	sleep 2
 
-	if [ ! -d "../${configpath}/${1}/" ]; then
-		printf "build/config/corebootmodify WARNING: config '%s' does not exist. Skipping.\n" "${1}"
-		cd "../"
+	if [ ! -d "../../../${configpath}/${board}/" ]; then
+		printf "build/config/dcmodify WARNING: config '%s' does not exist. Skipping.\n" "${board}"
+		cd "../../../"
 		return
 	fi
 	
-	mv "../${configpath}/${1}/config" ".config"
+	mv "../../../${configpath}/${board}/config" ".config"
 	make menuconfig
-	mv ".config" "../${configpath}/${1}/config"
+	mv ".config" "../../../${configpath}/${board}/config"
 
-	cd "../"
+	cd "../../../"
 }
 
 if [ $# -lt 1 ]; then

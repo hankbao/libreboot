@@ -3,7 +3,7 @@
 #
 #  helper script: build ROM images with GRUB and put them in ./bin/
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -27,6 +27,10 @@
 set -u -e
 
 printf "Building ROM images with the GRUB payload\n"
+
+# The GRUB files should be deleted first
+rm -f "coreboot/grub"*.{elf,cfg}
+rm -f "coreboot/"*/*/grub*.{elf,cfg}
 
 [ -d bin ] || mkdir "bin/"
 
@@ -136,5 +140,6 @@ fi
 
 # The GRUB files are no longer needed
 rm -f "coreboot/grub"*.{elf,cfg}
+rm -f "coreboot/"*/*/grub*.{elf,cfg}
 
 printf "\n\n"

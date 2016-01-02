@@ -3,7 +3,7 @@
 #
 #  helper script: run "make menuconfig" on config(s) to replace them
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,20 +25,23 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-configpath="resources/libreboot/config/depthcharge"
+payload="depthcharge"
+configpath="resources/libreboot/config/${payload}"
 
 hackconfig () {
-	cd "coreboot/"
+	board="${1}"
 
-	printf "Replacing or creating new config for %s\n" "${1}"
+	cd "coreboot/${payload}/${board}/"
+
+	printf "Replacing or creating new config for %s (%s payload)\n" "${board}" "${payload}"
 	sleep 2
 	
 	make menuconfig
 
-	[ ! -d "../${configpath}/${1}/" ] && mkdir -p "../${configpath}/${1}/"
-	mv ".config" "../${configpath}/${1}/config"
+	[ ! -d "../../../${configpath}/${board}/" ] && mkdir -p "../../../${configpath}/${board}/"
+	mv ".config" "../../../${configpath}/${board}/config"
 
-	cd "../"
+	cd "../../../"
 }
 
 if [ $# -lt 1 ]; then

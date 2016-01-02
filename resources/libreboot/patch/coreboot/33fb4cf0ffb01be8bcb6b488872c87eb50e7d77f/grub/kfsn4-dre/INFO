@@ -1,0 +1,2 @@
+ugly hack. reuses patches for kgpe-d16, just to add a patch to fix a build issue
+related to loading of microcode (to make it not load it, because this is libreboot)

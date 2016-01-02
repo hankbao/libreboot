@@ -2,7 +2,7 @@
 
 #  helper script: builds the dependencies that coreboot needs before building a ROM image
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -30,13 +30,28 @@ set -u -e
 
 printf "Building the utilities in coreboot\n"
 
-# crossgcc
-# coreboot on x86 is 32-bit, so only build for i386. Also build for ARM
-for architecture in i386 arm; do
-	make -j$(nproc) -BC coreboot crossgcc-${architecture}
-done
+# clean coreboot and crossgcc (source archives preserved)
+for payload in coreboot/*; do
+	for board in "${payload}/"*; do
 
-# cbfstool, cbmem, nvramtool
-for util in {cbfs,nvram}tool cbmem; do
-   make -BC coreboot/util/${util}
+		if [ "${payload##*/}" = "crossgcc" ]; then # build crossgcc
+
+			for architecture in i386 arm; do
+				make -j$(nproc) -BC "${board}/" crossgcc-${architecture}
+			done
+		else # build other utils
+			# cbfstool, cbmem, nvramtool
+			for util in {cbfs,nvram}tool cbmem; do
+				make -BC "${board}/util/${util}"
+			done
+			# create symlink to crossgcc
+			(
+			boardconfig_path="resources/libreboot/config/${payload##*/}/${board##*/}"
+			cbrevision="$(cat "${boardconfig_path}/cbrevision")"
+			cd "${board}/util/"
+			ln -s "../../../crossgcc/${cbrevision}/util/crossgcc/" crossgcc
+			)
+		fi
+
+	done
 done

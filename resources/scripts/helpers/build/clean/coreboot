@@ -2,7 +2,7 @@
 
 #  helper script: clean the dependencies that were built in coreboot
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #       Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -29,12 +29,27 @@ set -u -e
 printf "Cleaning the previous build of coreboot and its utilities\n"
 
 # clean coreboot and crossgcc (source archives preserved)
-make -C coreboot clean
-make -C coreboot crossgcc-clean
+for payload in coreboot/*; do
+	for board in "${payload}/"*; do
+		# Clean coreboot, of course
+		make -C "${board}/" distclean
 
-# Clean its utilities as well
-for util in {cbfs,ifd,nvram}tool cbmem; do
-   make -C coreboot/util/"${util}" clean
+		# Clean its utilities as well
+		for util in {cbfs,ifd,nvram}tool cbmem; do
+			make -C "${board}/util/${util}/" clean
+		done
+		make -C "${board}/payloads/libpayload/" distclean
+
+		# Clean crossgcc
+		if [ "${payload##*/}" != "crossgcc" ]; then # is a symlink
+			# delete symlink to crossgcc
+			rm -f "${board}/util/crossgcc"
+		else # is the real crossgcc
+			# payload is crossgcc
+			# board is not a board, it's a coreboot revision
+			make -C "${board}/" crossgcc-clean
+		fi
+	done
 done
 
 printf "\n\n"

@@ -2,7 +2,7 @@
 
 #  find blobs in coreboot
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -20,6 +20,9 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e -u
+
+printf "coreboot-libre findblobs: TODO: re-write this for the new scheme (multiple coreboot/vboot revisions per board)\n"
+exit 1
 
 # This is used when updating the version of
 # coreboot that libreboot uses, to know what

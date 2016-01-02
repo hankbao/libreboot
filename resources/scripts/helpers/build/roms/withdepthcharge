@@ -2,7 +2,7 @@
 
 #  helper script: build ROM images with depthcharge and put them in ./bin/
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #	Copyright (C) 2015 Paul Kocialkowski <contact@paulk.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -32,13 +32,23 @@ then
 	mkdir "bin/"
 fi
 
+if [ -f "version" ]; then
+	# _src release archive is being used
+	version="$(cat "version")"
+else
+	# git repo is being used
+	version="$(git describe --tags HEAD)" # note: in libreboot, coreboot/.git doesn't exist, this uses libreboot .git
+fi
+
 # Build libpayload
 # ------------------------------------------------------------------------------
 
 buildlibpayload() {
-	family="$1"
+	family="${1}"
+	board="${2}"
 
-	cd "coreboot/payloads/libpayload"
+	(
+	cd "coreboot/depthcharge/${board}/payloads/libpayload/"
 
 	make distclean
 	rm -Rf "install/"
@@ -46,95 +56,92 @@ buildlibpayload() {
 	make KBUILD_DEFCONFIG="configs/config.$family" defconfig
 	make -j"$(nproc)"
 	make DESTDIR="install" install
-
-	cd "../../../"
+	)
 }
 
 # Build depthcharge
 # ------------------------------------------------------------------------------
 
 builddepthcharge() {
-	board="$1"
+	board="${1}"
 
+	(
 	cd "depthcharge/"
 
 	make distclean
-	rm -f "../coreboot/depthcharge.elf"
+	rm -f "../coreboot/depthcharge/${board:?}/depthcharge.elf"
 
-	make BOARD="$board" defconfig
-	make BOARD="$board" LIBPAYLOAD_DIR="$(pwd)/../coreboot/payloads/libpayload/install/libpayload" VB_SOURCE="$(pwd)/../coreboot/3rdparty/vboot" -j"$(nproc)" depthcharge_unified
+	make BOARD="${board}" defconfig
+	make BOARD="${board}" LIBPAYLOAD_DIR="$(pwd)/../coreboot/depthcharge/${board}/payloads/libpayload/install/libpayload" VB_SOURCE="$(pwd)/../coreboot/depthcharge/${board}/3rdparty/vboot" -j"$(nproc)" depthcharge_unified
 
-	cp "build/depthcharge.elf" "../coreboot/"
-
-	cd "../"
+	cp "build/depthcharge.elf" "../coreboot/depthcharge/${board}/"
+	)
 }
 
 # Build coreboot
 # ------------------------------------------------------------------------------
 
 buildcoreboot() {
-	board="$1"
+	board="${1}"
 
-	cd "coreboot/"
+	(
+	cd "coreboot/depthcharge/${board}/"
 
 	make distclean
 	rm -f ".coreboot-version"
 	rm -f *.img
 
-	if [ -f "../version" ]; then
-		# _src release archive is being used
-		version="$(cat ../version)"
-	else
-		# git repo is being used
-		version="$(git describe --tags HEAD)" # note: in libreboot, coreboot/.git doesn't exist, this uses libreboot .git
-	fi
 	printf 'libreboot-%s' "${version}" > "ro-frid"
 	printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
-	make KBUILD_DEFCONFIG="$(pwd)/../resources/libreboot/config/depthcharge/${board}/config" defconfig
+	make KBUILD_DEFCONFIG="$(pwd)/../../../resources/libreboot/config/depthcharge/${board}/config" defconfig
 	make -j"$(nproc)"
 
 	cbfs_size=$( grep CONFIG_CBFS_SIZE ".config" | sed "s/.*[[:space:]]*=[[:space:]]*//g" )
-	cbfs_size=$( printf "%d\n" "$cbfs_size" )
+	cbfs_size=$( printf "%d\n" "${cbfs_size}" )
 	cbfs_size=$(( $cbfs_size / 1024 ))
 
-	dd if="build/coreboot.rom" of="coreboot.img" bs=1024 count="$cbfs_size"
+	dd if="build/coreboot.rom" of="coreboot.img" bs=1024 count="${cbfs_size}"
 
 	objcopy -I binary -O binary --pad-to=0x100 --gap-fill=0x00 "ro-frid" "ro-frid.img"
 
 	# prepare directory for new images
 	rm -Rf "${board:?}/"
-	mkdir "$board/"
+	mkdir "${board}/"
 	# move the images into the newly created directory
-	mv "coreboot.img" "$board/"
-	mv "ro-frid.img" "$board/"
+	mv "coreboot.img" "${board}/"
+	mv "ro-frid.img" "${board}/"
 	# copy the scripts too
-	cp "../resources/libreboot/install/depthcharge/cros-flash-replace" "$board/"
-	cp "../resources/libreboot/install/depthcharge/${board}/layout.txt" "$board/"
+	cp "../../../resources/libreboot/install/depthcharge/cros-flash-replace" "${board}/"
+	cp "../../../resources/libreboot/install/depthcharge/${board}/layout.txt" "${board}/"
 	# delete the old images from ../bin
-	rm -Rf "../bin/depthcharge/${board}/"
+	rm -Rf "../../../bin/depthcharge/${board}/"
 	# now put the new images in ./bin/depthcharge/
-	[ ! -d "../bin/depthcharge/" ] && mkdir -p "../bin/depthcharge/"
-	mv "$board/" "../bin/depthcharge/"
+	[ ! -d "../../../bin/depthcharge/" ] && mkdir -p "../../../bin/depthcharge/"
+	mv "${board}/" "../../../bin/depthcharge/"
 
-	cd "../"
+	# clean this up
+	rm -f "depthcharge.elf"
+	rm -f *.img
+	)
 }
 
 # Build ROM images for supported boards
 buildrom() {
-	board="$1"
+	board="${1}"
+
 	if [ -f "resources/libreboot/config/depthcharge/${board}/config" ]; then
 		family=$( echo ${board} |sed "s/_.*//g" )
 
-		buildlibpayload "$family"
-		builddepthcharge "$board"
-		buildcoreboot "$board"
+		buildlibpayload "${family}" "${board}"
+		builddepthcharge "${board}"
+		buildcoreboot "${board}"
 	fi
 }
 
 if [ $# -gt 0 ]; then
 	for board in "${@}"; do
-		buildrom "$board"
+		buildrom "${board}"
 	done
 else
 	for board in resources/libreboot/config/depthcharge/*; do

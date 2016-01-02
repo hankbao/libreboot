@@ -2,7 +2,7 @@
 
 #  helper script: downloads coreboot and patches/deblobs it
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
 #	Copyright (C) 2015 Paul Kocialkowski <contact@paulk.fr>
 #
 #    This program is free software: you can redistribute it and/or modify
@@ -25,6 +25,95 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+if [ -f "version" ]; then
+	# _src release archive is being used
+	version="libreboot-$(cat version)"
+else
+	# git repo is being used
+	version="libreboot-$(git describe --tags HEAD)"
+fi
+
+# sanity check (check for invalid paths in the reused.list patch lists before proceeding)
+for payloads in resources/libreboot/config/*; do
+
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
+
+	payload="${payloads##*/}"
+
+	for boardconfig in resources/libreboot/config/${payload}/*; do
+
+		if [ ! -d "${boardconfig}/" ]; then
+			continue
+		fi
+
+		boardname="${boardconfig##*/}"
+		cbrevision=$(cat "${boardconfig}/cbrevision")
+		vbootrevision=$(cat "${boardconfig}/vbootrevision")
+
+		reused_coreboot_patches="resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list"
+		reused_vboot_patches="resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list"
+		for reused_patches in "${reused_coreboot_patches}" "${reused_vboot_patches}"; do
+			if [ -f "${reused_patches}" ]; then
+				for patch in $(cat "${reused_patches}"); do
+					if [ ! -f "./${patch}" ]; then
+						printf "%s listed in %s does not exist\n" "${patch}" "${reused_patches}"
+						exit 1
+					fi
+				done
+			fi
+		done
+
+	done
+done
+
+# in ascending filename order, apply patches from a directory
+apply_patches_from_directory() {
+	patch_directory="${1}" # directory containing the patch files
+
+	if [ -d "${patch_directory}" ]; then
+		for patch in ${patch_directory}/*.patch;  do
+
+			if [ "${patch##*/}" = "*.patch" ]; then # oh so ugly
+				continue # ugly ugly ugly ugly ugly
+			fi # most hideous thing you've ever seen
+
+			git am "${patch}" || return 1
+		done
+	fi
+}
+# files listed in the file (if found) are absolute paths, relative to the root of the libreboot src directory
+# the file lists patches patches that should be applied
+apply_patches_from_file() {
+	patch_list="${1}" # file listing the paths to all the patches
+	libreboot_src_root="${2}" # path to the root of the libreboot_src directory
+
+	if [ -f "${patch_list}" ]; then
+		for patchname in $(cat "${patch_list}"); do
+			git am "${libreboot_src_root}/${patchname}" || return 1
+		done
+	fi
+}
+make_coreboot_src_directory() {
+	payload="${1}"
+	boardname="${2}"
+	firmwarepath="${3}" # libreboot_src/coreboot/
+(
+	cd "${firmwarepath}/"
+	# copy coreboot directory there
+	rm -Rf "${payload:?}/${boardname:?}/"
+	if [ ! -d "${payload}/" ]; then
+		mkdir -p "${payload}/"
+	fi
+	cp -R "coreboot/" "${payload}/${boardname}/"
+)
+}
+reset_at_revision() {
+	revision="${1}"
+	git reset --hard ${revision}
+}
+
 printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 
 # This grabs current base used, and applies patches
@@ -35,6 +124,10 @@ printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 
 rm -Rf "coreboot/"
 
+mkdir "coreboot/"
+
+cd "coreboot/"
+
 # Get latest coreboot:
 # ------------------------------------------------------------------------------
 
@@ -44,132 +137,123 @@ git clone http://review.coreboot.org/coreboot
 # there are modifications required
 cd "coreboot/"
 
-# reset to previously tested revision
-git reset --hard 33fb4cf0ffb01be8bcb6b488872c87eb50e7d77f
+# Define a common version (based on the libreboot version)
+# Most likely redundant, because the build system needs to update
+# this every time when building a ROM image anyway
+printf '%s\n' "${version}" >".coreboot-version"
 
 # vboot submodule is needed
+# ------------------------------------------------------------------------------
+
 git submodule update --init --checkout -- 3rdparty/vboot/
 
-# there are modifications required
-cd "3rdparty/vboot/"
-
-# reset vboot to last known good revision
-git reset --hard fbf631c845c08299f0bcbae3f311c5807d34c0d6
-
-# Patch vboot
+# Create branches, with patches in each branch
+# Create separate coreboot source directories *for each board*
 # ------------------------------------------------------------------------------
 
-printf "firmware: Developer mode timeout delay shortening (down to 3 seconds)\n"
-git am "../../../resources/libreboot/patch/vboot/0001-firmware-Developer-mode-timeout-delay-shortening-dow.patch"
+for payloads in ../../resources/libreboot/config/*; do
 
-printf "firmware: Text-based screen display in priority\n"
-git am "../../../resources/libreboot/patch/vboot/0002-firmware-Text-based-screen-display-in-priority.patch"
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
 
-printf "firmware: NV context pointer handoff to VbExDisplayScreen\n"
-git am "../../../resources/libreboot/patch/vboot/0003-firmware-NV-context-pointer-handoff-to-VbExDisplaySc.patch"
+	payload="${payloads##*/}"
 
-printf "firmware: Hold key combination in developer mode\n"
-git am "../../../resources/libreboot/patch/vboot/0004-firmware-Hold-key-combination-in-developer-mode.patch"
+	for boardconfig in ../../resources/libreboot/config/${payload}/*; do
 
-printf "firmware: Screen blank and wait at disabled USB boot warning\n"
-git am "../../../resources/libreboot/patch/vboot/0005-firmware-Screen-blank-and-wait-at-disabled-USB-boot-.patch"
+		if [ ! -d "${boardconfig}/" ]; then
+			continue
+		fi
 
-printf "firmware: Separate screen and wait at device information screen\n"
-git am "../../../resources/libreboot/patch/vboot/0006-firmware-Separate-screen-and-wait-at-device-informat.patch"
+		boardname="${boardconfig##*/}"
+		cbrevision=$(cat "${boardconfig}/cbrevision")
+		vbootrevision=$(cat "${boardconfig}/vbootrevision")
 
-printf "firmware: Localization keys removal\n"
-git am "../../../resources/libreboot/patch/vboot/0007-firmware-Localization-keys-removal.patch"
+		make_coreboot_src_directory ${payload} ${boardname} ..
 
-# leave the vboot tree
-cd "../../"
+		# patch that version
+		(
 
+			cd "../${payload}/${boardname}/"
+			reset_at_revision ${cbrevision}
 
-# Get patches from review.coreboot.org
-# ------------------------------------------------------------------------------
+			# apply patches (coreboot, common to all systems using this revision)
+			apply_patches_from_directory "../../../resources/libreboot/patch/common/coreboot/${cbrevision}"
+			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
+			apply_patches_from_file "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list" ../../..
+			# apply patches (coreboot, machine-specific for this revision)
+			apply_patches_from_directory "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}"
 
-printf "mainboard/lenovo/t400: Add initial hybrid graphics support\n"
-git am "../resources/libreboot/patch/misc/0001-mainboard-lenovo-t400-Add-initial-hybrid-graphics-su.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/19/9319/18 && git cherry-pick FETCH_HEAD
+			cd "3rdparty/vboot/"
+			# reset to known revision (vboot)
+			reset_at_revision ${vbootrevision}
 
-# not included, but keep an eye on it:
-# printf "mainboard/lenovo/t400: Increase backlight frequency to reduce flicker\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/31/9331/14 && git cherry-pick FETCH_HEAD
+			# apply patches (vboot, common to all systems using this revision)
+			apply_patches_from_directory "../../../../../resources/libreboot/patch/common/vboot/${vbootrevision}"
+			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
+			apply_patches_from_file "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list" ../../../../..
+			# apply patches (vboot, machine-specific for this revision)
+			apply_patches_from_directory "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
 
-printf "NOTFORMERGE: lenovo/t400: hard-code enable integrated-only video\n"
-git am "../resources/libreboot/patch/misc/0002-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/50/10550/1 && git cherry-pick FETCH_HEAD
-
-printf "lenovo/x60: use correct BLC_PWM_CTL value\n"
-git am "../resources/libreboot/patch/misc/0003-lenovo-x60-use-correct-BLC_PWM_CTL-value.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/24/10624/2 && git cherry-pick FETCH_HEAD
-
-printf "lenovo/t60: Enable brightness controls (native graphics)\n"
-git am "../resources/libreboot/patch/misc/0004-lenovo-t60-Enable-brightness-controls-native-graphic.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/52/10552/2 && git cherry-pick FETCH_HEAD
-
-printf "ec/lenovo/h8: permanently enable wifi/trackpoint/touchpad/bluetooth/wwan\n"
-git am "../resources/libreboot/patch/misc/0005-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/58/7058/9 && git cherry-pick FETCH_HEAD
-
-# NOTE: remove this when updating to the latest version of coreboot. this patch
-# makes the patch below redundant: https://review.coreboot.org/#/c/12814/
-printf "northbridge/gm45/raminit.c: enable GS45 high-perf (i.e. add X200S support to libreboot)\n"
-git am "../resources/libreboot/patch/misc/0006-northbridge-gm45-raminit.c-enable-GS45-high-performa.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/35/11135/3 && git cherry-pick FETCH_HEAD
-
-# Patch removed for now, affected by this patch:
-# http://review.coreboot.org/#/c/11702/
-# printf "fix uneven backlight on X200 (when setting brightness low)\n"
-# git fetch http://review.coreboot.org/coreboot refs/changes/79/7979/2 && git cherry-pick FETCH_HEAD
-
-# NOTE: remove this when updating coreboot. This has been merged upstream
-printf "ThinkPad R400 support (clone of the T400)\n"
-git am "../resources/libreboot/patch/misc/0007-lenovo-r400-Add-clone-of-Lenovo-T400.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/93/8393/5 && git cherry-pick FETCH_HEAD
-
-# NOTE: remove this when updating coreboot. This has been merged upstream
-printf "ThinkPad T500 (depends on T400 patch)\n"
-git am "../resources/libreboot/patch/misc/0008-lenovo-t500-Add-clone-of-Lenovo-T400.patch"
-# git fetch http://review.coreboot.org/coreboot refs/changes/45/10545/1 && git cherry-pick FETCH_HEAD
-
-# CrOS:
-
-printf "chromeos: Allow disabling vboot firmware verification when ChromeOS is enabled\n"
-git am "../resources/libreboot/patch/cros/0001-chromeos-Allow-disabling-vboot-firmware-verification.patch"
-
-# KGPE-D16 patches
-# new versions can be found at https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php
-for i in ../resources/libreboot/patch/kgpe-d16/*; do
-	git am "${i}"
+		)
+	done
 done
-# Temporary fix (TODO: get tpearson to fix properly):
-# Remove code from coreboot that adds microcode updates
-# git fetch http://review.coreboot.org/coreboot refs/changes/90/12090/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/tmpfix/0001-NOTFORMERGE-don-t-add-CPU-microcode-on-fam10h-to-fam.patch"
+
+# prepare directories for crossgcc
+for payloads in ../../resources/libreboot/config/*; do
+
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
+
+	payload="${payloads##*/}"
+
+	for boardconfig in ../../resources/libreboot/config/${payload}/*; do
+
+		if [ ! -d "${boardconfig}/" ]; then
+			continue
+		fi
+
+		boardname="${boardconfig##*/}"
+		cbrevision=$(cat "${boardconfig}/cbrevision")
+		vbootrevision=$(cat "${boardconfig}/vbootrevision")
+
+		# Create coreboot directory for compiling crossgcc
+		if [ ! -d "../crossgcc/${cbrevision}" ]; then
+			make_coreboot_src_directory crossgcc ${cbrevision} ..
+			(
+				cd "../crossgcc/${cbrevision}/"
+				# reset to known revision (coreboot)
+				reset_at_revision ${cbrevision}
+				# no way to know which vboot revision is used here, so delete 3rdparty
+				rm -Rf "3rdparty/"
+			)
+		fi
+	done
+done
+
+# go back to _src/coreboot/ (containing all coreboot directories)
+cd "../"
+# delete the gitted one (not needed anymore)
+rm -Rf "coreboot/"
 
 # Run coreboot-libre deblob scripts
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -Rf ".git/"
-rm -f ".gitreview"
-rm -f ".gitmodules"
-rm -f ".gitignore"
+rm -Rf */*/.git*
+rm -Rf */*/3rdparty/*/.git*
 
-rm -Rf 3rdparty/*/.git*
-
+# Delete crossgcc from non-crossgcc coreboot archives
+# (the build system will create symlinks later when building the ROM images)
+for payload in *; do
+	if [ "${payload##*/}" != "crossgcc" ]; then
+		rm -Rf ${payload}/*/util/crossgcc/
+	fi
+done
 cd "../"
 
 printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
-
-if [ -f "version" ]; then
-	# _src release archive is being used
-	version="libreboot-$(cat version)"
-else
-	# git repo is being used
-	version="libreboot-$(git describe --tags HEAD)"
-fi
-printf '%s\n' "${version}" >"coreboot/.coreboot-version"
 
 printf "\n\n"
