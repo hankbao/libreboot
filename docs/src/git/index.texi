@@ -39,6 +39,8 @@ Or @uref{../index.html,Back to main index}.
 @ref{#build_flashrom,How to build "flashrom"}
 @item
 @ref{#config,Configuring libreboot}
+@item
+@ref{#config_chromebook,Configuring libreboot for chromebooks}
 @itemize
 @item
 @ref{#config_dmidecode,dmidecode}
@@ -46,36 +48,8 @@ Or @uref{../index.html,Back to main index}.
 @ref{#config_grub,GRUB payload}
 @itemize
 @item
-@ref{#config_kfsn4-dre,ASUS KFSN4-DRE}
-@item
-@ref{#config_x60,ThinkPad X60, X60S and X60 Tablet}
-@item
-@ref{#config_t60,ThinkPad T60}
-@item
-@ref{#config_x200,ThinkPad X200}
-@item
-@ref{#config_r400,ThinkPad R400}
-@item
-@ref{#config_r500,ThinkPad R500}
-@item
-@ref{#config_t400,ThinkPad T400}
-@item
-@ref{#config_t500,ThinkPad T500}
-@item
-@ref{#config_macbook21,MacBook2,1}
-@item
-@ref{#config_qemu_i440fx_piix4,QEMU (x86 i440fx/piix4)}
-@item
-@ref{#config_qemu_q35_ich9,QEMU (x86 q35/ich9)}
+@ref{#config}
 @end itemize
-
-@item
-@ref{#config_depthcharge,Depthcharge payload}
-@itemize
-@item
-@ref{#config_c201,ASUS Chromebook C201}
-@end itemize
-
 @end itemize
 
 @item
@@ -233,33 +207,23 @@ GRUB is one of the payloads that libreboot targets.
 
 Configurations are then saved as files called @strong{".config"}. Copies of each configuration used for each system type by the libreboot build scripts are stored in resources/libreboot/config/grub/
 @menu
-* ASUS KFSN4-DRE configuration file resources/libreboot/config/grub/kfsn4-dre/config::
-* ThinkPad X60 X60S and X60 Tablet configuration file resources/libreboot/config/grub/x60/config::
-* ThinkPad T60 configuration file resources/libreboot/config/grub/t60/config::
-* ThinkPad X200 configuration file resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config::
-* ThinkPad R400 configuration file resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config::
-* ThinkPad R500 configuration file resources/libreboot/config/grub/r500_4mb/config::
-* ThinkPad T400 configuration file resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config::
-* ThinkPad T500 configuration file resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config::
-* MacBook21 configuration file resources/libreboot/config/grub/macbook21/config::
-* QEMU x86 i440fx/piix4 configuration file resources/libreboot/config/grub/qemu_i440fx_piix4/config::
-* QEMU x86 q35/ich9 configuration file resources/libreboot/config/grub/qemu_q35_ich9/config::
+* Generic configuration file resources/libreboot/config/payload/board/config::
 @end menu
 
-@node ASUS KFSN4-DRE configuration file resources/libreboot/config/grub/kfsn4-dre/config
-@subsection ASUS KFSN4-DRE configuration (file: resources/libreboot/config/grub/kfsn4-dre/config)
-@anchor{#asus-kfsn4-dre-configuration-file-resourceslibrebootconfiggrubkfsn4-dreconfig}
+@node Generic configuration file resources/libreboot/config/payload/board/config
+@subsection Generic configuration (file: resources/libreboot/config/payload/board/config)
+@anchor{#config}
 @itemize
 @item
 General setup / Expert mode = @emph{enable}
 @item
 General / Use CMOS for configuration values = @emph{enable}
 @item
-Mainboard / Mainboard vendor = @emph{ASUS}
+Mainboard / Mainboard vendor = @emph{Name of manufacturer}
 @item
-Mainboard / Mainboard model = @emph{KFSN4-DRE}
+Mainboard / Mainboard model = @emph{Model name}
 @item
-Mainboard / ROM chip size = @emph{1024 KB (1 MB)}
+Mainboard / ROM chip size = @emph{Size of chip}
 @item
 Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
 @item
@@ -296,529 +260,7 @@ Devices / Run VGA Option ROMs = @emph{disable}
 Devices / Run Option ROMs on PCI devices = @emph{disable}
 @end itemize
 
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/kfsn4-dre/config} and is used by the build scripts for this system.
-
-@node ThinkPad X60 X60S and X60 Tablet configuration file resources/libreboot/config/grub/x60/config
-@subsection ThinkPad X60, X60S and X60 Tablet configuration (file: resources/libreboot/config/grub/x60/config)
-@anchor{#thinkpad-x60-x60s-and-x60-tablet-configuration-file-resourceslibrebootconfiggrubx60config}
-@itemize
-@item
-General setup / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad X60 / X60s / X60t}
-@item
-Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Generic Drivers / Digitizer = @emph{Present}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Now go back into Devices:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/x60/config} and is used by the build scripts for this system.
-
-This configuration is used on all variants: X60, X60S and X60 Tablet.
-
-@node ThinkPad T60 configuration file resources/libreboot/config/grub/t60/config
-@subsection ThinkPad T60 configuration (file: resources/libreboot/config/grub/t60/config)
-@anchor{#thinkpad-t60-configuration-file-resourceslibrebootconfiggrubt60config}
-@itemize
-@item
-General setup / Expert mode = @emph{enable}
-@item
-General setup / Local version string = @emph{79ETE7WW (2.27 )}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad T60 / T60p}
-@item
-Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
-@item
-System tables / SMBIOS Serial Number = @emph{L3DKE06}
-@item
-System tables / SMBIOS Version Number = @emph{ThinkPad T60}
-@item
-System tables / SMBIOS Manufacturer = @emph{LENOVO}
-@item
-System tables / SMBIOS Product name = @emph{1951FEG}
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back into Devices:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/t60/config} and is used by the build scripts for this system.
-
-It is believed that the motherboards on 14.1" and 15.1" T60s are the same, so the same configuration is used on both the 14.1" and 15.1" T60s.
-
-@node ThinkPad X200 configuration file resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config
-@subsection ThinkPad X200 configuration (file: resources/libreboot/config/grub/x200_4mb/config and resources/libreboot/config/grub/x200_8mb/config)
-@anchor{#thinkpad-x200-configuration-file-resourceslibrebootconfiggrubx200_4mbconfig-and-resourceslibrebootconfiggrubx200_8mbconfig}
-These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
-
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad X200}
-@item
-Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Generic Drivers / Digitizer = @emph{Present}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/x200_8mb/config} and resources/libreboot/config/@strong{grub/x200_4mb/config} and is used by the build scripts for this system.
-
-@node ThinkPad R400 configuration file resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config
-@subsection ThinkPad R400 configuration (file: resources/libreboot/config/grub/r400_4mb/config and resources/libreboot/config/grub/r400_8mb/config)
-@anchor{#thinkpad-r400-configuration-file-resourceslibrebootconfiggrubr400_4mbconfig-and-resourceslibrebootconfiggrubr400_8mbconfig}
-These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
-
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad R400}
-@item
-Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/r400_8mb/config} and resources/libreboot/config/@strong{grub/r400_4mb/config} and is used by the build scripts for this system.
-
-@node ThinkPad R500 configuration file resources/libreboot/config/grub/r500_4mb/config
-@subsection ThinkPad R500 configuration (file: resources/libreboot/config/grub/r500_4mb/config)
-@anchor{#thinkpad-r500-configuration-file-resourceslibrebootconfiggrubr500_4mbconfig}
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad R500}
-@item
-Mainboard / ROM chip size = @emph{4096 KB (4 MB)}
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Chipset / Size of CBFS filesystem in ROM = @emph{0x3FF000}
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/r500_4mb/config} and is used by the build scripts for this system.
-
-@node ThinkPad T400 configuration file resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config
-@subsection ThinkPad T400 configuration (file: resources/libreboot/config/grub/t400_4mb/config and resources/libreboot/config/grub/t400_8mb/config)
-@anchor{#thinkpad-t400-configuration-file-resourceslibrebootconfiggrubt400_4mbconfig-and-resourceslibrebootconfiggrubt400_8mbconfig}
-These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
-
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad T400}
-@item
-Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/t400_8mb/config} and resources/libreboot/config/@strong{grub/t400_4mb/config} and is used by the build scripts for this system.
-
-@node ThinkPad T500 configuration file resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config
-@subsection ThinkPad T500 configuration (file: resources/libreboot/config/grub/t500_4mb/config and resources/libreboot/config/grub/t500_8mb/config)
-@anchor{#thinkpad-t500-configuration-file-resourceslibrebootconfiggrubt500_4mbconfig-and-resourceslibrebootconfiggrubt500_8mbconfig}
-These are saved as two configs, because there are 2 size flash chips: 4MB or 8MB.
-
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Lenovo}
-@item
-Mainboard / Mainboard model = @emph{ThinkPad T500}
-@item
-Mainboard / ROM chip size = @emph{4096 KB (4 MB)} or @emph{8192 KB (8 MB)} depending on flash chip size
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Chipset / Size of CBFS filesystem in ROM = byte size @emph{0x7FD000} (for 8MB flash chip) or @emph{3FD000} (for 4MB flash chip)
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{Net20DC or compatible}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/t500_8mb/config} and resources/libreboot/config/@strong{grub/t500_4mb/config} and is used by the build scripts for this system.
-
-@node MacBook21 configuration file resources/libreboot/config/grub/macbook21/config
-@subsection MacBook2,1 configuration (file: resources/libreboot/config/grub/macbook21/config)
-@anchor{#macbook21-configuration-file-resourceslibrebootconfiggrubmacbook21config}
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-General / Local version string = @emph{"@ @ @ @ MB21.88Z.00A5.B07.0706270922"} (without the quotes)
-@item
-General / Use CMOS for configuration values = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Apple}
-@item
-Mainboard / Mainboard model = @emph{Macbook2,1 ICH7 TESTING}
-@item
-Mainboard / ROM chip size = @emph{2048 KB (2 MB)}
-@item
-System tables / SMBIOS Serial Number = @emph{W8724XXXXXX}
-@item
-System tables / SMBIOS Version Number = @emph{1.0}
-@item
-System tables / SMBIOS Manufacturer = @emph{Apple Inc.}
-@item
-System tables / SMBIOS Product Name = @emph{MacBook2,1}
-@item
-Chipset / Include CPU microcode in CBFS = @emph{Do not include microcode updates}
-@item
-Devices / Use native graphics initialization = @emph{enable}
-@item
-Display / Keep VESA framebuffer = @emph{disable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with text-mode enabled by default, but it automatically patches a copy of the config at build time to enable coreboot framebuffer for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Generic Drivers / USB 2.0 EHCI debug dongle support = @emph{Enable}
-@item
-Generic Drivers / Enable early (pre-RAM) usbdebug = @emph{Enable}
-@item
-Generic Drivers / Type of dongle = @emph{}
-@item
-Console / USB dongle console output = @emph{enable}
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/macbook21/config} and is used by the build scripts for this system. @strong{This config is also used for the MacBook1,1}.
-
-@node QEMU x86 i440fx/piix4 configuration file resources/libreboot/config/grub/qemu_i440fx_piix4/config
-@subsection QEMU (x86 i440fx/piix4) configuration (file: resources/libreboot/config/grub/qemu_i440fx_piix4/config)
-@anchor{#qemu-x86-i440fxpiix4-configuration-file-resourceslibrebootconfiggrubqemu_i440fx_piix4config}
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Emulation}
-@item
-Mainboard / Mainboard model = @emph{QEMU x86 i440fx/piix4 (aka qemu -M pc)}
-@item
-Mainboard / ROM chip size = @emph{8192 KB (8 MB)}
-@item
-Devices / Use native graphics initialization = @emph{enable} (should already be enabled)
-@item
-Display / Keep VESA framebuffer = @emph{enable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time to enable coreboot text-mode for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/qemu_i440fx_piix4/config} and is used by the build scripts for this system.
-
-@node QEMU x86 q35/ich9 configuration file resources/libreboot/config/grub/qemu_q35_ich9/config
-@subsection QEMU (x86 q35/ich9) configuration (file: resources/libreboot/config/grub/qemu_q35_ich9/config)
-@anchor{#qemu-x86-q35ich9-configuration-file-resourceslibrebootconfiggrubqemu_q35_ich9config}
-@itemize
-@item
-General / Expert mode = @emph{enable}
-@item
-Mainboard / Mainboard vendor = @emph{Emulation}
-@item
-Mainboard / Mainboard model = @emph{QEMU x86 q35/ich9 (aka qemu -M q35)}
-@item
-Mainboard / ROM chip size = @emph{8192 KB (8 MB)}
-@item
-Devices / Use native graphics initialization = @emph{enable} (should already be enabled)
-@item
-Display / Keep VESA framebuffer = @emph{enable} (disable for text-mode graphics, enable for coreboot vesa framebuffer)
-@itemize
-@item
-Libreboot provides this with framebuffer enabled by default, but it automatically patches a copy of the config at build time to enable coreboot text-mode for a separate set of ROM images, in each system.
-@end itemize
-
-@item
-Payload / Add a payload = @emph{An ELF executable payload}
-@item
-Payload / Payload path and filename = @emph{grub.elf}
-@end itemize
-
-Go back and disable option ROMs:
-
-@itemize
-@item
-Devices / Run VGA Option ROMs = @emph{disable}
-@item
-Devices / Run Option ROMs on PCI devices = @emph{disable}
-@end itemize
-
-The resulting .config file was saved as resources/libreboot/config/@strong{grub/qemu_q35_ich9/config} and is used by the build scripts for this system.
+The resulting .config file was saved as resources/libreboot/config/@strong{payload/board/config} and is used by the build scripts for this system.
 
 @node Depthcharge payload
 @section Depthcharge payload
@@ -830,14 +272,14 @@ Configurations are then saved as files called @strong{".config"}. Copies of each
 * ASUS Chromebook C201 configuration file resources/libreboot/config/depthcharge/veyron_speedy/config::
 @end menu
 
-@node ASUS Chromebook C201 configuration file resources/libreboot/config/depthcharge/veyron_speedy/config
-@subsection ASUS Chromebook C201 configuration (file: resources/libreboot/config/depthcharge/veyron_speedy/config)
-@anchor{#asus-chromebook-c201-configuration-file-resourceslibrebootconfigdepthchargeveyron_speedyconfig}
+@node Configuration for chromebooks file resources/libreboot/config/depthcharge/board/config
+@subsection Configuration for chromebooks (file: resources/libreboot/config/depthcharge/board/config)
+@anchor{#config_chromebook}
 @itemize
 @item
 Mainboard / Mainboard vendor = @emph{Google}
 @item
-Mainboard / Mainboard model = @emph{Veyron_Speedy}
+Mainboard / Mainboard model = @emph{Name of board}
 @item
 Chipset / ChromeOS / Build for ChromeOS = @emph{enable}
 @item
@@ -848,7 +290,7 @@ Payload / Add a payload = @emph{An ELF executable payload}
 Payload / Payload path and filename = @emph{depthcharge.elf}
 @end itemize
 
-The resulting .config file was saved as resources/libreboot/config/@strong{depthcharge/veyron_speedy/config} and is used by the build scripts for this system.
+The resulting .config file was saved as resources/libreboot/config/@strong{depthcharge/board/config} and is used by the build scripts for this system.
 
 @ref{#pagetop,Back to top of page.}
 
