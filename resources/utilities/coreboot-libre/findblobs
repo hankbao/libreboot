@@ -21,9 +21,6 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e -u
 
-printf "coreboot-libre findblobs: TODO: re-write this for the new scheme (multiple coreboot/vboot revisions per board)\n"
-exit 1
-
 # This is used when updating the version of
 # coreboot that libreboot uses, to know what
 # new blobs have landed in coreboot
@@ -33,29 +30,17 @@ exit 1
 # this will have to do.
 
 printf "Searching for blobs in coreboot\n"
-cp "deblob-check" "../../../coreboot"
-cd "../../../coreboot/"
+cp "deblob-check" "../../../coreboot/coreboot/"
+cd "../../../coreboot/coreboot/"
 
 chmod +x "deblob-check"
-find -type f | xargs ./deblob-check > "blobs"
+find -type f | xargs ./deblob-check > "tocheck"
 rm -f "deblob-check"
 
-rm -f "tocheck"
-touch "tocheck"
+rm -f "../../resources/utilities/coreboot-libre/tocheck"
+mv "tocheck" "../../resources/utilities/coreboot-libre/"
 
-for file in $(cat blobs)
-do
-	if ! grep -Fxq "${file}" "../resources/utilities/coreboot-libre/nonblobs"
-	then
-		 printf "%s\n" "${file}" >> tocheck
-	fi
-done
-rm -f "blobs"
-
-rm -f "../resources/utilities/coreboot-libre/tocheck"
-mv "tocheck" "../resources/utilities/coreboot-libre/"
-
-cd "../resources/utilities/coreboot-libre/"
+cd "../../resources/utilities/coreboot-libre/"
 
 printf "Done! open resources/utilities/coreboot-libre/tocheck in an editor\n"
 printf "This will contain the names of the files that you must decide whether they are blobs or not\n\n"
