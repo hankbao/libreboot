@@ -248,7 +248,7 @@ rm -Rf */*/3rdparty/*/.git*
 # (the build system will create symlinks later when building the ROM images)
 for payload in *; do
 	if [ "${payload##*/}" != "crossgcc" ]; then
-		rm -Rf ${payload}/*/util/crossgcc/
+		rm -Rf ${payload:?}/*/util/crossgcc/
 	fi
 done
 cd "../"
