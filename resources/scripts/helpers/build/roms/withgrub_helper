@@ -76,9 +76,9 @@ do
 					continue
 			fi
 	fi
-	if [ "${boardtarget}" = "kgpe-d16" ]; then
+	if [ "${boardtarget}" = "kgpe-d16" ] || [ "${boardtarget}" = "ga-g41m-es2l" ]; then
 		if [ "${romtype}" = "vesafb" ]; then
-			printf "Only text-mode is reported to work on KGPE-D16\n"
+			printf "Only text-mode is reported to work on KGPE-D16 and ga-g41m-es2l\n"
 			printf "TODO: get tpearson to fix it\n"
 			continue
 		fi
