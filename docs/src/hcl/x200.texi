@@ -59,6 +59,8 @@ On GM45 hardware (with libreboot), make sure that the @emph{kvm} and @emph{kvm_i
 
 The following errata datasheet from Intel might help with investigation: @uref{http://download.intel.com/design/mobile/specupdt/320121.pdf,http://download.intel.com/design/mobile/specupdt/320121.pdf}
 
+Anecdotal reports from at least 1 user suggests that some models with CPU microcode 1067a (on the CPU itself) might work with vt-x in libreboot.
+
 @node X200S and X200 Tablet
 @section X200S and X200 Tablet.
 @anchor{#x200s-and-x200-tablet.}
