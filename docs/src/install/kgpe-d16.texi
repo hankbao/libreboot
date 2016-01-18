@@ -20,9 +20,7 @@
 @node KGPE-D16 external flashing instructions
 @chapter KGPE-D16 external flashing instructions
 @anchor{#kgpe-d16-external-flashing-instructions}
-Initial flashing instructions for X200.
-
-This guide is for those who want libreboot on their ThinkPad X200 while they still have the original Lenovo BIOS present. This guide can also be followed (adapted) if you brick your X200, to know how to recover.
+Initial flashing instructions for KGPE-D16.
 
 This guide is for those who want libreboot on their ASUS KGPE-D16 motherboard, while they still have the proprietary ASUS BIOS present. This guide can also be followed (adapted) if you brick you board, to know how to recover.
 
