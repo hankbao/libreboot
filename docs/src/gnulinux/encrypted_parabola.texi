@@ -1,4 +1,4 @@
-\input texinfo
+9w\input texinfo
 @documentencoding UTF-8
 
 @ifnottex
@@ -166,7 +166,7 @@ Console font and keymap:@* # @strong{nano /etc/vconsole.conf}@* In my case:
 
 @verbatim
 KEYMAP=dvorak-uk
-FONT=Lat9w-16
+FONT=lat9w-16
 @end verbatim
 
 Time zone:@* # @strong{ln -s /usr/share/zoneinfo/Europe/London /etc/localtime}@* (Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
