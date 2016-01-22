@@ -67,9 +67,7 @@ Not all LCD panels are compatible yet. See @uref{../hcl/gm45_lcd.html,../hcl/gm4
 @node Quad-core CPUs
 @section Quad-core CPUs
 @anchor{#quad-core-cpus}
-Although blocked by lenovobios (as was reported), it is reported that there are quad-core CPUs for GM45. This laptop has socketed CPUs, so it might be possible to use them (they are untested in coreboot; support may have to be added). Core 2 Quad Q9000, Q9100 or QX9300.
-
-Look at this link:@* @uref{https://en.wikipedia.org/wiki/List_of_Intel_Core_2_microprocessors#Quad-Core_Notebook_processors,https://en.wikipedia.org/wiki/List_of_Intel_Core_2_microprocessors#Quad-Core_Notebook_processors}
+Incompatible. Do not use.
 
 @node A note about GPUs
 @chapter A note about GPUs
