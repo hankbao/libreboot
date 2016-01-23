@@ -189,7 +189,7 @@ Mkinitcpio: Configure /etc/mkinitcpio.conf as needed (see @uref{https://wiki.par
 @item
 MODULES="i915"
 @item
-This forces the driver to load earlier, so that the console font isn't wiped out after getting to login)
+This forces the driver to load earlier, so that the console font isn't wiped out after getting to login). Macbook21 users will also need to add the @strong{"hid-generic", "hid" and "hid-apple" modules to have a working keyboard when asked to enter the LUKS password.}
 @item
 HOOKS="base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown"
 @item
@@ -401,7 +401,7 @@ Supported CD-RW media types according to MMC-4 feature 0x37:
   Does not write ultra high speed+ CD-RW media
 @end verbatim
 
-Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Copyright © 2015 Jeroen Quint <jezza@@diplomail.ch>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+Copyright © 2014, 2015, 2016 Francis Rowe <info@@gluglug.org.uk>@* Copyright © 2015 Jeroen Quint <jezza@@diplomail.ch>@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
 
 Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
 
