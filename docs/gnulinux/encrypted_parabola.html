@@ -393,7 +393,7 @@ FONT=lat9w-16
 			</p>
 				<ul>
 					<li>MODULES="i915"</li>
-					<li>This forces the driver to load earlier, so that the console font isn't wiped out after getting to login)</li>
+					<li>This forces the driver to load earlier, so that the console font isn't wiped out after getting to login). Macbook21 users will also need <strong>hid-generic, hid and hid-apple to have a working keyboard when asked to enter the LUKS password.</strong></li>
 					<li>HOOKS="base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown"</li>
 					<li>Explanation:</li>
 					<li>keymap adds to initramfs the keymap that you specified in /etc/vconsole.conf</li>
