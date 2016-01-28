@@ -1,2 +1,2 @@
-/resources/libreboot/patch/coreboot/33fb4cf0ffb01be8bcb6b488872c87eb50e7d77f/grub/t400_8mb/0001-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
+/resources/libreboot/patch/coreboot/33fb4cf0ffb01be8bcb6b488872c87eb50e7d77f/grub/x60/0001-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
 /resources/libreboot/patch/coreboot/33fb4cf0ffb01be8bcb6b488872c87eb50e7d77f/grub/x200_8mb/0001-northbridge-gm45-raminit.c-enable-GS45-high-performa.patch
