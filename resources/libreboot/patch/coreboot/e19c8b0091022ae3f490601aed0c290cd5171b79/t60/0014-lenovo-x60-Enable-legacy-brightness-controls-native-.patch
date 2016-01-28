@@ -1,27 +1,26 @@
-From e4b5b65c93122126344771f2042f8d7a3468be19 Mon Sep 17 00:00:00 2001
+From 89f4c7561e486030d867674e4df2978a7260c4a7 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
-Date: Mon, 22 Jun 2015 17:37:06 +0100
-Subject: [PATCH 3/9] lenovo/x60: use correct BLC_PWM_CTL value
+Date: Sat, 11 Oct 2014 16:43:28 +0100
+Subject: [PATCH 14/22] lenovo/x60: Enable legacy brightness controls (native
+ graphics)
 
-Bit 16 in BLC_PWM_CTL enables brightness controls, but the
-current value is generic. Use the proper value, obtained
-by reading BLC_PWM_CTL while running the VBIOS.
+Value obtained by reading BLC_PWM_CTL when running the VBIOS (option ROM).
 
-Change-Id: Ib273359e1c285b405a9bb26fc217c2f7e255b99f
+Change-Id: Id855c4e91fe71fb489739e62fbe99ca22841acd2
 Signed-off-by: Francis Rowe <info@gluglug.org.uk>
 ---
  src/mainboard/lenovo/x60/devicetree.cb | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/src/mainboard/lenovo/x60/devicetree.cb b/src/mainboard/lenovo/x60/devicetree.cb
-index b4d1144..4d62116 100644
+index 382ebaf..4e02d3c 100644
 --- a/src/mainboard/lenovo/x60/devicetree.cb
 +++ b/src/mainboard/lenovo/x60/devicetree.cb
-@@ -26,7 +26,7 @@ chip northbridge/intel/i945
- 
+@@ -25,7 +25,7 @@ chip northbridge/intel/i945
  	register "gpu_hotplug" = "0x00000220"
  	register "gpu_lvds_use_spread_spectrum_clock" = "1"
--	register "gpu_backlight" = "0x1290128"
+ 	register "gpu_lvds_is_dual_channel" = "0"
+-	register "gpu_backlight" = "0x1280128"
 +	register "gpu_backlight" = "0x879F879E"
  
  	device cpu_cluster 0 on

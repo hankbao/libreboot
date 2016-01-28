@@ -1,0 +1,26 @@
+From e1a421df8add1b976ee9bd001c88fbc95900e1f3 Mon Sep 17 00:00:00 2001
+From: Vladimir Serbinenko <phcoder@gmail.com>
+Date: Thu, 21 Aug 2014 02:25:59 +0200
+Subject: [PATCH 13/22] lenovo/x60: Enable text mode native gfx init
+
+Change-Id: I3aad96a7034c73e447cf8995473a45ffd3893f3f
+Signed-off-by: Vladimir Serbinenko <phcoder@gmail.com>
+---
+ src/mainboard/lenovo/x60/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mainboard/lenovo/x60/Kconfig b/src/mainboard/lenovo/x60/Kconfig
+index 0125d8c..ab4b58e 100644
+--- a/src/mainboard/lenovo/x60/Kconfig
++++ b/src/mainboard/lenovo/x60/Kconfig
+@@ -24,6 +24,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select HAVE_ACPI_RESUME
+ 	select USE_OPTION_TABLE
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT
++	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 	select H8_DOCK_EARLY_INIT
+ 	select DRIVERS_LENOVO_WACOM
+ 	select INTEL_EDID
+-- 
+1.9.1
+
