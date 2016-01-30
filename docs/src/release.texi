@@ -83,6 +83,15 @@ Check notes in @strong{@emph{hcl/kgpe-d16.html}}
 @end itemize
 
 @item
+@strong{ASUS KCMA-D8 desktop/workstation board}
+@itemize
+@item
+Check notes in @strong{@emph{hcl/kcma-d8.html}}
+@item
+@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
+@end itemize
+
+@item
 @strong{ThinkPad X60/X60s}
 @itemize
 @item

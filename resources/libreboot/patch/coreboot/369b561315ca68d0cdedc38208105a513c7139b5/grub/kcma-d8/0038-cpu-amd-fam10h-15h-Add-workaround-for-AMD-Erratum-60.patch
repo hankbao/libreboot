@@ -1,0 +1,28 @@
+From 048d7a04e75fbc511838623916f4850897b29c5a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:04 -0600
+Subject: [PATCH 38/45] cpu/amd/fam10h-15h: Add workaround for AMD Erratum 600
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/defaults.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/defaults.h b/src/cpu/amd/family_10h-family_15h/defaults.h
+index 3618cb8..d384eb3 100644
+--- a/src/cpu/amd/family_10h-family_15h/defaults.h
++++ b/src/cpu/amd/family_10h-family_15h/defaults.h
+@@ -270,6 +270,10 @@ static const struct {
+ 					   ForceErrType = 0x0,
+ 					   MultRetryErr = 0x0 */
+ 
++	/* Errata 600 */
++	{ 0, 0x150, AMD_OR_B2, AMD_PTYPE_ALL,
++	  0x00000000, 0x00000e00 },	/* HtRetryCrcDatIns = 0x4 */
++
+ 	/*  Errata 351
+ 	 * System software should program the Link Extended Control Registers[LS2En]
+ 	 * (F0x[18C:170][8]) to 0b for all links. System software should also
+-- 
+2.1.4
+

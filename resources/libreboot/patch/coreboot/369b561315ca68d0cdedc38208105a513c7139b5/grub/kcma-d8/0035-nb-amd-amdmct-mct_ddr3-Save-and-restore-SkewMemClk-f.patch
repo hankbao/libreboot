@@ -1,0 +1,63 @@
+From e90ac9c0e629f2f50f59203d4d91415b89354d2f Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:02 -0600
+Subject: [PATCH 35/45] nb/amd/amdmct/mct_ddr3: Save and restore SkewMemClk for
+ S3 resume
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mct_d.h   | 5 +++--
+ src/northbridge/amd/amdmct/mct_ddr3/s3utils.c | 6 ++++++
+ 2 files changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+index e7361ac..f953919 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mct_d.h
+@@ -729,7 +729,7 @@ struct amd_s3_persistent_mct_channel_data {
+ 	uint32_t f3x5c;
+ 	uint32_t f3x60;
+ 
+-	/* Family 15h-specific registers (90 dwords) */
++	/* Family 15h-specific registers (91 dwords) */
+ 	uint32_t f2x200;
+ 	uint32_t f2x204;
+ 	uint32_t f2x208;
+@@ -785,8 +785,9 @@ struct amd_s3_persistent_mct_channel_data {
+ 	uint32_t f2x9cx0d0fc231;
+ 	uint32_t f2x9cx0d0f0_0_f_31[9];		/* [lane] */
+ 	uint32_t f2x9cx0d0f8021;
++	uint32_t f2x9cx0d0fe00a;
+ 
+-	/* TOTAL: 342 dwords */
++	/* TOTAL: 343 dwords */
+ } __attribute__((packed));
+ 
+ struct amd_s3_persistent_node_data {
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+index ae2cca1..fe77075 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/s3utils.c
+@@ -454,6 +454,9 @@ void copy_mct_data_to_save_variable(struct amd_s3_persistent_data* persistent_da
+ 					data->f2x9cx0d0f0_0_f_31[i] = read_amd_dct_index_register_dct(dev_fn2, node, channel, 0x98, 0x0d0f0031 | (i << 8));
+ 
+ 				data->f2x9cx0d0f8021 = read_amd_dct_index_register_dct(dev_fn2, node, channel, 0x98, 0x0d0f8021);
++
++				if (channel == 1)
++					data->f2x9cx0d0fe00a = read_amd_dct_index_register_dct(dev_fn2, node, channel, 0x98, 0x0d0fe00a);
+ 			}
+ 
+ 			/* Stage 4 */
+@@ -796,6 +799,9 @@ void restore_mct_data_from_save_variable(struct amd_s3_persistent_data* persiste
+ 					write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x0d0f0031 | (i << 8), data->f2x9cx0d0f0_0_f_31[i]);
+ 
+ 				write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x0d0f8021, data->f2x9cx0d0f8021);
++
++				if (channel == 1)
++					write_amd_dct_index_register_dct(PCI_DEV(0, 0x18 + node, 2), node, channel, 0x98, 0x0d0fe00a, data->f2x9cx0d0fe00a);
+ 			}
+ 		}
+ 	}
+-- 
+2.1.4
+

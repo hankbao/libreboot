@@ -1,0 +1,53 @@
+From 01f84b46b749454f6c93c3273fac65be780a128b Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:11:56 -0600
+Subject: [PATCH 23/45] southbridge/amd/sb700: Add CMOS option to disable
+ legacy USB support
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sb700/sm.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/src/southbridge/amd/sb700/sm.c b/src/southbridge/amd/sb700/sm.c
+index 04f4601..942e4f8 100644
+--- a/src/southbridge/amd/sb700/sm.c
++++ b/src/southbridge/amd/sb700/sm.c
+@@ -63,6 +63,7 @@ static void sm_init(device_t dev)
+ 	u32 dword;
+ 	void *ioapic_base;
+ 	uint32_t power_state;
++	uint32_t enable_legacy_usb;
+ 	u32 nmi_option;
+ 
+ 	printk(BIOS_INFO, "sm_init().\n");
+@@ -72,10 +73,23 @@ static void sm_init(device_t dev)
+ 	ioapic_base = (void *)(pci_read_config32(dev, 0x74) & (0xffffffe0));
+ 	setup_ioapic(ioapic_base, 0); /* Don't rename IOAPIC ID. */
+ 
++	enable_legacy_usb = 1;
++	get_option(&enable_legacy_usb, "enable_legacy_usb");
++
+ 	/* 2.10 Interrupt Routing/Filtering */
+-	dword = pci_read_config8(dev, 0x62);
+-	dword |= 3;
+-	pci_write_config8(dev, 0x62, dword);
++	byte = pci_read_config8(dev, 0x62);
++	if (enable_legacy_usb)
++		byte |= 0x3;
++	else
++		byte &= ~0x3;
++	pci_write_config8(dev, 0x62, byte);
++
++	byte = pci_read_config8(dev, 0x67);
++	if (enable_legacy_usb)
++		byte |= 0x1 << 7;
++	else
++		byte &= ~(0x1 << 7);
++	pci_write_config8(dev, 0x67, byte);
+ 
+ 	/* Delay back to back interrupts to the CPU. */
+ 	dword = pci_read_config16(dev, 0x64);
+-- 
+2.1.4
+

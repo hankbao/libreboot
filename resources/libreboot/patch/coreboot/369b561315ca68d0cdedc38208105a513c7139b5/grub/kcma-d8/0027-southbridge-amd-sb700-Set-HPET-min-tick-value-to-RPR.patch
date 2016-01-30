@@ -1,0 +1,27 @@
+From 6c4fb7d4b666ae94c8421e4dd363674294f3f7ca Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:11:58 -0600
+Subject: [PATCH 27/45] southbridge/amd/sb700: Set HPET min tick value to RPR
+ recommendation
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/southbridge/amd/sb700/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/southbridge/amd/sb700/Kconfig b/src/southbridge/amd/sb700/Kconfig
+index 9a0ddb2..9a988a9 100644
+--- a/src/southbridge/amd/sb700/Kconfig
++++ b/src/southbridge/amd/sb700/Kconfig
+@@ -50,4 +50,8 @@ config EHCI_BAR
+ 	hex
+ 	default 0xfef00000
+ 
++config HPET_MIN_TICKS
++	hex
++	default 0x14
++
+ endif # SOUTHBRIDGE_AMD_SB700
+-- 
+2.1.4
+

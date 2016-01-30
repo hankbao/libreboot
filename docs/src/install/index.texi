@@ -61,6 +61,8 @@ This section relates to installing libreboot on supported targets.
 @item
 @uref{kgpe-d16.html,KGPE-D16 (needed if running the proprietary firmware, or to unbrick)}
 @item
+@uref{kcma-d8.html,KCMA-D8 (needed if running the proprietary firmware, or to unbrick)}
+@item
 @uref{x60_unbrick.html,ThinkPad X60: Recovery guide}
 @item
 @uref{x60tablet_unbrick.html,ThinkPad X60 Tablet: Recovery guide}
@@ -128,6 +130,7 @@ Look at the @ref{#rom,list of ROM images} to see which image is compatible with 
 * Are you currently running the original proprietary firmware?::
 * ASUS KFSN4-DRE?::
 * ASUS KGPE-D16?::
+* ASUS KCMA-D8?::
 * Are you currently running libreboot or coreboot?::
 * MAC address on GM45 X200/R400/T400/T500::
 * Flash chip size::
@@ -166,6 +169,17 @@ If you already have coreboot or libreboot installed, without write protection on
 @strong{DO NOT hot-swap the chip with your bare hands. Use a PDIP-8 chip extractor. These can be found online. See @uref{http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools,http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools}}
 
 Do check the HCL entry: @uref{../hcl/kgpe-d16.html,../hcl/kgpe-d16.html}
+
+@node ASUS KCMA-D8?
+@section ASUS KCMA-D8?
+@anchor{#asus-kcma-d8}
+If you have the proprietary BIOS, you need to flash libreboot externally. See @uref{kcma-d8.html,kcma-d8.html}.
+
+If you already have coreboot or libreboot installed, without write protection on the flash chip, then you can do it in software (otherwise, see link above).
+
+@strong{DO NOT hot-swap the chip with your bare hands. Use a PDIP-8 chip extractor. These can be found online. See @uref{http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools,http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools}}
+
+Do check the HCL entry: @uref{../hcl/kcma-d8.html,../hcl/kcma-d8.html}
 
 @node Are you currently running libreboot or coreboot?
 @section Are you currently running libreboot (or coreboot)?

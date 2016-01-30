@@ -1,0 +1,53 @@
+From 3efdfbd1def5dd2b3bd87ac9ff0bad83c2945eed Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:07 -0600
+Subject: [PATCH 40/45] cpu/amd/fam10h-fam15h: Add CMOS option to disable CPB
+ (core boost)
+
+On certain systems and CPUs Core Performance Boost (CPB) may cause
+sporadic system lockups.  This issue is also somewhat known on the
+various proprietary BIOSes, therefore it seems to be a hardware
+incompatibility when present.
+
+Allow the user to disable CBP if needed.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/init_cpus.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/init_cpus.c b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+index e2a1bf3..c1ff240 100644
+--- a/src/cpu/amd/family_10h-family_15h/init_cpus.c
++++ b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+@@ -987,6 +987,7 @@ void cpuSetAMDMSR(uint8_t node_id)
+ 	u32 platform;
+ 	uint64_t revision;
+ 	uint8_t enable_c_states;
++	uint8_t enable_cpb;
+ 
+ 	printk(BIOS_DEBUG, "cpuSetAMDMSR ");
+ 
+@@ -1078,6 +1079,19 @@ void cpuSetAMDMSR(uint8_t node_id)
+ 	enable_c_states = 0;
+ #endif
+ 
++	if (revision & AMD_FAM15_ALL) {
++		enable_cpb = 1;
++		if (get_option(&nvram, "cpu_core_boost") == CB_SUCCESS)
++			enable_cpb = !!nvram;
++
++		if (!enable_cpb) {
++			/* Disable Core Performance Boost */
++			msr = rdmsr(0xc0010015);
++			msr.lo |= (0x1 << 25);		/* CpbDis = 1 */
++			wrmsr(0xc0010015, msr);
++		}
++	}
++
+ 	printk(BIOS_DEBUG, " done\n");
+ }
+ 
+-- 
+2.1.4
+

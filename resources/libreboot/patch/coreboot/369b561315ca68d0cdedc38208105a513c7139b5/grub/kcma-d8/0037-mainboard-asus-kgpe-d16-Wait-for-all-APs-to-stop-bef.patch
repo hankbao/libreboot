@@ -1,0 +1,34 @@
+From acb022efd422f1008e311863779cfb2395069bd6 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:03 -0600
+Subject: [PATCH 37/45] mainboard/asus/kgpe-d16: Wait for all APs to stop
+ before MCT setup
+
+Under certain conditions when the APs are still executing during
+MCT setup the system can hang.  This was the root cause of most
+of the S3 resume failures on this platform; waiting for AP stop
+before MCT setup allows for reliable S3 resume.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/romstage.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index 6fb7668..5df6de4 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -515,6 +515,10 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 
+ 	post_code(0x3B);
+ 
++	/* Wait for all APs to be stopped, otherwise ram initialization may hang */
++	if (IS_ENABLED(CONFIG_LOGICAL_CPUS))
++		wait_all_other_cores_stopped(bsp_apicid);
++
+ 	/* It's the time to set ctrl in sysinfo now; */
+ 	printk(BIOS_DEBUG, "fill_mem_ctrl() detected %d nodes\n", sysinfo->nodes);
+ 	if (is_fam15h())
+-- 
+2.1.4
+

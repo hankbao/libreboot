@@ -1,0 +1,156 @@
+From ebf04615b9589056c09cded45521499e8eefe8e1 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:08 -0600
+Subject: [PATCH 44/45] mainboard/asus/kcma-d8: Initial modification for
+ KCMA-D8 name strings
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kcma-d8/Kconfig      | 18 +++++++++---------
+ src/mainboard/asus/kcma-d8/Kconfig.name |  4 ++--
+ src/mainboard/asus/kcma-d8/mainboard.c  |  2 +-
+ src/mainboard/asus/kcma-d8/romstage.c   | 24 +++++-------------------
+ 4 files changed, 17 insertions(+), 31 deletions(-)
+
+diff --git a/src/mainboard/asus/kcma-d8/Kconfig b/src/mainboard/asus/kcma-d8/Kconfig
+index 23c91f0..3c8cdcd 100644
+--- a/src/mainboard/asus/kcma-d8/Kconfig
++++ b/src/mainboard/asus/kcma-d8/Kconfig
+@@ -1,8 +1,8 @@
+-if BOARD_ASUS_KGPE_D16
++if BOARD_ASUS_KCMA_D8
+ 
+ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	def_bool y
+-	select CPU_AMD_SOCKET_G34_NON_AGESA
++	select CPU_AMD_SOCKET_C32_NON_AGESA
+ 	select DIMM_DDR3
+ 	select DIMM_REGISTERED
+ 	# select QRANK_DIMM_SUPPORT
+@@ -37,11 +37,11 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 
+ config MAINBOARD_DIR
+ 	string
+-	default "asus/kgpe-d16"
++	default "asus/kcma-d8"
+ 
+ config BOOTBLOCK_MAINBOARD_INIT
+ 	string
+-	default "mainboard/asus/kgpe-d16/bootblock.c"
++	default "mainboard/asus/kcma-d8/bootblock.c"
+ 
+ config DCACHE_RAM_BASE
+ 	hex
+@@ -57,7 +57,7 @@ config APIC_ID_OFFSET
+ 
+ config MAINBOARD_PART_NUMBER
+ 	string
+-	default "KGPE-D16"
++	default "KCMA-D8"
+ 
+ config HW_MEM_HOLE_SIZEK
+ 	hex
+@@ -65,12 +65,12 @@ config HW_MEM_HOLE_SIZEK
+ 
+ config MAX_CPUS
+ 	int
+-	default 32
++	default 16
+ 
+-# 2 (internal) processors per G34 socket
++# 1 (internal) processor per C32 socket
+ config MAX_PHYSICAL_CPUS
+ 	int
+-	default 4
++	default 2
+ 
+ config HT_CHAIN_UNITID_BASE
+ 	hex
+@@ -100,4 +100,4 @@ config MAX_REBOOT_CNT
+ 	int
+ 	default 10
+ 
+-endif # BOARD_ASUS_KGPE_D16
++endif # BOARD_ASUS_KCMA_D8
+diff --git a/src/mainboard/asus/kcma-d8/Kconfig.name b/src/mainboard/asus/kcma-d8/Kconfig.name
+index bdfa31a..69b63ea 100644
+--- a/src/mainboard/asus/kcma-d8/Kconfig.name
++++ b/src/mainboard/asus/kcma-d8/Kconfig.name
+@@ -1,2 +1,2 @@
+-config BOARD_ASUS_KGPE_D16
+-	bool "KGPE-D16"
++config BOARD_ASUS_KCMA_D8
++	bool "KCMA-D8"
+diff --git a/src/mainboard/asus/kcma-d8/mainboard.c b/src/mainboard/asus/kcma-d8/mainboard.c
+index 65029d4..0219ee6 100644
+--- a/src/mainboard/asus/kcma-d8/mainboard.c
++++ b/src/mainboard/asus/kcma-d8/mainboard.c
+@@ -52,7 +52,7 @@ void set_pcie_dereset(void)
+ *************************************************/
+ static void mainboard_enable(device_t dev)
+ {
+-	printk(BIOS_INFO, "Mainboard KGPE-D16 Enable. dev=0x%p\n", dev);
++	printk(BIOS_INFO, "Mainboard KCMA-D8 initializing, dev=0x%p\n", dev);
+ 
+ 	msr_t msr, msr2;
+ 
+diff --git a/src/mainboard/asus/kcma-d8/romstage.c b/src/mainboard/asus/kcma-d8/romstage.c
+index 5df6de4..0b9a2ef 100644
+--- a/src/mainboard/asus/kcma-d8/romstage.c
++++ b/src/mainboard/asus/kcma-d8/romstage.c
+@@ -1,7 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
+- * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
++ * Copyright (C) 2015 Raptor Engineering
+  *
+  * Copyright (C) 2007 AMD
+  * Written by Yinghai Lu <yinghailu@amd.com> for AMD.
+@@ -67,7 +67,7 @@ static inline int spd_read_byte(unsigned device, unsigned address)
+ #include "northbridge/amd/amdfam10/early_ht.c"
+ 
+ /*
+- * ASUS KGPE-D16 specific SPD enable/disable magic.
++ * ASUS KCMA-D8 specific SPD enable/disable magic.
+  *
+  * Setting SP5100 GPIOs 59 and 60 controls an SPI mux with four settings:
+  * 0: Disabled
+@@ -116,22 +116,8 @@ static const uint8_t spd_addr_fam10[] = {
+ };
+ 
+ static void activate_spd_rom(const struct mem_controller *ctrl) {
+-	struct sys_info *sysinfo = &sysinfo_car;
+-
++	/* Nothing needs to be done as there is no SPD mux on this board */
+ 	printk(BIOS_DEBUG, "activate_spd_rom() for node %02x\n", ctrl->node_id);
+-	if (ctrl->node_id == 0) {
+-		printk(BIOS_DEBUG, "enable_spd_node0()\n");
+-		switch_spd_mux(0x2);
+-	} else if (ctrl->node_id == 1) {
+-		printk(BIOS_DEBUG, "enable_spd_node1()\n");
+-		switch_spd_mux((is_fam15h() || (sysinfo->nodes <= 2))?0x2:0x3);
+-	} else if (ctrl->node_id == 2) {
+-		printk(BIOS_DEBUG, "enable_spd_node2()\n");
+-		switch_spd_mux((is_fam15h() || (sysinfo->nodes <= 2))?0x3:0x2);
+-	} else if (ctrl->node_id == 3) {
+-		printk(BIOS_DEBUG, "enable_spd_node3()\n");
+-		switch_spd_mux(0x3);
+-	}
+ }
+ 
+ /* Voltages are specified by index
+@@ -414,8 +400,8 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	enable_sr5650_dev8();
+ 	sb7xx_51xx_lpc_init();
+ 
+-	if (CONFIG_MAX_PHYSICAL_CPUS != 4)
+-		printk(BIOS_WARNING, "CONFIG_MAX_PHYSICAL_CPUS is %d, but this is a dual socket AMD G34 board!\n", CONFIG_MAX_PHYSICAL_CPUS);
++	if (CONFIG_MAX_PHYSICAL_CPUS != 2)
++		printk(BIOS_WARNING, "CONFIG_MAX_PHYSICAL_CPUS is %d, but this is a dual socket AMD C32 board!\n", CONFIG_MAX_PHYSICAL_CPUS);
+ 
+ 	/* Halt if there was a built in self test failure */
+ 	report_bist_failure(bist);
+-- 
+2.1.4
+

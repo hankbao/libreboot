@@ -1,0 +1,31 @@
+From 4484fa77860f3595a4c0fd634bcd8648c3f12764 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:11:55 -0600
+Subject: [PATCH 20/45] mainboard/asus/kgpe-d16: Enable ASUS MIO audio option
+
+The KGPE-D16 supports an optional MIO audio card, which connects
+to the on-board HDA interface of the SP5100.
+
+Enable the HDA interface for use with the MIO card.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/devicetree.cb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/devicetree.cb b/src/mainboard/asus/kgpe-d16/devicetree.cb
+index 014a35f..96372f9 100644
+--- a/src/mainboard/asus/kgpe-d16/devicetree.cb
++++ b/src/mainboard/asus/kgpe-d16/devicetree.cb
+@@ -175,7 +175,7 @@ chip northbridge/amd/amdfam10/root_complex	# Root complex
+ 						end
+ 					end
+ 					device pci 14.1 on end			# IDE 0x439c
+-					device pci 14.2 off end			# HDA 0x4383 (KGPE-D16 omits audio option)
++					device pci 14.2 on end			# HDA 0x4383 (ASUS MIO add-on card)
+ 					device pci 14.3 on			# LPC 0x439d (SMBUS primary controller)
+ 						chip superio/nuvoton/nct5572d	# Super I/O
+ 							device pnp 2e.0 off end	# FDC; Not available on the KGPE-D16
+-- 
+2.1.4
+

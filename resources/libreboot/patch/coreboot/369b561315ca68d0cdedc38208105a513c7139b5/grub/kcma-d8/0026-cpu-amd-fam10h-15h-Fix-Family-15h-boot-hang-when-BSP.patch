@@ -1,0 +1,59 @@
+From 5da709f633ca379d6f0689f99f3f2cc01110f673 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:11:58 -0600
+Subject: [PATCH 26/45] cpu/amd/fam10h-15h: Fix Family 15h boot hang when BSP
+ lift enabled
+
+The existing code did not allow for the second core of the BSP to
+reside on an APIC ID other than 1, leading to a boot hang on Family
+15h processors when APIC_ID_OFFSET was set to anything other than 0.
+Furthermore, insufficient AP stack space was allocated for AP start.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/cpu/amd/family_10h-family_15h/Kconfig     | 2 +-
+ src/cpu/amd/family_10h-family_15h/init_cpus.c | 8 +++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/src/cpu/amd/family_10h-family_15h/Kconfig b/src/cpu/amd/family_10h-family_15h/Kconfig
+index bfb6751..2f3dfc0 100644
+--- a/src/cpu/amd/family_10h-family_15h/Kconfig
++++ b/src/cpu/amd/family_10h-family_15h/Kconfig
+@@ -48,7 +48,7 @@ config DCACHE_BSP_STACK_SLUSH
+ 
+ config DCACHE_AP_STACK_SIZE
+ 	hex
+-	default 0x400
++	default 0x500
+ 
+ config UDELAY_IO
+ 	bool
+diff --git a/src/cpu/amd/family_10h-family_15h/init_cpus.c b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+index 5a67601..e8e81d2 100644
+--- a/src/cpu/amd/family_10h-family_15h/init_cpus.c
++++ b/src/cpu/amd/family_10h-family_15h/init_cpus.c
+@@ -356,6 +356,7 @@ static u32 init_cpus(u32 cpu_init_detectedx, struct sys_info *sysinfo)
+ 	uint32_t dword;
+ 	uint8_t set_mtrrs;
+ 	uint8_t node_count;
++	uint8_t fam15_bsp_core1_apicid;
+ 	struct node_core_id id;
+ 
+ 	/* Please refer to the calculations and explaination in cache_as_ram.inc before modifying these values */
+@@ -483,7 +484,12 @@ static u32 init_cpus(u32 cpu_init_detectedx, struct sys_info *sysinfo)
+ 		if (is_fam15h()) {
+ 			/* core 1 on node 0 is special; to avoid corrupting the
+ 			 * BSP do not alter MTRRs on that core */
+-			if (apicid == 1)
++			if (IS_ENABLED(CONFIG_ENABLE_APIC_EXT_ID) && (CONFIG_APIC_ID_OFFSET > 0))
++				fam15_bsp_core1_apicid = CONFIG_APIC_ID_OFFSET + 1;
++			else
++				fam15_bsp_core1_apicid = 1;
++
++			if (apicid == fam15_bsp_core1_apicid)
+ 				set_mtrrs = 0;
+ 			else
+ 				set_mtrrs = !!(apicid & 0x1);
+-- 
+2.1.4
+

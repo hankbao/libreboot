@@ -1,0 +1,27 @@
+From 6f02a70d622a6834323a960eda887074543efe8a Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:12:01 -0600
+Subject: [PATCH 34/45] mainboard/asus/kcma-d8: Use W83667HG-A specific PS/2
+ ASL file
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/dsdt.asl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/dsdt.asl b/src/mainboard/asus/kgpe-d16/dsdt.asl
+index 702ace1..5f9195a 100644
+--- a/src/mainboard/asus/kgpe-d16/dsdt.asl
++++ b/src/mainboard/asus/kgpe-d16/dsdt.asl
+@@ -562,7 +562,7 @@ DefinitionBlock (
+ 					})
+ 				}
+ 
+-				#include "../../../drivers/pc80/ps2_controller.asl"
++				#include "../../../superio/winbond/w83667hg-a/ps2_controller.asl"
+ 
+ 				/* UART 1 */
+ 				Device (URT1)
+-- 
+2.1.4
+

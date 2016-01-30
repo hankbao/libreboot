@@ -1,0 +1,30 @@
+From 5f5614ca862cecec27a3cf1fe843a4c30cbde69b Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Tue, 24 Nov 2015 14:11:52 -0600
+Subject: [PATCH 15/45] nb/amd/mct_ddr3: Properly set MR0 WR value
+
+The existing code accidentally truncated the MSB from the MR0
+WR value.  While this probably had a minimal effect in reality,
+it should be configured correctly for maximal system stability.
+
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c b/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
+index 822d813..bcf6031 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctsdi.c
+@@ -967,7 +967,7 @@ static u32 mct_MR0(struct MCTStatStruc *pMCTstat,
+ 
+ 		/* Load data into MRS word */
+ 		ret |= (ppd & 0x1) << 12;
+-		ret |= (wr_ap & 0x3) << 9;
++		ret |= (wr_ap & 0x7) << 9;
+ 		ret |= (dll_reset & 0x1) << 8;
+ 		ret |= (test_mode & 0x1) << 7;
+ 		ret |= ((cas_latency & 0xe) >> 1) << 4;
+-- 
+2.1.4
+

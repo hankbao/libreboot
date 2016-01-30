@@ -1,0 +1,72 @@
+From 013c91f9f6699cfefcda0d0745db7bd999d7cdb5 Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Thu, 5 Nov 2015 13:16:55 -0600
+Subject: [PATCH 03/45] mainboard/asus/kgpe-d16: Enable romstage spinlocks
+
+Change-Id: Iac1adbeacdcded7faff2443b78a491cbb8a90fe8
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/mainboard/asus/kgpe-d16/Kconfig    |  1 +
+ src/mainboard/asus/kgpe-d16/romstage.c | 20 +++++++++++++++-----
+ 2 files changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/src/mainboard/asus/kgpe-d16/Kconfig b/src/mainboard/asus/kgpe-d16/Kconfig
+index c4f3962..67b43ca 100644
+--- a/src/mainboard/asus/kgpe-d16/Kconfig
++++ b/src/mainboard/asus/kgpe-d16/Kconfig
+@@ -14,6 +14,7 @@ config BOARD_SPECIFIC_OPTIONS # dummy
+ 	select SOUTHBRIDGE_AMD_SUBTYPE_SP5100
+ 	select SUPERIO_NUVOTON_NCT5572D
+ 	select PARALLEL_CPU_INIT
++	select HAVE_ROMSTAGE_CONSOLE_SPINLOCK
+ 	select HAVE_HARD_RESET
+ 	select HAVE_OPTION_TABLE
+ 	select HAVE_CMOS_DEFAULT
+diff --git a/src/mainboard/asus/kgpe-d16/romstage.c b/src/mainboard/asus/kgpe-d16/romstage.c
+index df76ab4..13eacd2 100644
+--- a/src/mainboard/asus/kgpe-d16/romstage.c
++++ b/src/mainboard/asus/kgpe-d16/romstage.c
+@@ -312,6 +312,18 @@ static void execute_memory_test(void)
+ }
+ #endif
+ 
++static spinlock_t printk_spinlock CAR_GLOBAL;
++
++spinlock_t* romstage_console_lock(void)
++{
++	return car_get_var_ptr(&printk_spinlock);
++}
++
++void initialize_romstage_console_lock(void)
++{
++	car_get_var(printk_spinlock) = SPIN_LOCK_UNLOCKED;
++}
++
+ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ {
+ 	uint32_t esp;
+@@ -338,6 +350,9 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 		timestamp_init(timestamp_get());
+ 		timestamp_add_now(TS_START_ROMSTAGE);
+ 
++		/* Initialize the printk spinlock */
++		initialize_romstage_console_lock();
++
+ 		/* Nothing special needs to be done to find bus 0 */
+ 		/* Allow the HT devices to be found */
+ 		set_bsp_node_CHtExtNodeCfgEn();
+@@ -407,11 +422,6 @@ void cache_as_ram_main(unsigned long bist, unsigned long cpu_init_detectedx)
+ 	post_code(0x36);
+ 
+ 	/* Wait for all the APs core0 started by finalize_node_setup. */
+-	/* FIXME: A bunch of cores are going to start output to serial at once.
+-	 * It would be nice to fix up prink spinlocks for ROM XIP mode.
+-	 * I think it could be done by putting the spinlock flag in the cache
+-	 * of the BSP located right after sysinfo.
+-	 */
+ 	wait_all_core0_started();
+ 
+ 	/* run _early_setup before soft-reset. */
+-- 
+2.1.4
+
