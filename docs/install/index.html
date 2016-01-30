@@ -43,6 +43,7 @@
 				<li><a href="bbb_setup.html">Flashing the Gigabyte GA-G41M-ES2L (has 2 SOIC-8 chips, one is backup)</a></li>
 				<li><a href="bbb_ehci.html">How to configure EHCI debugging on the BeagleBone Black</a></li>
 				<li><a href="kgpe-d16.html">KGPE-D16 (needed if running the proprietary firmware, or to unbrick)</a></li>
+				<li><a href="kcma-d8.html">KCMA-D8 (needed if running the proprietary firmware, or to unbrick)</a></li>
 				<li><a href="x60_unbrick.html">ThinkPad X60: Recovery guide</a></li>
 				<li><a href="x60tablet_unbrick.html">ThinkPad X60 Tablet: Recovery guide</a></li>
 				<li><a href="t60_unbrick.html">ThinkPad T60: Recovery guide</a></li>
@@ -211,6 +212,29 @@
 
 				<p>
 					Do check the HCL entry: <a href="../hcl/kgpe-d16.html">../hcl/kgpe-d16.html</a>
+				</p>
+
+			<h2>ASUS KCMA-D8?</h2>
+
+				<p>
+					If you have the proprietary BIOS, you need to flash libreboot externally.
+					See <a href="kgpe-d16.html">kcma-d8.html</a>.
+				</p>
+				<p>
+					If you already have coreboot or libreboot installed, without write protection on the flash
+					chip, then you can do it in software (otherwise, see link above).
+				</p>
+
+				<p>
+					<b>
+						DO NOT hot-swap the chip with your bare hands. Use a PDIP-8
+						chip extractor. These can be found online.
+						See <a href="http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools">http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools</a>
+					</b>
+				</p>
+
+				<p>
+					Do check the HCL entry: <a href="../hcl/kcma-d8.html">../hcl/kcma-d8.html</a>
 				</p>
 
 			<h2>Are you currently running libreboot (or coreboot)?</h2>
