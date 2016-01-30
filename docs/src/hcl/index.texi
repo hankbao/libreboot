@@ -68,6 +68,8 @@ Libreboot supports the following systems in this release:
 @item
 @uref{ga-g41m-es2l.html,Gigabyte Gigabyte GA-G41M-ES2L motherboard}
 @item
+@uref{d510mo.html,Intel D510MO motherboard}
+@item
 @uref{kcma-d8.html,ASUS KCMA-D8 motherboard}
 @end itemize
 

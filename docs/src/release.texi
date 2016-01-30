@@ -63,6 +63,15 @@ Check notes in @strong{@emph{hcl/ga-g41m-es2l.html}}
 @end itemize
 
 @item
+@strong{Intel D510MO desktop board}
+@itemize
+@item
+Check notes in @strong{@emph{hcl/d510mo.html}}
+@item
+@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
+@end itemize
+
+@item
 @strong{ASUS KFSN4-DRE server board}
 @itemize
 @item

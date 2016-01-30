@@ -55,6 +55,8 @@ This section relates to installing libreboot on supported targets.
 @item
 @uref{bbb_setup.html,Flashing the Gigabyte GA-G41M-ES2L (has 2 SOIC-8 flash chips, one is backup)}
 @item
+@uref{bbb_setup.html,Flashing the Intel D510MO}
+@item
 @uref{bbb_setup.html,How to program an SPI flash chip with the BeagleBone Black}
 @item
 @uref{bbb_ehci.html,How to configure EHCI debugging on the BeagleBone Black}
