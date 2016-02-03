@@ -5,14 +5,14 @@
 @paragraphindent 0
 @end ifnottex
 @titlepage
-@title ASUS KCMA-D8 server/workstation board
+@title ASUS KCMA-D8 desktop/workstation board
 @end titlepage
 
 @node Top
-@top ASUS KCMA-D8 server/workstation board
+@top ASUS KCMA-D8 desktop/workstation board
 
 @menu
-* ASUS KCMA-D8 server/workstation board::
+* ASUS KCMA-D8 desktop/workstation board::
 * Board status compatibility::
 * Form factor::
 * IPMI iKVM module add-on::
@@ -21,10 +21,10 @@
 * Current issues::
 @end menu
 
-@node ASUS kcma-d8 server/workstation board
-@chapter ASUS kcma-d8 server/workstation board
-@anchor{#asus-kcma-d8-serverworkstation-board}
-This is a server board using AMD hardware (Fam10h @strong{and Fam15h} CPUs available). It can also be used for building a high-powered workstation. Powered by libreboot. The coreboot port was done by Timothy Pearson of @uref{https://raptorengineeringinc.com/,Raptor Engineering Inc.} and, working with Timothy (and sponsoring the work) merged into libreboot.
+@node ASUS kcma-d8 desktop/workstation board
+@chapter ASUS kcma-d8 desktop/workstation board
+@anchor{#asus-kcma-d8-desktopworkstation-board}
+This is a desktop board using AMD hardware (Fam10h @strong{and Fam15h} CPUs available). It can also be used for building a high-powered workstation. Powered by libreboot. The coreboot port was done by Timothy Pearson of @uref{https://raptorengineeringinc.com/,Raptor Engineering Inc.} and, working with Timothy (and sponsoring the work) merged into libreboot.
 
 @strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
