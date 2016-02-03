@@ -23,7 +23,7 @@ This is a desktop board using intel hardware. It can make for quite a nifty desk
 @strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
 NOTE: video framebuffer currently unsupported, only text-mode works, even when booting GNU/Linux.
-This can still be used for building a headlesss server.
+This can still be used for building a headlesss server. Boot with fb=false
 
 Flashing instructions can be found at @uref{../install/index.html#flashrom,../install/index.html#flashrom}
 
