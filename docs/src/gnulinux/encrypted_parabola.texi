@@ -115,7 +115,7 @@ Create LVM partition:@* # @strong{pvcreate /dev/mapper/lvm}@* Show that you just
 
 Now I create the volume group, inside of which the logical volumes will be created:@* # @strong{vgcreate matrix /dev/mapper/lvm}@* (volume group name is 'matrix' - choose your own name, if you like) Show that you created it:@* # @strong{vgdisplay}
 
-Now create the logical volumes:@* # @strong{lvcreate -L 2G matrix -n swapvol} (2G swap partition, named swapvol)@* Again, choose your own name if you like. Also, make sure to choose a swap size of your own needs. It basically depends on how much RAM you have installed. I refer to @uref{http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space,http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space}.@* # @strong{lvcreate -l +100%FREE matrix -n rootvol} (single large partition in the rest of the space, named rootvol)@* You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example, if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system). For a home/laptop system (typical use case), a root and a swap will do (really).
+Now create the logical volumes:@* # @strong{lvcreate -L 2G matrix -n swapvol} (2G swap partition, named swapvol)@* Again, choose your own name if you like. Also, make sure to choose a swap size of your own needs. It basically depends on how much RAM you have installed. I refer to @uref{http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space,http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space}.@* # @strong{lvcreate -l +100%FREE matrix -n root} (single large partition in the rest of the space, named root)@* You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example, if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system). For a home/laptop system (typical use case), a root and a swap will do (really).
 
 Verify that the logical volumes were created, using the following command:@* # @strong{lvdisplay}
 
@@ -124,9 +124,9 @@ Verify that the logical volumes were created, using the following command:@* # @
 @anchor{#create-and-swap-partitions-and-mount}
 For the swapvol LV I use:@* # @strong{mkswap /dev/mapper/matrix-swapvol}@* Activate swap:@* # @strong{swapon /dev/matrix/swapvol}
 
-For the rootvol LV I use:@* # @strong{mkfs.ext4 /dev/mapper/matrix-rootvol}
+For the root LV I use:@* # @strong{mkfs.ext4 /dev/mapper/matrix-root}
 
-Mount the root (/) partition:@* # @strong{mount /dev/matrix/rootvol /mnt}
+Mount the root (/) partition:@* # @strong{mount /dev/matrix/root /mnt}
 
 @node Continue with Parabola installation
 @section Continue with Parabola installation
@@ -135,7 +135,7 @@ This guide is really about GRUB, Parabola and cryptomount. I have to show how to
 
 Now I am following the rest of @uref{https://wiki.parabolagnulinux.org/Installation_Guide,https://wiki.parabolagnulinux.org/Installation_Guide}. I also cross referenced @uref{https://wiki.archlinux.org/index.php/Installation_guide,https://wiki.archlinux.org/index.php/Installation_guide}.
 
-Create /home and /boot on rootvol mountpoint:@* # @strong{mkdir -p /mnt/home}@* # @strong{mkdir -p /mnt/boot}
+Create /home and /boot on root mountpoint:@* # @strong{mkdir -p /mnt/home}@* # @strong{mkdir -p /mnt/boot}
 
 Once all the remaining partitions, if any, have been mounted, the devices are ready to install Parabola.
 
@@ -230,7 +230,7 @@ Exit from chroot:@* # @strong{exit}
 
 unmount:@* # @strong{umount -R /mnt}@* # @strong{swapoff -a}
 
-deactivate the lvm lv's:@* # @strong{lvchange -an /dev/matrix/rootvol}@* # @strong{lvchange -an /dev/matrix/swapvol}@*
+deactivate the lvm lv's:@* # @strong{lvchange -an /dev/matrix/root}@* # @strong{lvchange -an /dev/matrix/swapvol}@*
 
 Lock the encrypted partition (close it):@* # @strong{cryptsetup luksClose lvm}
 
@@ -241,7 +241,7 @@ Lock the encrypted partition (close it):@* # @strong{cryptsetup luksClose lvm}
 @anchor{#booting-from-grub}
 Initially you will have to boot manually. Press C to get to the GRUB command line. The underlined parts are optional (using those 2 underlines will boot lts kernel instead of normal).
 
-grub> @strong{cryptomount -a}@* grub> @strong{set root='lvm/matrix-rootvol'}@* grub> @strong{linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root}@* grub> @strong{initrd /boot/initramfs-linux-libre-lts.img}@* grub> @strong{boot}@*
+grub> @strong{cryptomount -a}@* grub> @strong{set root='lvm/matrix-root'}@* grub> @strong{linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root cryptdevice=/dev/sda1:root}@* grub> @strong{initrd /boot/initramfs-linux-libre-lts.img}@* grub> @strong{boot}@*
 
 You could also make it load /boot/vmlinuz-linux-libre-grsec and /boot/initramfs-linux-libre-grsec.img
 
@@ -261,8 +261,8 @@ In grubtest.cfg, inside the 'Load Operating System' menu entry, change the conte
 
 @verbatim
 cryptomount -a
-set root='lvm/matrix-rootvol'
-linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root
+set root='lvm/matrix-root'
+linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root cryptdevice=/dev/sda1:root
 initrd /boot/initramfs-linux-libre-lts.img
 @end verbatim
 

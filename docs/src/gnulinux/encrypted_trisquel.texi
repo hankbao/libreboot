@@ -109,7 +109,7 @@ Keep settings: Yes
 Create volume group:
 @itemize
 @item
-Name: @strong{grubcrypt} (you can use whatever you want here, this is just an example)
+Name: @strong{matrix} (you can use whatever you want here, this is just an example)
 @item
 Select crypto partition
 @end itemize
@@ -118,9 +118,9 @@ Select crypto partition
 Create logical volume
 @itemize
 @item
-select @strong{grubcrypt} (or whatever you named it before)
+select @strong{matrix} (or whatever you named it before)
 @item
-name: @strong{trisquel} (you can use whatever you want here, this is just an example)
+name: @strong{root} (you can use whatever you want here, this is just an example)
 @item
 size: default, minus 2048 MB
 @end itemize
@@ -129,7 +129,7 @@ size: default, minus 2048 MB
 Create logical volume
 @itemize
 @item
-select @strong{grubcrypt} (or whatever you named it before)
+select @strong{matrix} (or whatever you named it before)
 @item
 name: @strong{swap} (you can use whatever you want here, this is just an example)
 @item
@@ -145,7 +145,7 @@ Now you are back at the main partitioning screen. You will simply set mountpoint
 
 @itemize
 @item
-LVM LV trisquel
+LVM LV root
 @itemize
 @item
 use as: ext4
@@ -200,7 +200,7 @@ Just say 'Yes'.
 @anchor{#booting-your-system}
 At this point, you will have finished the installation. At your GRUB payload, press C to get to the command line.
 
-Do that:@* grub> @strong{cryptomount -a}@* grub> @strong{set root='lvm/grubcrypt-trisquel'}@* grub> @strong{linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root}@* grub> @strong{initrd /initrd.img}@* grub> @strong{boot}
+Do that:@* grub> @strong{cryptomount -a}@* grub> @strong{set root='lvm/matrix-root'}@* grub> @strong{linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root}@* grub> @strong{initrd /initrd.img}@* grub> @strong{boot}
 
 @node ecryptfs
 @chapter ecryptfs
@@ -218,7 +218,7 @@ Now you need to set it up so that the system will automatically boot, without ha
 
 Modify your grub.cfg (in the firmware) @uref{grub_cbfs.html,using this tutorial}; just change the default menu entry 'Load Operating System' to say this inside:
 
-@strong{cryptomount -a}@* @strong{set root='lvm/grubcrypt-trisquel'}@* @strong{linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root}@* @strong{initrd /initrd.img}
+@strong{cryptomount -a}@* @strong{set root='lvm/matrix-root'}@* @strong{linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root}@* @strong{initrd /initrd.img}
 
 Without specifying a device, the @emph{-a} parameter tries to unlock all detected LUKS volumes. You can also specify -u UUID or -a (device).
 
