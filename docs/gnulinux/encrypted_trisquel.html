@@ -112,22 +112,22 @@
 					<li>
 						Create volume group:
 						<ul>
-							<li>Name: <b>grubcrypt</b> (you can use whatever you want here, this is just an example)</li>
+							<li>Name: <b>matrix</b> (you can use whatever you want here, this is just an example)</li>
 							<li>Select crypto partition</li>
 						</ul>
 					</li>
 					<li>
 						Create logical volume
 						<ul>
-							<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
-							<li>name: <b>trisquel</b> (you can use whatever you want here, this is just an example)</li>
+							<li>select <b>matrix</b> (or whatever you named it before)</li>
+							<li>name: <b>root</b> (you can use whatever you want here, this is just an example)</li>
 							<li>size: default, minus 2048 MB</li>
 						</ul>
 					</li>
 					<li>
 						Create logical volume
 						<ul>
-							<li>select <b>grubcrypt</b> (or whatever you named it before)</li>
+							<li>select <b>matrix</b> (or whatever you named it before)</li>
 							<li>name: <b>swap</b> (you can use whatever you want here, this is just an example)</li>
 							<li>size: press enter</li>
 						</ul>
@@ -145,7 +145,7 @@
 			</p>
 				<ul>
 					<li>
-						LVM LV trisquel
+						LVM LV root
 						<ul>
 							<li>use as: ext4</li>
 							<li>mount point: /</li>
@@ -237,8 +237,8 @@
 			<p>
 				Do that:<br/>
 				grub&gt; <b>cryptomount -a</b><br/>
-				grub&gt; <b>set root='lvm/grubcrypt-trisquel'</b><br/>
-				grub&gt; <b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
+				grub&gt; <b>set root='lvm/matrix-root'</b><br/>
+				grub&gt; <b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
 				grub&gt; <b>initrd /initrd.img</b><br/>
 				grub&gt; <b>boot</b>
 			</p>
@@ -284,8 +284,8 @@
 
 			<p>
 				<b>cryptomount -a</b><br/>
-				<b>set root='lvm/grubcrypt-trisquel'</b><br/>
-				<b>linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel cryptdevice=/dev/mapper/grubcrypt-trisquel:root</b><br/>
+				<b>set root='lvm/matrix-root'</b><br/>
+				<b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
 				<b>initrd /initrd.img</b>
 			</p>
 

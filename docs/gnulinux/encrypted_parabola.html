@@ -218,7 +218,7 @@
 				Again, choose your own name if you like. Also, make sure to choose a swap size of your own needs. It basically depends on how much RAM
 				you have installed. I refer to <a 
 href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space">http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space</a>.<br/>
-				# <b>lvcreate -l +100%FREE matrix -n rootvol</b> (single large partition in the rest of the space, named <u>rootvol</u>)<br/>
+				# <b>lvcreate -l +100%FREE matrix -n root</b> (single large partition in the rest of the space, named <u>root</u>)<br/>
 				You can also be flexible here, for example you can specify a /boot, a /, a /home, a /var, a /usr, etc. For example,
 				if you will be running a web/mail server then you want /var in its own partition (so that if it fills up with logs, it won't crash your system).
 				For a home/laptop system (typical use case), a root and a swap will do (really).
@@ -240,12 +240,12 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 				# <b>swapon /dev/matrix/swapvol</b>
 			</p>
 			<p>
-				For the rootvol LV I use:<br/>
-				# <b>mkfs.ext4 /dev/mapper/matrix-rootvol</b>
+				For the root LV I use:<br/>
+				# <b>mkfs.ext4 /dev/mapper/matrix-root</b>
 			</p>
 			<p>
 				Mount the root (/) partition:<br/>
-				# <b>mount /dev/matrix/rootvol /mnt</b>
+				# <b>mount /dev/matrix/root /mnt</b>
 			</p>
 			
 	</div>
@@ -262,7 +262,7 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 				I also cross referenced <a href="https://wiki.archlinux.org/index.php/Installation_guide">https://wiki.archlinux.org/index.php/Installation_guide</a>.
 			</p>
 			<p>
-				Create /home and /boot on rootvol mountpoint:<br/>
+				Create /home and /boot on root mountpoint:<br/>
 				# <b>mkdir -p /mnt/home</b><br/>
 				# <b>mkdir -p /mnt/boot</b>
 			</p>
@@ -466,7 +466,7 @@ FONT=lat9w-16
 			</p>
 			<p>
 				deactivate the lvm lv's:<br/>
-				# <b>lvchange -an /dev/matrix/rootvol</b><br/>
+				# <b>lvchange -an /dev/matrix/root</b><br/>
 				# <b>lvchange -an /dev/matrix/swapvol</b><br/>
 			</p>
 			<p>
@@ -489,8 +489,8 @@ FONT=lat9w-16
 			</p>
 			<p>
 				grub> <b>cryptomount -a</b><br/>
-				grub> <b>set root='lvm/matrix-rootvol'</b><br/>
-				grub> <b>linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root</b><br/>
+				grub> <b>set root='lvm/matrix-root'</b><br/>
+				grub> <b>linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/root cryptdevice=/dev/sda1:root</b><br/>
 				grub> <b>initrd /boot/initramfs-linux-libre<u>-lts</u>.img</b><br/>
 				grub> <b>boot</b><br/>
 			</p>
@@ -542,8 +542,8 @@ FONT=lat9w-16
 			</p>
 <pre>
 cryptomount -a<br/>
-set root='lvm/matrix-rootvol'<br/>
-linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root<br/>
+set root='lvm/matrix-root'<br/>
+linux /boot/vmlinuz-linux-libre<u>-lts</u> root=/dev/matrix/root cryptdevice=/dev/sda1:root<br/>
 initrd /boot/initramfs-linux-libre<u>-lts</u>.img
 </pre>
 
