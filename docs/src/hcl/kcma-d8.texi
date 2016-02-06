@@ -38,7 +38,7 @@ Flashing instructions can be found at @uref{../install/index.html#flashrom,../in
 @anchor{#cpu-compatibility}
 
 @strong{Use Opteron 4200 series (works without microcode updates, including hw virt).}
-6300 series needs microcode updates, so avoid those CPUs. 4100 series is too old, and mostly untested.
+4300 series needs microcode updates, so avoid those CPUs. 4100 series is too old, and mostly untested.
 
 @uref{index.html,Back to previous index}.
 
