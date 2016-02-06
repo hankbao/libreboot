@@ -13,6 +13,7 @@
 
 @menu
 * ASUS KCMA-D8 desktop/workstation board::
+* CPU compatibility::
 * Board status compatibility::
 * Form factor::
 * IPMI iKVM module add-on::
@@ -29,6 +30,15 @@ This is a desktop board using AMD hardware (Fam10h @strong{and Fam15h} CPUs avai
 @strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
 Flashing instructions can be found at @uref{../install/index.html#flashrom,../install/index.html#flashrom} - note that external flashing is required (e.g. BBB), if the proprietary (ASUS) firmware is currently installed. If you already have libreboot, by default it is possible to re-flash using software running in GNU/Linux on the kcma-d8, without using external hardware.
+
+@uref{index.html,Back to previous index}.
+
+@node CPU compatibility
+@chapter CPU compatibility
+@anchor{#cpu-compatibility}
+
+@strong{Use Opteron 4200 series (works without microcode updates, including hw virt).}
+6300 series needs microcode updates, so avoid those CPUs. 4100 series is too old, and mostly untested.
 
 @uref{index.html,Back to previous index}.
 
