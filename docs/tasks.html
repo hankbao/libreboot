@@ -18,6 +18,81 @@
 			</p>
 	</div>
 
+	<div class="section" id="urgent-tasks">
+<ul>
+	<li>
+	Make libreboot GNU-compatible (see libreboot.org/gnu)
+	</li><li>
+	Fix keyboard init on x60/t60 (right now delay isn't long enough. might be fixed upstream)
+	</li><li>
+	Make KGPE-D16, KCMA-D8, GA-G41M-ES2L and D510MO use latest coreboot revision
+	</li><li>
+	Make all other boards use the same coreboot revision
+	</li><li>
+	In coreboot download script, reset to a "master" revision (all other revisions
+	used are at or before this revision). Then use 1 version of coreboot's GCC toolchain,
+	from the master revision, and use that to compile all boards
+	</li><li>
+	Don't copy coreboot directories per board. Copy them per revision (try
+	to always use 1 revision for all boards). When doing build module coreboot,
+	do git-init for each revision and for boards using that revision, create
+	branches with the patches for that board. checkout each branch for each board.
+	When doing build clean coreboot, just switch the coreboot directories back
+	to master and delete .git. Note that this is a new .git, not coreboot's .git.
+	</li><li>
+	LOok at configs of KGPE-D16 and KCMA-D8. There were boot delays caused by it
+	last time I asked tpearson to test ROM images. Fix any issues
+	</li><li>
+	GM45 laptops in libreboot.git currently have uneven backlight at lower levels.
+	This was fixed but patch was removed due to upstream changes, with intent to
+	re-implement fix on top of upstream later. Do that.
+	</li><li>
+	Make sure the RTC bug on thinkpads is fixed, and write instructions for
+	how to recover for those who were affected (fix includes not just using
+	newer version of coreboot in libreboot, where fix is upstreamed, but if
+	a person was affected, they need to modify some values in NVRAM - the 
+	century byte, specifically, changing it back to 0x20.
+	</li><li>
+	general polishing of the docs - re-order some sections, make it easier for novices to read
+	</li><li>
+	some boards don't have adequate installation instructions (most server/desktop boards). fix that
+	</li><li>
+	use the timeless branch from coreboot (rebase for different revisions). we don't need timestamps.
+	this is needed for reproducible builds (reproducible builds are for later release, not next release).
+	See <a href="https://review.coreboot.org/#/c/13412/">https://review.coreboot.org/#/c/13412/</a>
+	and <a href="https://review.coreboot.org/#/q/topic:timeless">https://review.coreboot.org/#/q/topic:timeless</a>
+	</li><li>
+	(probably won't be done before release) have tpearson look into boot delays on d8/d16/dre, and USB issues
+	on dre)
+	</li><li>
+	</li><li>
+	(probably won't be done before release) have damo22 look into vesa framebuffer graphics on d510mo (right
+	now only text mode works, including in GNU/Linux)
+	</li><li>
+	GuixSD /boot/ FDE full disk encryption guide.
+	</li><li>
+	fix up R500 port (if not ready before wanting to release, just remove R500 before release)
+	</li><li>
+	add W500 (probably won't be done before release, but a user did report that it does work
+	with T500 ROM images iirc)
+	</li><li>
+	fix up screen compatibility issues on t400/t500 (francis has a 1440x900 T400 and 1920x1200 T500 to test on)
+	</li><li>
+	merge patch for sinkhole on x60 (probably already merged upstream in coreboot)
+	</li><li>
+	get patrickg to fix sinkhole on gm45 (send that person an X200)
+	</li><li>
+	(not for release, just putting it here). SHA1 was apparently broken. This has implications for git.
+	Context: 
+	<a href="http://lwn.net/Articles/132513/">this post</a> and
+	<a href="https://eprint.iacr.org/2015/967">this page</a>
+	- maybe reproducibly tar up the downloaded git repositories that libreboot uses,
+	and check sha512 hashes (maybe stronger hash, or even multiple hashes) - also
+	start GPG signing your commits. maintain offline file hashes of repositories
+	</li>
+</ul>
+	</div>
+
 	<div class="section">
 		<h1 id="tasks">
 			Important tasks for the libreboot project
@@ -323,7 +398,7 @@
 						</li>
 						<li>NOTE: see build/release/* commands for coreboot/.coreboot-version in libreboot</li>
 						<li>NOTE: GRUB ELF executable (payload) is built reproducibly in libreboot now</li>
-						<li>NOTE: MemTest86+ seems to be built reproducibly, but we're not sure. @uref{https://reproducible.debian.net/rb-pkg/testing/amd64/memtest86+.html,this link}</li>
+						<li>NOTE: MemTest86+ seems to be built reproducibly, but we're not sure. <a href="https://reproducible.debian.net/rb-pkg/testing/amd64/memtest86+.html">this link</a></li>
 					</ul>
 				</li>
 			</ul>
