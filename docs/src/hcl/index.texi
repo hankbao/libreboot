@@ -395,7 +395,7 @@ Specifically (Order No. / Model No. / CPU):
 @item
 MA255LL/A / A1181 (EMC 2092) / Core Duo T2500 @strong{(tested - working)}
 @item
-MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 (untested)
+MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 @strong{(tested - working)}
 @item
 MA472LL/A / A1181 (EMC 2092) / Core Duo T2500 (untested)
 @end itemize
