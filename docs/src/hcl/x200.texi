@@ -184,6 +184,9 @@ BIOS 3.15, EC 1.06
 @anchor{#ram-s3-and-microcode-updates}
 Not all memory modules work. Most of the default ones do, but you have to be careful when upgrading to 8GiB; some modules work, some don't.
 
+@uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
+(note: coreboot raminit is different, so this page might be BS)
+
 pehjota started collecting some steppings for different CPUs on several X200 laptops. You can get the CPUID by running: @* $ @strong{dmesg | sed -n 's/^.* microcode: CPU0 sig=0x\([^,]*\),.*$/\1/p'}
 
 What pehjota wrote: The laptops that have issues resuming from suspend, as well as a laptop that (as I mentioned earlier in #libreboot) won't boot with any Samsung DIMMs, all have CPUID 0x10676 (stepping M0).

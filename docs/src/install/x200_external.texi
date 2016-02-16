@@ -216,6 +216,9 @@ You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs (speed/size). Non
 
 Make sure that the RAM you buy is the 2Rx8 density.
 
+@uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
+(note: coreboot raminit is different, so this page might be BS)
+
 In this photo, 8GiB of RAM (2x4GiB) is installed:@* @image{../resources/images/x200/disassembly/0018,,,,jpg}
 @menu
 * Boot it!::
