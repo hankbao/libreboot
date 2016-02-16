@@ -13,6 +13,7 @@
 
 @menu
 * Libreboot task list::
+* URGENT tasks for next upcoming release
 * Important tasks for the libreboot project::
 * Special news that affects libreboot::
 * Board ports::
@@ -29,6 +30,81 @@
 @chapter Libreboot task list
 @anchor{#libreboot-task-list}
 Back to @uref{index.html,index.html}.
+
+@node URGENT tasks for next upcoming release
+@chapter URGENT tasks for next upcoming release
+@anchor{#urgent-tasks-for-next-upcoming-release}
+@itemize
+@item
+Make libreboot GNU-compatible (see libreboot.org/gnu)
+@item
+Fix keyboard init on x60/t60 (right now delay isn't long enough. might be fixed upstream)
+@item
+Make KGPE-D16, KCMA-D8, GA-G41M-ES2L and D510MO use latest coreboot revision
+@item
+Make all other boards use the same coreboot revision
+@item
+In coreboot download script, reset to a "master" revision (all other revisions
+used are at or before this revision). Then use 1 version of coreboot's GCC toolchain,
+from the master revision, and use that to compile all boards
+@item
+Don't copy coreboot directories per board. Copy them per revision (try
+to always use 1 revision for all boards). When doing build module coreboot,
+do git-init for each revision and for boards using that revision, create
+branches with the patches for that board. checkout each branch for each board.
+When doing build clean coreboot, just switch the coreboot directories back
+to master and delete .git. Note that this is a new .git, not coreboot's .git.
+@item
+LOok at configs of KGPE-D16 and KCMA-D8. There were boot delays caused by it
+last time I asked tpearson to test ROM images. Fix any issues
+@item
+GM45 laptops in libreboot.git currently have uneven backlight at lower levels.
+This was fixed but patch was removed due to upstream changes, with intent to
+re-implement fix on top of upstream later. Do that.
+@item
+Make sure the RTC bug on thinkpads is fixed, and write instructions for
+how to recover for those who were affected (fix includes not just using
+newer version of coreboot in libreboot, where fix is upstreamed, but if
+a person was affected, they need to modify some values in NVRAM - the 
+century byte, specifically, changing it back to 0x20.
+@item
+general polishing of the docs - re-order some sections, make it easier for novices to read
+@item
+some boards don't have adequate installation instructions (most server/desktop boards). fix that
+@item
+use the timeless branch from coreboot (rebase for different revisions). we don't need timestamps.
+this is needed for reproducible builds (reproducible builds are for later release, not next release).
+See @uref{https://review.coreboot.org/#/c/13412/,https://review.coreboot.org/#/c/13412/}
+and @uref{https://review.coreboot.org/#/q/topic:timeless,https://review.coreboot.org/#/q/topic:timeless}
+@item
+(probably won't be done before release) have tpearson look into boot delays on d8/d16/dre, and USB issues
+on dre)
+@item
+@item
+(probably won't be done before release) have damo22 look into vesa framebuffer graphics on d510mo (right
+now only text mode works, including in GNU/Linux)
+@item
+GuixSD /boot/ FDE full disk encryption guide.
+@item
+fix up R500 port (if not ready before wanting to release, just remove R500 before release)
+@item
+add W500 (probably won't be done before release, but a user did report that it does work
+with T500 ROM images iirc)
+@item
+fix up screen compatibility issues on t400/t500 (francis has a 1440x900 T400 and 1920x1200 T500 to test on)
+@item
+merge patch for sinkhole on x60 (probably already merged upstream in coreboot)
+@item
+get patrickg to fix sinkhole on gm45 (send that person an X200)
+@item
+(not for release, just putting it here). SHA1 was apparently broken. This has implications for git.
+Context: 
+@uref{http://lwn.net/Articles/132513/,this post} and
+@uref{https://eprint.iacr.org/2015/967,this page}
+- maybe reproducibly tar up the downloaded git repositories that libreboot uses,
+and check sha512 hashes (maybe stronger hash, or even multiple hashes) - also
+start GPG signing your commits. maintain offline file hashes of repositories
+@end itemize
 
 @node Important tasks for the libreboot project
 @chapter Important tasks for the libreboot project
