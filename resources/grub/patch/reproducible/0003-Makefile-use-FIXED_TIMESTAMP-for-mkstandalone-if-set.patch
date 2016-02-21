@@ -1,7 +1,7 @@
-From 0a19e32fbb62df69e0dfeb80f0a0672b09930f00 Mon Sep 17 00:00:00 2001
+From 58d54ff1514d83d9e4f77d4374635b1bf705ed81 Mon Sep 17 00:00:00 2001
 From: Alexander Couzens <lynxis@fe80.eu>
 Date: Fri, 4 Dec 2015 17:10:44 +0100
-Subject: [PATCH 3/3] Makefile: use FIXED_TIMESTAMP for mkstandalone if set
+Subject: [PATCH 10/11] Makefile: use FIXED_TIMESTAMP for mkstandalone if set
 
 mkstandalone sets timestamps for files which can be overriden by a fixed_timestamp.
 This makes it possible to build reproducible builds for coreboot.
@@ -13,15 +13,15 @@ make default_payload.elf FIXED_TIMESTAMP=1134242
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 994ebbd..37a7cc4 100644
+index 288e621..6c786b7 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -403,7 +403,7 @@ bootcheck: $(BOOTCHECKS)
- 
+@@ -411,7 +411,7 @@ bootcheck: $(BOOTCHECKS)
  if COND_i386_coreboot
- default_payload.elf: grub-mkstandalone grub-mkimage
--	pkgdatadir=. ./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o $@ --modules='ahci pata ehci uhci ohci usb_keyboard usbms part_msdos xfs ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs' --install-modules='ls linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test serial multiboot cbmemc linux16 gzio echo help' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=$(srcdir)/coreboot.cfg
-+	pkgdatadir=. ./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o $@ --modules='ahci pata ehci uhci ohci usb_keyboard usbms part_msdos xfs ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs' --install-modules='ls linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test serial multiboot cbmemc linux16 gzio echo help' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=$(srcdir)/coreboot.cfg $(if $(FIXED_TIMESTAMP),-t $(FIXED_TIMESTAMP))
+ default_payload.elf: grub-mkstandalone grub-mkimage FORCE
+ 	rm $@
+-	pkgdatadir=. ./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o $@ --modules='ahci pata ehci uhci ohci usb_keyboard usbms part_msdos ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs' --install-modules='ls linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test serial multiboot cbmemc linux16 gzio echo help syslinuxcfg xnu $(shell cat grub-core/fs.lst) password_pbkdf2 $(EXTRA_PAYLOAD_MODULES)' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=$(srcdir)/coreboot.cfg
++	pkgdatadir=. ./grub-mkstandalone --grub-mkimage=./grub-mkimage -O i386-coreboot -o $@ --modules='ahci pata ehci uhci ohci usb_keyboard usbms part_msdos ext2 fat at_keyboard part_gpt usbserial_usbdebug cbfs' --install-modules='ls linux search configfile normal cbtime cbls memrw iorw minicmd lsmmap lspci halt reboot hexdump pcidump regexp setpci lsacpi chain test serial multiboot cbmemc linux16 gzio echo help syslinuxcfg xnu $(shell cat grub-core/fs.lst) password_pbkdf2 $(EXTRA_PAYLOAD_MODULES)' --fonts= --themes= --locales= -d grub-core/ /boot/grub/grub.cfg=$(srcdir)/coreboot.cfg $(if $(FIXED_TIMESTAMP),-t $(FIXED_TIMESTAMP))
  endif
  
  endif

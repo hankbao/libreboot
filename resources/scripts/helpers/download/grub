@@ -41,7 +41,7 @@ git clone git://git.savannah.gnu.org/grub.git
 cd "grub/"
 
 # reset to known revision
-git reset --hard 346a494d7c92fe7c2a89f01be84a7be67bcfbfe7
+git reset --hard e3745f908706c07fa249616255ed993ef5704351y
 
 # Apply patches
 # ------------------------------------------------------------------------------
@@ -62,10 +62,6 @@ git am "../resources/grub/patch/grub.johnlane.ie/0006-grub-core-disk-cryptodisk.
 git am "../resources/grub/patch/reproducible/0001-mkstandalone-add-argument-fixed-time-to-override-mti.patch"
 git am "../resources/grub/patch/reproducible/0002-mkrescue-add-argument-fixed-time-to-get-reproducible.patch"
 git am "../resources/grub/patch/reproducible/0003-Makefile-use-FIXED_TIMESTAMP-for-mkstandalone-if-set.patch"
-
-# Patch security vulnerability in GRUB
-# See: http://hmarco.org/bugs/CVE-2015-8370-Grub2-authentication-bypass.html
-git am "../resources/grub/patch/secfix/0001-Fix-CVE-2015-8370-Grub2-user-pass-vulnerability.patch"
 
 cd "../"
 printf "\n\n"

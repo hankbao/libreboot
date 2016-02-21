@@ -1,7 +1,7 @@
-From ec936adca3370995a5ed5c6e5e99c6e8fa5c25ef Mon Sep 17 00:00:00 2001
+From 6d9ac49d116325c9d29633002ca204f56e8c57f5 Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 22:48:03 +0100
-Subject: [PATCH 5/6] Cryptomount support for hyphens in UUID
+Subject: [PATCH 06/11] Cryptomount support for hyphens in UUID
 
 ---
  grub-core/disk/cryptodisk.c | 20 +++++++++++++++++---

@@ -1,7 +1,7 @@
-From bc2a23386d123d37510c3cff1f7e607e7cf49cb1 Mon Sep 17 00:00:00 2001
+From f19bd8a206682a0d8c8c9650b2d4d171a67a9c1f Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Tue, 23 Jun 2015 11:16:30 +0100
-Subject: [PATCH 1/6] Cryptomount support LUKS detached header
+Subject: [PATCH 02/11] Cryptomount support LUKS detached header
 
 ---
  grub-core/disk/cryptodisk.c | 22 ++++++++++++++++++----

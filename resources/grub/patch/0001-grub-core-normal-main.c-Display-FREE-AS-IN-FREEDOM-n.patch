@@ -1,15 +1,15 @@
-From f56cc3dc534db469905a4ff33a40e18b4481876e Mon Sep 17 00:00:00 2001
+From f93359e10e720673466fa52ac4814619b3bddc06 Mon Sep 17 00:00:00 2001
 From: Francis Rowe <info@gluglug.org.uk>
 Date: Sat, 14 Feb 2015 01:24:23 +0000
-Subject: [PATCH] grub-core/normal/main.c: Display "FREE AS IN FREEDOM", not
- version
+Subject: [PATCH 01/11] grub-core/normal/main.c: Display "FREE AS IN FREEDOM",
+ not version
 
 ---
  grub-core/normal/main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/grub-core/normal/main.c b/grub-core/normal/main.c
-index 623b93b..659e241 100644
+index 78a70a8..982bde3 100644
 --- a/grub-core/normal/main.c
 +++ b/grub-core/normal/main.c
 @@ -208,7 +208,7 @@ grub_normal_init_page (struct grub_term_output *term,

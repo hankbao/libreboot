@@ -1,7 +1,7 @@
-From aeb2681fdf889be9725ab8d64896fade960f8bd1 Mon Sep 17 00:00:00 2001
+From 1ad8a4c5d0d6003954d37c4f7eeca0514971f8b4 Mon Sep 17 00:00:00 2001
 From: Alexander Couzens <lynxis@fe80.eu>
 Date: Fri, 4 Dec 2015 17:10:43 +0100
-Subject: [PATCH 2/3] mkrescue: add argument --fixed-time to get reproducible
+Subject: [PATCH 09/11] mkrescue: add argument --fixed-time to get reproducible
  uuids
 
 The uuid generation is based on the time.
@@ -10,7 +10,7 @@ The uuid generation is based on the time.
  1 file changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/util/grub-mkrescue.c b/util/grub-mkrescue.c
-index 4511826..164c4e1 100644
+index 238d484..a3e0155 100644
 --- a/util/grub-mkrescue.c
 +++ b/util/grub-mkrescue.c
 @@ -52,6 +52,7 @@ static int xorriso_arg_alloc;
@@ -54,7 +54,7 @@ index 4511826..164c4e1 100644
      default:
        return ARGP_ERR_UNKNOWN;
      }
-@@ -541,7 +554,7 @@ main (int argc, char *argv[])
+@@ -542,7 +555,7 @@ main (int argc, char *argv[])
    {
      time_t tim;
      struct tm *tmm;
