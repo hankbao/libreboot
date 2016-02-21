@@ -54,7 +54,7 @@ These are some common examples of ways in which the grubtest.cfg file can be mod
 @anchor{#obvious-option-dont-even-modify-the-built-in-grub.cfg}
 Use the menuentry that says something like @emph{Search for GRUB outside CBFS}. Assuming that you have a grub.cfg file at /boot/grub/ in your installed distro, this will generate a new menuentry in the GRUB menu. Use that to boot.
 
-Then do this as root:@* $ @strong{cd /boot/grub/}@* $ @strong{ln -s grub.cfg libreboot_grub.cfg}
+Then do this as root:@* $ @strong{cd /boot/grub/}@* $ @strong{ln -s grub.cfg coreboot_grub.cfg}
 
 After that, your system should then boot automatically.
 
