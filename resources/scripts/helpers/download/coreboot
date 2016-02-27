@@ -137,6 +137,11 @@ git clone https://review.coreboot.org/coreboot
 # there are modifications required
 cd "coreboot/"
 
+# Reset to a common revision#
+# other revisions used will be on this one, or before it
+# This common revision is used for the crossgcc compilation
+git reset --hard 4351ace145c4069f9c93ca7541d6dfaf8300b53b
+
 # Define a common version (based on the libreboot version)
 # Most likely redundant, because the build system needs to update
 # this every time when building a ROM image anyway
