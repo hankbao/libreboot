@@ -32,6 +32,15 @@ printf "Cleaning the previous build of coreboot and its utilities\n"
 for payload in coreboot/*; do
 	for board in "${payload}/"*; do
 
+        (
+        # Reset to master branch, where there are no board-specific patches applied
+        # also remove the .git history and so on
+        cd "${board}/"
+        git checkout master
+        rm -Rf ".git/"*
+        rm -Rf "3rdparty/"*/*.git
+        )
+
         # Clean coreboot, of course
 		make -C "${board}/" distclean
 
@@ -46,6 +55,7 @@ for payload in coreboot/*; do
 done
 
 # Also do the same for the crossgcc version of coreboot
+# Note how we do not want to delete crossgcc. We only clean it
 make -C "crossgcc/" crossgcc-clean
 for util in {cbfs,ifd,nvram}tool cbmem; do
 	make -C "crossgcc/util/${util}/" clean
