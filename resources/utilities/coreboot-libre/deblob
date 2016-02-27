@@ -70,5 +70,10 @@ for payloads in "coreboot/"*; do
 	done
 done
 
+# Now also do the same for crossgcc coreboot
+for blob in $(cat "resources/utilities/coreboot-libre/blobs/coreboot/crossgcc/blobs.list"); do
+    rm -f "crossgcc/${blob}"
+done
+
 printf "\n\n"
 

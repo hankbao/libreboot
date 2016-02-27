@@ -31,7 +31,8 @@ printf "Cleaning the previous build of coreboot and its utilities\n"
 # clean coreboot and crossgcc (source archives preserved)
 for payload in coreboot/*; do
 	for board in "${payload}/"*; do
-		# Clean coreboot, of course
+
+        # Clean coreboot, of course
 		make -C "${board}/" distclean
 
 		# Clean its utilities as well
@@ -40,16 +41,15 @@ for payload in coreboot/*; do
 		done
 		make -C "${board}/payloads/libpayload/" distclean
 
-		# Clean crossgcc
-		if [ "${payload##*/}" != "crossgcc" ]; then # is a symlink
-			# delete symlink to crossgcc
-			rm -f "${board}/util/crossgcc"
-		else # is the real crossgcc
-			# payload is crossgcc
-			# board is not a board, it's a coreboot revision
-			make -C "${board}/" crossgcc-clean
-		fi
+        rm -f "${board}/util/crossgcc"
 	done
 done
+
+# Also do the same for the crossgcc version of coreboot
+make -C "crossgcc/" crossgcc-clean
+for util in {cbfs,ifd,nvram}tool cbmem; do
+	make -C "crossgcc/util/${util}/" clean
+done
+make -C "crosgcc/" distclean
 
 printf "\n\n"

@@ -34,24 +34,24 @@ printf "Building the utilities in coreboot\n"
 for payload in coreboot/*; do
 	for board in "${payload}/"*; do
 
-		if [ "${payload##*/}" = "crossgcc" ]; then # build crossgcc
-
-			for architecture in i386 arm; do
-				make -j$(nproc) -BC "${board}/" crossgcc-${architecture}
-			done
-		else # build other utils
-			# cbfstool, cbmem, nvramtool
-			for util in {cbfs,nvram}tool cbmem; do
-				make -BC "${board}/util/${util}"
-			done
-			# create symlink to crossgcc
-			(
-			boardconfig_path="resources/libreboot/config/${payload##*/}/${board##*/}"
-			cbrevision="$(cat "${boardconfig_path}/cbrevision")"
-			cd "${board}/util/"
-			ln -s "../../../crossgcc/${cbrevision}/util/crossgcc/" crossgcc
-			)
-		fi
+	# cbfstool, cbmem, nvramtool
+	for util in {cbfs,nvram}tool cbmem; do
+		make -BC "${board}/util/${util}"
+	done
+	# create symlink to crossgcc
+	(
+	boardconfig_path="resources/libreboot/config/${payload##*/}/${board##*/}"
+	cbrevision="$(cat "${boardconfig_path}/cbrevision")"
+	cd "${board}/util/"
+	ln -s "../../../../crossgcc/util/crossgcc/" crossgcc
+	)
 
 	done
 done
+
+# Now build crossgcc
+(
+cd "crossgcc/"
+make crossgcc-i386
+make crossgcc-arm
+)

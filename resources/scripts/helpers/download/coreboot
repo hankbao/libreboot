@@ -33,6 +33,9 @@ else
 	version="libreboot-$(git describe --tags HEAD)"
 fi
 
+# coreboot revisios used for crossgcc
+crossgccrevision="4351ace145c4069f9c93ca7541d6dfaf8300b53b"
+
 # sanity check (check for invalid paths in the reused.list patch lists before proceeding)
 for payloads in resources/libreboot/config/*; do
 
@@ -137,11 +140,6 @@ git clone https://review.coreboot.org/coreboot
 # there are modifications required
 cd "coreboot/"
 
-# Reset to a common revision#
-# other revisions used will be on this one, or before it
-# This common revision is used for the crossgcc compilation
-git reset --hard 4351ace145c4069f9c93ca7541d6dfaf8300b53b
-
 # Define a common version (based on the libreboot version)
 # Most likely redundant, because the build system needs to update
 # this every time when building a ROM image anyway
@@ -204,38 +202,20 @@ for payloads in ../../resources/libreboot/config/*; do
 	done
 done
 
-# prepare directories for crossgcc
-for payloads in ../../resources/libreboot/config/*; do
+# prepare directory for crossgcc
+rm -Rf "../../crossgcc/"
+make_coreboot_src_directory crossgcc ${crossgccrevision} ..
+(
+    cd "../crossgcc/${crossgccrevision}"
+    reset_at_revision ${crossgccrevision}
+    rm -Rf "3rdparty/"
 
-	if [ ! -d "${payloads}/" ]; then
-		continue
-	fi
-
-	payload="${payloads##*/}"
-
-	for boardconfig in ../../resources/libreboot/config/${payload}/*; do
-
-		if [ ! -d "${boardconfig}/" ]; then
-			continue
-		fi
-
-		boardname="${boardconfig##*/}"
-		cbrevision=$(cat "${boardconfig}/cbrevision")
-		vbootrevision=$(cat "${boardconfig}/vbootrevision")
-
-		# Create coreboot directory for compiling crossgcc
-		if [ ! -d "../crossgcc/${cbrevision}" ]; then
-			make_coreboot_src_directory crossgcc ${cbrevision} ..
-			(
-				cd "../crossgcc/${cbrevision}/"
-				# reset to known revision (coreboot)
-				reset_at_revision ${cbrevision}
-				# no way to know which vboot revision is used here, so delete 3rdparty
-				rm -Rf "3rdparty/"
-			)
-		fi
-	done
-done
+    # Put this in its own separate directory 
+    rm -Rf "../../../crossgcc"
+    cd ../
+    mv "${crossgccrevision}/" "crossgcc/"
+    mv "crossgcc/" ../../
+)
 
 # go back to _src/coreboot/ (containing all coreboot directories)
 cd "../"
@@ -246,7 +226,7 @@ rm -Rf "coreboot/"
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -Rf */*/.git*
+rm -Rf */*/.git* ../crossgcc/*.git
 rm -Rf */*/3rdparty/*/.git*
 
 # Delete crossgcc from non-crossgcc coreboot archives
