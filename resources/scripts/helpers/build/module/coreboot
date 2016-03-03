@@ -30,6 +30,146 @@ set -u -e
 
 printf "Building the utilities in coreboot\n"
 
+for payloads in resources/libreboot/config/*; do
+
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
+
+	payload="${payloads##*/}"
+
+	for boardconfig in resources/libreboot/config/${payload}/*; do
+
+		if [ ! -d "${boardconfig}/" ]; then
+			continue
+		fi
+
+		boardname="${boardconfig##*/}"
+		cbrevision=$(cat "${boardconfig}/cbrevision")
+		vbootrevision=$(cat "${boardconfig}/vbootrevision")
+
+		reused_coreboot_patches="resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list"
+		reused_vboot_patches="resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list"
+		for reused_patches in "${reused_coreboot_patches}" "${reused_vboot_patches}"; do
+			if [ -f "${reused_patches}" ]; then
+				for patch in $(cat "${reused_patches}"); do
+					if [ ! -f "./${patch}" ]; then
+						printf "%s listed in %s does not exist\n" "${patch}" "${reused_patches}"
+						exit 1
+					fi
+				done
+			fi
+		done
+
+	done
+done
+
+# sanity check (check for invalid paths in the reused.list patch lists before proceeding)
+# in ascending filename order, apply patches from a directory
+apply_patches_from_directory() {
+	patch_directory="${1}" # directory containing the patch files
+
+	if [ -d "${patch_directory}" ]; then
+		for patch in ${patch_directory}/*.patch;  do
+
+			if [ "${patch##*/}" = "*.patch" ]; then # oh so ugly
+				continue # ugly ugly ugly ugly ugly
+			fi # most hideous thing you've ever seen
+
+			git am "${patch}" || return 1
+		done
+	fi
+}
+# files listed in the file (if found) are absolute paths, relative to the root of the libreboot src directory
+# the file lists patches patches that should be applied
+apply_patches_from_file() {
+	patch_list="${1}" # file listing the paths to all the patches
+	libreboot_src_root="${2}" # path to the root of the libreboot_src directory
+
+	if [ -f "${patch_list}" ]; then
+		for patchname in $(cat "${patch_list}"); do
+			git am "${libreboot_src_root}/${patchname}" || return 1
+		done
+	fi
+}
+make_coreboot_src_directory() {
+	payload="${1}"
+	cbrevision="${2}"
+	firmwarepath="${3}" # libreboot_src/coreboot/
+(
+	cd "${firmwarepath}/"
+	# copy coreboot directory there
+	rm -Rf "${payload:?}/${cbrevision:?}/"
+	if [ ! -d "${payload}/" ]; then
+		mkdir -p "${payload}/"
+	fi
+	cp -R "coreboot/" "${payload}/${cbrevision}/"
+)
+}
+reset_at_revision() {
+	revision="${1}"
+	git reset --hard ${revision}
+}
+
+for payloads in ../../resources/libreboot/config/*; do
+
+	if [ ! -d "${payloads}/" ]; then
+		continue
+	fi
+
+	payload="${payloads##*/}"
+
+	for boardconfig in ../../resources/libreboot/config/${payload}/*; do
+
+		if [ ! -d "${boardconfig}/" ]; then
+			continue
+		fi
+
+		boardname="${boardconfig##*/}"
+		cbrevision=$(cat "${boardconfig}/cbrevision")
+		vbootrevision=$(cat "${boardconfig}/vbootrevision")
+
+        # the same vboot revision is always used for coreboot revision,
+        # so we don't need to wworry about checking for that here
+
+        if [ -d "../${cbrevision}" ]; then
+            continue
+            # the directory already exists, no need to recreate it
+        fi
+
+		make_coreboot_src_directory ${payload} ${boardname} ..
+
+		# patch that version
+		(
+
+			cd "../${payload}/${cbrevision}/"
+			reset_at_revision ${cbrevision}
+
+			# apply patches (coreboot, common to all systems using this revision)
+			apply_patches_from_directory "../../../resources/libreboot/patch/common/coreboot/${cbrevision}"
+			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
+			apply_patches_from_file "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list" ../../..
+			# apply patches (coreboot, machine-specific for this revision)
+			apply_patches_from_directory "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}"
+
+			cd "3rdparty/vboot/"
+			# reset to known revision (vboot)
+			reset_at_revision ${vbootrevision}
+
+			# apply patches (vboot, common to all systems using this revision)
+			apply_patches_from_directory "../../../../../resources/libreboot/patch/common/vboot/${vbootrevision}"
+			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
+			apply_patches_from_file "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list" ../../../../..
+			# apply patches (vboot, machine-specific for this revision)
+			apply_patches_from_directory "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
+
+		)
+	done
+done
+
+
+
+
 # clean coreboot and crossgcc (source archives preserved)
 for payload in coreboot/*; do
 	for board in "${payload}/"*; do
