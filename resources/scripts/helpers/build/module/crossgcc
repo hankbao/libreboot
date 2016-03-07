@@ -24,8 +24,6 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-./build clean crossgcc
-
 (
 cd "crossgcc/util/crossgcc/"
 if [ $# -lt 1 ]; then
