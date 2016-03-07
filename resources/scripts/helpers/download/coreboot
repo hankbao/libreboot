@@ -82,7 +82,7 @@ cd "coreboot/"
 # ------------------------------------------------------------------------------
 
 # download it using git
-git clone https://review.coreboot.org/coreboot
+git clone https://review.coreboot.org/coreboot || git clone https://github.com/coreboot/coreboot.git
 
 # there are modifications required
 cd "coreboot/"
