@@ -35,7 +35,7 @@ rm -Rf "grub/"
 # ------------------------------------------------------------------------------
 
 # download it using git
-git clone git://git.savannah.gnu.org/grub.git
+git clone git://git.savannah.gnu.org/grub.git || git clone http://git.savannah.gnu.org/r/grub.git
 
 # modifications are required
 cd "grub/"
