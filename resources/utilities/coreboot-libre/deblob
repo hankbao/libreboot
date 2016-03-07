@@ -30,7 +30,7 @@ if [ ! -d "coreboot/" ]; then
 	printf "coreboot-libre deblob: no coreboot directory exists, so there is nothing to deblob\n"
 fi
 
-for payloads in "coreboot/"*; do
+for payloads in resources/libreboot/config/*; do
 
 	if [ ! -d "${payloads}/" ]; then
 		continue
@@ -38,19 +38,16 @@ for payloads in "coreboot/"*; do
 
 	payload="${payloads##*/}"
 
-	for boards in "coreboot/${payload}/"*; do
+	for boards in "${payload}/"*; do
 
 		if [ ! -d "${boards}/" ]; then
 			continue
 		fi
 
 		board="${boards##*/}"
-		boardpath="coreboot/${payload}/${board}"
-		if [ "${payload}" = "crossgcc" ]; then
-			cbrevision="${board}"
-		else
-			cbrevision="$(cat "resources/libreboot/config/${payload}/${board}/cbrevision")"
-		fi
+		cbrevision="$(cat "resources/libreboot/config/${payload}/${board}/cbrevision")"
+        vbrevision="$(cat "resources/libreboot/config/${payload}/${board}/vbootrevision")"
+		boardpath="coreboot/${cbrevision}/${cbrevision}"
 
 		# deblob coreboot
 		for blob in $(cat "resources/utilities/coreboot-libre/blobs/coreboot/${cbrevision}/blobs.list"); do
