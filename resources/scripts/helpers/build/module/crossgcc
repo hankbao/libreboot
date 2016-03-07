@@ -25,13 +25,13 @@
 set -u -e
 
 (
-cd "crossgcc/util/crossgcc/"
+cd "crossgcc/"
 if [ $# -lt 1 ]; then
-    make build-i386
-    make build-arm
+    make crossgcc-i386
+    make crossgcc-arm
 else
     for architecture in "${@}"; do
-        make build-${architecture}
+        make crossgcc-${architecture}
     done
 fi
 )
