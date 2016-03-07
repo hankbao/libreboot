@@ -137,7 +137,7 @@ rm -Rf "../../crossgcc/"
 make_coreboot_src_directory crossgcc ${crossgccrevision} "no_vboot_revision" ..
 (
     cd "../crossgcc/${crossgccrevision}"
-    reset_at_revision ${crossgccrevision}
+    git reset --hard ${crossgccrevision}
     rm -Rf "3rdparty/"
 
     # Put this in its own separate directory 
