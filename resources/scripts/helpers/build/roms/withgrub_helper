@@ -34,21 +34,31 @@ fi
 
 boardtarget="${1}"
 
-printf "GRUB Helper script: build ROM images for '%s'\n" "${boardtarget}"
-
-(
-cd "coreboot/grub/${boardtarget}/"
-
-# Make sure to remove these first
-rm -f "grub."*{elf,cfg}
-
-if [ -f "../version" ]; then
+if [ -f "version" ]; then
 	# release archive is being used
-	version="$(cat ../version)"
+	version="$(cat version)"
 else
 	# git repo is being used
 	version="$(git describe --tags HEAD)"
 fi
+
+printf "GRUB Helper script: build ROM images for '%s'\n" "${boardtarget}"
+
+(
+cbrevision="$(cat resources/libreboot/config/grub/${boardtarget}/cbrevision)"
+vbootrevision="$(cat resources/libreboot/config/grub/${boardtarget}/vbootrevision)"
+branchname="grub_${boardtarget}"
+
+cd "coreboot/${cbrevision}/${cbrevision}/"
+git checkout ${branchname}
+(
+    cd "3rdparty/vboot/"
+    git checkout ${branchname}
+)
+
+# Make sure to remove these first
+rm -f "grub."*{elf,cfg}
+
 printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
 # Build ROM images with text-mode and corebootfb modes.
@@ -138,6 +148,12 @@ mv "${boardtarget}/" "../../../bin/grub/"
 
 # version info file no longer needed
 rm -f ".coreboot-version"
+
+git checkout master
+(
+    cd "3rdparty/vboot/"
+    git checkout master
+)
 )
 
 printf "\n\n"

@@ -140,6 +140,6 @@ fi
 
 # The GRUB files are no longer needed
 rm -f "coreboot/grub"*.{elf,cfg}
-rm -f "coreboot/"*/*/grub*.{elf,cfg}
+rm -f "coreboot/"*/*/*.{elf,cfg}
 
 printf "\n\n"

@@ -83,6 +83,8 @@ rm -Rf "${distdir}/flashrom/".git*
 rm -Rf "${distdir}/grub/".git*
 rm -Rf "${distdir}/depthcharge/".git*
 
+rm -f "${distdir}"/*.vim
+
 # Delete useless files.
 rm -Rf "${distdir}/TODO/"
 rm -f "${distdir}/push"
