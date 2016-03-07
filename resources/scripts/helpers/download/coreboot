@@ -158,7 +158,7 @@ rm -Rf "coreboot/"
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -Rf */*/.git* ../crossgcc/*.git
+rm -Rf */*/.git* ../crossgcc/.git*
 rm -Rf */*/3rdparty/*/.git*
 
 # Delete crossgcc from non-crossgcc coreboot archives
