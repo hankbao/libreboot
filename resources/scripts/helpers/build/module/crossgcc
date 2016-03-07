@@ -26,9 +26,15 @@ set -u -e
 
 ./build clean crossgcc
 
-# Now build crossgcc
 (
-cd "crossgcc/util/crossgcc"
-make build-i386
-make build-arm
+cd "crossgcc/util/crossgcc/"
+if [ $# -lt 1 ]; then
+    make build-i386
+    make build-arm
+else
+    for architecture in "${@}"; do
+        make build-${architecture}
+    done
+fi
 )
+
