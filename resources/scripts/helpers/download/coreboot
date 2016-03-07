@@ -60,10 +60,6 @@ make_coreboot_src_directory() {
 )
 }
 
-
-# coreboot revisios used for crossgcc
-crossgccrevision="4351ace145c4069f9c93ca7541d6dfaf8300b53b"
-
 printf "Downloading coreboot, patching coreboot and deblobbing coreboot\n"
 
 # This grabs current base used, and applies patches
@@ -130,25 +126,6 @@ for payloads in ../../resources/libreboot/config/*; do
 	done
 done
 
-
-
-# prepare directory for crossgcc
-rm -Rf "../../crossgcc/"
-make_coreboot_src_directory crossgcc ${crossgccrevision} "no_vboot_revision" ..
-(
-    cd "../crossgcc/${crossgccrevision}/"
-    git reset --hard ${crossgccrevision}
-    rm -Rf "3rdparty/"
-
-    # Put this in its own separate directory 
-    rm -Rf "../../../crossgcc"
-    cd ../
-    mv "${crossgccrevision}/" "crossgcc/"
-    mv "crossgcc/" ../../
-    cd ../
-    rm -Rf "crossgcc/"
-)
-
 # go back to _src/coreboot/ (containing all coreboot directories)
 cd "../"
 # delete the gitted one (not needed anymore)
@@ -158,7 +135,7 @@ rm -Rf "coreboot/"
 # ------------------------------------------------------------------------------
 
 printf "Deleting .git* in coreboot/ (history inside .git contains the blobs that were deleted)\n"
-rm -Rf */*/.git* ../crossgcc/.git*
+rm -Rf */*/.git*
 rm -Rf */*/3rdparty/*/.git*
 
 # Delete crossgcc from non-crossgcc coreboot archives

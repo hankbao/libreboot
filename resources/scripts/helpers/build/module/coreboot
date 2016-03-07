@@ -200,9 +200,3 @@ for payload in coreboot/*; do
 	done
 done
 
-# Now build crossgcc
-(
-cd "crossgcc/"
-make crossgcc-i386
-make crossgcc-arm
-)

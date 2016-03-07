@@ -1,0 +1,54 @@
+#!/bin/bash
+
+#  helper script: downloads crossgcc, for building coreboot
+#
+#	Copyright (C) 2016 Francis Rowe <info@gluglug.org.uk>
+#
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+# This script assumes that the working directory is the
+# root of libreboot_src or libreboot git.
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -u -e
+
+if [ -f "version" ]; then
+	# _src release archive is being used
+	version="libreboot-$(cat version)"
+else
+	# git repo is being used
+	version="libreboot-$(git describe --tags HEAD)"
+fi
+
+# coreboot revisios used for crossgcc
+crossgccrevision="4351ace145c4069f9c93ca7541d6dfaf8300b53b"
+
+rm -Rf "crossgcc/"
+mkdir -p "crossgcc/"
+(
+    cd "crossgcc/"
+    git clone https://review.coreboot.org/coreboot || git clone https://github.com/coreboot/coreboot.git
+    cd "coreboot/"
+    git reset --hard ${crossgccrevision}
+    mkdir -p "../util/"
+    mv "util/crossgcc/" "../util/"
+    cd "../"
+    rm -Rf "coreboot/"
+)
+
+printf "Deblobbing coreboot\n"
+./resources/utilities/coreboot-libre/deblob
+
+

@@ -24,25 +24,5 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# clean coreboot utilities (dependencies for 'build'):
+make -C "crossgcc/util/crossgcc/" distclean
 
-printf "Cleaning the previous build of coreboot and its utilities\n"
-
-# clean coreboot and crossgcc (source archives preserved)
-for payload in coreboot/*; do
-	for board in "${payload}/"*; do
-
-        # Clean coreboot, of course
-		make -C "${board}/" distclean
-
-		# Clean its utilities as well
-		for util in {cbfs,ifd,nvram}tool cbmem; do
-			make -C "${board}/util/${util}/" clean
-		done
-		make -C "${board}/payloads/libpayload/" distclean
-
-        rm -f "${board}/util/crossgcc"
-	done
-done
-
-printf "\n\n"
