@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#  helper script: builds GRUB source code
+#  helper script: builds GRUB2 source code
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
-#	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
+#   Copyright (C) 2015, 2016 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -25,17 +25,19 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build GRUB as coreboot payload
-# ---------------------------------------------------------------------
+# Build GRUB2 as coreboot payload
 
 printf "Building GRUB\n"
 
-cd "grub/"
+# use a subshell to not end up in grub/ in case of build issues
+(
+cd grub/
 
-# clean it first
+# clean up first
 [ -d Makefile ] && make distclean
 
-# build grub
+# build
 ./autogen.sh
 ./configure --with-platform=coreboot
 make -j$(nproc)
+)
