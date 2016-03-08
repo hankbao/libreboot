@@ -30,8 +30,15 @@ configpath="resources/libreboot/config/${payload}"
 
 hackconfig () {
 	board="${1}"
-
-	cd "coreboot/${payload}/${board}/"
+    cbrevision="$(cat ${configpath}/${board}/cbrevision)"
+    vbootrevision="$(cat ${configpath}/${board}/vbootrevision)"
+(
+	cd "coreboot/${cbrevision}/${cbrevision}/"
+    git checkout ${payload}_${board}
+    (
+        cd "3rdparty/vboot/"
+        git checkout ${payload}_${board}
+    )
 
 	printf "Replacing or creating new config for %s (%s payload)\n" "${board}" "${payload}"
 	sleep 2
@@ -41,7 +48,12 @@ hackconfig () {
 	[ ! -d "../../../${configpath}/${board}/" ] && mkdir -p "../../../${configpath}/${board}/"
 	mv ".config" "../../../${configpath}/${board}/config"
 
-	cd "../../../"
+    git checkout master
+    (
+        cd "3rdparty/vboot/"
+        git checkout master
+    )
+)
 }
 
 if [ $# -lt 1 ]; then

@@ -30,15 +30,26 @@ configpath="resources/libreboot/config/${payload}"
 
 hackconfig () {
 	board="${1}"
-
-	cd "coreboot/${payload}/${board}/"
+    cbrevision="$(cat ${configpath}/${board}/cbrevision)"
+    vbootrevision="$(cat ${configpath}/${board}/vbootrevision)"
+(
+    cd "coreboot/${cbrevision}/${cbrevision}/"
+    git checkout ${payload}_${board}
+    (
+        cd "3rdparty/vboot/"
+        git checkout ${payload}_${board}
+    )
 
 	printf "Updating config for %s (%s payload)\n" "${board}" "${payload}"
 	sleep 2
 
 	if [ ! -d "../../../${configpath}/${board}/" ]; then
 		printf "build/config/grubupdate WARNING: config '%s' does not exist. Skipping.\n" "${board}"
-		cd "../../../"
+        git checkout master
+        (
+            cd "3rdparty/vboot/"
+            git checkout master
+        )
 		return
 	fi
 	
@@ -46,7 +57,12 @@ hackconfig () {
 	make oldconfig
 	mv ".config" "../../../${configpath}/${board}/config"
 
-	cd "../../../"
+    git checkout master
+    (
+        cd "3rdparty/vboot/"
+        git checkout master
+    )
+)
 }
 
 if [ $# -lt 1 ]; then
