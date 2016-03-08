@@ -49,13 +49,15 @@ buildlibpayload() {
     cbrevision="${3}"
     vbootrevision="${4}"
 
-	(
-	cd "coreboot/${cbrevision}/${cbrevision}/payloads/libpayload/"
+	( 
+    cd "coreboot/${cbrevision}/${cbrevision}/"
     git checkout depthcharge_${board}
     (
         cd "3rdparty/vboot/"
         git checkout depthcharge_${board}
     )
+
+    cd "payloads/libpayload/"
 
 	make distclean
 	rm -Rf "install/"
@@ -64,6 +66,7 @@ buildlibpayload() {
 	make -j"$(nproc)"
 	make DESTDIR="install" install
 
+    cd "../../"
     git checkout master
     cd "3rdparty/vboot/"
     git checkout master
