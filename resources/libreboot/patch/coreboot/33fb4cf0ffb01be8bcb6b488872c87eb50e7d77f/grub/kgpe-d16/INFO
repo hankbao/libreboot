@@ -1,8 +1,0 @@
-# KGPE-D16 patches
-# new versions can be found at https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php
-
-# Hotfixes:
-
-# NOTE: fixed in master -> https://review.coreboot.org/#/c/12109
-# git fetch http://review.coreboot.org/coreboot refs/changes/90/12090/1 && git cherry-pick FETCH_HEAD
-git am "../resources/libreboot/patch/tmpfix/0001-NOTFORMERGE-don-t-add-CPU-microcode-on-fam10h-to-fam.patch"
