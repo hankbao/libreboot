@@ -1,0 +1,35 @@
+From 3119f40c2e0abc36630a92fc5cee58b8d0f9087c Mon Sep 17 00:00:00 2001
+From: Timothy Pearson <tpearson@raptorengineeringinc.com>
+Date: Mon, 7 Mar 2016 13:29:24 -0600
+Subject: [PATCH 2/2] nb/amd/mct_ddr3: Train correct receiver in
+ TrainDQSRdWrPos_D_Fam15
+
+Change-Id: Ia26950a8297f0a7125c21e995c89a3fc68d9d8a9
+Signed-off-by: Timothy Pearson <tpearson@raptorengineeringinc.com>
+---
+ src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
+
+diff --git a/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c b/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
+index 1a3c7c1..ad81c3d 100644
+--- a/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
++++ b/src/northbridge/amd/amdmct/mct_ddr3/mctdqs_d.c
+@@ -1340,14 +1340,11 @@ static uint8_t TrainDQSRdWrPos_D_Fam15(struct MCTStatStruc *pMCTstat,
+ 
+ 	Errors = 0;
+ 	dual_rank = 0;
+-	Receiver = mct_InitReceiver_D(pDCTstat, dct);
+-	if (receiver_start > Receiver)
+-		Receiver = receiver_start;
+ 
+ 	/* There are four receiver pairs, loosely associated with chipselects.
+ 	 * This is essentially looping over each rank within each DIMM.
+ 	 */
+-	for (; Receiver < receiver_end; Receiver++) {
++	for (Receiver = receiver_start; Receiver < receiver_end; Receiver++) {
+ 		dimm = (Receiver >> 1);
+ 		if ((Receiver & 0x1) == 0) {
+ 			/* Even rank of DIMM */
+-- 
+1.9.1
+
