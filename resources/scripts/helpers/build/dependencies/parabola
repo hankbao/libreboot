@@ -57,12 +57,14 @@ pacman -S arm-none-eabi-gcc
 
 pacman -S --needed libpciaccess
 
+[ "$(uname -i)" = x86_64 ] || [ "$(uname -m)" = x86_64 ]
+arch=${?}
+
 # For cross-compiling i686 target on x86_64 host.
-if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
-	then
-		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
-		pacman -Sl --needed multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
-		pacman -S --needed gcc{,-libs}-multilib lib32-{lib{ltdl,pciaccess,stdc++5},glibc,fakeroot}
+if ["${arch}" -eq 0 ]; then
+	printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
+	pacman -Sl multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
+	pacman -S --needed gcc-multilib gcc-libs-multilib lib32-libltdl lib32-libpciaccess lib32-libstdc++5 lib32-glibc lib32-fakeroot
 fi
 
 # Memtest86+ build dependencies
@@ -83,15 +85,12 @@ pacman -S ncurses doxygen iasl gdb flex bison
 # pacman -S git base-devel
 
 # For cross-compiling i686 target on x86_64 host.
-if [ "$(uname -i)" = "x86_64" ] || [ "$(uname -m)" = "x86_64" ]
-	then
-		printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
-		pacman -S --needed lib32-ncurses
+if ["${arch}" -eq 0 ]; then
+	printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
+	pacman -S --needed lib32-ncurses
 fi
 
-# GRUB build dependencies (also requires build-essential, bison and flex)
-# ------------------------------------------------------------
-
+# GRUB2 build dependencies (also requires build-essential, bison and flex)
 # pacman -S --needed base-devel bison flex
 
 printf "GRUB: Fonts, (crypto) filesystem support, automake, etc.\n"
