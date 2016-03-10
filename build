@@ -87,10 +87,12 @@ if [ $# -gt 1 ]; then
     			if [ -f "${build}"/"${mode}"/"${option}" ]; then
     				"${build}"/"${mode}"/"${option}" "$@"
     			else
+                    help
     				die "Invalid option for '${mode}'. See './build ${mode} list'."
     			fi
     		else
-    			die "Invalid mode. See './build help'."
+                help
+    			die "Invalid mode '${mode}'. See './build help'."
     		fi
     esac
 else
