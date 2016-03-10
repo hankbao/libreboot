@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/bin/sh
 
-#  generic build script, for building libreboot (all of it)
+#  generic build script, for building components (all of them)
 #
 #	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
-#                      2015 Patrick "P. J." McDermott <pj@pehjota.net>
+#	Copyright (C) 2015 Patrick "P. J." McDermott <pj@pehjota.net>
+#	Copyright (C) 2015, 2016 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -22,48 +23,67 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-build="./resources/scripts/helpers/build"
-mode="unknown"
-option="unknown"
+build=./resources/scripts/helpers/build
 
-usage="./build mode option"
-availablemodes="$(for mode in ${build}/*; do printf "%s\n" "${mode##*/}"; done)"
-availableoptions="unknown" # unknown until the mode is determined
+listmodes() {
+	for mode in "${build}"/*; do
+		printf '%s\n' "${mode##*/}"
+	done
+}
 
-# User specified no or too few/many parameters
-if [ $# -lt 2 ]; then
-	printf "%s\n\n" "${usage}"
-	printf "possible values for 'mode':\n%s\n\n" "${availablemodes}"
-	printf "Example: ./build module all\n"
-	printf "Example: ./build module flashrom\n"
-	printf "Example: ./build roms withgrub\n"
-	printf "Example: ./build clean all\n"
-	printf "Example (extra option) ./build module bucts static\n"
-	printf "Refer to the libreboot documentation for more info\n\n"
+# Takes exactly one mode as parameter
+listoptions() {
+	for option in "${build}"/"${1}"/*; do
+		printf '%s\n' "${option##*/}"
+	done
+}
+
+help() {
+	cat <<- EOF
+	USAGE:	./build <MODE> <OPTION>
+
+	possible values for 'mode':
+	$(listmodes)
+
+	Example:	./build module all
+	Example:	./build module flashrom [static]
+	Example:	./build roms withgrub
+	Example:	./build clean all
+
+	Refer to the libreboot documentation for more information.
+	EOF
+}
+
+die() {
+	printf 'Error: %s\n' "${@}" 1>&2
 	exit 1
-fi
-mode="${1}"
-option="${2}"
-shift 2
+}
 
-if [ -d "${build}/${mode}" ]; then
-	availableoptions="$(for buildoption in ${build}/${mode}/*; do printf "%s\n" "${buildoption##*/}"; done)"
-	if [ "${option}" = "list" ]; then
-		printf "Available options for '%s' are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
-	elif [ -f "${build}/${mode}/${option}" ]; then
-		"${build}/${mode}/${option}" "$@"
-	elif [ "${option}" = "all" ]; then
-		for option in ${availableoptions}; do
-			"${build}/${mode}/${option}" "$@"
+if [ ${#} -eq 0 ] || [ ${#} -ge 4 ]; then
+	die "Wrong number of arguments specified. See './build help'."
+fi
+
+
+[ "${1}" = help ] && help && exit 0
+
+case "${2}" in
+	list)
+		printf "Available options for mode '%s':\n\n" "${1}"
+		listoptions "${1}"
+		;;
+	all)
+		for option in $(listoptions "${1}"); do
+			"${build}"/"${1}"/"${2}" "$@"
 		done
-	else
-		printf "Invalid option for '%s'. Available options are:\nall\n%s\n\n" "${mode}" "${availableoptions}"
-		exit 1
-	fi
-else
-	printf "Invalid mode. Available modes are:\n%s\n\n" "${availablemodes}"
-	exit 1
-fi
-
-# ------------------- DONE ----------------------
-
+		;;
+	*)
+		if [ -d "${build}"/"${1}"/ ]; then
+			if [ -f "${build}"/"${1}"/"${2}" ]; then
+				"${build}"/"${1}"/"${2}" "$@"
+			else
+				die "Invalid option for '${1}'. See './build ${1} list'."
+			fi
+		else
+			die "Invalid mode. See './build help'."
+		fi
+esac
