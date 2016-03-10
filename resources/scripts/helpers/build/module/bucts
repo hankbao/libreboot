@@ -24,6 +24,17 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
 
 # Build BUC.TS utility (needed for flashing ROM images on X60/T60 while Lenovo BIOS is running)
 # --------------------------------------------------------------------
@@ -44,7 +55,7 @@ if [ "${buildtype}" = "static" ]; then
 fi
 
 make clean
-make -j$(nproc)
+make -j${cores}
 
 if [ "${buildtype}" = "static" ]; then
 	patch "Makefile" -R < "../resources/bucts/patch/staticlink.diff"

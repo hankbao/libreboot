@@ -24,6 +24,17 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
 
 if (( $# != 1 )); then
 	printf "Usage: ./buildrom-withgrub boardname\n"
@@ -98,7 +109,7 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	cp "../../grub_${romtype}.elf" "grub.elf"
-	make -j$(nproc)
+	make -j${cores}
 	rm -f "grub.elf"
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 	# .config no longer needed

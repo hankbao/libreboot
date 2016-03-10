@@ -24,6 +24,17 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
 
 # Build GRUB2 as coreboot payload
 
@@ -39,5 +50,5 @@ cd grub/
 # build
 ./autogen.sh
 ./configure --with-platform=coreboot
-make -j$(nproc)
+make -j${cores}
 )

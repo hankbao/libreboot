@@ -24,6 +24,17 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
 
 # Build "flashrom" (utility for flashing/dumping ROMs)
 # --------------------------------------------------------------------
@@ -34,12 +45,12 @@ cd "flashrom/"
 
 make clean
 if (( $# != 1 )); then
-	make -j$(nproc)
+	make -j${cores}
 else
 	if [ "${1}" = "static" ]; then
-		make SHARED=0 CC='gcc -static' -j$(nproc)
+		make SHARED=0 CC='gcc -static' -j${cores}
 	else
-		make -j$(nproc)
+		make -j${cores}
 	fi
 fi
 
@@ -60,12 +71,12 @@ do
 	
 	make clean
 	if (( $# != 1 )); then
-		make -j$(nproc)
+		make -j${cores}
 	else
 		if [ "${1}" = "static" ]; then
-			make SHARED=0 CC='gcc -static' -j$(nproc)
+			make SHARED=0 CC='gcc -static' -j${cores}
 		else
-			make -j$(nproc)
+			make -j${cores}
 		fi
 	fi
 	

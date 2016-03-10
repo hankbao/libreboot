@@ -24,6 +24,17 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
 
 printf "Building ROM images with the depthcharge payload\n"
 
@@ -63,7 +74,7 @@ buildlibpayload() {
 	rm -Rf "install/"
 
 	make KBUILD_DEFCONFIG="configs/config.$family" defconfig
-	make -j$(nproc)
+	make -j${cores}
 	make DESTDIR="install" install
 
     cd "../../"
@@ -94,7 +105,7 @@ builddepthcharge() {
 	rm -f "../coreboot/${cbrevision:?}/${cbrevision:?}/depthcharge.elf"
 
 	make BOARD="${board}" defconfig
-	make BOARD="${board}" LIBPAYLOAD_DIR="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/payloads/libpayload/install/libpayload" VB_SOURCE="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/3rdparty/vboot" -j$(nproc) depthcharge_unified
+	make BOARD="${board}" LIBPAYLOAD_DIR="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/payloads/libpayload/install/libpayload" VB_SOURCE="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/3rdparty/vboot" -j${cores} depthcharge_unified
 
 	cp "build/depthcharge.elf" "../coreboot/${cbrevision}/${cbrevision}/"
 
@@ -129,7 +140,7 @@ buildcoreboot() {
 	printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
 	make KBUILD_DEFCONFIG="$(pwd)/../../../resources/libreboot/config/depthcharge/${board}/config" defconfig
-	make -j$(nproc)
+	make -j${cores}
 
 	cbfs_size=$( grep CONFIG_CBFS_SIZE ".config" | sed "s/.*[[:space:]]*=[[:space:]]*//g" )
 	cbfs_size=$( printf "%d\n" "${cbfs_size}" )
