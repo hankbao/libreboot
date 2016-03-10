@@ -98,7 +98,7 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	cp "../../grub_${romtype}.elf" "grub.elf"
-	make -j"$(nproc)"
+	make -j$(nproc)
 	rm -f "grub.elf"
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 	# .config no longer needed

@@ -34,12 +34,12 @@ cd "flashrom/"
 
 make clean
 if (( $# != 1 )); then
-	make -j"$(nproc)"
+	make -j$(nproc)
 else
 	if [ "${1}" = "static" ]; then
-		make SHARED=0 CC='gcc -static' -j"$(nproc)"
+		make SHARED=0 CC='gcc -static' -j$(nproc)
 	else
-		make -j"$(nproc)"
+		make -j$(nproc)
 	fi
 fi
 
@@ -60,12 +60,12 @@ do
 	
 	make clean
 	if (( $# != 1 )); then
-		make -j"$(nproc)"
+		make -j$(nproc)
 	else
 		if [ "${1}" = "static" ]; then
-			make SHARED=0 CC='gcc -static' -j"$(nproc)"
+			make SHARED=0 CC='gcc -static' -j$(nproc)
 		else
-			make -j"$(nproc)"
+			make -j$(nproc)
 		fi
 	fi
 	
