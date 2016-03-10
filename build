@@ -63,25 +63,28 @@ if [ ${#} -eq 0 ] || [ ${#} -ge 4 ]; then
 	die "Wrong number of arguments specified. See './build help'."
 fi
 
+mode="${1}"
+option="${2}"
+shift 2
 
-[ "${1}" = help ] && help && exit 0
+[ "${mode}" = help ] && help && exit 0
 
-case "${2}" in
+case "${option}" in
 	list)
-		printf "Available options for mode '%s':\n\n" "${1}"
-		listoptions "${1}"
+		printf "Available options for mode '%s':\n\n" "${mode}"
+		listoptions "${mode}"
 		;;
 	all)
-		for option in $(listoptions "${1}"); do
-			"${build}"/"${1}"/"${2}" "$@"
+		for option in $(listoptions "${mode}"); do
+			"${build}"/"${mode}"/"${option}" "$@"
 		done
 		;;
 	*)
-		if [ -d "${build}"/"${1}"/ ]; then
-			if [ -f "${build}"/"${1}"/"${2}" ]; then
-				"${build}"/"${1}"/"${2}" "$@"
+		if [ -d "${build}"/"${mode}"/ ]; then
+			if [ -f "${build}"/"${mode}"/"${option}" ]; then
+				"${build}"/"${mode}"/"${option}" "$@"
 			else
-				die "Invalid option for '${1}'. See './build ${1} list'."
+				die "Invalid option for '${mode}'. See './build ${mode} list'."
 			fi
 		else
 			die "Invalid mode. See './build help'."
