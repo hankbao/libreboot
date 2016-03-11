@@ -106,8 +106,6 @@ Libreboot supports the following systems in this release:
 @item
 @uref{r400.html,Lenovo ThinkPad R400}
 @item
-@uref{r500.html,Lenovo ThinkPad R500}
-@item
 @uref{t400.html,Lenovo ThinkPad T400}
 @item
 @uref{t500.html,Lenovo ThinkPad T500}

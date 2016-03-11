@@ -86,8 +86,6 @@ now only text mode works, including in GNU/Linux)
 @item
 GuixSD /boot/ FDE full disk encryption guide.
 @item
-fix up R500 port (if not ready before wanting to release, just remove R500 before release)
-@item
 add W500 (probably won't be done before release, but a user did report that it does work
 with T500 ROM images iirc)
 @item
@@ -196,8 +194,6 @@ Non-lenovo GM45 laptops:
 @itemize
 @item
 GM45: suspend stopped working recently in libreboot.git, but worked in 20150518. Do a git bisect of coreboot for the relevant commit IDs, then implement a fix.
-@item
-Several serious bugs exist on the ThinkPad R500, which makes the system virtually unusable. See @uref{hcl/r500/index.html#issues,hcl/r500/index.html#issues}.
 @item
 GM45: investigate S3/raminit on all models (CPU stepping/cpuid). See @uref{hcl/x200.html#ram_s3_microcode,hcl/x200.html#ram_s3_microcode}
 @item
@@ -320,8 +316,6 @@ Next release after 20150518, relating to the ASUS KFSN4-DRE:
 Remove the notes in release.html that say @emph{NOTE: not in libreboot 20150518. Only in git, for now.}
 @item
 Remove the note in hcl/kfsn4-dre.html that says @emph{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
-@item
-Remove the note in hcl/r500.html that says @emph{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 @end itemize
 
 @item

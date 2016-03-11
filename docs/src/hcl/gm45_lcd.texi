@@ -23,8 +23,6 @@
 @anchor{#lcd-compatibility-on-gm45-laptops}
 On the T400 and T500 (maybe others), some of the higher resolution panels (e.g. 1440x900, 1680x1050, 1920x1200) fail in libreboot.
 
-It is currently unknown, whether there exist any compatibility issues on the ThinkPad R500.
-
 @strong{All X200/X200S/X200T LCD panels are believed to be compatible.}
 
 @uref{index.html,Back to previous index}.

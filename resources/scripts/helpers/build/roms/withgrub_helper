@@ -88,7 +88,7 @@ fi
 
 for romtype in txtmode vesafb
 do
-	if [ "${boardtarget}" = "x200_8mb" ] || [ "${boardtarget}" = "x200_4mb" ] || [ "${boardtarget}" = "r400_8mb" ] || [ "${boardtarget}" = "r400_4mb" ] || [ "${boardtarget}" = "r500_8mb" ] || [ "${boardtarget}" = "r500_4mb" ] || [ "${boardtarget}" = "t400_8mb" ] || [ "${boardtarget}" = "t400_4mb" ] || [ "${boardtarget}" = "t500_8mb" ] || [ "${boardtarget}" = "t500_4mb" ]
+	if [ "${boardtarget}" = "x200_8mb" ] || [ "${boardtarget}" = "x200_4mb" ] || [ "${boardtarget}" = "r400_8mb" ] || [ "${boardtarget}" = "r400_4mb" ] || [ "${boardtarget}" = "t400_8mb" ] || [ "${boardtarget}" = "t400_4mb" ] || [ "${boardtarget}" = "t500_8mb" ] || [ "${boardtarget}" = "t500_4mb" ]
 		then
 			if [ "${romtype}" = "txtmode" ]
 				then
@@ -118,7 +118,7 @@ do
 	# Add the background image
 	if [ "$romtype" = "vesafb" ]
 	then
-		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ]  || [ "$1" = "r500_4mb" ] || [ "$1" = "r500_8mb" ] || [ "$1" = "t400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t500_4mb" ] || [ "$1" = "t500_8mb" ]
+		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ]  || [ "$1" = "t400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t500_4mb" ] || [ "$1" = "t500_8mb" ]
 		then
 			./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../resources/grub/background/background1280x800.png -n background.png -t raw
 		else

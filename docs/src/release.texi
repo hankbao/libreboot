@@ -148,17 +148,6 @@ See @strong{@emph{hcl/r400.html}}
 @end itemize
 
 @item
-@strong{ThinkPad R500}
-@itemize
-@item
-See @strong{@emph{hcl/r500.html}}
-@item
-@strong{ME/AMT}: libreboot removes this, permanently. @strong{@emph{hcl/gm45_remove_me.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
-@end itemize
-
-@item
 @strong{ThinkPad T400}
 @itemize
 @item

@@ -75,8 +75,6 @@ This section relates to installing libreboot on supported targets.
 @item
 @uref{r400_external.html,ThinkPad R400 (needed if running the proprietary firmware, or to unbrick)}
 @item
-@uref{r500_external.html,ThinkPad R500 (needed if running the proprietary firmware, or to unbrick)}
-@item
 @uref{t400_external.html,ThinkPad T400 (needed if running the proprietary firmware, or to unbrick)}
 @item
 @uref{t500_external.html,ThinkPad T500 (needed if running the proprietary firmware, or to unbrick)}
@@ -146,7 +144,7 @@ If you are currently running the proprietary firmware (not libreboot or coreboot
 
 X60/T60 users running the proprietary firmware should refer to @ref{#flashrom_lenovobios,#flashrom_lenovobios}. MacBook2,1 users running Apple EFI should refer to @ref{#flashrom_macbook21,#flashrom_macbook21}
 
-X200 users, refer to @uref{x200_external.html,x200_external.html}, R400 users refer to @uref{r400_external.html,r400_external.html}, R500 users refer to @uref{r500_external.html,r500_external.html}, T400 users refer to @uref{t400_external.html,t400_external.html}, T500 users refer to @uref{t500_external.html,t500_external.html}
+X200 users, refer to @uref{x200_external.html,x200_external.html}, R400 users refer to @uref{r400_external.html,r400_external.html}, T400 users refer to @uref{t400_external.html,t400_external.html}, T500 users refer to @uref{t500_external.html,t500_external.html}
 
 @node ASUS KFSN4-DRE?
 @section ASUS KFSN4-DRE?
@@ -188,7 +186,7 @@ Do check the HCL entry: @uref{../hcl/kcma-d8.html,../hcl/kcma-d8.html}
 @anchor{#are-you-currently-running-libreboot-or-coreboot}
 X60/T60 users should be fine with this guide. If you write-protected the flash chip, please refer to @uref{x60_unbrick.html,x60_unbrick.html}, @uref{x60tablet_unbrick.html,x60tablet_unbrick.html} or @uref{t60_unbrick.html,t60_unbrick.html}. @emph{This probably does not apply to you. Most people do not write-protect the flash chip, so you probably didn't either.}
 
-Similarly, it is possible to write-protect the flash chip in coreboot or libreboot on GM45 laptops (X200/R400/R500/T400/T500). If you did this, then you will need to use the links above for flashing, treating your laptop as though it currently has the proprietary firmware (because write-protected SPI flash requires external re-flashing, as is also the case when running the proprietary firmware).
+Similarly, it is possible to write-protect the flash chip in coreboot or libreboot on GM45 laptops (X200/R400/T400/T500). If you did this, then you will need to use the links above for flashing, treating your laptop as though it currently has the proprietary firmware (because write-protected SPI flash requires external re-flashing, as is also the case when running the proprietary firmware).
 
 If you did not write-protect the flash chip, or it came to you without any write-protection (@strong{@emph{libreboot does not write-protect the flash chip by default, so this probably applies to you}}), read on!
 
@@ -198,8 +196,6 @@ If you did not write-protect the flash chip, or it came to you without any write
 @strong{Users of the X200/R400/T400/T500 take note:} The MAC address for the onboard ethernet chipset is located inside the flash chip. Libreboot ROM images for these laptops contain a generic MAC address by default (00:F5:F0:40:71:FE), but this is not what you want. @emph{Make sure to change the MAC address inside the ROM image, before flashing it. The instructions on @uref{../hcl/gm45_remove_me.html#ich9gen,../hcl/gm45_remove_me.html#ich9gen} show how to do this.}
 
 It is important that you change the default MAC address, before flashing. It will be printed on a sticker at the bottom of the laptop, or it will be printed on a sticker next to or underneath the RAM. Alternatively, and assuming that your current firmware has the correct MAC address in it, you can get it from your OS.
-
-@strong{R500 users: your laptop lacks a GbE region, because it has a different NIC. You do not need to change the MAC address on this laptop; it will already be correct. You can simply flash the available ROM images for the R500, as-is. See @uref{../hcl/r500.html#nogbe,../hcl/r500.html#nogbe}.}
 
 @node Flash chip size
 @section Flash chip size

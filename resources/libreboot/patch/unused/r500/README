@@ -1,7 +1,0 @@
-applies on top of coreboot commit fb82ebe9065e2160e662aee490d749ac31388fa6
-
-These are the R500 patches, but not all of them (not all are yet written).
-Remaining issues on R500 are documented in libreboot. The port will be completed later.
-These patches aren't actually used yet in libreboot, and will be rebased.
-
-
