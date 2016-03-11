@@ -1,8 +1,17 @@
+From 260f0e096b385c9f53e9a28e79293131a11122a6 Mon Sep 17 00:00:00 2001
+From: Francis Rowe <info@gluglug.org.uk>
+Date: Fri, 11 Mar 2016 06:50:50 +0000
+Subject: [PATCH 1/1] purged chips
+
+---
+ flashchips.c | 303 -----------------------------------------------------------
+ 1 file changed, 303 deletions(-)
+
 diff --git a/flashchips.c b/flashchips.c
-index c722a64..4124023 100644
+index 0fc1b7a..5c94304 100644
 --- a/flashchips.c
 +++ b/flashchips.c
-@@ -7038,80 +7038,6 @@ const struct flashchip flashchips[] = {
+@@ -7451,80 +7451,6 @@ const struct flashchip flashchips[] = {
  
  	{
  		.vendor		= "Macronix",
@@ -83,7 +92,7 @@ index c722a64..4124023 100644
  		.name		= "MX25L1605D/MX25L1608D/MX25L1673E",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -7219,41 +7145,6 @@ const struct flashchip flashchips[] = {
+@@ -7632,41 +7558,6 @@ const struct flashchip flashchips[] = {
  
  	{
  		.vendor		= "Macronix",
@@ -125,7 +134,7 @@ index c722a64..4124023 100644
  		.name		= "MX25L3205D/MX25L3208D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -7290,84 +7181,6 @@ const struct flashchip flashchips[] = {
+@@ -7703,84 +7594,6 @@ const struct flashchip flashchips[] = {
  
  	{
  		.vendor		= "Macronix",
@@ -176,7 +185,7 @@ index c722a64..4124023 100644
 -		.page_size	= 256,
 -		/* OTP: 64B total; enter 0xB1, exit 0xC1 */
 -		.feature_bits	= FEATURE_WRSR_WREN | FEATURE_OTP,
--		.tested		= TEST_UNTESTED,
+-		.tested		= TEST_OK_PREW,
 -		.probe		= probe_spi_rdid,
 -		.probe_timing	= TIMING_ZERO,
 -		.block_erasers	=
@@ -210,7 +219,7 @@ index c722a64..4124023 100644
  		.name		= "MX25L3235D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -7404,42 +7217,6 @@ const struct flashchip flashchips[] = {
+@@ -7817,42 +7630,6 @@ const struct flashchip flashchips[] = {
  
  	{
  		.vendor		= "Macronix",
@@ -253,7 +262,7 @@ index c722a64..4124023 100644
  		.name		= "MX25L6405D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
-@@ -7476,86 +7253,6 @@ const struct flashchip flashchips[] = {
+@@ -7889,86 +7666,6 @@ const struct flashchip flashchips[] = {
  
  	{
  		.vendor		= "Macronix",
@@ -340,3 +349,6 @@ index c722a64..4124023 100644
  		.name		= "MX25L12805D",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
+-- 
+1.9.1
+

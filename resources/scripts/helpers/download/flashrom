@@ -39,26 +39,26 @@ rm -Rf "flashrom/"
 # download it using git
 git clone https://github.com/stefanct/flashrom.git
 
+(
 cd "flashrom/"
 
 # reset to known revision
-git reset --hard 80c9382948afa5e572854d49846a36b7f9d90e03
+git reset --hard 99b2468c9eaa97f7209ee919aa254ba536fd84c2
 
 # Apply patches
 # ------------------------------------------------------------------------------
 
 printf "Enabling whitelist for X200S, X200 Tablet, T400, T500 and R400\n"
-patch "board_enable.c" < "../resources/flashrom/patch/x200s_x200t_t400_t500_r400_whitelist.diff"
+git am "../resources/flashrom/patch/0001-New-laptops-whitelisted-ThinkPad-R400-and-ThinkPad-T.patch"
 
 printf "Enabling whitelist for Libiquity Taurinus X200\n"
-patch "board_enable.c" < "../resources/flashrom/patch/0001-Add-board-enable-for-Libiquity-Taurinus-X200.patch"
+git am "../resources/flashrom/patch/0002-Add-whitelist-for-Taurinus-X200-laptop.patch"
 
 # Remove redundant definitions for the flash chips that
 # supported libreboot systems use. This removes the need
 # for the user to run with the "-c" argument on these systems
 printf "Patching flashchips.c to remove the redundant entries\n"
-patch "flashchips.c" < "../resources/flashrom/patch/purged_chips.diff"
-
-cd "../"
+git am "../resources/flashrom/patch/0003-purged-chips.patch"
+)
 
 printf "\n\n"
