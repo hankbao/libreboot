@@ -71,8 +71,6 @@
 	</li><li>
 	GuixSD /boot/ FDE full disk encryption guide.
 	</li><li>
-	fix up R500 port (if not ready before wanting to release, just remove R500 before release)
-	</li><li>
 	add W500 (probably won't be done before release, but a user did report that it does work
 	with T500 ROM images iirc)
 	</li><li>
@@ -236,10 +234,6 @@
 			<ul>
 				<li>GM45: suspend stopped working recently in libreboot.git, but worked in 20150518. Do
 				a git bisect of coreboot for the relevant commit IDs, then implement a fix.</li>
-				<li>
-					Several serious bugs exist on the ThinkPad R500, which makes
-					the system virtually unusable. See <a href="hcl/r500/index.html#issues">hcl/r500/index.html#issues</a>.
-				</li>
 				<li>
 					GM45: investigate S3/raminit on all models (CPU stepping/cpuid).
 					See <a href="hcl/x200.html#ram_s3_microcode">hcl/x200.html#ram_s3_microcode</a>
@@ -433,7 +427,6 @@
 					<ul>
 						<li>Remove the notes in docs/release.html that say <i>NOTE: not in libreboot 20150518. Only in git, for now.</i></li>
 						<li>Remove the note in docs/hcl/kfsn4-dre.html that says <i> NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. </i></li>
-						<li>Remove the note in docs/hcl/r500.html that says <i> NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. </i></li>
 					</ul>
 				</li>
 				<li>
