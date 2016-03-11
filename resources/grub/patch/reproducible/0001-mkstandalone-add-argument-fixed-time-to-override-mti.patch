@@ -1,7 +1,7 @@
-From 21ae195006adf67a6c6a0de007e7149e6d3dbcf3 Mon Sep 17 00:00:00 2001
+From 8dde1d7be2dd321a375570b7ff7e22bb01293044 Mon Sep 17 00:00:00 2001
 From: Alexander Couzens <lynxis@fe80.eu>
 Date: Fri, 4 Dec 2015 17:10:42 +0100
-Subject: [PATCH 08/11] mkstandalone: add argument --fixed-time to override
+Subject: [PATCH 08/10] mkstandalone: add argument --fixed-time to override
  mtime of files
 
 mkstandalone adds several files to an archive. Doing this it uses the

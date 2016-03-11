@@ -41,7 +41,7 @@ git clone git://git.savannah.gnu.org/grub.git || git clone http://git.savannah.g
 cd "grub/"
 
 # reset to known revision
-git reset --hard e3745f908706c07fa249616255ed993ef5704351
+git reset --hard 7f2a856faec951b7ab816880bd26e1e10b17a596
 
 # Apply patches
 # ------------------------------------------------------------------------------

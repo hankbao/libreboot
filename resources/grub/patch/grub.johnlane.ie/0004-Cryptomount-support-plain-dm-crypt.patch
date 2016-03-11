@@ -1,7 +1,7 @@
-From a20258f8afbb3c9e1b3c6735126e7c720fa2459a Mon Sep 17 00:00:00 2001
+From 632155a6e8923cdd5c1d4e23576cfadcb78ee67b Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 22:09:52 +0100
-Subject: [PATCH 05/11] Cryptomount support plain dm-crypt
+Subject: [PATCH 05/10] Cryptomount support plain dm-crypt
 
 ---
  grub-core/disk/cryptodisk.c | 298 +++++++++++++++++++++++++++++++++++++++++++-

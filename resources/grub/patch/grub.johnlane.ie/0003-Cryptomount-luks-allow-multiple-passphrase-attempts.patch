@@ -1,7 +1,7 @@
-From b761dd8c48075a285f89ed439a0870879fde6c6e Mon Sep 17 00:00:00 2001
+From f39e8ee5696f15860c73b07e652a8b59fcc834c7 Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 13:49:58 +0100
-Subject: [PATCH 04/11] Cryptomount luks allow multiple passphrase attempts
+Subject: [PATCH 04/10] Cryptomount luks allow multiple passphrase attempts
 
 ---
  grub-core/disk/luks.c | 278 ++++++++++++++++++++++++++------------------------

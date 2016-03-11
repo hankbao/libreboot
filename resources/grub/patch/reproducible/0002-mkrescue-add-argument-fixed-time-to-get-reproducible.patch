@@ -1,7 +1,7 @@
-From 1ad8a4c5d0d6003954d37c4f7eeca0514971f8b4 Mon Sep 17 00:00:00 2001
+From 0f1e1a29d4d019e7b2b1a3ac3db7ca22c75e8d88 Mon Sep 17 00:00:00 2001
 From: Alexander Couzens <lynxis@fe80.eu>
 Date: Fri, 4 Dec 2015 17:10:43 +0100
-Subject: [PATCH 09/11] mkrescue: add argument --fixed-time to get reproducible
+Subject: [PATCH 09/10] mkrescue: add argument --fixed-time to get reproducible
  uuids
 
 The uuid generation is based on the time.

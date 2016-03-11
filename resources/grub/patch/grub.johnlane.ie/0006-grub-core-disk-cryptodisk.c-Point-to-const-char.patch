@@ -1,7 +1,7 @@
-From 1d3e995f587369b8de6c4a10fe3a7bb0d6ec6ee1 Mon Sep 17 00:00:00 2001
+From fd72a029d64e0ee9552e4433387ee01f3cb05592 Mon Sep 17 00:00:00 2001
 From: Klemens Nanni <contact@autoboot.org>
 Date: Tue, 15 Sep 2015 16:00:03 +0200
-Subject: [PATCH 07/11] grub-core/disk/cryptodisk.c: Point to const char
+Subject: [PATCH 07/10] grub-core/disk/cryptodisk.c: Point to const char
 
 ---
  grub-core/disk/cryptodisk.c | 2 +-

@@ -1,7 +1,7 @@
-From 641ff2b2aa380c0b9adbc025eb4af3a0217b577b Mon Sep 17 00:00:00 2001
+From 3b7ef4a5fd57b042201fbefb92a217070b944d67 Mon Sep 17 00:00:00 2001
 From: John Lane <john@lane.uk.net>
 Date: Fri, 26 Jun 2015 13:37:10 +0100
-Subject: [PATCH 03/11] Cryptomount support key files
+Subject: [PATCH 03/10] Cryptomount support key files
 
 ---
  grub-core/disk/cryptodisk.c | 46 ++++++++++++++++++++++++++++++++++++++++++++-
