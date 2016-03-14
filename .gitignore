@@ -10,6 +10,7 @@
 /flashrom/
 /grub/
 /memtest86plus/
+/seabios/
 /bin/
 /release/
 /resources/utilities/ich9deblob/*.rom
