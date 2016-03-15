@@ -84,11 +84,23 @@ do
 		fi
 	fi
 
+    if [ "${boardtarget}" = "qemu_i440fx_piix4" ] || [ "${boardtarget}" = "qemu_q35_ich9" ]
+    then
+    	# assume that the default config enable framebuffer mode, duplicate and patch for text-mode
+    	# necessary, otherwise it will ask you to enter the Y/X resolution of the framebuffer at build time
+    	cp "../../../resources/libreboot/config/seabios/${boardtarget}/config" "config_vesafb"
+    	sed 's/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/' < "config_vesafb" > "config_txtmode"
+    else
+    	# assume that the default config enables text-mode, duplicate and patch for framebuffer mode
+    	cp "../../../resources/libreboot/config/seabios/${boardtarget}/config" "config_txtmode"
+    	sed 's/# CONFIG_FRAMEBUFFER_KEEP_VESA_MODE is not set/CONFIG_FRAMEBUFFER_KEEP_VESA_MODE=y/' < "config_txtmode" > "config_vesafb"
+    fi
+
 	# Build coreboot ROM image
 	make clean
-	cp "../../../resources/libreboot/config/seabios/${boardtarget}/config" ".config"
 	cp "../../../seabios/out/bios.bin.elf" "seabios.elf"
-	make -j${cores}
+    mv "config_${romtype}" .config
+    make -j${cores}
 	rm -f "seabios.elf"
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 
