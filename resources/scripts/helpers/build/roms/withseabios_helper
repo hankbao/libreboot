@@ -86,7 +86,7 @@ do
 
 	# Build coreboot ROM image
 	make clean
-	cp "../../../resources/seabios/config/config" ".config"
+	cp "../../../resources/libreboot/config/seabios/${boardtarget}/config" ".config"
 	cp "../../../seabios/out/bios.bin.elf" "seabios.elf"
 	make -j${cores}
 	rm -f "seabios.elf"
