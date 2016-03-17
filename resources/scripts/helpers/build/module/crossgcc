@@ -24,14 +24,26 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
+if [ -z ${NPROC+x} ]; then
+    cores="$(nproc)"
+else
+    case ${NPROC} in
+        ''|*[!0-9]*)
+            printf "value '%s' for NPROC is invalid. non-numeric. Exiting.\n" "${NPROC}"
+            exit 1
+            ;;
+    esac
+    cores="${NPROC}"
+fi
+
 (
 cd "crossgcc/"
 if [ $# -lt 1 ]; then
-    make crossgcc-i386
-    make crossgcc-arm
+    make crossgcc-i386 CPUS=${cores}
+    make crossgcc-arm CPUS=${cores}
 else
     for architecture in "${@}"; do
-        make crossgcc-${architecture}
+        make crossgcc-${architecture} CPUS=${cores}
     done
 fi
 )
