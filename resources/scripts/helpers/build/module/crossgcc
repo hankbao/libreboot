@@ -38,13 +38,6 @@ fi
 
 (
 cd "crossgcc/"
-if [ $# -lt 1 ]; then
-    make crossgcc-i386 CPUS=${cores}
-    make crossgcc-arm CPUS=${cores}
-else
-    for architecture in "${@}"; do
-        make crossgcc-${architecture} CPUS=${cores}
-    done
-fi
+make crossgcc CPUS=${cores}
 )
 
