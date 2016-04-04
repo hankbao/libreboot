@@ -11,21 +11,6 @@
 @node Top
 @top Libreboot task list
 
-@menu
-* Libreboot task list::
-* URGENT tasks for next upcoming release
-* Important tasks for the libreboot project::
-* Special news that affects libreboot::
-* Board ports::
-* Platform-specific bugs::
-* Flashing from lenovobios to libreboot and vice versa::
-* Build system::
-* Improvements to the utilities::
-* Documentation improvements::
-* Project institutional improvements::
-* EC firmware::
-@end menu
-
 @node Libreboot task list
 @chapter Libreboot task list
 @anchor{#libreboot-task-list}
