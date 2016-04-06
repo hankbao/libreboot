@@ -29,6 +29,8 @@ This is a desktop board using AMD hardware (Fam10h @strong{and Fam15h} CPUs avai
 
 @strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
+@strong{Memory initialization is still problematic, for some modules. We recommend avoiding Kingston modules..}
+
 Flashing instructions can be found at @uref{../install/index.html#flashrom,../install/index.html#flashrom} - note that external flashing is required (e.g. BBB), if the proprietary (ASUS) firmware is currently installed. If you already have libreboot, by default it is possible to re-flash using software running in GNU/Linux on the kcma-d8, without using external hardware.
 
 @uref{index.html,Back to previous index}.
@@ -75,8 +77,6 @@ Only text-mode is known to work, but linux(kernel) can initialize the framebuffe
 @chapter Current issues
 @anchor{#current-issues}
 @itemize
-@item
-RDIMM memory modules untested, according to tpearson (they'll probably work)
 @item
 LRDIMM memory modules are currently incompatible
 @item

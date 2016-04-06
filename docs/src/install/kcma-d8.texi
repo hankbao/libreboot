@@ -22,6 +22,8 @@
 @anchor{#kcma-d8-external-flashing-instructions}
 Initial flashing instructions for KCMA-D8.
 
+@strong{Memory initialization is still problematic, for some modules. We recommend avoiding Kingston modules..}
+
 This guide is for those who want libreboot on their ASUS KCMA-D8 motherboard, while they still have the proprietary ASUS BIOS present. This guide can also be followed (adapted) if you brick you board, to know how to recover.
 
 For more general information about this board, refer to @uref{../hcl/kcma-d8.html,../hcl/kcma-d8.html}.
