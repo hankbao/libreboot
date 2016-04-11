@@ -100,8 +100,6 @@ rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
 
-# Patches are not needed, because they are already applied to coreboot sources.
-rm -Rf "${distdir}/resources/libreboot/patch/"
 # Other patches aren't needed in the release, either
 rm -Rf "${distdir}/resources/depthcharge/patch/"
 rm -Rf "${distdir}/resources/grub/patch/"
