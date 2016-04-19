@@ -1,7 +1,7 @@
-From 5ad9900434045ea97c536c98cb514bdb43114c12 Mon Sep 17 00:00:00 2001
+From 0ec9edead1d9de5f913333e6aa77bcd3de83a617 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Sun, 9 Aug 2015 12:09:35 +0200
-Subject: [PATCH 4/7] Adaptation for a read-only boot path when no vboot
+Subject: [PATCH 4/8] Adaptation for a read-only boot path when no vboot
  handoff data is found
 
 When no vboot handoff data is found, this makes the unified depthcharge build
@@ -128,5 +128,5 @@ index 10fcb93..575dcfd 100644
  	return 0;
  }
 -- 
-1.9.1
+2.8.0
 

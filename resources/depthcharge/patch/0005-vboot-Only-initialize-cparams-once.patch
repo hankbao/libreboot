@@ -1,0 +1,34 @@
+From 40668e8b5fb9a9e07a3b1ddf334bd4e12a38525f Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 18 Apr 2016 11:14:19 +0200
+Subject: [PATCH 5/8] vboot: Only initialize cparams once
+
+Calling common_params_init multiple times in a row results in emptying cparams
+each time, causing the GBB data to be lost as it is only read once (the first
+time).
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/vboot/util/commonparams.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/vboot/util/commonparams.c b/src/vboot/util/commonparams.c
+index 9f29473..3a71a8b 100644
+--- a/src/vboot/util/commonparams.c
++++ b/src/vboot/util/commonparams.c
+@@ -159,8 +159,10 @@ int is_cparams_initialized(void)
+ int common_params_init(int clear_shared_data)
+ {
+ 	// Set up the common param structure.
+-	memset(&cparams, 0, sizeof(cparams));
+-	cparams_initialized = 1;
++	if (!is_cparams_initialized()) {
++		memset(&cparams, 0, sizeof(cparams));
++		cparams_initialized = 1;
++	}
+ 
+ 	if (gbb_init())
+ 		return 1;
+-- 
+2.8.0
+

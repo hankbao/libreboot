@@ -1,4 +1,4 @@
-From 741adbf4fdb4ef72245f9373a2980ecade41f3f5 Mon Sep 17 00:00:00 2001
+From 1c60b7224562b50a9aef90d533cdfd918dced867 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 10 Aug 2015 22:59:50 +0200
 Subject: [PATCH 4/7] firmware: Hold key combination in developer mode
@@ -7,23 +7,22 @@ This binds the Ctrl + H key combination to hold the developer mode screen.
 
 Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
 ---
- firmware/lib/vboot_api_kernel.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ firmware/lib/vboot_api_kernel.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/firmware/lib/vboot_api_kernel.c b/firmware/lib/vboot_api_kernel.c
-index 312014b..e191137 100644
+index fff3056..5e784eb 100644
 --- a/firmware/lib/vboot_api_kernel.c
 +++ b/firmware/lib/vboot_api_kernel.c
-@@ -251,7 +251,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
- 	GoogleBinaryBlockHeader *gbb = cparams->gbb;
- 	VbSharedDataHeader *shared =
- 		(VbSharedDataHeader *)cparams->shared_data_blob;
--	uint32_t allow_usb = 0, allow_legacy = 0, ctrl_d_pressed = 0;
-+	uint32_t allow_usb = 0, allow_legacy = 0, ctrl_d_pressed = 0, hold = 0;
+@@ -292,6 +292,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+ 	uint32_t use_legacy = 0;
+ 	uint32_t default_boot = 0;
+ 	uint32_t ctrl_d_pressed = 0;
++	uint32_t hold = 0;
+ 
  	VbAudioContext *audio = 0;
  
- 	VBDEBUG(("Entering %s()\n", __func__));
-@@ -364,6 +364,12 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+@@ -417,6 +418,12 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
  			ctrl_d_pressed = 1;
  			goto fallout;
  			break;
@@ -36,7 +35,7 @@ index 312014b..e191137 100644
  		case 0x0c:
  			VBDEBUG(("VbBootDeveloper() - "
  				 "user pressed Ctrl+L; Try legacy boot\n"));
-@@ -430,7 +436,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
+@@ -467,7 +474,7 @@ VbError_t VbBootDeveloper(VbCommonParams *cparams, LoadKernelParams *p)
  			VbCheckDisplayKey(cparams, key, &vnc);
  			break;
  		}
@@ -46,5 +45,5 @@ index 312014b..e191137 100644
   fallout:
  
 -- 
-1.9.1
+2.8.0
 

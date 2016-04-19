@@ -1,7 +1,7 @@
-From dce70fb042d91ba74359a6dfb519f31d77e2c328 Mon Sep 17 00:00:00 2001
+From 8acd4854603672dd1bc16900c9eb58dd5c8c342d Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 10 Aug 2015 20:24:50 +0200
-Subject: [PATCH 5/7] Proper firmware index report for read-only boot path
+Subject: [PATCH 6/8] Proper firmware index report for read-only boot path
 
 When booting from a read-only boot path, the active firmware to report is RO.
 This is detected with the lack of a vboot handoff pointer.
@@ -66,5 +66,5 @@ index fb6f206..090e9d1 100644
  int get_active_fw_size(void);
  
 -- 
-1.9.1
+2.8.0
 

@@ -1,4 +1,4 @@
-From b724719ae34c3fd7c25502339f9029ee9e0bbb1e Mon Sep 17 00:00:00 2001
+From 4be2a60b0ebb845c8f5043ef3f27b691a51df7c2 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 10 Aug 2015 23:53:48 +0200
 Subject: [PATCH 6/7] firmware: Separate screen and wait at device information
@@ -14,10 +14,10 @@ Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
  2 files changed, 20 insertions(+), 5 deletions(-)
 
 diff --git a/firmware/lib/vboot_api_kernel.c b/firmware/lib/vboot_api_kernel.c
-index 6463571..2f33258 100644
+index 7d22c93..4e6de18 100644
 --- a/firmware/lib/vboot_api_kernel.c
 +++ b/firmware/lib/vboot_api_kernel.c
-@@ -371,6 +371,18 @@ developer_mode_screen:
+@@ -425,6 +425,18 @@ developer_mode_screen:
  				 "hold developer mode screen\n"));
  			hold = 1;
  			break;
@@ -37,10 +37,10 @@ index 6463571..2f33258 100644
  			VBDEBUG(("VbBootDeveloper() - "
  				 "user pressed Ctrl+L; Try legacy boot\n"));
 diff --git a/firmware/lib/vboot_display.c b/firmware/lib/vboot_display.c
-index 0158cc2..c3d504d 100644
+index 472ca91..e092189 100644
 --- a/firmware/lib/vboot_display.c
 +++ b/firmware/lib/vboot_display.c
-@@ -503,7 +503,7 @@ const char *RecoveryReasonString(uint8_t code)
+@@ -541,7 +541,7 @@ const char *RecoveryReasonString(uint8_t code)
  	return "We have no idea what this means";
  }
  
@@ -49,7 +49,7 @@ index 0158cc2..c3d504d 100644
  
  VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
  {
-@@ -518,8 +518,8 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
+@@ -556,8 +556,8 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
  	VbError_t ret;
  	uint32_t i;
  
@@ -60,7 +60,7 @@ index 0158cc2..c3d504d 100644
  
  	/* Add hardware ID */
  	VbRegionReadHWID(cparams, hwid, sizeof(hwid));
-@@ -622,8 +622,11 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
+@@ -666,8 +666,11 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
  		used += StrnAppend(buf + used, sha1sum, DEBUG_INFO_SIZE - used);
  	}
  
@@ -75,5 +75,5 @@ index 0158cc2..c3d504d 100644
  	/* TODO: add more interesting data:
  	 * - Information on current disks */
 -- 
-1.9.1
+2.8.0
 

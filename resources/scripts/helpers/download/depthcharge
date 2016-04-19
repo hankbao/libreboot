@@ -40,7 +40,7 @@ git clone https://chromium.googlesource.com/chromiumos/platform/depthcharge
 cd "depthcharge/"
 
 # reset to the latest previously tested revision
-git reset --hard 3a5d54e31267578f48fb283fae56a405108f1498
+git reset --hard 065ba14bc56c9044247fef6337d8f9e9a3055820
 
 # Patch depthcharge
 # ------------------------------------------------------------------------------
@@ -57,14 +57,17 @@ git am "../resources/depthcharge/patch/0003-DOTCONFIG-location-correction.patch"
 printf "Adaptation for a read-only boot path when no vboot handoff data is found\n"
 git am "../resources/depthcharge/patch/0004-Adaptation-for-a-read-only-boot-path-when-no-vboot-h.patch"
 
+printf "vboot: Only initialize cparams once\n"
+git am "../resources/depthcharge/patch/0005-vboot-Only-initialize-cparams-once.patch"
+
 printf "Proper firmware index report for read-only boot path\n"
-git am "../resources/depthcharge/patch/0005-Proper-firmware-index-report-for-read-only-boot-path.patch"
+git am "../resources/depthcharge/patch/0006-Proper-firmware-index-report-for-read-only-boot-path.patch"
 
 printf "fdt: nonvolatile-context-storage report to mkbp for EC NV storage\n"
-git am "../resources/depthcharge/patch/0006-fdt-nonvolatile-context-storage-report-to-mkbp-for-E.patch"
+git am "../resources/depthcharge/patch/0007-fdt-nonvolatile-context-storage-report-to-mkbp-for-E.patch"
 
 printf "vboot: Display callbacks for developer and recovery mode screens\n"
-git am "../resources/depthcharge/patch/0007-vboot-Display-callbacks-for-developer-and-recovery-m.patch"
+git am "../resources/depthcharge/patch/0008-vboot-Display-callbacks-for-developer-and-recovery-m.patch"
 
 # leave the tree
 cd "../"

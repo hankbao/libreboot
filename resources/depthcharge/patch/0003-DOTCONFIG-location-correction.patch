@@ -1,7 +1,7 @@
-From 72bb1a69cf6c0f58d3c1a8f6ba98334640818566 Mon Sep 17 00:00:00 2001
+From dfdcd8c218215df4e1523bf6dd11270bc4f52605 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Sun, 9 Aug 2015 12:06:28 +0200
-Subject: [PATCH 3/7] DOTCONFIG location correction
+Subject: [PATCH 3/8] DOTCONFIG location correction
 
 The configuration file doesn't have to be in src and HAVE_DOTCONFIG holds its
 current location.
@@ -25,5 +25,5 @@ index a1a9d33..13305cd 100644
  ifeq ($(CONFIG_ARCH_X86),y)
  ARCH = x86
 -- 
-1.9.1
+2.8.0
 

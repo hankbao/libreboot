@@ -1,7 +1,7 @@
-From 095ae6281bb2d5bdab288fa042e5c4daa05c5ca3 Mon Sep 17 00:00:00 2001
+From 80e3428c2e50b5a6838d71a89007f610eda5e2dc Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 3 Aug 2015 14:39:42 +0200
-Subject: [PATCH 1/7] arm: armv7-a march abi flag for ARMv7 hardware
+Subject: [PATCH 1/8] arm: armv7-a march abi flag for ARMv7 hardware
 
 Specifying the march is required to get depthcharge to build with e.g. the arm
 toolchain built by coreboot's crossgcc script. Without this flag, the toolchain
@@ -26,5 +26,5 @@ index b2fce32..455e370 100644
  
  ifeq ($(CONFIG_ARCH_ARM_V8),y)
 -- 
-1.9.1
+2.8.0
 

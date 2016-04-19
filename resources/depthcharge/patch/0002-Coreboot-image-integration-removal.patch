@@ -1,7 +1,7 @@
-From 4e7d727edf1939904bc516d569ceef9e295f454c Mon Sep 17 00:00:00 2001
+From f095d901afe02728fb0471d51e02553036cd2538 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 3 Aug 2015 14:49:34 +0200
-Subject: [PATCH 2/7] Coreboot image integration removal
+Subject: [PATCH 2/8] Coreboot image integration removal
 
 There is no need to integrate the built depthcharge binary inside a coreboot
 image right after building it, coreboot will handle this on its own.
@@ -29,5 +29,5 @@ index a73785b..564dd13 100644
  $(notdir $1)_unified: $1.bin $1.payload
  PHONY += $(notdir $1)_unified
 -- 
-1.9.1
+2.8.0
 

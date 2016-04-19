@@ -1,0 +1,31 @@
+From 02bc24a863a9b580d5eb32b780296ff8a5c3d2c1 Mon Sep 17 00:00:00 2001
+From: Patrick Georgi <pgeorgi@chromium.org>
+Date: Mon, 8 Feb 2016 20:28:32 +0100
+Subject: [PATCH 3/4] rockchip/rk3288: UART uses 32bit wide registers
+
+Change-Id: I084eb4694a2aa8f66afc1f3148480608ac3ff02b
+Signed-off-by: Patrick Georgi <pgeorgi@chromium.org>
+Reviewed-on: https://review.coreboot.org/13635
+Reviewed-by: Stefan Reinauer <stefan.reinauer@coreboot.org>
+Tested-by: build bot (Jenkins)
+Reviewed-by: Paul Menzel <paulepanter@users.sourceforge.net>
+---
+ src/soc/rockchip/rk3288/uart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/soc/rockchip/rk3288/uart.c b/src/soc/rockchip/rk3288/uart.c
+index 9847734..8576dc1 100644
+--- a/src/soc/rockchip/rk3288/uart.c
++++ b/src/soc/rockchip/rk3288/uart.c
+@@ -155,7 +155,7 @@ void uart_fill_lb(void *data)
+ 	serial.type = LB_SERIAL_TYPE_MEMORY_MAPPED;
+ 	serial.baseaddr = CONFIG_CONSOLE_SERIAL_UART_ADDRESS;
+ 	serial.baud = default_baudrate();
+-	serial.regwidth = 1;
++	serial.regwidth = 4;
+ 	lb_add_serial(&serial, data);
+ 
+ 	lb_add_console(LB_TAG_CONSOLE_SERIAL8250MEM, data);
+-- 
+2.8.0
+

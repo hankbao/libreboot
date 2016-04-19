@@ -1,7 +1,7 @@
-From 9eb389b0273cf07add859cd162c1411d15806149 Mon Sep 17 00:00:00 2001
+From ff08bf3966b3c299d6ead9707cc17a71ff9e50c7 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 10 Aug 2015 20:30:14 +0200
-Subject: [PATCH 6/7] fdt: nonvolatile-context-storage report to mkbp for EC NV
+Subject: [PATCH 7/8] fdt: nonvolatile-context-storage report to mkbp for EC NV
  storage
 
 This allows old versions of crossystem to detect that it should use mosys to
@@ -26,5 +26,5 @@ index a79b192..0487513 100644
  		dt_add_string_prop(node, "nonvolatile-context-storage", "disk");
  		dt_add_u32_prop(node, "nonvolatile-context-lba",
 -- 
-1.9.1
+2.8.0
 

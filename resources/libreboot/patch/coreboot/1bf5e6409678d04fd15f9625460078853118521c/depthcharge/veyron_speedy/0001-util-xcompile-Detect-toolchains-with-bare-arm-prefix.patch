@@ -1,0 +1,26 @@
+From 1a378294fa9afdc4d6d3b0e580ba78d33a62d044 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Tue, 19 Apr 2016 12:02:14 +0200
+Subject: [PATCH 1/4] util: xcompile: Detect toolchains with bare arm prefix
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ util/xcompile/xcompile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/util/xcompile/xcompile b/util/xcompile/xcompile
+index b0199eb..1765183 100755
+--- a/util/xcompile/xcompile
++++ b/util/xcompile/xcompile
+@@ -290,7 +290,7 @@ SUPPORTED_ARCHITECTURES="arm arm64 mipsel riscv x64 x86 power8"
+ arch_config_arm() {
+ 	TARCH="arm"
+ 	TBFDARCHS="littlearm"
+-	TCLIST="armv7-a armv7a"
++	TCLIST="armv7-a armv7a arm"
+ 	TWIDTH="32"
+ 	TSUPP="arm armv4 armv7 armv7_m"
+ 	TABI="eabi"
+-- 
+2.8.0
+

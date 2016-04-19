@@ -1,7 +1,7 @@
-From 541a3f09ecb062e3f0778eb9846732cfabcbfbba Mon Sep 17 00:00:00 2001
+From 50a27cb948d3e944e3e466146b0d81939e8ce9a5 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Tue, 11 Aug 2015 11:22:54 +0200
-Subject: [PATCH 7/7] vboot: Display callbacks for developer and recovery mode
+Subject: [PATCH 8/8] vboot: Display callbacks for developer and recovery mode
  screens
 
 We don't want to use bitmaps stored in GBB since they recommend the use of non-
@@ -9,22 +9,27 @@ free software (Chrome OS), so this implements a text-based interface instead.
 
 Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
 ---
- src/vboot/callbacks/display.c | 168 +++++++++++++++++++++++++++++++++++++++---
- 1 file changed, 156 insertions(+), 12 deletions(-)
+ src/vboot/callbacks/display.c | 200 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 185 insertions(+), 15 deletions(-)
 
 diff --git a/src/vboot/callbacks/display.c b/src/vboot/callbacks/display.c
-index efa0691..b659f7b 100644
+index 183e278..ece9140 100644
 --- a/src/vboot/callbacks/display.c
 +++ b/src/vboot/callbacks/display.c
-@@ -84,9 +84,17 @@ void print_on_center(const char *msg)
+@@ -86,12 +86,19 @@ void print_on_center(const char *msg)
  	print_string(msg);
  }
  
--VbError_t VbExDisplayScreen(uint32_t screen_type)
-+VbError_t VbExDisplayScreen(uint32_t screen_type, VbNvContext *vnc)
+-VbError_t VbExDisplayScreen(uint32_t screen_type, uint32_t locale)
++VbError_t VbExDisplayScreen(uint32_t screen_type, VbNvContext *vnc,
++                            uint32_t locale)
  {
 -	const char *msg = NULL;
+-
+-	if (vboot_draw_screen(screen_type, locale) == CBGFX_SUCCESS)
+-		return VBERROR_SUCCESS;
 +	unsigned int rows, cols;
++	uint32_t default_boot = 0;
 +	uint32_t boot_signed_only = 0;
 +	uint32_t boot_usb = 0;
 +	uint32_t boot_legacy = 0;
@@ -36,7 +41,7 @@ index efa0691..b659f7b 100644
  
  	/*
  	 * Show the debug messages for development. It is a backup method
-@@ -98,31 +106,167 @@ VbError_t VbExDisplayScreen(uint32_t screen_type)
+@@ -103,31 +110,194 @@ VbError_t VbExDisplayScreen(uint32_t screen_type, uint32_t locale)
  		video_console_clear();
  		break;
  	case VB_SCREEN_DEVELOPER_WARNING:
@@ -50,6 +55,8 @@ index efa0691..b659f7b 100644
 +
 +			VbNvGet(vnc, VBNV_DEV_BOOT_USB, &boot_usb);
 +			VbNvGet(vnc, VBNV_DEV_BOOT_LEGACY, &boot_legacy);
++
++			VbNvGet(vnc, VBNV_DEV_DEFAULT_BOOT, &default_boot);
 +		}
 +
 +		print_string(
@@ -89,6 +96,25 @@ index efa0691..b659f7b 100644
 +
 +			if (!boot_signed_only || boot_usb)
 +				print_string("\n");
++
++			print_string("Default boot medium: ");
++
++			switch (default_boot) {
++				case VBNV_DEV_DEFAULT_BOOT_DISK:
++					print_string("internal storage");
++					break;
++				case VBNV_DEV_DEFAULT_BOOT_USB:
++					print_string("external media");
++					break;
++				case VBNV_DEV_DEFAULT_BOOT_LEGACY:
++					print_string("legacy payload");
++					break;
++				default:
++					print_string("unknown");
++					break;
++			}
++
++			print_string("\n");
 +		}
 +
 +		find_common_params(&blob, &size);
@@ -202,6 +228,12 @@ index efa0691..b659f7b 100644
 +	case VB_SCREEN_TO_NORM_CONFIRMED:
 +		video_console_clear();
 +		print_on_center("Disabling developer mode.");
++		break;
++	case VB_SCREEN_OS_BROKEN:
++		video_console_clear();
++		print_on_center(
++			"Something went wrong and the device cannot boot.\n"
++			"Press Escape + Refresh + Power to access recovery.");
  		break;
  	default:
  		printf("Not a valid screen type: %d.\n", screen_type);
@@ -215,5 +247,5 @@ index efa0691..b659f7b 100644
  }
  
 -- 
-1.9.1
+2.8.0
 
