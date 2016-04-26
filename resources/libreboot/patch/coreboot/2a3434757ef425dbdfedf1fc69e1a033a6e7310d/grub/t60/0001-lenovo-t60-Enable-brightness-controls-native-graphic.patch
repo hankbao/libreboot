@@ -1,5 +1,5 @@
 From 770021ce66a0fddebb9639c4df0696ecfca45488 Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Mon, 15 Jun 2015 19:59:46 +0100
 Subject: [PATCH 4/9] lenovo/t60: Enable brightness controls (native graphics)
 
@@ -13,7 +13,7 @@ reverses polarity). Set the bit to enable brightness
 controls.
 
 Change-Id: I22e261f2ce28ec81cd208a73e6311ec67146eb72
-Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+Signed-off-by: Minifree Ltd <info@minifree.org>
 ---
  src/mainboard/lenovo/t60/devicetree.cb | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

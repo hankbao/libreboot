@@ -2,7 +2,7 @@
 
 #  helper script: build ROM images with depthcharge and put them in ./bin/
 #
-#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Minifree Ltd <info@minifree.org>
 #	Copyright (C) 2015 Paul Kocialkowski <contact@paulk.fr>
 #
 #    This program is free software: you can redistribute it and/or modify

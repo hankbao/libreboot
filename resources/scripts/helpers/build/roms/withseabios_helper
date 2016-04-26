@@ -2,7 +2,7 @@
 
 #  helper script: create ROM images for a given system, with SeaBIOS
 #
-#	Copyright (C) 2014, 2015, 2016 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015, 2016 Minifree Ltd <info@minifree.org>
 #	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify

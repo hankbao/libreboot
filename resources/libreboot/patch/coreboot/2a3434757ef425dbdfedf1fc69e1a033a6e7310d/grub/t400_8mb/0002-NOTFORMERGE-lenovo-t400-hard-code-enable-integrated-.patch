@@ -1,5 +1,5 @@
 From 6e7cdcaa317f9fdea329839b1e6e6343cd45b642 Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Mon, 15 Jun 2015 03:44:15 +0100
 Subject: [PATCH 2/9] NOTFORMERGE: lenovo/t400: hard-code enable
  integrated-only video
@@ -12,7 +12,7 @@ Native graphics initialization does not yet exist for the ATI GPUs
 on these laptops...
 
 Change-Id: I2c056a8fb498972f87c4ec1122b239fdc9a4c666
-Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+Signed-off-by: Minifree Ltd <info@minifree.org>
 ---
  src/mainboard/lenovo/t400/romstage.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)

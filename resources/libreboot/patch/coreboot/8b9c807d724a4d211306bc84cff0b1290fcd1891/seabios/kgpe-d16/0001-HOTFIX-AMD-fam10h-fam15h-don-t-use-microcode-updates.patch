@@ -1,5 +1,5 @@
 From 388f9dbe66f6834013d478eeffe154d59ca6c239 Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Tue, 8 Mar 2016 07:21:33 +0000
 Subject: [PATCH] HOTFIX: AMD fam10h/fam15h: don't use microcode updates
 

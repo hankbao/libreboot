@@ -2,7 +2,7 @@
 
 #  helper script: builds crossgcc, needed by coreboot's build system
 #
-#	Copyright (C) 2016 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2016 Minifree Ltd <info@minifree.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by

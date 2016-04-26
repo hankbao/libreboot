@@ -5,7 +5,7 @@
  * Purpose: header file for ich9deblob.c
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Francis Rowe <info@gluglug.org.uk>
+ *                     Minifree Ltd <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

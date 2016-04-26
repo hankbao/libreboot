@@ -261,7 +261,7 @@ See this image: @uref{http://i.imgur.com/qHGxKpj.jpg,http://i.imgur.com/qHGxKpj.
 He was able to flash at 50MHz (lower speeds are also fine).
 @end itemize
 
-Copyright © 2014, 2015 Francis Rowe <info@@gluglug.org.uk>@* Copyright © 2015 Patrick "P. J." McDermott <pj@@pehjota.net>@* Copyright © 2015 Albin Söderqvist@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+Copyright © 2014, 2015 Minifree Ltd <info@@minifree.org>@* Copyright © 2015 Patrick "P. J." McDermott <pj@@pehjota.net>@* Copyright © 2015 Albin Söderqvist@* Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
 
 Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
 

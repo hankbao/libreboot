@@ -943,7 +943,7 @@ Microcode size field is 0
 Microcode size field is 0
 Microcode size field is 0
 Microcode size field is 0
-fchmmr: built-in microcode revision 0x0 date=2010-10-01
+vimuser: built-in microcode revision 0x0 date=2010-10-01
 microcode: updated to revision 0xd1 date=2010-10-01
 CPU: Intel(R) Core(TM)2 CPU         T7200  @ 2.00GHz.
 MTRR: Physical address space:
@@ -1006,7 +1006,7 @@ Microcode size field is 0
 Microcode size field is 0
 Microcode size field is 0
 Microcode size field is 0
-fchmmr: built-in microcode revision 0x0 date=2010-10-01
+vimuser: built-in microcode revision 0x0 date=2010-10-01
 microcode: updated to revision 0xd1 date=2010-10-01
 CPU: Intel(R) Core(TM)2 CPU         T7200  @ 2.00GHz.
 MTRR: Fixed MSR 0x250 0x0606060606060606

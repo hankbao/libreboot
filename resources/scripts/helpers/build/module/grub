@@ -2,7 +2,7 @@
 
 #  helper script: builds GRUB2 source code
 #
-#	Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+#	Copyright (C) 2014, 2015 Minifree Ltd <info@minifree.org>
 #   Copyright (C) 2015, 2016 Klemens Nanni <contact@autoboot.org>
 #
 #    This program is free software: you can redistribute it and/or modify
