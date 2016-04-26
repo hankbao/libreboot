@@ -1,5 +1,5 @@
 From ac39ee38d292b713b040cd51cc590470ae9c39ca Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Wed, 5 Aug 2015 02:25:47 +0100
 Subject: [PATCH 4/7] mainboard/lenovo/r500: use 4MiB ROM size by default
 
@@ -7,7 +7,7 @@ These systems come with 4MiB chips (SOIC-8), by default, so it
 makes more sense to use this size.
 
 Change-Id: I9d8a7dd7b619d7d3af2f725f914d0ee79fcc6d50
-Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+Signed-off-by: Minifree Ltd <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

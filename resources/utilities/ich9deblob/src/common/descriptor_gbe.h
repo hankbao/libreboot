@@ -4,7 +4,7 @@
  * 
  * Purpose: header file for descriptor_gbe.c
  *
- *  Copyright (C) 2014, 2015 Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014, 2015 Minifree Ltd <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify

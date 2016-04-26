@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014 Francis Rowe <info@gluglug.org.uk>
+ *  Copyright (C) 2014 Minifree Ltd <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

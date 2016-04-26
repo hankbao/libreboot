@@ -1,11 +1,11 @@
 From 9d8e96dd8421f19dc38cf0ca4d92b35e63e5e88e Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Wed, 5 Aug 2015 01:42:44 +0100
 Subject: [PATCH 3/7] mainboard/lenovo/r500: Fix HDA verbs to match hardware
  layout
 
 Change-Id: I2b69399b9677845b55d4c68d4ac6f276a11a1cf6
-Signed-off-by: Francis Rowe <info@gluglug.org.uk>
+Signed-off-by: Minifree Ltd <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/hda_verb.c | 10 +++++-----
  1 file changed, 5 insertions(+), 5 deletions(-)

@@ -88,7 +88,7 @@ Some results on the X60 (3D still doesn't work, openarena and tuxkart were slow)
 git diff: http://paste.debian.net/102618/
 
 In src/northbridge/intel/i945/raminit.c
-PaulePanter: fchmmr: In your next step could you please add
+PaulePanter: vimuser: In your next step could you please add
 PaulePanter: printk(BIOS_DEBUG, "BSM = 0x%08x\n", pci_read_config32(PCI_DEV(0,2,0), BSM));
 PaulePanter: before
 PaulePanter: pci_write_config32(PCI_DEV(0,2,0), BSM, (tolud * MiB - 64 * MiB) & 0xfff00000);
@@ -99,8 +99,8 @@ Also adding it after that line aswell, per advice from PaulePanter
 Some new results on the X60 after doing the above (3D still doesn't work, openarena and tuxkart were slow): 
 <a href="dumps/5885_logs_2.tar.gz">5885_logs_2.tar.gz</a>
 
-PaulePanter: fchmmr: No idea if you can write with `devmem2`. Never used it.
-PaulePanter: fchmmr: It would indeed be interesting to know what value the BSM has with the vendor BIOS.
+PaulePanter: vimuser: No idea if you can write with `devmem2`. Never used it.
+PaulePanter: vimuser: It would indeed be interesting to know what value the BSM has with the vendor BIOS.
 Note to self: do that.
 
 PaulePanter said: I have `& 0xfff00000` and phcoder uses `& 0xfffff000`, so it looks like I have the ordering incorrect.
@@ -146,102 +146,102 @@ and note: on later kernels they also can't seem to init the GPU properly without
 
 PaulePanter: damo22: There is also a Linux and coreboot native graphics incompatibility documented in the Wiki (by samnob).
 PaulePanter: http://www.coreboot.org/Board:lenovo/x60#Problems_in_native_graphics_code_exposed_by_recent_kernels
-fchmmr: PaulePanter, that only exists with kernel 3.12 and above. 
-PaulePanter: fchmmr: Do you have time to report it to the Freedesktop Bugzilla?
+vimuser: PaulePanter, that only exists with kernel 3.12 and above. 
+PaulePanter: vimuser: Do you have time to report it to the Freedesktop Bugzilla?
 funfunctor:  patrickg: I think its related to recent changes we had done to toolchain.in
-fchmmr: Yes. What info do you need ?
-PaulePanter: fchmmr: It’s a regressions and these are normally not allowed with Linux’ no regression policy.
-fchmmr: What do you think would happen then, after I made that report?
-PaulePanter: fchmmr: https://01.org/linuxgraphics/documentation/how-report-bugs
-fchmmr: You can look at it 2 ways: kernel broke, or kernel fixed a bug which broke coreboot.
-PaulePanter: fchmmr: Hopefully they’ll fix it.
-fchmmr: so: either coreboot is broken, or kernel is broken. 
-fchmmr: PaulePanter, kernel 3.12+ should work just fine on lenovo bios, so my opinion is that the native gfx in coreboot is what's buggy.
-PaulePanter: fchmmr: You can also check with the developers in #intel-gfx. But first report the bug so you can reference it.
-fchmmr: Do you think I should just copy what's in the coreboot wiki already?
-PaulePanter: fchmmr: Does not matter. If it worked before 3.12, it should work afterward.
-fchmmr: It seems pretty complete (as far as reporting it is concerned).
-fchmmr: PaulePanter, my basic point is that I'm on the fence as to whether this is linux's problem, coreboot's problem, or both.
-PaulePanter: fchmmr: That would probably help. If they need other information, the Intel folks will ask you for it. Daniel Vetter and the other Intel folks are very responsive in my experience.
-fchmmr: So you think then that there would be a patch specifically for i915 + coreboot_native_init
-PaulePanter: fchmmr: I do not know. They hopefully figure it out.
-fchmmr: PaulePanter, I will do it.
-PaulePanter: fchmmr: And as I wrote, it is a regression. As far as I understood it, even if the firmware/hardware is broken, Linux should not introduce regressions.
-fchmmr: PaulePanter: at the very least, it might offer a new perspective. this whole issue has been very one-sided so far: it has only been coreboot community that talks about it. It has probably gone unobserved in kernel/intel community.
-fchmmr: The intel/kernel people might even be able to (easily) spot a fix for coreboot.
-fchmmr: I hadn't even considered this possibility before, I thought it was only a coreboot problem. Talking to those other people definitely makes sense.
+vimuser: Yes. What info do you need ?
+PaulePanter: vimuser: It’s a regressions and these are normally not allowed with Linux’ no regression policy.
+vimuser: What do you think would happen then, after I made that report?
+PaulePanter: vimuser: https://01.org/linuxgraphics/documentation/how-report-bugs
+vimuser: You can look at it 2 ways: kernel broke, or kernel fixed a bug which broke coreboot.
+PaulePanter: vimuser: Hopefully they’ll fix it.
+vimuser: so: either coreboot is broken, or kernel is broken. 
+vimuser: PaulePanter, kernel 3.12+ should work just fine on lenovo bios, so my opinion is that the native gfx in coreboot is what's buggy.
+PaulePanter: vimuser: You can also check with the developers in #intel-gfx. But first report the bug so you can reference it.
+vimuser: Do you think I should just copy what's in the coreboot wiki already?
+PaulePanter: vimuser: Does not matter. If it worked before 3.12, it should work afterward.
+vimuser: It seems pretty complete (as far as reporting it is concerned).
+vimuser: PaulePanter, my basic point is that I'm on the fence as to whether this is linux's problem, coreboot's problem, or both.
+PaulePanter: vimuser: That would probably help. If they need other information, the Intel folks will ask you for it. Daniel Vetter and the other Intel folks are very responsive in my experience.
+vimuser: So you think then that there would be a patch specifically for i915 + coreboot_native_init
+PaulePanter: vimuser: I do not know. They hopefully figure it out.
+vimuser: PaulePanter, I will do it.
+PaulePanter: vimuser: And as I wrote, it is a regression. As far as I understood it, even if the firmware/hardware is broken, Linux should not introduce regressions.
+vimuser: PaulePanter: at the very least, it might offer a new perspective. this whole issue has been very one-sided so far: it has only been coreboot community that talks about it. It has probably gone unobserved in kernel/intel community.
+vimuser: The intel/kernel people might even be able to (easily) spot a fix for coreboot.
+vimuser: I hadn't even considered this possibility before, I thought it was only a coreboot problem. Talking to those other people definitely makes sense.
 
 PaulePanter of #coreboot made the initial report to Freedesktop tracker:
 
-PaulePanter: fchmmr: Hi. Did you report the Linux regression to the Freedesktop bug tracker?
-PaulePanter: fchmmr: Understood. Do you have an account for the Freedesktop bug tracker?
-fchmmr: PaulePanter: I do not have an account for Freedesktop bug tracker, but I think I could get one?
-PaulePanter: fchmmr: Yes, it is easy to register.
-fchmmr: PaulePanter, there's reporting and there's reporting properly; I want to compile my report first, before I make it. 
-PaulePanter: fchmmr: As you do not know what they need, I think it is the wrong approach.
-fchmmr: Since the people that I am reporting to will be unfamiliar with the issue, and might not even know about coreboot, or only vaguely know.
-PaulePanter: fchmmr: I’ll report the issue and give you the URL. You can then add to it.
-fchmmr: PaulePanter: Good point. I can make it brief describing it as best I can, and then I can answer any specific questions.
-fchmmr: PaulePanter, you can use my notes at http://libreboot.org/howto.html#kernel312bugs if you like, it's a collection of insights plus links to those pages on the coreboot wiki that talk about the issue.
-fchmmr: (in case there is anything in the notes that might be helpful)
-fchmmr: PaulePanter, are the intel i915 devs of freedesktop also the ones working on the i915 code in kernel.org? (I'm slightly confused about this)
+PaulePanter: vimuser: Hi. Did you report the Linux regression to the Freedesktop bug tracker?
+PaulePanter: vimuser: Understood. Do you have an account for the Freedesktop bug tracker?
+vimuser: PaulePanter: I do not have an account for Freedesktop bug tracker, but I think I could get one?
+PaulePanter: vimuser: Yes, it is easy to register.
+vimuser: PaulePanter, there's reporting and there's reporting properly; I want to compile my report first, before I make it. 
+PaulePanter: vimuser: As you do not know what they need, I think it is the wrong approach.
+vimuser: Since the people that I am reporting to will be unfamiliar with the issue, and might not even know about coreboot, or only vaguely know.
+PaulePanter: vimuser: I’ll report the issue and give you the URL. You can then add to it.
+vimuser: PaulePanter: Good point. I can make it brief describing it as best I can, and then I can answer any specific questions.
+vimuser: PaulePanter, you can use my notes at http://libreboot.org/howto.html#kernel312bugs if you like, it's a collection of insights plus links to those pages on the coreboot wiki that talk about the issue.
+vimuser: (in case there is anything in the notes that might be helpful)
+vimuser: PaulePanter, are the intel i915 devs of freedesktop also the ones working on the i915 code in kernel.org? (I'm slightly confused about this)
 
 THE REPORT:
 
-PaulePanter: fchmmr: The Wiki talks about crashes.
-PaulePanter: fchmmr: https://bugs.freedesktop.org/show_bug.cgi?id=79038
+PaulePanter: vimuser: The Wiki talks about crashes.
+PaulePanter: vimuser: https://bugs.freedesktop.org/show_bug.cgi?id=79038
 
-PaulePanter: fchmmr: The Wiki talks about crashes.
-PaulePanter: fchmmr: https://bugs.freedesktop.org/show_bug.cgi?id=79038
-fchmmr: PaulePanter, thanks. I'll add to it and help any way I can.
-PaulePanter: fchmmr: Add `drm.debug=0x06` to the Linux command line (probably configuring in GRUB) and please add `/var/log/dmesg` to the bug report. (Or the output of `dmesg`.)
-PaulePanter: fchmmr: They also need `/var/log/Xorg.0.log` and your distribution and exact Linux kernel version `uname -r`.
-fchmmr: PaulePanter: there are basically 2 versions of native init: 3998 (based on replay, only works on X60 with XGA screen - also what libreboot currently uses) and 5320 (much better, works on more screens, 5345 can use it to enable T60 - not yet in libreboot)
-fchmmr: PaulePanter: should I do this test on both versions? (libreboot and coreboot+5320+5345)
+PaulePanter: vimuser: The Wiki talks about crashes.
+PaulePanter: vimuser: https://bugs.freedesktop.org/show_bug.cgi?id=79038
+vimuser: PaulePanter, thanks. I'll add to it and help any way I can.
+PaulePanter: vimuser: Add `drm.debug=0x06` to the Linux command line (probably configuring in GRUB) and please add `/var/log/dmesg` to the bug report. (Or the output of `dmesg`.)
+PaulePanter: vimuser: They also need `/var/log/Xorg.0.log` and your distribution and exact Linux kernel version `uname -r`.
+vimuser: PaulePanter: there are basically 2 versions of native init: 3998 (based on replay, only works on X60 with XGA screen - also what libreboot currently uses) and 5320 (much better, works on more screens, 5345 can use it to enable T60 - not yet in libreboot)
+vimuser: PaulePanter: should I do this test on both versions? (libreboot and coreboot+5320+5345)
 
-fchmmr: PaulePanter: should I do this test on both versions? (libreboot and coreboot+5320+5345)
-fchmmr: PaulePanter: nonetheless, I will do both, and make that report for you now.
-fchmmr: Do I do this on pre-3.12 kernel or 3.12+ ?
-PaulePanter: fchmmr: I’d say Linux 3.12+.
-PaulePanter: fchmmr: Do you know which coreboot patches samnob used?
+vimuser: PaulePanter: should I do this test on both versions? (libreboot and coreboot+5320+5345)
+vimuser: PaulePanter: nonetheless, I will do both, and make that report for you now.
+vimuser: Do I do this on pre-3.12 kernel or 3.12+ ?
+PaulePanter: vimuser: I’d say Linux 3.12+.
+PaulePanter: vimuser: Do you know which coreboot patches samnob used?
 
-fchmmr: PaulePanter: very well. http://jxself.org/linux-libre has latest kernels
-fchmmr: I will install that.
-fchmmr: I do not know what coreboot patches samnob used. Probably 3998 (this was a long time ago).
-fchmmr: Definitely change ID 3998 (review.coreboot.org gerrit): http://review.coreboot.org/#/c/3998/
+vimuser: PaulePanter: very well. http://jxself.org/linux-libre has latest kernels
+vimuser: I will install that.
+vimuser: I do not know what coreboot patches samnob used. Probably 3998 (this was a long time ago).
+vimuser: Definitely change ID 3998 (review.coreboot.org gerrit): http://review.coreboot.org/#/c/3998/
 
 
-fchmmr: PaulePanter: here is the information that you requested: http://libreboot.org/logs/3998_Xorg.0.log http://libreboot.org/logs/3998_dmesg http://libreboot.org/logs/3998_uname
-fchmmr: PaulePanter: that bug in the report doesn't happen with the above -- it's an older kernel. 
-fchmmr: Do they want me to try 3.12+ instead?
-fchmmr: PaulePanter: you should also give them these links to the lastest code for native graphics:
-fchmmr: http://review.coreboot.org/#/c/5320/
+vimuser: PaulePanter: here is the information that you requested: http://libreboot.org/logs/3998_Xorg.0.log http://libreboot.org/logs/3998_dmesg http://libreboot.org/logs/3998_uname
+vimuser: PaulePanter: that bug in the report doesn't happen with the above -- it's an older kernel. 
+vimuser: Do they want me to try 3.12+ instead?
+vimuser: PaulePanter: you should also give them these links to the lastest code for native graphics:
+vimuser: http://review.coreboot.org/#/c/5320/
 
-PaulePanter: fchmmr: Thank you for getting the logs. Please register and upload the files yourself.
-fchmmr: Yes, ok. I will also get the same logs again for a kernel that is broken (3.12+)
-fchmmr: I will repeat both processes again for coreboot+5320+5345, as currently I am getting these on libreboot. 
-fchmmr: More logs can't hurt, the worst that can happen is they will ignore the ones they don't need. I want to make sure they have everything they need.
+PaulePanter: vimuser: Thank you for getting the logs. Please register and upload the files yourself.
+vimuser: Yes, ok. I will also get the same logs again for a kernel that is broken (3.12+)
+vimuser: I will repeat both processes again for coreboot+5320+5345, as currently I am getting these on libreboot. 
+vimuser: More logs can't hurt, the worst that can happen is they will ignore the ones they don't need. I want to make sure they have everything they need.
 
-samnob: fchmmr: samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_1_i386.deb and http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnu-stolenmem-owen_1_i386.deb latest linux-libre without and with 17fec8a reverted.
-PaulePanter: fchmmr: Thanks.
+samnob: vimuser: samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnuowen_1_i386.deb and http://samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnu-stolenmem-owen_1_i386.deb latest linux-libre without and with 17fec8a reverted.
+PaulePanter: vimuser: Thanks.
 
-fchmmr: samnob, thanks.
-fchmmr: but we are trying to get kernel 3.12+ to work without users having to patch it
-fchmmr: either by fixing coreboot, or patching around coreboot in the kernel
-fchmmr: eventually both
+vimuser: samnob, thanks.
+vimuser: but we are trying to get kernel 3.12+ to work without users having to patch it
+vimuser: either by fixing coreboot, or patching around coreboot in the kernel
+vimuser: eventually both
 samnob: Yes, just providing you kernels for the bug.
-fchmmr: ah right. 
-fchmmr: with and without. that is useful. i was going to use jxself kernels. that is useful.
-fchmmr: I'll use yours then ;)
-fchmmr: dpkg -i ?
+vimuser: ah right. 
+vimuser: with and without. that is useful. i was going to use jxself kernels. that is useful.
+vimuser: I'll use yours then ;)
+vimuser: dpkg -i ?
 
 samnob: Though based on the devs comment in the bug I think you're hope of the driver working around it is unlikely.
-fchmmr: can't hurt to try
+vimuser: can't hurt to try
 samnob: dpkg -i will work fine.
 samnob: (though gdebi is more fun.)
 samnob: there's a version symlink_hook in that same folder that is handy for grub2 payload users too.
-fchmmr: samnob we think it might be classed under linux "no regression" policy
-fchmmr: PaulePanter's idea
+vimuser: samnob we think it might be classed under linux "no regression" policy
+vimuser: PaulePanter's idea
 samnob: can't hurt to try :)
 
 Here is the debugging results then: <a href="coreboot_native_3.12_bug.tar.gz" >coreboot_native_3.12_bug.tar.gz</a>
@@ -260,17 +260,17 @@ https://bugzilla.kernel.org/show_bug.cgi?id=71391
 
 --
 
-PaulePanter:  fchmmr: If you run the Lenovo X60 right now, could you just paste it now. It should not change between all your tests.
-PaulePanter:  fchmmr: It would really be helpful to have it now.
-fchmmr: My workstation X60 is running coreboot+5320 (and modification for backlight control support)
-fchmmr: Shall I take iomem output from that?
-fchmmr: kernel 3.2 is in use
-PaulePanter:  fchmmr: Yes. Please.
-fchmmr: For you record:
-fchmmr: $ uname -r
-fchmmr: 3.2.0-56-generic-pae
-fchmmr: distro: trisquel 6
-fchmmr: PaulePanter: http://paste.debian.net/101404/
+PaulePanter:  vimuser: If you run the Lenovo X60 right now, could you just paste it now. It should not change between all your tests.
+PaulePanter:  vimuser: It would really be helpful to have it now.
+vimuser: My workstation X60 is running coreboot+5320 (and modification for backlight control support)
+vimuser: Shall I take iomem output from that?
+vimuser: kernel 3.2 is in use
+PaulePanter:  vimuser: Yes. Please.
+vimuser: For you record:
+vimuser: $ uname -r
+vimuser: 3.2.0-56-generic-pae
+vimuser: distro: trisquel 6
+vimuser: PaulePanter: http://paste.debian.net/101404/
 
 PaulePanter linked to this:
 http://www.intel.com/content/dam/www/public/us/en/documents/datasheets/3rd-gen-core-desktop-vol-2-datasheet.pdf
@@ -331,50 +331,50 @@ damo22: kernel does this: base &= ~((1<<20) - 1);
 damo22: but coreboot does this: pci_read_config32(dev, 0x5c) & ~0xf,
 damo22: possibly a one liner
 damo22: change ~0xf to ~0xfffff lol
-samnob: fchmmr: samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnu-stolenmem-owen_2_i386.deb and linux-image-3.14.4-gnuowen_2_i386.deb with CONFIG_STRICT_DEVMEM unset. No PAE as always.
+samnob: vimuser: samnoble.org/thinkpad/kernel/linux-image-3.14.4-gnu-stolenmem-owen_2_i386.deb and linux-image-3.14.4-gnuowen_2_i386.deb with CONFIG_STRICT_DEVMEM unset. No PAE as always.
 samnob: damo22: thanks for looking into this.
 </font></b>
-fchmmr: damo22: you are the most awesome person ever. I'm stilll preparing my dev/debugging environment and you speculate this already. I will try it soon.
-fchmmr: samnob: thank you for confirming.
-fchmmr: samnob: ok, /dev/mem support and non-PAE. excellent! 
-samnob: fchmmr: don't overlook that revision 2 those, are new debs with STRICT_DEVMEM unset
-damo22: fchmmr: its much quicker to read and compare code than to compile kernels and flash firmware
-PaulePanter: fchmmr: I think your testing is not needed until you get a patch.
+vimuser: damo22: you are the most awesome person ever. I'm stilll preparing my dev/debugging environment and you speculate this already. I will try it soon.
+vimuser: samnob: thank you for confirming.
+vimuser: samnob: ok, /dev/mem support and non-PAE. excellent! 
+samnob: vimuser: don't overlook that revision 2 those, are new debs with STRICT_DEVMEM unset
+damo22: vimuser: its much quicker to read and compare code than to compile kernels and flash firmware
+PaulePanter: vimuser: I think your testing is not needed until you get a patch.
 PaulePanter: damo22: TOLUD (PCI Device 0 offset BCh bits 31:20)
-fchmmr: PaulePanter ?
-fchmmr: Yes I understand that. I was about to debug, but now we will test damo22's advice first.
+vimuser: PaulePanter ?
+vimuser: Yes I understand that. I was about to debug, but now we will test damo22's advice first.
 damo22: PaulePanter: i think intel_gma_init is being called with unaligned physical address for graphics mem
 
-PaulePanter: fchmmr: BDSM—Base Data of Stolen Memory Register
+PaulePanter: vimuser: BDSM—Base Data of Stolen Memory Register
 PaulePanter: http://www.intel.com/content/dam/www/public/us/en/documents/datasheets/3rd-gen-core-desktop-vol-2-datasheet.pdf
 
-PaulePanter: fchmmr: The methods you try just read it out and never set it.
+PaulePanter: vimuser: The methods you try just read it out and never set it.
 PaulePanter: This register contains the base address of graphics data stolen DRAM memory. BIOS determines the base of graphics data stolen memory by subtracting the graphics data stolen memory size (PCI Device 0 offset 52 bits 7:4) from TOLUD (PCI Device 0 offset BCh bits 31:20).
 damo22: PaulePanter: im pretty sure BDSM is only present in core iX cpus
-fchmmr: PaulePanter, yes my method was to go about to be sure where it is set, and then try to set it properly in 5320. 
-PaulePanter: fchmmr: The problem is already present with native graphics in coreboot master, isn’t it?
-fchmmr: damo22 took a shorter method to get the same result (hopefully. like you, i wait for him to confirm or deny success)
-fchmmr: PaulePanter, yes the 3.12+ glitches exist in 5320 changeset aswell as 3998 (the old replay version, which 5320 is a re-write of)
-PaulePanter: fchmmr: Sorry, I claim your tests would have never gotten any solution for the problem.
+vimuser: PaulePanter, yes my method was to go about to be sure where it is set, and then try to set it properly in 5320. 
+PaulePanter: vimuser: The problem is already present with native graphics in coreboot master, isn’t it?
+vimuser: damo22 took a shorter method to get the same result (hopefully. like you, i wait for him to confirm or deny success)
+vimuser: PaulePanter, yes the 3.12+ glitches exist in 5320 changeset aswell as 3998 (the old replay version, which 5320 is a re-write of)
+PaulePanter: vimuser: Sorry, I claim your tests would have never gotten any solution for the problem.
 * martinr (~martin@8.36.227.227) has joined #coreboot
-fchmmr: PaulePanter, that is quite possible, but it was a test anyway. 
+vimuser: PaulePanter, that is quite possible, but it was a test anyway. 
 PaulePanter: damo22: Chris Wilson and the Linux commit say that the BDSM is present, don’t they?
 PaulePanter: + if (INTEL_INFO(dev)->gen >= 3) {
 PaulePanter: + /* Read Graphics Base of Stolen Memory directly */
-fchmmr: I actually did find where the stolen memory address was set, in /var/log/kern.log after using drm.debug=0x06 in those previous results i uploaded to freedesktop.org, but that was on coreboot/5320 with the address set incorrectly.
-fchmmr: just search for the word "stolen" in the log and you'll find it on one of the lines.
+vimuser: I actually did find where the stolen memory address was set, in /var/log/kern.log after using drm.debug=0x06 in those previous results i uploaded to freedesktop.org, but that was on coreboot/5320 with the address set incorrectly.
+vimuser: just search for the word "stolen" in the log and you'll find it on one of the lines.
 
-PaulePanter: fchmmr: It’s not *set* it is *read* in there.
-fchmmr: Oh right.
-fchmmr: But I thought when reading it, it has to know the address. So the address I saw must have been what was set?
-fchmmr: What am I missing?
+PaulePanter: vimuser: It’s not *set* it is *read* in there.
+vimuser: Oh right.
+vimuser: But I thought when reading it, it has to know the address. So the address I saw must have been what was set?
+vimuser: What am I missing?
 damo22: okay so there is something to clarify, i915 driver is the same for all intel gpus even some that are physically located in cpu
 
-PaulePanter: fchmmr: As it is not explicitely set beforehand it contains some incorrect value, which is then read.
-PaulePanter: fchmmr: That is the whole problem.
-fchmmr: I see.
-fchmmr: So,
-fchmmr: my tests would have been useless, then.
+PaulePanter: vimuser: As it is not explicitely set beforehand it contains some incorrect value, which is then read.
+PaulePanter: vimuser: That is the whole problem.
+vimuser: I see.
+vimuser: So,
+vimuser: my tests would have been useless, then.
 
 <b><font color="red">damo22: it didnt work</font></b>
 (note: can still try to make other changes: see testing notes below)
@@ -388,13 +388,13 @@ damo22: wierd, when i rebooted i got vga fine
 damo22: i think linux kernel i915 is trying to do something with vgarom because it says "invalid rom contents" as first boot line
 damo22: no i need to find out if the kernel is doing something bad without rom present
 damo22: and then figure out how to enable lvds, because vga is working
-fchmmr: drivers/pci/rom.c:   dev_err(&pdev->dev, "Invalid ROM contents\n");
-fchmmr: in that: size_t pci_get_rom_size(struct pci_dev *pdev, void __iomem *rom, size_t size)
-fchmmr:                 /* Standard PCI ROMs start out with these bytes 55 AA */
-fchmmr:                 if (readb(image) != 0x55) {
-fchmmr:                         dev_err(&pdev->dev, "Invalid ROM contents\n");
-fchmmr:                         break;
-fchmmr:                 }
+vimuser: drivers/pci/rom.c:   dev_err(&pdev->dev, "Invalid ROM contents\n");
+vimuser: in that: size_t pci_get_rom_size(struct pci_dev *pdev, void __iomem *rom, size_t size)
+vimuser:                 /* Standard PCI ROMs start out with these bytes 55 AA */
+vimuser:                 if (readb(image) != 0x55) {
+vimuser:                         dev_err(&pdev->dev, "Invalid ROM contents\n");
+vimuser:                         break;
+vimuser:                 }
 damo22: i guess i should focus on the fact that coreboot did not initialise the gfx at grub screen
 damo22: i mean seabios
 damo22: its difficult because linux does some reinitialisation of gfx
@@ -414,15 +414,15 @@ damo22: otherwise we need to patch the linux kernel to ignore certain models tha
 CareBear\: damo22 : let's first find out what information is used in those tables
 damo22: i have the code in front of me
 damo22: drivers/gpu/drm/i915/intel_bios.c (kernel)
-damo22: fchmmr: no, i am trawling through linux driver code
-fchmmr: damo22: are you aware that certain kernels can initialize the GPU on X60 without the native gfx or oprom? (you don't see payloads, but kernel/X11 shows display
+damo22: vimuser: no, i am trawling through linux driver code
+vimuser: damo22: are you aware that certain kernels can initialize the GPU on X60 without the native gfx or oprom? (you don't see payloads, but kernel/X11 shows display
 damo22: i have a feeling the linux kernel currently tries to load the vgarom regardless of PCH existance
 
 damo22: i think there are two problems with native gfx init, one problem is that the lvds isnt coming up (coreboot issue), the other is is with the linux kernel i915 driver that tries to read the vgarom that isnt there
 
-fchmmr: damo22, what hardware are you testing your changes on?
-fchmmr: Did you try 5320 without your changes?
-fchmmr: (hardware: X60 or T60)
+vimuser: damo22, what hardware are you testing your changes on?
+vimuser: Did you try 5320 without your changes?
+vimuser: (hardware: X60 or T60)
 
 Peter on 5320 talks about vga pipe not being enabled: this means that payload doesn't appear
 on vga (only on lvds). OS can output on vga or lvds. so we need to get 5320 to output (during payload) on vga
@@ -676,41 +676,41 @@ phcoder-screen: yes
 
 Side discussion (in #libreboot, not #coreboot as above):
 
-fchmmr: damo22: what was the problem?
+vimuser: damo22: what was the problem?
 damo22: EDID is not being read in linux
 damo22: well it is, but it fails
 damo22: probably because the VBT signature is missing from the oprom
-fchmmr: oprom?
-fchmmr: You mean native init code?
-fchmmr: that it doesn't put the proper data in vbt
+vimuser: oprom?
+vimuser: You mean native init code?
+vimuser: that it doesn't put the proper data in vbt
 damo22: there is some special metadata in the oprom that native init doesnt put in
 damo22: linux looks for it
 damo22: thats how it knows where to read the EDID from
 damo22: otherwise it uses a default address that could be wrong
 damo22: in some cases it works
 damo22: other cases like my X60t it fails
-fchmmr: that would explain why "read-edid" utility deosn't work on natisev gfx at the mament
-fchmmr: moment
-fchmmr: Basstard` ^
+vimuser: that would explain why "read-edid" utility deosn't work on natisev gfx at the mament
+vimuser: moment
+vimuser: Basstard` ^
 
-damo22: fchmmr: phcoder wrote an experimental utility to parse some of the VBT tables from a vgarom
-fchmmr: Did he share it with you?
+damo22: vimuser: phcoder wrote an experimental utility to parse some of the VBT tables from a vgarom
+vimuser: Did he share it with you?
 damo22: yes
-fchmmr: Did he upload it publicly?
+vimuser: Did he upload it publicly?
 damo22: http://review.coreboot.org/#/c/5842/
-fchmmr: Ok cool.
-fchmmr: Do you think I should try it?
+vimuser: Ok cool.
+vimuser: Do you think I should try it?
 
 damo22: you could use it to get more info from all your known boards, collect the parsed tables in a folder correctly named with the type of panel and the type of laptop
-fchmmr: So as per #coreboot, my understanding is: move to new stolen memory address, find that metadata and how it's calculated and write that (memcpy/write32) in native init, get VBT tables parsed from ROM, replicate that in native gfx (stub code, just the addresses and pointers to the native init code)
-fchmmr: Should this be run an a vgabios.bin, or on a system where vga bios is running (parse it in memory) ?
-fchmmr: or both?
+vimuser: So as per #coreboot, my understanding is: move to new stolen memory address, find that metadata and how it's calculated and write that (memcpy/write32) in native init, get VBT tables parsed from ROM, replicate that in native gfx (stub code, just the addresses and pointers to the native init code)
+vimuser: Should this be run an a vgabios.bin, or on a system where vga bios is running (parse it in memory) ?
+vimuser: or both?
 damo22: we havent got a solution for native init yet, but we do need to collect info from different models
 damo22: to see how they compare
-fchmmr: yes so, vgabios.bin (file) or running vga bios?
+vimuser: yes so, vgabios.bin (file) or running vga bios?
 damo22: and also we can add it to devicetree.cb somehow later
 damo22: preferably the running vgabios
-fchmmr: ok
+vimuser: ok
 damo22: you can dump it with this command:
 damo22: sudo dd if=/dev/mem bs=64k of=runningvga.bin skip=12 count=1
 
@@ -718,39 +718,39 @@ damo22: coreboot/util/intelvbttool
 
 damo22: gcc intelvbttool.c -o intelvbttool
 
-fchmmr: it would be good for you to run intelvbttool on vgabios.bin and runningvgabios.bin. (where vgabios.bin is extracted from lenovo rom, and runningvgabios.bin is dd'd from memory after it executed)
-fchmmr: right?
-fchmmr: (I will do the same)
-fchmmr: just runningvgabios.bin ?
+vimuser: it would be good for you to run intelvbttool on vgabios.bin and runningvgabios.bin. (where vgabios.bin is extracted from lenovo rom, and runningvgabios.bin is dd'd from memory after it executed)
+vimuser: right?
+vimuser: (I will do the same)
+vimuser: just runningvgabios.bin ?
 damo22: its useless in the factory bios
 damo22: for the purposes of this test
-fchmmr: ok
-fchmmr: Can't hurt though (might be useful later).
+vimuser: ok
+vimuser: Can't hurt though (might be useful later).
 damo22: not really, it might be modified at runtime and we wont know anything about it
 damo22: we need final values
 damo22: the rest is irrelevant
-fchmmr: Yes. I was saying to run it on final dump, and factory dump.
-fchmmr: but ok, i will only do it for final dump
+vimuser: Yes. I was saying to run it on final dump, and factory dump.
+vimuser: but ok, i will only do it for final dump
 
 --
 
 further discussion, continued in #coreboot:
 
 damo22:we could generate fake_vbt arrays for each model
-damo22:fchmmr: whats the link to the vbt stuff again
-fchmmr: http://review.coreboot.org/#/c/5396 for X230
-damo22:fchmmr: no on libreboot
-fchmmr: I also added this to the notes at http://libreboot.org/howto.html#i945_vbt and http://libreboot.org/howto.html#intelvbttool_results for future reference.
-fchmmr: on libreboot? I don't understand.
+damo22:vimuser: whats the link to the vbt stuff again
+vimuser: http://review.coreboot.org/#/c/5396 for X230
+damo22:vimuser: no on libreboot
+vimuser: I also added this to the notes at http://libreboot.org/howto.html#i945_vbt and http://libreboot.org/howto.html#intelvbttool_results for future reference.
+vimuser: on libreboot? I don't understand.
 damo22:its possible that the VBT is modified by the vgarom depending on the panel it detects, assuming it can do that
 damo22:only problem is, you need info from the VBT to know where to read the EDID, so how does the vgarom do it?
 damo22:maybe its safe to assume that the EDID i2c will be the same for all panels
-fchmmr: Might be hardcoded (what CareBear calls "stupid magic numbers")
+vimuser: Might be hardcoded (what CareBear calls "stupid magic numbers")
 damo22:so we should check all VBTs of the same laptop model and verify that the EDID i2c or ddc pin is the same for all panel types
-fchmmr: Sorry, when you say VBT do you mean the runningvga.bin dump taken with dd when vgarom is running?
+vimuser: Sorry, when you say VBT do you mean the runningvga.bin dump taken with dd when vgarom is running?
 damo22:then we can hardcode that value into the coreboot devicetree.cb
 
-fchmmr: I see. it's an i2c bus that connects lvds/vga/vga out
+vimuser: I see. it's an i2c bus that connects lvds/vga/vga out
 kmalkki:damo22: in your opinion, where is this EDID eeprom physically located?
 damo22:kmalkki: on the panel, or the transformer for the panel
 kmalkki:damo22: what do you think is a transformer for the panel?
@@ -837,7 +837,7 @@ Basstard' damo22: Here's a cleaner one: http://pdf.datasheetarchive.com/indexerf
 kmalkki:just verify 1315730 works
 damo22:1315730?
 
-GNUtoo-irssi: fchmmr: hi, 0x58BF58BE works fine --- cool. (not related to these discussions, but GNUtoo is happy).
+GNUtoo-irssi: vimuser: hi, 0x58BF58BE works fine --- cool. (not related to these discussions, but GNUtoo is happy).
 
 <a name="gnutoo_gtt"></a>
 GNUtoo-irssi: phcoder-screen: if you're still working on native GPU init for i945(it seems so), I've an observation:
@@ -1063,23 +1063,23 @@ damo22:well that means X200 could be ported with ME disabled
 phcoder-screen:damo22: that's my next fun project after raminit for ivy.
 * thomasg_ is now known as thomasg
 
-damo22:fchmmr: LTN150XG-L08 is my T60 EDID string (for his T60 15" -- this is already noted below in intelvbttool results)
+damo22:vimuser: LTN150XG-L08 is my T60 EDID string (for his T60 15" -- this is already noted below in intelvbttool results)
 
-fchmmr: damo22: ok, i should test 5868? I understand it puts the vgarom inside but without running it (just for getting VBT tables) but latre we could replace it with something like what the X230 "Deploy VBT" does
+vimuser: damo22: ok, i should test 5868? I understand it puts the vgarom inside but without running it (just for getting VBT tables) but latre we could replace it with something like what the X230 "Deploy VBT" does
 damo22:yeah
-fchmmr: Let me read backlog...
-damo22:fchmmr: you dont need backlog, everything you need is in the 5868 commit
-fchmmr: how did your X60t unbricking go, damo22?
+vimuser: Let me read backlog...
+damo22:vimuser: you dont need backlog, everything you need is in the 5868 commit
+vimuser: how did your X60t unbricking go, damo22?
 damo22:havent bothered finding my screwdrivers yet
-fchmmr: I need to.... tidy myself up. Back in an hour or so.
-fchmmr: damo22: upload a ROM for me, with 5868 and grub payload
-fchmmr: I'll test it for you
+vimuser: I need to.... tidy myself up. Back in an hour or so.
+vimuser: damo22: upload a ROM for me, with 5868 and grub payload
+vimuser: I'll test it for you
 damo22:im not good with grub payloads
 damo22:i can give you one with seabios
-fchmmr: ok give me that,
-fchmmr: also hm ok, give me your .config. I'll add grub myself
+vimuser: ok give me that,
+vimuser: also hm ok, give me your .config. I'll add grub myself
 damo22:ok
-damo22:fchmmr: http://paste.debian.net/plain/101692
+damo22:vimuser: http://paste.debian.net/plain/101692
 #
 # Automatically generated make config: don't edit
 # coreboot version: 4.0-5614-gdb77532
@@ -1517,69 +1517,69 @@ damo22:you need to still add the vgabios filename
 damo22:CONFIG_VGA_BIOS_FILE="vgabios.bin" is the current setting
 damo22:# CONFIG_CONSOLE_CBMEM is not set woops
 
-fchmmr: damo22 »       register "gpu_lvds_is_dual_channel" = "1"
-fchmmr: on x60/devicetree.cb
-damo22:fchmmr: well check your VBT i think its correct though
-fchmmr: so 0 was wrong?
+vimuser: damo22 »       register "gpu_lvds_is_dual_channel" = "1"
+vimuser: on x60/devicetree.cb
+damo22:vimuser: well check your VBT i think its correct though
+vimuser: so 0 was wrong?
 damo22:it might depend on panel
 
-fchmmr: Oh
-fchmmr: I get it now.
-fchmmr: I didn't see any code in 5868 that executes anything from the vgarom but,
-fchmmr: you set coreboot to load it into memory, but not execute it.
-fchmmr: I thought "load" only meant put it in cbfs
-fchmmr: is this a correct assessment?
-fchmmr: To let kernel find vbt tables.
-fchmmr: And then we "fake" it later (withotu vga rom loaded).
-fchmmr: damo22: are you testing 5868 on your X60t?
-damo22:fchmmr: its to make linux kernel detect lvds after native init, but if you can also test coreboot native framebuffer with grub too, that would be handy
+vimuser: Oh
+vimuser: I get it now.
+vimuser: I didn't see any code in 5868 that executes anything from the vgarom but,
+vimuser: you set coreboot to load it into memory, but not execute it.
+vimuser: I thought "load" only meant put it in cbfs
+vimuser: is this a correct assessment?
+vimuser: To let kernel find vbt tables.
+vimuser: And then we "fake" it later (withotu vga rom loaded).
+vimuser: damo22: are you testing 5868 on your X60t?
+damo22:vimuser: its to make linux kernel detect lvds after native init, but if you can also test coreboot native framebuffer with grub too, that would be handy
 
-fchmmr: So, vgarom has nothing to do with that patch.
-fchmmr: ?
-fchmmr: All I see is a change of stolen memory address, and the backlight values added
-damo22:fchmmr: its tricky because the final vgabios in memory changes depending on the panel, because vgarom is self modifying
+vimuser: So, vgarom has nothing to do with that patch.
+vimuser: ?
+vimuser: All I see is a change of stolen memory address, and the backlight values added
+damo22:vimuser: its tricky because the final vgabios in memory changes depending on the panel, because vgarom is self modifying
 
-fchmmr: So should I include the vgarunning.bin instead of vgabios.bin ?
+vimuser: So should I include the vgarunning.bin instead of vgabios.bin ?
 damo22:yes
 
-damo22:fchmmr: if you can load grub as payload and you see something, its a success
-fchmmr: damo22: the problem is, without that patch I just use 5320 as-is, and I see grub as payload already.
-fchmmr: Hence my question above.
-damo22:fchmmr: also, if you can boot into linux after that and dont get any error messages from drm module, its a double success
-fchmmr: Which error messages (besides "Invalid ROM contents") am I looking for?
-damo22:fchmmr: stuff like, page fault
-fchmmr: And should I enable any specific debugging options (such as drm.debug=0x06)
+damo22:vimuser: if you can load grub as payload and you see something, its a success
+vimuser: damo22: the problem is, without that patch I just use 5320 as-is, and I see grub as payload already.
+vimuser: Hence my question above.
+damo22:vimuser: also, if you can boot into linux after that and dont get any error messages from drm module, its a double success
+vimuser: Which error messages (besides "Invalid ROM contents") am I looking for?
+damo22:vimuser: stuff like, page fault
+vimuser: And should I enable any specific debugging options (such as drm.debug=0x06)
 damo22:yes that would help
-fchmmr: Ok: which logs do you want?
-fchmmr: I'll upload it for your reference
-damo22:fchmmr: kernel boot log and Xorg.0.log, coreboot log if possible
-fchmmr: probably kern.log and Xorg.0.log
-fchmmr: coreboot log is possible, i have dock.
-fchmmr: anything else?
+vimuser: Ok: which logs do you want?
+vimuser: I'll upload it for your reference
+damo22:vimuser: kernel boot log and Xorg.0.log, coreboot log if possible
+vimuser: probably kern.log and Xorg.0.log
+vimuser: coreboot log is possible, i have dock.
+vimuser: anything else?
 damo22:that is all, thanks
-fchmmr: ok. will do.
+vimuser: ok. will do.
 
-fchmmr: damo22: I could test this on T60 aswell by cherry picking 5345, right?
-damo22:fchmmr: idk
-fchmmr: (and addinf backlight value to deivcetree)
-fchmmr: We should devise a way to test this on T60 aswell.
-damo22:fchmmr: lets just see if the x60 fix works
+vimuser: damo22: I could test this on T60 aswell by cherry picking 5345, right?
+damo22:vimuser: idk
+vimuser: (and addinf backlight value to deivcetree)
+vimuser: We should devise a way to test this on T60 aswell.
+damo22:vimuser: lets just see if the x60 fix works
 
 damo22:it still needs work if the test passes
-fchmmr: Ok but, you just have that one line changed in gma.c, and backlight value changed it x60/devicetree.cb
+vimuser: Ok but, you just have that one line changed in gma.c, and backlight value changed it x60/devicetree.cb
 damo22:yes
 damo22:phcoder did most of the work
-fchmmr: So, I could run this same test on T60 by cherry picking 5345 on top of 5868, changing t60/devicetree.cb's backlight value and including T60 runningvga.bin and having that load (but not execute)
+vimuser: So, I could run this same test on T60 by cherry picking 5345 on top of 5868, changing t60/devicetree.cb's backlight value and including T60 runningvga.bin and having that load (but not execute)
 damo22:its a small bug i think
-fchmmr: I will do that above, after X60 is tested.
-damo22:fchmmr: youre always talking about more and more combinations of tests, lets just get one right
-fchmmr: Yes. Just a thought. We'll test X60 exclusively. T60 can easily be tested later.
-fchmmr: Ok..... back soon. I'll get you the results you wanted. I'll be using 3.14.4 (the one samnob made).
+vimuser: I will do that above, after X60 is tested.
+damo22:vimuser: youre always talking about more and more combinations of tests, lets just get one right
+vimuser: Yes. Just a thought. We'll test X60 exclusively. T60 can easily be tested later.
+vimuser: Ok..... back soon. I'll get you the results you wanted. I'll be using 3.14.4 (the one samnob made).
 damo22:thanks
 
-fchmmr: We should do this with the latest runningvga.bin (from extracting with dd on the latest vgabios.bin)
-fchmmr: My one is older
-damo22:fchmmr: version number of vgabios is irrelevant if it was taken from a lenovo bios that used to run on your machine, and since pulled from ram
+vimuser: We should do this with the latest runningvga.bin (from extracting with dd on the latest vgabios.bin)
+vimuser: My one is older
+damo22:vimuser: version number of vgabios is irrelevant if it was taken from a lenovo bios that used to run on your machine, and since pulled from ram
 damo22:ie, it should have the correct VBT values
 damo22:for your machine
 

@@ -1,5 +1,5 @@
 From f56cc3dc534db469905a4ff33a40e18b4481876e Mon Sep 17 00:00:00 2001
-From: Francis Rowe <info@gluglug.org.uk>
+From: Minifree Ltd <info@minifree.org>
 Date: Sat, 14 Feb 2015 01:24:23 +0000
 Subject: [PATCH] grub-core/normal/main.c: Display "FREE AS IN FREEDOM", not
  version

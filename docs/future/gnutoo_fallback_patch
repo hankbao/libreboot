@@ -153,12 +153,12 @@
 <GNUtoo-irssi> I was going trough the list of patches I had first
 <GNUtoo-irssi> yes
 <GNUtoo-irssi> but to a specific/personal page
-<fchmmr> could you link me to the updated instructions? (when done)
+<vimuser> could you link me to the updated instructions? (when done)
 <GNUtoo-irssi> well, I'll update them first
 <GNUtoo-irssi> I was going trough my patches list before that
 <GNUtoo-irssi> so I'll do that now
-<fchmmr> So I gather that you basically reset the counter yourself after you boot (after typing grub password)
-<fchmmr> and so, if you boot and the counter is higher, you know if someone tried to use it
+<vimuser> So I gather that you basically reset the counter yourself after you boot (after typing grub password)
+<vimuser> and so, if you boot and the counter is higher, you know if someone tried to use it
 <GNUtoo-irssi> yes, my systemd unit does it
 <GNUtoo-irssi> *resets it
 <GNUtoo-irssi> so it works like that:
