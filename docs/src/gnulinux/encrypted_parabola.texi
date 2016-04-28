@@ -23,6 +23,8 @@ Libreboot on x86 uses the GRUB @uref{http://www.coreboot.org/Payloads#GRUB_2,pay
 
 On most systems, the /boot partition has to be left unencrypted while the others are encrypted. This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical access to the system.
 
+NOTE: When finishing implementing this setup, if the boot stalls when running cryptomount -a, try removing the DVD drive (on thinkpads).
+
 @strong{This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.}
 
 @uref{index.html,Back to previous index}
