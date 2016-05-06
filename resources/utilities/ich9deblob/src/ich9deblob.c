@@ -5,7 +5,7 @@
  * Purpose: disable and remove the ME from ich9m/gm45 systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *  Copyright (C) 2014,2015 Minifree Ltd <info@minifree.org>
+ *  Copyright (C) 2014,2015 Leah Woods <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

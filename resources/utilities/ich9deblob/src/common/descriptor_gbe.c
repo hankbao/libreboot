@@ -4,7 +4,7 @@
  * 
  * Purpose: common descriptor/gbe functions used by ich9deblob
  *
- *  Copyright (C) 2014, 2015 Minifree Ltd <info@minifree.org>
+ *  Copyright (C) 2014, 2015 Leah Woods <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
