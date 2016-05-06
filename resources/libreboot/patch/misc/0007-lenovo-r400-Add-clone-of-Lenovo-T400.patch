@@ -12,7 +12,7 @@ laptops.
 
 Change-Id: I1dadddd7250ab80a4c40c2435865d72e3e5d99c9
 Signed-off-by: Michał Masłowski <mtjm@mtjm.eu>
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/mainboard/lenovo/r400/Kconfig        | 7 +++++++
  src/mainboard/lenovo/r400/Kconfig.name   | 2 ++

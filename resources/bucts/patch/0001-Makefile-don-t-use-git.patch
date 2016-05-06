@@ -1,5 +1,5 @@
 From 63312528ea81207865077ab2c75963e3660859f0 Mon Sep 17 00:00:00 2001
-From: Minifree Ltd <info@minifree.org>
+From: Leah Woods <info@minifree.org>
 Date: Sat, 14 Feb 2015 00:56:43 +0000
 Subject: [PATCH] Makefile: don't use git
 

@@ -1,5 +1,5 @@
 From 1024b5e6c476dcc195dca742746735277f63236b Mon Sep 17 00:00:00 2001
-From: Minifree Ltd <info@minifree.org>
+From: Leah Woods <info@minifree.org>
 Date: Mon, 13 Oct 2014 00:14:53 +0100
 Subject: [PATCH 5/9] NOTFORMERGE: ec/lenovo/h8:
  wlan/trackpoint/touchpad/bluetooth/wwan
@@ -7,7 +7,7 @@ Subject: [PATCH 5/9] NOTFORMERGE: ec/lenovo/h8:
 Permanently enable them.
 
 Change-Id: Ic76ab9ab9c865f30312378e18af58bece6c3260a
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/ec/lenovo/h8/h8.c     | 21 +++++++++++----------
  src/ec/lenovo/pmh7/pmh7.c | 11 ++++-------

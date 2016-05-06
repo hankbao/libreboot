@@ -19,7 +19,7 @@ compatibility to a whole new chipset (GS45), depending on the CPU.
 
 Change-Id: I2719385e93c37d254ce38e0f5f486262160234e1
 Signed-off-by: Steve Shenton <sgsit@libreboot.org>
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/northbridge/intel/gm45/raminit.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)

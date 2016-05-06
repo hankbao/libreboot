@@ -1,10 +1,10 @@
 From 5d8a06db8ac4a3abaff79f75fd41987db6c4c675 Mon Sep 17 00:00:00 2001
-From: Minifree Ltd <info@minifree.org>
+From: Leah Woods <info@minifree.org>
 Date: Wed, 5 Aug 2015 20:21:47 +0100
 Subject: [PATCH 7/7] mainboard/lenovo/r500 romstage.c: use correct RCBA values
 
 Change-Id: I928fd59426f4716d00add1b0c73ade1952aaaeac
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/romstage.c | 42 ++++++++++++++++++------------------
  1 file changed, 21 insertions(+), 21 deletions(-)

@@ -1,10 +1,10 @@
 From 0197ee58d0ead0ffdaea74022c17c60d2d14ac27 Mon Sep 17 00:00:00 2001
-From: Minifree Ltd <info@minifree.org>
+From: Leah Woods <info@minifree.org>
 Date: Wed, 5 Aug 2015 19:53:59 +0100
 Subject: [PATCH 6/7] mainboard/lenovo/r500: use correct GPIO values
 
 Change-Id: I2f1e8515cf27769cd90d59b8edc6d6caff855eaa
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/romstage.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)

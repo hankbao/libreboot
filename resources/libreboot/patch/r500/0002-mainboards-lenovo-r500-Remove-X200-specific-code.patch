@@ -1,10 +1,10 @@
 From 8674a3090ef843905c779b92e55a3951bbb5add8 Mon Sep 17 00:00:00 2001
-From: Minifree Ltd <info@minifree.org>
+From: Leah Woods <info@minifree.org>
 Date: Wed, 5 Aug 2015 00:59:29 +0100
 Subject: [PATCH 2/7] mainboards/lenovo/r500: Remove X200-specific code
 
 Change-Id: Ib5a7217f95b75c38e318972bb742547a534c064b
-Signed-off-by: Minifree Ltd <info@minifree.org>
+Signed-off-by: Leah Woods <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/Kconfig       | 9 ++++-----
  src/mainboard/lenovo/r500/Kconfig.name  | 4 ++--
