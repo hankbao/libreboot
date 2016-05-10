@@ -25,7 +25,7 @@ This is a desktop board using intel hardware. It can make for quite a nifty desk
 NOTE: video framebuffer currently unsupported, only text-mode works, even when booting GNU/Linux.
 This can still be used for building a headlesss server. Boot with fb=false
 
-Flashing instructions can be found at @uref{../install/index.html#flashrom,../install/index.html#flashrom}
+Flashing instructions can be found at @uref{../install/d510mo.html,../install/d510mo.html}
 
 @uref{index.html,Back to previous index}.
 
