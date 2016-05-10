@@ -60,7 +60,7 @@ CONFIG_STRICT_DEVMEM not enabled.
 @item
 @uref{bbb_setup.html,Flashing the Gigabyte GA-G41M-ES2L (has 2 SOIC-8 flash chips, one is backup)}
 @item
-@uref{bbb_setup.html,Flashing the Intel D510MO}
+@uref{d510mo.html,Flashing the Intel D510MO}
 @item
 @uref{bbb_setup.html,How to program an SPI flash chip with the BeagleBone Black}
 @item
