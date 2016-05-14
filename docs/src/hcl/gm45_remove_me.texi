@@ -61,9 +61,11 @@ Two new files will be created:
 @strong{ich9fdgbe_4m.bin}: this is for GM45 laptops with the 4MB flash chip.
 @item
 @strong{ich9fdgbe_8m.bin}: this is for GM45 laptops with the 8MB flash chip.
+@item
+@strong{ich9fdgbe_16m.bin}: this is for GM45 laptops with the 16MB flash chip.
 @end itemize
 
-Assuming that your libreboot image is named @strong{libreboot.rom}, copy the file to where @strong{libreboot.rom} is located and then insert the descriptor+gbe file into the ROM image. For 8MiB flash chips:@* $ @strong{dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc}@* For 4MiB flash chips:@* $ @strong{dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc}@*
+Assuming that your libreboot image is named @strong{libreboot.rom}, copy the file to where @strong{libreboot.rom} is located and then insert the descriptor+gbe file into the ROM image.  For 16MiB flash chips:@* $ @strong{dd if=ich9fdgbe_16m.bin of=libreboot.rom bs=1 count=12k conv=notrunc}@* For 8MiB flash chips:@* $ @strong{dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc}@* For 4MiB flash chips:@* $ @strong{dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc}@* 
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer back to @uref{../install/index.html#flashrom,../install/index.html#flashrom} for how to flash it.
 @menu
