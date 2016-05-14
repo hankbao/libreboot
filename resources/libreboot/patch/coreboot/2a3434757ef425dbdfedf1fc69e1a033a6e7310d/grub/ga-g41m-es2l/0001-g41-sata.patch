@@ -1,0 +1,96 @@
+From e1eada0b19f11777ce1ce9e64d99905fbb16bcbd Mon Sep 17 00:00:00 2001
+From: Damien Zammit <damien@zamaudio.com>
+Date: Wed, 11 May 2016 19:08:33 +1000
+Subject: [PATCH] mb/gigabyte/ga-g41m-es2l: Fix ACPI IRQ settings for SATA
+
+Previously, due to a bug in devicetree and incorrect IRQ
+settings in ACPI, SATA controller would not initialize
+any HDDs in the OS, even though it worked in SeaBIOS.
+The devicetree setting is not needed because SATA must
+function in "plain" mode on this board, as "combined" mode
+does not work at all.
+
+Change-Id: I0036c4734de00b84cc3d64f38e4b1fd80fd1a25d
+Signed-off-by: Damien Zammit <damien@zamaudio.com>
+---
+
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/acpi/x4x_pci_irqs.asl b/src/mainboard/gigabyte/ga-g41m-es2l/acpi/x4x_pci_irqs.asl
+index fdfe73d..87719f7 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/acpi/x4x_pci_irqs.asl
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/acpi/x4x_pci_irqs.asl
+@@ -22,28 +22,35 @@
+ 		Return (Package() {
+ 			/* Internal GFX */
+ 			Package() { 0x0002ffff, 0, 0, 16 },
++			Package() { 0x0002ffff, 1, 0, 17 },
++			Package() { 0x0002ffff, 2, 0, 18 },
++			Package() { 0x0002ffff, 3, 0, 19 },
+ 			/* High Definition Audio	0:1b.0 */
+-			Package() { 0x001bffff, 0, 0, 22 },
++			Package() { 0x001bffff, 0, 0, 16 },
+ 			/* PCIe Root Ports		0:1c.x */
+ 			Package() { 0x001cffff, 0, 0, 16 },
+ 			Package() { 0x001cffff, 1, 0, 17 },
+ 			Package() { 0x001cffff, 2, 0, 18 },
+ 			Package() { 0x001cffff, 3, 0, 19 },
++			Package() { 0x001cffff, 0, 0, 16 },
++			Package() { 0x001cffff, 1, 0, 17 },
+ 			/* USB and EHCI			0:1d.x */
+ 			Package() { 0x001dffff, 0, 0, 23 },
+ 			Package() { 0x001dffff, 1, 0, 19 },
+ 			Package() { 0x001dffff, 2, 0, 18 },
+ 			Package() { 0x001dffff, 3, 0, 16 },
+-			Package() { 0x001dffff, 0, 0, 23 },
+ 			/* SMBUS/SATA/PATA	0:1f.2, 0:1f.3 */
+-			Package() { 0x001fffff, 1, 0, 19 },
+-			Package() { 0x001fffff, 1, 0, 19 },
+ 			Package() { 0x001fffff, 0, 0, 18 },
++			Package() { 0x001fffff, 1, 0, 19 },
++			Package() { 0x001fffff, 1, 0, 19 },
+ 		})
+ 	} Else {
+ 		Return (Package() {
+ 			/* Internal GFX */
+ 			Package() { 0x0002ffff, 0, \_SB.PCI0.LPCB.LNKA, 0 },
++			Package() { 0x0002ffff, 1, \_SB.PCI0.LPCB.LNKB, 0 },
++			Package() { 0x0002ffff, 2, \_SB.PCI0.LPCB.LNKC, 0 },
++			Package() { 0x0002ffff, 3, \_SB.PCI0.LPCB.LNKD, 0 },
+ 			/* High Definition Audio	0:1b.0 */
+ 			Package() { 0x001bffff, 0, \_SB.PCI0.LPCB.LNKA, 0 },
+ 			/* PCIe Root Ports		0:1c.x */
+@@ -51,16 +58,17 @@
+ 			Package() { 0x001cffff, 1, \_SB.PCI0.LPCB.LNKB, 0 },
+ 			Package() { 0x001cffff, 2, \_SB.PCI0.LPCB.LNKC, 0 },
+ 			Package() { 0x001cffff, 3, \_SB.PCI0.LPCB.LNKD, 0 },
++			Package() { 0x001cffff, 0, \_SB.PCI0.LPCB.LNKA, 0 },
++			Package() { 0x001cffff, 1, \_SB.PCI0.LPCB.LNKB, 0 },
+ 			/* USB and EHCI			0:1d.x */
+ 			Package() { 0x001dffff, 0, \_SB.PCI0.LPCB.LNKH, 0 },
+ 			Package() { 0x001dffff, 1, \_SB.PCI0.LPCB.LNKD, 0 },
+ 			Package() { 0x001dffff, 2, \_SB.PCI0.LPCB.LNKC, 0 },
+ 			Package() { 0x001dffff, 3, \_SB.PCI0.LPCB.LNKA, 0 },
+-			Package() { 0x001dffff, 0, \_SB.PCI0.LPCB.LNKH, 0 },
+ 			/* SMBUS/SATA/PATA		0:1f.2, 0:1f.3 */
+-			Package() { 0x001fffff, 1, \_SB.PCI0.LPCB.LNKD, 0 },
+-			Package() { 0x001fffff, 1, \_SB.PCI0.LPCB.LNKD, 0 },
+ 			Package() { 0x001fffff, 0, \_SB.PCI0.LPCB.LNKC, 0 },
++			Package() { 0x001fffff, 1, \_SB.PCI0.LPCB.LNKD, 0 },
++			Package() { 0x001fffff, 1, \_SB.PCI0.LPCB.LNKD, 0 },
+ 		})
+ 	}
+ }
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb b/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
+index 3965538..68a3352 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
+@@ -46,10 +46,8 @@
+       register "pirqf_routing" = "0x0b"
+       register "pirqg_routing" = "0x0b"
+       register "pirqh_routing" = "0x0b"
+-      register "ide_legacy_combined" = "0x1"
+       register "ide_enable_primary" = "0x1"
+       register "ide_enable_secondary" = "0x0"
+-      register "sata_ahci" = "0x0"
+       register "sata_ports_implemented" = "0x3"
+       register "gpe0_en" = "0x40"
+ 
