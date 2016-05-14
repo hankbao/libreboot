@@ -43,7 +43,7 @@ git clone https://github.com/stefanct/flashrom.git
 cd "flashrom/"
 
 # reset to known revision
-git reset --hard 99b2468c9eaa97f7209ee919aa254ba536fd84c2
+git reset --hard 3d3210e6b453738c6b13fbbb2c230b59f5d8adad
 
 # Apply patches
 # ------------------------------------------------------------------------------
