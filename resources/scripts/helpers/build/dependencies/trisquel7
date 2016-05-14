@@ -93,7 +93,7 @@ apt-get -y install build-essential
 # Flashrom build dependencies (also requires build-essential)
 # ------------------------------------------------------------
 
-apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential libusb-1.0-0-dev
+apt-get -y install libpci-dev pciutils zlib1g-dev libftdi-dev build-essential libusb-1.0-0-dev libusb-1.0
 
 # For cross-compiling i686 target on x86_64 host.
 [ "${arch}" -eq 0 ] && apt-get -y install lib32z1-dev
