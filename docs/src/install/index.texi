@@ -58,7 +58,7 @@ CONFIG_STRICT_DEVMEM not enabled.
 @anchor{#hardware-methods}
 @itemize
 @item
-@uref{bbb_setup.html,Flashing the Gigabyte GA-G41M-ES2L (has 2 SOIC-8 flash chips, one is backup)}
+@uref{ga-g41-es2l.html,Flashing the Gigabyte GA-G41M-ES2L (has 2 SOIC-8 flash chips, one is backup)}
 @item
 @uref{d510mo.html,Flashing the Intel D510MO}
 @item
