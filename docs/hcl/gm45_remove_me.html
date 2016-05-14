@@ -109,12 +109,16 @@
 				<ul>
 					<li><b>ich9fdgbe_4m.bin</b>: this is for GM45 laptops with the 4MB flash chip.</li>
 					<li><b>ich9fdgbe_8m.bin</b>: this is for GM45 laptops with the 8MB flash chip.</li>
+					<li><b>ich9fdgbe_16m.bin</b>: this is for GM45 laptops with the 16MB flash chip.</li>
 				</ul>
 			
 			<p>
 				Assuming that your libreboot image is named <b>libreboot.rom</b>, copy
 				the file to where <b>libreboot.rom</b> is located
-				and then insert the descriptor+gbe file into the ROM image. For 8MiB flash chips:<br/>
+				and then insert the descriptor+gbe file into the ROM image.<br/>
+                For 16MiB flash chips:<br/>
+				$ <b>dd if=ich9fdgbe_16m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
+                For 8MiB flash chips:<br/>
 				$ <b>dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
 				For 4MiB flash chips:<br/>
 				$ <b>dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k conv=notrunc</b><br/>
