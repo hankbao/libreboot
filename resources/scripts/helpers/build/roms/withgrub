@@ -97,7 +97,7 @@ if [ -d "bin/grub/" ]; then
 	cd "bin/grub/"
 	for board in "x200" "r400" "t400" "t500"
 	do
-		for romsize in "4m" "8m"
+		for romsize in "4m" "8m" "16m"
 		do	
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"

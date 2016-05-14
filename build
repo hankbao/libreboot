@@ -79,13 +79,13 @@ if [ $# -gt 1 ]; then
     		;;  
     	all)
     		for option in $(listoptions "${mode}"); do
-    			"${build}"/"${mode}"/"${option}" "$@"
+    			"${build}"/"${mode}"/"${option}" $@
     		done
     		;;
     	*)
     		if [ -d "${build}"/"${mode}"/ ]; then
     			if [ -f "${build}"/"${mode}"/"${option}" ]; then
-    				"${build}"/"${mode}"/"${option}" "$@"
+    				"${build}"/"${mode}"/"${option}" $@
     			else
                     help
     				die "Invalid option for '${mode}'. See './build ${mode} list'."
