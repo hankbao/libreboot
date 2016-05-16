@@ -214,6 +214,8 @@ Not to be confused with wifi (wifi is fine).
 @anchor{#memory}
 You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs (speed/size). Non-matching pairs won't work. You can also install a single module (meaning, one of the slots will be empty) in slot 0.
 
+NOTE: reports from some users indicate that non matching pairs might work (e.g. 1+2 GiB).
+
 Make sure that the RAM you buy is the 2Rx8 density.
 
 @uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
