@@ -52,3 +52,6 @@ cd grub/
 ./configure --with-platform=coreboot
 make -j${cores}
 )
+
+# Also build SeaBIOS, which we use with GRUB to make SeaGRUB
+./build module seabios

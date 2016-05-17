@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  helper script: create ROM images for a given system, with GRUB
+#  helper script: create ROM images for a given system, with SeaGRUB
 #
 #	Copyright (C) 2014, 2015, 2016 Leah Woods <info@minifree.org>
 #	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
@@ -69,6 +69,7 @@ git checkout ${branchname}
 
 # Make sure to remove these first
 rm -f "grub."*{elf,cfg}
+rm -f "seabios"*.elf
 
 printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
@@ -109,9 +110,32 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	cp "../../grub_${romtype}.elf" "grub.elf"
+    cp "../../../seabios/out/bios.bin.elf" "seabios.elf"
 	make -j${cores}
-	rm -f "grub.elf"
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
+
+    # We dont need seabios.elf anymore
+    rm -f "seabios.elf"
+
+    # Add the grub.elf to CBFS
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f grub.elf -c lzma -n img/grub2.lzma -t raw
+    # we dont need that grub.elf now
+    rm -f "grub.elf"
+
+    # Set bootorder so that seabios loads grub by default
+    printf "/rom@img/grub2\n" > bootorder
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f bootorder -n bootorder -t raw
+    rm -f bootorder
+
+    # Add 0s delay to seabios, so that the user is not burdened by seeing
+    # that horrible interface that seabios has
+    dd if=/dev/zero of=zero bs=1 count=1 conv=notrunc
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f zero -n etc/show-boot-menu -t raw
+    rm -f zero
+
+    # SeaVGABIOS stuff
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
+
 	# .config no longer needed
 	rm -f ".config"
 
