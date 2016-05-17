@@ -1,16 +1,16 @@
-From a378e20a4306990747213288c52571056281f738 Mon Sep 17 00:00:00 2001
+From 44b3d02a49bc25dc8e9119a11bd948db2c37a931 Mon Sep 17 00:00:00 2001
 From: Arthur Heymans <arthur@aheymans.xyz>
 Date: Sun, 15 May 2016 02:17:12 +0200
 Subject: [PATCH] i945: Enable changing VRAM size
 
 On i945 the vram size was the default 8mb. It was also possible
-to set it 1mb hardcoding it in early_init.c
+to set it 1mb or 0mb hardcoding the GGC register in early_init.c
 
-The intel documentation on i945 only mentions those two options.
-It was set using 3 bits. The documententation also makes mention
-of 4mb, 16mb, 32mb, 64mb but not how to set it.
+The intel documentation on i945 only documents those three options.
+They are set using 3 bits. The documententation also makes mention
+of 4mb, 16mb, 32mb, 48mb, 64mb but not how to set it.
 
-Other non documented (straight forward) bit combinations allows
+The other non documented (straight forward) bit combinations allows
 to change the VRAM size to those other states.
 
 Change-Id: I5e510e81322a4c8315c01b7963ac4b5f7f58a17e
@@ -96,10 +96,10 @@ index 475e88a..bd062ad 100644
  	pci_write_config8(PCI_DEV(0, 0x00, 0), PAM0, 0x30);
  	pci_write_config8(PCI_DEV(0, 0x00, 0), PAM1, 0x33);
 diff --git a/src/northbridge/intel/i945/gma.c b/src/northbridge/intel/i945/gma.c
-index df13ef4..a1de89a 100644
+index df13ef4..f853cc8 100644
 --- a/src/northbridge/intel/i945/gma.c
 +++ b/src/northbridge/intel/i945/gma.c
-@@ -359,9 +359,21 @@ static int intel_gma_init(struct northbridge_intel_i945_config *conf,
+@@ -359,9 +359,24 @@ static int intel_gma_init(struct northbridge_intel_i945_config *conf,
  		case 1:
  			uma_size = 1024;
  			break;
@@ -116,16 +116,19 @@ index df13ef4..a1de89a 100644
 +			uma_size = 32768;
 +			break;
 +		case 6:
++			uma_size = 49152;
++			break;
++		case 7:
 +			uma_size = 65536;
 +			break;
  		}
  
  		printk(BIOS_DEBUG, "%dM UMA\n", uma_size >> 10);
 diff --git a/src/northbridge/intel/i945/northbridge.c b/src/northbridge/intel/i945/northbridge.c
-index 514f88c..e7d09af 100644
+index 514f88c..4be9827 100644
 --- a/src/northbridge/intel/i945/northbridge.c
 +++ b/src/northbridge/intel/i945/northbridge.c
-@@ -112,9 +112,21 @@ static void pci_domain_set_resources(device_t dev)
+@@ -112,9 +112,24 @@ static void pci_domain_set_resources(device_t dev)
  		case 1:
  			uma_size = 1024;
  			break;
@@ -142,6 +145,9 @@ index 514f88c..e7d09af 100644
 +			uma_size = 32768;
 +			break;
 +		case 6:
++			uma_size = 49152;
++			break;
++		case 7:
 +			uma_size = 65536;
 +			break;
  		}
