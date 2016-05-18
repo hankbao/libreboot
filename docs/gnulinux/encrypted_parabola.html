@@ -82,15 +82,6 @@
 		</p>
 
 		<p>
-			Wipe the MBR (if you use MBR):<br/>
-			# <b>lsblk</b><br/>
-			Your storage is probably /dev/sda, but be very sure to double check this or you WILL lose your data!<br/>
-			# <b>dd if=/dev/zero of=/dev/sda bs=446 count=1; sync</b><br/>
-			Never use SeaBIOS! The MBR section can easily be changed with malicious code, which SeaBIOS will blindly execute. 
-			This guide is for libreboot with GRUB-as-payload only.
-		</p>
-
-		<p>
 			Securely wipe the drive:<br/>
 			# <b>dd if=/dev/urandom of=/dev/sda; sync</b><br/>
 			NOTE: If you have an SSD, only do this the first time. If it was already LUKS-encrypted before,
