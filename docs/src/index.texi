@@ -5,11 +5,11 @@
 @paragraphindent 0
 @end ifnottex
 @titlepage
-@title Libreboot project documentation
+@title GNU Libreboot documentation
 @end titlepage
 
 @node Top
-@top Libreboot project documentation
+@top GNU Libreboot documentation
 
 @menu
 * Libreboot project documentation::
@@ -18,9 +18,9 @@
 * How do I know what version I'm running?::
 @end menu
 
-@node Libreboot project documentation
-@chapter Libreboot project documentation
-@anchor{#libreboot-project-documentation}
+@node GNU Libreboot documentation
+@chapter GNU Libreboot documentation
+@anchor{#gnu-libreboot-documentation}
 Information about this release can be found at @uref{release.html,release.html}. Always check @uref{http://libreboot.org,libreboot.org} for updates.
 
 @node Table of contents
@@ -55,7 +55,14 @@ Information about this release can be found at @uref{release.html,release.html}.
 @node About the libreboot project
 @chapter About the libreboot project
 @anchor{#about-the-libreboot-project}
-Libreboot originally began during December 2013, as a commercial effort by @uref{http://gluglug.org.uk/,Gluglug} to achieve @uref{https://www.fsf.org/resources/hw/endorsement/respects-your-freedom,RYF} endorsement for a modified ThinkPad X60 (the first system to ever be added to libreboot).
+GNU Libreboot is a free BIOS or UEFI replacement (@uref{https://www.gnu.org/philosophy/free-sw.html,free as in freedom});
+libre @i{boot firmware} that initializes the hardware and starts a bootloader for your operating
+system.
+It's also an open source BIOS, but open source @uref{https://www.gnu.org/philosophy/open-source-misses-the-point.html,fails} to
+promote freedom; @i{please call libreboot @strong{@uref{https://www.gnu.org/philosophy/free-sw.html,free software}}}.
+Since 14 May 2016, Libreboot is part of the @uref{https://www.gnu.org/,GNU project}.
+
+Libreboot originally began during December 2013, as a commercial effort by the @uref{https://minifree.org/,Ministry of Freedom} to achieve @uref{https://www.fsf.org/resources/hw/endorsement/respects-your-freedom,RYF} endorsement for a modified ThinkPad X60 (the first system to ever be added to libreboot).
 
 Back then, the name @emph{libreboot} didn't exist; the project was nameless, referring to itself as a @emph{deblobbed version of coreboot}. The project named itself libreboot at some point during early 2014, and has since rapidly expanded to support more hardware and become more user-friendly.
 
