@@ -75,14 +75,24 @@ for program in ${programs}; do
 	if [ "${noconfirm}" = "0" ]; then
 		printf "Use \"./download --noconfirm\" or \"./download -y\" if you want to be rid of these confirmation dialogues.\n\n"
 		if [ -d "${program}/" ]; then
-			printf "A %s/ directory already exists, delete it? [yN]: " "${program}"
-			read -r answer
-			if [ "${answer}" = "y" ]; then
-				rm -Rf "${program:?}" && printf "Old %s directory deleted.\n\n" "${program}"
-			else
-				printf "%s directory not deleted, and therefore not replaced.\n" "${program}"
-				continue
-			fi
+            if [ "${program}" = "seabios" ]; then
+                # temporary hack. download grub also downloads seabios,
+                # which breaks automated build when running ./download all
+                # Later on, we'll delete the seabios download script
+                # and grub download script and replace both with
+                # a download seagrub script
+
+			    rm -Rf "${program:?}" && printf "Old %s directory deleted.\n\n" "${program}"
+            else
+			    printf "A %s/ directory already exists, delete it? [yN]: " "${program}"
+		    	read -r answer
+		    	if [ "${answer}" = "y" ]; then
+			    	rm -Rf "${program:?}" && printf "Old %s directory deleted.\n\n" "${program}"
+    			else
+	    			printf "%s directory not deleted, and therefore not replaced.\n" "${program}"
+		    		continue
+		    	fi
+            fi
 		fi
 	fi
 
