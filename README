@@ -37,3 +37,6 @@ Libreboot provides a fully automated build system and installation process, with
 documentation written for non-technical users, in an attempt to make the 
 software as easy to use as possible. ROM images are provided, along with 
 utilities, all built from the publicly distributed source code. 
+
+This README is licensed under Creative Commons Zero 1.0:
+https://creativecommons.org/publicdomain/zero/1.0/
