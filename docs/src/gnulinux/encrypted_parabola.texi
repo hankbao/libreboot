@@ -43,8 +43,6 @@ This section deals with wiping the storage device on which you plan to install P
 
 - make sure to read @uref{https://wiki.archlinux.org/index.php/Solid_State_Drives,this article}. Edit /etc/fstab later on when chrooted into your install. Also, read the whole article and keep all points in mind, adapting them for this guide.
 
-Wipe the MBR (if you use MBR):@* # @strong{lsblk}@* Your storage is probably /dev/sda, but be very sure to double check this or you WILL lose your data!@* # @strong{dd if=/dev/zero of=/dev/sda bs=446 count=1; sync}@* Never use SeaBIOS! The MBR section can easily be changed with malicious code, which SeaBIOS will blindly execute. This guide is for libreboot with GRUB-as-payload only.
-
 Securely wipe the drive:@* # @strong{dd if=/dev/urandom of=/dev/sda; sync}@* NOTE: If you have an SSD, only do this the first time. If it was already LUKS-encrypted before, use the info below to wipe the LUKS header. Also, check online for your SSD what the recommended erase block size is. For example if it was 2MiB:@* # @strong{dd if=/dev/urandom of=/dev/sda bs=2M; sync}
 
 If your drive was already LUKS encrypted (maybe you are re-installing your distro) then it is already 'wiped'. You should just wipe the LUKS header. @uref{https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/,https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/} showed me how to do this. It recommends doing the first 3MiB. Now, that guide is recommending putting zero there. I'm going to use urandom. Do this:@* # @strong{head -c 3145728 /dev/urandom > /dev/sda; sync}@* (Wiping the LUKS header is important, since it has hashed passphrases and so on. It's 'secure', but 'potentially' a risk).
