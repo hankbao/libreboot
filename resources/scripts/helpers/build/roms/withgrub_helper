@@ -137,15 +137,9 @@ do
     # SeaVGABIOS stuff
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
 
-    if $(./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" print | grep -Fxq "etc\/ps2\-keyboard\-spinup"); then
-        # Remove default 3000ms timeout
-        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup
-    fi
-
-    if ! $(./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" print | grep -Fxq "etc\/ps2\-keyboard\-spinup"); then
-        # Add keyboard startup delay timeout. Needed on some boards. 60s, just to play it safe.
-        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup
-    fi
+    # keyboard spinup timeout
+   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
+   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup || printf "already exists"
 
 	# .config no longer needed
 	rm -f ".config"
