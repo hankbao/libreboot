@@ -61,9 +61,9 @@ pacman -S --needed libpciaccess
 arch=${?}
 
 # For cross-compiling i686 target on x86_64 host.
-if ["${arch}" -eq 0 ]; then
+if [ "${arch}" -eq 0 ]; then
 	printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
-	pacman -Sl multilib 1&>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
+	pacman -Sl multilib &>/dev/null || (printf "You must enable the multilib repository in /etc/pacman.conf first\n"; exit 1)
 	pacman -S --needed gcc-multilib gcc-libs-multilib lib32-libltdl lib32-libpciaccess lib32-libstdc++5 lib32-glibc lib32-fakeroot
 fi
 
@@ -85,7 +85,7 @@ pacman -S ncurses doxygen iasl gdb flex bison
 # pacman -S git base-devel
 
 # For cross-compiling i686 target on x86_64 host.
-if ["${arch}" -eq 0 ]; then
+if [ "${arch}" -eq 0 ]; then
 	printf "Cross-Compiling: You are running on 64-bit architecture, however 32-bit libraries are needed\n"
 	pacman -S --needed lib32-ncurses
 fi
