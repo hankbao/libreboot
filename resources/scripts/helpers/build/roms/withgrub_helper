@@ -137,7 +137,7 @@ do
     # SeaVGABIOS stuff
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
 
-    if ! $(./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" print | grep -Fxq "etc\/ps2\-keyboard\-spinup"); then
+    if $(./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" print | grep -Fxq "etc\/ps2\-keyboard\-spinup"); then
         # Remove default 3000ms timeout
         ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup
     fi
