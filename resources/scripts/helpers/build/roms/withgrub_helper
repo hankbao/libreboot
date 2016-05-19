@@ -137,8 +137,11 @@ do
     # SeaVGABIOS stuff
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
 
-    # Add keyboard startup delay timeout. Needed on some boards. 20s, just to play it safe.
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 20000 -n etc/ps2-keyboard-spinup
+    # Remove default 3000ms timeout
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup
+
+    # Add keyboard startup delay timeout. Needed on some boards. 60s, just to play it safe.
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup
 
 	# .config no longer needed
 	rm -f ".config"
