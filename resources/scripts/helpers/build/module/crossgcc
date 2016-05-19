@@ -38,6 +38,8 @@ fi
 
 (
 cd "crossgcc/"
-make crossgcc CPUS=${cores}
+for architecture in i386 arm; do
+    make crossgcc-${architecture} CPUS=${cores}
+done
 )
 
