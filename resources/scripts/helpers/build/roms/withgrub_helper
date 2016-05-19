@@ -118,7 +118,7 @@ do
     rm -f "seabios.elf"
 
     # Add the grub.elf to CBFS
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f grub.elf -c lzma -n img/grub2.lzma -t raw
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma grub.elf img/grub2
     # we dont need that grub.elf now
     rm -f "grub.elf"
 
@@ -129,7 +129,8 @@ do
 
     # Add 0s delay to seabios, so that the user is not burdened by seeing
     # that horrible interface that seabios has
-    dd if=/dev/zero of=zero bs=1 count=1 conv=notrunc
+    rm -f zero
+    dd if=/dev/null of=zero bs=1 count=1
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f zero -n etc/show-boot-menu -t raw
     rm -f zero
 
