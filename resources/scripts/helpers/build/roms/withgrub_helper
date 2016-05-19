@@ -142,8 +142,10 @@ do
         ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup
     fi
 
-    # Add keyboard startup delay timeout. Needed on some boards. 60s, just to play it safe.
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup
+    if ! $(./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" print | grep -Fxq "etc\/ps2\-keyboard\-spinup"); then
+        # Add keyboard startup delay timeout. Needed on some boards. 60s, just to play it safe.
+        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup
+    fi
 
 	# .config no longer needed
 	rm -f ".config"
