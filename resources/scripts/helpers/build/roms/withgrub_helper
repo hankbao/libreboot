@@ -118,7 +118,7 @@ do
     rm -f "seabios.elf"
 
     # Add the grub.elf to CBFS
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma grub.elf img/grub2
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma -f grub.elf -n img/grub2
     # we dont need that grub.elf now
     rm -f "grub.elf"
 
