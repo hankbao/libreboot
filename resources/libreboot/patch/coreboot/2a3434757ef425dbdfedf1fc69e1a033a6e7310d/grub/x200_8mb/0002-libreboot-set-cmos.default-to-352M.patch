@@ -1,0 +1,34 @@
+From bbb785a3b1499b7745882e8720b3e73f1361845a Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Thu, 19 May 2016 16:12:26 +0200
+Subject: [PATCH 2/2] libreboot set cmos.default to 352M
+
+Change-Id: Ifb514302968eba9c2ac4f38406b6b99b11192383
+
+diff --git a/src/mainboard/lenovo/t400/cmos.default b/src/mainboard/lenovo/t400/cmos.default
+index 5cf3e63..f9f4a48 100644
+--- a/src/mainboard/lenovo/t400/cmos.default
++++ b/src/mainboard/lenovo/t400/cmos.default
+@@ -14,4 +14,4 @@ power_management_beeps=Enable
+ low_battery_beep=Enable
+ sata_mode=AHCI
+ hybrid_graphics_mode=Integrated Only
+-gfx_uma_size=32M
+\ No newline at end of file
++gfx_uma_size=352M
+\ No newline at end of file
+diff --git a/src/mainboard/lenovo/x200/cmos.default b/src/mainboard/lenovo/x200/cmos.default
+index 1d7b420..d6b5fbd 100644
+--- a/src/mainboard/lenovo/x200/cmos.default
++++ b/src/mainboard/lenovo/x200/cmos.default
+@@ -13,4 +13,4 @@ sticky_fn=Disable
+ power_management_beeps=Enable
+ low_battery_beep=Enable
+ sata_mode=AHCI
+-gfx_uma_size=32M
+\ No newline at end of file
++gfx_uma_size=352M
+\ No newline at end of file
+-- 
+2.8.2
+
