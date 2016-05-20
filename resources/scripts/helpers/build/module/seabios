@@ -39,9 +39,21 @@ cp ../resources/seabios/config/config .config
 # build SeaBIOS
 make
 
+mv "out/bios.bin.elf" ../
+
 printf "\n\n"
 
 rm -f .config
+
+make distclean
+
+cp ../resources/seabios/config/config_vga .config
+
+make
+rm -f .config
+
+mv out/bios.bin.elf out/bios.bin.vga.elf
+mv ../bios.bin.elf out/
 
 # done. go back to main directory
 cd ../

@@ -31,6 +31,7 @@ printf "Cleaning the previous build of seabios\n"
 
 (
 cd "seabios/"
+rm -f "out/bios.bin.vga.elf"
 make distclean
 )
 

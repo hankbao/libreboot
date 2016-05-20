@@ -134,9 +134,6 @@ do
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f zero -n etc/show-boot-menu -t raw
     rm -f zero
 
-    # SeaVGABIOS stuff
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw
-
     # keyboard spinup timeout
    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup || printf "already exists"

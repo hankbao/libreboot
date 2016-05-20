@@ -28,11 +28,18 @@ set -u -e
 (
 cd "seabios/"
 
-if [ -f "../resources/seabios/config/config" ]; then
-	cp "../resources/seabios/config/config" ".config"
-fi
+for cfgtype in config config_vga; do
 
-make menuconfig
+    printf "doing config %s\n" "${cfgtype}"
+    sleep 2
 
-mv ".config" "../resources/seabios/config/config"
+    if [ -f "../resources/seabios/config/${cfgtype}" ]; then
+    	cp "../resources/seabios/config/${cfgtype}" ".config"
+    fi
+
+    make menuconfig
+
+    mv ".config" "../resources/seabios/config/${cfgtype}"
+
+done
 )
