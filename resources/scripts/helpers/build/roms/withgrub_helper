@@ -133,7 +133,7 @@ do
 
     # keyboard spinup timeout
    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
-   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 60000 -n etc/ps2-keyboard-spinup || printf "already exists"
+   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 6000 -n etc/ps2-keyboard-spinup || printf "already exists"
 
 	# .config no longer needed
 	rm -f ".config"
