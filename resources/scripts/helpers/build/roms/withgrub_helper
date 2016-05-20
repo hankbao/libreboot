@@ -129,10 +129,7 @@ do
 
     # Add 0s delay to seabios, so that the user is not burdened by seeing
     # that horrible interface that seabios has
-    rm -f zero
-    dd if=/dev/null of=zero bs=1 count=1
-    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f zero -n etc/show-boot-menu -t raw
-    rm -f zero
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 0 -n etc/show-boot-menu || "already exists"
 
     # keyboard spinup timeout
    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
