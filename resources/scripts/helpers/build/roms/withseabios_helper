@@ -68,7 +68,7 @@ git checkout ${branchname}
 )
 
 # Make sure to remove these first
-rm -f "seabios."*{elf,cfg}
+rm -f *{elf,cfg}
 
 printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
@@ -98,10 +98,10 @@ do
 
 	# Build coreboot ROM image
 	make clean
-	cp "../../../seabios/out/bios.bin.vga.elf" "seabios.elf"
+	cp "../../../seabios/out/bios.bin.vga.elf" "payload.elf"
     mv "config_${romtype}" .config
     make -j${cores}
-	rm -f "seabios.elf"
+	rm -f "payload.elf"
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 
     # Now add SeaVGABIOS (SeaBIOS wrapper for coreboot native video init)

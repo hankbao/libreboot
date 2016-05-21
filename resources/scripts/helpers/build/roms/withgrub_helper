@@ -68,8 +68,7 @@ git checkout ${branchname}
 )
 
 # Make sure to remove these first
-rm -f "grub."*{elf,cfg}
-rm -f "seabios"*.elf
+rm -f *.{elf,cfg}
 
 printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproducible builds in coreboot
 
@@ -110,12 +109,12 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	cp "../../grub_${romtype}.elf" "grub.elf"
-    cp "../../../seabios/out/bios.bin.elf" "seabios.elf"
+    cp "../../../seabios/out/bios.bin.elf" "payload.elf"
 	make -j${cores}
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 
     # We dont need seabios.elf anymore
-    rm -f "seabios.elf"
+    rm -f "payload.elf"
 
     # Add the grub.elf to CBFS
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma -f grub.elf -n img/grub2

@@ -119,8 +119,7 @@ if [ -d "bin/grub/" ]; then
 fi
 
 # The GRUB files are no longer needed
-rm -f "coreboot/grub"*.{elf,cfg}
-rm -f "coreboot/seabios"*.elf
+rm -f "coreboot/"*.{elf,cfg}
 rm -f "coreboot/"*/*/*.{elf,cfg}
 
 printf "\n\n"

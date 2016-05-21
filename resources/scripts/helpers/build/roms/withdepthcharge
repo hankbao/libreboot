@@ -105,12 +105,12 @@ builddepthcharge() {
 		cd "depthcharge/"
 
 		make distclean
-		rm -f "../coreboot/${cbrevision:?}/${cbrevision:?}/depthcharge.elf"
+		rm -f "../coreboot/${cbrevision:?}/${cbrevision:?}/payload.elf"
 
 		make BOARD="${board}" defconfig
 		make BOARD="${board}" LIBPAYLOAD_DIR="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/payloads/libpayload/install/libpayload" VB_SOURCE="$(pwd)/../coreboot/${cbrevision}/${cbrevision}/3rdparty/vboot" -j${cores} depthcharge_unified
 
-		cp "build/depthcharge.elf" "../coreboot/${cbrevision}/${cbrevision}/"
+		cp "build/depthcharge.elf" "../coreboot/${cbrevision}/${cbrevision}/payload.elf"
 
 		cd "../coreboot/${cbrevision}/${cbrevision}/"
 		git checkout master
@@ -171,7 +171,7 @@ buildcoreboot() {
 		mv "${board}/" "../../../bin/depthcharge/"
 
 		# clean this up
-		rm -f "depthcharge.elf"
+		rm -f "payload.elf"
 		rm -f *.img
 
 		git checkout master

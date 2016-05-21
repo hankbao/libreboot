@@ -49,7 +49,7 @@ else
 fi
 
 # The SeaBIOS files are no longer needed
-rm -f "coreboot/seabios"*.{elf,cfg}
-rm -f "coreboot/"*/*/*.{elf,cfg}
+rm -f coreboot/*.{elf,cfg}
+rm -f coreboot/*/*/*.{elf,cfg}
 
 printf "\n\n"
