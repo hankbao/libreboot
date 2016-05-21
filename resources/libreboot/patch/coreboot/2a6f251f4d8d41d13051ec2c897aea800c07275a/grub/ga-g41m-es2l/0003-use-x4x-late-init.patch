@@ -1,0 +1,60 @@
+From bbea7db476854e3979a60c9a3e173eb8a52a8fa5 Mon Sep 17 00:00:00 2001
+From: Damien Zammit <damien@zamaudio.com>
+Date: Sat, 21 May 2016 01:56:53 +1000
+Subject: [PATCH] mb/gigabyte/ga-g41m-es2l: Use x4x_late_init()
+
+Change-Id: I10d0f6ce747b60499680e4dc229b7fcbb16cc039
+Signed-off-by: Damien Zammit <damien@zamaudio.com>
+---
+
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/romstage.c b/src/mainboard/gigabyte/ga-g41m-es2l/romstage.c
+index bff481f..425b176 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/romstage.c
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/romstage.c
+@@ -50,9 +50,10 @@
+ 	pci_write_config32(dev, GPIO_BASE, (DEFAULT_GPIOBASE | 1));
+ 	pci_write_config8(dev, GPIO_CNTL, 0x10);
+ 
+-	outl(0x1f15f7c0, DEFAULT_GPIOBASE + 0x00); /* GPIO_USE_SEL */
++	outl(0x1f35f7c0, DEFAULT_GPIOBASE + 0x00); /* GPIO_USE_SEL */
+ 	outl(0xe2e9ffc3, DEFAULT_GPIOBASE + 0x04); /* GP_IO_SEL */
+-	outl(0xe0d7fcc3, DEFAULT_GPIOBASE + 0x0c); /* GP_LVL */
++	outl(0xe0d7ec02, DEFAULT_GPIOBASE + 0x0c); /* GP_LVL */
++	outl(0x00000000, DEFAULT_GPIOBASE + 0x18); /* GPO_BLINK */
+ 	outl(0x000039ff, DEFAULT_GPIOBASE + 0x2c); /* GPI_INV */
+ 	outl(0x000000e7, DEFAULT_GPIOBASE + 0x30);
+ 	outl(0x000000f0, DEFAULT_GPIOBASE + 0x34);
+@@ -98,10 +99,23 @@
+ 	RCBA32(0x3110) = 0x00000001;
+ 	RCBA32(0x3140) = 0x00410032;
+ 	RCBA32(0x3144) = 0x32100237;
++	RCBA32(0x3148) = 0x00000000;
+ 
+ 	/* Enable IOAPIC */
+ 	RCBA8(0x31ff) = 0x03;
+ 	RCBA8(0x31ff);
++
++	RCBA32(0x3410) = 0x00190464;
++	RCBA32(0x3418) = 0x003c0063;
++	RCBA32(0x341c) = 0x00000000;
++	RCBA32(0x3430) = 0x00000001;
++	RCBA32(0x3e00) = 0xff000001;
++	RCBA32(0x3e08) = 0x00000080;
++	RCBA32(0x3e0c) = 0x00800000;
++	RCBA32(0x3e40) = 0xff000001;
++	RCBA32(0x3e48) = 0x00000080;
++	RCBA32(0x3e4c) = 0x00800000;
++	RCBA32(0x3f00) = 0x0000000b;
+ }
+ 
+ static void ich7_enable_lpc(void)
+@@ -146,4 +160,9 @@
+ 	quick_ram_check();
+ 	cbmem_initialize_empty();
+ 	printk(BIOS_DEBUG, "Memory initialized\n");
++
++	x4x_late_init();
++
++	printk(BIOS_DEBUG, "x4x late init complete\n");
++
+ }
