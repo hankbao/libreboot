@@ -1,3 +1,4 @@
 /resources/libreboot/patch/coreboot/2a3434757ef425dbdfedf1fc69e1a033a6e7310d/grub/x60/0001-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
 /resources/libreboot/patch/coreboot/2a3434757ef425dbdfedf1fc69e1a033a6e7310d/grub/t400_8mb/0002-NOTFORMERGE-lenovo-t400-hard-code-enable-integrated-.patch
 /resources/libreboot/patch/coreboot/2a3434757ef425dbdfedf1fc69e1a033a6e7310d/grub/x200_8mb/0001-add-acpi-c3-cpu-c4-state-for-gm45-thinpads.patch
+resources/libreboot/patch/coreboot/2a3434757ef425dbdfedf1fc69e1a033a6e7310d/grub/x200_8mb/0001-gm45-enable-setting-all-vram-sizes-from-cmos.patch
