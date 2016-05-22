@@ -116,7 +116,6 @@ do
         # Use GRUB
         cp grub.elf payload.elf 
     fi
-    cp "../../../seabios/out/bios.bin.elf" "payload.elf"
 	make -j${cores}
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
 
