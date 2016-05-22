@@ -348,8 +348,6 @@ Read this post on the libreboot mailing list for more information: @uref{https:/
 
 @strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
-NOTE: the onboard NIC does not work when libreboot is installed. This is being investigated by damo22 in the libreboot IRC channel.
-
 Flashing instructions can be found at @ref{How to update/install,flashrom}.
 
 
