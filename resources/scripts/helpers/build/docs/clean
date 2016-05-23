@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+basedir="docs/manual"
+
+echo "Cleaning $basedir..." 
+if [ -d $basedir ]; then rm -Rf $basedir; fi
+echo "Done."

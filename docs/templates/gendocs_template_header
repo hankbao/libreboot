@@ -1,0 +1,12 @@
+<!--#include virtual="/server/header.html" -->
+<!-- Parent-Version: 1.77 -->
+<title>%%TITLE%% - GNU Project - Free Software Foundation</title>
+<!--#include virtual="/server/banner.html" -->
+<h2>%%TITLE%%</h2>
+
+<address>Free Software Foundation</address>
+<address>last updated %%DATE%%</address>
+
+<p>This manual (%%PACKAGE%%) is available in the following formats:</p>
+
+<ul>

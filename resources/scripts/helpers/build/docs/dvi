@@ -1,0 +1,24 @@
+#!/bin/sh -e
+#
+# Libreboot documentation build script: dvi
+#
+
+echo "@set librebootbase `pwd`" > docs/constants.texi
+
+basedir="docs/manual/"
+outfile="${basedir}libreboot.dvi"
+texinfo_src="docs/libreboot.texi"
+
+[ -d docs/manual ] || mkdir docs/manual
+
+echo "Writing manual: $outfile..."
+# Options: quiet, clean (remove TeX compilation directory)
+# and expand macros using makeinfo
+texi2dvi -q -c -e -o $outfile $texinfo_src
+
+echo "Making $outfile.gz..."
+gzip -f -9 -c $outfile > $outfile.gz 
+
+echo "Done."
+
+

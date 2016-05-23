@@ -4,6 +4,12 @@
 
 @documentencoding UTF-8
 
+@include constants.texi
+
+@ifclear librebootbase
+@set librebootbase ../
+@end ifclear
+
 @ignore
 A few notes:
 - Nodes cannot share the same name in texinfo files. Therefore I had to change some of the node names. I usually did this by appending the name of the hardware in question to the original node name.
@@ -27,10 +33,10 @@ Copyright @copyright{} 2014, 2015, 2016 Leah Woods <info@@minifree.org>@*
 Copyright @copyright{} 2015 Paul Kocialkowski <contact@@paulk.fr>@*
 Copyright @copyright{} 2015 Alex David <opdecirkel@@gmail.com>@*
 Copyright @copyright{} 2015 Patrick "P. J." McDermott <pj@@pehjota.net>@*
-Copyright @copyright{} 2015 Albin Söderqvist@*
+Copyright @copyright{} 2015 Albin S@"oderqvist@*
 Copyright @copyright{} 2015 Jeroen Quint <jezza@@diplomail.ch>@*
 
-Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{../resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
+Permission is granted to copy, distribute and/or modify this document under the terms of the GNU Free Documentation License, Version 1.3 or any later version published by the Free Software Foundation; with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A copy of the license can be found at @uref{@value{librebootbase}/docs/resources/licenses/gfdl-1.3.txt,gfdl-1.3.txt}
 
 Updated versions of the license (when available) can be found at @uref{https://www.gnu.org/licenses/licenses.html,https://www.gnu.org/licenses/licenses.html}
 
@@ -500,7 +506,7 @@ PCB revision 1.05G is the best version of this board (the revision number will b
 Current issues
 @itemize
 @item
-There seems to be a 30 second bootblock delay (observed by tpearson); the system otherwise boots and works as expected. See @uref{../resources/text/kfsn4-dre/bootlog.txt,kfsn4-dre/bootlog.txt} - this uses the 'simple' bootblock, while tpearson uses the 'normal' bootblock, which tpearson suspects may be a possible cause. This person says that they will look into it. @uref{http://review.coreboot.org/gitweb?p=board-status.git;a=blob;f=asus/kfsn4-dre/4.0-10101-g039edeb/2015-06-27T03:59:16Z/config.txt;h=4742905c185a93fbda8eb14322dd82c70641aef0;hb=055f5df4e000a97453dfad6c91c2d06ea22b8545,This config} doesn't have the issue. 
+There seems to be a 30 second bootblock delay (observed by tpearson); the system otherwise boots and works as expected. See @uref{@value{librebootbase}/docs/resources/text/kfsn4-dre/bootlog.txt,kfsn4-dre/bootlog.txt} - this uses the 'simple' bootblock, while tpearson uses the 'normal' bootblock, which tpearson suspects may be a possible cause. This person says that they will look into it. @uref{http://review.coreboot.org/gitweb?p=board-status.git;a=blob;f=asus/kfsn4-dre/4.0-10101-g039edeb/2015-06-27T03:59:16Z/config.txt;h=4742905c185a93fbda8eb14322dd82c70641aef0;hb=055f5df4e000a97453dfad6c91c2d06ea22b8545,This config} doesn't have the issue. 
 @item
 Text-mode is a bit jittery (but still usable). (the jitter disappears if using KMS, once the kernel starts. The jitter will remain, if booting the kernel in text-mode).
 @end itemize
@@ -1018,7 +1024,7 @@ There is also a 15.4" T60 with Intel GPU.
 
 Note: the T60@strong{p} laptops all have ATI graphics. The T60p laptops cannot be used with libreboot under any circumstances.
 
-The following T60 motherboard (see area highlighted in white) shows an empty space where the ATI GPU would be (this particular motherboard has an Intel GPU):@*@* @image{../resources/images/t60_dev/t60_unbrick,,,,jpg} 
+The following T60 motherboard (see area highlighted in white) shows an empty space where the ATI GPU would be (this particular motherboard has an Intel GPU):@*@* @image{@value{librebootbase}/docs/resources/images/t60_dev/t60_unbrick,,,,jpg} 
 
 The reason that the ATI GPU on T60 is unsupported is due to the VBIOS (Video BIOS) which is non-free. The VBIOS for the Intel GPU on X60/T60 has been reverse engineered, and replaced with Free Software and so will work in libreboot.
 
@@ -1162,13 +1168,13 @@ X200S and X200 Tablet have raminit issues at the time of writing (GS45 chipset. 
 
 X200S and X200 Tablet are known to work, but only with certain CPU+RAM configurations. The current stumbling block is RCOMP and SFF, mentioned in @uref{https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf,https://www.cs.cmu.edu/~410/doc/minimal_boot.pdf}.
 
-The issues mostly relate to raminit (memory initialization). With an unpatched coreboot, you get the following: @uref{../resources/text/x200s/cblog00.txt,cblog00.txt}. No SODIMM combination that was tested would work. At first glance, it looks like GS45 (chipset that X200S uses. X200 uses GM45) is unsupported, but there is a workaround that can be used to make certain models of the X200S work, depending on the RAM. 
+The issues mostly relate to raminit (memory initialization). With an unpatched coreboot, you get the following: @uref{@value{librebootbase}/docs/resources/text/x200s/cblog00.txt,cblog00.txt}. No SODIMM combination that was tested would work. At first glance, it looks like GS45 (chipset that X200S uses. X200 uses GM45) is unsupported, but there is a workaround that can be used to make certain models of the X200S work, depending on the RAM. 
 
 The datasheet for GS45 describes two modes: low-performance and high-performance. Low performance uses the SU range of ultra-low voltage procesors (SU9400, for example), and high-performance uses the SL range of processors (SL9400, for example). According to datasheets, GS45 behaves very similarly to GM45 when operating in high-performance mode.
 
 The theory then was that you could simply remove the checks in coreboot and make it pass GS45 off as GM45; the idea is that, with a high-performance mode CPU (SL9400, for example) it would just boot up and work.
 
-This suspicion was confirmed with the following log: @uref{../resources/text/x200s/cblog01.txt,cblog01.txt}. The memory modules in this case are 2x4GB. @strong{However, not all configurations work: @uref{../resources/text/x200s/cblog02.txt,cblog02.txt} (2x2GB) and @uref{../resources/text/x200s/cblog03.txt,cblog03.txt} (1x2GB) show a failed bootup.} @emph{False alarm. The modules were mixed (non-matching). X200S with high-performance mode CPU will work so long as you use matching memory modules (doesn't matter what size).} S
+This suspicion was confirmed with the following log: @uref{@value{librebootbase}/docs/resources/text/x200s/cblog01.txt,cblog01.txt}. The memory modules in this case are 2x4GB. @strong{However, not all configurations work: @uref{@value{librebootbase}/docs/resources/text/x200s/cblog02.txt,cblog02.txt} (2x2GB) and @uref{@value{librebootbase}/docs/resources/text/x200s/cblog03.txt,cblog03.txt} (1x2GB) show a failed bootup.} @emph{False alarm. The modules were mixed (non-matching). X200S with high-performance mode CPU will work so long as you use matching memory modules (doesn't matter what size).} S
 
 This was then pushed as a patch for coreboot, which can be found at @uref{http://review.coreboot.org/#/c/7786/,http://review.coreboot.org/#/c/7786/} (libreboot merges this patch in coreboot-libre now. Check the 'getcb' script in src or git).
 @menu
@@ -1263,7 +1269,7 @@ The coreboot wiki @uref{http://www.coreboot.org/Motherboard_Porting_Guide,shows}
 BIOS 3.15, EC 1.06
 @itemize
 @item
-@uref{../resources/misc/dumps/x200/,x200_dumps/}
+@uref{@value{librebootbase}/docs/resources/misc/dumps/x200/,x200_dumps/}
 @end itemize
 
 @end itemize
@@ -1387,7 +1393,7 @@ The coreboot wiki @uref{http://www.coreboot.org/Motherboard_Porting_Guide,shows}
 T400 with @strong{Winbond W25X64} flash chip (8MiB, SOIC-16) and Lenovo BIOS 2.02 (EC firmware 1.01):
 @itemize
 @item
-@uref{../resources/misc/dumps/logs-t400-bios2.02-ec1.01/,logs-t400-bios2.02-ex1.01}
+@uref{@value{librebootbase}/docs/resources/misc/dumps/logs-t400-bios2.02-ec1.01/,logs-t400-bios2.02-ex1.01}
 @end itemize
 
 @item
@@ -1433,7 +1439,7 @@ Not all LCD panels are compatible yet. See @ref{LCD compatibility on GM45 laptop
 
 @node Descriptor and Gbe differences
 @c @subsubheading Descriptor and Gbe differences
-See @uref{../resources/misc/dumps/t500_x200_descriptor/descriptor_diff_t500_x200.txt,descriptor_diff_t500_x200.txt} and @uref{../resources/misc/dumps/t500_x200_descriptor/gbe_diff_t500_x200.txt,gbe_diff_t500_x200.txt}.
+See @uref{@value{librebootbase}/docs/resources/misc/dumps/t500_x200_descriptor/descriptor_diff_t500_x200.txt,descriptor_diff_t500_x200.txt} and @uref{@value{librebootbase}/docs/resources/misc/dumps/t500_x200_descriptor/gbe_diff_t500_x200.txt,gbe_diff_t500_x200.txt}.
 
 The patches above are based on the output from ich9deblob on a factory.rom image dumped from the T500 with a SOIC-8 4MiB flash chip. The patch re-creates the X200 descriptor/gbe source, so the commands were something like:@* $ @strong{diff -u t500gbe x200gbe}@* $ @strong{diff -u t500descriptor x200descriptor}
 
@@ -1450,7 +1456,7 @@ The coreboot wiki @uref{http://www.coreboot.org/Motherboard_Porting_Guide,shows}
 T500 with @strong{Macronix MX25L3205D} flash chip (4MiB, SOIC-8) and Lenovo BIOS 3.13 7VET83WW (EC firmware 1.06):
 @itemize
 @item
-@uref{../resources/misc/dumps/t500log/,t500log/}
+@uref{@value{librebootbase}/docs/resources/misc/dumps/t500log/,t500log/}
 @end itemize
 
 @end itemize
@@ -1818,7 +1824,7 @@ The sections below are adapted from (mostly) IRC logs related to early developme
 @item
 textstrikeout@{@strong{See reference to HDA_SDO (disable descriptor security)@}} strap connected GPIO33 pin is it on ICH9-M (X200). HDA_SDO applies to later chipsets (series 6 or higher). Disabling descriptor security also disables the ethernet according to sgsit. sgsit's method involves use of 'soft straps' (see IRC logs below) instead of disabling the descriptor. @c ADD STRIKEOUT
 @item
-@strong{and the location of GPIO33 on the x200s: (was an external link. Putting it here instead)} @uref{../resources/images/x200/gpio33_location.jpg,../resources/images/x200/gpio33_location.jpg} - it's above the number 7 on TP37 (which is above the big intel chip at the bottom)
+@strong{and the location of GPIO33 on the x200s: (was an external link. Putting it here instead)} @uref{@value{librebootbase}/docs/resources/images/x200/gpio33_location.jpg,@value{librebootbase}/docs/resources/images/x200/gpio33_location.jpg} - it's above the number 7 on TP37 (which is above the big intel chip at the bottom)
 @item
 The ME datasheet may not be for the mobile chipsets but it doesn't vary that much. This one gives some detail and covers QM67 which is what the X201 uses: @uref{http://www.intel.co.uk/content/dam/www/public/us/en/documents/datasheets/6-chipset-c200-chipset-datasheet.pdf,http://www.intel.co.uk/content/dam/www/public/us/en/documents/datasheets/6-chipset-c200-chipset-datasheet.pdf}
 @end itemize
@@ -2594,7 +2600,7 @@ Since part of the SPI flash is write-protected by a screw, it is necessary to re
 
 To access the screw, the device has to be opened. There are 8 screws to remove from the bottom of the device, as shown on the picture below. Two are hidden under the top pads. After removing the screws, the keyboard plastic part can be carefully detached from the rest. @strong{Beware: there are cables attached to it!} It is advised to flip the keyboard plastic part over, as shown on the picture below. The write protect screw is located next to the SPI flash chip, circled in red in the picture below. It has to be removed.
 
-@uref{../resources/images/c201/screws.jpg,@image{../resources/images/c201/screws,,,Screws,jpg}} @uref{../resources/images/c201/wp-screw.jpg,@image{../resources/images/c201/wp-screw,,,WP screw,jpg}}
+@uref{@value{librebootbase}/docs/resources/images/c201/screws.jpg,@image{@value{librebootbase}/docs/resources/images/c201/screws,,,Screws,jpg}} @uref{@value{librebootbase}/docs/resources/images/c201/wp-screw.jpg,@image{@value{librebootbase}/docs/resources/images/c201/wp-screw,,,WP screw,jpg}}
 
 The write protect screw can be put back in place later, when the device is known to be in a working state.
 
@@ -2630,7 +2636,7 @@ Before installing Libreboot to the SPI flash internally, the device has to be op
 
 The SPI flash is located next to the write protect screw. Its layout is indicated in the picture below. Note that it is not necessary to connect @strong{WP#} since removing the screw already connects it to ground. Before writing to the chip externally, the battery connector has to be detached. It is located under the heat spreader, that has to be unscrewed from the rest of the case. The battery connector is located on the right and has colorful cables, as shown on the picture below.
 
-@uref{../resources/images/c201/spi-flash-layout.jpg,@image{../resources/images/c201/spi-flash-layout,,,SPI flash layout,jpg}} @uref{../resources/images/c201/battery-connector.jpg,@image{../resources/images/c201/battery-connector,,,Battery connector,jpg}}
+@uref{@value{librebootbase}/docs/resources/images/c201/spi-flash-layout.jpg,@image{@value{librebootbase}/docs/resources/images/c201/spi-flash-layout,,,SPI flash layout,jpg}} @uref{@value{librebootbase}/docs/resources/images/c201/battery-connector.jpg,@image{@value{librebootbase}/docs/resources/images/c201/battery-connector,,,Battery connector,jpg}}
 
 All the files from the @strong{veyron_speedy} release (or build) have to be transferred to the host.
 
@@ -2732,7 +2738,7 @@ You only need one 3.3V supply and one ground for the flash chip, after grounding
 
 The male end of a 0.1" or 2.54mm header cable is not thick enough to remain permanently connected to the ATX PSU on its own. When connecting header cables to the connector on the ATX PSU, use a female end attached to a thicker piece of wire (you could use a paper clip), or wedge the male end of the jumper cable into the sides of the hole in the connector, instead of going through the centre.
 
-Here is an example set up:@* @image{../resources/images/x200/psu33,,,,jpg}
+Here is an example set up:@* @image{@value{librebootbase}/docs/resources/images/x200/psu33,,,,jpg}
 
 @node Accessing the operating system on the BBB
 @c @subsubheading Accessing the operating system on the BBB
@@ -2744,7 +2750,7 @@ You will also be using the OS on your BBB for programming an SPI flash chip.
 @item
 Alternatives to SSH in case SSH fails::
 
-You can also use a serial FTDI debug board with GNU Screen, to access the serial console.@* # @strong{screen /dev/ttyUSB0 115200}@* Here are some example photos:@* @image{../resources/images/x200/ftdi,,,,jpg} @image{../resources/images/x200/ftdi_port,,,,jpg}@*
+You can also use a serial FTDI debug board with GNU Screen, to access the serial console.@* # @strong{screen /dev/ttyUSB0 115200}@* Here are some example photos:@* @image{@value{librebootbase}/docs/resources/images/x200/ftdi,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/ftdi_port,,,,jpg}@*
 
 You can also connect the USB cable from the BBB to another computer and a new network interface will appear, with its own IP address. This is directly accessible from SSH, or screen:@* # @strong{screen /dev/ttyACM0 115200}
 
@@ -2883,7 +2889,7 @@ GND 4-5 MOSI
 
 if you need to extend the 3.3v psu leads, just use the same colour M-F leads, @strong{but} keep all other leads short (10cm or less)
 
-You should now have something that looks like this:@* @image{../resources/images/x200/5252_bbb0,,,,jpg} @image{../resources/images/x200/5252_bbb1,,,,jpg}
+You should now have something that looks like this:@* @image{@value{librebootbase}/docs/resources/images/x200/5252_bbb0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/5252_bbb1,,,,jpg}
 
 
 @node Notes about stability
@@ -2960,7 +2966,7 @@ Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
 
 @node Flashing instructions - D510MO
 @c @subsubheading Flashing instructions - D510MO
-@image{../resources/images/d510mo/d510mo,,,,jpg} 
+@image{@value{librebootbase}/docs/resources/images/d510mo/d510mo,,,,jpg} 
 
 Use this image for reference, then refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to set up the BBB for flashing it. 
 
@@ -3399,7 +3405,7 @@ Types of brick:
 
 @node Bucts not reset - X60
 @c @subsubheading Brick type 1: bucts not reset.
-You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{../resources/images/x60_unbrick/0004,,,,jpg}@*@* *Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.
+You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0004,,,,jpg}@*@* *Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.
 
 @node Bad rom or user error - X60
 @c @subsubheading Brick type 2: Bad rom (or user error), system won't boot
@@ -3407,37 +3413,37 @@ In this scenario, you compiled a ROM that had an incorrect configuration, or the
 
 "Unbricking" means flashing a known-good (working) ROM. The problem: you can't boot the system, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
 
-Remove those screws:@* @image{../resources/images/x60_unbrick/0000,,,,jpg} @c IMAGES
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0000,,,,jpg} @c IMAGES
 
-Push the keyboard forward (carefully):@* @image{../resources/images/x60_unbrick/0001,,,,jpg}
+Push the keyboard forward (carefully):@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0001,,,,jpg}
 
-Lift the keyboard up and disconnect it from the board:@* @image{../resources/images/x60_unbrick/0002,,,,jpg}
+Lift the keyboard up and disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0002,,,,jpg}
 
-Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{../resources/images/x60_unbrick/0003,,,,jpg}
+Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0003,,,,jpg}
 
-You should now have this:@* @image{../resources/images/x60_unbrick/0004,,,,jpg}
+You should now have this:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0004,,,,jpg}
 
-Disconnect the wifi antenna cables, the modem cable and the speaker:@* @image{../resources/images/x60_unbrick/0005,,,,jpg}
+Disconnect the wifi antenna cables, the modem cable and the speaker:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0005,,,,jpg}
 
-Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand side:@* @image{../resources/images/x60_unbrick/0006,,,,jpg}
+Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand side:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0006,,,,jpg}
 
-Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape that holds it into place:@* @image{../resources/images/x60_unbrick/0008,,,,jpg}
+Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape that holds it into place:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0008,,,,jpg}
 
-Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:@* @image{../resources/images/x60_unbrick/0009,,,,jpg}
+Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0009,,,,jpg}
 
-Remove the screw that is highlighted (do NOT remove the other one; it holds part of the heatsink (other side) into place):@* @image{../resources/images/x60_unbrick/0011,,,,jpg}
+Remove the screw that is highlighted (do NOT remove the other one; it holds part of the heatsink (other side) into place):@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0011,,,,jpg}
 
-Remove those screws:@* @image{../resources/images/x60_unbrick/0012,,,,jpg}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0012,,,,jpg}
 
-Carefully remove the plate, like so:@* @image{../resources/images/x60_unbrick/0013,,,,jpg}
+Carefully remove the plate, like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0013,,,,jpg}
 
-Remove the SATA connector:@* @image{../resources/images/x60_unbrick/0014,,,,jpg}
+Remove the SATA connector:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0014,,,,jpg}
 
-Now remove the motherboard (gently) and cast the lcd/chassis aside:@* @image{../resources/images/x60_unbrick/0015,,,,jpg}
+Now remove the motherboard (gently) and cast the lcd/chassis aside:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0015,,,,jpg}
 
-Lift back that tape and hold it with something. Highlighted is the SPI flash chip:@* @image{../resources/images/x60_unbrick/0016,,,,jpg}
+Lift back that tape and hold it with something. Highlighted is the SPI flash chip:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0016,,,,jpg}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{../resources/images/x60_unbrick/0017,,,,jpg}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0017,,,,jpg}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3450,7 +3456,7 @@ POMONA 5250:
 This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.
 @end verbatim
 
-Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{../resources/images/x60/th_bbb_flashing,,,,jpg}
+Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{@value{librebootbase}/docs/resources/images/x60/th_bbb_flashing,,,,jpg}
 
 Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
@@ -3458,53 +3464,53 @@ SSH'd into the BBB:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spisp
 
 It should be @strong{Verifying flash... VERIFIED} at the end. If flashrom complains about multiple flash chip definitions detected, then choose one of them following the instructions in the output.
 
-Remove the programmer and put it away somewhere. Put back the tape and press firmly over it:@* @image{../resources/images/x60_unbrick/0026,,,,jpg}
+Remove the programmer and put it away somewhere. Put back the tape and press firmly over it:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0026,,,,jpg}
 
-Your empty chassis:@* @image{../resources/images/x60_unbrick/0027,,,,jpg}
+Your empty chassis:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0027,,,,jpg}
 
-Put the motherboard back in:@* @image{../resources/images/x60_unbrick/0028,,,,jpg}
+Put the motherboard back in:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0028,,,,jpg}
 
-Reconnect SATA:@* @image{../resources/images/x60_unbrick/0029,,,,jpg}
+Reconnect SATA:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0029,,,,jpg}
 
-Put the plate back and re-insert those screws:@* @image{../resources/images/x60_unbrick/0030,,,,jpg}
+Put the plate back and re-insert those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0030,,,,jpg}
 
-Re-route that antenna cable around the fan and apply the tape:@* @image{../resources/images/x60_unbrick/0031,,,,jpg}
+Re-route that antenna cable around the fan and apply the tape:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0031,,,,jpg}
 
-Route the cable here and then (not shown, due to error on my part) reconnect the monitor cable to the motherboard and re-insert the screws:@* @image{../resources/images/x60_unbrick/0032,,,,jpg}
+Route the cable here and then (not shown, due to error on my part) reconnect the monitor cable to the motherboard and re-insert the screws:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0032,,,,jpg}
 
-Re-insert that screw:@* @image{../resources/images/x60_unbrick/0033,,,,jpg}
+Re-insert that screw:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0033,,,,jpg}
 
-Route the black antenna cable like so:@* @image{../resources/images/x60_unbrick/0034,,,,jpg}
+Route the black antenna cable like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0034,,,,jpg}
 
-Tuck it in neatly like so:@* @image{../resources/images/x60_unbrick/0035,,,,jpg}
+Tuck it in neatly like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0035,,,,jpg}
 
-Route the modem cable like so:@* @image{../resources/images/x60_unbrick/0036,,,,jpg}
+Route the modem cable like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0036,,,,jpg}
 
-Connect modem cable to board and tuck it in neatly like so:@* @image{../resources/images/x60_unbrick/0037,,,,jpg}
+Connect modem cable to board and tuck it in neatly like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0037,,,,jpg}
 
-Route the power connection and connect it to the board like so:@* @image{../resources/images/x60_unbrick/0038,,,,jpg}
+Route the power connection and connect it to the board like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0038,,,,jpg}
 
-Route the antenna and modem cables neatly like so:@* @image{../resources/images/x60_unbrick/0039,,,,jpg}
+Route the antenna and modem cables neatly like so:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0039,,,,jpg}
 
-Connect the wifi antenna cables. At the start of the tutorial, this system had an Intel wifi chip. Here you see I've replaced it with an Atheros AR5B95 (supports 802.11n and can be used without blobs):@* @image{../resources/images/x60_unbrick/0040,,,,jpg}
+Connect the wifi antenna cables. At the start of the tutorial, this system had an Intel wifi chip. Here you see I've replaced it with an Atheros AR5B95 (supports 802.11n and can be used without blobs):@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0040,,,,jpg}
 
-Connect the modem cable:@* @image{../resources/images/x60_unbrick/0041,,,,jpg}
+Connect the modem cable:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0041,,,,jpg}
 
-Connect the speaker:@* @image{../resources/images/x60_unbrick/0042,,,,jpg}
+Connect the speaker:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0042,,,,jpg}
 
-You should now have this:@* @image{../resources/images/x60_unbrick/0043,,,,jpg}
+You should now have this:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0043,,,,jpg}
 
-Re-connect the upper chassis:@* @image{../resources/images/x60_unbrick/0044,,,,jpg}
+Re-connect the upper chassis:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0044,,,,jpg}
 
-Re-connect the keyboard:@* @image{../resources/images/x60_unbrick/0045,,,,jpg}
+Re-connect the keyboard:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0045,,,,jpg}
 
-Re-insert the screws that you removed earlier:@* @image{../resources/images/x60_unbrick/0046,,,,jpg}
+Re-insert the screws that you removed earlier:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0046,,,,jpg}
 
-Power on!@* @image{../resources/images/x60_unbrick/0047,,,,jpg}
+Power on!@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0047,,,,jpg}
 
-Trisquel live USB menu (using the GRUB ISOLINUX parser):@* @image{../resources/images/x60_unbrick/0048,,,,jpg}
+Trisquel live USB menu (using the GRUB ISOLINUX parser):@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0048,,,,jpg}
 
-Trisquel live desktop:@* @image{../resources/images/x60_unbrick/0049,,,,jpg}
+Trisquel live desktop:@* @image{@value{librebootbase}/docs/resources/images/x60_unbrick/0049,,,,jpg}
 
 
 
@@ -3521,7 +3527,7 @@ Types of brick:
 
 @node Bucts not reset - X60 Tablet
 @c @subsubheading Brick type 1: bucts not reset.
-You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{../resources/images/x60t_unbrick/0008,,,,JPG}@*@* *Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.
+You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0008,,,,JPG}@*@* *Those dd commands should be applied to all newly compiled X60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}.
 
 @node Bad rom or user error - X60 Tablet
 @c @subsubheading Brick type 2: Bad rom (or user error), system won't boot
@@ -3529,29 +3535,29 @@ In this scenario, you compiled a ROM that had an incorrect configuration, or the
 
 "Unbricking" means flashing a known-good (working) ROM. The problem: you can't boot the system, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
 
-@image{../resources/images/x60t_unbrick/0000,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0000,,,,JPG}
 
-Remove those screws:@* @image{../resources/images/x60t_unbrick/0001,,,,JPG}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0001,,,,JPG}
 
-Remove the HDD:@* @image{../resources/images/x60t_unbrick/0002,,,,JPG}
+Remove the HDD:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0002,,,,JPG}
 
-Push keyboard forward to loosen it:@* @image{../resources/images/x60t_unbrick/0003,,,,JPG}
+Push keyboard forward to loosen it:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0003,,,,JPG}
 
-Lift:@* @image{../resources/images/x60t_unbrick/0004,,,,JPG}
+Lift:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0004,,,,JPG}
 
-Remove those:@* @image{../resources/images/x60t_unbrick/0005,,,,JPG}
+Remove those:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0005,,,,JPG}
 
-@image{../resources/images/x60t_unbrick/0006,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0006,,,,JPG}
 
-Also remove that (marked) and unroute the antenna cables:@* @image{../resources/images/x60t_unbrick/0007,,,,JPG}
+Also remove that (marked) and unroute the antenna cables:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0007,,,,JPG}
 
-For some X60T laptops, you have to unroute those too:@* @image{../resources/images/x60t_unbrick/0010,,,,JPG}
+For some X60T laptops, you have to unroute those too:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0010,,,,JPG}
 
-Remove the LCD extend board screws. Also remove those screws (see blue marks) and remove/unroute the cables and remove the metal plate:@* @image{../resources/images/x60t_unbrick/0008,,,,JPG}
+Remove the LCD extend board screws. Also remove those screws (see blue marks) and remove/unroute the cables and remove the metal plate:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0008,,,,JPG}
 
-Remove that screw and then remove the board:@* @image{../resources/images/x60t_unbrick/0009,,,,JPG}
+Remove that screw and then remove the board:@* @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0009,,,,JPG}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{../resources/images/x60t_unbrick/0011,,,,JPG}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{librebootbase}/docs/resources/images/x60t_unbrick/0011,,,,JPG}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3564,7 +3570,7 @@ POMONA 5250:
 This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.
 @end verbatim
 
-Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{../resources/images/x60/th_bbb_flashing,,,,jpg}
+Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{@value{librebootbase}/docs/resources/images/x60/th_bbb_flashing,,,,jpg}
 
 Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
@@ -3589,7 +3595,7 @@ Types of brick:
 
 @node Bucts not reset - T60
 @c @subsubheading Brick type 1: bucts not reset.
-You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{../resources/images/t60_dev/0006,,,,JPG}@*@* *Those dd commands should be applied to all newly compiled T60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}. (it says x60, but instructions for t60 are identical)
+You still have Lenovo BIOS, or you had libreboot running and you flashed another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if Lenovo BIOS was present and libreboot wasn't flashed.@*@* In this case, unbricking is easy: reset BUC.TS to 0 by removing that yellow cmos coin (it's a battery) and putting it back after a minute or two:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0006,,,,JPG}@*@* *Those dd commands should be applied to all newly compiled T60 ROM images (the ROM images in libreboot binary archives already have this applied!):@* dd if=coreboot.rom of=top64k.bin bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x10000] count=64k@* dd if=coreboot.rom bs=1 skip=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k | hexdump@* dd if=top64k.bin of=coreboot.rom bs=1 seek=$[$(stat -c %s coreboot.rom) - 0x20000] count=64k conv=notrunc@* (doing this makes the ROM suitable for use when flashing a system that still has Lenovo BIOS running, using those instructions: @uref{http://www.coreboot.org/Board:lenovo/x60/Installation,http://www.coreboot.org/Board:lenovo/x60/Installation}. (it says x60, but instructions for t60 are identical)
 
 @node Bad rom or user error - T60
 @c @subsubheading bad rom (or user error), system won't boot
@@ -3597,45 +3603,45 @@ In this scenario, you compiled a ROM that had an incorrect configuration, or the
 
 "Unbricking" means flashing a known-good (working) ROM. The problem: you can't boot the system, making this difficult. In this situation, external hardware (see hardware requirements above) is needed which can flash the SPI chip (where libreboot resides).
 
-Remove those screws and remove the HDD:@* @image{../resources/images/t60_dev/0001,,,,JPG} @image{../resources/images/t60_dev/0002,,,,JPG}
+Remove those screws and remove the HDD:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0001,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0002,,,,JPG}
 
-Lift off the palm rest:@* @image{../resources/images/t60_dev/0003,,,,JPG}
+Lift off the palm rest:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0003,,,,JPG}
 
-Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{../resources/images/t60_dev/0004,,,,JPG} @image{../resources/images/t60_dev/0005,,,,JPG} @image{../resources/images/t60_dev/0006,,,,JPG}
+Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0004,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0005,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0006,,,,JPG}
 
-Gently wedge both sides loose:@* @image{../resources/images/t60_dev/0007,,,,JPG} @image{../resources/images/t60_dev/0008,,,,JPG}
+Gently wedge both sides loose:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0007,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0008,,,,JPG}
 
-Remove that cable from the position:@* @image{../resources/images/t60_dev/0009,,,,JPG} @image{../resources/images/t60_dev/0010,,,,JPG}
+Remove that cable from the position:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0009,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0010,,,,JPG}
 
-Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):@* @image{../resources/images/t60_dev/0011,,,,JPG}
+Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0011,,,,JPG}
 
-Remove those screws:@* @image{../resources/images/t60_dev/0012,,,,JPG}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0012,,,,JPG}
 
-Disconnect the power jack:@* @image{../resources/images/t60_dev/0013,,,,JPG}
+Disconnect the power jack:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0013,,,,JPG}
 
-Remove nvram battery:@* @image{../resources/images/t60_dev/0014,,,,JPG}
+Remove nvram battery:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0014,,,,JPG}
 
-Disconnect cable (for 56k modem) and disconnect the other cable:@* @image{../resources/images/t60_dev/0015,,,,JPG} @image{../resources/images/t60_dev/0016,,,,JPG}
+Disconnect cable (for 56k modem) and disconnect the other cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0015,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0016,,,,JPG}
 
-Disconnect speaker cable:@* @image{../resources/images/t60_dev/0017,,,,JPG}
+Disconnect speaker cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0017,,,,JPG}
 
-Disconnect the other end of the 56k modem cable:@* @image{../resources/images/t60_dev/0018,,,,JPG}
+Disconnect the other end of the 56k modem cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0018,,,,JPG}
 
-Make sure you removed it:@* @image{../resources/images/t60_dev/0019,,,,JPG}
+Make sure you removed it:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0019,,,,JPG}
 
-Unscrew those:@* @image{../resources/images/t60_dev/0020,,,,JPG}
+Unscrew those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0020,,,,JPG}
 
-Make sure you removed those:@* @image{../resources/images/t60_dev/0021,,,,JPG}
+Make sure you removed those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0021,,,,JPG}
 
-Disconnect LCD cable from board:@* @image{../resources/images/t60_dev/0022,,,,JPG}
+Disconnect LCD cable from board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0022,,,,JPG}
 
-Remove those screws then remove the LCD assembly:@* @image{../resources/images/t60_dev/0023,,,,JPG} @image{../resources/images/t60_dev/0024,,,,JPG} @image{../resources/images/t60_dev/0025,,,,JPG}
+Remove those screws then remove the LCD assembly:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0023,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0024,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0025,,,,JPG}
 
-Once again, make sure you removed those:@* @image{../resources/images/t60_dev/0026,,,,JPG}
+Once again, make sure you removed those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0026,,,,JPG}
 
-Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{../resources/images/t60_dev/0027,,,,JPG} @image{../resources/images/t60_dev/0028,,,,JPG} @image{../resources/images/t60_dev/0029,,,,JPG} @image{../resources/images/t60_dev/0031,,,,JPG} @image{../resources/images/t60_dev/0032,,,,JPG} @image{../resources/images/t60_dev/0033,,,,JPG}
+Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0027,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0028,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0029,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0031,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0032,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0033,,,,JPG}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the T60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)}@* @image{../resources/images/t60_dev/0030,,,,JPG}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the T60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)}@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0030,,,,JPG}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3656,31 +3662,31 @@ SSH'd into the BBB:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spisp
 
 It should be @strong{Verifying flash... VERIFIED} at the end. If flashrom complains about multiple flash chip definitions detected, then choose one of them following the instructions in the output.
 
-Put those screws back:@* @image{../resources/images/t60_dev/0047,,,,JPG}
+Put those screws back:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0047,,,,JPG}
 
-Put it back into lower chassis:@* @image{../resources/images/t60_dev/0048,,,,JPG}
+Put it back into lower chassis:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0048,,,,JPG}
 
-Attach LCD and insert screws (also, attach the lcd cable to the board):@* @image{../resources/images/t60_dev/0049,,,,JPG}
+Attach LCD and insert screws (also, attach the lcd cable to the board):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0049,,,,JPG}
 
-Insert those screws:@* @image{../resources/images/t60_dev/0050,,,,JPG}
+Insert those screws:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0050,,,,JPG}
 
-On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{../resources/images/t60_dev/0051,,,,JPG}
+On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0051,,,,JPG}
 
-Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{../resources/images/t60_dev/0052,,,,JPG}
+Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0052,,,,JPG}
 
-Reinstall that upper bezel:@* @image{../resources/images/t60_dev/0053,,,,JPG}
+Reinstall that upper bezel:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0053,,,,JPG}
 
-Do that:@* @image{../resources/images/t60_dev/0054,,,,JPG} @image{../resources/images/t60_dev/0055,,,,JPG}
+Do that:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0054,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0055,,,,JPG}
 
 Re-attach modem, wifi, (wwan?), and all necessary cables. Sorry, forgot to take pics. Look at previous removal steps to see where they go back to.
 
-Attach keyboard and install nvram battery:@* @image{../resources/images/t60_dev/0056,,,,JPG} @image{../resources/images/t60_dev/0057,,,,JPG}
+Attach keyboard and install nvram battery:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0056,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0057,,,,JPG}
 
-Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{../resources/images/t60_dev/0058,,,,JPG}
+Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0058,,,,JPG}
 
-It lives!@* @image{../resources/images/t60_dev/0071,,,,JPG} @image{../resources/images/t60_dev/0072,,,,JPG} @image{../resources/images/t60_dev/0073,,,,JPG}
+It lives!@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0071,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0072,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0073,,,,JPG}
 
-Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{../resources/images/t60_dev/0074,,,,JPG}
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0074,,,,JPG}
 
 
 @node ThinkPad X200/X200S/X200T
@@ -3722,7 +3728,7 @@ On the X200/X200S/X200T, the MAC address for the onboard gigabit ethernet chipse
 
 Keep a note of the MAC address before disassembly; this is very important, because you will need to insert this into the libreboot ROM image before flashing it. It will be written in one of these locations:
 
-@image{../resources/images/x200/disassembly/0002,,,,jpg} @image{../resources/images/x200/disassembly/0001,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0002,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0001,,,,jpg}
 
 @node Initial BBB configuration - X200
 @c @subsubheading Initial BBB configuration - X200
@@ -3765,27 +3771,27 @@ Look at the pads in that photo, on the left and right. Those are for SOIC-16. Wo
 chip on those pins?
 @end verbatim
 
-@strong{On the X200S and X200 Tablet the flash chip is underneath the board, in a WSON package. The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available).@* The following image shows how this is done:}@* @image{../resources/images/x200/wson_soldered,,,,jpg} @* In this image, a pin header was soldered onto the WSON. Another solution might be to de-solder the WSON-8 chip and put a SOIC-8 there instead. Check the list of SOIC-8 flash chips at @ref{Flash chips,flashchips} but do note that these are only 4MiB (32Mb) chips. The only X200 SPI chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case, the X201 SOIC-8 flash chip (Macronix 25L6445E) might work. 
+@strong{On the X200S and X200 Tablet the flash chip is underneath the board, in a WSON package. The pinout is very much the same as a SOIC-8, except you need to solder (there are no clips available).@* The following image shows how this is done:}@* @image{@value{librebootbase}/docs/resources/images/x200/wson_soldered,,,,jpg} @* In this image, a pin header was soldered onto the WSON. Another solution might be to de-solder the WSON-8 chip and put a SOIC-8 there instead. Check the list of SOIC-8 flash chips at @ref{Flash chips,flashchips} but do note that these are only 4MiB (32Mb) chips. The only X200 SPI chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case, the X201 SOIC-8 flash chip (Macronix 25L6445E) might work. 
 
 @node The procedure - X200
 @c @subsubheading The procedure - X200
 This section is for the X200. This does not apply to the X200S or X200 Tablet (for those systems, you have to remove the motherboard completely, since the flash chip is on the other side of the board).
 
-Remove these screws:@* @image{../resources/images/x200/disassembly/0003,,,,jpg}
+Remove these screws:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0003,,,,jpg}
 
-Push the keyboard forward, gently, then lift it off and disconnect it from the board:@* @image{../resources/images/x200/disassembly/0004,,,,jpg} @image{../resources/images/x200/disassembly/0005,,,,jpg}
+Push the keyboard forward, gently, then lift it off and disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0004,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0005,,,,jpg}
 
-Pull the palm rest off, lifting from the left and right side at the back of the palm rest:@* @image{../resources/images/x200/disassembly/0006,,,,jpg}
+Pull the palm rest off, lifting from the left and right side at the back of the palm rest:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0006,,,,jpg}
 
-Lift back the tape that covers a part of the flash chip, and then connect the clip:@* @image{../resources/images/x200/disassembly/0007,,,,jpg} @image{../resources/images/x200/disassembly/0008,,,,jpg}
+Lift back the tape that covers a part of the flash chip, and then connect the clip:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0007,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0008,,,,jpg}
 
-On pin 2 of the BBB, where you have the ground (GND), connect the ground to your PSU:@* @image{../resources/images/x200/disassembly/0009,,,,jpg} @image{../resources/images/x200/disassembly/0010,,,,jpg}
+On pin 2 of the BBB, where you have the ground (GND), connect the ground to your PSU:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0009,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0010,,,,jpg}
 
-Connect the 3.3V supply from your PSU to the flash chip (via the clip):@* @image{../resources/images/x200/disassembly/0011,,,,jpg} @image{../resources/images/x200/disassembly/0012,,,,jpg}
+Connect the 3.3V supply from your PSU to the flash chip (via the clip):@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0011,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0012,,,,jpg}
 
-Of course, make sure that your PSU is also plugged in and turn on:@* @image{../resources/images/x200/disassembly/0013,,,,jpg}
+Of course, make sure that your PSU is also plugged in and turn on:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0013,,,,jpg}
 
-This tutorial tells you to use an ATX PSU, for the 3.3V DC supply. The PSU used when taking these photos is actually not an ATX PSU, but a PSU that is designed specifically for providing 3.3V DC (an ATX PSU will also work):@* @image{../resources/images/x200/disassembly/0014,,,,jpg}
+This tutorial tells you to use an ATX PSU, for the 3.3V DC supply. The PSU used when taking these photos is actually not an ATX PSU, but a PSU that is designed specifically for providing 3.3V DC (an ATX PSU will also work):@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0014,,,,jpg}
 
 Now, you should be ready to install libreboot.
 
@@ -3812,7 +3818,7 @@ Follow the instructions at @ref{ICH9 gen utility,ich9gen} to change the MAC addr
 
 Now flash it:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V}
 
-@image{../resources/images/x200/disassembly/0015,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0015,,,,jpg}
 
 You might see errors, but if it says @strong{Verifying flash... VERIFIED} at the end, then it's flashed and should boot. If you see errors, try again (and again, and again); the message @strong{Chip content is identical to the requested image} is also an indication of a successful installation.
 
@@ -3839,7 +3845,7 @@ Some X200 laptops come with an Atheros chipset, but this is 802.11g only.
 
 It is recommended that you install a new wifi chipset. This can only be done after installing libreboot, because the original firmware has a whitelist of approved chips, and it will refuse to boot if you use an 'unauthorized' wifi card.
 
-The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this X200 came with:@* @image{../resources/images/x200/disassembly/0016,,,,jpg} @image{../resources/images/x200/disassembly/0017,,,,jpg}
+The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this X200 came with:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0016,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0017,,,,jpg}
 
 @node WWAN - X200
 @c @subsubheading WWAN - X200
@@ -3858,13 +3864,13 @@ Make sure that the RAM you buy is the 2Rx8 density.
 @uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
 (note: coreboot raminit is different, so this page might be BS)
 
-In this photo, 8GiB of RAM (2x4GiB) is installed:@* @image{../resources/images/x200/disassembly/0018,,,,jpg}
+In this photo, 8GiB of RAM (2x4GiB) is installed:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0018,,,,jpg}
 
 @node Booting - X200
 @c @subsubheading Boot it!
 You should see something like this:
 
-@image{../resources/images/x200/disassembly/0019,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0019,,,,jpg}
 
 Now @ref{GNU/Linux distributions,install GNU/Linux}. 
 
@@ -3872,7 +3878,7 @@ Now @ref{GNU/Linux distributions,install GNU/Linux}.
 @c @subsubheading X200S and X200 Tablet users: GPIO33 trick will not work.
 sgsit found out about a pin called GPIO33, which can be grounded to disable the flashing protections by the descriptor and stop the ME from starting (which itself interferes with flashing attempts). The theory was proven correct; however, it is still useless in practise.
 
-Look just above the 7 in TP37 (that's GPIO33):@* @image{../resources/images/x200/gpio33_location,,,,jpg}
+Look just above the 7 in TP37 (that's GPIO33):@* @image{@value{librebootbase}/docs/resources/images/x200/gpio33_location,,,,jpg}
 
 By default we would see this in lenovobios, when trying flashrom -p internal -w rom.rom:
 
@@ -3972,7 +3978,7 @@ On the R400, the MAC address for the onboard gigabit ethernet chipset is stored 
 
 Keep a note of the MAC address before disassembly; this is very important, because you will need to insert this into the libreboot ROM image before flashing it. It will be written in one of these locations:
 
-@image{../resources/images/t400/macaddress0,,,,jpg} @image{../resources/images/t400/macaddress1,,,,jpg} @image{../resources/images/x200/disassembly/0001,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/macaddress0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/macaddress1,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0001,,,,jpg}
 
 @node Initial BBB configuration - R400
 @c @subsubheading Initial BBB configuration 
@@ -4010,51 +4016,51 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 
 @node Disassembly - R400
 @c @subsubheading Disassembly
-Remove all screws:@* @image{../resources/images/r400/0000,,,,jpg}@* Remove the HDD and optical drive:@* @image{../resources/images/r400/0001,,,,jpg}@* Remove the hinge screws:@* @image{../resources/images/r400/0002,,,,jpg} @image{../resources/images/r400/0003,,,,jpg}
+Remove all screws:@* @image{@value{librebootbase}/docs/resources/images/r400/0000,,,,jpg}@* Remove the HDD and optical drive:@* @image{@value{librebootbase}/docs/resources/images/r400/0001,,,,jpg}@* Remove the hinge screws:@* @image{@value{librebootbase}/docs/resources/images/r400/0002,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0003,,,,jpg}
 
-Remove the palm rest and keyboard:@* @image{../resources/images/r400/0004,,,,jpg} @image{../resources/images/r400/0005,,,,jpg}
+Remove the palm rest and keyboard:@* @image{@value{librebootbase}/docs/resources/images/r400/0004,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0005,,,,jpg}
 
-Remove these screws, and then remove the bezel:@* @image{../resources/images/r400/0006,,,,jpg} @image{../resources/images/r400/0007,,,,jpg}
+Remove these screws, and then remove the bezel:@* @image{@value{librebootbase}/docs/resources/images/r400/0006,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0007,,,,jpg}
 
-Remove the speaker screws, but don't remove the speakers yet (just set them loose):@* @image{../resources/images/r400/0008,,,,jpg} @image{../resources/images/r400/0009,,,,jpg} @image{../resources/images/r400/0010,,,,jpg}
+Remove the speaker screws, but don't remove the speakers yet (just set them loose):@* @image{@value{librebootbase}/docs/resources/images/r400/0008,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0009,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0010,,,,jpg}
 
-Remove these screws, and then remove the metal plate:@* @image{../resources/images/r400/0011,,,,jpg} @image{../resources/images/r400/0012,,,,jpg} @image{../resources/images/r400/0013,,,,jpg}
+Remove these screws, and then remove the metal plate:@* @image{@value{librebootbase}/docs/resources/images/r400/0011,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0012,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0013,,,,jpg}
 
-Remove the antennas from the wifi card, and then start unrouting them:@* @image{../resources/images/r400/0014,,,,jpg} @image{../resources/images/r400/0015,,,,jpg} @image{../resources/images/r400/0016,,,,jpg} @image{../resources/images/r400/0017,,,,jpg} @image{../resources/images/r400/0018,,,,jpg} @image{../resources/images/r400/0019,,,,jpg}
+Remove the antennas from the wifi card, and then start unrouting them:@* @image{@value{librebootbase}/docs/resources/images/r400/0014,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0015,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0016,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0017,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0018,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0019,,,,jpg}
 
-Disconnect the LCD cable from the motherboard:@* @image{../resources/images/r400/0020,,,,jpg} @image{../resources/images/r400/0021,,,,jpg} @image{../resources/images/r400/0022,,,,jpg} @image{../resources/images/r400/0023,,,,jpg}
+Disconnect the LCD cable from the motherboard:@* @image{@value{librebootbase}/docs/resources/images/r400/0020,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0021,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0022,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0023,,,,jpg}
 
-Remove the hinge screws, and then remove the LCD panel:@* @image{../resources/images/r400/0024,,,,jpg} @image{../resources/images/r400/0025,,,,jpg} @image{../resources/images/r400/0026,,,,jpg} @image{../resources/images/r400/0027,,,,jpg}
+Remove the hinge screws, and then remove the LCD panel:@* @image{@value{librebootbase}/docs/resources/images/r400/0024,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0025,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0026,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0027,,,,jpg}
 
-Remove this:@* @image{../resources/images/r400/0028,,,,jpg} @image{../resources/images/r400/0029,,,,jpg}
+Remove this:@* @image{@value{librebootbase}/docs/resources/images/r400/0028,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0029,,,,jpg}
 
-Remove this long cable (there are 3 connections):@* @image{../resources/images/r400/0030,,,,jpg} @image{../resources/images/r400/0031,,,,jpg} @image{../resources/images/r400/0032,,,,jpg} @image{../resources/images/r400/0033,,,,jpg}
+Remove this long cable (there are 3 connections):@* @image{@value{librebootbase}/docs/resources/images/r400/0030,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0031,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0032,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0033,,,,jpg}
 
-Disconnect the speaker cable, and remove the speakers:@* @image{../resources/images/r400/0034,,,,jpg}
+Disconnect the speaker cable, and remove the speakers:@* @image{@value{librebootbase}/docs/resources/images/r400/0034,,,,jpg}
 
-Remove the heatsink screws, remove the fan and then remove the heatsink/fan:@* @image{../resources/images/r400/0035,,,,jpg} @image{../resources/images/r400/0036,,,,jpg} @image{../resources/images/r400/0037,,,,jpg} @image{../resources/images/r400/0038,,,,jpg}
+Remove the heatsink screws, remove the fan and then remove the heatsink/fan:@* @image{@value{librebootbase}/docs/resources/images/r400/0035,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0036,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0037,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0038,,,,jpg}
 
-Remove the NVRAM battery:@* @image{../resources/images/r400/0039,,,,jpg} @image{../resources/images/r400/0040,,,,jpg}
+Remove the NVRAM battery:@* @image{@value{librebootbase}/docs/resources/images/r400/0039,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0040,,,,jpg}
 
-Remove this screw:@* @image{../resources/images/r400/0041,,,,jpg} @image{../resources/images/r400/0042,,,,jpg}
+Remove this screw:@* @image{@value{librebootbase}/docs/resources/images/r400/0041,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0042,,,,jpg}
 
-Disconnect the AC jack:@* @image{../resources/images/r400/0043,,,,jpg} @image{../resources/images/r400/0044,,,,jpg}
+Disconnect the AC jack:@* @image{@value{librebootbase}/docs/resources/images/r400/0043,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0044,,,,jpg}
 
-Remove this screw and then remove what is under it:@* @image{../resources/images/r400/0045,,,,jpg}
+Remove this screw and then remove what is under it:@* @image{@value{librebootbase}/docs/resources/images/r400/0045,,,,jpg}
 
-Remove this:@* @image{../resources/images/r400/0046,,,,jpg}
+Remove this:@* @image{@value{librebootbase}/docs/resources/images/r400/0046,,,,jpg}
 
-Lift the motherboard (which is still inside the cage) from the side on the right, removing it completely:@* @image{../resources/images/r400/0047,,,,jpg} @image{../resources/images/r400/0048,,,,jpg}
+Lift the motherboard (which is still inside the cage) from the side on the right, removing it completely:@* @image{@value{librebootbase}/docs/resources/images/r400/0047,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0048,,,,jpg}
 
-Remove all screws, marking each hole so that you know where to re-insert them. You should place the screws in a layout corresponding to the order that they were in before removal: @image{../resources/images/r400/0049,,,,jpg} @image{../resources/images/r400/0050,,,,jpg}
+Remove all screws, marking each hole so that you know where to re-insert them. You should place the screws in a layout corresponding to the order that they were in before removal: @image{@value{librebootbase}/docs/resources/images/r400/0049,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0050,,,,jpg}
 
-Remove the motherboard from the cage, and the SPI flash chip will be next to the memory slots:@* @image{../resources/images/r400/0051,,,,jpg} @image{../resources/images/r400/0052,,,,jpg}
+Remove the motherboard from the cage, and the SPI flash chip will be next to the memory slots:@* @image{@value{librebootbase}/docs/resources/images/r400/0051,,,,jpg} @image{@value{librebootbase}/docs/resources/images/r400/0052,,,,jpg}
 
-Connect your programmer, then connect GND and 3.3V@* @image{../resources/images/t400/0065,,,,jpg} @image{../resources/images/t400/0066,,,,jpg} @image{../resources/images/t400/0067,,,,jpg} @image{../resources/images/t400/0069,,,,jpg} @image{../resources/images/t400/0070,,,,jpg} @image{../resources/images/t400/0071,,,,jpg}
+Connect your programmer, then connect GND and 3.3V@* @image{@value{librebootbase}/docs/resources/images/t400/0065,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0066,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0067,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0069,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0070,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0071,,,,jpg}
 
-A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{../resources/images/t400/0072,,,,jpg}
+A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{@value{librebootbase}/docs/resources/images/t400/0072,,,,jpg}
 
-Of course, make sure to turn on your PSU:@* @image{../resources/images/x200/disassembly/0013,,,,jpg}
+Of course, make sure to turn on your PSU:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0013,,,,jpg}
 
 Now, you should be ready to install libreboot.
 
@@ -4081,7 +4087,7 @@ Follow the instructions at @ref{ICH9 gen utility,ich9gen} to change the MAC addr
 
 Now flash it:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V}
 
-@image{../resources/images/x200/disassembly/0015,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0015,,,,jpg}
 
 You might see errors, but if it says @strong{Verifying flash... VERIFIED} at the end, then it's flashed and should boot. If you see errors, try again (and again, and again); the message @strong{Chip content is identical to the requested image} is also an indication of a successful installation.
 
@@ -4107,7 +4113,7 @@ Because part of this procedure involved removing the heatsink, you will need to 
 
 When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth. Then apply new paste. Arctic MX-4 is also much better than the default paste used on these systems.
 
-@image{../resources/images/t400/paste,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/paste,,,,jpg}
 
 NOTE: the photo above is for illustration purposes only, and does not show how to properly apply the thermal paste. Other guides online detail the proper application procedure.
 
@@ -4119,7 +4125,7 @@ Some R400 laptops might come with an Atheros chipset, but this is 802.11g only.
 
 It is recommended that you install a new wifi chipset. This can only be done after installing libreboot, because the original firmware has a whitelist of approved chips, and it will refuse to boot if you use an 'unauthorized' wifi card.
 
-The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this R400 came with:@* @image{../resources/images/t400/0012,,,,jpg} @image{../resources/images/t400/ar5b95,,,,jpg}
+The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this R400 came with:@* @image{@value{librebootbase}/docs/resources/images/t400/0012,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/ar5b95,,,,jpg}
 
 @node WWAN - R400
 @c @subsubheading WWAN
@@ -4136,13 +4142,13 @@ Make sure that the RAM you buy is the 2Rx8 density.
 @uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
 (note: coreboot raminit is different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{../resources/images/t400/memory,,,,jpg}
+The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{@value{librebootbase}/docs/resources/images/t400/memory,,,,jpg}
 
 @node Booting - R400
 @c @subsubheading Boot it!
 You should see something like this:
 
-@image{../resources/images/t400/boot0,,,,jpg} @image{../resources/images/t400/boot1,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/boot0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/boot1,,,,jpg}
 
 Now @ref{GNU/Linux distributions,install GNU/Linux}. 
 
@@ -4217,7 +4223,7 @@ On the T400, the MAC address for the onboard gigabit ethernet chipset is stored 
 
 Keep a note of the MAC address before disassembly; this is very important, because you will need to insert this into the libreboot ROM image before flashing it. It will be written in one of these locations:
 
-@image{../resources/images/t400/macaddress0,,,,jpg} @image{../resources/images/t400/macaddress1,,,,jpg} @image{../resources/images/x200/disassembly/0001,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/macaddress0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/macaddress1,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0001,,,,jpg}
 
 
 @node Initial BBB configuration - T400
@@ -4256,51 +4262,51 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 
 @node The procedure - T400
 @c @subsubheading The procedure
-Remove @emph{all} screws, placing them in the order that you removed them:@* @image{../resources/images/t400/0001,,,,jpg} @image{../resources/images/t400/0002,,,,jpg}
+Remove @emph{all} screws, placing them in the order that you removed them:@* @image{@value{librebootbase}/docs/resources/images/t400/0001,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0002,,,,jpg}
 
-Remove those three screws then remove the rear bezel:@* @image{../resources/images/t400/0003,,,,jpg} @image{../resources/images/t400/0004,,,,jpg} @image{../resources/images/t400/0005,,,,jpg} @image{../resources/images/t400/0006,,,,jpg}
+Remove those three screws then remove the rear bezel:@* @image{@value{librebootbase}/docs/resources/images/t400/0003,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0004,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0005,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0006,,,,jpg}
 
-Remove the speakers:@* @image{../resources/images/t400/0007,,,,jpg} @image{../resources/images/t400/0008,,,,jpg} @image{../resources/images/t400/0009,,,,jpg} @image{../resources/images/t400/0010,,,,jpg} @image{../resources/images/t400/0011,,,,jpg}
+Remove the speakers:@* @image{@value{librebootbase}/docs/resources/images/t400/0007,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0008,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0009,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0010,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0011,,,,jpg}
 
-Remove the wifi:@* @image{../resources/images/t400/0012,,,,jpg} @image{../resources/images/t400/0013,,,,jpg}
+Remove the wifi:@* @image{@value{librebootbase}/docs/resources/images/t400/0012,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0013,,,,jpg}
 
-Remove this cable:@* @image{../resources/images/t400/0014,,,,jpg} @image{../resources/images/t400/0015,,,,jpg} @image{../resources/images/t400/0016,,,,jpg} @image{../resources/images/t400/0017,,,,jpg} @image{../resources/images/t400/0018,,,,jpg}
+Remove this cable:@* @image{@value{librebootbase}/docs/resources/images/t400/0014,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0015,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0016,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0017,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0018,,,,jpg}
 
-Unroute those antenna wires:@* @image{../resources/images/t400/0019,,,,jpg} @image{../resources/images/t400/0020,,,,jpg} @image{../resources/images/t400/0021,,,,jpg} @image{../resources/images/t400/0022,,,,jpg} @image{../resources/images/t400/0023,,,,jpg}
+Unroute those antenna wires:@* @image{@value{librebootbase}/docs/resources/images/t400/0019,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0020,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0021,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0022,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0023,,,,jpg}
 
-Remove the LCD assembly:@* @image{../resources/images/t400/0024,,,,jpg} @image{../resources/images/t400/0025,,,,jpg} @image{../resources/images/t400/0026,,,,jpg} @image{../resources/images/t400/0027,,,,jpg} @image{../resources/images/t400/0028,,,,jpg} @image{../resources/images/t400/0029,,,,jpg} @image{../resources/images/t400/0030,,,,jpg} @image{../resources/images/t400/0031,,,,jpg}
+Remove the LCD assembly:@* @image{@value{librebootbase}/docs/resources/images/t400/0024,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0025,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0026,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0027,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0028,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0029,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0030,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0031,,,,jpg}
 
-Disconnect the NVRAM battery:@* @image{../resources/images/t400/0033,,,,jpg}
+Disconnect the NVRAM battery:@* @image{@value{librebootbase}/docs/resources/images/t400/0033,,,,jpg}
 
-Disconnect the fan:@* @image{../resources/images/t400/0034,,,,jpg}
+Disconnect the fan:@* @image{@value{librebootbase}/docs/resources/images/t400/0034,,,,jpg}
 
-Unscrew these:@* @image{../resources/images/t400/0035,,,,jpg} @image{../resources/images/t400/0036,,,,jpg} @image{../resources/images/t400/0037,,,,jpg} @image{../resources/images/t400/0038,,,,jpg}
+Unscrew these:@* @image{@value{librebootbase}/docs/resources/images/t400/0035,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0036,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0037,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0038,,,,jpg}
 
-Unscrew the heatsink, then lift it off:@* @image{../resources/images/t400/0039,,,,jpg} @image{../resources/images/t400/0040,,,,jpg}
+Unscrew the heatsink, then lift it off:@* @image{@value{librebootbase}/docs/resources/images/t400/0039,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0040,,,,jpg}
 
-Disconnect the power jack:@* @image{../resources/images/t400/0041,,,,jpg} @image{../resources/images/t400/0042,,,,jpg}
+Disconnect the power jack:@* @image{@value{librebootbase}/docs/resources/images/t400/0041,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0042,,,,jpg}
 
-Loosen this:@* @image{../resources/images/t400/0043,,,,jpg}
+Loosen this:@* @image{@value{librebootbase}/docs/resources/images/t400/0043,,,,jpg}
 
-Remove this:@* @image{../resources/images/t400/0044,,,,jpg} @image{../resources/images/t400/0045,,,,jpg} @image{../resources/images/t400/0046,,,,jpg} @image{../resources/images/t400/0047,,,,jpg} @image{../resources/images/t400/0048,,,,jpg}
+Remove this:@* @image{@value{librebootbase}/docs/resources/images/t400/0044,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0045,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0046,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0047,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0048,,,,jpg}
 
-Unscrew these:@* @image{../resources/images/t400/0049,,,,jpg} @image{../resources/images/t400/0050,,,,jpg}
+Unscrew these:@* @image{@value{librebootbase}/docs/resources/images/t400/0049,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0050,,,,jpg}
 
-Remove this:@* @image{../resources/images/t400/0051,,,,jpg} @image{../resources/images/t400/0052,,,,jpg}
+Remove this:@* @image{@value{librebootbase}/docs/resources/images/t400/0051,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0052,,,,jpg}
 
-Unscrew this:@* @image{../resources/images/t400/0053,,,,jpg}
+Unscrew this:@* @image{@value{librebootbase}/docs/resources/images/t400/0053,,,,jpg}
 
-Remove the motherboard (the cage is still attached) from the right hand side, then lift it out:@* @image{../resources/images/t400/0054,,,,jpg} @image{../resources/images/t400/0055,,,,jpg} @image{../resources/images/t400/0056,,,,jpg}
+Remove the motherboard (the cage is still attached) from the right hand side, then lift it out:@* @image{@value{librebootbase}/docs/resources/images/t400/0054,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0055,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0056,,,,jpg}
 
-Remove these screws, placing the screws in the same layout and marking each screw hole (so that you know what ones to put the screws back into later): @image{../resources/images/t400/0057,,,,jpg} @image{../resources/images/t400/0058,,,,jpg} @image{../resources/images/t400/0059,,,,jpg} @image{../resources/images/t400/0060,,,,jpg} @image{../resources/images/t400/0061,,,,jpg} @image{../resources/images/t400/0062,,,,jpg}
+Remove these screws, placing the screws in the same layout and marking each screw hole (so that you know what ones to put the screws back into later): @image{@value{librebootbase}/docs/resources/images/t400/0057,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0058,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0059,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0060,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0061,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0062,,,,jpg}
 
-Separate the motherboard:@* @image{../resources/images/t400/0063,,,,jpg} @image{../resources/images/t400/0064,,,,jpg}
+Separate the motherboard:@* @image{@value{librebootbase}/docs/resources/images/t400/0063,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0064,,,,jpg}
 
-Connect your programmer, then connect GND and 3.3V@* @image{../resources/images/t400/0065,,,,jpg} @image{../resources/images/t400/0066,,,,jpg} @image{../resources/images/t400/0067,,,,jpg} @image{../resources/images/t400/0069,,,,jpg} @image{../resources/images/t400/0070,,,,jpg} @image{../resources/images/t400/0071,,,,jpg}
+Connect your programmer, then connect GND and 3.3V@* @image{@value{librebootbase}/docs/resources/images/t400/0065,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0066,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0067,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0069,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0070,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0071,,,,jpg}
 
-A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{../resources/images/t400/0072,,,,jpg}
+A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{@value{librebootbase}/docs/resources/images/t400/0072,,,,jpg}
 
-Of course, make sure to turn on your PSU:@* @image{../resources/images/x200/disassembly/0013,,,,jpg}
+Of course, make sure to turn on your PSU:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0013,,,,jpg}
 
 Now, you should be ready to install libreboot.
 
@@ -4327,7 +4333,7 @@ Follow the instructions at @ref{ICH9 gen utility,ich9gen} to change the MAC addr
 
 Now flash it:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V}
 
-@image{../resources/images/x200/disassembly/0015,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0015,,,,jpg}
 
 You might see errors, but if it says @strong{Verifying flash... VERIFIED} at the end, then it's flashed and should boot. If you see errors, try again (and again, and again); the message @strong{Chip content is identical to the requested image} is also an indication of a successful installation.
 
@@ -4353,7 +4359,7 @@ Because part of this procedure involved removing the heatsink, you will need to 
 
 When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth. Then apply new paste. Arctic MX-4 is also much better than the default paste used on these systems.
 
-@image{../resources/images/t400/paste,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/paste,,,,jpg}
 
 NOTE: the photo above is for illustration purposes only, and does not show how to properly apply the thermal paste. Other guides online detail the proper application procedure.
 
@@ -4365,7 +4371,7 @@ Some T400 laptops might come with an Atheros chipset, but this is 802.11g only.
 
 It is recommended that you install a new wifi chipset. This can only be done after installing libreboot, because the original firmware has a whitelist of approved chips, and it will refuse to boot if you use an 'unauthorized' wifi card.
 
-The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this T400 came with:@* @image{../resources/images/t400/0012,,,,jpg} @image{../resources/images/t400/ar5b95,,,,jpg}
+The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this T400 came with:@* @image{@value{librebootbase}/docs/resources/images/t400/0012,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/ar5b95,,,,jpg}
 
 @node WWAN - T400
 @c @subsubheading WWAN
@@ -4382,13 +4388,13 @@ Make sure that the RAM you buy is the 2Rx8 density.
 @uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
 (note: coreboot raminit is different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{../resources/images/t400/memory,,,,jpg}
+The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{@value{librebootbase}/docs/resources/images/t400/memory,,,,jpg}
 
 @node Booting - T400
 @c @subsubheading Boot it!
 You should see something like this:
 
-@image{../resources/images/t400/boot0,,,,jpg} @image{../resources/images/t400/boot1,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/boot0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/boot1,,,,jpg}
 
 Now @ref{GNU/Linux distributions,install GNU/Linux}. 
 
@@ -4462,7 +4468,7 @@ On the T500, the MAC address for the onboard gigabit ethernet chipset is stored 
 
 Keep a note of the MAC address before disassembly; this is very important, because you will need to insert this into the libreboot ROM image before flashing it. It will be written in one of these locations:
 
-@image{../resources/images/t400/macaddress0,,,,jpg} @image{../resources/images/t400/macaddress1,,,,jpg} @image{../resources/images/x200/disassembly/0001,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/macaddress0,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/macaddress1,,,,jpg} @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0001,,,,jpg}
 
 @node Initial BBB configuration - T500
 @c @subsubheading Initial BBB configuration
@@ -4501,53 +4507,53 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 
 @node The procedure - T500
 @c @subsubheading The procedure
-Remove all screws:@* @image{../resources/images/t500/0000,,,,jpg}@* It is also advisable to, throughout the disassembly, place any screws and/or components that you removed in the same layout or arrangement. The follow photos demonstrate this:@* @image{../resources/images/t500/0001,,,,jpg} @image{../resources/images/t500/0002,,,,jpg}
+Remove all screws:@* @image{@value{librebootbase}/docs/resources/images/t500/0000,,,,jpg}@* It is also advisable to, throughout the disassembly, place any screws and/or components that you removed in the same layout or arrangement. The follow photos demonstrate this:@* @image{@value{librebootbase}/docs/resources/images/t500/0001,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0002,,,,jpg}
 
-Remove the HDD/SSD and optical drive:@* @image{../resources/images/t500/0003,,,,jpg} @image{../resources/images/t500/0004,,,,jpg}
+Remove the HDD/SSD and optical drive:@* @image{@value{librebootbase}/docs/resources/images/t500/0003,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0004,,,,jpg}
 
-Remove the palm rest:@* @image{../resources/images/t500/0005,,,,jpg} @image{../resources/images/t500/0006,,,,jpg}
+Remove the palm rest:@* @image{@value{librebootbase}/docs/resources/images/t500/0005,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0006,,,,jpg}
 
-Remove the keyboard and rear bezel:@* @image{../resources/images/t500/0007,,,,jpg} @image{../resources/images/t500/0008,,,,jpg} @image{../resources/images/t500/0009,,,,jpg} @image{../resources/images/t500/0010,,,,jpg} @image{../resources/images/t500/0011,,,,jpg} @image{../resources/images/t500/0012,,,,jpg}
+Remove the keyboard and rear bezel:@* @image{@value{librebootbase}/docs/resources/images/t500/0007,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0008,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0009,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0010,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0011,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0012,,,,jpg}
 
-If you have a WWAN/3G card and/or sim card reader, remove them permanently. The WWAN-3G card has proprietary firmware inside; the technology is identical to what is used in mobile phones, so it can also track your movements:@* @image{../resources/images/t500/0013,,,,jpg} @image{../resources/images/t500/0017,,,,jpg} @image{../resources/images/t500/0018,,,,jpg}
+If you have a WWAN/3G card and/or sim card reader, remove them permanently. The WWAN-3G card has proprietary firmware inside; the technology is identical to what is used in mobile phones, so it can also track your movements:@* @image{@value{librebootbase}/docs/resources/images/t500/0013,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0017,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0018,,,,jpg}
 
-Remove this frame, and then remove the wifi chip:@* @image{../resources/images/t500/0014,,,,jpg} @image{../resources/images/t500/0015,,,,jpg} @image{../resources/images/t500/0016,,,,jpg}
+Remove this frame, and then remove the wifi chip:@* @image{@value{librebootbase}/docs/resources/images/t500/0014,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0015,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0016,,,,jpg}
 
-Remove the speakers:@* @image{../resources/images/t500/0019,,,,jpg} @image{../resources/images/t500/0020,,,,jpg} @image{../resources/images/t500/0021,,,,jpg} @image{../resources/images/t500/0022,,,,jpg} @image{../resources/images/t500/0023,,,,jpg} @image{../resources/images/t500/0024,,,,jpg} @image{../resources/images/t500/0025,,,,jpg}
+Remove the speakers:@* @image{@value{librebootbase}/docs/resources/images/t500/0019,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0020,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0021,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0022,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0023,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0024,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0025,,,,jpg}
 
-Remove the NVRAM battery (already removed in this photo):@* @image{../resources/images/t500/0026,,,,jpg}
+Remove the NVRAM battery (already removed in this photo):@* @image{@value{librebootbase}/docs/resources/images/t500/0026,,,,jpg}
 
-When you re-assemble, you will be replacing the wifi chip with another. These two screws don't hold anything together, but they are included in your system because the screw holes for half-height cards are a different size, so use these if you will be installing a half-height card:@* @image{../resources/images/t500/0027,,,,jpg}
+When you re-assemble, you will be replacing the wifi chip with another. These two screws don't hold anything together, but they are included in your system because the screw holes for half-height cards are a different size, so use these if you will be installing a half-height card:@* @image{@value{librebootbase}/docs/resources/images/t500/0027,,,,jpg}
 
-Unroute the antenna wires:@* @image{../resources/images/t500/0028,,,,jpg} @image{../resources/images/t500/0029,,,,jpg} @image{../resources/images/t500/0030,,,,jpg} @image{../resources/images/t500/0031,,,,jpg}
+Unroute the antenna wires:@* @image{@value{librebootbase}/docs/resources/images/t500/0028,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0029,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0030,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0031,,,,jpg}
 
-Disconnect the LCD cable from the motherboard:@* @image{../resources/images/t500/0032,,,,jpg} @image{../resources/images/t500/0033,,,,jpg}
+Disconnect the LCD cable from the motherboard:@* @image{@value{librebootbase}/docs/resources/images/t500/0032,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0033,,,,jpg}
 
-Remove the LCD assembly hinge screws, and then remove the LCD assembly:@* @image{../resources/images/t500/0034,,,,jpg} @image{../resources/images/t500/0035,,,,jpg} @image{../resources/images/t500/0036,,,,jpg}
+Remove the LCD assembly hinge screws, and then remove the LCD assembly:@* @image{@value{librebootbase}/docs/resources/images/t500/0034,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0035,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0036,,,,jpg}
 
-Remove the fan and heatsink:@* @image{../resources/images/t500/0037,,,,jpg} @image{../resources/images/t500/0038,,,,jpg} @image{../resources/images/t500/0039,,,,jpg}
+Remove the fan and heatsink:@* @image{@value{librebootbase}/docs/resources/images/t500/0037,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0038,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0039,,,,jpg}
 
-Remove this screw:@* @image{../resources/images/t500/0040,,,,jpg}
+Remove this screw:@* @image{@value{librebootbase}/docs/resources/images/t500/0040,,,,jpg}
 
-Remove these cables, keeping note of how and in what arrangement they are connected:@* @image{../resources/images/t500/0041,,,,jpg} @image{../resources/images/t500/0042,,,,jpg} @image{../resources/images/t500/0043,,,,jpg} @image{../resources/images/t500/0044,,,,jpg} @image{../resources/images/t500/0045,,,,jpg} @image{../resources/images/t500/0046,,,,jpg} @image{../resources/images/t500/0047,,,,jpg} @image{../resources/images/t500/0048,,,,jpg} @image{../resources/images/t500/0049,,,,jpg}
+Remove these cables, keeping note of how and in what arrangement they are connected:@* @image{@value{librebootbase}/docs/resources/images/t500/0041,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0042,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0043,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0044,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0045,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0046,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0047,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0048,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0049,,,,jpg}
 
-Disconnect the power jack:@* @image{../resources/images/t500/0050,,,,jpg} @image{../resources/images/t500/0051,,,,jpg}
+Disconnect the power jack:@* @image{@value{librebootbase}/docs/resources/images/t500/0050,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0051,,,,jpg}
 
-Remove the motherboard and cage from the base (the marked hole is where those cables were routed through):@* @image{../resources/images/t500/0052,,,,jpg} @image{../resources/images/t500/0053,,,,jpg}
+Remove the motherboard and cage from the base (the marked hole is where those cables were routed through):@* @image{@value{librebootbase}/docs/resources/images/t500/0052,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0053,,,,jpg}
 
-Remove all screws, arranging them in the same layout when placing the screws on a surface and marking each screw hole (this is to reduce the possibility of putting them back in the wrong holes):@* @image{../resources/images/t500/0054,,,,jpg} @image{../resources/images/t500/0055,,,,jpg}
+Remove all screws, arranging them in the same layout when placing the screws on a surface and marking each screw hole (this is to reduce the possibility of putting them back in the wrong holes):@* @image{@value{librebootbase}/docs/resources/images/t500/0054,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0055,,,,jpg}
 
-Also remove this:@* @image{../resources/images/t500/0056,,,,jpg} @image{../resources/images/t500/0057,,,,jpg}
+Also remove this:@* @image{@value{librebootbase}/docs/resources/images/t500/0056,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0057,,,,jpg}
 
-Separate the motherboard from the cage:@* @image{../resources/images/t500/0058,,,,jpg} @image{../resources/images/t500/0059,,,,jpg}
+Separate the motherboard from the cage:@* @image{@value{librebootbase}/docs/resources/images/t500/0058,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t500/0059,,,,jpg}
 
-The flash chip is next to the memory slots. On this system, it was a SOIC-8 (4MiB or 32Mb) flash chip:@* @image{../resources/images/t500/0060,,,,jpg}
+The flash chip is next to the memory slots. On this system, it was a SOIC-8 (4MiB or 32Mb) flash chip:@* @image{@value{librebootbase}/docs/resources/images/t500/0060,,,,jpg}
 
-Connect your programmer, then connect GND and 3.3V@* @image{../resources/images/t500/0061,,,,jpg}@* @image{../resources/images/t400/0067,,,,jpg} @image{../resources/images/t400/0069,,,,jpg} @image{../resources/images/t400/0070,,,,jpg} @image{../resources/images/t400/0071,,,,jpg}
+Connect your programmer, then connect GND and 3.3V@* @image{@value{librebootbase}/docs/resources/images/t500/0061,,,,jpg}@* @image{@value{librebootbase}/docs/resources/images/t400/0067,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0069,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0070,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/0071,,,,jpg}
 
-A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{../resources/images/t400/0072,,,,jpg}
+A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:@* @image{@value{librebootbase}/docs/resources/images/t400/0072,,,,jpg}
 
-Of course, make sure to turn on your PSU:@* @image{../resources/images/x200/disassembly/0013,,,,jpg}
+Of course, make sure to turn on your PSU:@* @image{@value{librebootbase}/docs/resources/images/x200/disassembly/0013,,,,jpg}
 
 Now, you should be ready to install libreboot.
 
@@ -4574,7 +4580,7 @@ Follow the instructions at @ref{ICH9 gen utility,ich9gen} to change the MAC addr
 
 Now flash it:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V}
 
-@image{../resources/images/x200/disassembly/0015,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/x200/disassembly/0015,,,,jpg}
 
 You might see errors, but if it says @strong{Verifying flash... VERIFIED} at the end, then it's flashed and should boot. If you see errors, try again (and again, and again); the message @strong{Chip content is identical to the requested image} is also an indication of a successful installation.
 
@@ -4601,7 +4607,7 @@ Because part of this procedure involved removing the heatsink, you will need to 
 
 When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth. Then apply new paste. Arctic MX-4 is also much better than the default paste used on these systems.
 
-@image{../resources/images/t400/paste,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t400/paste,,,,jpg}
 
 NOTE: the photo above is for illustration purposes only, and does not show how to properly apply the thermal paste. Other guides online detail the proper application procedure.
 
@@ -4613,7 +4619,7 @@ Some T500 laptops might come with an Atheros chipset, but this is 802.11g only.
 
 It is recommended that you install a new wifi chipset. This can only be done after installing libreboot, because the original firmware has a whitelist of approved chips, and it will refuse to boot if you use an 'unauthorized' wifi card.
 
-The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this T500 came with:@* @image{../resources/images/t400/0012,,,,jpg} @image{../resources/images/t400/ar5b95,,,,jpg}
+The following photos show an Atheros AR5B95 being installed, to replace the Intel chip that this T500 came with:@* @image{@value{librebootbase}/docs/resources/images/t400/0012,,,,jpg} @image{@value{librebootbase}/docs/resources/images/t400/ar5b95,,,,jpg}
 
 @node WWAN - T500
 @c @subsubheading WWAN
@@ -4630,13 +4636,13 @@ Make sure that the RAM you buy is the 2Rx8 density.
 @uref{http://www.forum.thinkpads.com/viewtopic.php?p=760721, This page} might be useful for RAM compatibility info
 (note: coreboot raminit is different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{../resources/images/t400/memory,,,,jpg}
+The following photo shows 8GiB (2x4GiB) of RAM installed:@* @image{@value{librebootbase}/docs/resources/images/t400/memory,,,,jpg}
 
 @node Booting - T500
 @c @subsubheading Boot it!
 You should see something like this:
 
-@image{../resources/images/t500/0062,,,,jpg}
+@image{@value{librebootbase}/docs/resources/images/t500/0062,,,,jpg}
 
 Now @ref{GNU/Linux distributions,install GNU/Linux}.
 
@@ -6554,31 +6560,31 @@ This tutorial deals with reducing the number of devices that have direct memory 
 
 @node Disassembly - X60
 @subsubsection Disassembly
-Firstly remove the bluetooth (if your X60 has this):@* The marked screws are underneath those stickers (marked in those 3 locations at the bottom of the LCD assembly):@* @image{../resources/images/x60_security/0000_bluetooth0,,,,jpg}@* Now gently pry off the bottom part of the front bezel, and the bluetooth module is on the left (easily removable):@* @image{../resources/images/x60_security/0000_bluetooth,,,,jpg}@*
+Firstly remove the bluetooth (if your X60 has this):@* The marked screws are underneath those stickers (marked in those 3 locations at the bottom of the LCD assembly):@* @image{@value{librebootbase}/docs/resources/images/x60_security/0000_bluetooth0,,,,jpg}@* Now gently pry off the bottom part of the front bezel, and the bluetooth module is on the left (easily removable):@* @image{@value{librebootbase}/docs/resources/images/x60_security/0000_bluetooth,,,,jpg}@*
 
-If your model was WWAN, remove the simcard (check anyway):@* Uncover those 2 screws at the bottom:@* @image{../resources/images/x60_security/0000_simcard0,,,,jpg}@* SIM card (not present in the picture) is in the marked location:@* @image{../resources/images/x60_security/0000_simcard1,,,,jpg}@* Replacement: USB dongle.
+If your model was WWAN, remove the simcard (check anyway):@* Uncover those 2 screws at the bottom:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0000_simcard0,,,,jpg}@* SIM card (not present in the picture) is in the marked location:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0000_simcard1,,,,jpg}@* Replacement: USB dongle.
 
 Now get into the motherboard.
 
-Remove those screws:@* @image{../resources/images/x60_security/0000,,,,jpg}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0000,,,,jpg}
 
-Push the keyboard forward (carefully):@* @image{../resources/images/x60_security/0001,,,,jpg}
+Push the keyboard forward (carefully):@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001,,,,jpg}
 
-Lift the keyboard up and disconnect it from the board:@* @image{../resources/images/x60_security/0002,,,,jpg}
+Lift the keyboard up and disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0002,,,,jpg}
 
-Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{../resources/images/x60_security/0003,,,,jpg}
+Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0003,,,,jpg}
 
-You should now have this:@* @image{../resources/images/x60_security/0004,,,,jpg}
+You should now have this:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0004,,,,jpg}
 
-The following is a summary of what you will remove (already done to this system):@* @image{../resources/images/x60_security/0001_overview,,,,jpg}@* Note: the blue lines represent antenna cables and modem cables. You don't need to remove these, but you can if you want (to make it tidier after removing other parts). I removed the antenna wires, the modem jack, the modem cable and also (on another model) a device inside the part where the wwan antenna goes (wasn't sure what it was, but I knew it wasn't needed). @strong{This is optional}
+The following is a summary of what you will remove (already done to this system):@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001_overview,,,,jpg}@* Note: the blue lines represent antenna cables and modem cables. You don't need to remove these, but you can if you want (to make it tidier after removing other parts). I removed the antenna wires, the modem jack, the modem cable and also (on another model) a device inside the part where the wwan antenna goes (wasn't sure what it was, but I knew it wasn't needed). @strong{This is optional}
 
-Remove the microphone (can desolder it, but you can also easily pull it off with you hands). Already removed here:@* @image{../resources/images/x60_security/0001_microphone,,,,jpg}@* @strong{Rationale:}@* Another reason to remove the microphone: If your computer gets @xref{physical-access-x60,,[1]}, compromised, it can record what you say, and use it to receive data from nearby devices if they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically be programmed to accept remote commands from some speaker somewhere (remote security hole). @strong{In other words, the system could already be compromised from the factory.}
+Remove the microphone (can desolder it, but you can also easily pull it off with you hands). Already removed here:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001_microphone,,,,jpg}@* @strong{Rationale:}@* Another reason to remove the microphone: If your computer gets @xref{physical-access-x60,,[1]}, compromised, it can record what you say, and use it to receive data from nearby devices if they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically be programmed to accept remote commands from some speaker somewhere (remote security hole). @strong{In other words, the system could already be compromised from the factory.}
 
-Remove the modem:@* @image{../resources/images/x60_security/0001_modem,,,,jpg}@* (useless, obsolete device)
+Remove the modem:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001_modem,,,,jpg}@* (useless, obsolete device)
 
-Remove the speaker:@* @image{../resources/images/x60_security/0001_speaker,,,,jpg}@* Reason: combined with the microphone issue, this could be used to leak data.@* If your computer gets @xref{physical-access-x60,,[1]}, compromised, it can be used to transmit data to nearby compromised devices. It's unknown if it can be turned into a microphone @xref{microphone-x60,,[2]},.@* Replacement: headphones/speakers (line-out) or external DAC (USB).
+Remove the speaker:@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001_speaker,,,,jpg}@* Reason: combined with the microphone issue, this could be used to leak data.@* If your computer gets @xref{physical-access-x60,,[1]}, compromised, it can be used to transmit data to nearby compromised devices. It's unknown if it can be turned into a microphone @xref{microphone-x60,,[2]},.@* Replacement: headphones/speakers (line-out) or external DAC (USB).
 
-Remove the wlan (also remove wwan if you have it):@* @image{../resources/images/x60_security/0001_wlan_wwan,,,,jpg}@* Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.@* @strong{Wifi:} The ath5k/ath9k cards might not have firmware at all. They might safe but could have access to the computer's RAM trough DMA. If people have an intel card(most X60s come with Intel wifi by default, until you change it),then that card runs a non-free firwamre and has access to the computer's RAM trough DMA! So the risk-level is very high.@* @strong{Wwan (3g modem):} They run proprietary software! It's like AMT but over the GSM network which is probably even worse.@* Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
+Remove the wlan (also remove wwan if you have it):@* @image{@value{librebootbase}/docs/resources/images/x60_security/0001_wlan_wwan,,,,jpg}@* Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.@* @strong{Wifi:} The ath5k/ath9k cards might not have firmware at all. They might safe but could have access to the computer's RAM trough DMA. If people have an intel card(most X60s come with Intel wifi by default, until you change it),then that card runs a non-free firwamre and has access to the computer's RAM trough DMA! So the risk-level is very high.@* @strong{Wwan (3g modem):} They run proprietary software! It's like AMT but over the GSM network which is probably even worse.@* Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
 
 @menu
 * Not covered yet - X60::
@@ -6748,87 +6754,87 @@ This tutorial deals with reducing the number of devices that have direct memory 
 
 @node Disassembly - T60
 @subsubsection Disassembly
-Remove those screws and remove the HDD:@* @image{../resources/images/t60_dev/0001,,,,JPG} @image{../resources/images/t60_dev/0002,,,,JPG}
+Remove those screws and remove the HDD:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0001,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0002,,,,JPG}
 
-Lift off the palm rest:@* @image{../resources/images/t60_dev/0003,,,,JPG}
+Lift off the palm rest:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0003,,,,JPG}
 
-Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{../resources/images/t60_dev/0004,,,,JPG} @image{../resources/images/t60_dev/0005,,,,JPG} @image{../resources/images/t60_dev/0006,,,,JPG}
+Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0004,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0005,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0006,,,,JPG}
 
-Gently wedge both sides loose:@* @image{../resources/images/t60_dev/0007,,,,JPG} @image{../resources/images/t60_dev/0008,,,,JPG}
+Gently wedge both sides loose:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0007,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0008,,,,JPG}
 
-Remove that cable from the position:@* @image{../resources/images/t60_dev/0009,,,,JPG} @image{../resources/images/t60_dev/0010,,,,JPG}
+Remove that cable from the position:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0009,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0010,,,,JPG}
 
-Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):@* @image{../resources/images/t60_dev/0011,,,,JPG}@* Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.@* @strong{Wifi:} The ath5k/ath9k cards might not have firmware at all. They might safe but could have access to the computer's RAM trough DMA. If people have an intel card(most T60 laptops come with Intel wifi by default, until you change it),then that card runs a non-free firwamre and has access to the computer's RAM trough DMA! So the risk-level is very high.
+Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0011,,,,JPG}@* Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.@* @strong{Wifi:} The ath5k/ath9k cards might not have firmware at all. They might safe but could have access to the computer's RAM trough DMA. If people have an intel card(most T60 laptops come with Intel wifi by default, until you change it),then that card runs a non-free firwamre and has access to the computer's RAM trough DMA! So the risk-level is very high.
 
-Remove those screws:@* @image{../resources/images/t60_dev/0012,,,,JPG}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0012,,,,JPG}
 
-Disconnect the power jack:@* @image{../resources/images/t60_dev/0013,,,,JPG}
+Disconnect the power jack:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0013,,,,JPG}
 
-Remove nvram battery (we will put it back later):@* @image{../resources/images/t60_dev/0014,,,,JPG}
+Remove nvram battery (we will put it back later):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0014,,,,JPG}
 
-Disconnect cable (for 56k modem) and disconnect the other cable:@* @image{../resources/images/t60_dev/0015,,,,JPG} @image{../resources/images/t60_dev/0016,,,,JPG}
+Disconnect cable (for 56k modem) and disconnect the other cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0015,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0016,,,,JPG}
 
-Disconnect speaker cable:@* @image{../resources/images/t60_dev/0017,,,,JPG}
+Disconnect speaker cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0017,,,,JPG}
 
-Disconnect the other end of the 56k modem cable:@* @image{../resources/images/t60_dev/0018,,,,JPG}
+Disconnect the other end of the 56k modem cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0018,,,,JPG}
 
-Make sure you removed it:@* @image{../resources/images/t60_dev/0019,,,,JPG}
+Make sure you removed it:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0019,,,,JPG}
 
-Unscrew those:@* @image{../resources/images/t60_dev/0020,,,,JPG}
+Unscrew those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0020,,,,JPG}
 
-Make sure you removed those:@* @image{../resources/images/t60_dev/0021,,,,JPG}
+Make sure you removed those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0021,,,,JPG}
 
-Disconnect LCD cable from board:@* @image{../resources/images/t60_dev/0022,,,,JPG}
+Disconnect LCD cable from board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0022,,,,JPG}
 
-Remove those screws then remove the LCD assembly:@* @image{../resources/images/t60_dev/0023,,,,JPG} @image{../resources/images/t60_dev/0024,,,,JPG} @image{../resources/images/t60_dev/0025,,,,JPG}
+Remove those screws then remove the LCD assembly:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0023,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0024,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0025,,,,JPG}
 
-Once again, make sure you removed those:@* @image{../resources/images/t60_dev/0026,,,,JPG}
+Once again, make sure you removed those:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0026,,,,JPG}
 
-Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{../resources/images/t60_dev/0027,,,,JPG} @image{../resources/images/t60_dev/0028,,,,JPG} @image{../resources/images/t60_dev/0029,,,,JPG} @image{../resources/images/t60_dev/0031,,,,JPG} @image{../resources/images/t60_dev/0032,,,,JPG} @image{../resources/images/t60_dev/0033,,,,JPG}
+Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0027,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0028,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0029,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0031,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0032,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0033,,,,JPG}
 
-Remove microphone (soldering iron not needed. Just wedge it out gently):@* @image{../resources/images/t60_dev/0039,,,,JPG}@* @strong{Rationale:}@* Another reason to remove the microphone: If your computer gets@xref{physical-access-t60,,[1]}, compromised, it can record what you say, and use it to receive data from nearby devices if they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically be programmed to accept remote commands from some speaker somewhere (remote security hole). @strong{In other words, the system could already be compromised from the factory.}
+Remove microphone (soldering iron not needed. Just wedge it out gently):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0039,,,,JPG}@* @strong{Rationale:}@* Another reason to remove the microphone: If your computer gets@xref{physical-access-t60,,[1]}, compromised, it can record what you say, and use it to receive data from nearby devices if they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically be programmed to accept remote commands from some speaker somewhere (remote security hole). @strong{In other words, the system could already be compromised from the factory.}
 
-Remove infrared:@* @image{../resources/images/t60_dev/0040,,,,JPG} @image{../resources/images/t60_dev/0042,,,,JPG}
+Remove infrared:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0040,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0042,,,,JPG}
 
-Remove cardbus (it's in a socket, no need to disable. Just remove the port itself):@* @image{../resources/images/t60_dev/0041,,,,JPG}@* @strong{Rationale:}@* It has direct memory access and can be used to extract sensitive details (such as LUKS keys). See 'GoodBIOS' video linked at the end (speaker is Peter Stuge, a coreboot hacker). The video covers X60 but the same topics apply to T60.
+Remove cardbus (it's in a socket, no need to disable. Just remove the port itself):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0041,,,,JPG}@* @strong{Rationale:}@* It has direct memory access and can be used to extract sensitive details (such as LUKS keys). See 'GoodBIOS' video linked at the end (speaker is Peter Stuge, a coreboot hacker). The video covers X60 but the same topics apply to T60.
 
-Before re-installing the upper chassis, remove the speaker:@* @image{../resources/images/t60_dev/0043,,,,JPG} @image{../resources/images/t60_dev/0044,,,,JPG}@* Reason: combined with the microphone issue, this could be used to leak data.@* If your computer gets@xref{physical-access-t60,,[1]}, compromised, it can be used to transmit data to nearby compromised devices. It's unknown if it can be turned into a microphone@xref{microphone-t60,,[2]}.@* Replacement: headphones/speakers (line-out) or external DAC (USB).
+Before re-installing the upper chassis, remove the speaker:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0043,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0044,,,,JPG}@* Reason: combined with the microphone issue, this could be used to leak data.@* If your computer gets@xref{physical-access-t60,,[1]}, compromised, it can be used to transmit data to nearby compromised devices. It's unknown if it can be turned into a microphone@xref{microphone-t60,,[2]}.@* Replacement: headphones/speakers (line-out) or external DAC (USB).
 
-Remove the wwan:@* @image{../resources/images/t60_dev/0045,,,,JPG}@* @strong{Wwan (3g modem):} They run proprietary software! It's like AMT but over the GSM network which is probably even worse.@* Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
+Remove the wwan:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0045,,,,JPG}@* @strong{Wwan (3g modem):} They run proprietary software! It's like AMT but over the GSM network which is probably even worse.@* Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
 
-This is where the simcard connector is soldered. See notes above about wwan. Remove simcard by removing battery and then it's accessible (so, remember to do this when you re-assemble. or you could do it now?)@* @image{../resources/images/t60_dev/0046,,,,JPG}
+This is where the simcard connector is soldered. See notes above about wwan. Remove simcard by removing battery and then it's accessible (so, remember to do this when you re-assemble. or you could do it now?)@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0046,,,,JPG}
 
-Put those screws back:@* @image{../resources/images/t60_dev/0047,,,,JPG}
+Put those screws back:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0047,,,,JPG}
 
-Put it back into lower chassis:@* @image{../resources/images/t60_dev/0048,,,,JPG}
+Put it back into lower chassis:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0048,,,,JPG}
 
-Attach LCD and insert screws (also, attach the lcd cable to the board):@* @image{../resources/images/t60_dev/0049,,,,JPG}
+Attach LCD and insert screws (also, attach the lcd cable to the board):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0049,,,,JPG}
 
-Insert those screws:@* @image{../resources/images/t60_dev/0050,,,,JPG}
+Insert those screws:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0050,,,,JPG}
 
-On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{../resources/images/t60_dev/0051,,,,JPG}
+On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0051,,,,JPG}
 
-Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{../resources/images/t60_dev/0052,,,,JPG}
+Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0052,,,,JPG}
 
-Reinstall that upper bezel:@* @image{../resources/images/t60_dev/0053,,,,JPG}
+Reinstall that upper bezel:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0053,,,,JPG}
 
-Do that:@* @image{../resources/images/t60_dev/0054,,,,JPG} @image{../resources/images/t60_dev/0055,,,,JPG}
+Do that:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0054,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0055,,,,JPG}
 
-Attach keyboard and install nvram battery:@* @image{../resources/images/t60_dev/0056,,,,JPG} @image{../resources/images/t60_dev/0057,,,,JPG}
+Attach keyboard and install nvram battery:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0056,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0057,,,,JPG}
 
-Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{../resources/images/t60_dev/0058,,,,JPG}
+Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0058,,,,JPG}
 
-Remove those covers and unscrew:@* @image{../resources/images/t60_dev/0059,,,,JPG} @image{../resources/images/t60_dev/0060,,,,JPG} @image{../resources/images/t60_dev/0061,,,,JPG}
+Remove those covers and unscrew:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0059,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0060,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0061,,,,JPG}
 
 Gently pry off the front bezel (sorry, forgot to take pics).
 
-Remove bluetooth module:@* @image{../resources/images/t60_dev/0062,,,,JPG} @image{../resources/images/t60_dev/0063,,,,JPG}
+Remove bluetooth module:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0062,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0063,,,,JPG}
 
 Re-attach the front bezel and re-insert the screws (sorry, forgot to take pics).
 
-It lives!@* @image{../resources/images/t60_dev/0071,,,,JPG} @image{../resources/images/t60_dev/0072,,,,JPG} @image{../resources/images/t60_dev/0073,,,,JPG}
+It lives!@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0071,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0072,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0073,,,,JPG}
 
-Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{../resources/images/t60_dev/0074,,,,JPG}
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0074,,,,JPG}
 @menu
 * Not covered yet - T60::
 * Also not covered yet - T60::
@@ -7097,11 +7103,11 @@ Just follow these steps and then reverse.
 
 This tutorial is incomplete, and only pictures for now.
 
-@image{../resources/images/x60_keyboard/1,,,,JPG}@*
-@image{../resources/images/x60_keyboard/2,,,,JPG}@*
-@image{../resources/images/x60_keyboard/3,,,,JPG}@*
-@image{../resources/images/x60_keyboard/4,,,,JPG}@*
-@image{../resources/images/x60_keyboard/5,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_keyboard/1,,,,JPG}@*
+@image{@value{librebootbase}/docs/resources/images/x60_keyboard/2,,,,JPG}@*
+@image{@value{librebootbase}/docs/resources/images/x60_keyboard/3,,,,JPG}@*
+@image{@value{librebootbase}/docs/resources/images/x60_keyboard/4,,,,JPG}@*
+@image{@value{librebootbase}/docs/resources/images/x60_keyboard/5,,,,JPG}
 
 
 @node ThinkPad X60/X60S Change the fan/heatsink
@@ -7139,39 +7145,39 @@ stress utility
 
 @node Disassembly
 @subsubsection Disassembly
-Remove those screws:@* @image{../resources/images/x60_heatsink/0000,,,,jpg}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0000,,,,jpg}
 
-Push the keyboard forward (carefully):@* @image{../resources/images/x60_heatsink/0001,,,,jpg}
+Push the keyboard forward (carefully):@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0001,,,,jpg}
 
-Lift the keyboard up and disconnect it from the board:@* @image{../resources/images/x60_heatsink/0002,,,,jpg}
+Lift the keyboard up and disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0002,,,,jpg}
 
-Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{../resources/images/x60_heatsink/0003,,,,jpg}
+Grab the right-hand side of the chassis and force it off (gently) and pry up the rest of the chassis:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0003,,,,jpg}
 
-You should now have this:@* @image{../resources/images/x60_heatsink/0004,,,,jpg}
+You should now have this:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0004,,,,jpg}
 
-Disconnect the wifi antenna cables, the modem cable and the speaker:@* @image{../resources/images/x60_heatsink/0005,,,,jpg}
+Disconnect the wifi antenna cables, the modem cable and the speaker:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0005,,,,jpg}
 
-Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand side:@* @image{../resources/images/x60_heatsink/0006,,,,jpg}
+Unroute the cables along their path, carefully lifting the tape that holds them in place. Then, disconnect the modem cable (other end) and power connection and unroute all the cables so that they dangle by the monitor hinge on the right-hand side:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0006,,,,jpg}
 
-Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape that holds it into place:@* @image{../resources/images/x60_heatsink/0008,,,,jpg}
+Disconnect the monitor from the motherboard, and unroute the grey antenna cable, carefully lifting the tape that holds it into place:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0008,,,,jpg}
 
-Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:@* @image{../resources/images/x60_heatsink/0009,,,,jpg}
+Carefully lift the remaining tape and unroute the left antenna cable so that it is loose:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0009,,,,jpg}
 
-Remove those screws:@* @image{../resources/images/x60_heatsink/0011,,,,jpg}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0011,,,,jpg}
 
-Remove those screws:@* @image{../resources/images/x60_heatsink/0012,,,,jpg}
+Remove those screws:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0012,,,,jpg}
 
-Carefully remove the plate, like so:@* @image{../resources/images/x60_heatsink/0013,,,,jpg}
+Carefully remove the plate, like so:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0013,,,,jpg}
 
-Remove the SATA connector:@* @image{../resources/images/x60_heatsink/0014,,,,jpg}
+Remove the SATA connector:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0014,,,,jpg}
 
-Now remove the motherboard (gently) and cast the lcd/chassis aside:@* @image{../resources/images/x60_heatsink/0015,,,,jpg}
+Now remove the motherboard (gently) and cast the lcd/chassis aside:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0015,,,,jpg}
 
-Look at that black tape above the heatsink, remove it:@* @image{../resources/images/x60_heatsink/0016,,,,jpg}
+Look at that black tape above the heatsink, remove it:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0016,,,,jpg}
 
-Now you have removed it:@* @image{../resources/images/x60_heatsink/0017,,,,jpg}
+Now you have removed it:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0017,,,,jpg}
 
-Disconnect the fan and remove all the screws, heatsink will easily come off:@* @image{../resources/images/x60_heatsink/0018,,,,jpg}
+Disconnect the fan and remove all the screws, heatsink will easily come off:@* @image{@value{librebootbase}/docs/resources/images/x60_heatsink/0018,,,,jpg}
 
 Remove the old paste with a cloth (from the CPU and heatsink) and then clean both of them with the alcohol (to remove remaining residue of the paste). Apply a pea-sized amount of paste to the both chipsets that the heatsink covered and spread it evenly (uniformally). Finally reinstall the heatsink, reversing previous steps.
 
@@ -7183,13 +7189,13 @@ Remove the old paste with a cloth (from the CPU and heatsink) and then clean bot
 
 This tutorial is incomplete, and only pictures for now.
 
-@image{../resources/images/x60_lcd_change/0001,,,,JPG}
-@image{../resources/images/x60_lcd_change/0002,,,,JPG}
-@image{../resources/images/x60_lcd_change/0003,,,,JPG}
-@image{../resources/images/x60_lcd_change/0004,,,,JPG}
-@image{../resources/images/x60_lcd_change/0005,,,,JPG}
-@image{../resources/images/x60_lcd_change/0006,,,,JPG}
-@image{../resources/images/x60_lcd_change/0007,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0001,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0002,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0003,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0004,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0005,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0006,,,,JPG}
+@image{@value{librebootbase}/docs/resources/images/x60_lcd_change/0007,,,,JPG}
 
 
 
@@ -7204,25 +7210,25 @@ This is for the 15.1" T60. If you have another size then the procedure will diff
 
 @node Disassembly - T60 LCD
 @subsubsection Disassembly
-Remove those covers and unscrew:@* @image{../resources/images/t60_dev/0059,,,,JPG} @image{../resources/images/t60_dev/0060,,,,JPG} @image{../resources/images/t60_dev/0061,,,,JPG}
+Remove those covers and unscrew:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0059,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0060,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0061,,,,JPG}
 
 Gently pry off the front bezel.
 
-Remove inverter board:@* @image{../resources/images/t60_dev/0064,,,,JPG}
+Remove inverter board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0064,,,,JPG}
 
-Disconnect LCD cable:@* @image{../resources/images/t60_dev/0065,,,,JPG}
+Disconnect LCD cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0065,,,,JPG}
 
-Remove the panel:@* @image{../resources/images/t60_dev/0066,,,,JPG}
+Remove the panel:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0066,,,,JPG}
 
-Move the rails (left and right side) from the old panel to the new one and then attach LCD cable:@* @image{../resources/images/t60_dev/0068,,,,JPG}
+Move the rails (left and right side) from the old panel to the new one and then attach LCD cable:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0068,,,,JPG}
 
-Insert panel (this one is an LG-Philips LP150E05-A2K1, and there are others. See @ref{Supported T60 list,supported_t60_list}):@* @image{../resources/images/t60_dev/0069,,,,JPG}
+Insert panel (this one is an LG-Philips LP150E05-A2K1, and there are others. See @ref{Supported T60 list,supported_t60_list}):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0069,,,,JPG}
 
-Insert new inverter board (see @ref{Supported T60 list,supported_t60_list} for what is recommended on your LCD panel):@* @image{../resources/images/t60_dev/0070,,,,JPG}
+Insert new inverter board (see @ref{Supported T60 list,supported_t60_list} for what is recommended on your LCD panel):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0070,,,,JPG}
 
 Now re-attach the front bezel and put all the screws in.
 
-It lives!@* @image{../resources/images/t60_dev/0071,,,,JPG} @image{../resources/images/t60_dev/0072,,,,JPG} @image{../resources/images/t60_dev/0073,,,,JPG}
+It lives!@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0071,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0072,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0073,,,,JPG}
 
 
 @node ThinkPad T60 change the fan/heatsink
@@ -7256,35 +7262,35 @@ stress
 
 @node Disassembly - T60 heatsink
 @subsubsection Disassembly - T60 heatsink
-Remove those screws and remove the HDD:@* @image{../resources/images/t60_dev/0001,,,,JPG} @image{../resources/images/t60_dev/0002,,,,JPG}
+Remove those screws and remove the HDD:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0001,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0002,,,,JPG}
 
-Lift off the palm rest:@* @image{../resources/images/t60_dev/0003,,,,JPG}
+Lift off the palm rest:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0003,,,,JPG}
 
-Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{../resources/images/t60_dev/0004,,,,JPG} @image{../resources/images/t60_dev/0005,,,,JPG} @image{../resources/images/t60_dev/0006,,,,JPG}
+Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0004,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0005,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0006,,,,JPG}
 
-Gently wedge both sides loose:@* @image{../resources/images/t60_dev/0007,,,,JPG} @image{../resources/images/t60_dev/0008,,,,JPG}
+Gently wedge both sides loose:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0007,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0008,,,,JPG}
 
-Remove that cable from the position:@* @image{../resources/images/t60_dev/0009,,,,JPG} @image{../resources/images/t60_dev/0010,,,,JPG}
+Remove that cable from the position:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0009,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0010,,,,JPG}
 
 Remove the bezel (sorry forgot to take pics).
 
-On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{../resources/images/t60_dev/0051,,,,JPG}
+On the CPU (and there is another chip south-east to it, sorry forgot to take pic) clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too) you should also clean the heatsink the same way@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0051,,,,JPG}
 
 This is also an opportunity to change the CPU to another one. For example if you had a Core Duo T2400, you can upgrade it to a better processor (higher speed, 64-bit support). A Core 2 Duo T7600 was installed here.
 
-Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{../resources/images/t60_dev/0052,,,,JPG}
+Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0052,,,,JPG}
 
-Reinstall that upper bezel:@* @image{../resources/images/t60_dev/0053,,,,JPG}
+Reinstall that upper bezel:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0053,,,,JPG}
 
-Do that:@* @image{../resources/images/t60_dev/0054,,,,JPG} @image{../resources/images/t60_dev/0055,,,,JPG}
+Do that:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0054,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0055,,,,JPG}
 
-Attach keyboard:@* @image{../resources/images/t60_dev/0056,,,,JPG}
+Attach keyboard:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0056,,,,JPG}
 
-Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{../resources/images/t60_dev/0058,,,,JPG}
+Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0058,,,,JPG}
 
-It lives!@* @image{../resources/images/t60_dev/0071,,,,JPG} @image{../resources/images/t60_dev/0072,,,,JPG} @image{../resources/images/t60_dev/0073,,,,JPG}
+It lives!@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0071,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0072,,,,JPG} @image{@value{librebootbase}/docs/resources/images/t60_dev/0073,,,,JPG}
 
-Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{../resources/images/t60_dev/0074,,,,JPG}
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:@* @image{@value{librebootbase}/docs/resources/images/t60_dev/0074,,,,JPG}
 
 
 
@@ -7684,6 +7690,6 @@ Generally speaking, it is advisable to use the latest version of libreboot.
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
 
-@include ../resources/licenses/gfdl-1.3.txt
+@include @value{librebootbase}/docs/resources/licenses/gfdl-1.3.txt
 
 @bye
