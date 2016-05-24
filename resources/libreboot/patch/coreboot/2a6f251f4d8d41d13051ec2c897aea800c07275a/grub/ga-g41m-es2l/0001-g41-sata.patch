@@ -1,4 +1,4 @@
-From e1eada0b19f11777ce1ce9e64d99905fbb16bcbd Mon Sep 17 00:00:00 2001
+From bf128e4fc6d6a134d8d04ee0c4a392a4d98db1d4 Mon Sep 17 00:00:00 2001
 From: Damien Zammit <damien@zamaudio.com>
 Date: Wed, 11 May 2016 19:08:33 +1000
 Subject: [PATCH] mb/gigabyte/ga-g41m-es2l: Fix ACPI IRQ settings for SATA
@@ -80,17 +80,19 @@ index fdfe73d..87719f7 100644
  	}
  }
 diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb b/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
-index 3965538..68a3352 100644
+index 3965538..c433387 100644
 --- a/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
 +++ b/src/mainboard/gigabyte/ga-g41m-es2l/devicetree.cb
-@@ -46,10 +46,8 @@
+@@ -46,10 +46,10 @@
        register "pirqf_routing" = "0x0b"
        register "pirqg_routing" = "0x0b"
        register "pirqh_routing" = "0x0b"
 -      register "ide_legacy_combined" = "0x1"
++      register "ide_legacy_combined" = "0x0"	# Combined mode broken
        register "ide_enable_primary" = "0x1"
        register "ide_enable_secondary" = "0x0"
 -      register "sata_ahci" = "0x0"
++      register "sata_ahci" = "0x0"		# AHCI does not work
        register "sata_ports_implemented" = "0x3"
        register "gpe0_en" = "0x40"
  

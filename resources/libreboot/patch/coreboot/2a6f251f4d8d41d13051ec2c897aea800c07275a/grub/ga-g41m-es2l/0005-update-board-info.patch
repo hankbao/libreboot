@@ -1,0 +1,35 @@
+From ae837e942d751aaf9a7f5b9ed5fba687abbd1dde Mon Sep 17 00:00:00 2001
+From: Damien Zammit <damien@zamaudio.com>
+Date: Tue, 24 May 2016 17:26:51 +1000
+Subject: [PATCH] mb/gigabyte/ga-g41m-es2l: Update board_info.txt and add item to Kconfig
+
+This adds the website URL to the board info and also enables
+the realtek nic reset function as per a previous patch.
+
+Change-Id: I2cda120c59b55f0dd2ffa78d397b16beb13d6843
+Signed-off-by: Damien Zammit <damien@zamaudio.com>
+---
+
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig b/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
+index 31b29bb..7dec921 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
+@@ -29,6 +29,7 @@
+ 	select PCIEXP_ASPM
+ 	select PCIEXP_CLK_PM
+ 	select PCIEXP_L1_SUB_STATE
++	select REALTEK_8168_RESET
+ 
+ config MMCONF_BASE_ADDRESS
+ 	hex
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/board_info.txt b/src/mainboard/gigabyte/ga-g41m-es2l/board_info.txt
+index 44ed73a..170449e 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/board_info.txt
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/board_info.txt
+@@ -1,5 +1,5 @@
+ Category: desktop
+-Board URL:
++Board URL: http://www.gigabyte.com/products/product-page.aspx?pid=3024#ov
+ ROM package: SOIC-8
+ ROM protocol: SPI
+ ROM socketed: n
