@@ -2934,6 +2934,9 @@ Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
 @end ifinfo
 Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to set up the BBB for flashing it externally, if you want to do that.
 
+Here is an image of the flash chip:
+@image{@value{librebootbase}/docs/resources/images/ga-g41m-es2l/ga-g41m-es2l,,,,jpg}
+
 Internal flashing is possible. Boot with proprietary BIOS and GNU/Linux, and run the latest version of flashrom. This board has 2 flash chips, one is a backup.
 
 Flash the first chip:
