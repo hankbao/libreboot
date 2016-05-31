@@ -8,7 +8,7 @@
 # './build docs html' is short for ./build docs html-by-node
 # name the output accordingly for clarity
 
-echo "@set librebootbase `pwd`" > docs/constants.texi
+echo "@set docsdir ../../" > docs/constants.texi
 
 basefile="`basename "$0"`-by-node"
 basedir="docs/manual/"

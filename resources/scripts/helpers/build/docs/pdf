@@ -3,7 +3,7 @@
 # Libreboot documentation build script: pdf
 #
 
-echo "@set librebootbase `pwd`" > docs/constants.texi
+echo "@set docsdir " > docs/constants.texi
 
 basedir="docs/manual/"
 outfile="${basedir}libreboot.pdf"

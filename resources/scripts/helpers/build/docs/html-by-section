@@ -6,7 +6,7 @@
 # not display images correctly
 #
 
-echo "@set librebootbase `pwd`" > docs/constants.texi
+echo "@set docsdir ../../" > docs/constants.texi
 
 basefile=`basename "$0"`
 basedir="docs/manual/"

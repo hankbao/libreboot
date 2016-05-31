@@ -3,8 +3,6 @@
 # Libreboot documentation build script: texinfo-gz
 #
 
-echo "@set librebootbase `pwd`" > docs/constants.texi
-
 basedir="docs/manual/"
 outfile="${basedir}libreboot.texi.gz"
 texinfo_src="docs/libreboot.texi"
