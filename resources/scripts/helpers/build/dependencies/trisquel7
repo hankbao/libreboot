@@ -41,7 +41,7 @@ apt-get -y install git
 # For building the documentation
 # ------------------------------------------------------------
 
-apt-get -y install pandoc texi2html texinfo
+apt-get -y install pandoc texi2html texinfo texlive
 
 # For building source code:
 # ------------------------------------------------------------
