@@ -1,15 +1,3 @@
 #!/bin/sh -e
-#
-# Libreboot documentation build script: texinfo-gz
-#
+./build docs .master $0 $@
 
-basedir="docs/manual/"
-outfile="${basedir}libreboot.texi.gz"
-texinfo_src="docs/libreboot.texi"
-
-[ -d docs/manual ] || mkdir docs/manual
-
-echo "Making $outfile..."
-gzip -f -9 -c $texinfo_src > $outfile
-
-echo "Done."
