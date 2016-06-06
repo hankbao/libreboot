@@ -795,7 +795,6 @@ DDR3 1600 can only be supported with AMD Opteron 6300/6200 series processor
 
 @node ASUS Chromebook C201
 @subsubsection ASUS Chromebook C201
-@strong{DO NOT BUY THIS LAPTOP YET!!!!!!!!!!! This is intended mainly for developers at the moment (libreboot developers, and developers of libre GNU/Linux distributions). This laptop currently has @emph{zero} support from libre distros. Parabola theoretically supports it, by installing Arch first and then migrating to Parabola using the migration guide on the Parabola wiki, but it's not very well tested and does not have many packages --- in our opinion, Parabola does not really support this laptop. There are also several issues. Read this page for more information. This laptop can still be used reasonably, in freedom, but it requires a lot of work. Most users will be disappointed.}
 
 This is a Chromebook, using the Rockchip RK3288 SoC. It uses an ARM CPU, and has free EC firmware (unlike some other laptops). More RK3288-based laptops will be added to libreboot at a later date.
 
@@ -2540,8 +2539,6 @@ Shut down.
 
 These instructions are for installing Libreboot to the ASUS Chromebook C201. Since the device ships with Coreboot, the installation instructions are the same before and after flashing Libreboot for the first time.
 
-@strong{DO NOT BUY THIS LAPTOP YET!!!!!!!!!!! This is intended mainly for developers at the moment (libreboot developers, and developers of libre GNU/Linux distributions). This laptop currently has @emph{zero} support from libre distros. Parabola theoretically supports it, by installing Arch first and then migrating to Parabola using the migration guide on the Parabola wiki, but it's not very well tested and does not have many packages - in our opinion, Parabola does not really support this laptop. There are also several issues. Read @ref{ASUS Chromebook C201,this page} for more information. This laptop can still be used reasonably, in freedom, but it requires a lot of work. Most users will be disappointed.} 
-
 @strong{If you are using libreboot_src or git, then make sure that you built the sources first (see @ref{How to build the ROM images,build}).} 
 
 Look at the @ref{List of ROM images in libreboot,list of ROM images} to see which image is compatible with your device. 
@@ -2557,7 +2554,6 @@ Installing Libreboot internally requires sufficient privileges on the system ins
 * Preparing the device for the installation::
 * Installing Libreboot to the SPI flash::
 @end menu
-
 
 @node Gaining root privileges on ChromeOS
 @c @subsubheading Gaining root privileges on ChromeOS
