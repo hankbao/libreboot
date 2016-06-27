@@ -7520,6 +7520,7 @@ ukdvorak had to be created manually, based on usdvorak. diff them (under resourc
 * High Pitched Whining Noise on Idle - Parabola::
 * X60/T60 Serial port - how to use::                     for dock owners
 * Power Management Beeps on Thinkpads::
+* Finetune backlight control::
 * Get EDID - Find out the name of your LCD panel::
 @end menu
 
@@ -7607,6 +7608,75 @@ Disable or enable beeps when removing/adding the charger:@* $ @strong{sudo ./nvr
 Disable or enable beeps when battery is low:@* $ @strong{sudo ./nvramtool - low_battery_beep=Enable}@* $ @strong{sudo ./nvramtool - low_battery_beep=Disable}
 
 A reboot is required, for these changes to take effect.
+@node Finetune backlight control
+@subsection Finetune backlight control on intel gpu's.
+Sometimes the backlight control value (BLC_PWM_CTL) set by libreboot is not ideal. The result is either flicker, which could cause nausea or epilepsy or an uneven backlight and/or coil whine coming from the display.
+To fix this a different value for the gpu reg BLC_PWM_CTL needs to be set. See p94 of @uref{https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf} for more information on this reg.
+The tool for setting registry values on intel gpu's is included in intel-gpu-tools. Install intel-gpu-tools: @strong{sudo apt-get install intel-gpu-tools}
+
+You can set values:
+@* @strong{sudo intel_reg write 0x00061254 <your_value>}
+
+The value set has the following structure:
+bits [31:16] is PWM divider.   PWM / PWM_divider = frequency
+bits [15:0] is the duty cycle and determines the portion of the backlight modulation frequency. A value of 0 will mean that the display is off. A value equal to the backlight modulation frequency means full on. The value should not be larger than the backlight modulation frequency.
+
+On displays with a CCFL backlight start from:
+@strong{0x60016001}
+To verify if all modes work as desired use:
+@* @strong{xbacklight -set 10} @*
+and gradually increase until 100.
+Displays with an LED backlight need a lower backlight modulation. Do the same thing but start from
+@strong{0x01290129}
+.
+Try setting different values until you have found a value which presents no issue.
+
+It is important to know that there are four failure modes:
+@* 1. flickering very fast, which could cause epilepsy (frequency is too low. decrease divider)
+@* 2. randomly flickering in random intervals - driver IC cannot keep up with toggling the mosfet (frequency too fast, increase divider)
+@* 3.  frequency is in audible range and causes coils to whine (frequency is too high. increase divider)
+@* 4.  backlight is uneven. (CCFL specific, frequency is too high. increase divider)
+
+To check for flickering try moving your laptop while looking at it.
+
+A higher frequency equals higher power consumption. You want to find the highest good working value.
+
+Next this value should be set at boot:
+either add
+@verbatim
+intel_reg write 0x00061254 <your_ideal_value>
+@end verbatim
+
+before exit 0 in /etc/rc.local
+
+or create a systemd service file  /etc/systemd/system/backlight.service:
+@verbatim
+[Unit]
+Description=Set BLC_PWM_CTL to a good value
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/intel_reg write 0x00061254 <your_value>
+[Install]
+WantedBy=multi-user.target
+@end verbatim
+Now start and enable it:
+@strong{sudo systemctl start backlight && sudo systemctl enable backlight}
+
+Special note on i945:
+
+i945 behaves differently.
+Bit 16 needs to be 1 and the duty cycle is not updated when backlight is changed.
+There are no available datasheets on this target so why it behaves in such a way is not known.
+So to find a working value BLC_PWM_CTL set bit 16 to 1 and make sure PWM divider == duty cycle.
+see https://review.coreboot.org/#/c/10624/ on bit 16.
+The cause of this issue is that i945, in contrast with to GM45, is set to work in BLM Legacy Mode. This makes backlight more complicated since the duty cycle is derived from 3 instead of 2 registers using the following formula:
+@verbatim
+if(BPC[7:0] <> xFF) then BPCR[15:0] * BPC[7:0] Else BPCR[15:0]
+@end verbatim
+BPC is  LBB - PCI Backlight Control Register, described on http://www.mouser.com/pdfdocs/945gmedatasheet.pdf on page 315.
+BPCR is BLC_PWM_CTL described in https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf on page 94.
+More research needs to be done on this target so proceed with care.
 
 @node Get EDID - Find out the name of your LCD panel
 @subsection Get EDID: Find out the name (model) of your LCD panel
@@ -7615,8 +7685,6 @@ Get the panel name with @strong{sudo get-edid | strings}@* Or look in @strong{/s
 Alternatively you can use i2cdump. In Trisquel, this is in the package i2c-tools.@* $ @strong{sudo modprobe i2c-dev}@* $ @strong{sudo i2cdump -y 5 0x50} (you might have to change the value for -y)@* $ @strong{sudo rmmod i2c-dev}@* You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically removing the LCD panel is an option. Usually, there will be information printed on the back.
-
-
 
 @node About the libreboot project
 @chapter About the libreboot project
