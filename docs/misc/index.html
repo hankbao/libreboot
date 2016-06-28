@@ -24,6 +24,7 @@
 				<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
 				<li><a href="#powerbeeps">Power Management Beeps on Thinkpads</a></li>
 				<li><a href="patch.html">Using diff and patch</a></li>
+				<li><a href="#backlight control">Finetune backlight control on intel gpu’s</a></li>
 				<li><a href="#get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</a></li>
 			</ul>
 	</div>
@@ -149,9 +150,70 @@ WantedBy=multi-user.target
 			<p><a href="#pagetop">Back to top of page</a>
 			
 	</div>
+	<div class="section" id="backlight control">
+	  <h1>Finetune backlight control on intel gpu’s </h1>
+	  <p>
+	    Sometimes the backlight control value (BLC_PWM_CTL) set by libreboot is not ideal. The result is either flicker, which could cause nausea or epilepsy or an uneven backlight and/or coil whine coming from the display. To fix this a different value for the gpu reg BLC_PWM_CTL needs to be set. See p94 of <a href="https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf">https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf</a> for more information on this reg. The tool for setting registry values on intel gpu’s is included in intel-gpu-tools. Install intel-gpu-tools: <b>sudo apt-get install intel-gpu-tools</b>
+	  </p>
+	  <p>
+	    You can set values:</br>
+	    <b>sudo intel_reg write 0x00061254 &ltyour_value&gt</b>
+	  </p>
+	  <p>
+	    The value set has the following structure: bits [31:16] is PWM divider. PWM / PWM_divider = frequency bits [15:0] is the duty cycle and determines the portion of the backlight modulation frequency. A value of 0 will mean that the display is off. A value equal to the backlight modulation frequency means full on. The value should not be larger than the backlight modulation frequency.
+	  </p>
+	  <p>
+	    On displays with a CCFL backlight start from: 0x60016001 To verify if all modes work as desired use:</br>
+	    <b>xbacklight -set 10</b>
+	    and gradually increase until 100. Displays with an LED backlight need a lower backlight modulation. Do the same thing but start from 0x01290129 . Try setting different values until you have found a value which presents no issue.
+	  </p>
+	  <p>
+	    It is important to know that there are four failure modes:
+	    <ol>
+	      <li>flickering very fast, which could cause epilepsy (frequency is too low. decrease divider)</li>
+	      <li>randomly flickering in random intervals - driver IC cannot keep up with toggling the mosfet (frequency too fast, increase divider)</li>
+	      <li>frequency is in audible range and causes coils to whine (frequency is too high. increase divider)</li>
+	      <li>backlight is uneven. (CCFL specific, frequency is too high. increase divider)</li>
+	    </ol>
+	  </p>
+	  <p>
+	    To check for flickering try moving your laptop while looking at it.
+	  </p>
+	  <p>
+	    A higher frequency equals higher power consumption. You want to find the highest good working value.
+	  </p>
+	  <p>
+	    Next this value should be set at boot: either add</br>
+	    <pre>intel_reg write 0x00061254 &ltyour_ideal_value&gt</pre>
+	    before exit 0 in /etc/rc.local or create a systemd service file /etc/systemd/system/backlight.service:
+	    <pre>
+[Unit]
+Description=Set BLC_PWM_CTL to a good value
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/intel_reg write 0x00061254 &ltyour_value&gt
+[Install]
+WantedBy=multi-user.target
+	    </pre>
+	    Now start and enable it: <b>sudo systemctl start backlight && sudo systemctl enable backlight </b>
+	  </p>
+	  <p>
+	    Special note on i945:
+	  </p>
+	  <p>
+	    i945 behaves differently. Bit 16 needs to be 1 and the duty cycle is not updated when backlight is changed. There are no available datasheets on this target so why it behaves in such a way is not known. So to find a working value BLC_PWM_CTL set bit 16 to 1 and make sure PWM divider == duty cycle. see <a href="https://review.coreboot.org/#/c/10624/">https://review.coreboot.org/#/c/10624/</a> on bit 16. The cause of this issue is that i945, in contrast with to GM45, is set to work in BLM Legacy Mode. This makes backlight more complicated since the duty cycle is derived from 3 instead of 2 registers using the following formula:</br>
+	    <verbatim>
+	      if(BPC[7:0] <> xFF) then BPCR[15:0] * BPC[7:0] Else BPCR[15:0]
+	    </verbatim>
+	    </br>
+	      BPC is LBB - PCI Backlight Control Register, described on <a href="http://www.mouser.com/pdfdocs/945gmedatasheet.pdf">http://www.mouser.com/pdfdocs/945gmedatasheet.pdf</a> on page 315. BPCR is BLC_PWM_CTL described in <a href="https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf">https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf</a> on page 94. More research needs to be done on this target so proceed with care.
+	      </p>
+	</div>
+
 
 	<div class="section" id="powerbeeps">
-		
+
 		<h1>Power Management Beeps on Thinkpads</h1>
 
 			<p>
@@ -176,7 +238,7 @@ WantedBy=multi-user.target
 			<p>
 				A reboot is required, for these changes to take effect.
 			</p>
-		
+
 	</div>
 
 	<div class="section">
@@ -199,7 +261,7 @@ WantedBy=multi-user.target
 			</p>
 
 			<p><a href="#pagetop">Back to top of page.</a></p>
-			
+
 	</div>
 
 	<div class="section">
@@ -247,7 +309,7 @@ WantedBy=multi-user.target
 			possible, most closely approximates an absolute disclaimer and
 			waiver of all liability.
 		</p>
-		
+
 	</div>
 
 </body>
