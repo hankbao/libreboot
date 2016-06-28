@@ -7640,7 +7640,7 @@ It is important to know that there are four failure modes:
 
 To check for flickering try moving your laptop while looking at it.
 
-A higher frequency equals higher power consumption. You want to find the highest good working value for the devider (lowest frequency).
+A higher frequency equals higher power consumption. You want to find the highest good working value for the divider (lowest frequency).
 
 Next this value should be set at boot:
 either add
