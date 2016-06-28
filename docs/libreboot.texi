@@ -29,7 +29,7 @@ TODO:
 @end ignore
 
 @copying
-Copyright @copyright{} 2014, 2015, 2016 Leah Woods <info@@minifree.org>@* 
+Copyright @copyright{} 2014, 2015, 2016 Leah Rowe <info@@minifree.org>@* 
 Copyright @copyright{} 2015 Paul Kocialkowski <contact@@paulk.fr>@*
 Copyright @copyright{} 2015 Alex David <opdecirkel@@gmail.com>@*
 Copyright @copyright{} 2015 Patrick "P. J." McDermott <pj@@pehjota.net>@*
