@@ -1,5 +1,5 @@
 From 2a9b4169a25273dcf3c474c76455ab31d1e2839b Mon Sep 17 00:00:00 2001
-From: Leah Woods <info@minifree.org>
+From: Leah Rowe <info@minifree.org>
 Date: Sun, 14 Jun 2015 15:40:00 +0100
 Subject: [PATCH 8/9] lenovo/t500: Add clone of Lenovo T400
 
@@ -8,7 +8,7 @@ Lenovo T500.  Same HDA verbs are provided by Lenovo BIOS on both
 laptops.
 
 Change-Id: I300408a8a0ed00476aee6061925befc2822fb505
-Signed-off-by: Leah Woods <info@minifree.org>
+Signed-off-by: Leah Rowe <info@minifree.org>
 ---
  src/mainboard/lenovo/t400/Kconfig        | 2 +-
  src/mainboard/lenovo/t500/Kconfig        | 7 +++++++

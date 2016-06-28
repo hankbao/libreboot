@@ -1,5 +1,5 @@
 From 3655dbe9bf476336e783b54be9d1d9388da8277e Mon Sep 17 00:00:00 2001
-From: Leah Woods <info@minifree.org>
+From: Leah Rowe <info@minifree.org>
 Date: Wed, 5 Aug 2015 02:27:11 +0100
 Subject: [PATCH 5/7] mainboard/lenovo/r500: Say SOIC-8 in board_info.txt (not
  SOIC-16)
@@ -7,7 +7,7 @@ Subject: [PATCH 5/7] mainboard/lenovo/r500: Say SOIC-8 in board_info.txt (not
 These systems all use SOIC-8 flash chips, not SOIC-16
 
 Change-Id: Ic1c53a22acbce6154f5ebfcc4746aaf6c124b492
-Signed-off-by: Leah Woods <info@minifree.org>
+Signed-off-by: Leah Rowe <info@minifree.org>
 ---
  src/mainboard/lenovo/r500/board_info.txt | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

@@ -5,7 +5,7 @@
  * Purpose: compiler/cpu compatibility checks. ich9deblob is not portable, yet.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Leah Woods <info@minifree.org>
+ *                     Leah Rowe <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

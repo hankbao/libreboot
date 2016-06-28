@@ -1,5 +1,5 @@
 From 006f0efb848edebc43c73a5f6a421a1696266157 Mon Sep 17 00:00:00 2001
-From: Leah Woods <info@minifree.org>
+From: Leah Rowe <info@minifree.org>
 Date: Mon, 19 Oct 2015 02:26:24 +0100
 Subject: [PATCH] NOTFORMERGE: don't add CPU microcode on fam10h to fam15h
  (AMD)
@@ -13,7 +13,7 @@ patch fixes that.
 TODO: get tpearson to fix it properly, and then abandon this patch
 
 Change-Id: I018791e74f78c66d145225d6ddf0be324f41bc15
-Signed-off-by: Leah Woods <info@minifree.org>
+Signed-off-by: Leah Rowe <info@minifree.org>
 ---
  src/cpu/amd/family_10h-family_15h/Makefile.inc | 10 ----------
  1 file changed, 10 deletions(-)

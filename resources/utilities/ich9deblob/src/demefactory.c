@@ -5,7 +5,7 @@
  * Purpose: disable ME on GM45 factory firmware, but leave region intact
  * 			enable read-write on all regions
  *
- *	 Copyright (C) 2014, 2015 Leah Woods <info@minifree.org>
+ *	 Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>   
  *
  *  This program is free software: you can redistribute it and/or modify
