@@ -2553,6 +2553,7 @@ Installing Libreboot internally requires sufficient privileges on the system ins
 * Gaining root privileges on ChromeOS::
 * Preparing the device for the installation::
 * Installing Libreboot to the SPI flash::
+* Warning with Disabling Developer Mode::
 @end menu
 
 @node Gaining root privileges on ChromeOS
@@ -2620,6 +2621,8 @@ The SPI flash has to be read first:@* # @strong{flashrom -p host -r flash.img}@*
 
 Then, the @strong{cros-flash-replace} script has to be executed as such:@* # @strong{./cros-flash-replace flash.img coreboot ro-frid}@* If any error is shown, it is definitely a bad idea to go further than this point.
 
+If you are getting @strong{"./cros-flash-replace: Permission denied"} error, it might be that ChromeOS automatically mounts your drive with @strong{noexec} flag for security reasons. You can check if your device is mounted noexec:@* # @strong{mount -l}@* Manually re-mounting the device solves the problem (replace /dev/sda1 with correct partition path and /mnt with desired mount point:@* # @strong{umount /dev/sda1 && mount /dev/sda1 /mnt}
+
 The resulting flash image can then be flashed back:@* # @strong{flashrom -p host -w flash.img}@*
 
 You should also see within the output the following:@* @strong{"Verifying flash... VERIFIED."}
@@ -2648,6 +2651,21 @@ You should also see within the output the following:@* @strong{"Verifying flash.
 
 The device will now boot to Libreboot.
 
+@node Warning with Disabling Developer Mode
+@c @subsubheading Warning with Developer Mode
+
+@c QUESTION: are we sure that default flasg are dev_boot_usb=0 and dev_boot_signed_only=0?
+Disabling the developer mode resets the verified boot parameters to:
+@itemize
+@item
+Kernels signature verification: @emph{disabled}
+@item
+External media boot: @emph{disabled}
+@end itemize
+
+If you have installed a custom kernel to external device, and wiped the internal device, it may cause your device to be bricked @strong{if you disable the developer mode (by pressing space at boot screen)}. Make sure your custom kernel resides on internal device before disabling the developer mode, or do not disable it at all until you know everyhing works fine.
+
+However if you have mistakenly disabled developer mode and locked yourself out, Google's recovery image can still be of use. See @uref{https://lists.nongnu.org/archive/html/libreboot/2016-06/msg00021.html, this} post on mailing list. If that did not help, the final solution would be using @ref{Installing Libreboot externally with a SPI flash programmer,SPI flash programmer}.
 
 
 
