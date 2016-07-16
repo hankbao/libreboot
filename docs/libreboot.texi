@@ -7691,6 +7691,12 @@ Alternatively you can use i2cdump. In Trisquel, this is in the package i2c-tools
 
 If neither of these options work (or they are unavailable), physically removing the LCD panel is an option. Usually, there will be information printed on the back.
 
+@node USB keyboard wakeup on GM45 laptops
+
+Look at resources/scripts/helpers/misc/libreboot_usb_bugfix
+
+Put this script in /etc/init.d/ on debian-based systems.
+
 @node About the libreboot project
 @chapter About the libreboot project
 GNU Libreboot is a free BIOS or UEFI replacement (@uref{https://www.gnu.org/philosophy/free-sw.html,free as in freedom}); libre @i{boot firmware} that initializes the hardware and starts a bootloader for your operating
