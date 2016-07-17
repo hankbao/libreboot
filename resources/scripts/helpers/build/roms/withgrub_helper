@@ -88,15 +88,6 @@ fi
 
 for romtype in txtmode vesafb
 do
-	if [ "${boardtarget}" = "x200_16mb" ] || [ "${boardtarget}" = "x200_8mb" ] || [ "${boardtarget}" = "x200_4mb" ] || [ "${boardtarget}" = "r400_16mb" ] || [ "${boardtarget}" = "r400_8mb" ] || [ "${boardtarget}" = "r400_4mb" ] || [ "${boardtarget}" = "t400_16mb" ] || [ "${boardtarget}" = "t400_8mb" ] || [ "${boardtarget}" = "t400_4mb" ] || [ "${boardtarget}" = "t500_16mb" ] || [ "${boardtarget}" = "t500_8mb" ] || [ "${boardtarget}" = "t500_4mb" ]
-		then
-			if [ "${romtype}" = "txtmode" ]
-				then
-					printf "Text mode graphics is currently broken on X200, R400, T400 and T500. Only framebuffer mode works.\n"
-					printf "TODO: offending coreboot commit found (see docs/release.html). Fix text-mode graphics initialization.\n"
-					continue
-			fi
-	fi
 	if [ "${boardtarget}" = "kgpe-d16" ] || [ "${boardtarget}" = "ga-g41m-es2l" ] || [ "${boardtarget}" = "kcma-d8" ] || [ "${boardtarget}" = "d510mo" ]; then
 		if [ "${romtype}" = "vesafb" ]; then
 			printf "Only text-mode is reported to work on KGPE-D16, KCMA-D8, D510MO and ga-g41m-es2l\n"
