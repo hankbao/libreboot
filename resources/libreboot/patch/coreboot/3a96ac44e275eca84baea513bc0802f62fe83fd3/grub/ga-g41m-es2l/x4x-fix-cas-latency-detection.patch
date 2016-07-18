@@ -1,0 +1,46 @@
+From 267362bd16715216e0fb7af54d60ebaeaf6250ae Mon Sep 17 00:00:00 2001
+From: Damien Zammit <damien@zamaudio.com>
+Date: Sun, 17 Jul 2016 18:26:18 +1000
+Subject: [PATCH] nb/intel/x4x: Fix CAS latency detection
+
+Fix and use the failsafe CAS detection logic rather than
+recalulating the values from raw SPDs.
+
+Tested on GA-G41M-ES2L with 2x2GB DDR2-800 DIMMs
+(which worked before and still work)
+
+Change-Id: I6af0f1705d099f7bcbff8c9baa94a68dae689e01
+Signed-off-by: Damien Zammit <damien@zamaudio.com>
+---
+
+diff --git a/src/northbridge/intel/x4x/raminit.c b/src/northbridge/intel/x4x/raminit.c
+index 5d341db..9be2cd3 100644
+--- a/src/northbridge/intel/x4x/raminit.c
++++ b/src/northbridge/intel/x4x/raminit.c
+@@ -111,10 +111,10 @@
+ 			s->dimms[i].chip_capacity = s->dimms[i].banks;
+ 			s->dimms[i].rows = s->dimms[i].spd_data[3];// - 12;
+ 			s->dimms[i].cols = s->dimms[i].spd_data[4];// - 9;
+-			s->dimms[i].cas_latencies = 0x78;
++			s->dimms[i].cas_latencies = 0x70; // 6,5,4 CL
+ 			s->dimms[i].cas_latencies &= s->dimms[i].spd_data[18];
+ 			if (s->dimms[i].cas_latencies == 0)
+-				s->dimms[i].cas_latencies = 7;
++				s->dimms[i].cas_latencies = 0x70;
+ 			s->dimms[i].tAAmin = s->dimms[i].spd_data[26];
+ 			s->dimms[i].tCKmin = s->dimms[i].spd_data[25];
+ 			s->dimms[i].width = (s->dimms[i].spd_data[13] >> 3) - 1;
+@@ -337,10 +337,10 @@
+ 		// Choose max memory frequency for MCH as previously detected
+ 		freq = (s->max_ddr2_mhz == 800) ? MEM_CLOCK_800MHz : MEM_CLOCK_667MHz;
+ 
+-		// Detect a common CAS latency
+-		commoncas = 0xff;
++		// Detect a common CAS latency (Choose from 6,5,4 CL)
++		commoncas = 0x70;
+ 		FOR_EACH_POPULATED_DIMM(s->dimms, i) {
+-			commoncas &= s->dimms[i].spd_data[18];
++			commoncas &= s->dimms[i].cas_latencies;
+ 		}
+ 		if (commoncas == 0) {
+ 			die("No common CAS among dimms\n");
