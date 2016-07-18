@@ -1672,7 +1672,9 @@ Another project recently found: @uref{http://io.smashthestack.org/me/,http://io.
 @subsubsection ICH9 gen utility
 It is no longer necessary to use @ref{ICH9 deblob utility,ich9deblob} to generate a deblobbed descriptor+gbe image for GM45 targets. ich9gen is a small utility within ich9deblob that can generate them from scratch, without a factory.bin dump.
 
-ich9gen executables can be found under ./ich9deblob/ statically compiled in libreboot_util. If you are using src or git, build ich9gen from source with:@* $ @strong{./build module ich9deblob}@* The executable will appear under resources/utilities/ich9deblob/
+If you are using src or git, build ich9gen from source with:@* $ @strong{./build module ich9deblob}@* The executable will appear under resources/utilities/ich9deblob/
+
+Building from the _util directory is done in much the same way.
 
 Run:@* $ @strong{./ich9gen}
 
@@ -1744,8 +1746,6 @@ This was the tool originally used to disable the ME on X200 (later adapted for o
 This is what you will use to generate the deblobbed descriptor+gbe regions for your libreboot ROM image.
 
 If you are working with libreboot_src (or git), you can find the source under resources/utilities/ich9deblob/ and will already be compiled if you ran @strong{./build module all} or @strong{./build module ich9deblob} from the main directory (./), otherwise you can build it like so:@* $ @strong{./build module ich9deblob}@* An executable file named @strong{ich9deblob} will now appear under resources/utilities/ich9deblob/
-
-If you are working with libreboot_util release archive, you can find the utility included, statically compiled (for i686 and x86_64 on GNU/Linux) under ./ich9deblob/.
 
 Place the factory.rom from your system (can be obtained using the external flashing guides for GM45 targets linked, @pxref{Installation}) in the directory where you have your ich9deblob executable, then run the tool:@* $ @strong{./ich9deblob}
 
@@ -2471,10 +2471,6 @@ Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
 @c @subsubheading All good?
 Excellent! Moving on...
 
-Download the @emph{libreboot_util.tar.xz} archive, and extract it. Inside, you will find a directory called @emph{flashrom}. This contains statically compiled executable files of the @emph{flashrom} utility, which you will use to re-flash your libreboot system.
-
-Simply use @emph{cd} on your terminal, to switch to the @emph{libreboot_util} directory. Inside, there is a script called @emph{flash}, which will detect what CPU architecture you have (e.g. i686, x86_64) and use the appropriate executable. It is also possible for you to build these executables from the libreboot source code archives.
-
 How to update the flash chip contents:@* $ @strong{sudo ./flash update @ref{List of ROM images in libreboot,yourrom.rom}} 
 
 Ocassionally, coreboot changes the name of a given board. If flashrom complains about a board mismatch, but you are sure that you chose the correct ROM image, then run this alternative command:@* $ @strong{sudo ./flash forceupdate @ref{List of ROM images in libreboot,yourrom.rom}} 
@@ -2828,10 +2824,6 @@ crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 @end verbatim
 
 Now the BBB is ready to be used for flashing. Make this persist across reboots:@* In /etc/default/capemgr add @strong{CAPE=BB-SPI0-01} at the end (or change the existing @strong{CAPE=} entry to say that, if an entry already exists.
-
-Get flashrom from the libreboot_util release archive, or build it from libreboot_src/git if you need to. An ARM binary (statically compiled) for flashrom exists in libreboot_util releases. Put the flashrom binary on your BBB.
-
-You may also need ich9gen, if you will be flashing an ICH9-M laptop (such as the X200). Get it from libreboot_util, or build it from libreboot_src, and put the ARM binary for it on your BBB.
 
 Finally, get the ROM image that you would like to flash and put that on your BBB.
 
@@ -3194,6 +3186,8 @@ Locate the rom image for your target (I will call it: $img_path)
 Running the following command will extract the config in a file ./my_config:
 @end itemize
 
+cbfstool is in coreboot source code under util/
+
 @verbatim
 ./cbfstool/i686/cbfstool $img_path extract -n config -f ./my_config
 @end verbatim
@@ -3479,8 +3473,6 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 
 Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{@value{docsdir}@value{useinstall}images/x60/th_bbb_flashing,,,,jpg}
 
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
-
 SSH'd into the BBB:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom}
 
 It should be @strong{Verifying flash... VERIFIED} at the end. If flashrom complains about multiple flash chip definitions detected, then choose one of them following the instructions in the output.
@@ -3593,7 +3585,6 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 
 Connecting the BBB and pomona (in this image, an external 3.3v DC PSU was used):@* @image{@value{docsdir}@value{useinstall}images/x60/th_bbb_flashing,,,,jpg}
 
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
 SSH'd into the BBB:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom}
 
@@ -3676,8 +3667,6 @@ This is how you will connect. Numbers refer to pin numbers on the BBB, on the pl
 @end verbatim
 
 Connect the pomona from the BBB to the flash chip. No pics unfortunately. (use the text diagram above).
-
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
 SSH'd into the BBB:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w yourrom.rom}
 
@@ -3815,8 +3804,6 @@ Of course, make sure that your PSU is also plugged in and turn on:@* @image{@val
 This tutorial tells you to use an ATX PSU, for the 3.3V DC supply. The PSU used when taking these photos is actually not an ATX PSU, but a PSU that is designed specifically for providing 3.3V DC (an ATX PSU will also work):@* @image{@value{docsdir}@value{useinstall}images/x200/disassembly/0014,,,,jpg}
 
 Now, you should be ready to install libreboot.
-
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
 Log in as root on your BBB, using the instructions in @ref{Accessing the operating system on the BBB,bbb_access}. 
 
@@ -4085,8 +4072,6 @@ Of course, make sure to turn on your PSU:@* @image{@value{docsdir}@value{useinst
 
 Now, you should be ready to install libreboot.
 
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
-
 Log in as root on your BBB, using the instructions in @ref{Accessing the operating system on the BBB,bbb_access}.
 
 Test that flashrom works:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512}@* In this case, the output was:
@@ -4330,8 +4315,6 @@ A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is also fine:
 Of course, make sure to turn on your PSU:@* @image{@value{docsdir}@value{useinstall}images/x200/disassembly/0013,,,,jpg}
 
 Now, you should be ready to install libreboot.
-
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
 
 Log in as root on your BBB, using the instructions in @ref{Accessing the operating system on the BBB,bbb_access}.
 
@@ -4578,8 +4561,6 @@ Of course, make sure to turn on your PSU:@* @image{@value{docsdir}@value{useinst
 
 Now, you should be ready to install libreboot.
 
-Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively, libreboot also distributes flashrom source code which can be built.
-
 Log in as root on your BBB, using the instructions in @ref{Accessing the operating system on the BBB,bbb_access}.
 
 Test that flashrom works:@* # @strong{./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512}@* In this case, the output was:
@@ -4790,6 +4771,8 @@ Libreboot on x86 uses the GRUB @uref{http://www.coreboot.org/Payloads#GRUB_2,pay
 
 A libreboot (or coreboot) ROM image is not simply "flat"; there is an actual filesystem inside called CBFS (coreboot filesystem). A utility called 'cbfstool' allows you to change the contents of the ROM image. In this case, libreboot is configured such that the 'grub.cfg' and 'grubtest.cfg' files exist directly inside CBFS instead of inside the GRUB payload 'memdisk' (which is itself stored in CBFS).
 
+cbfstool is in coreboot source code under util/
+
 You can either modify the GRUB configuration stored in the flash chip, or you can modify a GRUB configuration file on the main storage which the libreboot GRUB payload will automatically search for.
 
 Here is an excellent writeup about CBFS (coreboot filesystem): @uref{http://lennartb.home.xs4all.nl/coreboot/col5.html,http://lennartb.home.xs4all.nl/coreboot/col5.html}.
@@ -4838,8 +4821,6 @@ You can modify what is stored inside the flash chip quite easily. Read on to fin
 @ifinfo
 @subsubheading Acquire the necessary utilities
 @end ifinfo
-Use @strong{@emph{cbfstool}} and @strong{@emph{flashrom}}. There are available in the @emph{libreboot_util} release archive, or they can be compiled (see @ref{How to build flashrom,build_flashrom}). Flashrom is also available from the repositories:@* # @strong{pacman -S flashrom} 
-
 
 @node Acquiring the correct ROM image
 @ifinfo
@@ -4854,6 +4835,8 @@ ROM images are included pre-compiled in libreboot. You can also dump your curren
 @subsubheading Extract grubtest.cfg from the ROM image
 @end ifinfo
 You can check the contents of the ROM image, inside CBFS:@* @strong{$ cd .../libreboot_util/cbfstool} @strong{$ ./cbfstool libreboot.rom print}
+
+cbfstool is in the coreboot source archive, under util/
 
 The files @emph{grub.cfg} and @emph{grubtest.cfg} should be present. grub.cfg is loaded by default, with a menuentry for switching to grubtest.cfg. In this tutorial, you will first modify and test @emph{grubtest.cfg}. This is to reduce the possibility of bricking your device, so DO NOT SKIP THIS!
 
@@ -5183,8 +5166,6 @@ We will modify grub.config inside the ROM and do all kinds of fun stuff, but I r
 @node Modify grubcfg inside the ROM
 @subsubsection Modify grub.cfg inside the ROM
 (Re-)log in to your system, pressing C, so booting manually from GRUB (see above). You need to modify the ROM, so that Parabola can boot automatically with this configuration. @ref{How to replace the default GRUB configuration file on a libreboot system,grub_cbfs} shows you how. Follow that guide, using the configuration details below. If you go for option 2 (re-flash), promise to do this on grubtest.cfg first! We can't emphasise this enough. This is to reduce the possibility of bricking your device!
-
-I will go for the re-flash option here. Firstly, cd to the libreboot_util/cbfstool/@{armv7l i686 x86_64@} directory. Dump the current firmware - where @emph{libreboot.rom} is an example: make sure to adapt:@* # @strong{flashrom -p internal -r libreboot.rom}@* If flashrom complains about multiple flash chips detected, add a @emph{-c} option at the end, with the name of your chosen chip is quotes.@* You can check if everything is in there (@emph{grub.cfg} and @emph{grubtest.cfg} would be really nice):@* $ @strong{./cbfstool libreboot.rom print}@* Extract grubtest.cfg:@* $ @strong{./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg}@* And modify:@* $ @strong{nano grubtest.cfg}
 
 In grubtest.cfg, inside the 'Load Operating System' menu entry, change the contents to:
 
@@ -6017,7 +5998,6 @@ This section relates to building libreboot from source, and working with the git
 
 @node Install build dependencies
 @subsubsection Install build dependencies
-Before doing anything, you need the dependencies first. This is true if you want to build libreboot from source, with either libreboot_src.tar.xz or git. @strong{If you are using libreboot_util.tar.xz (binary archive) then you can ignore this, because ROM images and statically compiled executables for the utilities are included.}
 
 For Trisquel 7, you can run the following command:@* $ @strong{sudo ./build dependencies trisquel7}
 
@@ -6054,8 +6034,6 @@ Bucts is needed when flashing in software the X60/X60S/X60T/T60 ROM while Lenovo
 *Libreboot ROM images have identical data in those two 64KiB regions because dd is used to do that, by the build system. If you're building from upstream (coreboot), you have to do it manually.
 
 BUC.TS is backed up (powered) by the NVRAM battery (or CMOS battery, as some people call it). On thinkpads, this is typically in a yellow plastic package with the battery inside, connected via power lines to the mainboard. Removing that battery removes power to BUC.TS, resetting the bit back to 0 (if you previously set it to 1).
-
-BUC.TS utility is included in libreboot_src.tar.xz and libreboot_util.tar.xz.@* @strong{If you downloaded from git, follow @ref{Get the full source code from metadata,build_meta} before you proceed.}
 
 ``BUC'' means ``@strong{B}ack@strong{u}p @strong{C}ontrol'' (it's a register) and ``TS'' means ``@strong{T}op @strong{S}wap'' (it's a status bit). Hence ``bucts'' (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
 
@@ -6289,8 +6267,6 @@ If you are building on an x86_64 host, this will build statically linked 32- *an
 @strong{To include statically linked i686 and x86_64 binaries for bucts and flashrom, you will need to build them on a chroot, a virtual system or a real system where the host uses each given architecture. These packages are difficult to cross-compile, and the libreboot project is still figuring out how to deal with them.}
 
 The same applies if you want to include statically linked flashrom binaries for ARM.
-
-armv7l binaries (tested on a BeagleBone Black) are also included in libreboot_util, for:
 
 @itemize
 @item
@@ -7479,7 +7455,7 @@ This section relates to the GRUB payload used in libreboot.
 
 @node Changing the background image in GRUB
 @subsection Changing the background image in GRUB
-Use cbfstool from libreboot_util, or libreboot_src/coreboot/util/cbfstool/ if you want to build from source.
+cbfstool is found in coreboot under util/, and can be compiled.
 
 ./cbfstool yourrom.rom remove background.png -n background.png@* ./cbfstool yourrom.rom add -f background.png -n background.png -t raw
 
