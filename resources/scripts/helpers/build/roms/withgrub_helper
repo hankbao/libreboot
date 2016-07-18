@@ -100,12 +100,12 @@ do
 	make clean
 	mv "config_${romtype}" ".config"
 	cp "../../grub_${romtype}.elf" "grub.elf"
-    if [ "${boardtarget}" = "macbook21" ] || [ "${boardtarget}" = "x60" ] || [ "${boardtarget}" = "t60" ] || [ "${boardtarget}" = "kcma-d8" ] || [ "${boardtarget}" = "kgpe-d16" ]; then
+    if [ "${boardtarget}" = "d510mo" ] || [ "${boardtarget}" = "ga-g41m-es2l" ]; then
+        # Do not use SeaGRUB 
+        cp grub.elf payload.elf 
+    else
         # Use SeaGRUB
         cp "../../../seabios/out/bios.bin.elf" "payload.elf"
-    else
-        # Use GRUB
-        cp grub.elf payload.elf 
     fi
 	make -j${cores}
 	mv "build/coreboot.rom" "${boardtarget}_${romtype}.rom"
@@ -113,26 +113,21 @@ do
     # We dont need seabios.elf anymore
     rm -f "payload.elf"
 
-    if [ "${boardtarget}" = "macbook21" ] || [ "${boardtarget}" = "x60" ] || [ "${boardtarget}" = "t60" ] || [ "${boardtarget}" = "kcma-d8" ] || [ "${boardtarget}" = "kgpe-d16" ]; then
-        # These systems use SeaGRUB, which requires additional files:
+    # Add the grub.elf to CBFS
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma -f grub.elf -n img/grub2
 
-        # Add the grub.elf to CBFS
-        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-payload -c lzma -f grub.elf -n img/grub2
+    # Set bootorder so that seabios loads grub by default
+    printf "/rom@img/grub2\n" > bootorder
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f bootorder -n bootorder -t raw
+    rm -f bootorder
 
-        # Set bootorder so that seabios loads grub by default
-        printf "/rom@img/grub2\n" > bootorder
-        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f bootorder -n bootorder -t raw
-        rm -f bootorder
+    # Add 0s delay to seabios, so that the user is not burdened by seeing
+    # that horrible interface that seabios has
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 0 -n etc/show-boot-menu || "already exists"
 
-        # Add 0s delay to seabios, so that the user is not burdened by seeing
-        # that horrible interface that seabios has
-        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 0 -n etc/show-boot-menu || "already exists"
-
-        # keyboard spinup timeout
-       ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
-       ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 3000 -n etc/ps2-keyboard-spinup || printf "already exists"
-
-    fi
+    # keyboard spinup timeout
+   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" remove -n etc/ps2-keyboard-spinup || printf "does not exist"
+   ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 3000 -n etc/ps2-keyboard-spinup || printf "already exists"
 
     # we dont need that grub.elf now
     rm -f "grub.elf"
