@@ -899,7 +899,7 @@ These systems do not use the GRUB payload. Instead, they use a payload called de
 @end ifinfo
 It's next to the flash chip. Unscrew it, and the flash chip is read-write. Screw it back in, and the flash chip is read-only. It's called the screw.
 
-@emph{The screw} is accessible by removing other screws and gently prying off the upper shell, where the flash chip and the screw are then directly accessible. User flashing from software is possible, without having to externally re-flash, but the flash chip is SPI (SOIC-8 form factor) so you can also externally re-flash if you want to. In practise, you only need to externally re-flash if you brick the laptop; read @ref{How to program an SPI flash chip with BeagleBone Black,BBB setup} for an example of how to set up an SPI programmer.
+@emph{The screw} is accessible by removing other screws and gently prying off the upper shell, where the flash chip and the screw are then directly accessible. User flashing from software is possible, without having to externally re-flash, but the flash chip is SPI (SOIC-8 form factor) so you can also externally re-flash if you want to. In practise, you only need to externally re-flash if you brick the laptop; read @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,BBB setup} for an example of how to set up an SPI programmer.
 
 Write protection is useful, because it prevents the firmware from being re-flashed by any malicious software that might become executed on your GNU/Linux system, as root. In other words, it can prevent a firmware-level @emph{evil maid} attack. It's possible to write protect on all current libreboot systems, but CrOS devices make it easy. The screw is such a stupidly simple idea, which all designs should implement.
 
@@ -1488,7 +1488,7 @@ Also of interest: @ref{How to build the ROM images,config_macbook21}.
 
 Unbricking: @uref{https://www.ifixit.com/Device/MacBook_Core_2_Duo,this page shows disassembly guides} and mono's page (see @ref{Apple Macbook2-1,MacBook2@,1}) shows the location of the SPI flash chip on the motherboard. @uref{https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529,How to remove the motherboard}. 
 
-No method is yet known for flashing in GNU/Linux while the Apple firmware is running. You will need to disassemble the system and flash externally. Reading from flash seems to work. For external flashing, refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup}. 
+No method is yet known for flashing in GNU/Linux while the Apple firmware is running. You will need to disassemble the system and flash externally. Reading from flash seems to work. For external flashing, refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup}. 
 
 
 
@@ -1561,7 +1561,7 @@ Also of interest: @ref{How to build the ROM images,config_macbook21}.
 
 Unbricking: @uref{https://www.ifixit.com/Device/MacBook_Core_2_Duo,this page shows disassembly guides} and mono's page (see above) shows the location of the SPI flash chip on the motherboard. @uref{https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529,How to remove the motherboard}.
 
-For external flashing, refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup}. 
+For external flashing, refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup}. 
 
 You need to replace OS X with GNU/Linux before flashing libreboot. (OSX won't run at all in libreboot).
 
@@ -1729,7 +1729,7 @@ Also look in @emph{resources/utilities/ich9deblob/src/ich9gen/mkdescriptor.c} fo
     descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
 @end verbatim
 
-NOTE: When you write-protect the flash chip, re-flashing is no longer possible unless you use dedicated external equipment, which also means disassembling the laptop. The same equipment can also be used to remove the write-protection later on, if you choose to do so. *Only* write-protect the chip if you have the right equipment for external flashing later on; for example, see @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup}.
+NOTE: When you write-protect the flash chip, re-flashing is no longer possible unless you use dedicated external equipment, which also means disassembling the laptop. The same equipment can also be used to remove the write-protection later on, if you choose to do so. *Only* write-protect the chip if you have the right equipment for external flashing later on; for example, see @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup}.
 
 Change them all to 0x0, then re-compile ich9gen. After you have done that, follow the notes in @ref{ICH9 deblob utility,ich9gen} to generate a new descriptor+gbe image and insert that into your ROM image, then flash it. The next time you boot, the flash chip will be read-only in software (hardware re-flashing will still work, which you will need for re-flashing the chip after write-protecting it, to clear the write protection or to flash yet another ROM image with write protection set in the descriptor).
 
@@ -2669,7 +2669,7 @@ However if you have mistakenly disabled developer mode and locked yourself out, 
 @subsection Hardware methods
 
 @menu
-* How to program an SPI flash chip with BeagleBone Black::
+* How to program an SPI flash chip with BeagleBone Black or Teensy 3.1::
 * GA-G41M-ES2L flashing tutorial::
 * Flashing Intel D510MO::
 * Configuring EHCI debugging on the BeagleBone Black::
@@ -2942,7 +2942,7 @@ Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
 @ifinfo
 @subsubheading Flashing instructions - GA-G41M-ES2L
 @end ifinfo
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to set up the BBB for flashing it externally, if you want to do that.
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to set up the BBB for flashing it externally, if you want to do that.
 
 Here is an image of the flash chip:
 @image{@value{docsdir}images/ga-g41m-es2l/ga-g41m-es2l,,,,jpg}
@@ -2985,7 +2985,7 @@ Use this to find out:@* # @strong{dmidecode | grep ROM\ Size}
 @c @subsubheading Flashing instructions - D510MO
 @image{@value{docsdir}images/d510mo/d510mo,,,,jpg} 
 
-Use this image for reference, then refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to set up the BBB for flashing it. 
+Use this image for reference, then refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to set up the BBB for flashing it. 
 
 Do refer to the @ref{Hardware compatibility,compatibility page} for more information about this board. 
 
@@ -3373,7 +3373,7 @@ Check the @uref{../../suppliers,suppliers} page for more information.
 
 @node External programmer - KGPE-D16
 @c @subsubheading External programmer
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for a guide on how to set up an external SPI programmer. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for a guide on how to set up an external SPI programmer. 
 
 The flash chip is in a PDIP 8 socket (SPI flash chip) on the motherboard, which you take out and then re-flash with libreboot, using the programmer. @strong{DO NOT} remove the chip with your hands. Use a chip extractor tool.
 
@@ -3404,7 +3404,7 @@ Check the @uref{../../suppliers,suppliers} page for more information.
 
 @node External programmer - KCMA-D8
 @c @subsubheading External programmer
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for a guide on how to set up an external SPI programmer. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for a guide on how to set up an external SPI programmer. 
 
 The flash chip is in a PDIP 8 socket (SPI flash chip) on the motherboard, which you take out and then re-flash with libreboot, using the programmer. @strong{DO NOT} remove the chip with your hands. Use a chip extractor tool.
 
@@ -3462,7 +3462,7 @@ Now remove the motherboard (gently) and cast the lcd/chassis aside:@* @image{@va
 
 Lift back that tape and hold it with something. Highlighted is the SPI flash chip:@* @image{@value{docsdir}images/x60_unbrick/0016,,,,jpg}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{docsdir}images/x60_unbrick/0017,,,,jpg}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{docsdir}images/x60_unbrick/0017,,,,jpg}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3574,7 +3574,7 @@ Remove the LCD extend board screws. Also remove those screws (see blue marks) an
 
 Remove that screw and then remove the board:@* @image{@value{docsdir}images/x60t_unbrick/0009,,,,JPG}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{docsdir}images/x60t_unbrick/0011,,,,JPG}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the X60 Tablet: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)} @image{@value{docsdir}images/x60t_unbrick/0011,,,,JPG}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3657,7 +3657,7 @@ Once again, make sure you removed those:@* @image{@value{docsdir}images/t60_dev/
 
 Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:@* @image{@value{docsdir}images/t60_dev/0027,,,,JPG} @image{@value{docsdir}images/t60_dev/0028,,,,JPG} @image{@value{docsdir}images/t60_dev/0029,,,,JPG} @image{@value{docsdir}images/t60_dev/0031,,,,JPG} @image{@value{docsdir}images/t60_dev/0032,,,,JPG} @image{@value{docsdir}images/t60_dev/0033,,,,JPG}
 
-Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the T60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)}@* @image{@value{docsdir}images/t60_dev/0030,,,,JPG}@* Correlate the following with the BBB guide linked above: 
+Now wire up the BBB and the Pomona with your PSU.@* Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to setup the BBB for flashing.@* @strong{Note, the guide mentions a 3.3v DC PSU but you don't need this on the T60: if you don't have or don't want to use an external PSU, then make sure not to connect the 3.3v leads mentioned in the guide; instead, connect the AC adapter (the one that normally charges your battery) so that the board has power (but don't boot it up)}@* @image{@value{docsdir}images/t60_dev/0030,,,,JPG}@* Correlate the following with the BBB guide linked above: 
 
 @verbatim
 POMONA 5250:
@@ -3746,7 +3746,7 @@ Keep a note of the MAC address before disassembly; this is very important, becau
 
 @node Initial BBB configuration - X200
 @c @subsubheading Initial BBB configuration - X200
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to set up the BBB for flashing. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to set up the BBB for flashing. 
 
 The following shows how to connect the clip to the BBB (on the P9 header), for SOIC-16 (clip: Pomona 5252):
 
@@ -3994,7 +3994,7 @@ Keep a note of the MAC address before disassembly; this is very important, becau
 
 @node Initial BBB configuration - R400
 @c @subsubheading Initial BBB configuration 
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to setup the BBB for flashing. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to setup the BBB for flashing. 
 
 The following shows how to connect clip to the BBB (on the P9 header), for SOIC-16 (clip: Pomona 5252):
 
@@ -4238,7 +4238,7 @@ Keep a note of the MAC address before disassembly; this is very important, becau
 
 @node Initial BBB configuration - T400
 @c @subsubheading Initial BBB configuration
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to configure the BBB for flashing. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to configure the BBB for flashing. 
 
 The following shows how to connect clip to the BBB (on the P9 header), for SOIC-16 (clip: Pomona 5252):
 
@@ -4480,7 +4480,7 @@ Keep a note of the MAC address before disassembly; this is very important, becau
 
 @node Initial BBB configuration - T500
 @c @subsubheading Initial BBB configuration
-Refer to @ref{How to program an SPI flash chip with BeagleBone Black,bbb_setup} for how to configure the BBB for flashing. 
+Refer to @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,bbb_setup} for how to configure the BBB for flashing. 
 
 The following shows how to connect clip to the BBB (on the P9 header), for SOIC-16 (clip: Pomona 5252):
 
@@ -4793,7 +4793,7 @@ Here is an excellent writeup about CBFS (coreboot filesystem): @uref{http://lenn
 @subsubsection Introduction
 Download the latest release from @uref{http://libreboot.org/,http://libreboot.org/} @*@strong{If you downloaded from git, refer to @ref{Get the full source code from metadata,build_meta} before continuing.} 
 
-There are several advantages to modifying the GRUB configuration stored in CBFS, but this also means that you have to flash a new libreboot ROM image on your system (some users feel intimidated by this, to say the least). Doing so can be risky if not handled correctly, because it can result in a bricked system (recovery is easy if you have the @ref{How to program an SPI flash chip with BeagleBone Black,equipment} for it, but most people don't). If you aren't up to that then don't worry; it is possible to use a custom GRUB menu without flashing a new image, by loading a GRUB configuration from a partition on the main storage instead. 
+There are several advantages to modifying the GRUB configuration stored in CBFS, but this also means that you have to flash a new libreboot ROM image on your system (some users feel intimidated by this, to say the least). Doing so can be risky if not handled correctly, because it can result in a bricked system (recovery is easy if you have the @ref{How to program an SPI flash chip with BeagleBone Black or Teensy 3.1,equipment} for it, but most people don't). If you aren't up to that then don't worry; it is possible to use a custom GRUB menu without flashing a new image, by loading a GRUB configuration from a partition on the main storage instead. 
 
 @node 1st option - don't re-flash
 @subsubsection 1st option: don't re-flash
