@@ -33,7 +33,7 @@ else
 fi
 
 # coreboot revisios used for crossgcc
-crossgccrevision="15fca66bf08db45937ce88b950491963654805b9"
+crossgccrevision="00aa45391ddb22b5ac24151d54615ca1d89eb745"
 
 rm -Rf "crossgcc/"
 (
