@@ -844,11 +844,11 @@ The libreboot project would like to see all FSF-endorsed distro projects port to
 @ifinfo
 @subsubheading Caution: Video acceleration requires a non-free blob, software rendering can be used instead.
 @end ifinfo
-The lima driver source code for the onboard Mali GPU is not released. The developer withheld it for personal reasons. Until that is released, the only way to use video (in freedom) on this laptop is to not have video acceleration, by making sure not to install the relevant blob. Most tasks can still be performed without video acceleration, without any noticeable performance penalty.
+The Tamil driver source code for the onboard Mali T GPU is not released. The developer has so-far withheld it. Until that is released, the only way to use video (in freedom) on this laptop is to not have video acceleration, by making sure not to install the relevant blob. Most tasks can still be performed without video acceleration, without any noticeable performance penalty.
 
 In practise, this means that certain things like games, blender and GNOME shell (or other fancy desktops) won't work well. The libreboot project recommends a lightweight desktop which does not need video acceleration, such as @emph{XFCE} or @emph{LXDE}.
 
-The lima developer wrote this blog post, which sheds light on the story: @uref{http://libv.livejournal.com/27461.html,http://libv.livejournal.com/27461.html}
+The Tamil developer wrote this blog post, which sheds light on the story: @uref{http://libv.livejournal.com/27461.html,http://libv.livejournal.com/27461.html}
 
 @node WiFi blobs
 @ifinfo
