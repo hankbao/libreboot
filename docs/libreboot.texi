@@ -1552,7 +1552,7 @@ MB061LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7200 (untested)
 @item
 MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 @strong{(tested - working)}
 @item
-MB063LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 (untested)
+MB063LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 (works)
 @item
 MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 @strong{(tested - working)}
 @end itemize
