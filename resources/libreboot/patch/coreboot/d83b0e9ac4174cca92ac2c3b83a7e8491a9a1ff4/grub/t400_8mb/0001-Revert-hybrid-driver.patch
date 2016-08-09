@@ -259,7 +259,7 @@ index 3a82c97..1b8e212 100644
 -hybrid_graphics_mode=Integrated Only
 \ No newline at end of file
 diff --git a/src/mainboard/lenovo/t420s/cmos.layout b/src/mainboard/lenovo/t420s/cmos.layout
-index 3521849..4362840 100644
+index 3521849..43628406 100644
 --- a/src/mainboard/lenovo/t420s/cmos.layout
 +++ b/src/mainboard/lenovo/t420s/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -387,7 +387,7 @@ index b3e5069..2822774 100644
 -- 
 2.9.2
 
-From 8cf666c9177f2c96d40394974a3915392f1229a4 Mon Sep 17 00:00:00 2001
+From 90f5f34629ff88506bb803988da1552f3373d4f0 Mon Sep 17 00:00:00 2001
 From: Arthur Heymans <arthur@aheymans.xyz>
 Date: Thu, 4 Aug 2016 11:01:53 +0200
 Subject: [PATCH 2/3] Revert "Revert "mainboard/lenovo/t400: Add initial hybrid
@@ -408,20 +408,19 @@ index ac9f96d..98ce970 100644
 +hybrid_graphics_mode=Integrated Only
 \ No newline at end of file
 diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
-index e1a088d..3cc2a38 100644
+index e1a088d..b4b7766 100644
 --- a/src/mainboard/lenovo/t400/cmos.layout
 +++ b/src/mainboard/lenovo/t400/cmos.layout
-@@ -79,6 +79,10 @@ entries
- # coreboot config options: northbridge
- 941         4       e       11       gfx_uma_size
+@@ -77,7 +77,8 @@ entries
+ 940         1       e       1        uwb
  
-+# coreboot config options: graphics
+ # coreboot config options: northbridge
+-941         4       e       11       gfx_uma_size
 +944         2       e       12       hybrid_graphics_mode
-+#946        6       r       0        unused
-+
++946         4       e       11       gfx_uma_size
+ 
  # coreboot config options: EC
  952         8       h       0        volume
- 
 diff --git a/src/mainboard/lenovo/t400/romstage.c b/src/mainboard/lenovo/t400/romstage.c
 index f518775..fcc545b 100644
 --- a/src/mainboard/lenovo/t400/romstage.c
