@@ -1,11 +1,11 @@
-From 5fda1c61b94b7f746bc009d733bd4e4c71e5531c Mon Sep 17 00:00:00 2001
+From fbbc8d6a278c733eca475c17cbf95a8946e2c173 Mon Sep 17 00:00:00 2001
 From: Arthur Heymans <arthur@aheymans.xyz>
-Date: Thu, 4 Aug 2016 12:41:51 +0200
-Subject: [PATCH 1/2] Revert "drivers/lenovo: Add hybrid graphics driver"
+Date: Thu, 4 Aug 2016 11:00:13 +0200
+Subject: [PATCH 1/3] Revert "drivers/lenovo: Add hybrid graphics driver"
 
 This reverts commit 5919ba42ed0ce5b1b13717514698444232c6036c.
 
-Change-Id: Ie28320be56a3309a3bb02915a4abe4852a375584
+Change-Id: I027581ef769ca8232e72f89738c1bdec13f62687
 
 diff --git a/src/drivers/lenovo/Kconfig b/src/drivers/lenovo/Kconfig
 index f8eddf2..f20f3b2 100644
@@ -190,7 +190,7 @@ index 5cf3e63..ac9f96d 100644
 -gfx_uma_size=32M
 \ No newline at end of file
 diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
-index b4b7766..b6db0dd 100644
+index b4b7766..e1a088d 100644
 --- a/src/mainboard/lenovo/t400/cmos.layout
 +++ b/src/mainboard/lenovo/t400/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -199,7 +199,7 @@ index b4b7766..b6db0dd 100644
  # coreboot config options: northbridge
 -944         2       e       12       hybrid_graphics_mode
 -946         4       e       11       gfx_uma_size
-+941         3       e       11       gfx_uma_size
++941         4       e       11       gfx_uma_size
  
  # coreboot config options: EC
  952         8       h       0        volume
@@ -387,15 +387,15 @@ index b3e5069..2822774 100644
 -- 
 2.9.2
 
-From 6aa0458a6976ecfad5bad524dd81dbfc9de2cf0f Mon Sep 17 00:00:00 2001
+From 8cf666c9177f2c96d40394974a3915392f1229a4 Mon Sep 17 00:00:00 2001
 From: Arthur Heymans <arthur@aheymans.xyz>
-Date: Thu, 4 Aug 2016 12:42:52 +0200
-Subject: [PATCH 2/2] Revert "Revert "mainboard/lenovo/t400: Add initial hybrid
+Date: Thu, 4 Aug 2016 11:01:53 +0200
+Subject: [PATCH 2/3] Revert "Revert "mainboard/lenovo/t400: Add initial hybrid
  graphics support""
 
 This reverts commit 14d1a93e444b91311eeed2a25953bf6c0779cdcb.
 
-Change-Id: I94221f87394988aa36a0e8b48695d5931c5a8461
+Change-Id: I965ea55bddb7cf919e7b02ecf8e160c9ad3ea3d4
 
 diff --git a/src/mainboard/lenovo/t400/cmos.default b/src/mainboard/lenovo/t400/cmos.default
 index ac9f96d..98ce970 100644
@@ -408,12 +408,12 @@ index ac9f96d..98ce970 100644
 +hybrid_graphics_mode=Integrated Only
 \ No newline at end of file
 diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
-index b6db0dd..8f49f4e 100644
+index e1a088d..3cc2a38 100644
 --- a/src/mainboard/lenovo/t400/cmos.layout
 +++ b/src/mainboard/lenovo/t400/cmos.layout
 @@ -79,6 +79,10 @@ entries
  # coreboot config options: northbridge
- 941         3       e       11       gfx_uma_size
+ 941         4       e       11       gfx_uma_size
  
 +# coreboot config options: graphics
 +944         2       e       12       hybrid_graphics_mode
