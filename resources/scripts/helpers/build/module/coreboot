@@ -190,7 +190,7 @@ for payload in coreboot/*; do
 	# cbfstool, cbmem, nvramtool
 	for util in {cbfs,nvram}tool cbmem; do
         if [ "${util}" = "cbfstool" ]; then
-            grep -wq "\-Wno\-sign\-compare" ${board}/util/cbfstool/Makefile.inc || s/"\$(objutil)/cbfstool/fmd_scanner.o: \$(objutil)/cbfstool/fmd.o"/"\$(objutil)/cbfstool/fmd_scanner.o: \$(objutil)/cbfstool/fmd.o\n\$(objutil)\/cbfstool\/fmd_scanner.o: TOOLCFLAGS += \-Wno\-sign\-compare"
+            grep -wq "\-Wno\-sign\-compare" ${board}/util/cbfstool/Makefile.inc || sed -i -- "s/'\$(objutil)/cbfstool/fmd_scanner.o: \$(objutil)/cbfstool/fmd.o'/'\$(objutil)/cbfstool/fmd_scanner.o: \$(objutil)/cbfstool/fmd.o\n\$(objutil)\/cbfstool\/fmd_scanner.o: TOOLCFLAGS += \-Wno\-sign\-compare'" ${board}/util/cbfstool/Makefile.inc
         fi
 		make -BC "${board}/util/${util}"
 	done
