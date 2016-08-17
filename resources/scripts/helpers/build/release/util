@@ -106,6 +106,13 @@ mv "flashrom_/" "flashrom/"
 # Miscellaneous
 # -------------
 
+cp -R "crossgcc/util/cbfstool/" "${distdir}/"
+(cd "${distdir}/cbfstool/" && make clean)
+cp -R "crossgcc/util/nvramtool/" "${distdir}/"
+(cd "${distdir}/nvramtool/" && make clean)
+cp -R "crossgcc/util/ectool/" "${distdir}/"
+(cd "${distdir}/ectool/" && make clean)
+
 cp -R "resources/" "${distdir}/"
 
 # Flashing script
