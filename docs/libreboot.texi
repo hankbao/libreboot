@@ -2959,6 +2959,10 @@ NOTE: You need the latest version of flashrom. Just grab it on flashrom.org from
 
 That's all!
 
+NOTE: There is a hardcoded MAC address for this board, due to a bug in the hardware. The
+factory BIOS worked around this per board, but in libreboot we don't. You will need
+to set the MAC address yourself, in your operating system.
+
 Do refer to the @ref{Hardware compatibility,compatibility page} for more information about this board. 
 
 
