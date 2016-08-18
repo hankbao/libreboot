@@ -69,12 +69,6 @@ for payload in *; do
 			rm -f "ChangeLog" "NEWS"
 			git log > "${archivename}/ChangeLog"
 			cp "${archivename}/ChangeLog" "${archivename}/NEWS"
-            if [ -f "../../RELEASE" ]; then
-                rm -f "${archivename}/NEWS"
-                rm -f "${archivename}/ChangeLog"
-                mv "RELEASE" "${archivename}/NEWS"
-                cp "RELEASE" "${archivename}/ChangeLog"
-            fi
 		else
 			# building from release archive
 			cp "ChangeLog" "${archivename}/"
