@@ -99,8 +99,6 @@ Installation instructions can be found @ref{Installation,here}. Building instruc
 @itemize
 @item
 Check notes: @xref{ASUS Chromebook C201}. @c @strong{@emph{hcl/c201.html}}
-@item
-NOTE: not in libreboot 20150518. Only in git. for now.
 @end itemize
 
 @item
@@ -108,8 +106,6 @@ NOTE: not in libreboot 20150518. Only in git. for now.
 @itemize
 @item
 Check notes: @xref{Gigabyte GA-G41M-ES2L motherboard}. @c @strong{@emph{hcl/ga-g41m-es2l.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
 @end itemize
 
 @item
@@ -117,8 +113,6 @@ Check notes: @xref{Gigabyte GA-G41M-ES2L motherboard}. @c @strong{@emph{hcl/ga-g
 @itemize
 @item
 Check notes: @xref{Intel D510MO motherboard}.  @c @strong{@emph{hcl/d510mo.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
 @end itemize
 
 @item
@@ -128,8 +122,6 @@ Check notes: @xref{Intel D510MO motherboard}.  @c @strong{@emph{hcl/d510mo.html}
 PCB revision 1.05G is the best version (can use 6-core CPUs)
 @item
 Check notes: @xref{ASUS KFSN4-DRE motherboard}.  @c @strong{@emph{hcl/kfsn4-dre.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
 @end itemize
 
 @item
@@ -137,8 +129,6 @@ Check notes: @xref{ASUS KFSN4-DRE motherboard}.  @c @strong{@emph{hcl/kfsn4-dre.
 @itemize
 @item
 Check notes: @xref{ASUS KGPE-D16 motherboard}. @c  @strong{@emph{hcl/kgpe-d16.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
 @end itemize
 
 @item
@@ -146,8 +136,6 @@ Check notes: @xref{ASUS KGPE-D16 motherboard}. @c  @strong{@emph{hcl/kgpe-d16.ht
 @itemize
 @item
 Check notes: @xref{ASUS KCMA-D8 motherboard}. @c @strong{@emph{hcl/kcma-d8.html}}
-@item
-@strong{NOTE: not in libreboot 20150518. Only in git, for now.}
 @end itemize
 
 @item
@@ -231,8 +219,8 @@ See @strong{@emph{hcl/t500.html}}
 
 @end itemize
 
-@node Changes for this release relative to r20150518
-@section Changes for this release, relative to r20150518 (earliest changes last, recent changes first)
+@node Changes for this release relative to r20160818
+@section Changes for this release, relative to r20160818 (earliest changes last, recent changes first)
 @itemize
 @item
 Changelog not yet generated. Clone the git repository and check the git logs.
@@ -355,16 +343,12 @@ Read this post on the libreboot mailing list for more information: @uref{https:/
 NOTE: by default, a working MAC address is not always set automatically. You need to set a MAC address manually in your GNU/Linux distribution.
 On debian-based systems (e.g. Trisquel), you can add this to your /etc/network/interfaces file for your NIC: hwaddress ether macaddressgoeshere
 
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
-
 Flashing instructions can be found at @ref{How to update/install,flashrom}.
 
 
 @node Intel D510MO motherboard
 @subsubsection Intel D510MO motherboard
 This is a desktop board using intel hardware. It can make for quite a nifty desktop. Powered by libreboot.
-
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
 NOTE: video framebuffer currently unsupported, only text-mode works, even when booting GNU/Linux.
 This can still be used for building a headlesss server. Boot with fb=false
@@ -376,8 +360,6 @@ Flashing instructions can be found at @ref{Flashing Intel D510MO}.
 @node ASUS KCMA-D8 motherboard
 @subsubsection ASUS KCMA-D8 motherboard
 This is a desktop board using AMD hardware (Fam10h @strong{and Fam15h} CPUs available). It can also be used for building a high-powered workstation. Powered by libreboot. The coreboot port was done by Timothy Pearson of @uref{https://raptorengineeringinc.com/,Raptor Engineering Inc.} and, working with Timothy (and sponsoring the work) merged into libreboot.
-
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
 @strong{Memory initialization is still problematic, for some modules. We recommend avoiding Kingston modules..}
 
@@ -459,8 +441,6 @@ Check ASUS website for specs
 @subsubsection ASUS KFSN4-DRE motherboard
 This is a server board using AMD hardware (Fam10h). It can also be used for building a high-powered workstation. Powered by libreboot.
 
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
-
 Flashing instructions can be found at @ref{How to update/install,flashrom}. 
 
 @itemize
@@ -523,8 +503,6 @@ Other information
 @node ASUS KGPE-D16 motherboard @c TODO: Nodes?
 @subsubsection ASUS KGPE-D16 server/workstation board
 This is a server board using AMD hardware (Fam10h @strong{and Fam15h} CPUs available). It can also be used for building a high-powered workstation. Powered by libreboot. The coreboot port was done by Timothy Pearson of @uref{https://raptorengineeringinc.com/,Raptor Engineering Inc.} and, working with Timothy (and sponsoring the work) merged into libreboot.
-
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository.}
 
 @strong{Memory initialization is still problematic, for some modules. We recommend avoiding Kingston modules..}
 
@@ -799,8 +777,6 @@ DDR3 1600 can only be supported with AMD Opteron 6300/6200 series processor
 This is a Chromebook, using the Rockchip RK3288 SoC. It uses an ARM CPU, and has free EC firmware (unlike some other laptops). More RK3288-based laptops will be added to libreboot at a later date.
 
 Paul Kocialkowski, a @uref{http://www.replicant.us/,Replicant} developer, ported this laptop to libreboot. Thank you, Paul!
-
-@strong{NOTE: This board is unsupported in libreboot 20150518. To use it in libreboot, for now, you must build for it from source using the libreboot git repository. Note that we recommend building for it from an x86 host, until libreboot's build system is modified accordingly.}
 
 @strong{More info will be added later, including build/installation instructions. The board is supported in libreboot, however, and has been confirmed to work.}
 
