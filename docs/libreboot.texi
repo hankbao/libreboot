@@ -2672,7 +2672,7 @@ However if you have mistakenly disabled developer mode and locked yourself out, 
 @end menu
 
 
-@node How to program an SPI flash chip with BeagleBone Black
+@node How to program an SPI flash chip with BeagleBone Black or Teensy 3.1
 @subsubsection How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1
 This document exists as a guide for reading from or writing to an SPI flash chip with the BeagleBone Black, using the @uref{http://flashrom.org/Flashrom,flashrom} software.  A BeagleBone Black, rev. C was used when creating this guide, but earlier revisions may also work.
 
