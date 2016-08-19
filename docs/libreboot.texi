@@ -338,10 +338,20 @@ This is a desktop board using intel hardware (circa ~2009, ICH7 southbridge, sim
 
 IDE on the board is untested, but it might be possible to use a SATA HDD using an IDE SATA adapter. The SATA ports do work.
 
-Read this post on the libreboot mailing list for more information: @uref{https://lists.nongnu.org/archive/html/libreboot-dev/2015-12/msg00011.html,https://lists.nongnu.org/archive/html/libreboot-dev/2015-12/msg00011.html}
+The pci-express x16 port currently does not work on this board.
 
-NOTE: by default, a working MAC address is not always set automatically. You need to set a MAC address manually in your GNU/Linux distribution.
-On debian-based systems (e.g. Trisquel), you can add this to your /etc/network/interfaces file for your NIC: hwaddress ether macaddressgoeshere
+Currently this board uses a harcoded MAC adress, this can be modified in GNU/linux.
+On debian-based systems (e.g. Trisquel), you can add this to your /etc/network/interfaces file for your NIC: hwaddress ether macaddressgoeshere.
+
+@* @strong{cpu compitibility: socket LGA775}
+@itemize
+@item
+ intel Penryn (45nm core 2): E7xxx, E8xxx (dual core), Q8xxx, Q9xxx, QX9xxx (only 1333fsb) (quad core): reported to work but like x200 hardware assisted virtualisation does not work without microcode updates;
+@item
+ intel Conroe/Merom (65nm core 2 duo): E4xxx, E6xxx (dual core), Q6xxx, QX6xxx (quad core): reported to work without microcode even for virtualisation;
+@item
+ intel Pentium 4/D LGA775: untested and not recommended due to being very power hungry and not powerfull at the same time.
+@end itemize
 
 Flashing instructions can be found at @ref{How to update/install,flashrom}.
 
