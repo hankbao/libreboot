@@ -360,8 +360,9 @@ Flashing instructions can be found at @ref{How to update/install,flashrom}.
 @subsubsection Intel D510MO motherboard
 This is a desktop board using intel hardware. It can make for quite a nifty desktop. Powered by libreboot.
 
-NOTE: video framebuffer currently unsupported, only text-mode works, even when booting GNU/Linux.
-This can still be used for building a headlesss server. Boot with fb=false
+NOTE: This board has a working framebuffer in Grub, but in GNU/Linux in native resolution the display is unusable due to some raminit issues.
+This board can however be used for building a headless server.
+
 
 Flashing instructions can be found at @ref{Flashing Intel D510MO}. 
 
