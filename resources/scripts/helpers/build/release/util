@@ -108,7 +108,6 @@ mv "flashrom_/" "flashrom/"
 
 cp -R "crossgcc/util/cbfstool/" "${distdir}/"
 (cd "${distdir}/cbfstool/" && make clean)
-sed -i '/.*fmd_scanner.o.*-Wno-unused-function$/ s/$/ -Wno-sign-compare/'  crossgcc/util/cbfstool/Makefile.inc
 cp -R "crossgcc/util/nvramtool/" "${distdir}/"
 (cd "${distdir}/nvramtool/" && make clean)
 cp -R "crossgcc/util/ectool/" "${distdir}/"
