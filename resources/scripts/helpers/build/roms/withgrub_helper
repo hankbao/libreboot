@@ -134,7 +134,7 @@ do
        ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 3000 -n etc/ps2-keyboard-spinup || printf "already exists"
     fi
 
-    print "%s\n" "${version}" > lbversion
+    printf "%s\n" "${version}" > lbversion
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f lbversion -n lbversion -t raw
     rm -f "lbversion"
 
