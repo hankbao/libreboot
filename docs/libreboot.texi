@@ -7737,18 +7737,7 @@ Libreboot freezes on a particular revision of coreboot, making sure that everyth
 
 @node How do I know what version I'm running?
 @chapter How do I know what version I'm running?
-If you are at least 127 commits after release 20150518 (commit message @emph{build/roms/helper: add version information to CBFS}) (or you have any @strong{upstream} stable release of libreboot after 20150518), then you can press C at the GRUB console, and use this command to find out what version of libreboot you have:@* @strong{cat (cbfsdisk)/lbversion}@* This will also work on non-release images (the version string is automatically generated, using @emph{git describe --tags HEAD}), built from the git repository. A file named @emph{version} will also be included in the archives that you downloaded (if you are using release archives).
-
-If it exists, you can also extract this @emph{lbversion} file by using the @emph{cbfstool} utility which libreboot includes, from a ROM image that you either dumped or haven't flashed yet. In GNU/Linux, run cbfstool on your ROM image (@emph{libreboot.rom}, in this example):@* $ @strong{./cbfstool libreboot.rom extract -n lbversion -f lbversion}@* You will now have a file, named @emph{lbversion}, which you can read in whatever program it is that you use for reading/writing text files.
-
-For git, it's easy. Just check the git log.
-
-For releases on or below 20150518, or snapshots generated from the git repository below 127 commits after 20150518, you can find a file named @emph{commitid} inside the archives. If you are using pre-built ROM images from the libreboot project, you can press C in GRUB for access to the terminal, and then run this command:@* @strong{lscoreboot}@* You may find a date in here, detailing when that ROM image was built. For pre-built images distributed by the libreboot project, this is a rough approximation of what version you have, because the version numbers are dated, and the release archives are typically built on the same day as the release; you can correlate that with the release information: @pxref{Libreboot release information}. 
-
-You can also check the documentation that came with your archives, and in @ref{Libreboot release information} will be the information about the version of libreboot that you are using.
-
-Generally speaking, it is advisable to use the latest version of libreboot.
-
+See @uref{https://libreboot.org/faq/#version,https://libreboot.org/faq/#version}
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
