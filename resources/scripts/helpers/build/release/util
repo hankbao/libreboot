@@ -109,6 +109,42 @@ mv "flashrom/flashrom_lenovobios_macronix" "${distdir}/flashrom/${arch}/"
 rm -Rf "flashrom/"
 mv "flashrom_/" "flashrom/"
 
+ # ----------------
+# cbfstool related
+# ----------------
+# build cbfstool, compiled (statically linked) and include the binary
+
+mkdir -p "${distdir}/cbfstool/${arch}/"
+
+cd "crossgcc/util/"
+cp -R "cbfstool" "cbfstool_/"
+cd "cbfstool/"
+make clean
+make SHARED=0 CC='gcc -static'
+
+mv "cbfstool" "../../../${distdir}/cbfstool/${arch}/"
+
+if [ "${arch}" = "x86_64" ]
+       then
+               # Now build 32-bit binaries
+               make clean
+               make SHARED=0 CC='gcc -static -m32'
+               mkdir "../../../${distdir}/cbfstool/i686"
+               mv "cbfstool" "../../../${distdir}/cbfstool/i686/"
+fi
+
+# cross-compile for ARM
+make clean
+make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
+mkdir "../../../${distdir}/cbfstool/armv7l/"
+mv "cbfstool" "../../../${distdir}/cbfstool/armv7l/"
+
+cd ../
+rm -Rf "cbfstool/"
+mv "cbfstool_/" "cbfstool/"
+cd ../../
+
+
 # ----------------
 # ich9deblob related
 # ----------------
@@ -150,16 +186,37 @@ rm -Rf "ich9deblob/"
 mv "ich9deblob_/" "ich9deblob/"
 cd "../../"
 
+# -----------------
+# nvramtool related
+# -----------------
+# build nvramtool, compiled (statically linked) and include the binary
+cd "crossgcc/util/"
+cp -R "nvramtool/" "nvramtool_/"
+cd "nvramtool/"
+make clean
+make SHARED=0 CC='gcc -static'
+
+mkdir -p "../../../${distdir}/nvramtool/${arch}/"
+
+mv "nvramtool" "../../../${distdir}/nvramtool/${arch}/"
+
+if [ "${arch}" = "x86_64" ]
+       then
+               # Now build 32-bit binaries
+               make clean
+               make SHARED=0 CC='gcc -static -m32'
+               mkdir "../../../${distdir}/nvramtool/i686/"
+               mv "nvramtool" "../../../${distdir}/nvramtool/i686/"
+fi
+
+cd "../"
+rm -Rf "nvramtool/"
+mv "nvramtool_/" "nvramtool/"
+cd "../../"
+
 # -------------
 # Miscellaneous
 # -------------
-
-cp -R "crossgcc/util/cbfstool/" "${distdir}/"
-(cd "${distdir}/cbfstool/" && make clean)
-cp -R "crossgcc/util/nvramtool/" "${distdir}/"
-(cd "${distdir}/nvramtool/" && make clean)
-cp -R "crossgcc/util/ectool/" "${distdir}/"
-(cd "${distdir}/ectool/" && make clean)
 
 # Flashing script
 cp "flash" "${distdir}/"
