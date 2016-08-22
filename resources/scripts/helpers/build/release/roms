@@ -75,6 +75,13 @@ for payload in *; do
 			cp "NEWS" "${archivename}/"
 		fi
 
+        if [ -f "../../RELEASE" ]; then
+            rm -f "${archivename}/ChangeLog"
+            rm -f "${archivename}/NEWS"
+            cp "../../RELEASE" "${archivename}/ChangeLog"
+            cp "../../RELEASE" "${archivename}/NEWS"
+        fi
+
 		# Put the version string in the archive.
 		printf '%s\n' "${version}" >"${archivename}/version"
 		# Put the version date string in the archive

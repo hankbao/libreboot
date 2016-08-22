@@ -84,6 +84,13 @@ else
 	cp "NEWS" "${distdir}/"
 fi
 
+if [ -f "RELEASE" ]; then
+    rm -f "${distdir}/ChangeLog"
+    rm -f "${distdir}/NEWS"
+    cp "RELEASE" "${distdir}/ChangeLog"
+    cp "RELEASE" "${distdir}/NEWS"
+fi
+
 # include version information
 printf '%s\n' "${version}" >"${distdir}/version"
 # include version date information

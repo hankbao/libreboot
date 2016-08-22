@@ -98,7 +98,7 @@ apply_patches_from_directory() {
 				continue # ugly ugly ugly ugly ugly
 			fi # most hideous thing you've ever seen
 
-			git am "${patch}" || return 1
+			git am "${patch}" || continue
 		done
 	fi
 }
@@ -110,7 +110,7 @@ apply_patches_from_file() {
 
 	if [ -f "${patch_list}" ]; then
 		for patchname in $(cat "${patch_list}"); do
-			git am "${libreboot_src_root}/${patchname}" || return 1
+			git am "${libreboot_src_root}/${patchname}" || continue
 		done
 	fi
 }
