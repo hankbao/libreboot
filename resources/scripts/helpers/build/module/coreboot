@@ -24,13 +24,35 @@
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
+HOMEDIR=$(pwd)
 
 # Build utilities needed in coreboot directory
 # --------------------------------------------------------------------
 
 printf "Building the utilities in coreboot\n"
 
-for payloads in resources/libreboot/config/*; do
+# build coreboot utilities (in each revision) and
+# create symlinks to the crossgcc archive
+for payload in $HOMEDIR/coreboot/*; do
+	for board in "${payload}/"*; do
+
+	# cbfstool, cbmem, nvramtool
+	for util in {cbfs,nvram}tool cbmem; do
+        if [ "${util}" = "cbfstool" ]; then
+            sed -i '/.*fmd_scanner.o.*-Wno-unused-function$/ s/$/ -Wno-sign-compare/'  "${board}"/util/cbfstool/Makefile.inc
+        fi
+		make -BC "${board}/util/${util}"
+	done
+	# create symlink to crossgcc
+	(
+
+	ln -s $HOMEDIR/crossgcc/util/crossgcc/ ${board}/util/crossgcc
+	)
+
+	done
+done
+
+for payloads in $HOMEDIR/resources/libreboot/config/*; do
 
 	if [ ! -d "${payloads}/" ]; then
 		continue
@@ -38,7 +60,7 @@ for payloads in resources/libreboot/config/*; do
 
 	payload="${payloads##*/}"
 
-	for boardconfig in resources/libreboot/config/${payload}/*; do
+	for boardconfig in $HOMEDIR/resources/libreboot/config/${payload}/*; do
 
 		if [ ! -d "${boardconfig}/" ]; then
 			continue
@@ -48,8 +70,8 @@ for payloads in resources/libreboot/config/*; do
 		cbrevision=$(cat "${boardconfig}/cbrevision")
 		vbootrevision=$(cat "${boardconfig}/vbootrevision")
 
-		reused_coreboot_patches="resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list"
-		reused_vboot_patches="resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list"
+		reused_coreboot_patches="$HOMEDIR/resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list"
+		reused_vboot_patches="$HOMEDIR/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list"
 		for reused_patches in "${reused_coreboot_patches}" "${reused_vboot_patches}"; do
 			if [ -f "${reused_patches}" ]; then
 				for patch in $(cat "${reused_patches}"); do
@@ -103,7 +125,7 @@ create_branch() {
 # use git-init on everything
 # this is so that we can then apply patche
 # for these revisions of vboot and coreboot
-for i in coreboot/*; do
+for i in $HOMEDIR/coreboot/*; do
     if [ ! -d "${i}/" ]; then
         continue
     fi
@@ -124,7 +146,7 @@ for i in coreboot/*; do
     done
 done
 
-for payloads in resources/libreboot/config/*; do
+for payloads in $HOMEDIR/resources/libreboot/config/*; do
 
 	if [ ! -d "${payloads}/" ]; then
 		continue
@@ -132,7 +154,7 @@ for payloads in resources/libreboot/config/*; do
 
 	payload="${payloads##*/}"
 
-	for boardconfig in resources/libreboot/config/${payload}/*; do
+	for boardconfig in $HOMEDIR/resources/libreboot/config/${payload}/*; do
 
 		if [ ! -d "${boardconfig}/" ]; then
 			continue
@@ -149,17 +171,17 @@ for payloads in resources/libreboot/config/*; do
 		# patch that version
 		(
 
-			cd "coreboot/${cbrevision}/${cbrevision}/"
+			cd "$HOMEDIR/coreboot/${cbrevision}/${cbrevision}/"
 			create_branch ${branchname}
 
             git checkout ${branchname}
 
 			# apply patches (coreboot, common to all systems using this revision)
-			apply_patches_from_directory "../../../resources/libreboot/patch/common/coreboot/${cbrevision}"
+			apply_patches_from_directory "$HOMEDIR/resources/libreboot/patch/common/coreboot/${cbrevision}"
 			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
-			apply_patches_from_file "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list" ../../..
+			apply_patches_from_file "$HOMEDIR/resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}/reused.list" ../../..
 			# apply patches (coreboot, machine-specific for this revision)
-			apply_patches_from_directory "../../../resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}"
+			apply_patches_from_directory "$HOMEDIR/resources/libreboot/patch/coreboot/${cbrevision}/${payload}/${boardname}"
 
             git checkout master
 
@@ -170,36 +192,14 @@ for payloads in resources/libreboot/config/*; do
             git checkout ${branchname}
 
 			# apply patches (vboot, common to all systems using this revision)
-			apply_patches_from_directory "../../../../../resources/libreboot/patch/common/vboot/${vbootrevision}"
+			apply_patches_from_directory "$HOMEDIR/resources/libreboot/patch/common/vboot/${vbootrevision}"
 			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
-			apply_patches_from_file "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list" ../../../../..
+			apply_patches_from_file "$HOMEDIR/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list" ../../../../..
 			# apply patches (vboot, machine-specific for this revision)
-			apply_patches_from_directory "../../../../../resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
+			apply_patches_from_directory "$HOME/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
 
             git checkout master
 
 		)
 	done
 done
-
-# build coreboot utilities (in each revision) and
-# create symlinks to the crossgcc archive
-for payload in coreboot/*; do
-	for board in "${payload}/"*; do
-
-	# cbfstool, cbmem, nvramtool
-	for util in {cbfs,nvram}tool cbmem; do
-        if [ "${util}" = "cbfstool" ]; then
-            sed -i '/.*fmd_scanner.o.*-Wno-unused-function$/ s/$/ -Wno-sign-compare/'  "${board}"/util/cbfstool/Makefile.inc
-        fi
-		make -BC "${board}/util/${util}"
-	done
-	# create symlink to crossgcc
-	(
-	cd "${board}/util/"
-	ln -s "../../../../crossgcc/util/crossgcc/" crossgcc
-	)
-
-	done
-done
-
