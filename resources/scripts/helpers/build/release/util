@@ -119,6 +119,7 @@ mkdir -p "${distdir}/cbfstool/${arch}/"
 cd "crossgcc/util/"
 cp -R "cbfstool" "cbfstool_/"
 cd "cbfstool/"
+sed -i '/.*fmd_scanner.o.*-Wno-unused-function$/ s/$/ -Wno-sign-compare/'  Makefile.inc # build fix for latest flex version
 make clean
 make SHARED=0 CC='gcc -static'
 
