@@ -34,14 +34,19 @@ fi
 
 # coreboot revisios used for crossgcc
 crossgccrevision="00aa45391ddb22b5ac24151d54615ca1d89eb745"
+vbootrevision="d187cd3fc792f8bcefbee4587c83eafbd08441fc"
 
 rm -Rf "crossgcc/"
 (
     git clone https://review.coreboot.org/coreboot crossgcc || git clone https://github.com/coreboot/coreboot.git crossgcc
     cd "crossgcc/"
     git reset --hard ${crossgccrevision}
+    git submodule update --init --checkout -- 3rdparty/vboot/
+    (
+        cd 3rdparty/vboot/
+        git reset --hard ${vbootrevision}
+    )
     rm -Rf .git* */*/.git*
-    rm -Rf "3rdparty/"
 )
 
 printf "Deblobbing coreboot\n"

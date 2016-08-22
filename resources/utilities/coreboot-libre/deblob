@@ -71,6 +71,10 @@ done
 for blob in $(cat "resources/utilities/coreboot-libre/blobs/coreboot/crossgcc/blobs.list"); do
     rm -f "crossgcc/${blob}"
 done
+for blob in $(cat "resources/utilities/coreboot-libre/blobs/vboot/crossgcc/blobs.list"); do
+    rm -f "crossgcc/${blob}"
+done
+
 
 printf "\n\n"
 
