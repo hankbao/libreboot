@@ -48,9 +48,9 @@ if (( $# != 1 )); then
 	make -j${cores}
 else
 	if [ "${1}" = "static" ]; then
-		make SHARED=0 CC='gcc -static' -j${cores}
+		make SHARED=0 CC='gcc -static' -j${cores} CONFIG_ENABLE_LIBUSB1_PROGRAMMERS=no
 	else
-		make -j${cores}
+		make -j${cores} CONFIG_ENABLE_LIBUSB1_PROGRAMMERS=no
 	fi
 fi
 
@@ -71,12 +71,12 @@ do
 	
 	make clean
 	if (( $# != 1 )); then
-		make -j${cores}
+		make -j${cores} CONFIG_ENABLE_LIBUSB1_PROGRAMMERS=no
 	else
 		if [ "${1}" = "static" ]; then
-			make SHARED=0 CC='gcc -static' -j${cores}
+			make SHARED=0 CC='gcc -static' -j${cores} CONFIG_ENABLE_LIBUSB1_PROGRAMMERS=no
 		else
-			make -j${cores}
+			make -j${cores} CONFIG_ENABLE_LIBUSB1_PROGRAMMERS=no
 		fi
 	fi
 	
