@@ -161,8 +161,6 @@ cp -R "crossgcc/util/nvramtool/" "${distdir}/"
 cp -R "crossgcc/util/ectool/" "${distdir}/"
 (cd "${distdir}/ectool/" && make clean)
 
-cp -R "resources/" "${distdir}/"
-
 # Flashing script
 cp "flash" "${distdir}/"
 
