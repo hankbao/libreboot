@@ -54,7 +54,7 @@ versiondir="release/${version}"
 distname="libreboot_${version}_util"
 distdir="${versiondir}/${distname}"
 
-printf "Creating utility archive (source code of commonly needed utilities)\n"
+printf "Creating utility archive (static executables)\n"
 
 # delete the old data
 rm -Rf "${distdir:?}/"
@@ -84,10 +84,13 @@ printf '%s\n' "${versiondate}" >"${distdir}/versiondate"
 # --------------
 # BUC.TS related
 # --------------
+# X60/T60: BUC.TS utility is needed to flash libreboot while Lenovo BIOS is running
+# Include it statically compiled
 cp -R "bucts" "bucts_/"
-mkdir -p "${distdir}/bucts/"
-./build clean bucts
-cp -R "bucts/" "${distdir}/"
+# make it statically compile
+./build module bucts static
+mkdir -p "${distdir}/bucts/${arch}/"
+mv "bucts/bucts" "${distdir}/bucts/${arch}/"
 rm -Rf "bucts/"
 mv "bucts_/" "bucts/"
 
@@ -97,22 +100,62 @@ mv "bucts_/" "bucts/"
 # Flashrom is used to install libreboot on supported targets
 # Include it statically compiled
 cp -R "flashrom/" "flashrom_/"
-./build clean flashrom
-cp -R "flashrom/" "${distdir}/"
+# make it statically compile
+./build module flashrom static
+mkdir -p "${distdir}/flashrom/${arch}/"
+mv "flashrom/flashrom" "${distdir}/flashrom/${arch}/"
+mv "flashrom/flashrom_lenovobios_sst" "${distdir}/flashrom/${arch}/"
+mv "flashrom/flashrom_lenovobios_macronix" "${distdir}/flashrom/${arch}/"
 rm -Rf "flashrom/"
 mv "flashrom_/" "flashrom/"
+
+# ----------------
+# ich9deblob related
+# ----------------
+# build ich9deblob, compiled (statically linked) and include the binary
+
+mkdir -p "${distdir}/ich9deblob/${arch}"
+
+cd "resources/utilities/"
+cp -R "ich9deblob" "ich9deblob_/"
+cd "ich9deblob/"
+make clean
+make SHARED=0 CC='gcc -static'
+
+mv "ich9deblob" "../../../${distdir}/ich9deblob/${arch}/"
+mv "ich9gen" "../../../${distdir}/ich9deblob/${arch}/"
+mv "demefactory" "../../../${distdir}/ich9deblob/${arch}/"
+
+if [ "${arch}" = "x86_64" ]
+	then
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir "../../../${distdir}/ich9deblob/i686/"
+		mv "ich9deblob" "../../../${distdir}/ich9deblob/i686/"
+		mv "ich9gen" "../../../${distdir}/ich9deblob/i686/"
+		mv "demefactory" "../../../${distdir}/ich9deblob/i686/"
+fi
+
+# cross-compile for ARM
+make clean
+make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
+mkdir "../../../${distdir}/ich9deblob/armv7l"
+mv "ich9deblob" "../../../${distdir}/ich9deblob/armv7l/"
+mv "ich9gen" "../../../${distdir}/ich9deblob/armv7l/"
+mv "demefactory" "../../../${distdir}/ich9deblob/armv7l/"
+
+cd "../"
+rm -Rf "ich9deblob/"
+mv "ich9deblob_/" "ich9deblob/"
+cd "../../"
 
 # -------------
 # Miscellaneous
 # -------------
 
-cp -R "resources/" "${distdir}/"
-
 # Flashing script
 cp "flash" "${distdir}/"
-
-# Build script
-cp "build" "${distdir}/"
 
 # powertop script
 cp "resources/scripts/misc/powertop.trisquel7" "${distdir}/"
