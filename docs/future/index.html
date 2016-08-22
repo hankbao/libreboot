@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>libreboot tutorials</title>
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="author" content="glugman">
+	<meta name="description" content="tutorials for libreboot, the reboot library.">
+	<meta name="robots" content="all">
+</head>
+
+<body>
+
+	<div class="section">
+
+		<h1 id="pagetop">Development notes</h1>
+			<p>
+				These are development notes, for future use. For old (obselete) notes, see <a href="old.html">old.html</a>.
+			</p>
+			<p>
+				Or go <a href="../tasks.html">back to main task list</a>.
+			</p>
+		
+	</div>
+
+	<div class="section">
+		
+		<h1>Table of contents</h1>
+			<ul>
+				<li><a href="#standard_test">Standard test</a></li>
+				<li><a href="#t60_cpu_microcode">T60 cpu microcode</a></li>
+				<li><a href="#i945_vram_size">i945 VRAM size</a></li>
+				<li><a href="#lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</a></li>
+				<li><a href="#i945_vbt">i945 X60/T60 VBT implementation (experimental: testing)</a></li>
+				<li><a href="#intelvbttool_results">IntelVbtTool results</a></li>
+				<li><a href="#fallback_patches">Fallback patches for i945</a></li>
+			</ul>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1 id="standard_test">standard test</h1>
+			<p>
+				These logs are usually obtained when testing changes related to graphics on i945 (X60 and T60).
+			</p>
+			<ul>
+				<li>
+					Make a copy of these files:
+					<ul>
+						<li>/var/log/dmesg</li>
+						<li>/var/log/kern.log</li>
+						<li>/var/log/Xorg.0.log</li>
+						<li>/proc/ioports</li>
+						<li>/proc/iomem</li>
+						<li>/sys/class/drm/card0/error</li>
+					</ul>
+				</li>
+				<li>
+					Record these outputs:
+					<ul>
+						<li>sudo intel_reg_dumper</li>
+						<li>uname -r</li>
+						<li>lspci -vvvvnnnnxxxx</li>
+						<li>sudo modprobe msr</li>
+						<li>sudo inteltool -a</li>
+						<li>sudo cbmem -c</li>
+					</ul>
+				</li>
+				<li>
+					Try some 3D games with latest kernel.
+				</li>
+			</ul>
+
+			<p><a href="#pagetop">Back to top of page.</a></p>
+	
+	</div>
+
+	<div class="section">
+
+		<h1 id="t60_cpu_microcode">T60 cpu microcode</h1>
+
+			<p>
+				TODO: T60: find (for rare buggy CPUs that are unstable without microcode updates) if there is a workaround (patched kernel, special parameter, etc) So far, only 1 processor has been found to have issues. See microcode errata sheets http://download.intel.com/design/mobile/SPECUPDT/31407918.pdf and http://download.intel.com/design/mobile/SPECUPDT/30922214.pdf and then look at the debugging results collected in <a href="../t7200q">t7200q</a> directory (q means quirk). 
+			</p>
+
+			<p>
+				Every other T7200 tested so far has worked without microcode updates.
+			</p>
+
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="i945_vram_size">i945 VRAM size</h1>
+
+			<p>
+				Apparently, only 8MB VRAM is available on i945 GPUs (though it could do 64MB):<br/>
+				phcoder: No. Hardware default is 8 MiB. When I wanted to make it configurable, I saw that docs mention only one other alternative: 1MiB. Later isn't event enough for 1024x768 at 24bpp without any acceleration or double buffering. It's possible that there are undocumented values. Which options do you have in vendor BIOS?
+				How to find out how much vram you have:<br/>
+				phcoder: TOM - BSM<br/>
+				phcoder: check what vendor BIOS offers as options<br/>
+				vimuser: I thought it could do 64MB usually<br/>
+				phcoder: not accorging to doc.<br/>
+				phcoder: see mobile-945-express-chipset-datasheet page 93<br/>
+				phcoder: see also src/northbridge/intel/i945/{early_init,northbridge,gma}.c<br/>
+				vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for<br/>
+				vimuser: frame buffer."<br/>
+				vimuser: "Others - reserved"<br/>
+				phcoder: the easiest way is a loop at this position which tries different values and reads (and prints) BSM with them<br/>
+				stefanct: vimuser: they suggest that you change the value and look how BSM reacts to that<br/>
+				stefanct: as they pointed out earlier vram size = TOM - BSM<br/>
+				stefanct: different values of GMS<br/>
+				stefanct: phcoder: hm... this could be a hint. look at the text description of TOLUD at page 103<br/>
+				stefanct: it mentions 64 MB in the text about BSM as well<br/>
+				stefanct: table 18...<br/>
+				phcoder: stefanct: I have a guess which value make is 64 but I will not tell to avoid skewing test results<br/>
+				stefanct: phcoder: sure... i assumed you were not sure if it supports it at all. testing it properly is of course a good idea :)<br/>
+				stefanct: test the various possible (but reserved) values of GMS and see what the resulting VRAM size is<br/>
+				vimuser: so, TOM - BSM
+			</p>
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="lcd_i945_incompatibility">LCD panels on i945 - fix incompatible panels</h1>
+
+			<p>
+				Fix T60 issues (see incompatible panels listed at <a href="../hcl/index.html#supported_t60_list">../hcl/index.html#supported_t60_list</a>).
+			</p>
+
+			<p>
+				Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on systems with the offending panels in:
+			</p>
+				<ul>
+					<li>Coreboot (or libreboot, whatever) with VBIOS (disable native graphics also)</li>
+					<li>(Factory BIOS also?)</li>
+				</ul>
+
+			<p>
+				This shows values in devicetree.cb and src/northbridge/intel/i945/gma.c, the idea is that you run it on factory bios or vbios
+				and that it will (might) show different values: then you try those in the native graphics (in libreboot).
+			</p>
+
+			<p>
+				Other values/registers might also need to be added to the script for these tests.
+			</p>
+
+			<p>
+				check if intel_bios_reader from intel-gpu-tools reports the same value (BIOS has a hardcoded value) for PWM modulation frequency. 
+				This file can read the VBIOS (64K dump).
+			</p>
+
+			<p>
+				Check other tools in intel-gpu-tools aswell, compare outputs. Possibly add more information to intel-regs.py output (submit changes to mtjm).
+				Do oprom trace / replay (<a href="http://www.coreboot.org/User:GNUtoo#How_to_get_rid_of_the_vbios_of_the_x60_.5BNew_Version.5D">http://www.coreboot.org/User:GNUtoo#How_to_get_rid_of_the_vbios_of_the_x60_.5BNew_Version.5D</a>)
+			</p>
+
+			<p>
+				Study how EDID works and how gma.c handles it.
+			</p>
+			
+			<p>
+				Original getregs.py script can be found at <a href="http://hg.mtjm.eu/scripts/file/tip/intel-regs.py">http://hg.mtjm.eu/scripts/file/tip/intel-regs.py</a>
+				written by Michał Masłowski.
+			</p>
+
+			<p>
+				About fixing remaining LCD panels on 5345:<br/>
+				'polarity' is mentioned in coreboot log (cbmem -c). compare output (with working and non-working panel). (and see the other notes in docs/future/index.html)
+         </p>
+         <p>
+				There was a theory that working panels are
+			   6bpc (bits per colour) and nonworking are
+			   8bpc, but all EDIDs that we have here are
+			   for 6bpc panels.
+			</p>
+                        <p>We should compare coreboot logs
+                          (from <code>cbmem -c</code> from systems with
+                          working and nonworking panels.</p>
+                        <p>How to dump EDID:</p>
+         <p>
+				# <b>apt-get install i2c-tools</b><br/>
+				# <b>modprobe i2c-dev</b><br/>
+				Find out the correct ID to use:<br/>
+				# <b>i2cdetect -l</b><br/>
+				Example:<br/>
+				# <b>i2cdump -y 2 0x50</b>
+			</p>
+			
+			<p>
+				Working panel: EDID dump from LG-Philips LP150E05-A2K1:
+			</p>
+<pre>
+No size specified (using byte-data access)
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: XX ff ff ff ff ff ff 00 30 ae 43 40 00 00 00 00    X.......0?C@....
+10: 00 0f 01 03 80 1e 17 78 ea af 00 99 58 53 8c 2a    .??????x??.?XS?*
+20: 25 50 54 21 08 00 81 80 01 01 01 01 01 01 01 01    %PT!?.??????????
+30: 01 01 01 01 01 01 30 2a 78 20 51 1a 10 40 30 70    ??????0*x Q??@0p
+40: 13 00 31 e4 10 00 00 18 28 23 78 20 51 1a 10 40    ?.1??..?(#x Q??@
+50: 30 70 13 00 31 e4 10 00 00 18 00 00 00 0f 00 90    0p?.1??..?...?.?
+60: 43 32 90 43 28 14 06 00 32 0c 00 00 00 00 00 fe    C2?C(??.2?.....?
+70: 00 4c 50 31 35 30 45 30 35 2d 41 32 0a 20 00 9b    .LP150E05-A2? .?
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+</pre>
+
+			<p>
+				Working panel: EDID dump from Boe-Hydis HT14P12-100  FRU: 13N7061 (Inverter FRU: 41W1010)
+			</p>
+
+<pre>
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: 00 ff ff ff ff ff ff 00 30 ae 22 40 00 00 00 00    ........0?"@....
+10: 00 0f 01 03 80 1c 15 78 ea af 40 95 56 4a 8f 25    .??????x??@?VJ?%
+20: 20 50 54 21 08 00 81 80 01 01 01 01 01 01 01 01     PT!?.??????????
+30: 01 01 01 01 01 01 30 2a 78 20 51 1a 10 40 30 70    ??????0*x Q??@0p
+40: 13 00 1d d6 10 00 00 19 25 23 78 20 51 1a 10 40    ?.???..?%#x Q??@
+50: 30 70 13 00 1d d6 10 00 00 19 00 00 00 0f 00 90    0p?.???..?...?.?
+60: 43 32 90 43 28 0f 01 00 09 e5 00 00 00 00 00 fe    C2?C(??.??.....?
+70: 00 48 54 31 34 50 31 32 2d 31 30 30 0a 20 00 3f    .HT14P12-100? .?
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+</pre>
+
+<p>LTN141XA-L01: revert to libreboot git commit c943281 to see this</p>
+
+			<p>
+				<b>Non-</b>working panel: EDID dump from Samsung LTN150XG-L08:
+			</p>
+<pre>
+     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f    0123456789abcdef
+00: 00 ff ff ff ff ff ff 00 30 ae 40 40 00 00 00 00    ........0?@@....
+10: 00 0f 01 03 80 1f 17 78 ea 2d 05 97 57 51 8a 27    .??????x?-??WQ?'
+20: 23 50 54 21 08 00 01 01 01 01 01 01 01 01 01 01    #PT!?.??????????
+30: 01 01 01 01 01 01 64 19 00 40 41 00 26 30 18 88    ??????d?.@A.&amp;0??
+40: 36 00 30 e4 10 00 00 19 28 15 00 40 41 00 26 30    6.0??..?(?.@A.&amp;0
+50: 18 88 36 00 30 e4 10 00 00 19 00 00 00 0f 00 61    ??6.0??..?...?.a
+60: 43 32 61 43 28 14 01 00 4c a3 58 47 00 00 00 fe    C2aC(??.L?XG...?
+70: 00 4c 54 4e 31 35 30 58 47 2d 4c 30 38 0a 00 6d    .LTN150XG-L08?.m
+80: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+90: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+a0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+b0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+c0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+d0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+e0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+f0: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff    ................
+</pre>
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="i945_vbt">i945 gfx: X60/T60 VBT implementation (experimental: testing)</h1>
+
+			<p>
+				intel_bios_dumper in intel-gpu-tools seems interesting.
+			</p>
+			<p>
+				<b>Use 'drm.debug=0x06' kernel parameter when booting in grub!</b>
+			</p>
+			<p>
+				Before each test run, boot a live USB and delete the old logs in /var/log (kernel log, xorg log, dmesg and so on).
+			</p>
+			<p>
+				Load (from the ROM) the runningvga.bin for each LCD panel on each system; do not execute it, only load it! (coreboot will have to be modified).
+				Rename the ROM appropriately, based on the system name and the panel name. coreboot_nativegfx_5868_plusrunningvga_t60_14_LTD141ECMB.rom,
+				for instance. Keep a copy for later use.
+			</p>
+
+			<p>You are supposed to:</p>
+				<ul>
+					<li>enable native graphics in menuconfig</li>
+					<li>include the self-modified VGA ROM (load, but not execute) - for reverse engineering the correct VBT tables.</li>
+				</ul>
+
+			<p>
+				With each boot, make notes about what you see and get logs using the <a href="#standard_test">standard test</a>.
+				You will need the files from <a href="#intelvbttool_results">#intelvbttool_results</a> for each system.
+			</p>
+
+			Results (# means untested):
+				<ul>
+					<li>
+						<b>X60/X60s:</b>
+						<ul>
+							<li>TMD-Toshiba LTD121ECHB: #</li>
+							<li>CMO N121X5-L06: #</li>
+							<li>Samsung LTN121XJ-L07: #</li>
+							<li>BOE-Hydis HT121X01-101: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>X60T XGA:</b>
+						<ul>
+							<li>BOE-Hydis HV121X03-100: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>X60T SXGA+:</b>
+						<ul>
+							<li>BOE-Hydis HV121P01-100: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>T60 14&quot; XGA:</b>
+						<ul>
+							<li>Samsung LTN141XA-L01: #</li>
+							<li>CMO N141XC: #</li>
+							<li>BOE-Hydis HT14X14: #</li>
+							<li>TMD-Toshiba LTD141ECMB: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>T60 14&quot; SXGA+</b>
+						<ul>
+							<li>TMD-Toshiba LTD141EN9B: #</li>
+							<li>Samsung LTN141P4-L02: #</li>
+							<li>Boe-Hydis HT14P12: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>T60 15&quot; XGA</b>
+						<ul>
+							<li>Samsung LTN150XG-L08: #</li>
+							<li>LG-Philips LP150X09: #</li>
+							<li>13N7068 (IDtech): #</li>
+							<li>13N7069 (CMO): #</li>
+						
+						</ul>
+					</li>
+					<li>
+						<b>T60 15&quot; SXGA+</b>
+						<ul>
+							<li>LG-Philips LP150E05-A2K1: #</li>
+							<li>BOE-Hydis HV150P01-100: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>T60 15&quot; UXGA</b>
+						<ul>
+							<li>BOE-Hydis HV150UX1-100: #</li>
+							<li>IDTech  N150U3-L01: #</li>
+							<li>BOE-Hydis  HV150UX1-102: #</li>
+						</ul>
+					</li>
+					<li>
+						<b>T50 15&quot; QXGA</b>
+						<ul>
+							<li>IDtech IAQX10N: #</li>
+							<li>IDtech IAQX10S: #</li>
+						</ul>
+					</li>
+				</ul>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="intelvbttool_results">intelvbttool test results (VGA ROM dumps)</h1>
+			<p>
+				The VBIOS on i945 (intel gpu) platforms is self-modifying; that is,
+				its contents change when you run it. intelvbttool takes a dump of 
+				the currently running vbios, and parses it.
+			</p>
+
+			<p>
+				The idea is that we can extract the VBT tables using this knowledge, on the X60, X60 Tablet and T60 (Intel GPU).
+			</p>
+
+			<p>
+				Here is an example of how VBT was implemented on the ThinkPad X230:
+				<a href="http://review.coreboot.org/#/c/5396">http://review.coreboot.org/#/c/5396</a>.
+			</p>
+
+			<p>
+				You'll need to build a T60 ROM with SeaBIOS and the VGA ROM (for Intel GPU). An X60 ROM is also needed (same configuration, using the VGA ROM for X60).
+			</p>
+
+			<p>
+				T60 has DVI on its dock, make sure that the dock is attached when getting this output.
+			</p>
+
+			<p>
+				Get intelvbttool here: <a href="http://review.coreboot.org/#/c/5842">http://review.coreboot.org/#/c/5842</a> (util/intelvbttool).
+			</p>
+
+			<p>
+				Now dump a copy of the running VGA BIOS:
+				<b>$ sudo dd if=/dev/mem bs=64k of=runningvga.bin skip=12 count=1</b><br/>
+				Then do (and record the output):<br/>
+				<b>$ ./intelvbttool runningvga.bin &gt; intelvbttool_out</b>
+			</p>
+
+			<p>
+				Backup both files (runningvga.bin and intelvbttool_out), renaming them to match the system and LCD panel used.
+				<a href="../misc/index.html#get_edid_panelname">../misc/index.html#get_edid_panelname</a> will show you how to get the name (model) of the LCD panel used.
+			</p>
+
+			<h2>Test results (# means untested and all had docks, unless noted).</h2>
+
+			<ul>
+				<li>
+					<b>X60/X60s:</b>
+					<ul>
+						<li>TMD-Toshiba LTD121ECHB: #</li>
+						<li>CMO N121X5-L06: #</li>
+						<li>Samsung LTN121XJ-L07: #</li>
+						<li>BOE-Hydis HT121X01-101: #</li>		
+					</ul>
+				</li>
+				<li>
+					<b>X60T XGA (1024x768):</b>
+					<ul>
+						<li>BOE-Hydis HV121X03-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>X60T SXGA+ (1400x1050):</b>
+					<ul>
+						<li>BOE-Hydis HV121P01-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 14&quot; XGA (1024x768):</b>
+					<ul>
+						<li>Samsung LTN141XA-L01: #</li>
+						<li>CMO N141XC: #</li>
+						<li>BOE-Hydis HT14X14: #</li>
+						<li>TMD-Toshiba LTD141ECMB: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 14&quot; SXGA+ (1400x1050):</b>
+					<ul>
+						<li>TMD-Toshiba LTD141EN9B: #</li>
+						<li>Samsung LTN141P4-L02: #</li>
+						<li>Boe-Hydis HT14P12: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; XGA (1024x768):</b>
+					<ul>
+						<li>Samsung LTN150XG-L08: #</li>
+						<li>LG-Philips LP150X09: #</li>
+						<li>13N7068 (IDtech): #</li>
+						<li>13N7069 (CMO): #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; SXGA+ (1400x1050):</b>
+					<ul>
+						<li>LG-Philips LP150E05-A2K1: #</li>
+						<li>BOE-Hydis HV150P01-100: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; UXGA (1600x1200):</b>
+					<ul>
+						<li>BOE-Hydis HV150UX1-100: #</li>
+						<li>IDTech  N150U3-L01: #</li>
+						<li>BOE-Hydis  HV150UX1-102: #</li>
+					</ul>
+				</li>
+				<li>
+					<b>T60 15&quot; QXGA (2048x1536):</b>
+					<ul>
+						<li>IDtech IAQX10N: #</li>
+						<li>IDtech IAQX10S: #</li>
+					</ul>
+				</li>
+			</ul>
+
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
+		
+	<div class="section">
+	
+		<h1 id="fallback_patches">Fallback patches</h1>
+
+			<ul>
+				<li>
+					Todo: test gnutoo's fallback patches: <a href="http://www.coreboot.org/Fallback_mechanism">http://www.coreboot.org/Fallback_mechanism</a>
+					(some parts use systemd. adapt for upstart, which is what trisquel uses)<br/>
+					see <a href="gnutoo_fallback_patch">this IRC log</a> (warning, not cleaned up)
+				</li>
+			</ul>
+			
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
+		
+	<div class="section">
+
+		<h1 id="other">Other - unlisted (low priority)</h1>
+		
+			<ul>
+				<li>
+					PTE errors still exist on i945 with 6718 (which is merged). <a href="http://review.coreboot.org/#/c/6718/">http://review.coreboot.org/#/c/6718/</a>
+					<ul>
+						<li><a href="future/dumps/pte_x60_6718/dmesg">dmesg</a></li>
+						<li><a href="future/dumps/pte_x60_6718/kern.log">kern.log</a></li>
+						<li>This doesn't seem to cause any issues for general use.</li>
+					</ul>
+				</li>
+				<li>
+					Implement INT 10H support in i945 native graphics. (this will be a lot of work. SeaBIOS has code for some geode boards, to get a general idea).
+				</li>
+				<li>
+					T60 15&quot; QXGA (2048x1536): fixed issue where GRUB wouldn't show any graphics. (Not many people have this panel)
+					<ul>
+						<li>It might be the same issue I ran into with Paul on the X60 (not enough memory being allocated) since the same code works on T60 SXGA+ and UXGA, where GRUB actually display graphics.</li>
+					</ul>
+				</li>
+			</ul>
+			
+			<p><a href="#pagetop">Back to top of page.</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

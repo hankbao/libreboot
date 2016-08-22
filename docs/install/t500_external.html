@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ThinkPad T500: flashing tutorial (BeagleBone Black)</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">Flashing the T500 with a BeagleBone Black</h1>
+		
+			<p>Initial flashing instructions for T500.</p>
+			<p>
+				This guide is for those who want libreboot on their ThinkPad T500
+				while they still have the original Lenovo BIOS present. This guide
+				can also be followed (adapted) if you brick your T500, to know how
+				to recover.
+			</p>
+
+			<p><a href="index.html">Back to main index</a></p>
+	</div>
+
+	<div class="section">
+
+		<h1 id="t400">Libreboot T400</h1>
+			<p>
+				You may also be interested in the smaller, more portable <a href="t400_external.html">Libreboot T400</a>.
+			</p>
+
+	</div>
+	
+	<div class="section">
+	
+		<h2 id="serial_port">Serial port</h2>
+		
+			<p>
+				EHCI debug might not be needed. It has been reported that the docking station
+				for this laptop has a serial port, so it might be possible to use that instead.
+			</p>
+	
+	</div>
+
+	<div class="section">
+
+		<h1 id="lcd_compatibility">LCD compatibly</h1>
+			<p>
+				Not all LCD panels are compatible yet. See <a href="../hcl/gm45_lcd.html">../hcl/gm45_lcd.html</a>.
+			</p>
+
+	</div>
+	
+	<div class="section" id="cpu_compatibility">
+	
+		<h1>A note about CPUs</h1>
+			<p>
+				<a href="http://www.thinkwiki.org/wiki/Category:T500">ThinkWiki</a> has a list of CPUs
+				for this system. The Core 2 Duo P8400, P8600 and P8700 are believed to work in libreboot.
+				The T9600 was also tested on the T400 and confirmed working, so the T9400/T9500/T9550 probably
+				also work, but they are untested.
+			</p>
+			
+			<h2>Quad-core CPUs</h2>
+			
+				<p>
+					Incompatible. Do not use.
+				</p>
+	
+	</div>
+	
+	<div class="section" id="switchable_graphics">
+	
+		<h1>A note about GPUs</h1>
+		
+			<p>
+				Some models have an Intel GPU, while others have both an ATI and an Intel GPU; this
+				is referred to as &quot;switchable graphics&quot;. In the <i>BIOS setup</i> program
+				for lenovobios, you can specify that the system will use one or the other (but not both).
+			</p>
+			
+			<p>
+				Libreboot is known to work on systems with only the Intel GPU, using native graphics initialization.
+				On systems with switchable graphics, the Intel GPU is used and the ATI GPU is disabled, so
+				native graphics initialization works all the same.
+			</p>
+			
+		<h1>CPU paste required</h1>
+			
+			<p>
+				See <a href="#paste">#paste</a>.
+			</p>
+	
+	</div>
+
+	<div class="section">
+
+		<h1 id="flashchips">Flash chip size</h1>
+		
+			<p>
+				Use this to find out:<br/>
+				# <b>dmidecode | grep ROM\ Size</b>
+			</p>
+		
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="macaddress">MAC address</h1>
+		
+			<p>
+				On the T500, the MAC address for the onboard
+				gigabit ethernet chipset is stored inside the flash chip,
+				along with other configuration data.
+			</p>
+			<p>
+				Keep a note of the MAC address before disassembly; this is
+				very important, because you will need to insert this into
+				the libreboot ROM image before flashing it.
+				It will be written in one of these locations:
+			</p>
+			
+			<p>
+				<img src="images/t400/macaddress0.jpg" alt="" />
+				<img src="images/t400/macaddress1.jpg" alt="" />
+				<img src="images/x200/disassembly/0001.jpg" alt="" />
+			</p>
+	
+	</div>
+		
+	<div class="section photos">
+
+		<h1>Initial BBB configuration</h1>
+		
+			<p>
+				Refer to <a href="bbb_setup.html">bbb_setup.html</a> for how to
+				configure the BBB for flashing.
+			</p>
+
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-16 (clip: Pomona 5252):
+			</p>
+<pre>
+POMONA 5252 (correlate with the BBB guide)
+===  ethernet jack and VGA port ====
+ NC              -       - 21
+ 1               -       - 17
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ 18              -       - 3.3V (PSU)
+ 22              -       - NC - this is pin 1 on the flash chip
+===  SATA port ===
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i><br/>
+<img src="images/t400/0065.jpg" alt="" />
+</pre>
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
+			</p>
+<pre>
+POMONA 5250 (correlate with the BBB guide)
+===  RAM slots ====
+ 18              -       - 1
+ 22              -       - NC
+ NC              -       - 21
+ 3.3V (PSU)      -       - 17 - this is pin 1 on the flash chip
+===  slot where the AC jack is connected ===<br/>
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i><br/>
+<img src="images/t500/0060.jpg" alt="" />
+</pre>
+	
+			<h2>
+				The procedure
+			</h2>
+					
+				<p>
+					Remove all screws:<br/>
+					<img src="images/t500/0000.jpg" alt="" /><br/>
+					It is also advisable to, throughout the disassembly,
+					place any screws and/or components that you removed in
+					the same layout or arrangement. The follow photos demonstrate
+					this:<br/>
+					<img src="images/t500/0001.jpg" alt="" />
+					<img src="images/t500/0002.jpg" alt="" />
+				</p>
+				<p>
+					Remove the HDD/SSD and optical drive:<br/>
+					<img src="images/t500/0003.jpg" alt="" />
+					<img src="images/t500/0004.jpg" alt="" />
+				</p>
+				<p>
+					Remove the palm rest:<br/>
+					<img src="images/t500/0005.jpg" alt="" />
+					<img src="images/t500/0006.jpg" alt="" />
+				</p>
+				<p>
+					Remove the keyboard and rear bezel:<br/>
+					<img src="images/t500/0007.jpg" alt="" />
+					<img src="images/t500/0008.jpg" alt="" />
+					<img src="images/t500/0009.jpg" alt="" />
+					<img src="images/t500/0010.jpg" alt="" />
+					<img src="images/t500/0011.jpg" alt="" />
+					<img src="images/t500/0012.jpg" alt="" />
+				</p>
+				<p>
+					If you have a WWAN/3G card and/or sim card reader,
+					remove them permanently. The WWAN-3G card has proprietary firmware inside; the technology is identical
+					to what is used in mobile phones, so it can also track
+					your movements:<br/>
+					<img src="images/t500/0013.jpg" alt="" />
+					<img src="images/t500/0017.jpg" alt="" />
+					<img src="images/t500/0018.jpg" alt="" />
+				</p>
+				<p>
+					Remove this frame, and then remove the wifi chip:<br/>
+					<img src="images/t500/0014.jpg" alt="" />
+					<img src="images/t500/0015.jpg" alt="" />
+					<img src="images/t500/0016.jpg" alt="" />
+				</p>
+				<p>
+					Remove the speakers:<br/>
+					<img src="images/t500/0019.jpg" alt="" />
+					<img src="images/t500/0020.jpg" alt="" />
+					<img src="images/t500/0021.jpg" alt="" />
+					<img src="images/t500/0022.jpg" alt="" />
+					<img src="images/t500/0023.jpg" alt="" />
+					<img src="images/t500/0024.jpg" alt="" />
+					<img src="images/t500/0025.jpg" alt="" />
+				</p>
+				<p>
+					Remove the NVRAM battery (already removed in this photo):<br/>
+					<img src="images/t500/0026.jpg" alt="" />
+				</p>
+				<p>
+					When you re-assemble, you will be replacing the wifi chip
+					with another. These two screws don't hold anything together,
+					but they are included in your system because the screw
+					holes for half-height cards are a different size, so
+					use these if you will be installing a half-height card:<br/>
+					<img src="images/t500/0027.jpg" alt="" />
+				</p>
+				<p>
+					Unroute the antenna wires:<br/>
+					<img src="images/t500/0028.jpg" alt="" />
+					<img src="images/t500/0029.jpg" alt="" />
+					<img src="images/t500/0030.jpg" alt="" />
+					<img src="images/t500/0031.jpg" alt="" />
+				</p>
+				<p>
+					Disconnect the LCD cable from the motherboard:<br/>
+					<img src="images/t500/0032.jpg" alt="" />
+					<img src="images/t500/0033.jpg" alt="" />
+				</p>
+				<p>
+					Remove the LCD assembly hinge screws, and then remove the LCD
+					assembly:<br/>
+					<img src="images/t500/0034.jpg" alt="" />
+					<img src="images/t500/0035.jpg" alt="" />
+					<img src="images/t500/0036.jpg" alt="" />
+				</p>
+				<p>
+					Remove the fan and heatsink:<br/>
+					<img src="images/t500/0037.jpg" alt="" />
+					<img src="images/t500/0038.jpg" alt="" />
+					<img src="images/t500/0039.jpg" alt="" />
+				</p>
+				<p>
+					Remove this screw:<br/>
+					<img src="images/t500/0040.jpg" alt="" />
+				</p>
+				<p>
+					Remove these cables, keeping note of how and in what
+					arrangement they are connected:<br/>
+					<img src="images/t500/0041.jpg" alt="" />
+					<img src="images/t500/0042.jpg" alt="" />
+					<img src="images/t500/0043.jpg" alt="" />
+					<img src="images/t500/0044.jpg" alt="" />
+					<img src="images/t500/0045.jpg" alt="" />
+					<img src="images/t500/0046.jpg" alt="" />
+					<img src="images/t500/0047.jpg" alt="" />
+					<img src="images/t500/0048.jpg" alt="" />
+					<img src="images/t500/0049.jpg" alt="" />
+				</p>
+				<p>
+					Disconnect the power jack:<br/>
+					<img src="images/t500/0050.jpg" alt="" />
+					<img src="images/t500/0051.jpg" alt="" />
+				</p>
+				<p>
+					Remove the motherboard and cage from the base
+					(the marked hole is where those cables were routed through):<br/>
+					<img src="images/t500/0052.jpg" alt="" />
+					<img src="images/t500/0053.jpg" alt="" />
+				</p>
+				<p>
+					Remove all screws, arranging them in the same layout
+					when placing the screws on a surface and marking each screw
+					hole (this is to reduce the possibility of putting them
+					back in the wrong holes):<br/>
+					<img src="images/t500/0054.jpg" alt="" />
+					<img src="images/t500/0055.jpg" alt="" />
+				</p>
+				<p>
+					Also remove this:<br/>
+					<img src="images/t500/0056.jpg" alt="" />
+					<img src="images/t500/0057.jpg" alt="" />
+				</p>
+				<p>
+					Separate the motherboard from the cage:<br/>
+					<img src="images/t500/0058.jpg" alt="" />
+					<img src="images/t500/0059.jpg" alt="" />
+				</p>
+				<p>
+					The flash chip is next to the memory slots. On this
+					system, it was a SOIC-8 (4MiB or 32Mb) flash chip:<br/>
+					<img src="images/t500/0060.jpg" alt="" />
+				</p>
+				<p>
+					Connect your programmer, then connect GND and 3.3V<br/>
+					<img src="images/t500/0061.jpg" alt="" /><br/>
+					<img src="images/t400/0067.jpg" alt="" />
+					<img src="images/t400/0069.jpg" alt="" />
+					<img src="images/t400/0070.jpg" alt="" />
+					<img src="images/t400/0071.jpg" alt="" />
+				</p>
+				<p>
+					A dedicated 3.3V PSU was used to create this guide, but
+					at ATX PSU is also fine:<br/>
+					<img src="images/t400/0072.jpg" alt="" />
+				</p>
+				
+				<p>
+					Of course, make sure to turn on your PSU:<br/>
+					<img src="images/x200/disassembly/0013.jpg" alt="" />
+				</p>
+				
+				<p>
+					Now, you should be ready to install libreboot.
+				</p>
+		
+				<p>
+					Flashrom binaries for ARM (tested on a BBB) are distributed in libreboot_util. Alternatively,
+					libreboot also distributes flashrom source code which can be built.
+				</p>
+				<p>
+					Log in as root on your BBB, using the instructions in <a href="bbb_setup.html#bbb_access">bbb_setup.html#bbb_access</a>. 
+				</p>
+				<p>
+					Test that flashrom works:<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
+					In this case, the output was:
+				</p>
+<pre>
+flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
+flashrom is free software, get the source code at http://www.flashrom.org
+Calibrating delay loop... OK.
+Found Macronix flash chip &quot;MX25L6405(D)&quot; (8192 kB, SPI) on linux_spi.
+Found Macronix flash chip &quot;MX25L6406E/MX25L6436E&quot; (8192 kB, SPI) on linux_spi.
+Found Macronix flash chip &quot;MX25L6445E/MX25L6473E&quot; (8192 kB, SPI) on linux_spi.
+Multiple flash chip definitions match the detected chip(s): &quot;MX25L6405(D)&quot;, &quot;MX25L6406E/MX25L6436E&quot;, &quot;MX25L6445E/MX25L6473E&quot;
+Please specify which chip definition to use with the -c &lt;chipname&gt; option.
+</pre>
+				<p>
+					How to backup factory.rom (change the -c option as neeed, for your flash chip):<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory1.rom</b><br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory2.rom</b><br/>
+					Note: the <b>-c</b> option is not required in libreboot's patched flashrom, because
+					the redundant flash chip definitions in <i>flashchips.c</i> have been removed.<br/>
+					Now compare the 3 images:<br/>
+					# <b>sha512sum factory*.rom</b><br/>
+					If the hashes match, then just copy one of them (the factory.rom) to a safe place (on a drive connected to another system, not
+					the BBB). This is useful for reverse engineering work, if there is a desirable behaviour in the original firmware
+					that could be replicated in coreboot and libreboot.
+				</p>
+				<p>
+					Follow the instructions at <a href="../hcl/gm45_remove_me.html#ich9gen">../hcl/gm45_remove_me.html#ich9gen</a>
+					to change the MAC address inside the libreboot ROM image, before flashing it.
+					Although there is a default MAC address inside the ROM image, this is not what you want. <b>Make sure
+					to always change the MAC address to one that is correct for your system.</b>
+				</p>
+				<p>
+					Now flash it:<br/>
+					# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V</b>
+				</p>
+				<p>
+					<img src="images/x200/disassembly/0015.jpg" alt="" />
+				</p>
+				<p>
+					You might see errors, but if it says <b>Verifying flash... VERIFIED</b> at the end, then it's flashed and should boot.
+					If you see errors, try again (and again, and again); the message <b>Chip content is identical to the requested image</b>
+					is also an indication of a successful installation.
+				</p>
+				<p>
+					Example output from running the command (see above):
+				</p>
+<pre>
+flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
+flashrom is free software, get the source code at http://www.flashrom.org
+Calibrating delay loop... OK.
+Found Macronix flash chip &quot;MX25L6405(D)&quot; (8192 kB, SPI) on linux_spi.
+Reading old flash chip contents... done.
+Erasing and writing flash chip... FAILED at 0x00001000! Expected=0xff, Found=0x00, failed byte count from 0x00000000-0x0000ffff: 0xd716
+ERASE FAILED!
+Reading current flash chip contents... done. Looking for another erase function.
+Erase/write done.
+Verifying flash... VERIFIED.
+</pre>
+
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+	
+	</div>
+	
+	<div class="section photos" id="paste">
+	
+		<h1>Thermal paste (IMPORTANT)</h1>
+	
+			<p>
+				Because part of this procedure involved removing the heatsink, you will need to apply new paste.
+				Arctic MX-4 is ok. You will also need isopropyl alcohol and an anti-static cloth to clean with.
+			</p>
+			
+			<p>
+				When re-installing the heatsink, you must first clean off all old paste with the alcohol/cloth.
+				Then apply new paste. Arctic MX-4 is also much better than the default paste used on these systems.
+			</p>
+			
+			<p>
+				<img src="images/t400/paste.jpg" alt="" />
+			</p>
+			
+			<p>
+				NOTE: the photo above is for illustration purposes only, and does not show how to properly apply the thermal paste.
+				Other guides online detail the proper application procedure.
+			</p>
+	
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="wifi">Wifi</h1>
+		
+			<p>
+				The T500 typically comes with an Intel wifi chipset, which does not
+				work without proprietary software. For a list of wifi chipsets that
+				work without proprietary software, see
+				<a href="../hcl/index.html#recommended_wifi">../hcl/index.html#recommended_wifi</a>.
+			</p>
+			
+			<p>
+				Some T500 laptops might come with an Atheros chipset, but this is 802.11g only.
+			</p>
+			
+			<p>
+				It is recommended that you install a new wifi chipset. This can only
+				be done after installing libreboot, because the original firmware has
+				a whitelist of approved chips, and it will refuse to boot if you
+				use an 'unauthorized' wifi card.
+			</p>
+			
+			<p>
+				The following photos show an Atheros AR5B95 being installed, to
+				replace the Intel chip that this T500 came with:<br/>
+				<img src="images/t400/0012.jpg" alt="" />
+				<img src="images/t400/ar5b95.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="wwan">WWAN</h1>
+			<p>
+				If you have a WWAN/3G card and/or sim card reader, remove them permanently. 
+				The WWAN-3G card has DMA, and proprietary firmware inside; the technology is
+				identical to what is used in mobile phones, so it can also track your movements.
+			</p>
+			<p>
+				Not to be confused with wifi (wifi is fine).
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+		<h1 id="memory">Memory</h1>
+		
+			<p>
+				You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
+				(speed/size). Non-matching pairs won't work. You can also install a
+				single module (meaning, one of the slots will be empty) in slot 0.
+			</p>
+			
+			<p>
+				Make sure that the RAM you buy is the 2Rx8 density.
+			</p>
+
+			<p>
+				<a href="http://www.forum.thinkpads.com/viewtopic.php?p=760721">This page</a> might be useful for RAM compatibility info
+				(note: coreboot raminit is different, so this page might be BS)
+			</p>
+			
+			<p>
+				The following photo shows 8GiB (2x4GiB) of RAM installed:<br/>
+				<img src="images/t400/memory.jpg" alt="" />
+			</p>
+	
+	</div>
+	
+	<div class="section photos">
+	
+			<h2>
+				Boot it!
+			</h2>
+			<p>
+				You should see something like this:
+			</p>
+			<p>
+				<img src="images/t500/0062.jpg" alt="" />
+			</p>
+			
+			<p>
+				Now <a href="../gnulinux/index.html">install GNU/Linux</a>.
+			</p>
+	
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

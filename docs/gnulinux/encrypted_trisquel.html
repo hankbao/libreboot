@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Installing Trisquel GNU/Linux with full disk encryption (including /boot)</title>
+</head>
+
+<body>
+	<div class="section">
+		<h1>Installing Trisquel GNU/Linux with full disk encryption (including /boot)</h1>
+			<p>
+				Libreboot on x86 uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
+				by default, which means that the GRUB configuration file 
+				(where your GRUB menu comes from) is stored directly alongside libreboot
+				and its GRUB payload executable, inside
+				the flash chip. In context, this means that installing distributions and managing them 
+				is handled slightly differently compared to traditional BIOS systems.
+			</p>
+
+			<p>
+				On most systems, the /boot partition has to be left unencrypted while the others are encrypted.
+				This is so that GRUB, and therefore the kernel, can be loaded and executed since the firmware
+				can't open a LUKS volume. Not so with libreboot! Since GRUB is already included directly as a 
+				payload, even /boot can be encrypted. This protects /boot from tampering by someone with physical
+				access to the system.
+			</p>
+			<p>
+				This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode). 
+				<a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
+			</p>
+			<p>
+				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
+			</p>
+
+
+            <p>
+            Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a step during boot to fail. If this happens to you, try removing the drive. 
+            </p>
+            <p><a href="index.html">Back to previous index</a></p>
+	</div>
+	
+	<div class="section">
+		
+		<p>
+			Set a strong user password (lots of lowercase/uppercase, numbers and symbols).
+		</p>
+
+		<p>
+			Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
+		</p>
+
+		<p>
+			when the installer asks you to set up
+			encryption (ecryptfs) for your home directory, select 'Yes' if you want to: <b>LUKS is already secure and performs well. Having ecryptfs on top of it
+			will add noticeable performance penalty, for little security gain in most use cases. This is therefore optional, and not recommended.
+			Choose 'no'.</b>
+		</p>
+
+		<p>
+			<b>
+				Your user password should be different from the LUKS password which you will set later on.
+				Your LUKS password should, like the user password, be secure.
+			</b>
+		</p>
+		
+	</div>
+	
+	<div class="section">
+
+		<h1>Partitioning</h1>
+
+			<p>Choose 'Manual' partitioning:</p>
+				<ul>
+					<li>Select drive and create new partition table</li>
+					<li>
+						Single large partition. The following are mostly defaults:
+						<ul>
+							<li>Use as: physical volume for encryption</li>
+							<li>Encryption: aes</li>
+							<li>key size: 256</li>
+							<li>IV algorithm: xts-plain64</li>
+							<li>Encryption key: passphrase</li> (<i>diceware method</i> recommended for choosing password)
+							<li>erase data: Yes (only choose 'No' if it's a new drive that doesn't contain your private data)</li>
+						</ul>
+					</li>
+					<li>
+						Select 'configure encrypted volumes'
+						<ul>
+							<li>Create encrypted volumes</li>
+							<li>Select your partition</li>
+							<li>Finish</li>
+							<li>Really erase: Yes</li>
+							<li>(erase will take a long time. be patient)</li>
+							<li>(if your old system was encrypted, just let this run for about a minute to
+							make sure that the LUKS header is wiped out)</li>
+						</ul>
+					</li>
+					<li>
+						Select encrypted space:
+						<ul>
+							<li>use as: physical volume for LVM</li>
+							<li>Choose 'done setting up the partition'</li>
+						</ul>
+					</li>
+					<li>
+						Configure the logical volume manager:
+						<ul>
+							<li>Keep settings: Yes</li>
+						</ul>
+					</li>
+					<li>
+						Create volume group:
+						<ul>
+							<li>Name: <b>matrix</b> (you can use whatever you want here, this is just an example)</li>
+							<li>Select crypto partition</li>
+						</ul>
+					</li>
+					<li>
+						Create logical volume
+						<ul>
+							<li>select <b>matrix</b> (or whatever you named it before)</li>
+							<li>name: <b>root</b> (you can use whatever you want here, this is just an example)</li>
+							<li>size: default, minus 2048 MB</li>
+						</ul>
+					</li>
+					<li>
+						Create logical volume
+						<ul>
+							<li>select <b>matrix</b> (or whatever you named it before)</li>
+							<li>name: <b>swap</b> (you can use whatever you want here, this is just an example)</li>
+							<li>size: press enter</li>
+						</ul>
+					</li>
+				</ul>
+	
+	</div>
+
+	<div class="section">
+		
+		<h1>Further partitioning</h1>
+
+			<p>
+				Now you are back at the main partitioning screen. You will simply set mountpoints and filesystems to use.
+			</p>
+				<ul>
+					<li>
+						LVM LV root
+						<ul>
+							<li>use as: ext4</li>
+							<li>mount point: /</li>
+							<li>done setting up partition</li>
+						</ul>
+					</li>
+					<li>
+						LVM LV swap
+						<ul>
+							<li>use as: swap area</li>
+							<li>done setting up partition</li>
+						</ul>
+					</li>
+					<li>Now you select 'Finished partitioning and write changes to disk'.</li>
+				</ul>
+	
+	</div>
+
+	<div class="section">
+		
+		<h1>Kernel</h1>
+
+			<p>
+				Installation will ask what kernel you want to use. linux-generic is fine.
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1>Tasksel</h1>
+
+			<p>
+				Choose <i>&quot;Trisquel Desktop Environment&quot;</i> if you want GNOME, 
+				<i>&quot;Trisquel-mini Desktop Environment&quot;</i> if you
+				want LXDE or <i>&quot;Triskel Desktop Environment&quot;</i> if you want KDE. 
+				If you want to have no desktop (just a basic shell)
+				when you boot or if you want to create your own custom setup, then choose nothing here (don't select anything). 
+				You might also want to choose some of the other package groups; it's up to you.
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1>Postfix configuration</h1>
+
+			<p>
+				If asked, choose <i>&quot;No Configuration&quot;</i> here (or maybe you want to select something else. It's up to you.)
+			</p>
+		
+	</div>
+
+	<div class="section">
+		
+		<h1>Install the GRUB boot loader to the master boot record</h1>
+
+			<p>
+				Choose 'Yes'. It will fail, but don't worry. Then at the main menu, choose 'Continue without a bootloader'.
+				You could also choose 'No'. Choice is irrelevant here.
+			</p>
+
+			<p>
+				<i>You do not need to install GRUB at all, since in libreboot you are using the GRUB payload (for libreboot) to boot your system directly.</i>
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>Clock UTC</h1>
+
+			<p>
+				Just say 'Yes'.
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>
+			Booting your system
+		</h1>
+
+			<p>
+				At this point, you will have finished the installation. At your GRUB payload, press C to get to the command line.
+			</p>
+
+			<p>
+				Do that:<br/>
+				grub&gt; <b>cryptomount -a</b><br/>
+				grub&gt; <b>set root='lvm/matrix-root'</b><br/>
+				grub&gt; <b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
+				grub&gt; <b>initrd /initrd.img</b><br/>
+				grub&gt; <b>boot</b>
+			</p>
+			
+	</div>
+	
+	<div class="section">
+
+		<h1>
+			ecryptfs
+		</h1>
+
+			<p>
+				If you didn't encrypt your home directory, then you can safely ignore this section.
+			</p>
+
+			<p>
+				Immediately after logging in, do that:<br/>
+				$ <b>sudo ecryptfs-unwrap-passphrase</b>
+			</p>
+
+			<p>
+				This will be needed in the future if you ever need to recover your home directory from another system, so write it down and keep the note
+				somewhere secret. Ideally, you should memorize it and then burn the note (or not even write it down, and memorize it still)>
+			</p>
+			
+	</div>
+
+	<div class="section">
+		
+		<h1>
+			Modify grub.cfg (CBFS)
+		</h1>
+
+			<p>
+				Now you need to set it up so that the system will automatically boot, without having to type a bunch of commands.
+			</p>
+
+			<p>
+				Modify your grub.cfg (in the firmware) <a href="grub_cbfs.html">using this tutorial</a>; 
+				just change the default menu entry 'Load Operating System' to say this inside:
+			</p>
+
+			<p>
+				<b>cryptomount -a</b><br/>
+				<b>set root='lvm/matrix-root'</b><br/>
+				<b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
+				<b>initrd /initrd.img</b>
+			</p>
+
+			<p>
+				Without specifying a device, the <i>-a</i> parameter tries to unlock all detected LUKS volumes. 
+				You can also specify -u UUID or -a (device).
+			</p>
+
+			<p>
+				Additionally, you should set a GRUB password. This is not your LUKS password, but it's a password that you have to enter to see
+				GRUB. This protects your system from an attacker simply booting a live USB and re-flashing your firmware. <b>This should be different than your LUKS passphrase and user password.</b>
+			</p>
+			<p>
+				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
+			</p>
+
+			<p>
+				The GRUB utility can be used like so:<br/>
+				$ <b>grub-mkpasswd-pbkdf2</b>
+			</p>
+
+			<p>
+				Give it a password (remember, it has to be secure) and it'll output something like:<br/>
+				<b>grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
+			</p>
+			<p>
+				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
+			</p>
+
+			<p>
+				Put that in the grub.cfg (the one for CBFS inside the ROM) before the 'Load Operating System' menu entry like so (example):<br/>
+			</p>
+			<pre>
+<b>set superusers=&quot;root&quot;</b>
+<b>password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
+			</pre>
+			<p style="font-size:2em;">
+				MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
+				Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
+				Then copy that to grub.cfg once you're satisfied.
+				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+			</p>
+			<p>
+				(emphasis added, because it's needed. This is a common roadblock for users)
+			</p>
+
+			<p>
+				Obviously, replace it with the correct hash that you actually got for the password that you entered. Meaning, not the hash that you see above!
+			</p>
+
+			<p>
+				After this, you will have a modified ROM with the menu entry for cryptomount, and the entry before that for the GRUB password. Flash the modified ROM 
+				using <a href="../install/index.html#flashrom">this tutorial</a>.
+			</p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="troubleshooting">Troubleshooting</h1>
+
+			<p>
+				A user reported issues when booting with a docking station attached
+				on an X200, when decrypting the disk in GRUB. The error
+				<i>AHCI transfer timed out</i> was observed. The workaround
+				was to remove the docking station.
+			</p>
+
+			<p>
+				Further investigation revealed that it was the DVD drive causing problems.
+				Removing that worked around the issue.
+			</p>
+
+<pre>
+
+&quot;sudo wodim -prcap&quot; shows information about the drive:
+Device was not specified. Trying to find an appropriate drive...
+Detected CD-R drive: /dev/sr0
+Using /dev/cdrom of unknown capabilities
+Device type    : Removable CD-ROM
+Version        : 5
+Response Format: 2
+Capabilities   : 
+Vendor_info    : 'HL-DT-ST'
+Identification : 'DVDRAM GU10N    '
+Revision       : 'MX05'
+Device seems to be: Generic mmc2 DVD-R/DVD-RW.
+
+Drive capabilities, per MMC-3 page 2A:
+
+  Does read CD-R media
+  Does write CD-R media
+  Does read CD-RW media
+  Does write CD-RW media
+  Does read DVD-ROM media
+  Does read DVD-R media
+  Does write DVD-R media
+  Does read DVD-RAM media
+  Does write DVD-RAM media
+  Does support test writing
+
+  Does read Mode 2 Form 1 blocks
+  Does read Mode 2 Form 2 blocks
+  Does read digital audio blocks
+  Does restart non-streamed digital audio reads accurately
+  Does support Buffer-Underrun-Free recording
+  Does read multi-session CDs
+  Does read fixed-packet CD media using Method 2
+  Does not read CD bar code
+  Does not read R-W subcode information
+  Does read raw P-W subcode data from lead in
+  Does return CD media catalog number
+  Does return CD ISRC information
+  Does support C2 error pointers
+  Does not deliver composite A/V data
+
+  Does play audio CDs
+  Number of volume control levels: 256
+  Does support individual volume control setting for each channel
+  Does support independent mute setting for each channel
+  Does not support digital output on port 1
+  Does not support digital output on port 2
+
+  Loading mechanism type: tray
+  Does support ejection of CD via START/STOP command
+  Does not lock media on power up via prevent jumper
+  Does allow media to be locked in the drive via PREVENT/ALLOW command
+  Is not currently in a media-locked state
+  Does not support changing side of disk
+  Does not have load-empty-slot-in-changer feature
+  Does not support Individual Disk Present feature
+
+  Maximum read  speed:  4234 kB/s (CD  24x, DVD  3x)
+  Current read  speed:  4234 kB/s (CD  24x, DVD  3x)
+  Maximum write speed:  4234 kB/s (CD  24x, DVD  3x)
+  Current write speed:  4234 kB/s (CD  24x, DVD  3x)
+  Rotational control selected: CLV/PCAV
+  Buffer size in KB: 1024
+  Copy management revision supported: 1
+  Number of supported write speeds: 4
+  Write speed # 0:  4234 kB/s CLV/PCAV (CD  24x, DVD  3x)
+  Write speed # 1:  2822 kB/s CLV/PCAV (CD  16x, DVD  2x)
+  Write speed # 2:  1764 kB/s CLV/PCAV (CD  10x, DVD  1x)
+  Write speed # 3:   706 kB/s CLV/PCAV (CD   4x, DVD  0x)
+
+Supported CD-RW media types according to MMC-4 feature 0x37:
+  Does write multi speed       CD-RW media
+  Does write high  speed       CD-RW media
+  Does write ultra high speed  CD-RW media
+  Does not write ultra high speed+ CD-RW media
+
+</pre>
+
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

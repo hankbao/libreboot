@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ASUS KGPE-D16 server/workstation board</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">ASUS KGPE-D16 server/workstation board</h1>
+
+			<p>
+				This is a server board using AMD hardware (Fam10h <b>and Fam15h</b> CPUs available). It can also be used
+				for building a high-powered workstation. Powered by libreboot. The coreboot port was done by
+				Timothy Pearson of <a href="https://raptorengineeringinc.com/">Raptor Engineering Inc.</a> and,
+				working with Timothy (and sponsoring the work) merged into libreboot.
+			</p>
+
+
+            <p>
+                <b>Memory initialization is still problematic, for some modules. We recommend avoiding Kingston modules.</b>
+            </p>
+
+			<p>
+				Flashing instructions can be found at <a href="../install/index.html#flashrom">../install/index.html#flashrom</a>
+				- note that external flashing is required (e.g. BBB), if the proprietary (ASUS) firmware is currently installed.
+				If you already have libreboot, by default it is possible to re-flash using software running in GNU/Linux
+				on the KGPE-D16, without using external hardware.
+			</p>
+			
+			<p>
+				<a href="index.html">Back to previous index</a>.
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="cpu-compatibility">CPU compatibility</h1>
+			<p>
+				<strong>Use Opteron 6200 series (works without microcode updates, including hw virt).</strong>
+				6300 series needs microcode updates, so avoid those CPUs. 6100 series is too old, and mostly untested.
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="boardstatus">Board status (compatibility)</h1>
+			<p>
+				See <a href="https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php">https://raptorengineeringinc.com/coreboot/kgpe-d16-status.php</a>.
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="formfactor">Form factor</h1>
+			<p>
+				These boards use the SSI EEB 3.61 form factor; make sure
+				that your case supports this. This form factor is similar
+				to E-ATX in that the size is identical, but the position of
+				the screws are different.
+			</p>
+	</div>
+	
+	<div class="section">
+		<h1 id="ipmi">IPMI iKVM module add-on</h1>
+			<p>
+				Don't use it. It uses proprietary firmware and adds a backdoor (remote out-of-band management chip,
+				similar to the <a href="http://libreboot.org/faq/#intelme">Intel Management Engine</a>. Fortunately,
+				the firmware is unsigned (possibly to replace) and physically separate from the mainboard since it's
+				on the add-on module, which you don't have to install.
+			</p>
+	</div>
+	
+	<div class="section">
+		<h1 id="flashchips">Flash chips</h1>
+			<p>
+				2MiB flash chips are included by default, on these boards. It's on a P-DIP 8 slot (SPI chip).
+				The flash chip can be upgraded to higher sizes: 4MiB, 8MiB or 16MiB. With at least 8MiB,
+				you could feasibly fit a compressed linux+initramfs image (BusyBox+Linux system) into CBFS
+				and boot that, loading it into memory.
+			</p>
+			<p>
+				Libreboot has configs for 2, 4, 8 and 16 MiB flash chip sizes (default flash chip is 2MiB).
+			</p>
+			<p>
+				<b>
+					DO NOT hot-swap the chip with your bare hands. Use a P-DIP 8
+					chip extractor. These can be found online.
+					See <a href="http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools">http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools</a>
+				</b>
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="graphics">Native graphics initialization</h1>
+			<p>
+				Only text-mode is known to work, but linux(kernel) can initialize
+				the framebuffer display (if it has KMS - kernel mode setting).
+			</p>
+	</div>
+
+	<div class="section">
+		<h1 id="issues">Current issues</h1>
+			<ul>
+				<li>LRDIMM memory modules are currently incompatible</li>
+				<li>
+					SAS (via PIKE 2008 module) requires non-free option ROM (and SeaBIOS) to boot from it
+					(theoretically possible to replace, but you can put a kernel in CBFS or on SATA
+					and use that to boot GNU, which can be on a SAS drive. The linux kernel can use
+					those SAS drives (via PIKE module) without an option ROM).
+				</li>
+				<li>
+					IPMI iKVM module (optional add-on card) uses proprietary firmware. Since it's for
+					remote out-of-band management, it's theoretically a backdoor similar to the Intel
+					Management Engine. Fortunately, unlike the ME, this firmware is unsigned which
+					means that a free replacement is theoretically possible. For now, the libreboot project
+					recommends not installing the module. <a href="https://github.com/facebook/openbmc">This project</a>
+					might be interesting to derive from, for those who want to work on a free replacement.
+					In practise, out-of-band management isn't very useful anyway (or at the very least,
+					it's not a major inconvenience to not have it).
+				</li>
+				<li>Graphics: only text-mode works. See <a href="#graphics">#graphics</a></li>
+			</ul>
+	</div>
+
+	<div class="section">
+		<h2 id="specifications">Hardware specifications</h2>
+			<p>
+				The information here is adapted, from the ASUS website.
+			</p>
+			<h3>Processor / system bus</h3>
+				<ul>
+					<li>2 CPU sockets (G34 compatible)</li>
+					<li>HyperTransport™ Technology 3.0</li>
+					<li>
+						CPUs supported:
+						<ul>
+							<li>AMD Opteron 6100 series (Fam10h. No IOMMU support. <b>Not</b> recommended - old. View errata datasheet here: <a href="http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf">http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf</a>)</li>
+							<li>AMD Opteron 6200 series (Fam15h, with full IOMMU support in libreboot - <strong>highly recommended - fast, and works well without microcode updates, including virtualization</strong>)</li>
+							<li>AMD Opteron 6300 series (Fam15h, with full IOMMU support in libreboot. <b>AVOID LIKE THE PLAGUE - virtualization is broken without microcode updates.</b></li>
+							<li>
+								NOTE: 6300 series CPUs have buggy microcode built-in, and libreboot recommends avoiding the updates. The 6200 series CPUs have more reliable microcode.
+								Look at this errata datasheet: <a href="http://support.amd.com/TechDocs/48063_15h_Mod_00h-0Fh_Rev_Guide.pdf">http://support.amd.com/TechDocs/48063_15h_Mod_00h-0Fh_Rev_Guide.pdf</a>
+								(see Errata 734 - this is what kills the 6300 series)
+							</li>
+						</ul>
+					</li>
+					<li>6.4 GT/s per link (triple link)</li>
+				</ul>
+			<h3>Core logic</h3>
+				<ul>
+					<li>AMD SR5690</li>
+					<li>AMD SP5100</li>
+				</ul>
+			<h3>Memory compatibility (with libreboot)</h3>
+				<ul>
+					<li><b>Total Slots:</b> 16 (4-channel per CPU, 8 DIMM per CPU), ECC</li>
+					<li><b>Capacity:</b> Maximum up to 256GB RDIMM</li>
+					<li>
+						<b>Memory Type that is compatible:</b>
+						<ul>
+							<li>DDR3 1600/1333/1066/800 UDIMM*</li>
+							<li>DDR3 1600/1333/1066/800 RDIMM*</li>
+						</ul>
+					</li>
+					<li>
+						<b>Compatible sizes per memory module:</b>
+						<ul>
+							<li>16GB, 8GB, 4GB, 3GB, 2GB, 1GB RDIMM</li>
+							<li>8GB, 4GB, 2GB, 1GB UDIMM</li>
+						</ul>
+					</li>
+				</ul>
+			<h3>Expansion slots</h3>
+				<ul>
+					<li><b>Total slot:</b> 6</li>
+					<li><b>Slot Location 1:</b> PCI 32bit/33MHz</li>
+					<li><b>Slot Location 2:</b> PCI-E x16 (Gen2 X8 Link)</li>
+					<li><b>Slot Location 3:</b> PCI-E x16 (Gen2 X16 Link), Auto switch to x8 link if slot 2 is occupied</li>
+					<li><b>Slot Location 4:</b> PCI-E x8 (Gen2 X4 Link)</li>
+					<li><b>Slot Location 5:</b> PCI-E x16 (Gen2 X16 Link)</li>
+					<li><b>Slot Location 6:</b> PCI-E x16 (Gen2 X16 Link), Auto turn off if slot 5 is occupied, For 1U FH/FL Card, MIO supported</li>
+					<li><b>Additional Slot 1:</b> PIKE slot (for SAS drives. See notes above)</li>
+					<li>Follow SSI Location#</li>
+				</ul>
+			<h3>Form factor</h3>
+				<ul>
+					<li>SSI EEB 3.61 (12"x13")</li>
+				</ul>
+			<h3>ASUS features</h3>
+				<ul>
+					<li>Fan Speed Control</li>
+					<li>Rack Ready (Rack and Pedestal dual use)</li>
+				</ul>
+			<h3>Storage</h3>
+				<ul>
+					<li>
+						<b>SATA controller:</b>
+						<ul>
+							<li>AMD SP5100</li>
+							<li>6 x SATA2 300MB/s</li>
+						</ul>
+					</li>
+					<li>
+						<b>SAS/SATA Controller:</b>
+						<ul>
+							<li>ASUS PIKE2008 3Gbps 8-port SAS card included</li>
+						</ul>
+					</li>
+				</ul>
+			<h3>Networking</h3>
+				<ul>
+					<li>2 x Intel® 82574L + 1 x Mgmt LAN</li>
+				</ul>
+			<h3>Graphics</h3>
+				<ul>
+					<li>Aspeed AST2050 with 8MB VRAM</li>
+				</ul>
+			<h3>On board I/O</h3>
+				<ul>
+					<li>1 x PSU Power Connector (24-pin SSI power connector + 8-pin SSI 12V + 8-pin SSI 12V power connector)</li>
+					<li>1 x Management Connector , Onboard socket for management card</li>
+					<li>3 x USB pin header , Up to 6 Devices</li>
+					<li>1 x Internal A Type USB Port</li>
+					<li>8 x Fan Header , 4pin (3pin/4pin fan dual support)</li>
+					<li>2 x SMBus</li>
+					<li>1 x Serial Port Header</li>
+					<li>1 x TPM header</li>
+					<li>1 x PS/2 KB/MS port</li>
+				</ul>
+			<h3>Back I/O ports</h3>
+				<ul>
+					<li>1 x External Serial Port</li>
+					<li>2 x External USB Port</li>
+					<li>1 x VGA Port</li>
+					<li>2 x RJ-45</li>
+					<li>1 x PS/2 KB/Mouse</li>
+				</ul>
+			<h3>Environment</h3>
+				<ul>
+					<li><b>Operation temperature:</b> 10C ~ 35C</li>
+					<li><b>Non operation temperature:</b> -40C ~ 70C</li>
+					<li><b>Non operation humidity:</b> 20% ~ 90% ( Non condensing)</li>
+				</ul>
+			<h3>Monitoring</h3>
+				<ul>
+					<li>CPU temperatures</li>
+					<li>Fan speed (RPM)</li>
+				</ul>
+			<h3>Note:</h3>
+				<ul>
+					<li>* DDR3 1600 can only be supported with AMD Opteron 6300/6200 series processor</li>
+				</ul>
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>
+

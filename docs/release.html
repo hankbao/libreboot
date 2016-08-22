@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('css/main.css');
+	</style>
+
+	<title>Libreboot release information</title>
+</head>
+<body>
+	<div class="section">
+		<h1 id="pagetop">Libreboot release information</h1>
+			<p>
+				Updated versions of libreboot can be found at <a href="http://libreboot.org/">libreboot.org</a>.
+			</p>
+	</div>
+
+	<div class="section">
+		
+		<h2>Old releases</h2>
+			<p>
+				See <a href="archive_old.html">archive_old.html</a> for information about older libreboot releases.
+			</p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="release20160818">GNU Libreboot 20160818</h1>
+		
+			<p>
+				Release date: 18th August 2016.
+			</p>
+
+				<p>
+					Installation instructions can be found at <b><i>docs/install/index.html</i></b>. 
+					Building instructions (for source code) can be found at <b><i>docs/git/index.html#build</i></b>.
+				</p>
+
+			<h2>Machines supported in this release:</h2>
+				<ul>
+					<li>
+						<b>ASUS Chromebook C201</b>
+						<ul>
+							<li>Check notes in <b><i>docs/hcl/c201.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>Gigabyte GA-G41M-ES2L desktop motherboard</b>
+						<ul>
+							<li>Check notes in <b><i>docs/hcl/ga-g41m-es2l.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>Intel D510MO desktop motherboard</b>
+						<ul>
+							<li>Check notes in <b><i>docs/hcl/d510mo.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ASUS KFSN4-DRE server board</b>
+						<ul>
+							<li>PCB revision 1.05G is the best version (can use 6-core CPUs)</li>
+							<li>Check notes in <b><i>docs/hcl/kfsn4-dre.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ASUS KGPE-D16 server board</b>
+						<ul>
+							<li>Check notes in <b><i>docs/hcl/kgpe-d16.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ASUS KCMA-D8 desktop/workstation board</b>
+						<ul>
+							<li>Check notes in <b><i>docs/hcl/kcma-d8.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad X60/X60s</b>
+						<ul>
+							<li>
+								You can also remove the motherboard from an X61/X61s and replace it with an X60/X60s motherboard.
+								An X60 Tablet motherboard will also fit inside an X60/X60s. 
+							</li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
+						<ul>
+							<li>See <b><i>docs/hcl/index.html#supported_x60t_list</i></b> for list of supported LCD panels</li>
+							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T60</b> (Intel GPU) (there are issues; see below):
+						<ul>
+							<li>See notes below for exceptions, and <b><i>docs/hcl/index.html#supported_t60_list</i></b> for known working LCD panels.</li>
+							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
+							<li>See <b><i>docs/future/index.html#t60_cpu_microcode</i></b>.</li>
+							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b><i>docs/hcl/index.html#t60_ati_intel</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad X200</b>
+						<ul>
+							<li>X200S and X200 Tablet are also supported, conditionally; see <b><i>docs/hcl/x200.html#x200s</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad R400</b>
+						<ul>
+							<li>See <b><i>docs/hcl/r400.html</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+						<b>ThinkPad T400</b>
+						<ul>
+							<li>See <b><i>docs/hcl/t400.html</i></b></li>
+							<li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+						</ul>
+					</li>
+					<li>
+                    <b>ThinkPad T500</b>
+                    <ul>
+                    <li>See <b><i>docs/hcl/t500.html</i></b></li>
+                    <li><b>ME/AMT</b>: libreboot removes this, permanently. <b><i>docs/hcl/gm45_remove_me.html</i></b></li>
+                    </ul>
+                    </li>
+        <li>
+<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
+        <ul>
+        <li>See <b><i>docs/hcl/index.html#macbook11</i></b>.</li>
+        </ul>
+        </li>
+        <li>
+<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
+        <ul>
+        <li>See <b><i>docs/hcl/index.html#macbook21</i></b>.</li>
+        </ul>
+        </li>
+        </ul>
+
+        <h2>
+Changes for this release, relative to r20150518 (earliest changes last, recent changes first)
+			</h2>
+<p>
+This is a brand GNU release. Libreboot joined the GNU project on 14 May 2016. This 18 August 2016 release is the first GNU release of libreboot.
+</p>
+
+<ul>
+<li>NEW BOARDS ADDED:
+<ul>
+<li>ASUS Chromebook C201 (ARM laptop) (thanks to Paul Kocialkowski)</li>
+<li>Gigabyte GA-G41M-ES2L motherboard (desktop) (thanks to Damien Zammit)</li>
+<li>Intel D510MO motherboard (desktop) (thanks to Damien Zammit)</li>
+<li>ASUS KCMA-D8 motherboard (desktop) (thanks to Timothy Pearson)</li>
+<li>ASUS KFSN4-DRE motherboard (server) (thanks to Timothy Pearson)</li>
+<li>ASUS KGPE-D16 motherboard (server) (thanks to Timothy Pearson)</li>
+</ul>
+</li>
+</ul>
+<p>
+For details development history on these boards, refer to the git log and documentation.
+</p>
+<p>
+For boards previously supported, many fixes from upstream have been merged.
+</p>
+<p>
+Other changes (compared to libreboot 20150518), for libreboot in general or for previously supported systems:
+(this is a summary. For more detailed change list, refer to the git log)
+</p>
+<p>
+256MiB VRAM allocated on GM45 (X200, T400, T500, R400) instead of 32MiB. This is an improvement over both Lenovo BIOS and Libreboot 20150518, allowing video decoding at 1080p to be smoother. (thanks Arthur Heymans)
+To clarify, GM45 video performance in libreboot 20160818 is better than on the original BIOS and the previous libreboot release.
+</p>
+<p>
+64MiB VRAM on i945 (X60, T60, MacBook2,1) now supported in coreboot-libre, and used by default (in the previous release, it was 8MiB allocated). Thanks to Arthur Heymans.
+</p>
+<p>
+Higher battery life on GM45 (X200, T400, T500, R400) due to higher cstates now being supported (thanks Arthur Heymans). C4 power states also supported.
+</p>
+<p>
+Higher battery life on i945 (X60, T60, MacBook2,1) due to better CPU C-state settings. (Deep C4, Dynamicl L2 shrinking, C2E).
+</p>
+<p>
+Text mode on GM45 (X200, T400, T500, R400) now works, making it possible to use MemTest86+ comfortably. (thanks to Nick High from coreboot)
+</p>
+<p>
+Dual channel LVDS displays on GM45 (T400, T500) are now automatically detected in coreboot-libre. (thanks Vladimir Serbinenko from coreboot)
+</p>
+<p>
+Partial fix in coreboot-libre for GRUB display on GM45, for dual channel LVDS higher resolution LCD panels (T400, T500). (thanks Arthur Heymans)
+</p>
+<p>
+Massively improved GRUB configuration, making it easier to boot more encrypted systems automatically, and generally a more useful menu for booting the system (thanks go to Klemens Nanni of the autoboot project).
+Libreboot now uses the grub.cfg provided by the installed GNU/Linux distribution automatically, if present, switching to that configuration. This is done across many partitions, where libreboot actively searches for a configuration file
+(also on LVM volumes and encrypted volumes). This should make libreboot more easy to use for non-technical users, without having to modify the GRUB configuration used in libreboot.
+</p>
+<p>
+Utilities archives is now source only. You will need to compile the packages in there (build scripts included, and a script for installing build dependencies in Trisquel 7). (binary utility archives are planned again in the next release, when the new build system is merged)
+</p>
+<p>
+SeaGRUB is now the default payload on all x86 boards. (SeaBIOS configured to load a compressed GRUB payload from CBFS immediately, without providing an interface in SeaBIOS. This way, GRUB is still used but now BIOS services are available, so you get the best of both worlds). Thanks go to Timothy Pearson of coreboot for this idea.
+</p>
+<p>
+crossgcc is now downloaded and built as a separate module to coreboot-libre, with a universal revision used to build all boards.
+</p>
+<p>
+Individual boards now have their own coreboot revision and patches, independently of each other board. This makes maintenance easier.
+</p>
+<p>
+Updated all utilities, and modules (coreboot, GRUB, etc) to newer versions, with various bugfixes and improvements upstream.
+</p>
+<p>
+RTC century byte issue now fixed on GM45 in coreboot-libre, so the date should now be correctly displayed when running the latest linux kernel, instead of seeing 1970-01-01 when you boot (thanks to Alexander Couzens from coreboot)
+</p>
+<p>
+Build system now uses multiple CPU cores when building, speeding up building for some people. Manually specifying how many cores are needed is also possible, for those using the build system in a chroot environment. (thanks go to Timothy Pearson from coreboot)
+</p>
+<p>
+In the build system (git repository), https:// is now used when cloning coreboot. http:// is used as a fallback for GRUB, if git:// fails.
+</p>
+<p>
+New payload, the depthcharge bootloader (free bootloader maintained by Google) for use on the ASUS Chromebook C201. (thanks go to Paul Kocialkowski)
+</p>
+<p>
+Various fixes to the ich9gen utility (e.g. flash component density is now set correctly in the descriptor, gbe-less descriptors now supported)
+</p>
+<p>
+The official documentation included in the release in provided in texinfo format, instead of HTML; this was one of the requirements for joining GNU. (the other requirement is a new build system, to comply with GNU standards, e.g. Makefiles, and common Makefile entries present in all GNU software. As of Libreboot 20160818, this new build system is not yet merged, but will be in the release afterwards) ChangeLog and NEWS files are included in the release, to comply with GNU standards (they are dumps of the git-log output)
+</p>				
+				
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="gfdl-1.3.txt">gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

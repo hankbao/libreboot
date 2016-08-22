@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Miscellaneous</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">Miscellaneous</h1>
+			<p>
+				Or <a href="../index.html">Back to main index</a>.
+			</p>
+			<ul>
+				<li><a href="#trisquel7_powertop">High Pitched Whining Noise on Idle (how to remove in Trisquel 7)</a></li>
+				<li><a href="#high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</a></li>
+				<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
+				<li><a href="#powerbeeps">Power Management Beeps on Thinkpads</a></li>
+				<li><a href="patch.html">Using diff and patch</a></li>
+				<li><a href="#backlight control">Finetune backlight control on intel gpu’s</a></li>
+				<li><a href="#get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</a></li>
+			</ul>
+	</div>
+
+	<div class="section">
+
+		<h1 id="trisquel7_powertop">High Pitched Whining Noise on Idle (how to remove in Trisquel 7)</h1>
+
+			<div class="subsection">
+				<h2 id="trisquel7_powertop_autostart">Start powertop automatically at boot time</h2>
+
+					<p>Included with libreboot is a script called 'powertop.trisquel7'. Run this as root and it will setup powertop to run with --auto-tune 
+					at boot time. Load the file in your text editor to see how it does that.</p>
+
+					<p>$ <b>sudo ./resources/scripts/misc/powertop.trisquel7</b></p>
+					<p>
+						Might want to run with --calibrate first
+					</p>
+					<p>
+						If powertop doesn't work, another way (reduces battery life slightly) is
+						to add <i>processor.max_cstate=2</i> to the <i>linux</i> line in grub.cfg,
+						using <a href="../gnulinux/grub_cbfs.html">this guide</a>.
+					</p>
+			</div>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</h1>
+
+			<p>The following removes most of the noise. It reduces what is a high frequency whine
+			(that not everyone can hear) to a slight buzz (which most people can't hear or doesn't bother most people).</p>
+
+			<p>This is not perfect! The full solution is still not discovered but this is a step towards that.
+			Also, in some instances you will need to run 'sudo powertop --auto-tune' again.
+			This needs to be implemented properly in coreboot itself!</p>
+
+			<p>On the X60 with coreboot or libreboot, there is a high pitched sound when idle.
+			So far we have use processor.max_cstate=2 or idle=halt in GRUB.
+			These consume power. Stop using them! </p>
+
+			<p>Be root<br/>
+			<b>$ su -</b></p>
+
+			<p>Installed powertop:<br/>
+			<b># pacman -S powertop</b></p>
+
+			<p>and added the following to /etc/systemd/system/powertop.service :</p>
+
+<pre><i>
+[Unit]
+Description=Powertop tunings
+
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/powertop --auto-tune
+# "powertop --auto-tune" still needs a terminal for some reason. Possibly a bug?
+Environment="TERM=xterm"
+
+[Install]
+WantedBy=multi-user.target
+</i></pre>
+
+
+			<p>Finally, as root do that:<br/>
+			<b># systemctl enable powertop</b><br/>
+			<b># systemctl start powertop</b></p>
+
+			<p>The next time you boot the system, the buzz will be gone.</p>
+			
+					<p>
+						Might want to run with --calibrate first
+					</p>
+					<p>
+						If powertop doesn't work, another way (reduces battery life slightly) is
+						to add <i>processor.max_cstate=2</i> to the <i>linux</i> line in grub.cfg,
+						using <a href="../gnulinux/grub_cbfs.html">this guide</a>.
+					</p>
+
+			<p><a href="#pagetop">Back to top of page</a></p>
+			
+	</div>
+
+	<div class="section">
+
+		<h1 id="serial">X60/T60: Serial port - how to use (for dock owners)</h1>
+			<p>
+				For the Thinkpad X60 you can use the <b>&quot;UltraBase X6&quot;</b> dock (for the X60 Tablet it is called
+				X6 Tablet UltraBase). For the ThinkPad T60, 
+				you can use the <b>&quot;Advanced Mini Dock&quot;</b>.
+			</p>
+			<p>
+				If you are using one of the ROM images with 'serial' in the name, then you have serial port enabled in libreboot
+				and you have memtest86+ included inside the ROM. Connect your null modem cable to the serial port on the dock
+				and connect the other end to a 2nd system using your USB Serial adapter.
+			</p>
+			<p>
+				On the 2nd system, you can try this (using GNU Screen):<br/>
+				<b>$ sudo screen /dev/ttyUSB0 115200</b>
+			</p>
+			<p>
+				How to quit GNU Screen: Ctrl+A then release and press K, and then press Y.
+			</p>
+			<p>There are also others like Minicom but I like GNU Screen</p>
+			<p>
+				By doing this before booting the X60/T60, you will see console output from libreboot. You will also see
+				GRUB displaying on the serial output, and you will be able to see MemTest86+ on the serial output aswell.
+				You can also configure your distro so that a terminal (TTY) is accessible from the serial console.
+			</p>
+			<p>
+				The following guide is for Ubuntu, and can be followed for Trisquel 6.0 which is based on Ubuntu 12.04
+				(should also work in Trisquel 7, based on Ubuntu 14.04) to enable a serial console using GeTTY:<br/>
+				<a href="https://help.ubuntu.com/community/SerialConsoleHowto">https://help.ubuntu.com/community/SerialConsoleHowto</a>
+			</p>
+			<p>
+				Note: part of the tutorial above requires changing your grub.cfg. Just change the <b>linux</b> line to add instructions for enabling getty.
+				See <a href="../gnulinux/grub_cbfs.html">../gnulinux/grub_cbfs.html</a>.
+			</p>
+			<p><a href="#pagetop">Back to top of page</a>
+			
+	</div>
+	<div class="section" id="backlight control">
+	  <h1>Finetune backlight control on intel gpu’s </h1>
+	  <p>
+	    Sometimes the backlight control value (BLC_PWM_CTL) set by libreboot is not ideal. The result is either flicker, which could cause nausea or epilepsy or an uneven backlight and/or coil whine coming from the display. To fix this a different value for the gpu reg BLC_PWM_CTL needs to be set. See p94 of <a href="https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf">https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf</a> for more information on this reg. The tool for setting registry values on intel gpu’s is included in intel-gpu-tools. Install intel-gpu-tools: <b>sudo apt-get install intel-gpu-tools</b>
+	  </p>
+	  <p>
+	    You can set values:</br>
+	    <b>sudo intel_reg write 0x00061254 &ltyour_value&gt</b>
+	  </p>
+	  <p>
+	    The value set has the following structure: bits [31:16] is PWM divider. PWM / PWM_divider = frequency bits [15:0] is the duty cycle and determines the portion of the backlight modulation frequency. A value of 0 will mean that the display is off. A value equal to the backlight modulation frequency means full on. The value should not be larger than the backlight modulation frequency.
+	  </p>
+	  <p>
+	    On displays with a CCFL backlight start from: 0x60016001 To verify if all modes work as desired use:</br>
+	    <b>xbacklight -set 10</b>
+	    and gradually increase until 100. Displays with an LED backlight need a lower backlight modulation. Do the same thing but start from 0x01290129 . Try setting different values until you have found a value which presents no issue.
+	  </p>
+	  <p>
+	    It is important to know that there are four failure modes:
+	    <ol>
+	      <li>flickering very fast, which could cause epilepsy (frequency is too low. decrease divider)</li>
+	      <li>randomly flickering in random intervals - driver IC cannot keep up with toggling the mosfet (frequency too fast, increase divider)</li>
+	      <li>frequency is in audible range and causes coils to whine (frequency is too high. increase divider)</li>
+	      <li>backlight is uneven. (CCFL specific, frequency is too high. increase divider)</li>
+	    </ol>
+	  </p>
+	  <p>
+	    To check for flickering try moving your laptop while looking at it.
+	  </p>
+	  <p>
+	    A higher frequency equals higher power consumption. You want to find the highest good working value.
+	  </p>
+	  <p>
+	    Next this value should be set at boot: either add</br>
+	    <pre>intel_reg write 0x00061254 &ltyour_ideal_value&gt</pre>
+	    before exit 0 in /etc/rc.local or create a systemd service file /etc/systemd/system/backlight.service:
+	    <pre>
+[Unit]
+Description=Set BLC_PWM_CTL to a good value
+[Service]
+Type=oneshot
+RemainAfterExit=no
+ExecStart=/usr/bin/intel_reg write 0x00061254 &ltyour_value&gt
+[Install]
+WantedBy=multi-user.target
+	    </pre>
+	    Now start and enable it: <b>sudo systemctl start backlight && sudo systemctl enable backlight </b>
+	  </p>
+	  <p>
+	    Special note on i945:
+	  </p>
+	  <p>
+	    i945 behaves differently. Bit 16 needs to be 1 and the duty cycle is not updated when backlight is changed. There are no available datasheets on this target so why it behaves in such a way is not known. So to find a working value BLC_PWM_CTL set bit 16 to 1 and make sure PWM divider == duty cycle. see <a href="https://review.coreboot.org/#/c/10624/">https://review.coreboot.org/#/c/10624/</a> on bit 16. The cause of this issue is that i945, in contrast with to GM45, is set to work in BLM Legacy Mode. This makes backlight more complicated since the duty cycle is derived from 3 instead of 2 registers using the following formula:</br>
+	    <verbatim>
+	      if(BPC[7:0] <> xFF) then BPCR[15:0] * BPC[7:0] Else BPCR[15:0]
+	    </verbatim>
+	    </br>
+	      BPC is LBB - PCI Backlight Control Register, described on <a href="http://www.mouser.com/pdfdocs/945gmedatasheet.pdf">http://www.mouser.com/pdfdocs/945gmedatasheet.pdf</a> on page 315. BPCR is BLC_PWM_CTL described in <a href="https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf">https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf</a> on page 94. More research needs to be done on this target so proceed with care.
+	      </p>
+	</div>
+
+
+	<div class="section" id="powerbeeps">
+
+		<h1>Power Management Beeps on Thinkpads</h1>
+
+			<p>
+				When disconnecting or connecting the charger, a beep occurs.
+				When the battery goes to a critically low charge level,
+				a beep occurs. Nvramtool is included in libreboot, and can
+				be used to enable or disable this behaviour.
+			</p>
+
+			<p>
+				Disable or enable beeps when removing/adding the charger:<br/>
+				$ <b>sudo ./nvramtool -w power_management_beeps=Enable</b><br/>
+				$ <b>sudo ./nvramtool -w power_management_beeps=Disable</b>
+			</p>
+
+			<p>
+				Disable or enable beeps when battery is low:<br/>
+				$ <b>sudo ./nvramtool -w low_battery_beep=Enable</b><br/>
+				$ <b>sudo ./nvramtool -w low_battery_beep=Disable</b>
+			</p>
+
+			<p>
+				A reboot is required, for these changes to take effect.
+			</p>
+
+	</div>
+
+	<div class="section">
+
+		<h1 id="get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</h1>
+			<p>
+				Get the panel name with <b>sudo get-edid | strings</b><br/>
+				Or look in <b>/sys/class/drm/card0-LVDS-1/edid</b>
+			</p>
+			<p>
+				Alternatively you can use i2cdump. In Trisquel, this is in the package i2c-tools.<br/>
+				$ <b>sudo modprobe i2c-dev</b><br/>
+				$ <b>sudo i2cdump -y 5 0x50</b> (you might have to change the value for -y)<br/>
+				$ <b>sudo rmmod i2c-dev</b><br/>
+				You'll see the panel name in the output (from the EDID dump). 
+			</p>
+			<p>
+				If neither of these options work (or they are unavailable), physically removing the LCD panel is an option. 
+				Usually, there will be information printed on the back.
+			</p>
+
+			<p><a href="#pagetop">Back to top of page.</a></p>
+
+	</div>
+
+    <div class="section">
+
+        <h1 id="usb_keyboard_gm45">USB keyboard wakeup on GM45 laptops</h1>
+            <p>
+                Look at resources/scripts/helpers/misc/libreboot_usb_bugfix
+            </p>
+            <p>
+                Put this script in /etc/init.d/ on debian-based systems.
+            </p>
+
+    </div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+
+	</div>
+
+</body>
+</html>

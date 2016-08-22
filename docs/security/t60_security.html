@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>Libreboot documentation: Security on the ThinkPad T60</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1>Security on the ThinkPad T60</h1>
+			<p>Hardware modifications to enhance security on the ThinkPad T60. This tutorial is <b>incomplete</b> at the time of writing.</p>
+			<p><a href="index.html">Back to previous index</a></p>
+	</div>
+
+	<div class="section">
+		<h1>Table of Contents</h1>
+			<ul>
+				<li><a href="#hardware_requirements">Hardware Requirements</a></li>
+				<li><a href="#software_requirements">Software Requirements</a></li>
+				<li><a href="#procedure">The procedure</a></li>
+			</ul>
+		<h1 id="hardware_requirements">Hardware requirements</h1>
+			<ul>
+				<li>A T60</li>
+				<li>screwdriver</li>
+				<li>Rubbing or isopropyl alcohol, and thermal compound.</li>
+				<li>(in a later version of this tutorial: soldering iron and scalpel)</li>
+			</ul>
+		<h1 id="software_requirements">Software requirements</h1>
+			<ul>
+				<li>none (at least in the scope of the article as-is)</li>
+				<li>You probably want to encrypt your GNU/Linux install using LUKS</li>
+			</ul>
+	</div>
+
+	<div class="section">
+		<h1>
+			Rationale
+		</h1>
+			<p>
+				Most people think of security on the software side: the hardware is important aswell.
+			</p>
+			<p>
+				This tutorial deals with reducing the number of devices that have direct memory access that
+				could communicate with inputs/outputs that could be used to remotely
+				command the system (or leak data). All of this is purely theoretical for the time being.
+			</p>
+	</div>
+
+	<div class="section">
+
+		<h1 id="procedure">Disassembly</h1>
+
+			<p>
+				Remove those screws and remove the HDD:<br/>
+				<img src="../images/t60_dev/0001.JPG" alt="" /> <img src="../images/t60_dev/0002.JPG" alt="" />
+			</p>
+
+			<p>
+				Lift off the palm rest:<br/>
+				<img src="../images/t60_dev/0003.JPG" alt="" />
+			</p>
+
+			<p>
+				Lift up the keyboard, pull it back a bit, flip it over like that and then disconnect it from the board:<br/>
+				<img src="../images/t60_dev/0004.JPG" alt="" /> <img src="../images/t60_dev/0005.JPG" alt="" /> <img src="../images/t60_dev/0006.JPG" alt="" />
+			</p>
+
+			<p>
+				Gently wedge both sides loose:<br/>
+				<img src="../images/t60_dev/0007.JPG" alt="" /> <img src="../images/t60_dev/0008.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove that cable from the position:<br/>
+				<img src="../images/t60_dev/0009.JPG" alt="" /> <img src="../images/t60_dev/0010.JPG" alt="" />
+			</p>
+
+			<p>
+				Now remove that bezel. Remove wifi, nvram battery and speaker connector (also remove 56k modem, on the left of wifi):<br/>
+				<img src="../images/t60_dev/0011.JPG" alt="" /><br/>
+				Reason: has direct (and very fast) memory access, and could (theoretically) leak data over a side-channel.<br/>
+				<b>Wifi:</b> The ath5k/ath9k cards might not have firmware at all. They might safe but could have
+				access to the computer's RAM trough DMA. If people have an intel
+				card(most T60 laptops come with Intel wifi by default, until you change it),then that card runs
+				a non-free firwamre and has access to the computer's RAM trough DMA! So
+				the risk-level is very high.
+			</p>
+
+			<p>
+				Remove those screws:<br/>
+				<img src="../images/t60_dev/0012.JPG" alt="" />
+			</p>
+
+			<p>
+				Disconnect the power jack:<br/>
+				<img src="../images/t60_dev/0013.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove nvram battery (we will put it back later):<br/>
+				<img src="../images/t60_dev/0014.JPG" alt="" />
+			</p>
+
+			<p>
+				Disconnect cable (for 56k modem) and disconnect the other cable:<br/>
+				<img src="../images/t60_dev/0015.JPG" alt="" /> <img src="../images/t60_dev/0016.JPG" alt="" />
+			</p>
+
+			<p>
+				Disconnect speaker cable:<br/>
+				<img src="../images/t60_dev/0017.JPG" alt="" />
+			</p>
+
+			<p>
+				Disconnect the other end of the 56k modem cable:<br/>
+				<img src="../images/t60_dev/0018.JPG" alt="" />
+			</p>
+
+			<p>
+				Make sure you removed it:<br/>
+				<img src="../images/t60_dev/0019.JPG" alt="" />
+			</p>
+
+			<p>
+				Unscrew those:<br/>
+				<img src="../images/t60_dev/0020.JPG" alt="" />
+			</p>
+
+			<p>
+				Make sure you removed those:<br/>
+				<img src="../images/t60_dev/0021.JPG" alt="" />
+			</p>
+
+			<p>
+				Disconnect LCD cable from board:<br/>
+				<img src="../images/t60_dev/0022.JPG" alt="" />
+			</p>
+
+			<p> 
+				Remove those screws then remove the LCD assembly:<br/>
+				<img src="../images/t60_dev/0023.JPG" alt="" /> <img src="../images/t60_dev/0024.JPG" alt="" /> <img src="../images/t60_dev/0025.JPG" alt="" />
+			</p>
+
+			<p>
+				Once again, make sure you removed those:<br/>
+				<img src="../images/t60_dev/0026.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove the shielding containing the motherboard, then flip it over. Remove these screws, placing them on a steady
+				surface in the same layout as they were in before you removed them. Also, you should mark each screw hole after removing the
+				screw (a permanent marker pen will do), this is so that you have a point of reference when re-assembling the system:<br/>
+				<img src="../images/t60_dev/0027.JPG" alt="" /> <img src="../images/t60_dev/0028.JPG" alt="" /> <img src="../images/t60_dev/0029.JPG" alt="" />
+				<img src="../images/t60_dev/0031.JPG" alt="" /> <img src="../images/t60_dev/0032.JPG" alt="" /> <img src="../images/t60_dev/0033.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove microphone (soldering iron not needed. Just wedge it out gently):<br/>
+				<img src="../images/t60_dev/0039.JPG" alt="" /><br/>
+				<b>Rationale:</b><br/>
+				Another reason to remove the microphone: If your computer gets<a href="#ref1">[1]</a> compromised, it can
+				record what you say, and use it to receive data from nearby devices if
+				they're compromised too. Also, we do not know what the built-in microcode (in the CPU) is doing; it could theoretically
+				be programmed to accept remote commands from some speaker somewhere (remote security hole). <b>In other words,
+				the system could already be compromised from the factory.</b>
+			</p>
+
+			<p>
+				Remove infrared:<br/>
+				<img src="../images/t60_dev/0040.JPG" alt="" /> <img src="../images/t60_dev/0042.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove cardbus (it's in a socket, no need to disable. Just remove the port itself):<br/>
+				<img src="../images/t60_dev/0041.JPG" alt="" /><br/>
+				<b>Rationale:</b><br/>
+				It has direct memory access and can be used to extract sensitive details (such as LUKS keys). See
+				'GoodBIOS' video linked at the end (speaker is Peter Stuge, a coreboot hacker). The video covers X60
+				but the same topics apply to T60.
+			</p>
+
+			<p>
+				Before re-installing the upper chassis, remove the speaker:<br/>
+				<img src="../images/t60_dev/0043.JPG" alt="" /> <img src="../images/t60_dev/0044.JPG" alt="" /><br/>
+				Reason: combined with the microphone issue, this could be used to leak data.<br/>
+				If your computer gets<a href="#ref1">[1]</a> compromised, it can be used to
+				transmit data to nearby compromised devices. It's unknown if it can be
+				turned into a microphone<a href="#ref2">[2]</a>.<br/>
+				Replacement: headphones/speakers (line-out) or external DAC (USB).
+			</p>
+
+			<p>
+				Remove the wwan:<br/>
+				<img src="../images/t60_dev/0045.JPG" alt="" /><br/>
+				<b>Wwan (3g modem):</b> They run proprietary software! It's like AMT but over the GSM network which is
+				probably even worse.<br/>
+				Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note, this has all the same privacy issues as mobile phones. wwan not recommended).
+			</p>
+
+			<p>
+				This is where the simcard connector is soldered. See notes above about wwan. Remove simcard by removing battery
+				and then it's accessible (so, remember to do this when you re-assemble. or you could do it now?)<br/>
+				<img src="../images/t60_dev/0046.JPG" alt="" />
+			</p>
+
+			<p>
+				Put those screws back:<br/>
+				<img src="../images/t60_dev/0047.JPG" alt="" />
+			</p>
+
+			<p>
+				Put it back into lower chassis:<br/>
+				<img src="../images/t60_dev/0048.JPG" alt="" />
+			</p>
+
+			<p>
+				Attach LCD and insert screws (also, attach the lcd cable to the board):<br/>
+				<img src="../images/t60_dev/0049.JPG" alt="" />
+			</p>
+
+			<p>
+				Insert those screws:<br/>
+				<img src="../images/t60_dev/0050.JPG" alt="" />
+			</p>
+
+			<p>
+				On the CPU (and there is another chip south-east to it, sorry forgot to take pic)
+				clean off the old thermal paste (with the alcohol) and apply new (Artic Silver 5 is good, others are good too)
+				you should also clean the heatsink the same way<br/>
+				<img src="../images/t60_dev/0051.JPG" alt="" />
+			</p>
+
+			<p>
+				Attach the heatsink and install the screws (also, make sure to install the AC jack as highlighted):<br/>
+				<img src="../images/t60_dev/0052.JPG" alt="" />
+			</p>
+
+			<p>
+				Reinstall that upper bezel:<br/>
+				<img src="../images/t60_dev/0053.JPG" alt="" />
+			</p>
+
+			<p>
+				Do that:<br/>
+				<img src="../images/t60_dev/0054.JPG" alt="" /> <img src="../images/t60_dev/0055.JPG" alt="" />
+			</p>
+
+			<p>
+				Attach keyboard and install nvram battery:<br/>
+				<img src="../images/t60_dev/0056.JPG" alt="" /> <img src="../images/t60_dev/0057.JPG" alt="" />
+			</p>
+
+			<p>
+				Place keyboard and (sorry, forgot to take pics) reinstall the palmrest and insert screws on the underside:<br/>
+				<img src="../images/t60_dev/0058.JPG" alt="" />
+			</p>
+
+			<p>
+				Remove those covers and unscrew:<br/>
+				<img src="../images/t60_dev/0059.JPG" alt="" /> <img src="../images/t60_dev/0060.JPG" alt="" /> <img src="../images/t60_dev/0061.JPG" alt="" />
+			</p>
+
+			<p>
+				Gently pry off the front bezel (sorry, forgot to take pics).
+			</p>
+
+			<p>
+				Remove bluetooth module:<br/>
+				<img src="../images/t60_dev/0062.JPG" alt="" /> <img src="../images/t60_dev/0063.JPG" alt="" />
+			</p>
+
+			<p>
+				Re-attach the front bezel and re-insert the screws (sorry, forgot to take pics).
+			</p>
+
+			<p>
+				It lives!<br/>
+				<img src="../images/t60_dev/0071.JPG" alt="" /> <img src="../images/t60_dev/0072.JPG" alt="" /> <img src="../images/t60_dev/0073.JPG" alt="" />
+			</p>
+
+			<p>
+				Always stress test ('stress -c 2' and xsensors. below 90C is ok) when replacing cpu paste/heatsink:<br/>
+				<img src="../images/t60_dev/0074.JPG" alt="" />
+			</p>
+			
+	</div>
+
+	<div class="section">
+		<h2>
+			Not covered yet:
+		</h2>	
+			<ul>
+				<li>Disable flashing the ethernet firmware</li>
+				<li>Disable SPI flash writes (can be re-enabled by unsoldering two parts)</li>
+				<li>Disable use of xrandr/edid on external monitor (cut 2 pins on VGA)</li>
+				<li>Disable docking station (might be possible to do it in software, in coreboot upstream as a Kconfig option)</li>
+			</ul>
+			<p>
+				Go to <a href="http://media.ccc.de/browse/congress/2013/30C3_-_5529_-_en_-_saal_2_-_201312271830_-_hardening_hardware_and_choosing_a_goodbios_-_peter_stuge.html">http://media.ccc.de/browse/congress/2013/30C3_-_5529_-_en_-_saal_2_-_201312271830_-_hardening_hardware_and_choosing_a_goodbios_-_peter_stuge.html</a>
+				or directly to the video: <a href="http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm">http://mirror.netcologne.de/CCC/congress/2013/webm/30c3-5529-en-Hardening_hardware_and_choosing_a_goodBIOS_webm.webm</a>.
+			</p>
+			<p>
+				A lot of this tutorial is based on that video. Look towards the second half of the video to see how to do the above.
+			</p>
+	</div>
+
+	<div class="section">
+		<h2>
+			Also not covered yet:
+		</h2>
+			<ul>
+				<li>
+					Intrusion detection: randomized seal on screws<br/>
+					Just put nail polish with lot of glider on the important screws, take
+					some good pictures. Keep the pictueres and make sure of their integrity.
+					Compare the nail polish with the pictures before powering on the laptop.
+				</li>
+				<li>
+					Tips about preventing/mitigating risk of cold boot attack.
+					<ul>
+						<li>soldered RAM?</li>
+						<li>wipe all RAM at boot/power-off/power-on? (patch in coreboot upstream?)</li>
+						<li>ask gnutoo about fallback patches (counts number of boots)</li>
+					</ul>
+				</li>
+				<li>
+					General tips/advice and web links showing how to detect physical intrusions.
+				</li>
+				<li>
+					For example: <a href="http://cs.tau.ac.il/~tromer/acoustic/">http://cs.tau.ac.il/~tromer/acoustic/</a>
+					or <a href="http://cyber.bgu.ac.il/content/how-leak-sensitive-data-isolated-computer-air-gap-near-mobile-phone-airhopper">http://cyber.bgu.ac.il/content/how-leak-sensitive-data-isolated-computer-air-gap-near-mobile-phone-airhopper</a>.
+				</li>
+				<li>
+					<a href="https://en.wikipedia.org/wiki/Tempest_%28codename%29">https://en.wikipedia.org/wiki/Tempest_%28codename%29</a>
+				</li>
+				<li>
+					https://gitorious.org/gnutoo-for-coreboot/grub-assemble/source/a61f636797777a742f65f4c9c58032aa6a9b23c3:
+				</li>
+			</ul>
+	</div>
+
+	<div class="section">
+		<h1>
+			Extra notes
+		</h1>
+			<p>
+				EC: Cannot be removed but can be mitigated: it contains non-free
+				non-loadable code, but it has no access to the computer's RAM.
+				It has access to the on-switch of the wifi, bluetooth, modem and some
+				other power management features. The issue is that it has access to the
+				keyboard, however if the software security howto <b>(not yet written)</b> is followed correctly,
+				it won't be able to leak data to a local attacker. It has no network
+				access but it may still be able to leak data remotely, but that
+				requires someone to be nearby to recover the data with the help of an
+				SDR and some directional antennas<a href="#ref3">[3]</a>.
+			</p>
+			<p>
+				<a href="http://www.coreboot.org/Intel_82573_Ethernet_controller">Intel 82573 Ethernet controller</a>
+				on the X60 seems safe, according to Denis. 
+			</p>
+
+			<div class="subsection">
+				<h2>
+					Risk level
+				</h2>
+					<ul>
+						<li>Modem (3g/wwan): highest</li>
+						<li>Intel wifi: Near highest</li>
+						<li>Atheros PCI wifi: unknown, but lower than intel wifi.</li>
+						<li>Microphone: only problematic if the computer gets compromised.</li>
+						<li>Speakers: only problematic if the computer gets compromised.</li>
+						<li>EC: can be mitigated if following the guide on software security.</li>
+					</ul>
+			</div>
+	</div>
+
+	<div class="section">
+		<h1>
+			Further reading material (software security)
+		</h1>
+			<ul>
+				<li><a href="../gnulinux/encrypted_trisquel.html">Installing Trisquel GNU/Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="../gnulinux/encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="dock.html">Notes about DMA access and the docking station</a></li>
+			</ul>
+	</div>
+
+	<div class="section">
+		<h1>
+			References
+		</h1>
+			<div class="subsection">
+				<h2 id="ref1">[1] physical access</h2>
+					<p>
+						Explain that black hats, TAO, and so on might use a 0day to get in,
+						and explain that in this case it mitigates what the attacker can do.
+						Also the TAO do some evaluation before launching an attack: they take
+						the probability of beeing caught into account, along with the kind of
+						target. A 0day costs a lot of money, I heard that it was from 100000$
+						to 400000$, some other websites had prices 10 times lower but that
+						but it was probably a typo. So if people increase their security it
+						makes it more risky and more costly to attack people.
+					</p>
+			</div>
+			<div class="subsection">
+				<h2 id="ref2">[2] microphone</h2>
+					<p>
+						It's possible to turn headphones into a microphone, you could try
+						yourself, however they don't record loud at all. Also intel cards have
+						the capability to change a connector's function, for instance the
+						microphone jack can now become a headphone plug, that's called
+						retasking. There is some support for it in GNU/Linux but it's not very
+						well known.
+					</p>
+			</div>
+			<div class="subsection">
+				<h2 id="ref3">[3] Video (CCC)</h2>
+					<p>
+						30c3-5356-en-Firmware_Fat_Camp_webm.webm from the 30th CCC. While
+						their demo is experimental(their hardware also got damaged during the
+						transport), the spies probably already have that since a long time.
+						<a href="http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm">http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm</a>
+					</p>
+			</div>
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

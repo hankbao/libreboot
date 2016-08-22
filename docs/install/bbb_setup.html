@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1</title>
+</head>
+
+<body>
+
+	<div class="section">
+		<h1 id="pagetop">How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1</h1>
+			<p>
+				This document exists as a guide for reading from or writing to an SPI flash chip with the BeagleBone Black,
+				using the <a href="http://flashrom.org/Flashrom">flashrom</a> software.  
+				A BeagleBone Black, rev. C was used when creating this guide, but earlier revisions
+				may also work.
+			</p>
+
+            <p>
+                There was no justification for a further section for the Teensy. Simply refer to <a href="https://www.flashrom.org/Teensy_3.1_SPI_%2B_LPC/FWH_Flasher#ISP_Usage">this page on flashrom.org</a> for information about how to set it up, and correlate that with the pins on the SPI flash chip as per other guides in the libreboot documentation for each board. At the time of writing, the teensy is tested for flashing on the ThinkPad X200, but it should work for other targets. here is a photo of the setup for the teensy: <a href="http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg">http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg</a></p>
+                <p>
+                    Onto the Beaglebone black...
+                </p>
+			<p><a href="index.html">Back to previous index</a></p>
+	</div>
+
+	<div class="section" id="hardware_requirements">
+
+		<h1>Hardware requirements</h1>
+		
+			<p>
+				Shopping list (pictures of this hardware is shown later):
+			</p>
+				<ul>
+					<li>
+						A <a href="http://flashrom.org">Flashrom</a>-compatible external SPI programmer: 
+						<strong>BeagleBone Black</strong>, sometimes referred to as 'BBB', (rev. C) is highly recommended. 
+						You can buy one from <a href="https://www.adafruit.com">Adafruit</a> (USA), <a href="http://electrokit.com">ElectroKit</a> (Sweden)
+						or any of the distributors listed <a href="http://beagleboard.org/black">here</a> (look below 'Purchase').  
+						We recommend this product because we know that it works well for our purposes and doesn't require any non-free software.
+					</li>
+					<li>
+						Electrical/insulative tape: cover the entire bottom surface of the BBB (the part that rests on a surface). 
+						This is important, when placing the BBB on top of a board so that nothing shorts.
+						Most hardware/electronics stores have this.  Optionally, you can use the bottom half of a
+						<a href="http://www.hammondmfg.com/1593HAM.htm#BeagleBoneBlack">hammond plastic enclosure</a>.
+					</li>
+					<li>
+						Clip for connecting to the flash chip: if you have a SOIC-16 flash chip (16 pins), you will need the
+						<strong>Pomona 5252</strong> or equivalent.  For SOIC-8 flash chips (8 pins), you will need the <strong>Pomona 5250</strong> 
+						or equivalent.  Do check which chip you have, before ordering a clip.  Also, you might as well buy two clips or more since they break easily.
+						<a href="http://farnell.com/">Farnell element 14</a> sells these and ships to many countries.  Some people find these clips difficult to
+						get hold of, especially in South America.  If you know of any good suppliers, please contact the libreboot project with the relevant information.
+						<strong>If you can't get hold of a pomona clip, some other clips might work, e.g. 3M, but they are not always reliable.
+						You can also directly solder the wires to the chip, if that suits you; the clip is just for convenience, really.</strong>
+					</li>
+					<li>
+						<strong>External 3.3V DC power supply</strong>, for powering the flash chip: an ATX power supply / PSU (common on Intel/AMD desktop
+						computers) will work for this.  A lab PSU (DC) will also work (adjusted to 3.3V).
+						<ul>
+							<li>Getting a multimeter might be worthwhile, to verify that it's supplying 3.3V.</li>
+						</ul>
+					</li>
+					<li>
+						<strong>External 5V DC power supply</strong> (barrel connector), for powering the BBB:
+						the latter can have power supplied via USB, but a dedicated power supply is recommended.
+						These should be easy to find in most places that sell electronics.  <strong>OPTIONAL. 
+						Only needed if not powering with the USB cable, or if you want to use <a href="bbb_ehci.html">EHCI debug</a></strong>.
+					</li>
+					<li>
+						<strong>Pin header / jumper cables</strong> (2.54mm / 0.1" headers): you should get male--male,
+						 male--female and female--female cables in 10cm size.  Just get a load of them.  
+						 Other possible names for these cables/wires/leads are as follows:
+						<ul>
+							<li>flying leads</li>
+							<li>breadboard cables (since they are often used on breadboards).</li>
+							<li>You might also be able to make these cables yourself.</li>
+						</ul>
+						<a href="https://www.adafruit.com">Adafruit</a> sell them, as do many others.
+						<strong>Some people find them difficult to buy.  Please contact the libreboot project if you know of any good sellers.</strong>
+						You might also be able to make these cables yourself.  For PSU connections, using long cables, e.g. 20cm, is fine, and you can extend them longer than that if needed.
+					</li>
+					<li>
+						<b>Mini USB A-B cable</b> (the BeagleBone probably already comes
+						with one.) - <b>OPTIONAL - only needed for <a href="bbb_ehci.html">EHCI debug</a> or for serial/ssh access without ethernet cable (g_multi kernel module)</b>
+						
+						<strong>Mini USB A-B cable</strong>: the BBB probably already comes with one.  <strong>OPTIONAL---only needed for
+						<a href="bbb_ehci.html">EHCI debug</a> or for serial/SSH access without ethernet cable (g_multi kernel module)</strong>.
+					</li>
+					<li>
+						<strong>FTDI TTL cable or debug board</strong>: used for accessing the serial console on the BBB.
+						<a href="http://elinux.org/Beagleboard:BeagleBone_Black_Serial">This page</a> contains a list. 
+						<strong>OPTIONAL---only needed for serial console on the BBB, if not using SSH via ethernet cable.</strong>
+					</li>
+				</ul>
+		
+			<p>
+				<a href="#pagetop">Back to top of page.</a>
+			</p>
+			
+	</div>
+		
+	<div class="section" id="psu33">
+
+		<h1>Setting up the 3.3V DC PSU</h1>
+
+			<p>
+				ATX PSU pinouts can be read on <a href="https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diagrams">this Wikipedia page</a>.
+			</p>
+			<p>
+				You can use pin 1 or 2 (orange wire) on a 20-pin or 24-pin ATX PSU for 3.3V, and any of the ground/earth sources (black cables) for ground. 
+				Short PS_ON# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin 14 on a 20-pin ATX PSU) to a ground
+				(black; there is one right next to it) using a wire/paperclip/jumper, then power on the PSU by grounding PS_ON#
+				(this is also how an ATX motherboard turns on a PSU).
+			</p>
+			<p>
+				<strong>DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a 20-pin ATX PSU), and DO **NOT** use pin
+				21, 22 or 23 (on a 24-pin ATX PSU).  Those wires (the red ones) are 5V, and they **WILL** kill your flash chip.
+				***NEVER*** supply more than 3.3V to your flash chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI
+				flash chips do exist, but they are rare.  Always check what voltage your chip takes.  Most of them take 3.3V).</strong>
+			</p>
+			<p>
+				You only need one 3.3V supply and one ground for the flash chip, after grounding PS_ON#.
+			</p>
+			
+			<p>
+				The male end of a 0.1&quot; or 2.54mm header cable is not thick enough to remain permanently
+				connected to the ATX PSU on its own.
+				When connecting header cables to the connector on the ATX PSU, use a female end attached to
+				a thicker piece of wire (you could use a paper clip), or wedge the male end of the jumper cable
+				into the sides of the hole in the connector, instead of going through the centre.
+			</p>
+			
+			<p>
+				Here is an example set up:<br/>
+				<img src="images/x200/psu33.jpg" alt="" title="Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt; see license notice at the end of this document" />
+			</p>
+			
+	</div>
+	
+	<div class="section" id="bbb_access">
+		
+		<h1>Accessing the operating system on the BBB</h1>
+			<p>
+				The operating system on your BBB will probably have an SSH daemon
+				running where the root account has no password. Use SSH to access
+				the operating system and set a root password. By default, the OS
+				on your BBB will most likely use DHCP, so it should already have an IP
+				address.
+			</p>
+			<p>
+				You will also be using the OS on your BBB for programming an SPI flash chip.
+			</p>
+			<h2>Alternatives to SSH (in case SSH fails)</h2>
+				<p>
+					You can also use a serial FTDI debug board with GNU Screen, to access the serial console.<br/>
+					# <b>screen /dev/ttyUSB0 115200</b><br/>
+					Here are some example photos:<br/>
+					<img src="images/x200/ftdi.jpg" alt="" />
+					<img src="images/x200/ftdi_port.jpg" alt="" /><br/>
+				</p>
+				<p>
+					You can also connect the USB cable from the BBB to another computer and a new network interface will appear,
+					with its own IP address. This is directly accessible from SSH, or screen:<br/>
+					# <b>screen /dev/ttyACM0 115200</b>
+				</p>
+				<p>
+					You can also access the uboot console, using the serial method
+					instead of SSH.
+				</p>
+			
+	</div>
+	
+	<div class="section" id="spidev">
+		
+		<h1>Setting up spidev on the BBB</h1>
+		
+			<p>
+				Log on as root on the BBB, using either SSH or a serial console as defined in
+				<a href="#bbb_access">#bbb_access</a>. Make sure that you have internet access
+				on your BBB.
+			</p>
+		
+			<p>
+				Follow the instructions at <a href="http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0">http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0</a>
+				up to (and excluding) the point where it tells you to modify uEnv.txt
+			</p>
+			<p>
+				You need to update the software on the BBB first. If you have an
+				element14 brand BBB (sold by Premier Farnell plc. stores like
+				Farnell element14, Newark element14, and Embest), you may need
+				to <a href="https://groups.google.com/forum/?_escaped_fragment_=msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ#!msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ">work around a bug</a>
+				in the LED aging init script before you can update your
+				software. If you don't have a file named
+				/etc/init.d/led_aging.sh, you can skip this step and update your
+				software as described below. Otherwise, replace the contents of
+				this file with:
+			</p>
+<pre>
+#!/bin/sh -e
+### BEGIN INIT INFO
+# Provides:          led_aging.sh
+# Required-Start:    $local_fs
+# Required-Stop:     $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start LED aging
+# Description:       Starts LED aging (whatever that is)
+### END INIT INFO
+
+x=$(/bin/ps -ef | /bin/grep "[l]ed_acc")
+if [ ! -n "$x" -a -x /usr/bin/led_acc ]; then
+    /usr/bin/led_acc &amp;
+fi
+</pre>
+			</p>
+				Run <b>apt-get update</b> and <b>apt-get upgrade</b> then reboot the BBB, before continuing.
+			</p>
+
+			<p>
+				Check that the firmware exists:<br/>
+				# <b>ls /lib/firmware/BB-SPI0-01-00A0.*</b><br/>
+				Output:
+			</p>
+<pre>
+/lib/firmware/BB-SPI0-01-00A0.dtbo
+</pre>
+			<p>
+				Then:<br/>
+				# <b>echo BB-SPI0-01 &gt; /sys/devices/bone_capemgr.*/slots</b><br/>
+				# <b>cat /sys/devices/bone_capemgr.*/slots</b><br/>
+				Output:
+			</p>
+<pre>
+ 0: 54:PF--- 
+ 1: 55:PF--- 
+ 2: 56:PF--- 
+ 3: 57:PF--- 
+ 4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
+ 5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
+ 7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
+</pre>
+
+			<p>
+				Verify that the spidev device now exists:<br/>
+				# <b>ls -al /dev/spid*</b><br/>
+				Output:
+			</p>
+<pre>
+crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
+</pre>
+			<p>
+				Now the BBB is ready to be used for flashing. Make this persist
+				across reboots:<br/>
+				In /etc/default/capemgr add <b>CAPE=BB-SPI0-01</b> at the end
+				(or change the existing <b>CAPE=</b> entry to say that, if an
+				entry already exists.
+			</p>
+			<p>
+				Get flashrom from the libreboot_util release archive, or build it from libreboot_src/git if you need to.
+				An ARM binary (statically compiled) for flashrom exists in libreboot_util releases. Put the flashrom binary
+				on your BBB.
+			</p>
+			<p>
+				You may also need ich9gen, if you will be flashing an ICH9-M laptop (such as the X200). Get it from libreboot_util,
+				or build it from libreboot_src, and put the ARM binary for it on your BBB.
+			</p>
+			<p>
+				Finally, get the ROM image that you would like to flash and put that on your BBB.
+			</p>
+			
+			<p>
+				Now test flashrom:<br/>
+				# <b>./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512</b><br/>
+				Output:
+			</p>
+<pre>
+Calibrating delay loop... OK.
+No EEPROM/flash device found.
+Note: flashrom can never write if the flash chip isn't found automatically.
+</pre>
+
+			<p>
+				This means that it's working (the clip isn't connected to any flash chip,
+				so the error is fine).
+			</p>
+			
+	</div>
+	
+	<div class="section" id="clip">
+			
+		<h1>
+			Connecting the Pomona 5250/5252
+		</h1>
+			<p>
+				Use this image for reference when connecting the pomona to the BBB:
+				<a href="http://beagleboard.org/Support/bone101#headers">http://beagleboard.org/Support/bone101#headers</a>
+				(D0 = MISO or connects to MISO).
+			</p>
+		
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-16 (clip: Pomona 5252):
+			</p>
+<pre>
+ NC              -       - 21
+ 1               -       - 17
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ NC              -       - NC
+ 18              -       - 3.3V (PSU)
+ 22              -       - NC - this is pin 1 on the flash chip
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
+
+You may also need to connect pins 1 and 9 (tie to 3.3V supply). These are HOLD# and WP#.
+On some systems they are held high, if the flash chip is attached to the board.
+If you're flashing a chip that isn't connected to a board, you'll almost certainly
+have to connect them.
+
+SOIC16 pinout (more info available online, or in the datasheet for your flash chip):
+HOLD	1-16	SCK
+VDD	2-15	MOSI
+N/C	3-14	N/C
+N/C	4-13	N/C
+N/C	5-12	N/C
+N/C	6-11	N/C
+SS	7-10	GND
+MISO	8-9	WP
+</pre>
+			<p>
+				The following shows how to connect clip to the BBB	(on the P9 header), for SOIC-8 (clip: Pomona 5250):
+			</p>
+<pre>
+ 18              -       - 1
+ 22              -       - NC
+ NC              -       - 21
+ 3.3V (PSU)      -       - 17 - this is pin 1 on the flash chip
+<i>This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.</i>
+
+You may also need to connect pins 3 and 7 (tie to 3.3V supply). These are HOLD# and WP#.
+On some systems they are held high, if the flash chip is attached to the board.
+If you're flashing a chip that isn't connected to a board, you'll almost certainly
+have to connect them.
+
+SOIC8 pinout (more info available online, or in the datasheet for your flash chip):
+SS	1-8	VDD
+MISO	2-7	HOLD
+WP	3-6	SCK
+GND	4-5	MOSI
+</pre>
+			<p>
+				<b>NC = no connection</b>
+			</p>
+			<p>
+				<b><u>DO NOT</u> connect 3.3V (PSU) yet. ONLY connect this once the pomona is connected to the flash chip.</b>
+			</p>
+			<p>
+				<b>You also need to connect the BLACK wire (ground/earth) from the 3.3V PSU to pin 2 on the BBB (P9 header). 
+				It is safe to install this now
+				(that is, before you connect the pomona to the flash chip); in fact, you should.</b>
+			</p>
+			<p>
+				if you need to extend the 3.3v psu leads, just use the same colour M-F leads, <b>but</b> keep all other 
+				leads short (10cm or less)
+			</p>
+			
+			<p>
+				You should now have something that looks like this:<br/>
+				<img src="images/x200/5252_bbb0.jpg" alt="" />
+				<img src="images/x200/5252_bbb1.jpg" alt="" />
+			</p>
+			
+		<p>
+			<a href="#pagetop">Back to top of page.</a>
+		</p>
+		
+	</div>
+	
+	<div class="section">
+	
+		<h1 id="stability">Notes about stability</h1>
+			
+			<p>
+				<a href="http://flashrom.org/ISP">http://flashrom.org/ISP</a> 
+				is what we typically do in libreboot, though not always. That page
+				has some notes about using resistors to affect stability. Currently,
+				we use spispeed=512 (512kHz) but it is possible to use higher speeds while
+				maintaining stability.
+			</p>
+			
+			<p>
+				tty0_ in #libreboot was able to get better flashing speeds with the following configuration:
+			</p>
+				<ul>
+					<li>&quot;coax&quot; with 0.1 mm core  and aluminum foley (from my kitchen), add 100 Ohm resistors (serial)</li>
+					<li>put heatshrink above the foley, for: CS, CLK, D0, D1</li>
+					<li>Twisted pair used as core (in case more capacitors are needed)</li>
+					<li>
+						See this image: 
+						<a href="http://i.imgur.com/qHGxKpj.jpg">http://i.imgur.com/qHGxKpj.jpg</a>
+					</li>
+					<li>He was able to flash at 50MHz (lower speeds are also fine).</li>
+				</ul>
+	
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Copyright &copy; 2015 Patrick &quot;P. J.&quot; McDermott &lt;pj@pehjota.net&gt;<br/>
+			Copyright &copy; 2015 Albin Söderqvist<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>

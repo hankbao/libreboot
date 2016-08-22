@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>ASUS Chromebook C201 installation guide</title>
+</head>
+
+<body>
+
+	<div class="section">
+		
+		<h1 id="pagetop">ASUS Chromebook C201 installation guide</h1>
+
+		<p>
+			These instructions are for installing Libreboot to the ASUS Chromebook C201.
+			Since the device ships with Coreboot, the installation instructions are the same before and after flashing Libreboot for the first time.
+		</p>
+
+		<div class="important">
+
+			<p>
+				<b>If you are using libreboot_src or git, then make sure that you built the sources first (see <a href="../git/index.html#build">../git/index.html#build</a>).</b>
+			</p>
+
+		</div>
+
+		<p>
+			Look at the <a href="#rom">list of ROM images</a> to see which image is compatible with your device.
+		</p>
+
+		<p>
+			Libreboot can be installed internally from the device, with sufficient privileges.
+			The installation process requires using <b>Google's modified version of flashrom</b>,
+			that has support for reflashing the Chromebook's SPI flash.
+			Otherwise, flashing externally will work with the upstream flashrom version.
+		</p>
+
+		<p>
+			<b>Google's modified version of flashrom</b> is free software and its source code is made available by Google: <a href="https://chromium.googlesource.com/chromiumos/third_party/flashrom/">flashrom</a>.<br />
+			It is not distributed along with Libreboot yet. However, it is preinstalled on the device, with ChromeOS.
+		</p>
+
+		<p>
+			Installing Libreboot internally requires sufficient privileges on the system installed on the device.<br />
+			When the device has ChromeOS installed (as it does initially), it is necessary to gain root privileges in ChromeOS,
+			to be able to access a root shell.
+		</p>
+
+		<ul>
+			<li><a href="#root_chromeos">Gaining root privileges on ChromeOS</a></li>
+			<li><a href="#preparing_device">Preparing the device for the installation</a>
+				<ul>
+					<li><a href="#configuring_verified_boot_parameters">Configuring verified boot parameters</a></li>
+					<li><a href="#removing_write_protect_screw">Removing the write protect screw</a></li>
+				</ul>
+			</li>
+			<li><a href="">Installing Libreboot to the SPI flash</a>
+				<ul>
+					<li><a href="#installing_libreboot_internally">Installing Libreboot internally, from the device</a></li>
+					<li><a href="#installing_libreboot_externally">Installing Libreboot externally, with a SPI flash programmer</a></li>
+				</ul>
+			</li>
+		</ul>
+
+		<p>
+			<a href="../index.html">Back to main index</a>
+		</p>
+			
+	</div>
+
+ 	<div class="section">
+ 
+		<h1 id="root_chromeos">Gaining root privileges on ChromeOS</h2>
+
+		<p>
+			In order to gain root privileges on ChromeOS, developer mode has to be enabled from the recovery mode screen and debugging features have to be enabled in ChromeOS.
+		</p>
+
+		<div class="important">
+
+			<p>
+				Instructions to access the <a href="../depthcharge/index.html#recovery_mode_screen">recovery mode screen</a> and <a href="../depthcharge/index.html#enabling_developer_mode">enabling developer mode</a> are available on the page dedicated to <a href="../depthcharge/index.html">depthcharge</a>.
+			</p>
+
+			<p>
+				Once developer mode is enabled, the device will boot to the <a href="../depthcharge/index.html#developer_mode_screen">developer mode screen</a>. ChromeOS can be booted by waiting for 30 seconds (the delay is shortened in Libreboot) or by pressing <b>Ctrl + D</b>
+			</p>
+
+			<p>
+				After the system has booted, root access can be enabled by clicking on the <b>Enable debugging features</b> link. A confirmation dialog will ask whether to proceed.<br />
+				After confirming by clicking <b>Proceed</b>, the device will reboot and ask for the root password to set. Finally, the operation has to be confirmed by clicking <b>Enable</b>.
+			</p>
+
+			<p>
+				After setting the root password, it becomes possible to log-in as root. 
+				A tty prompt can be obtained by pressing <strong>Ctrl + Alt + Next</strong>.
+				The <strong>Next</strong> key is the one on the top left of the keyboard.
+			</p>
+
+		</div>
+
+	</div>
+
+	<div class="section">
+
+		<h1 id="preparing_device">Preparing the device for the installation</h2>
+
+		<p>
+			Before installing Libreboot on the device, both its software and hardware has to be prepared to allow the installation procedure and to ensure that security features don't get in the way.
+		</p>
+
+		<div class="subsection">
+
+			<h2 id="configuring_verified_boot_parameters">Configuring verified boot parameters</h2>
+
+			<p>
+				It is recommended to have access to the <a href="../depthcharge/index.html#developer_mode_screen">developer mode screen</a> and to <a href="../depthcharge/index.html#configuring_verified_boot_parameters">configure the following verified boot parameters</a>:
+				<ul>
+					<li>Kernels signature verification: <i>disabled</i></li>
+					<li>External media boot: <i>enabled</i></li>
+				</ul>
+				Those changes can be reverted later, when the device is known to be in a working state.
+			</p>
+
+		</div>
+
+		<div class="subsection">
+
+			<h2 id="removing_write_protect_screw">Removing the write protect screw</h2>
+
+			<p>
+				Since part of the SPI flash is write-protected by a screw, it is necessary to remove the screw to remove the write protection and allow writing Libreboot to the <i>read-only</i> part of the flash.
+			</p>
+
+			<p>
+				To access the screw, the device has to be opened. There are 8 screws to remove from the bottom of the device, as shown on the picture below. Two are hidden under the top pads. After removing the screws, the keyboard plastic part can be carefully detached from the rest. <strong>Beware: there are cables attached to it!</strong> It is advised to flip the keyboard plastic part over, as shown on the picture below. The write protect screw is located next to the SPI flash chip, circled in red in the picture below. It has to be removed.
+			</p>
+
+			<p>
+				<a href="images/c201/screws.jpg"><img src="images/c201/screws.jpg" alt="Screws" style="width: 400px;"/></a>
+				<a href="images/c201/wp-screw.jpg"><img src="images/c201/wp-screw.jpg" alt="WP screw" style="width: 400px;"/></a>
+			</p>
+
+			<p>
+				The write protect screw can be put back in place later, when the device is known to be in a working state.
+			</p>
+
+		</div>
+
+	</div>
+
+	<div class="section">
+
+		<h1 id="installing_libreboot_spi_flash">Installing Libreboot to the SPI flash</h1>
+
+		<p>
+			The SPI flash (that holds Libreboot) is divided into various partitions that are used to implement parts of the CrOS security system.
+			Libreboot is installed in the <i>read-only</i> coreboot partition, that becomes writable after removing the write-protect screw.
+		</p>
+
+		<div class="subsection">
+
+			<h2 id="installing_libreboot_internally">Installing Libreboot internally, from the device</h2>
+
+			<p>
+				Before installing Libreboot to the SPI flash internally, the device has to be reassembled.
+			</p>
+
+			<p>
+				All the files from the <b>veyron_speedy</b> release (or build) have to be transferred to the device.
+			</p>
+
+			<p>
+				The following operations have to be executed with root privileges on the device (e.g. using the <em>root</em> account).
+				In addition, the <b>cros-flash-replace</b> script has to be made executable:<br />
+				# <b>chmod a+x cros-flash-replace</b><br />
+			</p>
+
+			<p>
+				The SPI flash has to be read first:<br />
+				# <b>flashrom -p host -r flash.img</b><br />
+				<b>Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.</b>
+			</p>
+
+			<p>
+				Then, the <b>cros-flash-replace</b> script has to be executed as such:<br />
+				# <b>./cros-flash-replace flash.img coreboot ro-frid</b><br />
+				If any error is shown, it is definitely a bad idea to go further than this point.
+			</p>
+
+			<p>
+				The resulting flash image can then be flashed back:<br />
+				# <b>flashrom -p host -w flash.img</b><br />
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Verifying flash... VERIFIED.&quot;</b>
+			</p>
+
+			<p>
+				Shut down. The device will now boot to Libreboot.
+			</p>
+
+		</div>
+
+		<div class="subsection">
+
+			<h2 id="installing_libreboot_externally">Installing Libreboot externally, with a SPI flash programmer</h2>
+
+			<p>
+				Before installing Libreboot to the SPI flash internally, the device has to be opened.
+			</p>
+
+			<p>
+				The SPI flash is located next to the write protect screw. Its layout is indicated in the picture below. Note that it is not necessary to connect <b>WP#</b> since removing the screw already connects it to ground. Before writing to the chip externally, the battery connector has to be detached. It is located under the heat spreader, that has to be unscrewed from the rest of the case. The battery connector is located on the right and has colorful cables, as shown on the picture below.
+			</p>
+
+			<p>
+				<a href="images/c201/spi-flash-layout.jpg"><img src="images/c201/spi-flash-layout.jpg" alt="SPI flash layout" style="width: 400px;"/></a>
+				<a href="images/c201/battery-connector.jpg"><img src="images/c201/battery-connector.jpg" alt="Battery connector" style="width: 400px;"/></a>
+			</p>
+
+			<p>
+				All the files from the <b>veyron_speedy</b> release (or build) have to be transferred to the host.
+			</p>
+
+			<p>
+				The following operations have to be executed with root privileges on the host (e.g. using the <em>root</em> account).
+				In addition, the <b>cros-flash-replace</b> script has to be made executable:<br />
+				# <b>chmod a+x cros-flash-replace</b><br />
+			</p>
+
+			<p>
+				The SPI flash has to be read first (using the right spi programmer):<br />
+				# <b>flashrom -p <i>programmer</i> -r flash.img</b><br />
+				<b>Note: it might be a good idea to copy the produced flash.img file at this point and store it outside of the device for backup purposes.</b>
+			</p>
+
+			<p>
+				Then, the <b>cros-flash-replace</b> script has to be executed as such:<br />
+				# <b>./cros-flash-replace flash.img coreboot ro-frid</b><br />
+				If any error is shown, it is definitely a bad idea to go further than this point.
+			</p>
+
+			<p>
+				The resulting flash image can then be flashed back (using the right spi programmer):<br />
+				# <b>flashrom -p <i>programmer</i> -w flash.img</b><br />
+			</p>
+
+			<p>
+				You should also see within the output the following:<br/>
+				<b>&quot;Verifying flash... VERIFIED.&quot;</b>
+			</p>
+
+			<p>
+				The device will now boot to Libreboot.
+			</p>
+
+		</div>
+
+		<p><a href="#pagetop">Back to top of page.</a></p>
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2015 Paul Kocialkowski &lt;contact@paulk.fr&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the GNU Free Documentation License, Version 1.3
+			or any later version published by the Free Software Foundation;
+			with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+			A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>
