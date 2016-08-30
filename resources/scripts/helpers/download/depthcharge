@@ -60,14 +60,14 @@ git reset --hard 3fe03aece37d0f9cf63ce6b548f734d794d7fedc
 # printf "vboot: Only initialize cparams once\n"
 # git am "../resources/depthcharge/patch/0005-vboot-Only-initialize-cparams-once.patch"
 
-printf "Proper firmware index report for read-only boot path\n"
-git am "../resources/depthcharge/patch/0006-Proper-firmware-index-report-for-read-only-boot-path.patch"
+# printf "Proper firmware index report for read-only boot path\n"
+# git am "../resources/depthcharge/patch/0006-Proper-firmware-index-report-for-read-only-boot-path.patch"
 
-printf "fdt: nonvolatile-context-storage report to mkbp for EC NV storage\n"
-git am "../resources/depthcharge/patch/0007-fdt-nonvolatile-context-storage-report-to-mkbp-for-E.patch"
+# printf "fdt: nonvolatile-context-storage report to mkbp for EC NV storage\n"
+# git am "../resources/depthcharge/patch/0007-fdt-nonvolatile-context-storage-report-to-mkbp-for-E.patch"
 
-printf "vboot: Display callbacks for developer and recovery mode screens\n"
-git am "../resources/depthcharge/patch/0008-vboot-Display-callbacks-for-developer-and-recovery-m.patch"
+# printf "vboot: Display callbacks for developer and recovery mode screens\n"
+# git am "../resources/depthcharge/patch/0008-vboot-Display-callbacks-for-developer-and-recovery-m.patch"
 
 # leave the tree
 cd "../"
