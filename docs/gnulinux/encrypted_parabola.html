@@ -143,6 +143,11 @@
 			</p>
 
 		<h2>Create LUKS partition</h2>
+            <p>
+                Note that the default iteration time is 2000ms (20 seconds) if not specified
+                in cryptsetup. You should set a lower time than this, otherwise there will be
+                an approximate 20 second delay when booting your system.
+            </p>
 			<p>
 				I am using MBR partitioning, so I use cfdisk:<br/>
 				# <b>cfdisk /dev/sda</b>
