@@ -46,7 +46,7 @@ for payload in $HOMEDIR/coreboot/*; do
 	# create symlink to crossgcc
 	(
 
-	ln -s $HOMEDIR/crossgcc/util/crossgcc/ ${board}/util/crossgcc
+	ln -fs $HOMEDIR/crossgcc/util/crossgcc/ ${board}/util/crossgcc
 	)
 
 	done
@@ -135,10 +135,12 @@ for i in $HOMEDIR/coreboot/*; do
         fi
         (
         cd "${revision}/"
+        rm -rf .git
         git init
         git add -A .
         git commit -m "coreboot revision ${revision##*/}"
         cd "3rdparty/vboot/"
+        rm -rf .git
         git init
         git add -A .
         git commit -m "coreboot revision ${revision##*/}"
