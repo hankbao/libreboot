@@ -1,4 +1,4 @@
-GNU Libreboot 20160822
+GNU Libreboot 20160902
 
 This is a bugfix release, based on 20160818. It contains no new board changes.
 The previous 20160818 release had build errors in the _src archive, and the
@@ -8,6 +8,7 @@ Changes compared to 20160818:
 * Fixed bug where ./build module coreboot always returned non-zero status
 * Fixed missing symlink of crossgcc when building from _src (thanks Arthur
 Heymans)
+* Fixed building with the depthcharge payload (ASUS C201)
 * Proper ChangeLog now, instead of pasted git log
 * Util archive is now binaries again (source code is in the _src archive)
 * Documentation is now in HTML format
