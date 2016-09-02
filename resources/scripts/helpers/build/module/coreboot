@@ -198,7 +198,7 @@ for payloads in $HOMEDIR/resources/libreboot/config/*; do
 			# apply patches re-used from other boards, before applying main patches (common patches for similar boards)
 			apply_patches_from_file "$HOMEDIR/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}/reused.list" ../../../../..
 			# apply patches (vboot, machine-specific for this revision)
-			apply_patches_from_directory "$HOME/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
+			apply_patches_from_directory "$HOMEDIR/resources/libreboot/patch/vboot/${vbootrevision}/${payload}/${boardname}"
 
             git checkout master
 
