@@ -38,10 +38,8 @@ fi
 
 (
 cd "crossgcc/"
-# for architecture in i386 arm; do
-#    make crossgcc-${architecture} CPUS=${cores}
-# done
-#dirty dirty hack for the 20160902 release:
-make crossgcc CPUS=${cores}
+for architecture in i386 arm; do
+    make crossgcc-${architecture} CPUS=${cores}
+done
 )
 
