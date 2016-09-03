@@ -8,12 +8,12 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Installing Parabola GNU/Linux with full disk encryption (including /boot)</title>
+	<title>Installing Parabola or Arch GNU/Linux with full disk encryption (including /boot)</title>
 </head>
 
 <body>
 	<div class="section">
-		<h1>Installing Parabola GNU/Linux with full disk encryption (including /boot)</h1>
+		<h1>Installing Parabola or Arch GNU/Linux with full disk encryption (including /boot)</h1>
 			<p>
 				Libreboot on x86 uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
@@ -33,6 +33,10 @@
 			<p>
 				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
 			</p>
+            <p>
+                This guide is intended for the Parabola distribution, but it should also work (with some adaptation)
+                for <em>Arch</em>.
+            </p>
 
             <p>
             Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a step during boot to fail. If this happens to you, try removing the drive. 
