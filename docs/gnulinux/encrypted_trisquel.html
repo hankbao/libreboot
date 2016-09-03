@@ -8,12 +8,12 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Installing Trisquel GNU/Linux with full disk encryption (including /boot)</title>
+	<title>Installing Trisquel or Debian GNU/Linux with full disk encryption (including /boot)</title>
 </head>
 
 <body>
 	<div class="section">
-		<h1>Installing Trisquel GNU/Linux with full disk encryption (including /boot)</h1>
+		<h1>Installing Trisquel or Debian GNU/Linux with full disk encryption (including /boot)</h1>
 			<p>
 				Libreboot on x86 uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
@@ -31,8 +31,9 @@
 				access to the system.
 			</p>
 			<p>
-				This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode). 
+				This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode).
 				<a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
+                This guide also works for the Debian distribution, when you install using the netinstall option in Debian.
 			</p>
 			<p>
 				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
@@ -83,8 +84,8 @@
 						<ul>
 							<li>Use as: physical volume for encryption</li>
 							<li>Encryption: aes</li>
-							<li>key size: 256</li>
-							<li>IV algorithm: xts-plain64</li>
+							<li>key size: whatever default is given to you</li>
+							<li>IV algorithm: whatever default is given to you</li>
 							<li>Encryption key: passphrase</li> (<i>diceware method</i> recommended for choosing password)
 							<li>erase data: Yes (only choose 'No' if it's a new drive that doesn't contain your private data)</li>
 						</ul>
@@ -152,7 +153,7 @@
 					<li>
 						LVM LV root
 						<ul>
-							<li>use as: ext4</li>
+							<li>use as: btrfs</li>
 							<li>mount point: /</li>
 							<li>done setting up partition</li>
 						</ul>
@@ -191,6 +192,20 @@
 				when you boot or if you want to create your own custom setup, then choose nothing here (don't select anything). 
 				You might also want to choose some of the other package groups; it's up to you.
 			</p>
+            <p>
+                For Debian, use the <em>MATE</em> option, or one of the others if you want.
+            </p>
+            <p>
+                On Debian or Trisquel, you may also want to select the option for a printer server,
+                so that you can print.
+            </p>
+            <p>
+                If you want debian-testing, then you should only select barebones options here
+                and change the entries in /etc/apt/sources.list after install to point to the new distro,
+                and then run <strong>apt-get update</strong> and <strong>apt-get dist-upgrade</strong>
+                as root, then reboot and run <b>tasksel</b> as root. This is to avoid downloading large
+                packages twice.
+            </p>
 			
 	</div>
 
