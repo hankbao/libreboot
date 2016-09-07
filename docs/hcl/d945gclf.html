@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style type="text/css">
+		@import url('../css/main.css');
+  </style>
+
+  <title>Intel d945gclf desktop board</title>
+</head>
+
+<body>
+
+  <div class="section">
+    <h1 id="pagetop">Intel d945gclf desktop board</h1>
+
+    <p>
+      This board is a mini-itx desktop board for 2008. It uses an atom 230, which is a singe core CPU but it is hyperthreaded so it appears to have 2 thread to the OS. The flash chip is very small, 512KiB, so grub2 does not fit, which is why libreboot has to use seabios on this target. Full disk encryption like on other supported targets will not be possible, so plan accordingly.
+    </p>
+    <p>
+      This board has a 945gc chipset which is the desktop equivalent of 945gm which can be found in the Lenovo x60/t60 or macbook2,1. This chipset features an ICH7 southbridge. It has 1 DIMM slot that can accommodate up to 2G of ddr2 ram.       
+    </p>
+    <p>
+      Connectivity-wise it has 1 PCI slot,  a 10/100 ethernet port, 4 usb slot and 4 usb ports, with one internal header and 2 SATA ports.
+    </p>
+    <p>
+      The d945gclf2 is an upgraded version of this board. The differences are: 1 more USB header, 10/100/1000 ethernet and a dual core cpu (also hyperthreaded). Since the board is almost identical (and coreboot code seem to indicate that it works, since MAX_CPU=4 is set), it is believe that it should also work but this is untested.
+    </p>
+    <p>
+      Remarks about vendor bios:
+      <ul>
+	<li>Without corecboot/libreboot this board is utery useless, since the vendor bios is very bad. It cannot boot from any HDD wether it is connected to the SATA port or USB. With libreboot it works just fine.</li>
+	<li>The vendor bios write protects the flash so it requires external flashing to install libreboot on this device. Once libreboot is flashed there is no problem to update the firmware internally</li>
+      </ul>
+    </p>
+    <p>
+      Here is an image of the board:<br/>
+      <img alt="" src="../images/d945gclf/d945gclf.jpg" />
+    </p>
+  </div>
+
+  <div class="section">
+
+    <p>
+      Copyright &copy;  2016 Arthur Heymans &lt;arthur@aheymans.xyz&gt;<br/>
+      Permission is granted to copy, distribute and/or modify this document
+      under the terms of the GNU Free Documentation License, Version 1.3
+      or any later version published by the Free Software Foundation;
+      with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+      A copy of the license can be found at <a href="../gfdl-1.3.txt">../gfdl-1.3.txt</a>
+    </p>
+
+    <p>
+      Updated versions of the license (when available) can be found at
+      <a href="https://www.gnu.org/licenses/licenses.html">https://www.gnu.org/licenses/licenses.html</a>
+    </p>
+
+    <p>
+      UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+      EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+      AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+      ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+      IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+      WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+      PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+      ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+      KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+      ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+    </p>
+    <p>
+      TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+      TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+      NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+      INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+      COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+      USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+      ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+      DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+      IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+    </p>
+    <p>
+      The disclaimer of warranties and limitation of liability provided
+      above shall be interpreted in a manner that, to the extent
+      possible, most closely approximates an absolute disclaimer and
+      waiver of all liability.
+    </p>
+
+  </div>
+
+</body>
+</html>
+
