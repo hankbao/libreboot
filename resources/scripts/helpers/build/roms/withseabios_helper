@@ -76,10 +76,9 @@ printf 'libreboot-%s\n' "${version}" > ".coreboot-version" # needed for reproduc
 
 for romtype in txtmode vesafb
 do
-	if [ "${boardtarget}" = "kgpe-d16" ] || [ "${boardtarget}" = "kcma-d8" ]; then
+	if [ "${boardtarget}" = "kgpe-d16" ] || [ "${boardtarget}" = "kcma-d8" ] || [ "${boardtarget}" = "d945gclf" ]; then
 		if [ "${romtype}" = "vesafb" ]; then
-			printf "Only text-mode is reported to work on KGPE-D16, KCMA-D8\n"
-			printf "TODO: get tpearson to fix it\n"
+			printf "Only text-mode is reported to work on KGPE-D16, KCMA-D8, d945gclf\n"
 			continue
 		fi
 	fi
