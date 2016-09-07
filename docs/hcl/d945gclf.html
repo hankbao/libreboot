@@ -24,18 +24,18 @@
       This board is a mini-itx desktop board for 2008. It uses an atom 230, which is a singe core CPU but it is hyperthreaded so it appears to have 2 thread to the OS. The flash chip is very small, 512KiB, so grub2 does not fit, which is why libreboot has to use seabios on this target. Full disk encryption like on other supported targets will not be possible, so plan accordingly.
     </p>
     <p>
-      This board has a 945gc chipset which is the desktop equivalent of 945gm which can be found in the Lenovo x60/t60 or macbook2,1. This chipset features an ICH7 southbridge. It has 1 DIMM slot that can accommodate up to 2G of ddr2 ram.       
+      This board has a 945gc chipset which is the desktop equivalent of 945gm which can be found in the Lenovo x60/t60 or macbook2,1. This chipset features an ICH7 southbridge. It has 1 DIMM slot that can accommodate up to 2G of DDR2 RAM.       
     </p>
     <p>
       Connectivity-wise it has 1 PCI slot,  a 10/100 ethernet port, 4 usb slot and 4 usb ports, with one internal header and 2 SATA ports.
     </p>
     <p>
-      The d945gclf2 is an upgraded version of this board. The differences are: 1 more USB header, 10/100/1000 ethernet and a dual core cpu (also hyperthreaded). Since the board is almost identical (and coreboot code seem to indicate that it works, since MAX_CPU=4 is set), it is believe that it should also work but this is untested.
+      The d945gclf2 is an upgraded version of this board. The differences are: 1 more USB header, 10/100/1000 ethernet and a dual core cpu (also hyperthreaded). Since the board is almost identical (and coreboot code seem to indicate that it works, since MAX_CPU=4 is set), it is believed that it should also work but this is untested.
     </p>
     <p>
       Remarks about vendor bios:
       <ul>
-	<li>Without corecboot/libreboot this board is utery useless, since the vendor bios is very bad. It cannot boot from any HDD wether it is connected to the SATA port or USB. With libreboot it works just fine.</li>
+	<li>Without coreboot/libreboot this board is utery useless, since the vendor bios is very bad. It cannot boot from any HDD wether it is connected to the SATA port or USB. With libreboot it works just fine.</li>
 	<li>The vendor bios write protects the flash so it requires external flashing to install libreboot on this device. Once libreboot is flashed there is no problem to update the firmware internally</li>
       </ul>
     </p>
