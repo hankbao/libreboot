@@ -1,3 +1,15 @@
+GNU Libreboot 20160907
+
+For existing boards, there are no new board specific changes.
+
+This release adds one new mainboard to libreboot:
+* Intel D945GCLF desktop motherboard (thanks to Arthur Heymans)
+
+Other bugfixes:
+* Various improvements to the documentation
+* re-added "unset superusers" to the grub.cfg, which was needed for some users
+  depending on the distros that they used
+
 GNU Libreboot 20160902
 
 This is a bugfix release, based on 20160818. It contains no new board changes.
