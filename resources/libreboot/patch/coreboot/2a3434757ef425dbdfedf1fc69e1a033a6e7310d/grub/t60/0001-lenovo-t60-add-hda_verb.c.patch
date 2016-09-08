@@ -1,0 +1,53 @@
+From bbd04909524d7b9fd2e2b4dbd804801bbde66e44 Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Wed, 7 Sep 2016 21:16:21 +0200
+Subject: [PATCH] lenovo/t60: add hda_verb.c
+
+This creates a config for the Lenovo T60 sound card based
+on values taken from vendor bios
+(in /sys/class/sound/hwC0D0/init_pin_configs on linux 3.16).
+The sound card configuration on the vendor bios is the same
+as the one on the Lenovo x60.
+
+It improves the default behavior of the sound card:
+- internal microphone is chosen by default
+- when jack is inserted it is chosen instead of internal speaker
+
+Change-Id: I44e3eaac437fe4ad97ff2b0eb32d36b33222c09b
+Signed-off-by: Arthur Heymans <arthur@aheymans.xyz>
+---
+ src/mainboard/lenovo/t60/hda_verb.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
+
+diff --git a/src/mainboard/lenovo/t60/hda_verb.c b/src/mainboard/lenovo/t60/hda_verb.c
+index 072a306..dee3e80 100644
+--- a/src/mainboard/lenovo/t60/hda_verb.c
++++ b/src/mainboard/lenovo/t60/hda_verb.c
+@@ -1,7 +1,22 @@
+ #include <device/azalia_device.h>
+ 
+-const u32 cim_verb_data[0] = {};
++const u32 cim_verb_data[] = {
++	0x11d41981, /* Codec Vendor / Device ID: Analog Devices AD1981 */
++	0x17aa2025, /* Subsystem ID */
++	0x0000000b, /* Number of 4 dword sets */
+ 
+-const u32 pc_beep_verbs[0] = {};
++	AZALIA_SUBVENDOR(0x0, 0x17aa2025),
+ 
++	AZALIA_PIN_CFG(0, 0x05, 0xc3014110),
++	AZALIA_PIN_CFG(0, 0x06, 0x4221401f),
++	AZALIA_PIN_CFG(0, 0x07, 0x591311f0),
++	AZALIA_PIN_CFG(0, 0x08, 0xc3a15020),
++	AZALIA_PIN_CFG(0, 0x09, 0x41813021),
++	AZALIA_PIN_CFG(0, 0x0a, 0x014470f0),
++	AZALIA_PIN_CFG(0, 0x16, 0x59f311f0),
++	AZALIA_PIN_CFG(0, 0x17, 0x59931122),
++	AZALIA_PIN_CFG(0, 0x18, 0x41a19023),
++	AZALIA_PIN_CFG(0, 0x19, 0x9933e12e)
++};
++const u32 pc_beep_verbs[0] = {};
+ AZALIA_ARRAY_SIZES;
+-- 
+2.9.3
+
