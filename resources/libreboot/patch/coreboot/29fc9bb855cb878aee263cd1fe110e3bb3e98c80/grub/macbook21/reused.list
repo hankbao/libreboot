@@ -1,2 +1,2 @@
-/resources/libreboot/patch/coreboot/8ba2010d126ce7a6d32504bcb2a0e1b231732c0f/grub/x60/0001-i945-Enable-changing-VRAM-size.patch
-/resources/libreboot/patch/coreboot/8ba2010d126ce7a6d32504bcb2a0e1b231732c0f/grub/x60/0004-model_6ex-enable-C2E-C4E-dynamic-lvl-2-cache.patch
+/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0001-i945-Enable-changing-VRAM-size.patch
+/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0004-model_6ex-enable-C2E-C4E-dynamic-lvl-2-cache.patch
