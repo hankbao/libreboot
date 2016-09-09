@@ -1,0 +1,43 @@
+From 60cc2c4532f63a40486b7c4e891fb87fb6d4ab7f Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Wed, 7 Sep 2016 22:10:57 +0200
+Subject: [PATCH] i945/gma.c: generate fake VBT
+
+This generates a fake VBT for the Intel i945 graphic device.
+i945 supports both the mobile chipset 945gm (calistoga)
+and the desktop chipset 945gc (lakeport),
+which is why a VBT with a different id string
+needs to be created for each target.
+
+The VBT id string is obtained from the vbios blob in the following way:
+"strings vbios.bin | grep VBT".
+
+Change-Id: I8245b12b16a4426efbe1f584d4163fc257231a98
+Signed-off-by: Arthur Heymans <arthur@aheymans.xyz>
+---
+ src/northbridge/intel/i945/gma.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/src/northbridge/intel/i945/gma.c b/src/northbridge/intel/i945/gma.c
+index 02caa0a..f0944b9 100644
+--- a/src/northbridge/intel/i945/gma.c
++++ b/src/northbridge/intel/i945/gma.c
+@@ -433,6 +433,15 @@ static void gma_func0_init(struct device *dev)
+ 			     iobase, mmiobase, graphics_base);
+ 	if (err == 0)
+ 		gfx_set_init_done(1);
++	/* Linux relies on VBT for panel info.  */
++	if (CONFIG_NORTHBRIDGE_INTEL_SUBTYPE_I945GM) {
++		generate_fake_intel_oprom(&conf->gfx, dev,
++			"$VBT CALISTOGA      ");
++	}
++	if (CONFIG_NORTHBRIDGE_INTEL_SUBTYPE_I945GC) {
++		generate_fake_intel_oprom(&conf->gfx, dev,
++			"$VBT LAKEPORT-G     ");
++	}
+ #endif
+ }
+ 
+-- 
+2.9.3
+
