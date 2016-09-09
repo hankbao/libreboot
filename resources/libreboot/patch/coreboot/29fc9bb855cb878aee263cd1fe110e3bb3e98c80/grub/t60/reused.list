@@ -4,3 +4,4 @@
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0004-model_6ex-enable-C2E-C4E-dynamic-lvl-2-cache.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0005-i945-gma.c-use-latest-linux-code-to-calculate-diviso.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0006-i945-gma.c-add-native-VGA-init.patch
+/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x60/0007-i945-gma.c-generate-fake-VBT.patch
