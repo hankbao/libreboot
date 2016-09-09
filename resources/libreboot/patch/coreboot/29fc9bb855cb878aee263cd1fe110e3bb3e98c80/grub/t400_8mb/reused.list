@@ -1,3 +1,5 @@
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0001-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0001-add-acpi-c3-cpu-c4-state-for-gm45-thinpads.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0001-nb-intel-gm45-Fix-IOMMU.patch
+/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0002-gm45-gma.c-use-screen-on-vga-connector-if-connected.patch
+/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0003-nb-gm45-gma.c-enable-VESA-framebuffer-mode-on-VGA-ou.patch
