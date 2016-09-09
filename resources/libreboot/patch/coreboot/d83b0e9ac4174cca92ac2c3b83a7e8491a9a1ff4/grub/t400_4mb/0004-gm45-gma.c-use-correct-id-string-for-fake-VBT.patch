@@ -1,0 +1,31 @@
+From d7fe366539f2a492b4a64030618506690bfbb232 Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Thu, 8 Sep 2016 22:21:54 +0200
+Subject: [PATCH] gm45/gma.c: use correct id string for fake VBT
+
+The correct id string for gm45 is "$VBT CANTIGA        ".
+This can be found in the gm45 option rom:
+"strings vbios.bin | grep VBT".
+
+Change-Id: Icd67a87dac774b4b3c211511c784c4fb4e2ea97c
+Signed-off-by: Arthur Heymans <arthur@aheymans.xyz>
+---
+ src/northbridge/intel/gm45/gma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/northbridge/intel/gm45/gma.c b/src/northbridge/intel/gm45/gma.c
+index d5f6471..19bd944 100644
+--- a/src/northbridge/intel/gm45/gma.c
++++ b/src/northbridge/intel/gm45/gma.c
+@@ -425,7 +425,7 @@ static void gma_func0_init(struct device *dev)
+ 
+ 		/* Linux relies on VBT for panel info.  */
+ 		generate_fake_intel_oprom(&conf->gfx, dev,
+-					  "$VBT IRONLAKE-MOBILE");
++					  "$VBT CANTIGA        ");
+ 	}
+ }
+ 
+-- 
+2.9.3
+
