@@ -1,0 +1,30 @@
+From f9a84edfc672424c9dcaa0a71ad0751c2355c3d0 Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Mon, 5 Sep 2016 12:07:57 +0200
+Subject: [PATCH 2/2] gigabyte/ga-g41m-es2l: add VESA mode to Kconfig
+
+This patch adds MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG to the
+gigabyte/ga-g41m-es2l Kconfig to allow selecting between textmode and
+vesamode in menuconfig.
+
+Change-Id: I84b61118fa0419d49d2498b66029711cdce97576
+Signed-off-by: Arthur Heymans <arthur@aheymans.xyz>
+---
+ src/mainboard/gigabyte/ga-g41m-es2l/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig b/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
+index 6452f4d..281d498 100644
+--- a/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
++++ b/src/mainboard/gigabyte/ga-g41m-es2l/Kconfig
+@@ -26,6 +26,7 @@ config BOARD_SPECIFIC_OPTIONS
+ 	select BOARD_ROMSIZE_KB_1024
+ 	select INTEL_EDID
+ 	select MAINBOARD_HAS_NATIVE_VGA_INIT
++	select MAINBOARD_HAS_NATIVE_VGA_INIT_TEXTMODECFG
+ 	select PCIEXP_ASPM
+ 	select PCIEXP_CLK_PM
+ 	select PCIEXP_L1_SUB_STATE
+-- 
+2.9.3
+
