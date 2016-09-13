@@ -78,7 +78,7 @@ for romtype in txtmode vesafb
 do
 	if [ "${boardtarget}" = "kgpe-d16" ] || [ "${boardtarget}" = "kcma-d8" ] || [ "${boardtarget}" = "d945gclf" ]; then
 		if [ "${romtype}" = "vesafb" ]; then
-			printf "Only text-mode is reported to work on KGPE-D16, KCMA-D8, d945gclf\n"
+			printf "Only text-mode is reported to work on KGPE-D16, KCMA-D8, D945GCLF\n"
 			continue
 		fi
 	fi
