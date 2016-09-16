@@ -1,4 +1,4 @@
-GNU Libreboot 20160907
+Libreboot 20160907
 
 For existing boards, there are no new board specific changes.
 
@@ -10,7 +10,7 @@ Other bugfixes:
 * re-added "unset superusers" to the grub.cfg, which was needed for some users
   depending on the distros that they used
 
-GNU Libreboot 20160902
+Libreboot 20160902
 
 This is a bugfix release, based on 20160818. It contains no new board changes.
 The previous 20160818 release had build errors in the _src archive, and the
@@ -25,10 +25,7 @@ Heymans)
 * Util archive is now binaries again (source code is in the _src archive)
 * Documentation is now in HTML format
 
-GNU Libreboot 20160818
-
-This is a brand GNU release. Libreboot joined the GNU project on 14 May 2016.
-This 18 August 2016 release is the first GNU release of libreboot.
+Libreboot 20160818
 
 NEW BOARDS ADDED:
 * ASUS Chromebook C201 (ARM laptop) (thanks to Paul Kocialkowski)
@@ -112,12 +109,3 @@ for use on the ASUS Chromebook C201. (thanks go to Paul Kocialkowski)
 
 Various fixes to the ich9gen utility (e.g. flash component density is now
 set correctly in the descriptor, gbe-less descriptors now supported)
-
-The official documentation included in the release in provided in texinfo
-format, instead of HTML; this was one of the requirements for joining GNU.
-(the other requirement is a new build system, to comply with GNU standards,
-e.g. Makefiles, and common Makefile entries present in all GNU software. As of
-Libreboot 20160818, this new build system is not yet merged, but will be
-in the release afterwards)
-ChangeLog and NEWS files are included in the release, to comply with GNU
-standards (they are dumps of the git-log output)
