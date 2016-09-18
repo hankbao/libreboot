@@ -60,6 +60,10 @@ git am "../resources/flashrom/patch/0002-Add-whitelist-for-Taurinus-X200-laptop.
 # for the user to run with the "-c" argument on these systems
 printf "Patching flashchips.c to remove the redundant entries\n"
 git am "../resources/flashrom/patch/0003-purged-chips.patch"
+
+# add whitelist for imac 5,2
+printf "Adding whitelist for Apple iMac 5,2\n"
+git am "../resources/flashrom/patch/0004-Add-board-enable-for-iMac5-2.patch"
 )
 
 printf "\n\n"
