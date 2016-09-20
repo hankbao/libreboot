@@ -1,3 +1,0 @@
-#!/bin/sh -e
-./build docs .master $0 $@
-
