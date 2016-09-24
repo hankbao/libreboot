@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -17,48 +17,95 @@
     <h1 id="pagetop">Intel D945GCLF desktop board</h1>
 
     <p>
-        <a href="index.html">Back to previous index</a>
+        <a href="https://libreboot.org/docs/hcl/index.html">Back to previous index</a>
     </p>
 
     <p>
         If you just want flashing instructions, go to
-        <a href="../install/d945gclf.html">../install/d945gclf.html</a>
+        <a href="https://libreboot.org/docs/install/d945gclf.html">../install/d945gclf.html</a>
     </p>
 
     <p>
-      This board is a mini-itx desktop board for 2008. It uses an atom 230, which is a singe core CPU but it is hyperthreaded so it appears to have 2 thread to the OS. The flash chip is very small, 512KiB, so grub2 does not fit, which is why libreboot has to use seabios on this target. Full disk encryption like on other supported targets will not be possible, so plan accordingly.
+      This board is a mini-itx desktop board for 2008. It uses an atom 
+230, which is a singe core CPU but it is hyperthreaded so it appears to 
+have 2 thread to the OS. The flash chip is very small, 512KiB, so grub2 
+does not fit, which is why libreboot has to use seabios on this target. 
+Full disk encryption like on other supported targets will not be 
+possible, so plan accordingly.
     </p>
     <p>
-      This board has a 945gc chipset which is the desktop equivalent of 945gm which can be found in the Lenovo x60/t60 or macbook2,1. This chipset features an ICH7 southbridge. It has 1 DIMM slot that can accommodate up to 2G of DDR2 RAM.       
+      This board has a 945gc chipset which is the desktop equivalent of 
+945gm which can be found in the Lenovo x60/t60 or macbook2,1. This 
+chipset features an ICH7 southbridge. It has 1 DIMM slot that can 
+accommodate up to 2G of DDR2 RAM.       
     </p>
     <p>
-      Connectivity-wise it has 1 PCI slot,  a 10/100 ethernet port, 4 usb slot and 4 usb ports, with one internal header and 2 SATA ports.
+      Connectivity-wise it has 1 PCI slot,  a 10/100 ethernet port, 4 
+usb slot and 4 usb ports, with one internal header and 2 SATA ports.
     </p>
     <p>
-      The D945GCLF2 is an upgraded version of this board. The differences are: 1 more USB header, 10/100/1000 ethernet and a dual core cpu (also hyperthreaded). Since the board is almost identical (and coreboot code seem to indicate that it works, since MAX_CPU=4 is set), it is believed that it should also work but this is untested.
+      The D945GCLF2 is an upgraded version of this board. The 
+differences are: 1 more USB header, 10/100/1000 ethernet and a dual core
+ cpu (also hyperthreaded). Since the board is almost identical (and 
+coreboot code seem to indicate that it works, since MAX_CPU=4 is set), 
+it is believed that it should also work but this is untested.
     </p>
-    <p>
+    <h2>
       Remarks about vendor bios:
+    </h2>
       <ul>
-	<li>Without coreboot/libreboot this board is utery useless, since the vendor bios is very bad. It cannot boot from any HDD wether it is connected to the SATA port or USB. With libreboot it works just fine.</li>
-	<li>The vendor bios write protects the flash so it requires external flashing to install libreboot on this device. Once libreboot is flashed there is no problem to update the firmware internally</li>
+	<li>Without coreboot/libreboot this board is utery useless, since the 
+vendor bios is very bad. It cannot boot from any HDD wether it is 
+connected to the SATA port or USB. With libreboot it works just fine.</li>
+	<li>The vendor bios write protects the flash so it requires external 
+flashing to install libreboot on this device. Once libreboot is flashed 
+there is no problem to update the firmware internally</li>
       </ul>
-    </p>
     <p>
-      Here is an image of the board:<br/>
-      <img alt="" src="../images/d945gclf/d945gclf.jpg" />
+      Here is an image of the board:<br>
+      <img alt="" src="../images/d945gclf/d945gclf.jpg"><br/>
+      Here is an image of the D945GCLF2 board:<br>
+      <img alt="" src="../images/d945gclf/20160923_141521.jpg" width="80%" height="80%"><br/>
+      And SPI SOIC8 flash chip<br/>
+      <img alt="" src="../images/d945gclf/20160923_141550.jpg" width="50%" height="50%">
     </p>
-  </div>
+    </div>
+
+    <div class="section">
+    <h2>How to replace thermal paste and fan</h2>
+    <p>
+   This board comes with very crappy disposable loud fan, that one has no bearings,
+which can not be repaired or oiled properly, do not waste your time trying to fix it, just buy one chinese same size fan<br/>
+   <img alt="" src="../images/d945gclf/20160923_141620.jpg" width="50%" height="50%">
+   <img alt="" src="../images/d945gclf/20160923_141614.jpg" width="50%" height="50%">
+   <br/>
+   Make sure that new one has same wiring<br/>
+   <img alt="" src="../images/d945gclf/20160923_142618.jpg" width="50%" height="50%"><br/>
+   This is a new one, with bearing and maintenable<br/>
+   <img alt="" src="../images/d945gclf/20160923_141738.jpg" width="50%" height="50%">
+   <img alt="" src="../images/d945gclf/20160923_141814.jpg" width="50%" height="50%"><br/>
+   Now remove the both coolers rotating them a bit, slowly, then clean both silicons
+and both coolers (removing cmos battery first is recommended)<br/>
+   <img alt="" src="../images/d945gclf/20160923_141601.jpg" width="50%" height="50%"><br/>
+   Put a little bit of non conductive thermal paste on both silicons (only cpu silicon iis shown on that image)<br/>
+   <img alt="" src="../images/d945gclf/20160923_142031.jpg" width="50%" height="50%"><br/>
+   <p>Before assembling new fan, some need new longer screws, make sure having these (on the left is original one, too short for new fan)<br/>
+   <img alt="" src="../images/d945gclf/20160923_141659.jpg" width="50%" height="50%"><br/>
+   After that, assemble your new fan into CPU cooler<br/>
+   <img alt="" src="../images/d945gclf/20160923_141635.jpg" width="50%" height="50%"><br/>
+   Finally assemle both coolers on both chips, do not forget put in the CPU fan connector back, and you are done.
+   </div>
 
   <div class="section">
 
     <p>
-      Copyright &copy;  2016 Arthur Heymans &lt;arthur@aheymans.xyz&gt;<br/>
+      Copyright &copy; 2016 Arthur Heymans &lt;arthur@aheymans.xyz&gt;<br>
+      Copyright &copy; 2016 Vitaly Castaño Solana &lt;vita_cell@hotmail.com&gt;<br>
       Permission is granted to copy, distribute and/or modify this document
       under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
       or any later version published by Creative Commons;
       
-      A copy of the license can be found at <a href="../cc-by-sa-4.0.txt">../cc-by-sa-4.0.txt</a>
+      A copy of the license can be found at <a href="https://libreboot.org/docs/cc-by-sa-4.0.txt">../cc-by-sa-4.0.txt</a>
     </p>
 
     <p>
@@ -98,6 +145,7 @@
 
   </div>
 
-</body>
-</html>
 
+
+
+</body></html>
