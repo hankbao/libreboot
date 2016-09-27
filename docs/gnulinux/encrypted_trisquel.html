@@ -8,13 +8,19 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Installing Trisquel or Debian GNU/Linux with full disk encryption (including /boot)</title>
+	<title>Installing Debian or Trisquel GNU/Linux with full disk encryption (including /boot)</title>
 </head>
 
 <body>
 	<div class="section">
-		<h1>Installing Trisquel or Debian GNU/Linux with full disk encryption (including /boot)</h1>
-			<p>
+		<h1>Installing Debian or Trisquel GNU/Linux with full disk encryption (including /boot)</h1>
+            <p>
+                The libreboot project recommends Debian, because it is more stable and up to date,
+                while still being entirely free software by default. Leah Rowe, libreboot's
+                lead maintainer, also runs Debian. See:
+                <a href="../distros/">../distros/</a>
+            </p>
+            <p>
 				Libreboot on x86 uses the GRUB <a href="http://www.coreboot.org/Payloads#GRUB_2">payload</a> 
 				by default, which means that the GRUB configuration file 
 				(where your GRUB menu comes from) is stored directly alongside libreboot
@@ -31,9 +37,9 @@
 				access to the system.
 			</p>
 			<p>
-				This works in Trisquel 7, and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode).
+                This guide is written for Debian.
+				This also works in Trisquel 7 (probably Trisquel 8), and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode).
 				<a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
-                This guide also works for the Debian distribution, when you install using the netinstall option in Debian.
 			</p>
 			<p>
 				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
@@ -182,7 +188,7 @@
 
 	<div class="section">
 		
-		<h1>Tasksel</h1>
+		<h1>Tasksel (Debian or Trisquel)</h1>
 
 			<p>
 				Choose <i>&quot;Trisquel Desktop Environment&quot;</i> if you want GNOME, 
