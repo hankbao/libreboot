@@ -49,7 +49,7 @@ apt-get -y install pandoc texi2html texinfo texlive
 apt-get -y install build-essential
 
 # for cross-compiling ARM binaries
-apt-get -y install gcc-arm-linux-gnueabi
+apt-get -y install gcc-arm-linux-gnueabi || printf "debian stretch ftw\n"
 
 [ "$(uname -i)" = x86_64 ] || [ "$(uname -m)" = x86_64 ]
 arch=${?}
