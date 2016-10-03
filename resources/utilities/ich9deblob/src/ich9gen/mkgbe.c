@@ -28,11 +28,11 @@ struct GBEREGIONRECORD_4K generatedGbeStruct4k()
     /* MAC address (words 00h to 02h) */
     /* see ../gbe/gbe.c */
     gbeStruct4k.macAddress[0] = 0x00;
-    gbeStruct4k.macAddress[1] = 0xf5;
-    gbeStruct4k.macAddress[2] = 0xf0;
-    gbeStruct4k.macAddress[3] = 0x40;
-    gbeStruct4k.macAddress[4] = 0x71;
-    gbeStruct4k.macAddress[5] = 0xfe;
+    gbeStruct4k.macAddress[1] = 0xDE;
+    gbeStruct4k.macAddress[2] = 0xAD;
+    gbeStruct4k.macAddress[3] = 0xC0;
+    gbeStruct4k.macAddress[4] = 0xFF;
+    gbeStruct4k.macAddress[5] = 0xEE;
 
     /* Word 03h (Reserved) */
     gbeStruct4k.reservedWord03h.reserved1_0 = 0x00;
