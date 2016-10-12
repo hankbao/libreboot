@@ -435,14 +435,11 @@
 						</ul>
 					</li>
 					<li>Documentation (grub_cbfs.html): Looping in libreboot_grub.cfg (Add notes about it if the user copied from grub.cfg in CBFS.)</li>
-					<li>Documentation: refer to Guix as GNU Guix System Distribution or GNU GSD per advice from the Guix project.</li>
 				</ul>
 			<h2>
 				Changes for this release (latest changes first, earliest changes last)
 			</h2>
 				<ul>
-					<li>Documentation: added information about how to boot Guix GNU/Linux.</li>
-					<li>grub.cfg: Added (usb0) and (usb0,*) to the list of devices in the <i>Search for GRUB</i> menuentry (this is needed for Guix GNU/Linux)</li>
 					<li>grub.cfg: Added (ahci1) to list of devices for ISOLINUX parser (CD/DVD) (this is needed for the X200 docking station).</li>
 					<li>grub.cfg: ISOLINUX parsing is now done on all USB partitions.</li>
 					<li>grub.cfg: Automatically switched to /boot/grub/libreboot_grub.cfg on a partition, if it exists.</li>
