@@ -94,11 +94,22 @@
 		<h2>Debian net install?</h2>
 
 			<p>
-				Tip: don't use the official net install image. Download the full GNOME ISO (the ~1.5GiB one).
-				In this ISO, there is still the capability to boot the net install, while it also provides
-				an easy to use live system (which you can boot from USB). This ISO also works using
-				<i>syslinux_configfile -i</i> (the <i>Parse ISOLINUX</i> menu entries in the default
-				GRUB configuration that libreboot uses).
+                Download the Debian net installer. You can download the ISO from the homepage on
+                <a href="https://www.debian.org/">debian.org</a>.
+                Use this on the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):<br/>
+                <strong>
+                set root='usb0'<br/>
+                linux /install.amd/vmlinuz<br/>
+                initrd /install.amd/initrd.gz<br/>
+                boot<br/>
+                </strong>
+                If you are on a 32-bit system (e.g. X60):<br/>
+                <strong>
+                set root='usb0'<br/>
+                linux /install.386/vmlinuz<br/>
+                initrd /install.386/initrd.gz<br/>
+                boot
+                </strong>
 			</p>
 
 			<p>
