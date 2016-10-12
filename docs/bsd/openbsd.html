@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<style type="text/css">
+		@import url('../css/main.css');
+	</style>
+
+	<title>How to install OpenBSD on a libreboot system</title>
+</head>
+
+<body>
+	<div id="pagetop" class="section">
+		<h1>How to install OpenBSD on a libreboot system</h1>
+			<p>
+				This section relates to preparing, booting and installing a
+				OpenBSD distribution on your libreboot system, using nothing more than a USB flash drive (and <i>dd</i>). They've only been tested on a Lenovo ThinkPad x200.
+			</p>
+			<ul>
+				<li><a href="#prepare">Prepare the USB drive (in OpenBSD)</a></li>
+				<li><a href="#noencryption">Installing OpenBSD without full disk encryption</a></li>
+				<li><a href="#encryption">Installing OpenBSD with full disk encryption</a></li>
+				<li><a href="#bootuing">Booting</a></li>
+				<li><a href="#configuring_grub">Configuring Grub</a></li>
+				<li><a href="#troubleshooting">Troubleshooting</a></li>
+			</ul>
+			<p>
+				<a href="index.html">Back to previous index</a>
+			</p>
+	</div>
+
+	<div class="section">
+		<p>
+			<b>This section is only for the GRUB payload. For depthcharge (used on CrOS devices in libreboot), instructions
+			have yet to be written in the libreboot documentation.</b>
+		</p>
+	</div>
+
+	<div id="prepare" class="section">
+		
+		<h2>Prepare the USB drive (in OpenBSD)</h2>
+
+			<p>
+				Connect the USB drive. Check dmesg:<br/>
+				<b>$ dmesg | tail</b><br/>
+
+				Check to confirm which drive it is, for example, if you think its sd3:<br/>
+				<b>$ disklabel sd3</b>
+			</p>
+
+			<p>
+				Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
+				<b>$ doas umount /dev/sd3i</b><br/>
+			</p>
+
+			<p>
+				dmesg told you what device it is. Overwrite the drive, writing the OpenBSD installer to it with dd. For example:<br/>
+				<b>$ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync</b><br/>
+			</p>
+			
+			<p>
+				You should now be able to boot the installer from your USB drive. Continue reading, for
+				information about how to do that.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+			
+	</div>
+
+	<div id="noencryption" class="section">
+
+		<h2>Installing OpenBSD without full disk encryption</h2>
+
+			<p>
+				Press C in GRUB to access the command line:
+			</p>
+			<p>
+				grub> <b>kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd</b>
+			</p>
+			<p>
+				It will start booting into the OpenBSD installer. Follow the normal process for installing OpenBSD.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div id="encryption" class="section">
+
+		<h2>Installing OpenBSD with full disk encryption</h2>
+
+			<p>
+				Not working. You can modify the above procedure (installation w/o encryption) to install OpenBSD using full disk encryption, and it appears to work, except that its not yet clear how to actually <i>boot</i> an OpenBSD+FDE installation using libreboot+Grub2. If you get it working, please let us know.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+		
+	<div id="booting" class="section">
+
+		<h2>Booting</h2>
+
+			<p>
+				Press C in GRUB to access the command line:
+			</p>
+			<p>
+				grub> <b>kopenbsd -r sd0a (ahci0,openbsd1)/bsd</b>
+			</p>
+			<p>
+				OpenBSD will start booting. Yay!
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
+	</div>
+
+	<div id="configuring_grub" class="section">
+		
+		<h2>Configuring Grub</h2>
+
+			<p>
+				If you don't want to drop to the GRUB command line and type in a command to boot OpenBSD every time, you can create a GRUB configuration that's aware of your OpenBSD installation and that will automatically be used by libreboot.
+      </p>
+			<p>
+			On your OpenBSD root partition, create the <b>/grub</b> directory and add the file <b>libreboot_grub.cfg</b> to it. Inside the <b>libreboot_grub.cfg</b> add these lines:
+			<p><b>
+			default=0
+			timeout=3
+			menuentry "OpenBSD" {<br>
+			&nbsp;&nbsp;&nbsp;&nbsp;kopenbsd -r sd0a (ahci0,openbsd1)/bsd<br>
+			}<br>
+			</b></p>
+			<p>The next time you boot, you'll see the old Grub menu for a few seconds, then you'll see the a new menu with only OpenBSD on the list. After 3 seconds OpenBSD will boot, or you can hit enter to boot.
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+			
+	</div>
+		
+	<div id="troubleshooting" class="section">
+		
+		<h1>Troubleshooting</h1>
+
+			<p>
+				Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer.
+				This mode is useful for booting payloads like memtest86+ which expect text-mode, but for OpenBSD distributions
+				it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
+			</p>
+
+			<p>
+				In most cases, you should use the vesafb ROM images. Example filename: libreboot_ukdvorak_vesafb.rom.
+			</p>
+
+			<h2>won't boot...something about file not found</h2>
+				<p>
+					You device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and numbers may differ. Use TAB completion.
+				</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+				
+	</div>
+
+	<div class="section">
+
+		<p>
+			Copyright &copy;  2014, 2015 Leah Rowe &lt;info@minifree.org&gt;<br/>
+			Permission is granted to copy, distribute and/or modify this document
+			under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
+			or any later version published by Creative Commons;
+			
+			A copy of the license can be found at <a href="../cc-by-sa-4.0.txt">../cc-by-sa-4.0.txt</a>
+		</p>
+
+		<p>
+			Updated versions of the license (when available) can be found at
+			<a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">https://creativecommons.org/licenses/by-sa/4.0/legalcode</a>
+		</p>
+
+		<p>
+			UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+			EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+			AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+			ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+			IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+			WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+			PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+			ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+			KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+			ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+			TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+			NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+			INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+			COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+			USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+			ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+			DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+			IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+		</p>
+		<p>
+			The disclaimer of warranties and limitation of liability provided
+			above shall be interpreted in a manner that, to the extent
+			possible, most closely approximates an absolute disclaimer and
+			waiver of all liability.
+		</p>
+		
+	</div>
+
+</body>
+</html>
