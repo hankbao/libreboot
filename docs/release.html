@@ -246,7 +246,7 @@ Libreboot now uses the grub.cfg provided by the installed GNU/Linux distribution
 (also on LVM volumes and encrypted volumes). This should make libreboot more easy to use for non-technical users, without having to modify the GRUB configuration used in libreboot.
 </p>
 <p>
-Utilities archives is now source only. You will need to compile the packages in there (build scripts included, and a script for installing build dependencies in Trisquel 7). (binary utility archives are planned again in the next release, when the new build system is merged)
+Utilities archives is now source only. You will need to compile the packages in there (build scripts included, and a script for installing build dependencies). (binary utility archives are planned again in the next release, when the new build system is merged)
 </p>
 <p>
 SeaGRUB is now the default payload on all x86 boards. (SeaBIOS configured to load a compressed GRUB payload from CBFS immediately, without providing an interface in SeaBIOS. This way, GRUB is still used but now BIOS services are available, so you get the best of both worlds). Thanks go to Timothy Pearson of coreboot for this idea.

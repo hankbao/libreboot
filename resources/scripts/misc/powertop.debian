@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#  powertop.trisquel7: automatically sets up powertop --auto-tune on startup in trisquel 7
+#  powertop.debian: automatically sets up powertop --auto-tune on startup in Debian
 #
 #	Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
 #
@@ -26,7 +26,7 @@ if [ $EUID -ne 0 ]; then
    exit 1
 fi
 
-# For Trisquel 7 users.
+# For Debian users.
 
 apt-get -y install powertop
 

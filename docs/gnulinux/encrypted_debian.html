@@ -8,12 +8,12 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>Installing Debian or Trisquel GNU/Linux with full disk encryption (including /boot)</title>
+	<title>Installing Debian GNU/Linux with full disk encryption (including /boot)</title>
 </head>
 
 <body>
 	<div class="section">
-		<h1>Installing Debian or Trisquel GNU/Linux with full disk encryption (including /boot)</h1>
+		<h1>Installing Debian GNU/Linux with full disk encryption (including /boot)</h1>
             <p>
                 The libreboot project recommends Debian, because it is more stable and up to date,
                 while still being entirely free software by default. Leah Rowe, libreboot's
@@ -37,10 +37,25 @@
 				access to the system.
 			</p>
 			<p>
-                This guide is written for Debian.
-				This also works in Trisquel 7 (probably Trisquel 8), and probably Trisquel 6. Boot the 'net installer' (Install Trisquel in Text Mode).
-				<a href="grub_boot_installer.html">How to boot a GNU/Linux installer</a>.
+                This guide is written for Debian net installer. You can download the ISO from the homepage on
+                <a href="https://www.debian.org/">debian.org</a>.
+                Use this on the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):<br/>
+                <strong>
+                set root='usb0'<br/>
+                linux /install.amd/vmlinuz<br/>
+                initrd /install.amd/initrd.gz<br/>
+                boot<br/>
+                If you are on a 32-bit system (e.g. X60):
+                set root='usb0'<br/>
+                linux /install.386/vmlinuz<br/>
+                initrd /install.386/initrd.gz<br/>
+                boot
+                </strong>
 			</p>
+            <p>
+                <a href="grub_boot_installer.html">This guide</a> shows how to
+                create a boot USB drive with the Debian ISO image.
+            </p>
 			<p>
 				<b>This guide is *only* for the GRUB payload. If you use the depthcharge payload, ignore this section entirely.</b>
 			</p>
@@ -188,22 +203,12 @@
 
 	<div class="section">
 		
-		<h1>Tasksel (Debian or Trisquel)</h1>
+		<h1>Tasksel</h1>
 
-			<p>
-				Choose <i>&quot;Trisquel Desktop Environment&quot;</i> if you want GNOME, 
-				<i>&quot;Trisquel-mini Desktop Environment&quot;</i> if you
-				want LXDE or <i>&quot;Triskel Desktop Environment&quot;</i> if you want KDE. 
-				If you want to have no desktop (just a basic shell)
-				when you boot or if you want to create your own custom setup, then choose nothing here (don't select anything). 
-				You might also want to choose some of the other package groups; it's up to you.
-			</p>
             <p>
                 For Debian, use the <em>MATE</em> option, or one of the others if you want.
-            </p>
-            <p>
-                On Debian or Trisquel, you may also want to select the option for a printer server,
-                so that you can print.
+                The libreboot project recommends MATE, unless you're saavy enough to choose something
+                else.
             </p>
             <p>
                 If you want debian-testing, then you should only select barebones options here

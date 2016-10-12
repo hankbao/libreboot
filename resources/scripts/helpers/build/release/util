@@ -230,7 +230,7 @@ cd "../../"
 cp "flash" "${distdir}/"
 
 # powertop script
-cp "resources/scripts/misc/powertop.trisquel7" "${distdir}/"
+cp "resources/scripts/misc/powertop.debian" "${distdir}/"
 
 printf "\n\n"
 

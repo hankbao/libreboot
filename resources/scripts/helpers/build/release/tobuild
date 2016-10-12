@@ -69,7 +69,7 @@ cp "resources/scripts/helpers/build/clean/bucts" "${distdir}/resources/scripts/h
 cp "resources/scripts/helpers/build/clean/flashrom" "${distdir}/resources/scripts/helpers/build/clean/"
 cp "resources/scripts/helpers/build/module/bucts" "${distdir}/resources/scripts/helpers/build/module/"
 cp "resources/scripts/helpers/build/module/flashrom" "${distdir}/resources/scripts/helpers/build/module/"
-cp "resources/scripts/misc/powertop.trisquel7" "${distdir}/"
+cp "resources/scripts/misc/powertop.debian" "${distdir}/"
 
 # this has to be done before generating
 # the "version" file

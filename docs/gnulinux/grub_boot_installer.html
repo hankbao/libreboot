@@ -23,7 +23,7 @@
 				<li><a href="#prepare">Prepare the USB drive (in GNU/Linux)</a></li>
 				<li><a href="#encryption">Installing GNU/Linux with full disk encryption</a></li>
 				<li><a href="#guix">GNU Guix System Distribution?</a></li>
-				<li><a href="#debian_netinstall">Debian or Trisquel net install?</a></li>
+				<li><a href="#debian_netinstall">Debian net install?</a></li>
 				<li><a href="#parse_isolinux">Booting ISOLINUX images (automatic method)</a></li>
 				<li><a href="#manual_isolinux">Booting ISOLINUX images (manual method)</a></li>
 				<li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -80,7 +80,7 @@
 		<h2>Installing GNU/Linux with full disk encryption</h2>
 
 			<ul>
-				<li><a href="encrypted_debian.html">Installing Debian or Trisquel GNU/Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="encrypted_debian.html">Installing Debian GNU/Linux with full disk encryption (including /boot)</a></li>
 				<li><a href="encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
 			</ul>
 
@@ -92,7 +92,7 @@
 		
 	<div id="debian_netinstall" class="section">
 
-		<h2>Debian or Trisquel net install?</h2>
+		<h2>Debian net install?</h2>
 
 			<p>
 				Tip: don't use the official net install image. Download the full GNOME ISO (the ~1.5GiB one).
@@ -153,10 +153,12 @@
 			</p>
 
 			<p>
-				For Trisquel (and other debian-based distros), there are typically menuentries listed in
+				For Debian (and other debian-based distros), there are typically menuentries listed in
 				<i>/isolinux/txt.cfg</i> or <i>/isolinux/gtk.cfg</i>. For dual-architecture ISO images
 				(i686 and x86_64), there may be separate files/directories for each architecture.
 				Just keep searching through the image, until you find the correct ISOLINUX configuration file.
+                NOTE: Debian 8.6 ISO only lists 32-bit boot options in txt.cfg. This is important if you want
+                64-bit booting on your system.
 			</p>
 
 			<p>
@@ -207,13 +209,13 @@
 			<h2>debian-installer graphical corruption in text-mode</h2>
 				<p>
 					When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
-					booting the Trisquel net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
+					booting the Debian net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
 					exist. Use that kernel parameter on the 'linux' line when booting it:<br/>
 					<b>vga=normal fb=false</b>
 				</p>
 
 				<p>
-					Tested in Trisquel 6 (and 7). This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
+					This forces debian-installer to start in text-mode, instead of trying to switch to a framebuffer.
 				</p>
 
 				<p>

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# for_trisquel7 script: installs build dependencies for Trisquel 7
+# script: installs build dependencies for Debian
 #
 #	Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
 #

@@ -2,7 +2,7 @@
 
 #  helper script: installs build dependencies for Parabola
 
-# this script is based on the script for Trisquel 7
+# this script is based on the script for Debian
 #
 #	Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
 #	Copyright (C) 2015 Klemens Nanni <klemens@posteo.de>

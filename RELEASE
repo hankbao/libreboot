@@ -73,8 +73,8 @@ easy to use for non-technical users, without having to modify the GRUB
 configuration used in libreboot.
 
 Utilities archives is now source only. You will need to compile the packages
-in there (build scripts included, and a script for installing build dependencies
-in Trisquel 7). (binary utility archives are planned again in the next
+in there (build scripts included, and a script for installing build
+dependencies. (binary utility archives are planned again in the next
 release, when the new build system is merged)
 
 SeaGRUB is now the default payload on all x86 boards. (SeaBIOS configured to
