@@ -48,8 +48,19 @@
 	</div>
 
 	<div id="prepare" class="section">
-		
-		<h2>Prepare the USB drive (in OpenBSD)</h2>
+	
+        <p>
+            install60.fs is the installation image for OpenBSD 6.0. Adapt
+            the filename accordingly, for a different OpenBSD version or
+            LibertyBSD.
+        </p>
+
+		<h2>Prepare the USB drive (in LibertyBSD or OpenBSD)</h2>
+
+            <p>
+                If you downloaded your ISO on a LibertyBSD or OpenBSD system,
+                here is how to create the bootable LibertyBSD/OpenBSD USB drive:
+            </p>
 
 			<p>
 				Connect the USB drive. Check dmesg:<br/>
@@ -76,9 +87,46 @@
 
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
+			</p>	
+
+		<h2>Prepare the USB drive (in GNU/Linux)</h2>
+
+            <p>
+                If you downloaded your ISO on a GNU/Linux system,
+                here is  how to create the bootable OpenBSD USB drive:
+            </p>
+
+			<p>
+				Connect the USB drive. Check dmesg:<br/>
+				<b>$ dmesg</b><br/>
+
+				Check lsblk to confirm which drive it is:<br/>
+				<b>$ lsblk</b>
+			</p>
+
+			<p>
+				Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
+				<b>$ sudo umount /dev/sdX*</b><br/>
+				<b># umount /dev/sdX*</b>
+			</p>
+
+			<p>
+				dmesg told you what device it is. Overwrite the drive, writing your distro ISO to it with dd. For example:<br/>
+				<b>$ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync</b><br/>
+				<b># dd if=install60.fs of=/dev/sdX bs=8M; sync</b>
 			</p>
 			
+			<p>
+				You should now be able to boot the installer from your USB drive. Continue reading, for
+				information about how to do that.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
 	</div>
+
 
 	<div id="noencryption" class="section">
 

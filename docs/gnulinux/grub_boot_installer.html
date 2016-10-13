@@ -43,6 +43,11 @@
 		
 		<h2>Prepare the USB drive (in GNU/Linux)</h2>
 
+            <p>
+                If you downloaded your ISO on an existing GNU/Linux system,
+                here is  how to create the bootable GNU/Linux USB drive:
+            </p>
+
 			<p>
 				Connect the USB drive. Check dmesg:<br/>
 				<b>$ dmesg</b><br/>
@@ -71,7 +76,41 @@
 			<p>
 				<a href="#pagetop">Back to top of page</a>.
 			</p>
+		
+		<h2>Prepare the USB drive (in LibertyBSD or OpenBSD)</h2>
+
+            <p>
+                If you downloaded your ISO on a LibertyBSD or OpenBSD system,
+                here is how to create the bootable GNU/Linux USB drive:
+            </p>
+
+			<p>
+				Connect the USB drive. Check dmesg:<br/>
+				<b>$ dmesg | tail</b><br/>
+
+				Check to confirm which drive it is, for example, if you think its sd3:<br/>
+				<b>$ disklabel sd3</b>
+			</p>
+
+			<p>
+				Check that it wasn't automatically mounted. If it was, unmount it. For example:<br/>
+				<b>$ doas umount /dev/sd3i</b><br/>
+			</p>
+
+			<p>
+				dmesg told you what device it is. Overwrite the drive, writing the OpenBSD installer to it with dd. For example:<br/>
+				<b>$ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync</b><br/>
+			</p>
 			
+			<p>
+				You should now be able to boot the installer from your USB drive. Continue reading, for
+				information about how to do that.
+			</p>
+
+			<p>
+				<a href="#pagetop">Back to top of page</a>.
+			</p>
+
 	</div>
 
 	<div id="encryption" class="section">
