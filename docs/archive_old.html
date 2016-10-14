@@ -54,8 +54,8 @@
 			</p>
 
 				<p>
-					Installation instructions can be found at <b><i>docs/install/index.html</i></b>. 
-					Building instructions (for source code) can be found at <b><i>docs/git/index.html#build</i></b>.
+					Installation instructions can be found at <b><i>docs/install/</i></b>. 
+					Building instructions (for source code) can be found at <b><i>docs/git/#build</i></b>.
 				</p>
 
 			<h2>Machines supported in this release:</h2>
@@ -72,17 +72,17 @@
 					<li>
 						<b>ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <b><i>docs/hcl/index.html#supported_x60t_list</i></b> for list of supported LCD panels</li>
+							<li>See <b><i>docs/hcl/#supported_x60t_list</i></b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 						<ul>
-							<li>See notes below for exceptions, and <b><i>docs/hcl/index.html#supported_t60_list</i></b> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b><i>docs/hcl/#supported_t60_list</i></b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
-							<li>See <b><i>docs/future/index.html#t60_cpu_microcode</i></b>.</li>
-							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b><i>docs/hcl/index.html#t60_ati_intel</i></b></li>
+							<li>See <b><i>docs/future/#t60_cpu_microcode</i></b>.</li>
+							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b><i>docs/hcl/#t60_ati_intel</i></b></li>
 						</ul>
 					</li>
 					<li>
@@ -116,13 +116,13 @@
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <b><i>docs/hcl/index.html#macbook11</i></b>.</li>
+							<li>See <b><i>docs/hcl/#macbook11</i></b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <b><i>docs/hcl/index.html#macbook21</i></b>.</li>
+							<li>See <b><i>docs/hcl/#macbook21</i></b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -150,14 +150,14 @@
 						docs/gnulinux/encrypted_*.html: Remove mention of password length
 						- it was arbitrary and pointless.
 					</li>
-					<li>docs/maintain/index.html: Finish the guide</li>
+					<li>docs/maintain/: Finish the guide</li>
 					<li>
 						scripts/download/coreboot: use diffs included in libreboot, not external gerrit cherry-picks
 						- review.coreboot.org (gerrit) being down no longer kills
 						libreboot (backup mirrors of the master repository exist)
 					</li>
 					<li>docs/install/bbb_setup.html: Add info about wp/hold and pinouts</li>
-					<li>docs/index.html: improve the description of libreboot</li>
+					<li>docs/: improve the description of libreboot</li>
 					<li>docs/hcl/gm45_remove_me.html: notes about the demefactory utility</li>
 					<li>docs/install/bbb_setup.html: EHCI debug: recommend linux-libre</li>
 					<li>docs/install/bbb_setup.html: EHCI Debug logging setup guide</li>
@@ -175,7 +175,7 @@
 					<li>ich9deblob: re-factor descriptor.c functions</li>
 					<li>docs/hcl/t500.html: add hardware logs</li>
 					<li>docs/gnulinux/encrypted_*.html: No password for default entry</li>
-					<li>docs/git/index.html: Add more details about BUC.TS</li>
+					<li>docs/git/: Add more details about BUC.TS</li>
 					<li>grub.cfg: Also scan for grub2/grub.cfg, not just grub/grub.cfg</li>
 					<li>docs/maintain/ (new section. WIP!): Maintaining libreboot</li>
 					<li>docs/gnulinux/grub_boot_installer.html: Fix hazardous instruction</li>
@@ -223,7 +223,7 @@
 					<li>build/clean/grub: use distclean instead of clean</li>
 					<li>grub-assemble: Add the <i>bsd</i> and <i>part_bsd</i> modules</li>
 					<li>build/roms/withgrub: Only run ich9gen if gm45/gs45 images exist</li>
-					<li>docs/git/index.html: Add notes about building for specific boards</li>
+					<li>docs/git/: Add notes about building for specific boards</li>
 					<li>build/roms/withgrub: Allow building for a custom range of boards</li>
 					<li>grub-assemble: Disable verbose output</li>
 					<li>Add documentation on how to unlock root encrypted fs with key in initramfs in Parabola Linux</li>
@@ -308,7 +308,7 @@
 					<li>i945-pwm: add clean command to Makefile</li>
 					<li>i945-pwm: add -lz to Makefile</li>
 					<li>docs/install/x200_external: Mention GPIO33 non-descriptor mode</li>
-					<li>docs/hcl/index.html: Remove redundant links</li>
+					<li>docs/hcl/: Remove redundant links</li>
 					<li>ich9macchange: Add R400</li>
 					<li>build-release: Separate ROM images into individual archives</li>
 					<li>build-release: rename libreboot_bin to libreboot_util</li>
@@ -340,17 +340,17 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
+							<li>See <b>hcl/#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have it's mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issuesinstall/x200_external.html; see below):
 						<ul>
-							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have it's mainboard replaced with a T60 motherboard.</li>
-							<li>See <b>future/index.html#t60_cpu_microcode</b>.</li>
-							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
+							<li>See <b>future/#t60_cpu_microcode</b>.</li>
+							<li>T60P (and T60 laptops with ATI GPU) will likely never be supported: <b>hcl/#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
@@ -369,13 +369,13 @@
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook11</b>.</li>
+							<li>See <b>hcl/#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook21</b>.</li>
+							<li>See <b>hcl/#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -395,21 +395,21 @@
 					<li>buildrom-withgrub: Put background.jpg in CBFS, not GRUB memdisk</li>
 					<li>grub-assemble: merge scripts into a single script gen.sh</li>
 					<li>Documentation: implement theme, drastically improve readability</li>
-					<li>docs/hcl/index.html: update list of compatible T60 LCD panels</li>
-					<li>docs/index.html: more clarification of libreboot's stated purpose.</li>
+					<li>docs/hcl/: update list of compatible T60 LCD panels</li>
+					<li>docs/: more clarification of libreboot's stated purpose.</li>
 					<li>build-release: include the commitid file in the release archives</li>
-					<li>docs/index.html: Further emphasize the GNU/Linux requirement.</li>
+					<li>docs/: Further emphasize the GNU/Linux requirement.</li>
 					<li>lenovobios_firstflash: fix BASH errors</li>
 					<li>lenovobios_secondflash: fix BASH errors</li>
 					<li>docs/install/x200_external.html: Tell user to switch MAC address.</li>
-					<li>docs/git/index.html: Add to the list of x86_64 compatible hosts.</li>
-					<li>docs/install/index.html: Remove old (obsolete) information.</li>
-					<li>docs/git/index.html: Say that the build dependencies are for src (and not nedeed for libreboot_bin)</li>
+					<li>docs/git/: Add to the list of x86_64 compatible hosts.</li>
+					<li>docs/install/: Remove old (obsolete) information.</li>
+					<li>docs/git/: Say that the build dependencies are for src (and not nedeed for libreboot_bin)</li>
 					<li>build: re-factor the descriptor/gbe generating loop for GM45/ICH9M</li>
 					<li>X60, X60S and X60 Tablet now the same ROM images.</li>
 					<li>Add QEMU (q35/ich9) support to libreboot.</li>
 					<li>Add QEMU (i440fx/piix4) support to libreboot</li>
-					<li>docs/index.html: Re-write the description of what libreboot is.</li>
+					<li>docs/: Re-write the description of what libreboot is.</li>
 					<li>docs/release.html: Add notes about how to use GPG.</li>
 					<li>build-release: delete the commitid file from release archives</li>
 					<li>build-release: create file named commitid after build-release</li>
@@ -456,7 +456,7 @@
 					<li>Enabled cstates 1 and 2 on macbook21. This reduces idle heat / power consumption.</li>
 					<li>buildrom-withgrub: disabled creation of *txtmode*.rom for X200 (only framebuffer graphics work)</li>
 					<li>Updated SeaBIOS (again)</li>
-					<li>docs/install/index.html#flashrom_x200: improve instructions</li>
+					<li>docs/install/#flashrom_x200: improve instructions</li>
 					<li>Updated flashrom (again) - patches updated</li>
 					<li>Updated GRUB (again)</li>
 					<li>Updated coreboot (again)</li>
@@ -581,29 +581,29 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
+							<li>See <b>hcl/#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below):
 						<ul>
-							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
-							<li>See <b>future/index.html#t60_cpu_microcode</b>.</li>
-							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
+							<li>See <b>future/#t60_cpu_microcode</b>.</li>
+							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook11</b>.</li>
+							<li>See <b>hcl/#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook21</b>.</li>
+							<li>See <b>hcl/#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -668,28 +668,28 @@
 					<li>
 						<b>Lenovo ThinkPad X60 Tablet</b> (1024x768 and 1400x1050) with digitizer support
 						<ul>
-							<li>See <b>hcl/index.html#supported_x60t_list</b> for list of supported LCD panels</li>
+							<li>See <b>hcl/#supported_x60t_list</b> for list of supported LCD panels</li>
 							<li>It is unknown whether an X61 Tablet can have its mainboard replaced with an X60 Tablet motherboard.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Lenovo ThinkPad T60</b> (Intel GPU) (there are issues; see below)
 						<ul>
-							<li>See notes below for exceptions, and <b>hcl/index.html#supported_t60_list</b> for known working LCD panels.</li>
+							<li>See notes below for exceptions, and <b>hcl/#supported_t60_list</b> for known working LCD panels.</li>
 							<li>It is unknown whether a T61 can have its mainboard replaced with a T60 motherboard.</li>
-							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/index.html#t60_ati_intel</b></li>
+							<li>T60P (and T60s with ATI GPU) will likely never be supported: <b>hcl/#t60_ati_intel</b></li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook1,1</b> (MA255LL/A, MA254LL/A, MA472LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook11</b>.</li>
+							<li>See <b>hcl/#macbook11</b>.</li>
 						</ul>
 					</li>
 					<li>
 						<b>Apple MacBook2,1</b> (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A, MB063LL/A, MB062LL/A)
 						<ul>
-							<li>See <b>hcl/index.html#macbook21</b>.</li>
+							<li>See <b>hcl/#macbook21</b>.</li>
 						</ul>
 					</li>
 				</ul>
@@ -725,8 +725,8 @@
 					<li>Added modified builddeb* scripts for Parabola GNU/Linux-libre: buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah Vesely)</li>
 					<li>Documentation: updated all relevant areas to mention use of buildpac* scripts for Parabola users.</li>
 					<li>Documentation: added information showing how to enable or disable bluetooth on the X60</li>
-					<li>MacBook1,1 tested! See <b>hcl/index.html#macbook11</b></li>
-					<li>Documentation: fixed typo in index.html#get_edid_panelname (get-edit changed to get-edid)</li>
+					<li>MacBook1,1 tested! See <b>hcl/#macbook11</b></li>
+					<li>Documentation: fixed typo in #get_edid_panelname (get-edit changed to get-edid)</li>
 					<li>Documentation: added images/x60_lcd_change/ (pics only for now)</li>
 					<li>Added gcry_serpent and gcry_whirlpool to the GRUB module list in the 'build' script (for luks users)</li>
 					<li>
@@ -769,7 +769,7 @@
 					<li>
 						Removed grub_serial*.cfg and libreboot_serial*.rom, all configs/rom files are now unified (containing same configuration as serial rom files from before).
 						<ul>
-							<li>Documentation: updated index.html#rom to reflect the above.</li>
+							<li>Documentation: updated #rom to reflect the above.</li>
 						</ul>
 					</li>
 					<li>Updated GRUB to new version from August 14th, 2014.</li>
@@ -811,22 +811,22 @@
 					<li>
 						'build' script: removed the parts that generated libreboot_meta directory (not needed anymore, since _meta will be hosted in git)
 						<ul>
-							<li>Updated index.html#build_meta (and other parts of documentation) to accomodate this change.</li>
+							<li>Updated #build_meta (and other parts of documentation) to accomodate this change.</li>
 						</ul>
 					</li>
-					<li>Documentation: simplified (refactored) the notes in index.html#rom</li>
+					<li>Documentation: simplified (refactored) the notes in #rom</li>
 					<li>
 						'build' script: removed the parts that generated libreboot_bin and added them to a new script: 'build-release'
 						<ul>
-							<li>Documentation: index.html#build updated to reflect the above.</li>
+							<li>Documentation: #build updated to reflect the above.</li>
 						</ul>
 					</li>
 					<li><s>Added all gcry_* modules to grub (luks/cryptomount): gcry_arcfour gcry_camellia gcry_crc gcry_dsa gcry_md4 gcry_rfc2268 gcry_rmd160 gcry_seed gcry_sha1 gcry_sha512 gcry_twofish gcry_blowfish gcry_cast5 gcry_des gcry_idea gcry_md5 gcry_rijndael gcry_rsa gcry_serpent gcry_sha256 gcry_tiger gcry_whirlpool</s></li>
 					<li>Added GNUtoo's list of GRUB modules (includes all of the gcry_* modules above), cryptomount should be working now.</li>
-					<li>Removed builddeb-bucts and builddeb-flashrom, merged them with builddeb (index.html updated accordingly)</li>
-					<li>Removed buildpac-bucts and buildpac-flashrom, merged them with buildpac (index.html updated accordingly)</li>
-					<li>Renamed buildpac to deps-parabola (index.html updated accordingly)</li>
-					<li>Documentation: removed all parts talking about build dependencies, replaced them with links to index.html#build_dependencies</li>
+					<li>Removed builddeb-bucts and builddeb-flashrom, merged them with builddeb ( updated accordingly)</li>
+					<li>Removed buildpac-bucts and buildpac-flashrom, merged them with buildpac ( updated accordingly)</li>
+					<li>Renamed buildpac to deps-parabola ( updated accordingly)</li>
+					<li>Documentation: removed all parts talking about build dependencies, replaced them with links to #build_dependencies</li>
 					<li>Documentation: emphasized more strongly on the documentation, the need to re-build bucts and/or flashrom before flashing a ROM image.</li>
 					<li>build-release: flashrom, nvramtool, cbfstool and bucts are no longer provided pre-compiled in binary archives, and are now in source form only. (to maximize distro compatibility).</li>
 					<li>'build' script: replaced grub.elf assembly instructons, it is now handled by a utility added under resources/utilities/grub-assemble</li>
@@ -834,7 +834,7 @@
 					<li>Documentation: removed useless links to pictures of keyboard layouts and unmodified layouts.</li>
 					<li>Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory</li>
 					<li>'buildrom-withgrub' script: updated it to create 2 sets of ROMs for each system: one with text-mode, one with coreboot framebuffer.</li>
-					<li>Documentation: updated index.html#rom to reflect the above</li>
+					<li>Documentation: updated #rom to reflect the above</li>
 					<li>Deleted unused README and COPYING file from main directory</li>
 					<li>Removed some rm -Rf .git* instructions from the get* scripts and moved them to build-release script</li>
 					<li>
@@ -889,7 +889,7 @@
 					<li>Documentation: removed pcmcia reference in x60_security.html (it's cardbus)</li>
 					<li>Documentation: added preliminary information about randomized seal (for physical intrusion detection) in x60_security.html and t60_security.html</li>
 					<li>Documentation: added preliminary information about preventing/mitigating cold-boot attack in x60_security.html and t60_security.html</li>
-					<li>Documentation: added info to index.html#macbook21 warning about issues with macbook21</li>
+					<li>Documentation: added info to #macbook21 warning about issues with macbook21</li>
 					<li>
 						Documentation: X60/T60: added information about checking custom ROMs using dd to see whether or not the top 64K 
 						region is duplicated below top or not. Advise caution about this in the tutorial that deals with flashing on top 
@@ -969,7 +969,7 @@
 					<li>Updated buildrom-withgrub to use gnulove.jpg aswell</li>
 					<li>Updated resources/grub/config/macbook21/grub*cfg to use gnulove.jpg background.</li>
 					<li>Updated resources/grub/config/{x60,t60,x60t}/grub*cfg to use background.jpg background.</li>
-					<li>Documentation: updated docs/index.html#grub_custom_keyboard to be more generally useful.</li>
+					<li>Documentation: updated docs/#grub_custom_keyboard to be more generally useful.</li>
 					<li>
 						nvramtool:
 						<ul>
@@ -1012,7 +1012,7 @@
 							<li>Added resources/libreboot/config/macbook21config</li>
 							<li>macbook21: Added 'build-macbook21' script and linked to it in 'build' (ROMs included under bin/macbook21/)</li>
 							<li>macbook21: Removed dd instructions from build-macbook21 script (macbook21 does not need bucts when flashing libreboot while Apple EFI firmware is running)</li>
-							<li>Documentation: Added macbook21 ROMs to the list of ROMs in docs/index.html#rom</li>
+							<li>Documentation: Added macbook21 ROMs to the list of ROMs in docs/#rom</li>
 							<li>Documentation: Write documentation linking to Mono Moosbart's macbook21 and parabola page (and include a copy)</li>
 						</ul>
 					</li>
@@ -1092,7 +1092,7 @@
 					<li>
 						Updated flashrom checkout (r1822 2014-06-16) from SVN (http://flashrom.org/Downloads).
 						<ul>
-							<li>Updated flashing instructions in docs/index.html for new commands needed (Macronix chip on X60/T60)</li>
+							<li>Updated flashing instructions in docs/ for new commands needed (Macronix chip on X60/T60)</li>
 							<li>For X60/T60 (flashrom): Patched flashchips.c_lenovobios_macronix and flashchips.c_lenovobios_sst executables for SST/macronix (included in resources/flashrom/patch)</li>
 							<li>Updated builddeps to build flashrom_lenovobios_sst and flashrom_lenovobios_macronix, for X60/T60 users with Lenovo BIOS</li>
 							<li>moved the flashrom build instructions from 'builddeps' and put them in 'builddeps-flashrom', excecuting that from 'builddeps'.</li>
@@ -1196,7 +1196,7 @@
 					<li>
 						Documentation: added information about X60/T60 dock (ultrabase x6 and advanced mini dock) to relevant sections.
 						<ul>
-							<li>Added to docs/index.html#serial</li>
+							<li>Added to docs/#serial</li>
 						</ul>
 					</li>
 				</ul>
@@ -1256,7 +1256,7 @@
 						<ul>
 							<li>removed FLASH_INSTRUCTION and README.powertop and merged them with README</li>
 							<li>removed obsolete info from README and tidied it up</li>
-							<li>deleted README (replaced with docs/index.html)</li>
+							<li>deleted README (replaced with docs/)</li>
 						</ul>
 					</li>
 					<li>tidied up the menu entries in GRUB</li>
