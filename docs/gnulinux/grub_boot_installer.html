@@ -22,7 +22,7 @@
                 <li><a href="../distros">List of recommended GNU/Linux distributions</a></li>
 				<li><a href="#prepare">Prepare the USB drive (in GNU/Linux)</a></li>
 				<li><a href="#encryption">Installing GNU/Linux with full disk encryption</a></li>
-				<li><a href="#debian_netinstall">Debian net install?</a></li>
+				<li><a href="#debian_netinstall">Debian or Devuan net install?</a></li>
 				<li><a href="#parse_isolinux">Booting ISOLINUX images (automatic method)</a></li>
 				<li><a href="#manual_isolinux">Booting ISOLINUX images (manual method)</a></li>
 				<li><a href="#troubleshooting">Troubleshooting</a></li>
@@ -118,7 +118,7 @@
 		<h2>Installing GNU/Linux with full disk encryption</h2>
 
 			<ul>
-				<li><a href="encrypted_debian.html">Installing Debian GNU/Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="encrypted_debian.html">Installing Debian or Devuan GNU/Linux with full disk encryption (including /boot)</a></li>
 				<li><a href="encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
 			</ul>
 
@@ -130,11 +130,11 @@
 		
 	<div id="debian_netinstall" class="section">
 
-		<h2>Debian net install?</h2>
+		<h2>Debian or Devuan net install?</h2>
 
 			<p>
-                Download the Debian net installer. You can download the ISO from the homepage on
-                <a href="https://www.debian.org/">debian.org</a>.
+                Download the Debian or Devuan net installer. You can download the ISO from the homepage on
+                <a href="https://www.debian.org/">debian.org</a>, or <a href="https://www.devuan.org/">the Devuan homepage</a> for Devuan.
                 Use this on the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):<br/>
                 <strong>
                 set root='usb0'<br/>
@@ -202,12 +202,13 @@
 			</p>
 
 			<p>
-				For Debian (and other debian-based distros), there are typically menuentries listed in
+				For Debian or Devuan (and other debian-based distros), there are typically menuentries listed in
 				<i>/isolinux/txt.cfg</i> or <i>/isolinux/gtk.cfg</i>. For dual-architecture ISO images
 				(i686 and x86_64), there may be separate files/directories for each architecture.
 				Just keep searching through the image, until you find the correct ISOLINUX configuration file.
                 NOTE: Debian 8.6 ISO only lists 32-bit boot options in txt.cfg. This is important if you want
-                64-bit booting on your system.
+                64-bit booting on your system. Devuan versions based on Debian 8.x may also have the same
+                issue.
 			</p>
 
 			<p>
@@ -255,10 +256,10 @@
 					Use one of the ROM images with vesafb in the filename (uses coreboot framebuffer instead of text-mode).
 				</p>
 
-			<h2>debian-installer graphical corruption in text-mode</h2>
+			<h2>debian-installer graphical corruption in text-mode (Debian and Devuan)</h2>
 				<p>
 					When using the ROM images that use coreboot's &quot;text mode&quot; instead of the coreboot framebuffer,
-					booting the Debian net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
+					booting the Debian or Devuan net installer results in graphical corruption because it is trying to switch to a framebuffer which doesn't
 					exist. Use that kernel parameter on the 'linux' line when booting it:<br/>
 					<b>vga=normal fb=false</b>
 				</p>
@@ -274,7 +275,7 @@
 
 				<p>
 					This workaround was found on the page: <a href="https://www.debian.org/releases/stable/i386/ch05s04.html">https://www.debian.org/releases/stable/i386/ch05s04.html</a>.
-					It should also work for gNewSense, Debian and any other apt-get distro that provides debian-installer (text mode) net install method.
+					It should also work for Debian, Devuan and any other apt-get distro that provides debian-installer (text mode) net install method.
 				</p>
 
 			<p>

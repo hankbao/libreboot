@@ -19,7 +19,7 @@
 				Or <a href="../index.html">Back to main index</a>.
 			</p>
 			<ul>
-				<li><a href="#debian_powertop">High Pitched Whining Noise on Idle (how to remove in Debian)</a></li>
+				<li><a href="#debian_powertop">High Pitched Whining Noise on Idle (how to remove in Debian or Devuan)</a></li>
 				<li><a href="#high_pitch_parabola">High Pitched Whining Noise on Idle (how to remove in Parabola)</a></li>
 				<li><a href="#serial">X60/T60: Serial port - how to use (for dock owners)</a></li>
 				<li><a href="#powerbeeps">Power Management Beeps on Thinkpads</a></li>
@@ -32,7 +32,7 @@
 
 	<div class="section">
 
-		<h1 id="debian_powertop">High Pitched Whining Noise on Idle (how to remove in Debian)</h1>
+		<h1 id="debian_powertop">High Pitched Whining Noise on Idle (how to remove in Debian or Devuan)</h1>
 
 			<div class="subsection">
 				<h2 id="debian_powertop_autostart">Start powertop automatically at boot time</h2>
@@ -140,9 +140,9 @@ WantedBy=multi-user.target
 				You can also configure your distro so that a terminal (TTY) is accessible from the serial console.
 			</p>
 			<p>
-				The following guide is for Ubuntu, but it should work in Debian, to enable a serial console using GeTTY:<br/>
+				The following guide is for Ubuntu, but it should work in Debian and Devuan, to enable a serial console using GeTTY:<br/>
 				<a href="https://help.ubuntu.com/community/SerialConsoleHowto">https://help.ubuntu.com/community/SerialConsoleHowto</a>
-                (we DO NOT recommend Ubuntu, because it contains non-free software in the default repos. Use Debian)
+                (we DO NOT recommend Ubuntu, because it contains non-free software in the default repos. Use Debian or Devuan)
 			</p>
 			<p>
 				Note: part of the tutorial above requires changing your grub.cfg. Just change the <b>linux</b> line to add instructions for enabling getty.
@@ -250,7 +250,7 @@ WantedBy=multi-user.target
 				Or look in <b>/sys/class/drm/card0-LVDS-1/edid</b>
 			</p>
 			<p>
-				Alternatively you can use i2cdump. In Debian, this is in the package i2c-tools.<br/>
+				Alternatively you can use i2cdump. In Debian and Devuan, this is in the package i2c-tools.<br/>
 				$ <b>sudo modprobe i2c-dev</b><br/>
 				$ <b>sudo i2cdump -y 5 0x50</b> (you might have to change the value for -y)<br/>
 				$ <b>sudo rmmod i2c-dev</b><br/>
