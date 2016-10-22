@@ -99,7 +99,9 @@
                 Modify your <em>/etc/portage/make.conf</em> with the relevant license groups. See:
                 <a href="https://wiki.gentoo.org/wiki/License_Groups#Metasets">https://wiki.gentoo.org/wiki/License_Groups#Metasets</a>
                 - and <a href="https://wiki.gentoo.org/wiki//etc/portage/make.conf#ACCEPT_LICENSE">https://wiki.gentoo.org/wiki//etc/portage/make.conf#ACCEPT_LICENSE</a>
-                - configure the <em>ACCEPT_LICENSE</em> string accordingly.
+                - configure the <em>ACCEPT_LICENSE</em> string accordingly. if you plan using <a href="https://wiki.gentoo.org/wiki/Overlay">overlays</a> it is also 
+		recommended that apart from the FREE metaset, you also add GPL to the variable ACCEPT_LICENSE as in some overlays there are packages that define that
+		they are using the GPL license but not what version of the GPL They are using.
             </p>
             <p>
                 You also need to deblob your kernel: For that you need to add the
