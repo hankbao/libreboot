@@ -102,9 +102,66 @@
                 - configure the <em>ACCEPT_LICENSE</em> string accordingly.
             </p>
             <p>
-                You also need to deblob your kernel. See:
-                <a href="https://wiki.gentoo.org/wiki/Installation_on_libreboot#Use_a_Kernel_without_blobs">https://wiki.gentoo.org/wiki/Installation_on_libreboot#Use_a_Kernel_without_blobs</a>
-            </p>
+                You also need to deblob your kernel: For that you need to add the
+deblob useflag in the USE variable at /etc/portage/make.conf see
+<a href="https://wiki.gentoo.org/wiki/Installation_on_libreboot#Let_portage_remove_the_blobs">https://wiki.gentoo.org/wiki/Installation_on_libreboot#Let_portage_remove_the_blobs</a>
+, so that when you install the source code of the kernel it is
+emerged without the blobs, however this will only work if your
+objective is to install the hardened-sources, ck-sources, or the
+rt-sources kernel, so if you plan to install any other kernel such as
+gentoo-sources (the recommended kernel by the Gentoo Project) or any
+other kernel listed at <a href="https://wiki.gentoo.org/wiki/Kernel/Overview">https://wiki.gentoo.org/wiki/Kernel/Overview</a>
+you have two options:</p>
+<ol>
+	<li>
+<p>Creating a local overlay (repository) with a modified copy
+	of your desired kernel’s ebuild so that the deblob useflag does
+	work in it (This may not work if you use the kernel git-sources, as
+	of git-sources unstable, inconsistent, bleeding-edge nature it may
+	work at some point and in other not, also pf-sources won’t work
+	with this method as its versioning classification does conflict with
+	Gentoo’s internal script for controlling the deblobbing proccess,
+	however if you want to mess with the script it is located inside the
+	file at /usr/portage/eclass/kernel-2.eclass). For this first create
+	a local overlay following the steps defined at
+	<a href="https://wiki.gentoo.org/wiki/Overlay/Local_overlay">https://wiki.gentoo.org/wiki/Overlay/Local_overlay</a>
+	, next create the directory of your kernel at
+	/usr/local/portage/sys-kernel/your-kernel-dir, after that copy the
+	ebuild of your desired kernel from
+	/usr/portage/sys-kernel/your-kernel-dir/your-kernel.ebuild to
+	usr/local/portage/sys-kernel/your-kernel-dir/your-kernel.ebuild,
+	then open it in an editor and add a line with K_DEBLOB_AVAILABLE=”1”
+	between the variable EAPI and the line inherit kernel-2, and finally
+	run with root permissions the command <b>ebuild
+	/usr/local/portage/sys-kernel/your-kernel-dir/your-kernel.ebuild
+	manifest</b> <span style="font-weight: normal">; after that if you
+	had already added </span><b>deblob</b> <span style="font-weight: normal">to
+	your useflags you can continue with the kernel installation as you
+	normally would.</span></p>
+	</li><li>
+<p>Adding an exception to the licences that are accepted for
+	your desired kernel so that portage allows installing the source
+	code of your desired kernel even if it has blobs, and after that
+	applying the linux-libre deblob scripts by yourself and by doing so
+	removing the blobs. For this first create a file in
+	/etc/portage/package.license with the following content
+	<b>sys-kernel/your-kernel-sources freedist</b> <span style="font-weight: normal">,
+	next emerge (install) the source code of your kernel with portage,
+	after that go to /usr/src/linux and download the proper </span><b>deblob-check</b> <span style="font-weight: normal">
+	and </span><b>deblob-version</b> <span style="font-weight: normal"> scripts for your kernel version from
+	<a href="http://www.fsfla.org/svn/fsfla/software/linux-libre/releases/tags/">http://www.fsfla.org/svn/fsfla/software/linux-libre/releases/tags/</a>,
+	then make them executable, and finally set the </span><b>EPYTHON</b>
+	<span style="font-weight: normal">variable to python2.7 and execute
+	with root permissions the script </span><b>deblob-version</b> <span style="font-weight: normal">; after that continue
+	with the kernel installation as you normally would. </span>
+	</p>
+</li></ol>
+<p><span style="font-weight: normal">It is also possible to install
+the  linux-libre sources following the ins</span><span style="font-weight: normal">tructions
+at
+<a href="https://wiki.gentoo.org/wiki/Installation_on_libreboot#Use_linux-libre_sources">https://wiki.gentoo.org/wiki/Installation_on_libreboot#Use_linux-libre_sources</a></span>
+however this is not recommended as portage would not be able to
+manage it.</p>
             <p>
                 <a href="https://gentoo.org/">Visit the Gentoo website</a>
             </p>
