@@ -1,7 +1,7 @@
-From 1024b5e6c476dcc195dca742746735277f63236b Mon Sep 17 00:00:00 2001
+From 1a5ae09115f4abce7561d239d49e7e8b927b6d01 Mon Sep 17 00:00:00 2001
 From: Leah Rowe <info@minifree.org>
 Date: Mon, 13 Oct 2014 00:14:53 +0100
-Subject: [PATCH 5/9] NOTFORMERGE: ec/lenovo/h8:
+Subject: [PATCH] NOTFORMERGE: ec/lenovo/h8:
  wlan/trackpoint/touchpad/bluetooth/wwan
 
 Permanently enable them.
@@ -14,10 +14,10 @@ Signed-off-by: Leah Rowe <info@minifree.org>
  2 files changed, 15 insertions(+), 17 deletions(-)
 
 diff --git a/src/ec/lenovo/h8/h8.c b/src/ec/lenovo/h8/h8.c
-index 2cafc88..a6cb6b6 100644
+index 943bdd4..32285ac 100644
 --- a/src/ec/lenovo/h8/h8.c
 +++ b/src/ec/lenovo/h8/h8.c
-@@ -255,9 +255,11 @@ static void h8_enable(struct device *dev)
+@@ -252,9 +252,11 @@ static void h8_enable(struct device *dev)
  
  	ec_write(H8_FAN_CONTROL, H8_FAN_CONTROL_AUTO);
  
@@ -32,8 +32,8 @@ index 2cafc88..a6cb6b6 100644
  
  	h8_trackpoint_enable(1);
  	h8_usb_power_enable(1);
-@@ -265,14 +267,13 @@ static void h8_enable(struct device *dev)
- 	if (get_option(&val, "volume") == CB_SUCCESS)
+@@ -262,14 +264,13 @@ static void h8_enable(struct device *dev)
+ 	if (get_option(&val, "volume") == CB_SUCCESS && !acpi_is_wakeup_s3())
  		ec_write(H8_VOLUME_CONTROL, val);
  
 -	if (get_option(&val, "bluetooth") != CB_SUCCESS)
@@ -54,10 +54,10 @@ index 2cafc88..a6cb6b6 100644
  	if (conf->has_uwb) {
  		if (get_option(&val, "uwb") != CB_SUCCESS)
 diff --git a/src/ec/lenovo/pmh7/pmh7.c b/src/ec/lenovo/pmh7/pmh7.c
-index cc6e891..38aef16 100644
+index b2c3c08..1570cd6 100644
 --- a/src/ec/lenovo/pmh7/pmh7.c
 +++ b/src/ec/lenovo/pmh7/pmh7.c
-@@ -106,7 +106,6 @@ static void enable_dev(struct device *dev)
+@@ -102,7 +102,6 @@ static void enable_dev(struct device *dev)
  {
  	struct ec_lenovo_pmh7_config *conf = dev->chip_info;
  	struct resource *resource;
@@ -65,7 +65,7 @@ index cc6e891..38aef16 100644
  
  	resource = new_resource(dev, EC_LENOVO_PMH7_INDEX);
  	resource->flags = IORESOURCE_IO | IORESOURCE_FIXED;
-@@ -118,13 +117,11 @@ static void enable_dev(struct device *dev)
+@@ -114,13 +113,11 @@ static void enable_dev(struct device *dev)
  	pmh7_backlight_enable(conf->backlight_enable);
  	pmh7_dock_event_enable(conf->dock_event_enable);
  
@@ -84,5 +84,5 @@ index cc6e891..38aef16 100644
  
  struct chip_operations ec_lenovo_pmh7_ops = {
 -- 
-1.9.1
+2.9.3
 
