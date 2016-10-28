@@ -1,5 +1,4 @@
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0001-NOTFORMERGE-ec-lenovo-h8-wlan-trackpoint-touchpad-bl.patch
-/resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/t400_8mb/0001-Revert-hybrid-driver.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/t400_8mb/0002-make-256M-vram-the-default-for-gm45-laptops.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/t400_8mb/0003-hardcode-use-on-intel-integrated-graphic-device-on-t.patch
 /resources/libreboot/patch/coreboot/29fc9bb855cb878aee263cd1fe110e3bb3e98c80/grub/x200_8mb/0001-nb-intel-gm45-Fix-IOMMU.patch
