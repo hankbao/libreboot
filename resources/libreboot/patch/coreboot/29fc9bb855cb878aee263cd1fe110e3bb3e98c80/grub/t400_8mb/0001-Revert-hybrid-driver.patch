@@ -1,34 +1,17 @@
-From 4ea76ba84116e05de90ab0e973d6662b35c98455 Mon Sep 17 00:00:00 2001
-From: Leah Rowe <info@minifree.org>
-Date: Mon, 24 Oct 2016 20:08:33 +0100
-Subject: [PATCH] Revert "drivers/lenovo: Add hybrid graphics driver"
+From fbbc8d6a278c733eca475c17cbf95a8946e2c173 Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Thu, 4 Aug 2016 11:00:13 +0200
+Subject: [PATCH 1/3] Revert "drivers/lenovo: Add hybrid graphics driver"
 
 This reverts commit 5919ba42ed0ce5b1b13717514698444232c6036c.
----
- src/drivers/lenovo/Kconfig              |  12 ---
- src/drivers/lenovo/Makefile.inc         |   1 -
- src/drivers/lenovo/hybrid_graphics.c    | 125 --------------------------------
- src/mainboard/lenovo/t400/Kconfig       |   1 -
- src/mainboard/lenovo/t420/cmos.default  |   1 -
- src/mainboard/lenovo/t420/cmos.layout   |   5 +-
- src/mainboard/lenovo/t420s/Kconfig      |   1 -
- src/mainboard/lenovo/t420s/cmos.default |   1 -
- src/mainboard/lenovo/t420s/cmos.layout  |   5 +-
- src/mainboard/lenovo/t520/Kconfig       |   1 -
- src/mainboard/lenovo/t520/cmos.default  |   1 -
- src/mainboard/lenovo/t520/cmos.layout   |   5 +-
- src/mainboard/lenovo/t530/Kconfig       |   1 -
- src/mainboard/lenovo/t530/cmos.default  |   1 -
- src/mainboard/lenovo/t530/cmos.layout   |   6 +-
- src/southbridge/intel/i82801ix/Kconfig  |   1 -
- 16 files changed, 4 insertions(+), 164 deletions(-)
- delete mode 100644 src/drivers/lenovo/hybrid_graphics.c
+
+Change-Id: I027581ef769ca8232e72f89738c1bdec13f62687
 
 diff --git a/src/drivers/lenovo/Kconfig b/src/drivers/lenovo/Kconfig
-index 38b86da..f20f3b2 100644
+index f8eddf2..f20f3b2 100644
 --- a/src/drivers/lenovo/Kconfig
 +++ b/src/drivers/lenovo/Kconfig
-@@ -27,15 +27,3 @@ config DIGITIZER_ABSENT
+@@ -27,16 +27,3 @@ config DIGITIZER_ABSENT
  endchoice
  
  endif
@@ -44,6 +27,7 @@ index 38b86da..f20f3b2 100644
 -	help
 -	  Set a default GPIO that sets the panel LVDS signal routing to
 -	  integrated or discrete GPU.
+-
 diff --git a/src/drivers/lenovo/Makefile.inc b/src/drivers/lenovo/Makefile.inc
 index 66f8594..c50db5b 100644
 --- a/src/drivers/lenovo/Makefile.inc
@@ -194,8 +178,33 @@ index a444bf8..d74a813 100644
  
  config MAINBOARD_DIR
  	string
+diff --git a/src/mainboard/lenovo/t400/cmos.default b/src/mainboard/lenovo/t400/cmos.default
+index 5cf3e63..ac9f96d 100644
+--- a/src/mainboard/lenovo/t400/cmos.default
++++ b/src/mainboard/lenovo/t400/cmos.default
+@@ -13,5 +13,3 @@ sticky_fn=Disable
+ power_management_beeps=Enable
+ low_battery_beep=Enable
+ sata_mode=AHCI
+-hybrid_graphics_mode=Integrated Only
+-gfx_uma_size=32M
+\ No newline at end of file
+diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
+index b4b7766..e1a088d 100644
+--- a/src/mainboard/lenovo/t400/cmos.layout
++++ b/src/mainboard/lenovo/t400/cmos.layout
+@@ -77,8 +77,7 @@ entries
+ 940         1       e       1        uwb
+ 
+ # coreboot config options: northbridge
+-944         2       e       12       hybrid_graphics_mode
+-946         4       e       11       gfx_uma_size
++941         4       e       11       gfx_uma_size
+ 
+ # coreboot config options: EC
+ 952         8       h       0        volume
 diff --git a/src/mainboard/lenovo/t420/cmos.default b/src/mainboard/lenovo/t420/cmos.default
-index cfb7552..1b8e212 100644
+index 3a82c97..1b8e212 100644
 --- a/src/mainboard/lenovo/t420/cmos.default
 +++ b/src/mainboard/lenovo/t420/cmos.default
 @@ -14,4 +14,3 @@ fn_ctrl_swap=Disable
@@ -203,8 +212,9 @@ index cfb7552..1b8e212 100644
  trackpoint=Enable
  hyper_threading=Enable
 -hybrid_graphics_mode=Integrated Only
+\ No newline at end of file
 diff --git a/src/mainboard/lenovo/t420/cmos.layout b/src/mainboard/lenovo/t420/cmos.layout
-index 79a3a68..61676a3 100644
+index 58a4abe..bf0f195 100644
 --- a/src/mainboard/lenovo/t420/cmos.layout
 +++ b/src/mainboard/lenovo/t420/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -239,7 +249,7 @@ index feacb51..935e659 100644
  	# Workaround for EC/KBC IRQ1.
  	select SERIRQ_CONTINUOUS_MODE
 diff --git a/src/mainboard/lenovo/t420s/cmos.default b/src/mainboard/lenovo/t420s/cmos.default
-index cfb7552..1b8e212 100644
+index 3a82c97..1b8e212 100644
 --- a/src/mainboard/lenovo/t420s/cmos.default
 +++ b/src/mainboard/lenovo/t420s/cmos.default
 @@ -14,4 +14,3 @@ fn_ctrl_swap=Disable
@@ -247,8 +257,9 @@ index cfb7552..1b8e212 100644
  trackpoint=Enable
  hyper_threading=Enable
 -hybrid_graphics_mode=Integrated Only
+\ No newline at end of file
 diff --git a/src/mainboard/lenovo/t420s/cmos.layout b/src/mainboard/lenovo/t420s/cmos.layout
-index ec9be11..edbf075 100644
+index 3521849..43628406 100644
 --- a/src/mainboard/lenovo/t420s/cmos.layout
 +++ b/src/mainboard/lenovo/t420s/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -283,7 +294,7 @@ index ee5dd81..c70581a 100644
  	# Workaround for EC/KBC IRQ1.
  	select SERIRQ_CONTINUOUS_MODE
 diff --git a/src/mainboard/lenovo/t520/cmos.default b/src/mainboard/lenovo/t520/cmos.default
-index 526a6d6..00e8863 100644
+index ad7dcf5..00e8863 100644
 --- a/src/mainboard/lenovo/t520/cmos.default
 +++ b/src/mainboard/lenovo/t520/cmos.default
 @@ -15,4 +15,3 @@ sticky_fn=Disable
@@ -291,8 +302,9 @@ index 526a6d6..00e8863 100644
  hyper_threading=Enable
  backlight=Both
 -hybrid_graphics_mode=Integrated Only
+\ No newline at end of file
 diff --git a/src/mainboard/lenovo/t520/cmos.layout b/src/mainboard/lenovo/t520/cmos.layout
-index a151b7e..7e77012 100644
+index 044c310..2cf3629 100644
 --- a/src/mainboard/lenovo/t520/cmos.layout
 +++ b/src/mainboard/lenovo/t520/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -327,7 +339,7 @@ index 76147fc..030c01f 100644
  	# Workaround for EC/KBC IRQ1.
  	select SERIRQ_CONTINUOUS_MODE
 diff --git a/src/mainboard/lenovo/t530/cmos.default b/src/mainboard/lenovo/t530/cmos.default
-index 526a6d6..00e8863 100644
+index ad7dcf5..00e8863 100644
 --- a/src/mainboard/lenovo/t530/cmos.default
 +++ b/src/mainboard/lenovo/t530/cmos.default
 @@ -15,4 +15,3 @@ sticky_fn=Disable
@@ -335,8 +347,9 @@ index 526a6d6..00e8863 100644
  hyper_threading=Enable
  backlight=Both
 -hybrid_graphics_mode=Integrated Only
+\ No newline at end of file
 diff --git a/src/mainboard/lenovo/t530/cmos.layout b/src/mainboard/lenovo/t530/cmos.layout
-index d6d671c..8943813 100644
+index 0e28bdd..e21c197 100644
 --- a/src/mainboard/lenovo/t530/cmos.layout
 +++ b/src/mainboard/lenovo/t530/cmos.layout
 @@ -77,8 +77,7 @@ entries
@@ -372,5 +385,217 @@ index b3e5069..2822774 100644
  if SOUTHBRIDGE_INTEL_I82801IX
  
 -- 
-2.9.3
+2.9.2
+
+From 90f5f34629ff88506bb803988da1552f3373d4f0 Mon Sep 17 00:00:00 2001
+From: Arthur Heymans <arthur@aheymans.xyz>
+Date: Thu, 4 Aug 2016 11:01:53 +0200
+Subject: [PATCH 2/3] Revert "Revert "mainboard/lenovo/t400: Add initial hybrid
+ graphics support""
+
+This reverts commit 14d1a93e444b91311eeed2a25953bf6c0779cdcb.
+
+Change-Id: I965ea55bddb7cf919e7b02ecf8e160c9ad3ea3d4
+
+diff --git a/src/mainboard/lenovo/t400/cmos.default b/src/mainboard/lenovo/t400/cmos.default
+index ac9f96d..98ce970 100644
+--- a/src/mainboard/lenovo/t400/cmos.default
++++ b/src/mainboard/lenovo/t400/cmos.default
+@@ -13,3 +13,4 @@ sticky_fn=Disable
+ power_management_beeps=Enable
+ low_battery_beep=Enable
+ sata_mode=AHCI
++hybrid_graphics_mode=Integrated Only
+\ No newline at end of file
+diff --git a/src/mainboard/lenovo/t400/cmos.layout b/src/mainboard/lenovo/t400/cmos.layout
+index e1a088d..b4b7766 100644
+--- a/src/mainboard/lenovo/t400/cmos.layout
++++ b/src/mainboard/lenovo/t400/cmos.layout
+@@ -77,7 +77,8 @@ entries
+ 940         1       e       1        uwb
+ 
+ # coreboot config options: northbridge
+-941         4       e       11       gfx_uma_size
++944         2       e       12       hybrid_graphics_mode
++946         4       e       11       gfx_uma_size
+ 
+ # coreboot config options: EC
+ 952         8       h       0        volume
+diff --git a/src/mainboard/lenovo/t400/romstage.c b/src/mainboard/lenovo/t400/romstage.c
+index f518775..fcc545b 100644
+--- a/src/mainboard/lenovo/t400/romstage.c
++++ b/src/mainboard/lenovo/t400/romstage.c
+@@ -1,6 +1,7 @@
+ /*
+  * This file is part of the coreboot project.
+  *
++ * Copyright (C) 2015 Timothy Pearson <tpearson@raptorengineeringinc.com>, Raptor Engineering
+  * Copyright (C) 2012 secunet Security Networks AG
+  *
+  * This program is free software; you can redistribute it and/or
+@@ -34,6 +35,118 @@
+ #define LPC_DEV PCI_DEV(0, 0x1f, 0)
+ #define MCH_DEV PCI_DEV(0, 0, 0)
+ 
++#define HYBRID_GRAPHICS_INTEGRATED_ONLY 0
++#define HYBRID_GRAPHICS_DISCRETE_ONLY 1
++#define HYBRID_GRAPHICS_SWITCHABLE 2
++
++#define HYBRID_GRAPHICS_GP_LVL_BITS 0x004a0000
++#define HYBRID_GRAPHICS_GP_LVL2_BITS 0x00020000
++
++#define HYBRID_GRAPHICS_DETECT_GP_BITS 0x00000010
++
++#define HYBRID_GRAPHICS_INT_CLAIM_VGA 0x2
++#define HYBRID_GRAPHICS_SEC_VGA_EN 0x2
++
++static void hybrid_graphics_configure_switchable_graphics(bool enable)
++{
++	uint32_t tmp;
++
++	if (enable) {
++		/* Disable integrated graphics legacy VGA cycles */
++		tmp = pci_read_config16(MCH_DEV, D0F0_GGC);
++		pci_write_config16(MCH_DEV, D0F0_GGC, tmp | HYBRID_GRAPHICS_INT_CLAIM_VGA);
++
++		/* Enable secondary VGA controller */
++		tmp = pci_read_config16(MCH_DEV, D0F0_DEVEN);
++		pci_write_config16(MCH_DEV, D0F0_DEVEN, tmp | HYBRID_GRAPHICS_SEC_VGA_EN);
++	}
++	else {
++		/* Enable integrated graphics legacy VGA cycles */
++		tmp = pci_read_config16(MCH_DEV, D0F0_GGC);
++		pci_write_config16(MCH_DEV, D0F0_GGC, tmp & ~HYBRID_GRAPHICS_INT_CLAIM_VGA);
++
++		/* Disable secondary VGA controller */
++		tmp = pci_read_config16(MCH_DEV, D0F0_DEVEN);
++		pci_write_config16(MCH_DEV, D0F0_DEVEN, tmp & ~HYBRID_GRAPHICS_SEC_VGA_EN);
++	}
++}
++
++static void hybrid_graphics_set_up_gpio(void)
++{
++	uint32_t tmp;
++
++	/* Enable hybrid graphics GPIO lines */
++	tmp = inl(DEFAULT_GPIOBASE + GP_IO_USE_SEL);
++	tmp = tmp | HYBRID_GRAPHICS_GP_LVL_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_IO_USE_SEL);
++
++	tmp = inl(DEFAULT_GPIOBASE + GP_IO_USE_SEL2);
++	tmp = tmp | HYBRID_GRAPHICS_GP_LVL2_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_IO_USE_SEL2);
++
++	/* Set hybrid graphics control GPIO lines to output */
++	tmp = inl(DEFAULT_GPIOBASE + GP_IO_SEL);
++	tmp = tmp & ~HYBRID_GRAPHICS_GP_LVL_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_IO_SEL);
++
++	tmp = inl(DEFAULT_GPIOBASE + GP_IO_SEL2);
++	tmp = tmp & ~HYBRID_GRAPHICS_GP_LVL2_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_IO_SEL2);
++
++	/* Set hybrid graphics detect GPIO lines to input */
++	tmp = inl(DEFAULT_GPIOBASE + GP_IO_SEL);
++	tmp = tmp | HYBRID_GRAPHICS_DETECT_GP_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_IO_SEL);
++}
++
++static bool hybrid_graphics_installed(void)
++{
++	if (inl(DEFAULT_GPIOBASE + GP_LVL) & HYBRID_GRAPHICS_DETECT_GP_BITS)
++		return false;
++	else
++		return true;
++}
++
++static void hybrid_graphics_switch_to_integrated_graphics(void)
++{
++	uint32_t tmp;
++
++	/* Disable switchable graphics */
++	hybrid_graphics_configure_switchable_graphics(false);
++
++	/* Configure muxes */
++	tmp = inl(DEFAULT_GPIOBASE + GP_LVL);
++	tmp = tmp & ~HYBRID_GRAPHICS_GP_LVL_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_LVL);
++
++	tmp = inl(DEFAULT_GPIOBASE + GP_LVL2);
++	tmp = tmp & ~HYBRID_GRAPHICS_GP_LVL2_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_LVL2);
++}
++
++static void hybrid_graphics_switch_to_discrete_graphics(void)
++{
++	uint32_t tmp;
++
++	/* Disable switchable graphics */
++	hybrid_graphics_configure_switchable_graphics(false);
++
++	/* Configure muxes */
++	tmp = inl(DEFAULT_GPIOBASE + GP_LVL);
++	tmp = tmp | HYBRID_GRAPHICS_GP_LVL_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_LVL);
++
++	tmp = inl(DEFAULT_GPIOBASE + GP_LVL2);
++	tmp = tmp | HYBRID_GRAPHICS_GP_LVL2_BITS;
++	outl(tmp, DEFAULT_GPIOBASE + GP_LVL2);
++}
++
++static void hybrid_graphics_switch_to_dual_graphics(void)
++{
++	/* Enable switchable graphics */
++	hybrid_graphics_configure_switchable_graphics(true);
++}
++
+ static void default_southbridge_gpio_setup(void)
+ {
+ 	outl(0x197e23fe, DEFAULT_GPIOBASE + GP_IO_USE_SEL);
+@@ -95,6 +208,31 @@ void mainboard_romstage_entry(unsigned long bist)
+ 
+ 	default_southbridge_gpio_setup();
+ 
++	uint8_t hybrid_graphics_mode = HYBRID_GRAPHICS_INTEGRATED_ONLY;
++	get_option(&hybrid_graphics_mode, "hybrid_graphics_mode");
++
++	/* Set up hybrid graphics */
++	hybrid_graphics_set_up_gpio();
++	if (hybrid_graphics_installed()) {
++		/* Select appropriate hybrid graphics device */
++		printk(BIOS_DEBUG, "Hybrid graphics available, setting mode %d\n", hybrid_graphics_mode);
++		if (hybrid_graphics_mode == HYBRID_GRAPHICS_INTEGRATED_ONLY)
++			hybrid_graphics_switch_to_integrated_graphics();
++		else if (hybrid_graphics_mode == HYBRID_GRAPHICS_DISCRETE_ONLY)
++			hybrid_graphics_switch_to_discrete_graphics();
++		else if (hybrid_graphics_mode == HYBRID_GRAPHICS_SWITCHABLE)
++			hybrid_graphics_switch_to_integrated_graphics();
++			/* Switchable graphics are fully enabled after raminit */
++			/* FIXME
++			 * Enabling switchable graphics prevents bootup!
++			 * Debug and fix appropriately...
++			 */
++	}
++	else {
++		printk(BIOS_DEBUG, "Hybrid graphics not installed\n");
++		hybrid_graphics_switch_to_integrated_graphics();
++	}
++
+ 	/* ASPM related setting, set early by original BIOS. */
+ 	DMIBAR16(0x204) &= ~(3 << 10);
+ 
+@@ -174,6 +312,11 @@ void mainboard_romstage_entry(unsigned long bist)
+ 	outl(inl(DEFAULT_GPIOBASE + 0x38) & ~0x400, DEFAULT_GPIOBASE + 0x38);
+ 
+ 	cbmem_initted = !cbmem_recovery(s3resume);
++
++	if (hybrid_graphics_installed())
++		if (hybrid_graphics_mode == HYBRID_GRAPHICS_SWITCHABLE)
++			hybrid_graphics_switch_to_dual_graphics();
++
+ #if CONFIG_HAVE_ACPI_RESUME
+ 	/* If there is no high memory area, we didn't boot before, so
+ 	 * this is not a resume. In that case we just create the cbmem toc.
+-- 
+2.9.2
 
