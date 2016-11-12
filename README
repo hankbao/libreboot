@@ -11,7 +11,7 @@ promote freedom; please call libreboot free software.
 
 Why use libreboot?
 
-Many people use non-free boot firmware, even if they use GNU/Linux. Non-free 
+Many people use non-free boot firmware, even if they use GNU+Linux. Non-free 
 BIOS/UEFI firmware often contains backdoors, can be slow and have severe bugs, 
 where you are left helpless at the mercy of the developers; you have no freedom 
 over your computing. By contrast, libreboot is building a world where 

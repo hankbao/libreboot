@@ -8,20 +8,20 @@
 		@import url('../css/main.css');
 	</style>
 
-	<title>How to install GNU/Linux on a libreboot system</title>
+	<title>How to install GNU+Linux on a libreboot system</title>
 </head>
 
 <body>
 	<div id="pagetop" class="section">
-		<h1>How to install GNU/Linux on a libreboot system</h1>
+		<h1>How to install GNU+Linux on a libreboot system</h1>
 			<p>
 				This section relates to preparing, booting and installing a
-				GNU/Linux distribution on your libreboot system, using nothing more than a USB flash drive (and <i>dd</i>).
+				GNU+Linux distribution on your libreboot system, using nothing more than a USB flash drive (and <i>dd</i>).
 			</p>
 			<ul>
-                <li><a href="../distros">List of recommended GNU/Linux distributions</a></li>
-				<li><a href="#prepare">Prepare the USB drive (in GNU/Linux)</a></li>
-				<li><a href="#encryption">Installing GNU/Linux with full disk encryption</a></li>
+                <li><a href="../distros">List of recommended GNU+Linux distributions</a></li>
+				<li><a href="#prepare">Prepare the USB drive (in GNU+Linux)</a></li>
+				<li><a href="#encryption">Installing GNU+Linux with full disk encryption</a></li>
 				<li><a href="#debian_netinstall">Debian or Devuan net install?</a></li>
 				<li><a href="#parse_isolinux">Booting ISOLINUX images (automatic method)</a></li>
 				<li><a href="#manual_isolinux">Booting ISOLINUX images (manual method)</a></li>
@@ -41,11 +41,11 @@
 
 	<div id="prepare" class="section">
 		
-		<h2>Prepare the USB drive (in GNU/Linux)</h2>
+		<h2>Prepare the USB drive (in GNU+Linux)</h2>
 
             <p>
-                If you downloaded your ISO on an existing GNU/Linux system,
-                here is  how to create the bootable GNU/Linux USB drive:
+                If you downloaded your ISO on an existing GNU+Linux system,
+                here is  how to create the bootable GNU+Linux USB drive:
             </p>
 
 			<p>
@@ -82,7 +82,7 @@
                <a href="https://wiki.netbsd.org/tutorials/how_to_install_netbsd_from_an_usb_memory_stick/">This page</a>
                on the NetBSD website shows how to create a NetBSD bootable USB drive
                from within NetBSD itself. You should use the <em>dd</em> method
-               documented there. This will also work with any GNU/Linux ISO image.
+               documented there. This will also work with any GNU+Linux ISO image.
             </p>
 
         <h2>Prepare the USB drive (in FreeBSD)</h2>
@@ -90,14 +90,14 @@
                 <a href="https://www.freebsd.org/doc/handbook/bsdinstall-pre.html">This page</a>
                 on the FreeBSD website shows how to create a bootable USB drive
                 for installing FreeBSD. Use the <em>dd</em> on that page. You can
-                also use the same instructions with any GNU/Linux ISO image..
+                also use the same instructions with any GNU+Linux ISO image..
             </p>
 
 		<h2>Prepare the USB drive (in LibertyBSD or OpenBSD)</h2>
 
             <p>
                 If you downloaded your ISO on a LibertyBSD or OpenBSD system,
-                here is how to create the bootable GNU/Linux USB drive:
+                here is how to create the bootable GNU+Linux USB drive:
             </p>
 
 			<p>
@@ -131,11 +131,11 @@
 
 	<div id="encryption" class="section">
 
-		<h2>Installing GNU/Linux with full disk encryption</h2>
+		<h2>Installing GNU+Linux with full disk encryption</h2>
 
 			<ul>
-				<li><a href="encrypted_debian.html">Installing Debian or Devuan GNU/Linux with full disk encryption (including /boot)</a></li>
-				<li><a href="encrypted_parabola.html">Installing Parabola GNU/Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="encrypted_debian.html">Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)</a></li>
+				<li><a href="encrypted_parabola.html">Installing Parabola GNU+Linux with full disk encryption (including /boot)</a></li>
 			</ul>
 
 			<p>
@@ -196,7 +196,7 @@
 
 			<p>
 				<i>These are generic instructions. They may or may not be correct for your
-				distribution. You must adapt them appropriately, for whatever GNU/Linux distribution
+				distribution. You must adapt them appropriately, for whatever GNU+Linux distribution
 				it is that you are trying to install.</i>
 			</p>
 
@@ -258,7 +258,7 @@
 
 			<p>
 				Most of these issues occur when using libreboot with coreboot's 'text mode' instead of the coreboot framebuffer.
-				This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU/Linux distributions
+				This mode is useful for booting payloads like memtest86+ which expect text-mode, but for GNU+Linux distributions
 				it can be problematic when they are trying to switch to a framebuffer because it doesn't exist.
 			</p>
 
