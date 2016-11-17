@@ -106,6 +106,9 @@ do
     # Now add SeaVGABIOS (SeaBIOS wrapper for coreboot native video init)
     ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../seabios/out/vgabios.bin -n vgaroms/vgabios.bin -t raw 
 
+    # Add a file to CBFS that tells SeaBIOS not to load option ROMs
+    ./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add-int -i 0 -n etc/pci-optionrom-exec || "already exists"
+
 	# .config no longer needed
 	rm -f ".config"
 done
