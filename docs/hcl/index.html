@@ -32,6 +32,7 @@
                     NOTES:
                     <ul>
                         <li><a href="#ecupdate">Updating the EC firmware on i945 and GM45 (recommended)</a></li>
+                        <li><a href="#ecversion">How to find what EC version you have (i945/GM45)</a></li>
                     </ul>
                 </li>
 				<li><a href="#recommended_wifi">Recommended wifi chipsets</a></li>
@@ -117,6 +118,30 @@
             <p>
                 Updated EC firmware has several advantages e.g.
                 bettery battery handling.
+            </p>
+            <p>
+                <a href="#pagetop">Back to top of page</a>
+            </p>
+
+    </div>
+
+    <div class="section">
+
+        <h1 id="ecversion">How to find what EC version you have (i945/GM45)</h1>
+
+            <p>
+                In GNU+Linux, you can try this:<br/>
+                <strong>grep 'at EC' /proc/asound/cards</strong>
+            </p>
+            <p>
+                Sample output:<br/>
+                <strong>ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6</strong>
+            </p>
+            <p>
+                7WHT19WW is the version in different notation, use search engine to find out regular version - in this case it's a 1.06 for x200 tablet
+            </p>
+            <p>
+                <a href="#pagetop">Back to top of page</a>
             </p>
 
     </div>
