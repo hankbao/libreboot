@@ -28,6 +28,12 @@
 						<li><a href="#supported_laptops_x86intel">Laptops (Intel, x86)</a></li>
 					</ul>
 				</li>
+                <li>
+                    NOTES:
+                    <ul>
+                        <li><a href="#ecupdate">Updating the EC firmware on i945 and GM45 (recommended)</a></li>
+                    </ul>
+                </li>
 				<li><a href="#recommended_wifi">Recommended wifi chipsets</a></li>
 			</ul>
 			<p>
@@ -85,6 +91,35 @@
 			<p><a href="#pagetop">Back to top of page</a></p>
 			
 	</div>
+
+
+    <div class="section">
+
+        <h1 id="ecupdate">EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400)</h1>
+
+            <p>
+                It is recommended that you update to the latest EC firmware version.
+                The <a href="https://libreboot.org/faq/#firmware-ec">EC firmware</a>
+                is separate from libreboot, so we don't actually provide that, but
+                if you still have Lenovo BIOS then you can just run the Lenovo BIOS
+                update utility, which will update both the BIOS and EC version.
+                See:
+            </p>
+            <ul>
+                <li><a href="https://libreboot.org/docs/install/index.html#flashrom">https://libreboot.org/docs/install/index.html#flashrom</a></li>
+                <li><a href="http://www.thinkwiki.org/wiki/BIOS_update_without_optical_disk">http://www.thinkwiki.org/wiki/BIOS_update_without_optical_disk</a></li>
+            </ul>
+            <p>
+                NOTE: this can only be done when you are using Lenovo BIOS. How to
+                update the EC firmware while running libreboot is unknown. 
+                Libreboot only replaces the BIOS firmware, not EC.
+            </p>
+            <p>
+                Updated EC firmware has several advantages e.g.
+                bettery battery handling.
+            </p>
+
+    </div>
 
 	<div class="section">
 
