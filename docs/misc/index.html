@@ -27,6 +27,7 @@
 				<li><a href="#backlight control">Finetune backlight control on intel gpu’s</a></li>
 				<li><a href="#get_edid_panelname">Get EDID: Find out the name (model) of your LCD panel</a></li>
 				<li><a href="bbb_ehci.html">How to enable EHCI debugging on the BeagleBone Black</a></li>
+                <li><a href="#e1000-hang">e1000e driver trouble shooting (Intel NICs)</a></li>
 			</ul>
 	</div>
 
@@ -264,6 +265,42 @@ WantedBy=multi-user.target
 			<p><a href="#pagetop">Back to top of page.</a></p>
 
 	</div>
+
+    <div class="section">
+
+        <h1 id="e1000-hang">e1000e driver trouble shooting (Intel NICs)</h1>
+            <p>
+                Example error, ¿may happen on weird and complex routing schemes(citation needed for cause):
+            </p>
+<pre>
+e1000e 0000:00:19.0 enp0s25: Detected Hardware Unit Hang
+</pre>
+            <p>
+                Possible workaround, tested by Nazara: Disable C-STATES.<br/>
+                <strong>
+                NOTE: this also disables power management, because disabling C-States
+                means that your CPU will now be running at full capacity (and therefore
+                using more power) non-stop, which will drain battery life if this is a laptop.
+                If power usage is a concern, then you should not use this.
+                (we're also not sure whether this workaround is appropriate)
+                </strong>
+            </p>
+            <p>
+                To disable c-states, do this in GNU+Linux:<br/>
+                <strong>
+                for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1 &gt; $i; done
+                </strong>
+            </p>
+            <p>
+                You can reproduce this issue more easily by sending lots of traffic across
+                subnets on the same interface (NIC).
+            </p>
+            <p>
+				More information, including logs, can be found on
+				<a href="https://notabug.org/vimuser/libreboot/issues/23">this page</a>.				
+            </p>
+
+    </div>
 
     <div class="section">
 
