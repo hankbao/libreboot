@@ -276,8 +276,8 @@
 			<p>
 				Do that:<br/>
 				grub&gt; <b>cryptomount -a</b><br/>
-				grub&gt; <b>set root='lvm/matrix-root'</b><br/>
-				grub&gt; <b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
+				grub&gt; <b>set root='lvm/matrix-rootvol'</b><br/>
+				grub&gt; <b>linux /vmlinuz root=/dev/mapper/matrix-rootvol cryptdevice=/dev/mapper/matrix-rootvol:root</b><br/>
 				grub&gt; <b>initrd /initrd.img</b><br/>
 				grub&gt; <b>boot</b>
 			</p>
@@ -323,8 +323,8 @@
 
 			<p>
 				<b>cryptomount -a</b><br/>
-				<b>set root='lvm/matrix-root'</b><br/>
-				<b>linux /vmlinuz root=/dev/mapper/matrix-root cryptdevice=/dev/mapper/matrix-root:root</b><br/>
+				<b>set root='lvm/matrix-rootvol'</b><br/>
+				<b>linux /vmlinuz root=/dev/mapper/matrix-rootvol cryptdevice=/dev/mapper/matrix-rootvol:root</b><br/>
 				<b>initrd /initrd.img</b>
 			</p>
 
