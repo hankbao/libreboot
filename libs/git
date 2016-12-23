@@ -61,7 +61,7 @@ git_branch_create() {
 
 	(
 		cd "$repository_path"
-		git checkout -b "$branch"
+		git checkout -B "$branch"
 
 		if ! [ -z "$revision" ]
 		then
