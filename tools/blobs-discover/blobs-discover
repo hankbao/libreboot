@@ -36,13 +36,27 @@ usage() {
 }
 
 update() {
+	local tool_path=$( tool_path "$tool" )
 	local sources_path=$( tool_sources_path "$tool" )
 	local deblob_check_path="$sources_path/deblob-check"
+	local patches_path="$tool_path/$PATCHES/$WILDDOTPATCH"
 
 	wget "https://www.fsfla.org/svn/fsfla/software/linux-libre/scripts/deblob-check" -O "$deblob_check_path"
 	perl -0777 -i -pe "s/  blobna \(\) \{[^\}]*\}/  blobna () \{\n    true\n  \}/" "$deblob_check_path"
 	perl -0777 -i -pe "s/  blobname \(\) \{[^\}]*\}/  blobname () \{\n    true\n  \}/" "$deblob_check_path"
 	chmod a+x "$deblob_check_path"
+
+	cd "$sources_path"
+
+	path_wildcard_expand "$patches_path" | while read patch_path
+	do
+		if ! [ -f "$patch_path" ]
+		then
+			continue
+		fi
+
+		patch -p1 < "$patch_path"
+	done
 }
 
 verify() {
@@ -139,7 +153,7 @@ execute() {
 
 	printf "\nDiscovering new blobs, this may take a while...\n"
 
-	files=$( cd "$project_sources_path" ; find * -type f | grep -vP "\.git/|\.tar|\.patch" )
+	files=$( find "$project_sources_path" -type f | grep -vP "\.git/|\.tar|\.patch" )
 
 	touch "$project_blobs_discover_path"
 
@@ -154,7 +168,7 @@ execute() {
 			fi
 		fi
 
-		match=$( cd "$project_sources_path" ; "$deblob_check_path" "$file" || true )
+		match=$( "$deblob_check_path" -l -i "" "$file" || true )
 		if ! [ -z "$match" ]
 		then
 			echo "$match" >> "$project_blobs_discover_path"
