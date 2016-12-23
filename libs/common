@@ -174,17 +174,13 @@ archive_files_create() {
 	then
 		git_files "$source_path" | tr -d '\0' > "$tarfiles_path"
 		echo "$DOTTARFILES" | tr -d '\0' >> "$tarfiles_path"
-	elif ! [ -f "$tarfiles_path" ]
-	then
+	else
 		touch "$tarfiles_path"
 
 		(
 			cd "$source_path"
 			find
 		) | LC_ALL=C sort | sed "s,^./,," | grep -vP "^\.$" > "$tarfiles_path"
-	else
-		# Preserve tarfiles if not in git.
-		return 0
 	fi
 
 	if [ -f "$revision_path" ]
