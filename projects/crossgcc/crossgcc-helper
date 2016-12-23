@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+crossgcc_tarballs() {
+	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
+	local install_path="$sources_path/util/crossgcc/tarballs/"
+	local tarballs=$( ls "$sources_path/util/crossgcc/sum" | sed "s/.cksum$//" )
+
+	echo "$tarballs"
+}
+
+crossgcc_tarball_sources_path() {
+	local tarball=$1
+
+	local tarball_sources_path="$root/$SOURCES/$tarball"
+
+	echo "$tarball_sources_path"
+}
+
+crossgcc_tarball_install_path() {
+	local tarball=$1
+	shift
+
+	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
+	local install_path="$sources_path/util/crossgcc/tarballs/"
+	local tarball_install_path="$install_path/$tarball"
+
+	echo "$tarball_install_path"
+}
+
+crossgcc_tarball_release_path() {
+	local tarball=$1
+	shift
+
+	local release_path=$( project_release_path "$project" "$SOURCES" "$@" )
+	local tarball_release_path="$release_path/$tarball"
+
+	echo "$tarball_release_path"
+}

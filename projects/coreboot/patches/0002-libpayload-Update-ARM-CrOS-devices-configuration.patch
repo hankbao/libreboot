@@ -1,0 +1,56 @@
+From fc26e7861ec756614e27a82895b60724a8173757 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 19 Dec 2016 18:03:23 +0100
+Subject: [PATCH 2/4] libpayload: Update ARM CrOS devices configuration
+
+This updates the configuration for ARM CrOS devices (nyans and veyrons)
+by using the CHROMEOS Kconfig option, thus reducing the number of
+options to select. It also brings proper serial console support.
+
+Change-Id: Iffc84c44a1d339c5bb575fbaffc40bc2d56bb6cf
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ payloads/libpayload/configs/config.nyan   | 10 +++-------
+ payloads/libpayload/configs/config.veyron | 10 +++-------
+ 2 files changed, 6 insertions(+), 14 deletions(-)
+
+diff --git a/payloads/libpayload/configs/config.nyan b/payloads/libpayload/configs/config.nyan
+index 6e593e5..caad2b6 100644
+--- a/payloads/libpayload/configs/config.nyan
++++ b/payloads/libpayload/configs/config.nyan
+@@ -1,10 +1,6 @@
+-CONFIG_LP_GPL=y
++CONFIG_LP_CHROMEOS=y
+ CONFIG_LP_ARCH_ARM=y
+-# CONFIG_LP_CURSES is not set
+-CONFIG_LP_SKIP_CONSOLE_INIT=y
+-CONFIG_LP_COREBOOT_VIDEO_CONSOLE=y
+-# CONFIG_LP_STORAGE is not set
++CONFIG_LP_8250_SERIAL_CONSOLE=y
+ CONFIG_LP_TIMER_TEGRA_1US=y
+-# CONFIG_LP_USB_OHCI is not set
+-# CONFIG_LP_USB_XHCI is not set
++CONFIG_LP_USB_EHCI=y
+ CONFIG_LP_USB_EHCI_HOSTPC_ROOT_HUB_TT=y
+diff --git a/payloads/libpayload/configs/config.veyron b/payloads/libpayload/configs/config.veyron
+index 793907f..e80535c 100644
+--- a/payloads/libpayload/configs/config.veyron
++++ b/payloads/libpayload/configs/config.veyron
+@@ -1,11 +1,7 @@
+-CONFIG_LP_GPL=y
++CONFIG_LP_CHROMEOS=y
+ CONFIG_LP_ARCH_ARM=y
+-# CONFIG_LP_CURSES is not set
+-CONFIG_LP_SKIP_CONSOLE_INIT=y
+-CONFIG_LP_COREBOOT_VIDEO_CONSOLE=y
+-# CONFIG_LP_STORAGE is not set
+-CONFIG_LP_TIMER_RK=y
+-CONFIG_LP_USB=y
++CONFIG_LP_8250_SERIAL_CONSOLE=y
++CONFIG_LP_TIMER_RK3288=y
+ CONFIG_LP_USB_EHCI=y
+ CONFIG_LP_USB_DWC2=y
+ # CONFIG_LP_USB_HID is not set
+-- 
+2.10.2
+

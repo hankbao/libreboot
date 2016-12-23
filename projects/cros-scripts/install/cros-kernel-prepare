@@ -1,0 +1,155 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ARCH="arch"
+CMDLINE="cmdline"
+BOOTLOADER="bootloader"
+KERNEL_ITS="kernel.its"
+KERNEL_FIT="kernel.fit"
+KERNEL_IMAGE="kernel.img"
+
+usage() {
+	printf "$executable [action] [kernel files|kernel image] [medium]\n" >&2
+
+	printf "\nActions:\n" >&2
+	printf "  pack - Pack kernel files to a medium-specific image\n" >&2
+	printf "  sign - Sign kernel image\n" >&2
+	printf "  verify - Very kernel image signatures\n" >&2
+
+	printf "\nMedium:\n" >&2
+	printf "  usb - External USB storage\n" >&2
+	printf "  mmc - External SD card storage\n" >&2
+	printf "  emmc - Internal storage\n" >&2
+
+	printf "\nEnvironment variables:\n" >&2
+	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
+	printf "  VBOOT_TOOLS_PATH - Path to vboot tools\n" >&2
+}
+
+pack() {
+	local kernel_files_path=$1
+	local medium=$2
+
+	local arch_path="$kernel_files_path/$ARCH"
+	local arch=$( cat "$arch_path" )
+	local cmdline_path="$kernel_files_path/$CMDLINE-$medium"
+	local bootloader_path="$kernel_files_path/$BOOTLOADER"
+	local kernel_its_path="$kernel_files_path/$KERNEL_ITS"
+	local kernel_fit_path="$kernel_files_path/$KERNEL_FIT"
+	local kernel_image_path="$kernel_files_path/$KERNEL_IMAGE"
+
+	mkimage -f "$kernel_its_path" "$kernel_fit_path"
+	futility vbutil_kernel --pack "$kernel_image_path" --version 1 --arch "$arch" --keyblock "$VBOOT_KEYS_PATH/kernel.keyblock" --signprivate "$VBOOT_KEYS_PATH/kernel_data_key.vbprivk" --config "$cmdline_path" --vmlinuz "$kernel_fit_path" --bootloader "$bootloader_path"
+
+	printf "\nPacked kernel image $kernel_image_path\n"
+}
+
+sign() {
+	local kernel_image_path=$1
+
+	futility vbutil_kernel --repack "$kernel_image_path" --version 1 --keyblock "$VBOOT_KEYS_PATH/kernel.keyblock" --signprivate "$VBOOT_KEYS_PATH/kernel_data_key.vbprivk" --oldblob "$kernel_image_path"
+
+	printf "\nSigned kernel image $kernel_image_path\n"
+}
+
+verify() {
+	local kernel_image_path=$1
+
+	futility vbutil_kernel --verify "$kernel_image_path"  --signpubkey "$VBOOT_KEYS_PATH/kernel_subkey.vbpubk"
+
+	printf "\nVerified kernel image $kernel_image_path\n"
+}
+
+requirements() {
+	local requirement
+	local requirement_path
+
+	for requirement in "$@"
+	do
+		requirement_path=$( which "$requirement" || true )
+
+		if [ -z "$requirement_path" ]
+		then
+			printf "Missing requirement: $requirement\n" >&2
+			exit 1
+		fi
+	done
+}
+
+setup() {
+	root=$( realpath "$( dirname "$0" )" )
+	executable=$( basename "$0" )
+
+	if ! [ -z "$VBOOT_TOOLS_PATH" ]
+	then
+		PATH="$PATH:$VBOOT_TOOLS_PATH"
+	fi
+
+	if [ -z "$VBOOT_KEYS_PATH" ]
+	then
+		if ! [ -z "$VBOOT_TOOLS_PATH" ] && [ -d "$VBOOT_TOOLS_PATH/devkeys" ]
+		then
+			VBOOT_KEYS_PATH="$VBOOT_TOOLS_PATH/devkeys"
+		else
+			VBOOT_KEYS_PATH="/usr/share/vboot/devkeys"
+		fi
+	fi
+}
+
+cros_media_setup() {
+	local action=$1
+	local kernel_files_path=$2
+	local kernel_image_path=$2
+	local medium=$3
+
+	set -e
+
+	setup "$@"
+
+	if [ -z "$action" ] || [ -z "$kernel_files_path" ] || [ -z "$kernel_image_path" ]
+	then
+		usage
+		exit 1
+	fi
+
+	case $action in
+		"pack")
+			if [ -z "$medium" ]
+			then
+				usage
+				exit 1
+			fi
+
+			requirements "mkimage" "futility"
+			pack "$kernel_files_path" "$medium"
+			;;
+		"sign")
+			requirements "futility"
+			sign "$kernel_image_path"
+			;;
+		"verify")
+			requirements "futility"
+			verify "$kernel_image_path"
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+}
+
+cros_media_setup "$@"

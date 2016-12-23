@@ -1,0 +1,182 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+BUILD_SYSTEM="libreboot"
+
+SOURCES="sources"
+
+TAR_XZ="tar.xz"
+SHA256SUM="sha256sum"
+ASC="asc"
+
+usage() {
+	printf "$executable [sources path] (extract path)\n" >&2
+
+	printf "\n  When no extract path is provided, sources are extracted in the current\n"
+	printf "  directory.\n"
+}
+
+verify_sources() {
+	local sources_path=$1
+
+	local checksum_path
+	local signature_path
+	local archive
+
+	if [ -z "$extract_path" ]
+	then
+		extract_path=$( pwd )
+	fi
+
+	printf "Verifying $BUILD_SYSTEM sources\n"
+
+	archive=$( find $sources_path -name "$BUILD_SYSTEM-sources.$TAR_XZ" || true )
+	if [ -z "$archive" ]
+	then
+		printf "Finding $BUILD_SYSTEM sources archive failed!\n" >&2
+		usage
+		exit 1
+	fi
+
+	checksum_path="$archive.$SHA256SUM"
+	signature_path="$archive.$ASC"
+
+	if [ -f "$checksum_path" ]
+	then
+		(
+			cd "$( dirname "$archive" )"
+			sha256sum -c "$archive.$SHA256SUM"
+		)
+	else
+		printf "Could not verify boostrap checksum!\n" >&2
+	fi
+
+	if [ -f "$signature_path" ]
+	then
+		gpg --armor --verify "$signature_path" "$archive"
+	else
+		printf "Could not verify boostrap signature!\n" >&2
+	fi
+}
+
+extract_sources() {
+	local sources_path=$1
+	local extract_path=$2
+
+	local build_system_path
+	local archive
+
+	if [ -z "$extract_path" ]
+	then
+		extract_path=$( pwd )
+	fi
+
+	build_system_path="$extract_path/$BUILD_SYSTEM"
+
+	if [ -d "$build_system_path" ]
+	then
+		return
+	fi
+
+	printf "Extracting $BUILD_SYSTEM sources from $sources_path to $extract_path\n"
+
+	archive=$( find $sources_path -name "$BUILD_SYSTEM-sources.$TAR_XZ" || true )
+	if [ -z "$archive" ]
+	then
+		printf "Finding $BUILD_SYSTEM sources archive failed!\n" >&2
+		usage
+		exit 1
+	fi
+
+	tar -xf "$archive" -ps -C "$extract_path"
+}
+
+copy_sources() {
+	local sources_path=$1
+	local extract_path=$2
+
+	local build_system_path
+	local build_system_sources_path
+	local archives
+	local file
+
+	if [ -z "$extract_path" ]
+	then
+		extract_path=$( pwd )
+	fi
+
+	build_system_path="$extract_path/$BUILD_SYSTEM"
+	build_system_sources_path="$build_system_path/$SOURCES"
+
+	if ! [ -d "$build_system_path" ]
+	then
+		return
+	fi
+
+	printf "Copying $BUILD_SYSTEM sources from $sources_path to $extract_path\n"
+
+	mkdir -p "$build_system_path/$SOURCES"
+
+	find "$sources_path" -type f -not -name "$BUILD_SYSTEM*" || true | while read file
+	do
+		cp "$file" "$build_system_sources_path"
+	done
+}
+
+requirements() {
+	local requirement
+	local requirement_path
+
+	for requirement in "$@"
+	do
+		requirement_path=$( which "$requirement" || true )
+
+		if [ -z "$requirement_path" ]
+		then
+			printf "Missing requirement: $requirement\n" >&2
+			exit 1
+		fi
+	done
+}
+
+setup() {
+	root=$( realpath "$( dirname "$0" )" )
+	executable=$( basename "$0" )
+}
+
+libreboot_bootstrap() {
+	local sources_path=$1
+	local extract_path=$2
+
+	set -e
+
+	setup "$@"
+
+	if [ -z "$sources_path" ]
+	then
+		usage
+		exit 1
+	fi
+
+	requirements "tar" "sha256sum" "gpg"
+
+	verify_sources "$sources_path"
+	extract_sources "$sources_path" "$extract_path"
+	copy_sources "$sources_path" "$extract_path"
+}
+
+libreboot_bootstrap "$@"

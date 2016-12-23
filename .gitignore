@@ -1,0 +1,9 @@
+/build/
+/install/
+/release/
+/sources/
+/libreboot.conf
+.version
+.revision
+.tarfiles
+.epoch

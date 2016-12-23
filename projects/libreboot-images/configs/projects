@@ -1,0 +1,6 @@
+coreboot
+crossgcc
+vboot devices
+libpayload
+depthcharge
+cros-ec

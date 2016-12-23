@@ -1,0 +1,135 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+arguments() {
+	project_arguments_targets "$project" "$@"
+}
+
+usage() {
+	project_usage_actions "$project"
+	project_usage_arguments "$project" "$@"
+}
+
+download() {
+	local repository=$project
+
+	project_download_git "$project" "$repository" "https://review.coreboot.org/coreboot https://github.com/coreboot/coreboot.git" "$@"
+}
+
+download_check() {
+	local repository=$project
+
+	project_download_check_git "$project" "$repository" "$@"
+}
+
+extract() {
+	project_extract "$project" "$@"
+}
+
+extract_check() {
+	project_extract_check "$project" "$@"
+}
+
+update() {
+	local repository=$project
+
+	project_update_git "$project" "$repository" "$@"
+}
+
+update_check() {
+	local repository=$project
+
+	project_update_check_git "$project" "$repository" "$@"
+}
+
+build() {
+	local payload=$1
+	shift
+
+	local repository=$project
+
+	project_sources_directory_missing_empty_error "$project" "$repository" "$payload" "$@"
+
+	local sources_path=$( project_sources_path "$project" "$repository" "$payload" "$@" )
+	local build_path=$( project_build_path "$project" "$payload" "$@" )
+	local config_path=$( coreboot_config_path "$payload" "$@" )
+
+	local arch=$( coreboot_arch "$payload" "$@" )
+
+	local crossgcc_build_path=$( project_build_path "crossgcc" "$arch" )
+	local crossgcc_bin_path="$crossgcc_build_path/bin/"
+	local vboot_sources_path=$( project_sources_path "vboot" "vboot" "devices" )
+
+	project_action "build" "crossgcc" "$arch"
+
+	if git_project_check "$repository"
+	then
+		git_project_checkout "$project" "$repository" "$payload" "$@"
+	fi
+
+	project_action "checkout" "vboot" "devices"
+
+	project_action "build" "$payload" "$@"
+
+	if coreboot_ec_check "$payload" "$@"
+	then
+		ec=$( coreboot_ec "$payload" "$@" )
+
+		project_action "build" "$ec" "$@"
+	fi
+
+	rm -f "$sources_path/.xcompile"
+
+	mkdir -p "$build_path"
+
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" KBUILD_DEFCONFIG="$config_path" "defconfig"
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" VBOOT_SOURCE="$vboot_sources_path" -j$TASKS
+
+	rm -f "$sources_path/.xcompile"
+}
+
+build_check() {
+	project_build_check "$project" "$@"
+}
+
+install() {
+	project_install "$project" "$@"
+}
+
+install_check() {
+	project_install_check "$project" "$@"
+}
+
+release() {
+	local repository=$project
+
+	project_release_install_archive "$project" "$IMAGES" "$@"
+
+	project_release_sources_git "$project" "$repository" "$@"
+}
+
+release_check() {
+	local repository=$project
+
+	project_release_install_archive_check "$project" "$IMAGES" "$@"
+
+	project_release_check_sources_git "$project" "$repository" "$@"
+}
+
+clean() {
+	project_clean "$project" "$@"
+}

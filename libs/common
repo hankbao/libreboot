@@ -1,0 +1,379 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+BUILD_SYSTEM="libreboot"
+
+PROJECTS="projects"
+SOURCES="sources"
+BUILD="build"
+INSTALL="install"
+RELEASE="release"
+SYSTEMS="systems"
+IMAGES="images"
+TOOLS="tools"
+DOCS="docs"
+
+CONFIGS="configs"
+PATCHES="patches"
+TARGETS="targets"
+REVISION="revision"
+BLOBS="blobs"
+BLOBS_IGNORE="blobs-ignore"
+BLOBS_DISCOVER="blobs-discover"
+
+DOTEPOCH=".epoch"
+DOTVERSION=".version"
+DOTREVISION=".revision"
+DOTTARFILES=".tarfiles"
+TAR_XZ="tar.xz"
+SHA256SUM="sha256sum"
+ASC="asc"
+
+function_check() {
+	local function=$1
+
+	declare -f -F "$function" > /dev/null
+}
+
+variable_check() {
+	local variable=$1
+
+	test ! -z "${!variable}"
+}
+
+arguments_list() {
+	local argument
+
+	for argument in "$@"
+	do
+		echo "$argument"
+	done
+}
+
+path_wildcard_expand() {
+	local path=$@
+
+	# Evaluation fails with unescaped whitespaces.
+	path=$( echo "$path" | sed "s/ /\\\ /g" )
+
+	eval "arguments_list "$path""
+}
+
+file_checksum_create() {
+	local path=$1
+
+	local checksum_path="$path.$SHA256SUM"
+	local name=$( basename "$path" )
+	local directory_path=$( dirname "$path" )
+
+	(
+		cd "$directory_path"
+		sha256sum "$name" > "$checksum_path"
+	)
+}
+
+file_checksum_check() {
+	local path=$1
+
+	local checksum_path="$path.$SHA256SUM"
+	local name=$( basename "$path" )
+	local directory_path=$( dirname "$path" )
+
+	if ! [ -f "$checksum_path" ]
+	then
+		printf "Could not verify file checksum!\n" >&2
+		return 1
+	fi
+
+	(
+		cd "$directory_path"
+		sha256sum -c "$checksum_path"
+	)
+}
+
+file_signature_create() {
+	local path=$1
+
+	local signature_path="$path.$ASC"
+
+	if [ -z "$RELEASE_KEY" ]
+	then
+		return 0
+	fi
+
+	gpg --default-key "$RELEASE_KEY" --armor --output "$signature_path" --detach-sign --yes "$path"
+}
+
+file_signature_check() {
+	local path=$1
+
+	local signature_path="$path.$ASC"
+
+	if ! [ -f "$signature_path" ]
+	then
+		printf "Could not verify file signature!\n" >&2
+		return 1
+	fi
+
+	gpg --armor --verify "$signature_path" "$path"
+}
+
+file_verification_create() {
+	local path=$1
+
+	file_checksum_create "$path"
+	file_signature_create "$path"
+}
+
+file_verification_check() {
+	local path=$1
+
+	file_checksum_check "$path"
+	file_signature_check "$path"
+}
+
+file_exists_check() {
+	local path=$1
+
+	test -f "$path"
+}
+
+directory_filled_check() {
+	local path=$1
+
+	if [ -z "$( ls -A "$path" 2> /dev/null )" ]
+	then
+		return 1
+	else
+		return 0
+	fi
+}
+
+archive_files_create() {
+	local source_path=$1
+
+	local directory=$( basename "$source_path" )
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local revision_path="$source_path/$DOTREVISION"
+	local version_path="$source_path/$DOTVERSION"
+
+	if git_check "$source_path"
+	then
+		git_files "$source_path" | tr -d '\0' > "$tarfiles_path"
+		echo "$DOTTARFILES" | tr -d '\0' >> "$tarfiles_path"
+	elif ! [ -f "$tarfiles_path" ]
+	then
+		touch "$tarfiles_path"
+
+		(
+			cd "$source_path"
+			find
+		) | LC_ALL=C sort | sed "s,^./,," | grep -vP "^\.$" > "$tarfiles_path"
+	else
+		# Preserve tarfiles if not in git.
+		return 0
+	fi
+
+	if [ -f "$revision_path" ]
+	then
+		echo "$DOTREVISION" | tr -d '\0' >> "$tarfiles_path"
+	fi
+
+	if [ -f "$version_path" ]
+	then
+		echo "$DOTVERSION" | tr -d '\0' >> "$tarfiles_path"
+	fi
+
+	if [ -f "$epoch_path" ]
+	then
+		echo "$DOTEPOCH" | tr -d '\0' >> "$tarfiles_path"
+	fi
+}
+
+archive_files_date() {
+	local source_path=$1
+
+	local epoch_path="$source_path/$DOTEPOCH"
+
+	if ! [ -z "$SOURCE_DATE_EPOCH" ]
+	then
+		(
+			cd "$source_path"
+			find -exec touch --no-dereference --date="@$SOURCE_DATE_EPOCH" {} \;
+		)
+	fi
+}
+
+archive_create() {
+	local archive_path=$1
+	local source_path=$2
+	local directory=$3
+
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local directory_path=$( dirname "$archive_path" )
+
+	mkdir -p "$directory_path"
+
+	if [ -z "$directory" ]
+	then
+		directory=$( basename "$source_path" )
+	fi
+
+	archive_files_create "$source_path"
+	archive_files_date "$source_path"
+
+	(
+		cd "$source_path"
+		tar -cJf "$archive_path" --no-recursion -T "$tarfiles_path" --transform="s,^,$directory/,S" --owner=root --group=root --numeric-owner
+	)
+}
+
+archive_extract() {
+	local archive_path=$1
+	local destination_path=$2
+
+	if [ -z "$destination_path" ]
+	then
+		destination_path=$( dirname "$archive_path" )
+	fi
+
+	tar -xf "$archive_path" -ps -C "$destination_path"
+}
+
+rootfs_files_create() {
+	local source_path=$1
+
+	local directory=$( basename "$source_path" )
+	local tarfiles_path="$source_path/$DOTTARFILES"
+
+	touch "$tarfiles_path"
+
+	(
+		cd "$source_path"
+		execute_root find
+	) | LC_ALL=C sort | sed "s,^./,," | grep -vP "^$DOTTARFILES|^\.$" > "$tarfiles_path"
+}
+
+rootfs_files_date() {
+	local source_path=$1
+
+	local epoch_path="$source_path/$DOTEPOCH"
+
+	if ! [ -z "$SOURCE_DATE_EPOCH" ]
+	then
+		(
+			cd "$source_path"
+			execute_root find -exec touch --no-dereference --date="@$SOURCE_DATE_EPOCH" {} \;
+		)
+	fi
+}
+
+rootfs_create() {
+	local rootfs_path=$1
+	local source_path=$2
+	local directory=$3
+
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local directory_path=$( dirname "$rootfs_path" )
+
+	mkdir -p "$directory_path"
+
+	if [ -z "$directory" ]
+	then
+		directory=$( basename "$source_path" )
+	fi
+
+	rootfs_files_create "$source_path"
+	rootfs_files_date "$source_path"
+
+	(
+		cd "$source_path"
+		execute_root tar -cJf "$rootfs_path" --no-recursion -T "$tarfiles_path" --numeric-owner
+	)
+
+	execute_root chmod 644 "$rootfs_path"
+	execute_root chown $USER:$USER "$rootfs_path"
+}
+
+requirements() {
+	local requirement
+	local requirement_path
+
+	for requirement in "$@"
+	do
+		requirement_path=$( which "$requirement" || true )
+
+		if [ -z "$requirement_path" ]
+		then
+			printf "Missing requirement: $requirement\n" >&2
+			exit 1
+		fi
+	done
+}
+
+requirements_root() {
+	local requirement
+	local requirement_path
+
+	for requirement in "$@"
+	do
+		# We need to keep stdout output to show the command.
+		requirement_path=$( execute_root which "$requirement" || true )
+
+		if [ -z "$requirement_path" ]
+		then
+			printf "Missing requirement: $requirement\n" >&2
+			exit 1
+		fi
+	done
+}
+
+arguments_concat() {
+	local delimiter=$1
+	shift
+
+	local concat
+
+	for argument in "$@"
+	do
+		if ! [ -z "$concat" ]
+		then
+			concat="$concat""$delimiter""$argument"
+		else
+			concat="$argument"
+		fi
+	done
+
+	echo "$concat"
+}
+
+execute_root() {
+	local sudo=$( which sudo 2> /dev/null || true )
+	local arguments
+
+	printf "Running command as root: " >&2
+	echo "$@" >&2
+
+	if ! [ -z "$sudo" ]
+	then
+		sudo "$@"
+	else
+		# Quote arguments for eval through su.
+		arguments=$( printf "%q " "$@" )
+		su -c "$arguments"
+	fi
+}

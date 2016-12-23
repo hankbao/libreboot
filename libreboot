@@ -1,0 +1,262 @@
+#!/bin/bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+libreboot_usage() {
+	local action
+	local target
+
+	printf "$executable [action] [target] [arguments]\n" >&2
+
+	printf "\nGeneric project actions:\n" >&2
+
+	for action in $PROJECT_ACTIONS_GENERIC
+	do
+		printf "  $action\n" >&2
+	done
+
+	printf "\nVirtual project actions:\n" >&2
+
+	printf "  sources\n"
+	printf "  produce\n"
+	printf "  test\n"
+
+	printf "\nProject targets:\n" >&2
+
+	ls -A "$root/$PROJECTS/" | while read target
+	do
+		if project_check "$target"
+		then
+			printf "  $target\n" >&2
+		fi
+	done
+
+	printf "\nGeneric tool actions:\n" >&2
+
+	for action in $TOOL_ACTIONS_GENERIC
+	do
+		printf "  $action\n" >&2
+	done
+
+	printf "\nTool targets:\n" >&2
+
+	ls -A "$root/$TOOLS/" | while read target
+	do
+		if tool_check "$target"
+		then
+			printf "  $target\n" >&2
+		fi
+	done
+
+	printf "\nEnvironment variables:\n" >&2
+	printf "  PROJECTS_FORCE - Projects to always perform actions for\n" >&2
+	printf "  TOOLS_FORCE - Tools to always perform actions for\n" >&2
+	printf "  RELEASE_KEY - GPG key to use for release\n" >&2
+	printf "  TASKS - Number of simultaneous tasks to run\n" >&2
+	printf "  VERSION - Version string to use\n" >&2
+
+	printf "\nConfiguration files:\n" >&2
+	printf "  $BUILD_SYSTEM.conf - Environment variables configuration\n" >&2
+}
+
+libreboot_project() {
+	action=$1
+	shift
+	project=$1
+	shift
+
+	case $action in
+		"sources")
+			(
+				set +e
+
+				project_action_arguments "extract" "$project" "$@"
+				if [ $? -eq 0 ]
+				then
+					return 0
+				fi
+
+				project_action_arguments "download" "$project" "$@"
+				if [ $? -eq 0 ]
+				then
+					return 0
+				fi
+			)
+			;;
+		"produce")
+			for action in "build" "install" "release"
+			do
+				project_action_arguments "$action" "$project" "$@"
+			done
+			;;
+		"test")
+			for action in $PROJECT_ACTIONS
+			do
+				project_action_arguments "$action" "$project" "$@"
+			done
+			;;
+		*)
+			if ! project_function_check "$project" "$action"
+			then
+				libreboot_usage
+				exit 1
+			fi
+
+			if [ "$action" = "usage" ]
+			then
+				project_action "$action" "$project" "$@"
+			else
+				project_action_arguments "$action" "$project" "$@"
+			fi
+			;;
+	esac
+}
+
+libreboot_tool() {
+	action=$1
+	shift
+	tool=$1
+	shift
+
+	case $action in
+		*)
+			if ! tool_function_check "$tool" "$action"
+			then
+				libreboot_usage
+				exit 1
+			fi
+
+			if [ "$action" = "usage" ]
+			then
+				tool_action "$action" "$tool" "$@"
+			else
+				tool_action_arguments_recursive "$action" "$tool" "$@"
+			fi
+			;;
+	esac
+}
+
+libreboot_setup() {
+	root=$( realpath "$( dirname "$0" )" )
+	executable=$( basename "$0" )
+
+	local requirements="git"
+	local requirement_path
+
+	libreboot_setup_include
+	libreboot_setup_variables
+
+	for requirement in $requirements
+	do
+		requirement_path=$( which "$requirement" || true )
+
+		if [ -z "$requirement_path" ]
+		then
+			printf "Missing requirement: $requirement\n" >&2
+			exit 1
+		fi
+	done
+}
+
+libreboot_setup_include() {
+	local libs_path="$root/libs"
+	local conf_path
+
+	. "$libs_path/project"
+	. "$libs_path/tool"
+	. "$libs_path/common"
+	. "$libs_path/git"
+
+	conf_path="$root/$BUILD_SYSTEM.conf"
+
+	if [ -f "$conf_path" ]
+	then
+		. "$conf_path"
+	fi
+}
+
+libreboot_setup_variables() {
+	local version_path="$root/$DOTVERSION"
+	local epoch_path="$root/$DOTEPOCH"
+
+	if [ -z "$TASKS" ]
+	then
+		TASKS=1
+	fi
+
+	if [ -z "$VERSION" ]
+	then
+		if git_check "$root"
+		then
+			VERSION="$BUILD_SYSTEM-"$( git_describe "$root" 2> /dev/null || echo "git" )
+		elif [ -f "$version_path" ]
+		then
+			VERSION=$( cat "$version_path" )
+		else
+			VERSION=$BUILD_SYSTEM
+		fi
+	fi
+
+	if [ -z "$SOURCE_DATE_EPOCH" ]
+	then
+		if git_check "$root"
+		then
+			SOURCE_DATE_EPOCH=$( git log -1 --format=%ct )
+		elif [ -f "$epoch_path" ]
+		then
+			SOURCE_DATE_EPOCH=$( cat "$epoch_path" )
+		else
+			SOURCE_DATE_EPOCH=$( date +%s )
+		fi
+	fi
+
+	if [ -z "$EDITOR" ]
+	then
+		EDITOR="nano"
+	fi
+}
+
+libreboot() {
+	action=$1
+	shift
+	target=$1
+	shift
+
+	set -e
+
+	libreboot_setup "$@"
+
+	if [ -z "$action" ] || [ -z "$target" ]
+	then
+		libreboot_usage
+		exit 1
+	fi
+
+	requirements "tar" "sed" "gpg" "sha256sum"
+
+	if project_check "$target"
+	then
+		libreboot_project "$action" "$target" "$@"
+	elif tool_check "$target"
+	then
+		libreboot_tool "$action" "$target" "$@"
+	else
+		libreboot_usage
+		exit 1
+	fi
+}
+
+libreboot "$@"
