@@ -25,7 +25,6 @@ RELEASE="release"
 SYSTEMS="systems"
 IMAGES="images"
 TOOLS="tools"
-DOCS="docs"
 
 CONFIGS="configs"
 PATCHES="patches"
