@@ -26,10 +26,6 @@ set -u -e
 
 printf "Deleting blobs in coreboot\n"
 
-if [ ! -d "coreboot/" ]; then
-	printf "coreboot-libre deblob: no coreboot directory exists, so there is nothing to deblob\n"
-fi
-
 for payloads in resources/libreboot/config/*; do
 
 	if [ ! -d "${payloads}/" ]; then
