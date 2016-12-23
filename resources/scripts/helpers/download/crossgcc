@@ -33,7 +33,7 @@ else
 fi
 
 # coreboot revisios used for crossgcc
-crossgccrevision="00aa45391ddb22b5ac24151d54615ca1d89eb745"
+crossgccrevision="35562d8b6477058e6bca31b5cedd9d4897124fc7"
 vbootrevision="d187cd3fc792f8bcefbee4587c83eafbd08441fc"
 
 rm -Rf "crossgcc/"
@@ -46,6 +46,9 @@ rm -Rf "crossgcc/"
         cd 3rdparty/vboot/
         git reset --hard ${vbootrevision}
     )
+    # workaround to fix the error on debian stretch and later, when building
+    # GMP. If -pie is enabled in GCC, then --with-pic must be used when compiling
+    git am ../resources/libreboot/patch/crossgcc/gccfix.diff
     rm -Rf .git* */*/.git*
 )
 
