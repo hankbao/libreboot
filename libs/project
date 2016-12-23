@@ -1242,10 +1242,7 @@ project_release_install_archive() {
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	if ! project_release_install_archive_exists_check "$project" "$prefix" "$@"
-	then
-		project_release_install_archive_create "$project" "$prefix" "$@"
-	fi
+	project_release_install_archive_create "$project" "$prefix" "$@"
 }
 
 project_release_install_archive_check() {
