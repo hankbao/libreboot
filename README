@@ -37,7 +37,10 @@ Each project and tool target has its own directory (either in projects or tools)
 that contain a script named after the target and possible a helper script, named
 after the script with a "-helper" suffix. The helper script is automatically
 included by the build system. Functions in helper scripts are usually prefixed
-with the name of the target.
+with the name of the target, where "-" symbols are replaced with "_" symbols.
+
+Each project and tool target's actions are functions defined in the target's
+specific script, with names matching the target's actions.
 
 Meta-Targets
 ------------
@@ -58,10 +61,11 @@ Various generic actions allow preparing projects through a series of steps:
 * releasing the project to a release directory
 * cleaning the build, install and release directories
 
-Actions can be checked by a specific project-specific function to determine
-whether it is necessary to run them again to follow the steps. An environment
-variable can force actions to be executed, by specifying a space-separated list
-of projects: PROJECTS_FORCE.
+Actions can be checked by a matching project-specific function, named after the
+function to check with a "_check" suffix, to determine whether it is necessary
+to run them again to follow the steps. An environment variable can force actions
+to be executed, by specifying a space-separated list of projects:
+PROJECTS_FORCE.
 
 Projects Configuration and Patches
 ----------------------------------
@@ -131,8 +135,10 @@ Tools are used for maintaining the build system, for performing routine tasks
 that can be automated. They may have specific actions and not implement any of
 the generic actions.
 
-An environment variable can force actions to be executed, by specifying a
-space-separated list of tasks: TASKS_FORCE.
+Actions can be checked by a matching tool-specific function, named after the
+function to check with a "_check" suffix, to determine whether it is necessary
+to run them again to follow the steps. An environment variable can force actions
+to be executed, by specifying a space-separated list of tasks: TASKS_FORCE.
 
 Tools Sources
 -------------
