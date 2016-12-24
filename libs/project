@@ -535,6 +535,8 @@ project_blobs_path() {
 			return
 		fi
 	done
+
+	echo "$blobs_path"
 }
 
 project_blobs_ignore_path() {
