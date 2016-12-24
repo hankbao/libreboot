@@ -65,9 +65,9 @@ generate() {
 
 		key_length=$(( 1 << (10 + ($algorithm / 3)) ))
 
-		openssl genrsa -F4 -out "$keys_directory/$key.$PEM" "$keys_directory/$key_length"
+		openssl genrsa -F4 -out "$keys_directory/$key.$PEM" "$key_length"
 		openssl req -batch -new -x509 -key "$keys_directory/$key.$PEM"
-		openssl req -batch -new -x509 -key "$keys_directory/$key.$PEM" -out "$key.$CRT"
+		openssl req -batch -new -x509 -key "$keys_directory/$key.$PEM" -out "$keys_directory/$key.$CRT"
 		dumpRSAPublicKey -cert "$keys_directory/$key.$CRT" > "$keys_directory/$key.$KEYB"
 		futility vbutil_key --pack "$keys_directory/$key.$VBPUBK" --key "$keys_directory/$key.$KEYB" --version "$KEYS_VERSION" --algorithm "$algorithm"
 		futility vbutil_key --pack "$keys_directory/$key.$VBPRIVK" --key "$keys_directory/$key.$PEM" --algorithm "$algorithm"
