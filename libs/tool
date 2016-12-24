@@ -285,3 +285,85 @@ tool_usage_arguments_recursive() {
 		done
 	fi
 }
+
+tool_file_path() {
+	local tool=$1
+	shift
+	local directory=$1
+	shift
+	local file=$1
+	shift
+
+	local tool_path=$( tool_path "$tool" )
+	local path="$tool_path/$directory"
+	local argument
+	local file_path
+
+	for argument in "" "$@"
+	do
+		if ! [ -z "$argument" ]
+		then
+			path="$path/$argument"
+		fi
+
+		if ! [ -f "$path/$file" ]
+		then
+			continue
+		fi
+
+		file_path="$path/$file"
+	done
+
+	if [ -z "$file_path" ]
+	then
+		return 1
+	fi
+
+	echo "$file_path"
+}
+
+tool_file_test() {
+	local file_path=$( tool_file_path "$@" )
+
+	test -f "$file_path"
+}
+
+tool_file_contents() {
+	local file_path=$( tool_file_path "$@" )
+
+	if [ -f "$file_path" ]
+	then
+		cat "$file_path"
+	fi
+}
+
+tool_file_contents_herit() {
+	local tool=$1
+	shift
+	local directory=$1
+	shift
+	local file=$1
+	shift
+
+	local tool_path=$( tool_path "$tool" )
+	local path="$tool_path/$directory"
+	local argument
+	local file_path
+
+	for argument in "" "$@"
+	do
+		if ! [ -z "$argument" ]
+		then
+			path="$path/$argument"
+		fi
+
+		file_path="$path/$file"
+
+		if ! [ -f "$file_path" ]
+		then
+			continue
+		fi
+
+		cat "$file_path"
+	done
+}
