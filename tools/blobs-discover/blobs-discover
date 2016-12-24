@@ -65,8 +65,8 @@ verify() {
 
 	local project_path=$( project_path "$project" )
 	local project_sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local project_blobs_path=$( project_blobs_path "$project" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" )
+	local project_blobs_path=$( project_blobs_path "$project" "$@" )
+	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
 	local project_blobs_discover_path
 
 	local ifs_save
@@ -132,8 +132,8 @@ execute() {
 	local sources_path=$( tool_sources_path "$tool" )
 	local project_path=$( project_path "$project" )
 	local project_sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local project_blobs_path=$( project_blobs_path "$project" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" )
+	local project_blobs_path=$( project_blobs_path "$project" "$@" )
+	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
 	local project_blobs_directory_path
 
 	if ! [ -z "$project_blobs_path" ]
@@ -183,8 +183,8 @@ execute_check() {
 	shift
 
 	local project_path=$( project_path "$project" )
-	local project_blobs_path=$( project_blobs_path "$project" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" )
+	local project_blobs_path=$( project_blobs_path "$project" "$@" )
+	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
 	local project_blobs_discover_path
 
 	if ! [ -z "$project_blobs_path" ]
