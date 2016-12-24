@@ -301,7 +301,7 @@ git_project_prepare_blobs() {
 	local blobs_path=$( project_blobs_path "$project" "$@" )
 	local blob
 
-	if [ -z "$blobs_path" ]
+	if ! [ -f "$blobs_path" ]
 	then
 		return
 	fi
