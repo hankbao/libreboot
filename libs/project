@@ -1435,7 +1435,10 @@ project_file_test() {
 project_file_contents() {
 	local file_path=$( project_file_path "$@" )
 
-	cat "$file_path"
+	if [ -f "$file_path" ]
+	then
+		cat "$file_path"
+	fi
 }
 
 project_file_contents_herit() {
