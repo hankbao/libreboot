@@ -1,3 +1,4 @@
 cros-boot-keys:cros-boot-keys
+cros-firmware-prepare:cros-firmware-prepare
 cros-kernel-prepare:cros-kernel-prepare
 cros-medium-setup:cros-medium-setup
