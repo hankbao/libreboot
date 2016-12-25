@@ -104,6 +104,8 @@ generate() {
 		rm -f "$VBOOT_KEYS_PATH/$key.$PEM" "$VBOOT_KEYS_PATH/$key.$CRT" "$VBOOT_KEYS_PATH/$key.$KEYB"
 	done
 
+	printf "\nGenerated keys $KEYS\n"
+
 	for keyblock in $KEYBLOCKS
 	do
 		pubkey=$( echo "$subkeys" | sed "s/$REGEXP/\1/g" )
@@ -117,6 +119,8 @@ generate() {
 		futility vbutil_keyblock --pack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --flags "$mode" --datapubkey "$VBOOT_KEYS_PATH/$pubkey.$VBPUBK" --signprivate "$VBOOT_KEYS_PATH/$privkey.$VBPRIVK"
 		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
+
+	printf "\nGenerated keyblocks $KEYBLOCKS\n"
 }
 
 verify() {
@@ -133,6 +137,8 @@ verify() {
 
 		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
+
+	printf "\nVerified keyblocks $KEYBLOCKS\n"
 }
 
 requirements() {
