@@ -65,6 +65,7 @@ libreboot_usage() {
 	printf "  PROJECTS_FORCE - Projects to always perform actions for\n" >&2
 	printf "  TOOLS_FORCE - Tools to always perform actions for\n" >&2
 	printf "  RELEASE_KEY - GPG key to use for release\n" >&2
+	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
 	printf "  TASKS - Number of simultaneous tasks to run\n" >&2
 	printf "  VERSION - Version string to use\n" >&2
 
@@ -189,6 +190,7 @@ libreboot_setup_include() {
 }
 
 libreboot_setup_variables() {
+	local vboot_tools_path=$( project_install_path "vboot" "tools" )
 	local version_path="$root/$DOTVERSION"
 	local epoch_path="$root/$DOTEPOCH"
 
@@ -221,6 +223,11 @@ libreboot_setup_variables() {
 		else
 			SOURCE_DATE_EPOCH=$( date +%s )
 		fi
+	fi
+
+	if [ -z "$VBOOT_KEYS_PATH" ] && [ -d "$vboot_tools_path/devkeys/" ]
+	then
+		VBOOT_KEYS_PATH="$vboot_tools_path/devkeys/"
 	fi
 
 	if [ -z "$EDITOR" ]
