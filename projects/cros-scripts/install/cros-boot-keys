@@ -31,24 +31,19 @@ ALGORITHMS="7 7 11 7 7 4 11 11 11"
 MODES="7 7 11 7 10"
 
 usage() {
-	printf "$executable [action] [keys directory] (firmware image path)\n" >&2
+	printf "$executable [action]\n" >&2
 
 	printf "\nActions:\n" >&2
 	printf "  generate - Generate a set of keys\n" >&2
-	printf "  sign - Sign a firmware image\n" >&2
 	printf "  verify - Verify keyblocks\n" >&2
-
-	printf "\nOutput files:\n" >&2
-	printf "  sign - Generates a firmware images with the \"-signed\" suffix\n" >&2
 
 	printf "\nEnvironment variables:\n" >&2
 	printf "  KEYS_VERSION - Version to give the keys\n" >&2
+	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
 	printf "  VBOOT_TOOLS_PATH - Path to vboot tools\n" >&2
 }
 
 generate() {
-	local keys_directory=$1
-
 	local algorithms=$ALGORITHMS
 	local subkeys=$SUBKEYS
 	local modes=$MODES
@@ -65,14 +60,14 @@ generate() {
 
 		key_length=$(( 1 << (10 + ($algorithm / 3)) ))
 
-		openssl genrsa -F4 -out "$keys_directory/$key.$PEM" "$key_length"
-		openssl req -batch -new -x509 -key "$keys_directory/$key.$PEM"
-		openssl req -batch -new -x509 -key "$keys_directory/$key.$PEM" -out "$keys_directory/$key.$CRT"
-		dumpRSAPublicKey -cert "$keys_directory/$key.$CRT" > "$keys_directory/$key.$KEYB"
-		futility vbutil_key --pack "$keys_directory/$key.$VBPUBK" --key "$keys_directory/$key.$KEYB" --version "$KEYS_VERSION" --algorithm "$algorithm"
-		futility vbutil_key --pack "$keys_directory/$key.$VBPRIVK" --key "$keys_directory/$key.$PEM" --algorithm "$algorithm"
+		openssl genrsa -F4 -out "$VBOOT_KEYS_PATH/$key.$PEM" "$key_length"
+		openssl req -batch -new -x509 -key "$VBOOT_KEYS_PATH/$key.$PEM"
+		openssl req -batch -new -x509 -key "$VBOOT_KEYS_PATH/$key.$PEM" -out "$VBOOT_KEYS_PATH/$key.$CRT"
+		dumpRSAPublicKey -cert "$VBOOT_KEYS_PATH/$key.$CRT" > "$VBOOT_KEYS_PATH/$key.$KEYB"
+		futility vbutil_key --pack "$VBOOT_KEYS_PATH/$key.$VBPUBK" --key "$VBOOT_KEYS_PATH/$key.$KEYB" --version "$KEYS_VERSION" --algorithm "$algorithm"
+		futility vbutil_key --pack "$VBOOT_KEYS_PATH/$key.$VBPRIVK" --key "$VBOOT_KEYS_PATH/$key.$PEM" --algorithm "$algorithm"
 
-		rm -f "$keys_directory/$key.$PEM" "$keys_directory/$key.$CRT" "$keys_directory/$key.$KEYB"
+		rm -f "$VBOOT_KEYS_PATH/$key.$PEM" "$VBOOT_KEYS_PATH/$key.$CRT" "$VBOOT_KEYS_PATH/$key.$KEYB"
 	done
 
 	for keyblock in $KEYBLOCKS
@@ -85,22 +80,12 @@ generate() {
 		mode=$( echo "$modes" | sed "s/$REGEXP/\1/g" )
 		modes=$( echo "$modes" | sed "s/$REGEXP/\2/g" )
 
-		futility vbutil_keyblock --pack "$keys_directory/$keyblock.$KEYBLOCK" --flags "$mode" --datapubkey "$keys_directory/$pubkey.$VBPUBK" --signprivate "$keys_directory/$privkey.$VBPRIVK"
-		futility vbutil_keyblock --unpack "$keys_directory/$keyblock.$KEYBLOCK" --signpubkey "$keys_directory/$privkey.$VBPUBK"
+		futility vbutil_keyblock --pack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --flags "$mode" --datapubkey "$VBOOT_KEYS_PATH/$pubkey.$VBPUBK" --signprivate "$VBOOT_KEYS_PATH/$privkey.$VBPRIVK"
+		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
 }
 
-sign() {
-	local keys_directory=$1
-	local firmware_image_path=$2
-
-	futility sign --signprivate="$keys_directory/firmware_data_key.$VBPRIVK" --keyblock "$keys_directory/firmware.$KEYBLOCK" --kernelkey "$keys_directory/kernel_subkey.$VBPUBK" -v "$KEYS_VERSION" --infile "$firmware_image_path"
-	futility gbb_utility -s --recoverykey="$keys_directory/recovery_key.$VBPUBK" --rootkey="$keys_directory/root_key.$VBPUBK" "$firmware_image_path" "$firmware_image_path"
-}
-
 verify() {
-	local keys_directory=$1
-
 	local subkeys=$SUBKEYS
 	local pubkey
 	local privkey
@@ -112,15 +97,8 @@ verify() {
 		privkey=$( echo "$subkeys" | sed "s/$REGEXP/\1/g" )
 		subkeys=$( echo "$subkeys" | sed "s/$REGEXP/\2/g" )
 
-		futility vbutil_keyblock --unpack "$keys_directory/$keyblock.$KEYBLOCK" --signpubkey "$keys_directory/$privkey.$VBPUBK"
+		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
-}
-
-verify_firmware() {
-	local keys_directory=$1
-	local firmware_image_path=$2
-
-	futility verify -k "$keys_directory/root_key.$VBPUBK" --type bios "$firmware_image_path" || printf "\nBad firmware image signature!\n" >&2 && return 1
 }
 
 requirements() {
@@ -152,18 +130,22 @@ setup() {
 	then
 		PATH="$PATH:$VBOOT_TOOLS_PATH"
 	fi
+
+	if [ -z "$VBOOT_KEYS_PATH" ]
+	then
+		VBOOT_KEYS_PATH="$root/keys"
+		mkdir -p "$VBOOT_KEYS_PATH"
+	fi
 }
 
 cros_boot_keys() {
 	local action=$1
-	local keys_directory=$2
-	local firmware_image_path=$3
 
 	set -e
 
 	setup "$@"
 
-	if [ -z "$action" ] || ! [ -d "$keys_directory" ]
+	if [ -z "$action" ]
 	then
 		usage
 		exit 1
@@ -172,26 +154,11 @@ cros_boot_keys() {
 	case $action in
 		"generate")
 			requirements "openssl" "dumpRSAPublicKey" "futility"
-			generate "$keys_directory"
-			;;
-		"sign")
-			if ! [ -f "$firmware_image_path" ]
-			then
-				usage
-				exit 1
-			fi
-
-			requirements "futility"
-			sign "$keys_directory" "$firmware_image_path"
+			generate
 			;;
 		"verify")
 			requirements "futility"
-			verify "$keys_directory"
-
-			if [ -f "$firmware_image_path" ]
-			then
-				verify_firmware "$keys_directory" "$firmware_image_path"
-			fi
+			verify
 			;;
 		*)
 			usage
