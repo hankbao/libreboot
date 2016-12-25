@@ -43,6 +43,38 @@ usage() {
 	printf "  VBOOT_TOOLS_PATH - Path to vboot tools\n" >&2
 }
 
+keys_override_confirm() {
+	local override=0
+	local confirm
+
+	for key in $KEYS
+	do
+		if [ -f "$VBOOT_KEYS_PATH/$key.$VBPUBK" ] || [ -f "$VBOOT_KEYS_PATH/$key.$VBPRIVK" ]
+		then
+			override=1
+		fi
+	done
+
+	for keyblock in $KEYBLOCKS
+	do
+		if [ -f "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" ]
+		then
+			override=1
+		fi
+	done
+
+	if [ $override -ne 1 ]
+	then
+		return 0
+	fi
+
+	printf "This is going to override keys stored in the following directory:\n"
+	printf "  $VBOOT_KEYS_PATH\n"
+	printf "Press enter to confirm: "
+
+	read confirm
+}
+
 generate() {
 	local algorithms=$ALGORITHMS
 	local subkeys=$SUBKEYS
@@ -52,6 +84,8 @@ generate() {
 	local pubkey
 	local privkey
 	local mode
+
+	keys_override_confirm
 
 	for key in $KEYS
 	do
