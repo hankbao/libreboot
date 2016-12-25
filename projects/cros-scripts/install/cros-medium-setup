@@ -21,7 +21,8 @@ DEVICE="device"
 VENDOR="vendor"
 MODEL="model"
 NAME="name"
-KERNEL_IMAGE="kernel.img"
+KERNEL="kernel"
+IMG="img"
 KERNEL_MODULES="modules/lib"
 KERNEL_PARTITION_INDEX=1
 ROOTFS_PARTITION_INDEX=2
@@ -31,7 +32,7 @@ GPT_SIZE=34
 KERNEL_SIZE=16384
 
 usage() {
-	printf "$executable [action] [storage] [rootfs tarball|kernel files]\n" >&2
+	printf "$executable [action] [storage] [rootfs tarball|kernel files] [medium]\n" >&2
 
 	printf "\nActions:\n" >&2
 	printf "  partitions - Setup partitions on storage\n" >&2
@@ -206,10 +207,11 @@ rootfs() {
 kernel() {
 	local storage_path=$1
 	local kernel_files_path=$2
+	local medium=$3
 
 	local storage_kernel_path=$( storage_partition_path "$storage_path" "$KERNEL_PARTITION_INDEX" )
 	local storage_rootfs_path=$( storage_partition_path "$storage_path" "$ROOTFS_PARTITION_INDEX" )
-	local kernel_image_path="$kernel_files_path/$KERNEL_IMAGE"
+	local kernel_image_path="$kernel_files_path/$KERNEL-$medium.$IMG"
 	local kernel_modules_path="$kernel_files_path/$KERNEL_MODULES"
 	local storage_rootfs_mount_path
 
@@ -267,6 +269,7 @@ cros_medium_setup() {
 	local storage_path=$2
 	local rootfs_tarball_path=$3
 	local kernel_files_path=$3
+	local medium=$4
 
 	set -e
 
@@ -294,14 +297,14 @@ cros_medium_setup() {
 			rootfs "$storage_path" "$rootfs_tarball_path"
 			;;
 		"kernel")
-			if [ -z "$kernel_files_path" ]
+			if [ -z "$kernel_files_path" ] || [ -z "$medium" ]
 			then
 				usage
 				exit 1
 			fi
 
 			requirements "udisksctl" "rsync"
-			kernel "$storage_path" "$kernel_files_path"
+			kernel "$storage_path" "$kernel_files_path" "$medium"
 			;;
 		*)
 			usage

@@ -21,9 +21,10 @@ VBPUBK="vbpubk"
 ARCH="arch"
 CMDLINE="cmdline"
 BOOTLOADER="bootloader"
-KERNEL_ITS="kernel.its"
-KERNEL_FIT="kernel.fit"
-KERNEL_IMAGE="kernel.img"
+KERNEL="kernel"
+ITS="its"
+FIT="fit"
+IMG="img"
 
 usage() {
 	printf "$executable [action] [kernel files|kernel image] [medium]\n" >&2
@@ -51,9 +52,9 @@ pack() {
 	local arch=$( cat "$arch_path" )
 	local cmdline_path="$kernel_files_path/$CMDLINE-$medium"
 	local bootloader_path="$kernel_files_path/$BOOTLOADER"
-	local kernel_its_path="$kernel_files_path/$KERNEL_ITS"
-	local kernel_fit_path="$kernel_files_path/$KERNEL_FIT"
-	local kernel_image_path="$kernel_files_path/$KERNEL_IMAGE"
+	local kernel_its_path="$kernel_files_path/$KERNEL.$ITS"
+	local kernel_fit_path="$kernel_files_path/$KERNEL.$FIT"
+	local kernel_image_path="$kernel_files_path/$KERNEL-$medium.$IMG"
 
 	mkimage -f "$kernel_its_path" "$kernel_fit_path"
 	futility vbutil_kernel --pack "$kernel_image_path" --version 1 --arch "$arch" --keyblock "$VBOOT_KEYS_PATH/kernel.$KEYBLOCK" --signprivate "$VBOOT_KEYS_PATH/kernel_data_key.$VBPRIVK" --config "$cmdline_path" --vmlinuz "$kernel_fit_path" --bootloader "$bootloader_path"
