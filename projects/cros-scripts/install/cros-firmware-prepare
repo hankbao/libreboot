@@ -19,12 +19,29 @@ KEYBLOCK="keyblock"
 VBPRIVK="vbprivk"
 VBPUBK="vbpubk"
 
+GBB_FLAGS="dev_screen_short_delay load_option_roms enable_alternate_os force_dev_switch_on force_dev_boot_usb disable_fw_rollback_check enter_triggers_tonorm force_dev_boot_legacy faft_key_overide disable_ec_software_sync default_dev_boot_lefacy disable_pd_software_sync disable_lid_shutdown dev_boot_fastboot_full_cap enable_serial"
+
 usage() {
-	printf "$executable [action] [firmware image path]\n" >&2
+	printf "$executable [action] [firmware image] [gbb action] [gbb file|gbb flag]\n" >&2
 
 	printf "\nActions:\n" >&2
 	printf "  sign - Sign firmware image\n" >&2
 	printf "  verify - Verify firmware image\n" >&2
+	printf "  gbb - Google Binary Block\n" >&2
+
+	printf "\nGBB actions:\n" >&2
+	printf "  extract - Extract GBB from firmware image to path \n" >&2
+	printf "  replace - Replace GBB from path to firmware image\n" >&2
+	printf "  list - List enabled GBB flags\n" >&2
+	printf "  enable - Enable GBB flag\n" >&2
+	printf "  disable - Disable GBB flag\n" >&2
+
+	printf "\nGBB flags:\n" >&2
+
+	for flag in $GBB_FLAGS
+	do
+		printf "  $flag\n" >&2
+	done
 
 	printf "\nEnvironment variables:\n" >&2
 	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
@@ -46,6 +63,141 @@ verify() {
 	futility verify -k "$VBOOT_KEYS_PATH/root_key.$VBPUBK" "$firmware_image_path" || ( printf "\nBad firmware image signature!\n" >&2 && return 1 )
 
 	printf "\nVerified firmware image $firmware_image_path\n"
+}
+
+gbb() {
+	local firmware_image_path=$1
+	local gbb_action=$2
+	local gbb_file_path=$3
+	local gbb_flag=$3
+
+	local i=0
+	local flags
+	local flag
+	local flag_value
+
+	case $gbb_action in
+		"extract")
+			if [ -z "$gbb_file_path" ]
+			then
+				usage
+				exit 1
+			fi
+
+
+			futility dump_fmap -x "$firmware_image_path" "GBB:$gbb_file_path"
+
+			printf "\nExtracted GBB from $firmware_image_path to $gbb_file_path\n"
+			;;
+		"replace")
+			if [ -z "$gbb_file_path" ]
+			then
+				usage
+				exit 1
+			fi
+
+			futility load_fmap "$firmware_image_path" "GBB:$gbb_file_path"
+
+			printf "\nReplaced GBB from $gbb_file_path to $firmware_image_path\n"
+			;;
+		"list")
+			printf "GBB flags in $firmware_image_path:\n"
+
+			flags=$( gbb_flags_get "$firmware_image_path" )
+
+			for flag in $GBB_FLAGS
+			do
+				flag_value=$(( 1 << $i ))
+
+				if (( $flags & $flag_value ))
+				then
+					printf "  $flag\n"
+				fi
+
+				i=$(( $i + 1 ))
+			done
+
+			;;
+		"enable")
+			if [ -z "$gbb_flag" ]
+			then
+				usage
+				exit 1
+			fi
+
+			flags=$( gbb_flags_get "$firmware_image_path" )
+			flag_value=$( gbb_flag_value "$gbb_flag" )
+
+			if [ -z "$flag_value" ]
+			then
+				printf "Invalid GBB flag: $gbb_flag\n" >&2
+				exit 1
+			fi
+
+			flags=$( printf "0x%x\n" $(( $flags | $flag_value )) )
+
+			gbb_flags_set "$firmware_image_path" "$flags"
+
+			printf "\nEnabled GBB flag $gbb_flag in $firmware_image_path\n"
+			;;
+		"disable")
+			if [ -z "$gbb_flag" ]
+			then
+				usage
+				exit 1
+			fi
+
+			flags=$( gbb_flags_get "$firmware_image_path" )
+			flag_value=$( gbb_flag_value "$gbb_flag" )
+
+			if [ -z "$flag_value" ]
+			then
+				printf "Invalid GBB flag: $gbb_flag\n" >&2
+				exit 1
+			fi
+
+			flags=$( printf "0x%x\n" $(( $flags & ~$flag_value )) )
+
+			gbb_flags_set "$firmware_image_path" "$flags"
+
+			printf "\nDisabled GBB flag $gbb_flag in $firmware_image_path\n"
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+
+}
+
+gbb_flags_get() {
+	local firmware_image_path=$1
+
+	futility gbb_utility -g --flags "$firmware_image_path" | sed "s/^[^:]*: //g"
+}
+
+gbb_flags_set() {
+	local firmware_image_path=$1
+	local gbb_flags=$2
+
+	futility gbb_utility -s --flags="$gbb_flags" "$firmware_image_path"
+}
+
+gbb_flag_value() {
+	local gbb_flag=$1
+
+	local i=0
+
+	for flag in $GBB_FLAGS
+	do
+		if [ "$gbb_flag" = "$flag" ]
+		then
+			echo $(( 1 << $i ))
+			return
+		fi
+
+		i=$(( $i + 1 ))
+	done
 }
 
 requirements() {
@@ -87,6 +239,8 @@ setup() {
 cros_firmware_prepare() {
 	local action=$1
 	local firmware_image_path=$2
+	local gbb_action=$3
+	local gbb_file_path_flag=$4
 
 	set -e
 
@@ -112,6 +266,10 @@ cros_firmware_prepare() {
 		"verify")
 			requirements "futility"
 			verify "$firmware_image_path"
+			;;
+		"gbb")
+			requirements "futility"
+			gbb "$firmware_image_path" "$gbb_action" "$gbb_file_path_flag"
 			;;
 		*)
 			usage
