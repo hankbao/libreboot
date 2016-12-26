@@ -114,7 +114,7 @@ setup() {
 	fi
 }
 
-cros_media_setup() {
+cros_kernel_prepare() {
 	local action=$1
 	local kernel_files_path=$2
 	local kernel_image_path=$2
@@ -156,4 +156,4 @@ cros_media_setup() {
 	esac
 }
 
-cros_media_setup "$@"
+cros_kernel_prepare "$@"
