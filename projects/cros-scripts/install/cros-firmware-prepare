@@ -22,7 +22,7 @@ VBPUBK="vbpubk"
 GBB_FLAGS="dev_screen_short_delay load_option_roms enable_alternate_os force_dev_switch_on force_dev_boot_usb disable_fw_rollback_check enter_triggers_tonorm force_dev_boot_legacy faft_key_overide disable_ec_software_sync default_dev_boot_lefacy disable_pd_software_sync disable_lid_shutdown dev_boot_fastboot_full_cap enable_serial"
 
 usage() {
-	printf "$executable [action] [firmware image] [gbb action] [gbb file|gbb flag]\n" >&2
+	printf "$executable [action] [firmware image] [gbb action|vpd action] [gbb file|gbb flag|vpd file]\n" >&2
 
 	printf "\nActions:\n" >&2
 	printf "  sign - Sign firmware image\n" >&2
@@ -42,6 +42,10 @@ usage() {
 	do
 		printf "  $flag\n" >&2
 	done
+
+	printf "\nVPD actions:\n" >&2
+	printf "  extract - Extract VPD from firmware image to path \n" >&2
+	printf "  replace - Replace VPD from path to firmware image\n" >&2
 
 	printf "\nEnvironment variables:\n" >&2
 	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
@@ -200,6 +204,29 @@ gbb_flag_value() {
 	done
 }
 
+vpd() {
+	local firmware_image_path=$1
+	local vpd_action=$2
+	local vpd_file_path=$3
+
+	case $vpd_action in
+		"extract")
+			futility dump_fmap -x "$firmware_image_path" "RO_VPD:$vpd_file_path"
+
+			printf "\nExtracted VPD from $firmware_image_path to $vpd_file_path\n"
+			;;
+		"replace")
+			futility load_fmap "$firmware_image_path" "RO_VPD:$vpd_file_path"
+
+			printf "\nReplaced VPD from $vpd_file_path to $firmware_image_path\n"
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+}
+
 requirements() {
 	local requirement
 	local requirement_path
@@ -240,7 +267,9 @@ cros_firmware_prepare() {
 	local action=$1
 	local firmware_image_path=$2
 	local gbb_action=$3
+	local vpd_action=$3
 	local gbb_file_path_flag=$4
+	local vpd_file_path=$4
 
 	set -e
 
@@ -270,6 +299,16 @@ cros_firmware_prepare() {
 		"gbb")
 			requirements "futility"
 			gbb "$firmware_image_path" "$gbb_action" "$gbb_file_path_flag"
+			;;
+		"vpd")
+			if [ -z "$vpd_file_path" ]
+			then
+				usage
+				exit 1
+			fi
+
+			requirements "futility"
+			vpd "$firmware_image_path" "$vpd_action" "$vpd_file_path"
 			;;
 		*)
 			usage
