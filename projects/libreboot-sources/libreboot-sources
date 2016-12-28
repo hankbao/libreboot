@@ -22,9 +22,21 @@ update() {
 	git_merge "$repository_path" "$ORIGIN_HEAD"
 }
 
+install() {
+	local install_path=$( project_install_path "$project" "$@" )
+
+	project_install "$project" "$@"
+}
+
+install_check() {
+	project_install_check "$project" "$@"
+}
+
 release() {
 	local archive_path=$( project_release_archive_path "$project" "$SOURCES" "$@" )
 	local sources_path=$root
+
+	project_release_install "$project" "$TOOLS" "$@"
 
 	echo "$VERSION" > "$sources_path/$DOTVERSION"
 	echo "$SOURCE_DATE_EPOCH" > "$sources_path/$DOTEPOCH"
@@ -40,6 +52,8 @@ release() {
 
 release_check() {
 	local archive_path=$( project_release_archive_path "$project" "$SOURCES" "$@" )
+
+	project_release_install_check "$project" "$TOOLS" "$@"
 
 	file_exists_check "$archive_path"
 }
