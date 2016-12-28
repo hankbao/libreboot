@@ -26,11 +26,11 @@ install_check() {
 }
 
 release() {
-	project_release_install "$project" "$SOURCES" "$@"
+	project_release_install "$project" "$TOOLS" "$@"
 }
 
 release_check() {
-	project_release_install_check "$project" "$SOURCES" "$@"
+	project_release_install_check "$project" "$TOOLS" "$@"
 }
 
 clean() {
