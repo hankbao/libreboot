@@ -50,8 +50,6 @@ download() {
 	local path
 	local url
 
-	printf "Downloading $project\n"
-
 	for prefix in "$SYSTEMS/$MACHINE" "$IMAGES" "$TOOLS/$MACHINE"
 	do
 		ifs_save=$IFS
@@ -78,6 +76,8 @@ download() {
 				wget -O "$path.$SHA256SUM" "$url.$SHA256SUM"
 				wget -O "$path.$ASC" "$url.$ASC"
 
+				printf "\nDownloaded $project\n"
+
 				return 0
 			fi
 		done
@@ -95,14 +95,14 @@ sources() {
 	local url="$DOWNLOAD_URL/$SOURCES/$project/$project.$TAR_XZ"
 	local path="$root/$SOURCES/$project/$project.$TAR_XZ"
 
-	printf "Downloading $project sources\n"
-
 	if wget --quiet --spider "$url"
 	then
-		mkdir -p "$root/$project"
+		mkdir -p "$( dirname "$path" )"
 		wget -O "$path" "$url"
 		wget -O "$path.$SHA256SUM" "$url.$SHA256SUM"
 		wget -O "$path.$ASC" "$url.$ASC"
+
+		printf "\nDownloaded $project sources\n"
 	else
 		printf "Could not download $project sources from $DOWNLOAD_URL\n" >&2
 		return 1
@@ -119,8 +119,6 @@ verify() {
 	local prefix
 	local directory
 	local path
-
-	printf "Verifying $project\n"
 
 	for prefix in "$SYSTEMS/$MACHINE" "$IMAGES" "$TOOLS/$MACHINE"
 	do
@@ -165,6 +163,8 @@ verify() {
 				printf "Could not verify $project signature!\n" >&2
 			fi
 
+			printf "\nVerified $project\n"
+
 			return 0
 		done
 
@@ -183,8 +183,6 @@ extract() {
 	local prefix
 	local directory
 	local path
-
-	printf "Extracting $project\n"
 
 	for prefix in "$SYSTEMS/$MACHINE" "$IMAGES" "$TOOLS/$MACHINE"
 	do
@@ -218,6 +216,8 @@ extract() {
 			extract_path=$( dirname "$path" )
 
 			tar -xf "$path" -ps -C "$extract_path"
+
+			printf "Extracted $project\n"
 
 			return 0
 		done
