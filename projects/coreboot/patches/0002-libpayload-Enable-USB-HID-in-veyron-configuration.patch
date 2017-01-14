@@ -1,11 +1,11 @@
-From 552b999c7b32363cbc51722f33a0de189baf27fe Mon Sep 17 00:00:00 2001
+From 417866c23c193a44a84d686ce1c2ee3d43284e05 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Mon, 19 Dec 2016 20:23:44 +0100
-Subject: [PATCH 4/4] libpayload: Enable USB HID in veyron configuration
+Subject: [PATCH 2/2] libpayload: Enable USB HID in veyron configuration
 
 This enables USB HID support in the veyron config, since it seems to
 work correctly and is needed for interaction with depthcharge on devices
-without an embedded keyboard (such as veyron_jerry).
+without an embedded keyboard (such as veyron_mickey).
 
 Change-Id: Icae829e3a132005df17bcb6f7e6f8a190912576d
 Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
@@ -14,7 +14,7 @@ Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
  1 file changed, 1 deletion(-)
 
 diff --git a/payloads/libpayload/configs/config.veyron b/payloads/libpayload/configs/config.veyron
-index e80535c..b643e92 100644
+index e80535c63e..b643e92a48 100644
 --- a/payloads/libpayload/configs/config.veyron
 +++ b/payloads/libpayload/configs/config.veyron
 @@ -4,4 +4,3 @@ CONFIG_LP_8250_SERIAL_CONSOLE=y
@@ -23,5 +23,5 @@ index e80535c..b643e92 100644
  CONFIG_LP_USB_DWC2=y
 -# CONFIG_LP_USB_HID is not set
 -- 
-2.10.2
+2.11.0
 

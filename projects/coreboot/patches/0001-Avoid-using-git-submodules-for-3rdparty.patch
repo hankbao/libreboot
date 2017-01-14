@@ -1,7 +1,7 @@
-From 95248477726f4a866b04a760f68930bc5ebd55ff Mon Sep 17 00:00:00 2001
+From 6c534728fde6a9582915995a2742808764fe4783 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
 Date: Wed, 20 Jul 2016 16:03:30 +0200
-Subject: [PATCH 1/4] Avoid using git submodules for 3rdparty
+Subject: [PATCH 1/2] Avoid using git submodules for 3rdparty
 
 This gets rid of git submodules entirely, to avoid the nuisance caused
 by automatically checking them out.
@@ -26,7 +26,7 @@ Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
  delete mode 160000 3rdparty/vboot
 
 diff --git a/.gitmodules b/.gitmodules
-index c3270e6..3a617c7 100644
+index c3270e6ae2..3a617c7dc5 100644
 --- a/.gitmodules
 +++ b/.gitmodules
 @@ -1,23 +1,3 @@
@@ -55,48 +55,48 @@ index c3270e6..3a617c7 100644
 -	url = ../libgfxinit.git
 diff --git a/3rdparty/arm-trusted-firmware b/3rdparty/arm-trusted-firmware
 deleted file mode 160000
-index bfd9251..0000000
+index 236c27d21f..0000000000
 --- a/3rdparty/arm-trusted-firmware
 +++ /dev/null
 @@ -1 +0,0 @@
--Subproject commit bfd925139fdbc2e87979849907b34843aa326994
+-Subproject commit 236c27d21f52ad8f0a998e54774e3d8a4b59129d
 diff --git a/3rdparty/blobs b/3rdparty/blobs
 deleted file mode 160000
-index 8090bdd..0000000
+index 8090bdd598..0000000000
 --- a/3rdparty/blobs
 +++ /dev/null
 @@ -1 +0,0 @@
 -Subproject commit 8090bdd59853599e469b7503ea473ca12e8c681b
 diff --git a/3rdparty/chromeec b/3rdparty/chromeec
 deleted file mode 160000
-index ea1a869..0000000
+index bcffec7fdc..0000000000
 --- a/3rdparty/chromeec
 +++ /dev/null
 @@ -1 +0,0 @@
--Subproject commit ea1a8699e96425806abdd532d04da254ae093f6e
+-Subproject commit bcffec7fdc50e959cb298d094d8af472777dba75
 diff --git a/3rdparty/libgfxinit b/3rdparty/libgfxinit
 deleted file mode 160000
-index 88a7f17..0000000
+index 88a7f17b7d..0000000000
 --- a/3rdparty/libgfxinit
 +++ /dev/null
 @@ -1 +0,0 @@
 -Subproject commit 88a7f17b7d7a4f8a4d25ef6b87c71236b0862f5d
 diff --git a/3rdparty/libhwbase b/3rdparty/libhwbase
 deleted file mode 160000
-index aab715f..0000000
+index aab715f166..0000000000
 --- a/3rdparty/libhwbase
 +++ /dev/null
 @@ -1 +0,0 @@
 -Subproject commit aab715f166bf1b54cfbd6982e8df49248ea544d8
 diff --git a/3rdparty/vboot b/3rdparty/vboot
 deleted file mode 160000
-index adfafba..0000000
+index adfafba793..0000000000
 --- a/3rdparty/vboot
 +++ /dev/null
 @@ -1 +0,0 @@
 -Subproject commit adfafba793684ed92965dfbd86b3fb3463975d8c
 diff --git a/Makefile.inc b/Makefile.inc
-index c5ce30f..919a5d4 100644
+index c5ce30f2b1..919a5d4ac1 100644
 --- a/Makefile.inc
 +++ b/Makefile.inc
 @@ -183,17 +183,6 @@ ifeq ($(CONFIG_COVERAGE),y)
@@ -118,5 +118,5 @@ index c5ce30f..919a5d4 100644
  romstage-c-deps:=$$(OPTION_TABLE_H)
  libverstage-c-deps:=$$(OPTION_TABLE_H)
 -- 
-2.10.2
+2.11.0
 
