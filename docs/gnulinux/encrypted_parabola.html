@@ -358,7 +358,7 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 			</p>
 			<p>
 				Locale:<br/>
-				# <b>nano /etc/locale.gen</b><br/>
+				# <b>vi /etc/locale.gen</b><br/>
 				Uncomment your needed localisations. For example en_GB.UTF-8 (UTF-8 is highly recommended over other options).<br/>
 				# <b>locale-gen</b><br/>
 				# <b>echo LANG=en_GB.UTF-8 &gt; /etc/locale.conf</b><br/>
@@ -366,7 +366,7 @@ href="http://www.linux.com/news/software/applications/8208-all-about-linux-swap-
 			</p>
 			<p>
 				Console font and keymap:<br/>
-				# <b>nano /etc/vconsole.conf</b><br/>
+				# <b>vi /etc/vconsole.conf</b><br/>
 				In my case:
 			</p>
 <pre>
@@ -387,7 +387,7 @@ FONT=lat9w-16
 				Write your hostname to /etc/hostname. For example, if your hostname is parabola:<br/>
 				# <b>echo parabola &gt; /etc/hostname</b><br/>
 				Add the same hostname to /etc/hosts:<br/>
-				# <b>nano /etc/hosts</b><br/>
+				# <b>vi /etc/hosts</b><br/>
 			</p>
 <pre>
 #&lt;ip-address&gt;	&lt;hostname.domain.org&gt;	&lt;hostname&gt;
@@ -401,7 +401,7 @@ FONT=lat9w-16
 				Configure /etc/mkinitcpio.conf as needed (see <a href="https://wiki.parabola.nu/Mkinitcpio">https://wiki.parabola.nu/Mkinitcpio</a>).
 				Runtime modules can be found in /usr/lib/initcpio/hooks, and build hooks can be found in /usr/lib/initcpio/install. (# <b>mkinitcpio -H hookname</b> gives information about each hook.)
 				Specifically, for this use case:<br/>
-				# <b>nano /etc/mkinitcpio.conf</b><br/>
+				# <b>vi /etc/mkinitcpio.conf</b><br/>
 				Then modify the file like so:
 			</p>
 				<ul>
@@ -426,7 +426,7 @@ FONT=lat9w-16
 			<p>
 				Set the root password:
 				At the time of writing, Parabola used SHA512 by default for its password hashing. I referred to <a href="https://wiki.archlinux.org/index.php/SHA_password_hashes">https://wiki.archlinux.org/index.php/SHA_password_hashes</a>.<br/>
-				# <b>nano /etc/pam.d/passwd</b><br/>
+				# <b>vi /etc/pam.d/passwd</b><br/>
 				Add rounds=65536 at the end of the uncommented 'password' line.<br/>
 				# <b>passwd root</b><br/>
 				Make sure to set a secure password! Also, it must never be the same as your LUKS password.
@@ -547,7 +547,7 @@ FONT=lat9w-16
 				Extract grubtest.cfg:<br/>
 				$ <b>./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg</b><br/>
 				And modify:<br/>
-				$ <b>nano grubtest.cfg</b>
+				$ <b>vi grubtest.cfg</b>
 			</p>
 
 			<p>

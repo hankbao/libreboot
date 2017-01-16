@@ -232,7 +232,7 @@ libreboot_setup_variables() {
 
 	if [ -z "$EDITOR" ]
 	then
-		EDITOR="nano"
+		EDITOR="vi"
 	fi
 }
 
