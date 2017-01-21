@@ -1,0 +1,79 @@
+From 4be2a60b0ebb845c8f5043ef3f27b691a51df7c2 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 10 Aug 2015 23:53:48 +0200
+Subject: [PATCH 6/7] firmware: Separate screen and wait at device information
+ screen
+
+This blanks the screen (instead of redrawing it) at device information and
+waits for the user to press any key to come back to the developer mode screen.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ firmware/lib/vboot_api_kernel.c | 12 ++++++++++++
+ firmware/lib/vboot_display.c    | 13 ++++++++-----
+ 2 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/firmware/lib/vboot_api_kernel.c b/firmware/lib/vboot_api_kernel.c
+index 7d22c93..4e6de18 100644
+--- a/firmware/lib/vboot_api_kernel.c
++++ b/firmware/lib/vboot_api_kernel.c
+@@ -425,6 +425,18 @@ developer_mode_screen:
+ 				 "hold developer mode screen\n"));
+ 			hold = 1;
+ 			break;
++		case 0x09:
++			/* Ctrl+I = device information */
++			VBDEBUG(("VbBootDeveloper() - "
++				 "device info\n"));
++
++			hold = 1;
++			VbDisplayDebugInfo(cparams, &vnc);
++
++			while (!VbExKeyboardRead()) ;
++
++			goto developer_mode_screen;
++			break;
+ 		case 0x0c:
+ 			VBDEBUG(("VbBootDeveloper() - "
+ 				 "user pressed Ctrl+L; Try legacy boot\n"));
+diff --git a/firmware/lib/vboot_display.c b/firmware/lib/vboot_display.c
+index 472ca91..e092189 100644
+--- a/firmware/lib/vboot_display.c
++++ b/firmware/lib/vboot_display.c
+@@ -541,7 +541,7 @@ const char *RecoveryReasonString(uint8_t code)
+ 	return "We have no idea what this means";
+ }
+ 
+-#define DEBUG_INFO_SIZE 512
++#define DEBUG_INFO_SIZE 768
+ 
+ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
+ {
+@@ -556,8 +556,8 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
+ 	VbError_t ret;
+ 	uint32_t i;
+ 
+-	/* Redisplay current screen to overwrite any previous debug output */
+-	VbDisplayScreen(cparams, disp_current_screen, 1, vncptr);
++	/* Blank screen */
++	VbDisplayScreen(cparams, VB_SCREEN_BLANK, 1, vncptr);
+ 
+ 	/* Add hardware ID */
+ 	VbRegionReadHWID(cparams, hwid, sizeof(hwid));
+@@ -666,8 +666,11 @@ VbError_t VbDisplayDebugInfo(VbCommonParams *cparams, VbNvContext *vncptr)
+ 		used += StrnAppend(buf + used, sha1sum, DEBUG_INFO_SIZE - used);
+ 	}
+ 
+-	/* Make sure we finish with a newline */
+-	used += StrnAppend(buf + used, "\n", DEBUG_INFO_SIZE - used);
++	/* Make sure we finish with newlines */
++	used += StrnAppend(buf + used, "\n\n", DEBUG_INFO_SIZE - used);
++
++	used += StrnAppend(buf + used, "Press any key to continue\n\n",
++			   DEBUG_INFO_SIZE - used);
+ 
+ 	/* TODO: add more interesting data:
+ 	 * - Information on current disks */
+-- 
+2.8.0
+

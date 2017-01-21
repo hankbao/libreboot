@@ -1,0 +1,30 @@
+From 80e3428c2e50b5a6838d71a89007f610eda5e2dc Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 3 Aug 2015 14:39:42 +0200
+Subject: [PATCH 1/8] arm: armv7-a march abi flag for ARMv7 hardware
+
+Specifying the march is required to get depthcharge to build with e.g. the arm
+toolchain built by coreboot's crossgcc script. Without this flag, the toolchain
+will complain that some ARM mrc/mcr ASM instructions are not defined.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/arch/arm/build_vars | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/arch/arm/build_vars b/src/arch/arm/build_vars
+index b2fce32..455e370 100644
+--- a/src/arch/arm/build_vars
++++ b/src/arch/arm/build_vars
+@@ -17,7 +17,7 @@
+ 
+ VB_FIRMWARE_ARCH=arm
+ ifeq ($(CONFIG_ARCH_ARM_V7),y)
+-ARCH_ABI_FLAGS += -mthumb
++ARCH_ABI_FLAGS += -mthumb -march=armv7-a
+ endif
+ 
+ ifeq ($(CONFIG_ARCH_ARM_V8),y)
+-- 
+2.8.0
+

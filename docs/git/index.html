@@ -45,14 +45,14 @@
 			<div class="important">
 				<p>
 					For Debian Stretch (may also work on Debian Jessie), you can run the following command:<br/>
-					$ <b>sudo ./build dependencies debian</b>
+					$ <b>sudo ./oldbuild dependencies debian</b>
                     <br/>(this will also work in Devuan)
 				</p>
 				<p>
 					For Parabola, you can run the following command:<br/>
-					$ <b>sudo ./build dependencies parabola</b><br/>
+					$ <b>sudo ./oldbuild dependencies parabola</b><br/>
 					or:<br/>
-					# <b>./build dependencies parabola</b>
+					# <b>./oldbuild dependencies parabola</b>
 				</p>
 			</div>
 
@@ -176,12 +176,12 @@
 
 			<p>
 				To build bucts, do this in the main directory:<br/>
-				$ <b>./build module bucts</b>
+				$ <b>./oldbuild module bucts</b>
 			</p>
 			
 			<p>
 				To statically compile it, do this:<br/>
-				$ <b>./build module bucts static</b>
+				$ <b>./oldbuild module bucts static</b>
 			</p>
 
 			<p>
@@ -217,12 +217,12 @@
 
 			<p>
 				To build it, do the following in the main directory:<br/>
-				$ <b>./build module flashrom</b>
+				$ <b>./oldbuild module flashrom</b>
 			</p>
 			
 			<p>
 				To statically compile it, do the following in the main directory:<br/>
-				$ <b>./build module flashrom static</b>
+				$ <b>./oldbuild module flashrom static</b>
 			</p>
 
 			<p>
@@ -281,36 +281,36 @@
 
 			<p>
 				Build all of the components used in libreboot:<br/>
-				$ <b>./build module all</b>
+				$ <b>./oldbuild module all</b>
 			</p>
 
 			<p>
-				You can also build each modules separately, using <i>./build module modulename</i>.
+				You can also build each modules separately, using <i>./oldbuild module modulename</i>.
 				To see the possible values for <i>modulename</i>, use:<br/>
-				$ <b>./build module list</b>
+				$ <b>./oldbuild module list</b>
 			</p>
 
 			<p>
 				After that, build the ROM images (for all boards):<br/>
-				$ <b>./build roms withgrub</b><br/>
+				$ <b>./oldbuild roms withgrub</b><br/>
 				Alternatively, you can build for a specific board or set of boards.
 				For example:<br/>
-				$ <b>./build roms withgrub x60</b><br/>
-				$ <b>./build roms withgrub x200_8mb</b><br/>
-				$ <b>./build roms withgrub x60 x200_8mb</b><br/>
+				$ <b>./oldbuild roms withgrub x60</b><br/>
+				$ <b>./oldbuild roms withgrub x200_8mb</b><br/>
+				$ <b>./oldbuild roms withgrub x60 x200_8mb</b><br/>
 				The list of board options can be found by looking at the directory
 				names in <b>resources/libreboot/config/grub/</b>.
 			</p>
 			<p>
 				For those boards which use the depcharge payload, you must use:
-				$ <b>./build roms withdepthcharge</b><br/>
+				$ <b>./oldbuild roms withdepthcharge</b><br/>
 				You can also build for a specific board or set of boards. For example:<br/>
-				$ <b>./build roms withdepthcharge veyron_speedy</b>
+				$ <b>./oldbuild roms withdepthcharge veyron_speedy</b>
 			</p>
 
 			<p>
 				To clean (reverse) everything, do the following:<br/>
-				$ <b>./build clean all</b>
+				$ <b>./oldbuild clean all</b>
 			</p>
 
 			<p>
@@ -334,7 +334,7 @@
 					</p>
 
 					<p>
-						The archives will appear under <i>release/${version}/</i>;
+						The archives will appear under <i>release/oldbuildsystem/${version}/</i>;
 						${version} will either be set using <i>git describe</i> or,
 						if a <i>version</i> file already exists (_src release archive),
 						then it will simply re-use that.
@@ -342,34 +342,34 @@
 
 					<p>
 						Tag the current commit, and that version will appear in both the ${version}
-						string on the directory under <i>release/</i>, and in the file names of the
+						string on the directory under <i>release/oldbuildsystem/</i>, and in the file names of the
 						archives. Otherwise, whatever git uses for <i>git describe --tags HEAD</i>
 						will be used.
 					</p>
 
 					<p>
 						Utilities (static executables):<br/>
-						$ <b>./build release util</b>
+						$ <b>./oldbuild release util</b>
 					</p>
 					<p>
 						Archive containing flashrom and bucts source code:<br/>
-						$ <b>./build release tobuild</b>
+						$ <b>./oldbuild release tobuild</b>
 					</p>
 					<p>
 						Documentation archive (<b>does not work on _src release archive, only git</b>):<br/>
-						$ <b>./build release docs</b>
+						$ <b>./oldbuild release docs</b>
 					</p>
 					<p>
 						ROM image archives:<br/>
-						$ <b>./build release roms</b>
+						$ <b>./oldbuild release roms</b>
 					</p>
 					<p>
 						Source code archive:<br/>
-						$ <b>./build release src</b>
+						$ <b>./oldbuild release src</b>
 					</p>
 					<p>
 						SHA512 sums of all other release archives that have been generated:<br/>
-						$ <b>./build release sha512sums</b>
+						$ <b>./oldbuild release sha512sums</b>
 					</p>
 
 					<p>
@@ -405,8 +405,8 @@
 
 					<p>
 						If you are building binaries on a live system or chroot (for flashrom/bucts), you can use the following to statically link them:<br/>
-						$ <b>./build module flashrom static</b><br/>
-						$ <b>./build module bucts static</b>
+						$ <b>./oldbuild module flashrom static</b><br/>
+						$ <b>./oldbuild module bucts static</b>
 					</p>
 					
 					<p>
@@ -417,17 +417,17 @@
 					
 					<p>
 						The command that you used for generating the release archives will also run the following command:<br/>
-						$ <b>./build release tobuild</b><br/>
-						The archive <b>tobuild.tar.xz</b> will have been created under <b>release/</b>, containing bucts, flashrom and all other required
+						$ <b>./oldbuild release tobuild</b><br/>
+						The archive <b>tobuild.tar.xz</b> will have been created under <b>release/oldbuildsystem/</b>, containing bucts, flashrom and all other required
 						resources for building them.
 					</p>
 
 					<p>
-						You'll find that the files libreboot_util.tar.xz and libreboot_src.tar.xz have been created, under <b>release/</b>.
+						You'll find that the files libreboot_util.tar.xz and libreboot_src.tar.xz have been created, under <b>release/oldbuildsystem/</b>.
 					</p>
 					
 					<p>
-						The ROM images will be stored in separate archives for each system, under <b>release/rom/</b>.
+						The ROM images will be stored in separate archives for each system, under <b>release/oldbuildsystem/rom/</b>.
 					</p>
 			
 			</div>

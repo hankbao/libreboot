@@ -1,0 +1,30 @@
+From ff08bf3966b3c299d6ead9707cc17a71ff9e50c7 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 10 Aug 2015 20:30:14 +0200
+Subject: [PATCH 7/8] fdt: nonvolatile-context-storage report to mkbp for EC NV
+ storage
+
+This allows old versions of crossystem to detect that it should use mosys to
+access NV storage in case it is stored on the EC.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/vboot/crossystem/fdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/vboot/crossystem/fdt.c b/src/vboot/crossystem/fdt.c
+index a79b192..0487513 100644
+--- a/src/vboot/crossystem/fdt.c
++++ b/src/vboot/crossystem/fdt.c
+@@ -56,7 +56,7 @@ static int install_crossystem_data(DeviceTreeFixup *fixup, DeviceTree *tree)
+ 		dt_add_string_prop(node, "nonvolatile-context-storage","nvram");
+ 	} else if (CONFIG_NV_STORAGE_CROS_EC) {
+ 		dt_add_string_prop(node,
+-				"nonvolatile-context-storage", "cros-ec");
++				"nonvolatile-context-storage", "mkbp");
+ 	} else if (CONFIG_NV_STORAGE_DISK) {
+ 		dt_add_string_prop(node, "nonvolatile-context-storage", "disk");
+ 		dt_add_u32_prop(node, "nonvolatile-context-lba",
+-- 
+2.8.0
+

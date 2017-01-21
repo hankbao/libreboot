@@ -1,0 +1,37 @@
+From fd72a029d64e0ee9552e4433387ee01f3cb05592 Mon Sep 17 00:00:00 2001
+From: Klemens Nanni <contact@autoboot.org>
+Date: Tue, 15 Sep 2015 16:00:03 +0200
+Subject: [PATCH 07/10] grub-core/disk/cryptodisk.c: Point to const char
+
+---
+ grub-core/disk/cryptodisk.c | 2 +-
+ include/grub/cryptodisk.h   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/grub-core/disk/cryptodisk.c b/grub-core/disk/cryptodisk.c
+index 5430b2e..633edb2 100644
+--- a/grub-core/disk/cryptodisk.c
++++ b/grub-core/disk/cryptodisk.c
+@@ -115,7 +115,7 @@ gf_mul_be (grub_uint8_t *o, const grub_uint8_t *a, const grub_uint8_t *b)
+ }
+ 
+ int
+-grub_cryptodisk_uuidcmp(char *uuid_a, char *uuid_b)
++grub_cryptodisk_uuidcmp(const char *uuid_a, const char *uuid_b)
+ {
+   while ((*uuid_a != '\0') && (*uuid_b != '\0'))
+     {
+diff --git a/include/grub/cryptodisk.h b/include/grub/cryptodisk.h
+index 01c0269..cd6a545 100644
+--- a/include/grub/cryptodisk.h
++++ b/include/grub/cryptodisk.h
+@@ -169,5 +169,5 @@ grub_cryptodisk_t grub_cryptodisk_create (grub_disk_t disk, char *uuid,
+ 				   char *ciphername, char *ciphermode, char *digest);
+ 
+ int
+-grub_cryptodisk_uuidcmp(char *uuid_a, char *uuid_b);
++grub_cryptodisk_uuidcmp(const char *uuid_a, const char *uuid_b);
+ #endif
+-- 
+1.9.1
+

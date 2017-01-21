@@ -1,0 +1,39 @@
+From b3b529bec8f07557632510663a350f6d2abbe742 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 10 Aug 2015 22:44:50 +0200
+Subject: [PATCH 2/7] firmware: Text-based screen display in priority
+
+This allows showing text-based screen displays before looking at the GBB bitmaps
+since those encourage the use of non-free software (Chrome OS) and don't display
+enough information to the user.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ firmware/lib/vboot_display.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/firmware/lib/vboot_display.c b/firmware/lib/vboot_display.c
+index f2978fb..b95a1eb 100644
+--- a/firmware/lib/vboot_display.c
++++ b/firmware/lib/vboot_display.c
+@@ -339,13 +339,12 @@ static VbError_t VbDisplayScreenLegacy(VbCommonParams *cparams, uint32_t screen,
+ 	/* Request the screen */
+ 	disp_current_screen = screen;
+ 
+-	/* Look in the GBB first */
+-	if (VBERROR_SUCCESS == VbDisplayScreenFromGBB(cparams, screen,
+-						      vncptr, locale))
++	/* Display default first */
++	if (VBERROR_SUCCESS == VbExDisplayScreen(screen, locale))
+ 		return VBERROR_SUCCESS;
+ 
+-	/* If screen wasn't in the GBB bitmaps, fall back to a default */
+-	return VbExDisplayScreen(screen, locale);
++	/* If default doesn't have anything to show, fall back to GBB bitmaps */
++	return VbDisplayScreenFromGBB(cparams, screen, vncptr, locale);
+ }
+ 
+ VbError_t VbDisplayScreen(VbCommonParams *cparams, uint32_t screen,
+-- 
+2.8.0
+

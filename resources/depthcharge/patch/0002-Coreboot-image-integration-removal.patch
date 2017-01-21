@@ -1,0 +1,33 @@
+From f095d901afe02728fb0471d51e02553036cd2538 Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Mon, 3 Aug 2015 14:49:34 +0200
+Subject: [PATCH 2/8] Coreboot image integration removal
+
+There is no need to integrate the built depthcharge binary inside a coreboot
+image right after building it, coreboot will handle this on its own.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+---
+ src/Makefile.inc | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/src/Makefile.inc b/src/Makefile.inc
+index a73785b..564dd13 100644
+--- a/src/Makefile.inc
++++ b/src/Makefile.inc
+@@ -77,12 +77,6 @@ $(eval $(call declare_bin,$1,$2 $$$$(VB_LIB),$3))
+ 
+ $1.payload: $1.elf
+ 	@printf "    PAYLOAD    $$(subst $$(obj)/,,$$@)\n"
+-	$$(Q)-rm -f $1.rom $1.bb
+-	$$(Q)dd if=/dev/zero of=$1.bb bs=512 count=1
+-	$$(Q)cbfstool $1.rom create -m $$(ARCH) -s 1024K -B $1.bb
+-	$$(Q)cbfstool $1.rom add-payload -f $$< -n dc.elf -c lzma
+-	$$(Q)cbfstool $1.rom extract -n dc.elf -f $$@
+-	$$(Q)rm -f $1.rom $1.bb
+ 
+ $(notdir $1)_unified: $1.bin $1.payload
+ PHONY += $(notdir $1)_unified
+-- 
+2.8.0
+
