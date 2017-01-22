@@ -88,7 +88,6 @@ printf '\n'
 rm -Rf "${distdir}/bucts/".git*
 rm -Rf "${distdir}/flashrom/".git*
 rm -Rf "${distdir}/grub/".git*
-rm -Rf "${distdir}/depthcharge/".git*
 rm -Rf "${distdir}/seabios/".git*
 
 rm -f "${distdir}"/*.vim
@@ -107,8 +106,6 @@ rm -Rf "${distdir}/resources/utilities/coreboot-libre/"
 rm -f "${distdir}/download"
 rm -Rf "${distdir}/resources/scripts/helpers/download/"
 
-# Other patches aren't needed in the release, either
-rm -Rf "${distdir}/resources/depthcharge/patch/"
 rm -Rf "${distdir}/resources/grub/patch/"
 rm -Rf "${distdir}/resources/memtest86plus/patch/"
 

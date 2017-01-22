@@ -13,6 +13,14 @@
 
 <body><div class="section"><p>If you're using libreboot from git, note that only CrOS devices build at the moment. We merged a newly rewritten build system recently, and we've yet to complete re-integration of older boards into Libreboot. Use Libreboot 20160907 for the time being, unless you're involved in libreboot development</p></div>
 
+<div class="section">
+<p>
+Depthcharge is currently not documented, since it is in the new build system.
+Instructions for how to build boards that have depthcharge are included in
+the BUILD_HOWTO file in libreboot.git or _src.
+</p>
+</div>
+
 	<div class="section">
 		<h1 id="pagetop">Building libreboot from source</h1>
 			<p>
@@ -301,12 +309,6 @@
 				The list of board options can be found by looking at the directory
 				names in <b>resources/libreboot/config/grub/</b>.
 			</p>
-			<p>
-				For those boards which use the depcharge payload, you must use:
-				$ <b>./oldbuild roms withdepthcharge</b><br/>
-				You can also build for a specific board or set of boards. For example:<br/>
-				$ <b>./oldbuild roms withdepthcharge veyron_speedy</b>
-			</p>
 
 			<p>
 				To clean (reverse) everything, do the following:<br/>
@@ -315,7 +317,7 @@
 
 			<p>
 				The ROM images will be stored under <b>bin/<i>payload</i>/</b>,
-				where <i>payload</i> could be <i>grub</i>, <i>depthcharge</i>, <i>seabios</i>, or
+				where <i>payload</i> could be <i>grub</i>, <i>seabios</i>, or
 				whatever other payload those images were built for.
 			</p>
 
