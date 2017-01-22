@@ -54,4 +54,4 @@ make -j${cores}
 )
 
 # Also build SeaBIOS, which we use with GRUB to make SeaGRUB
-./build module seabios
+./oldbuild module seabios

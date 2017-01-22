@@ -34,7 +34,7 @@ printf "Building ROM images with the SeaBIOS payload\n"
 buildrom() {
 	board="$1"
 	if [ -f "resources/libreboot/config/seabios/${board}/config" ]; then
-		./build roms withseabios_helper "${board}"
+		./oldbuild roms withseabios_helper "${board}"
 	fi
 }
 

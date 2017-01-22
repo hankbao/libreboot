@@ -40,15 +40,15 @@ listoptions() {
 
 help() {
 	cat <<- EOF
-	USAGE:	./build <MODE> <OPTION>
+	USAGE:	./oldbuild <MODE> <OPTION>
 
 	possible values for 'mode':
 	$(listmodes)
 
-	Example:	./build module all
-	Example:	./build module flashrom [static]
-	Example:	./build roms withgrub
-	Example:	./build clean all
+	Example:	./oldbuild module all
+	Example:	./oldbuild module flashrom [static]
+	Example:	./oldbuild roms withgrub
+	Example:	./oldbuild clean all
 
 	Refer to the libreboot documentation for more information.
 	EOF
@@ -60,7 +60,7 @@ die() {
 }
 
 if [ $# -lt 1 ]; then
-	die "Wrong number of arguments specified. See './build help'."
+	die "Wrong number of arguments specified. See './oldbuild help'."
 fi
 
 mode="${1}"
@@ -88,11 +88,11 @@ if [ $# -gt 1 ]; then
     				"${build}"/"${mode}"/"${option}" $@
     			else
                     help
-    				die "Invalid option for '${mode}'. See './build ${mode} list'."
+    				die "Invalid option for '${mode}'. See './oldbuild ${mode} list'."
     			fi
     		else
                 help
-    			die "Invalid mode '${mode}'. See './build help'."
+    			die "Invalid mode '${mode}'. See './oldbuild help'."
     		fi
     esac
 else

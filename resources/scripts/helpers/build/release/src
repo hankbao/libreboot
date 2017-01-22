@@ -80,7 +80,7 @@ printf '%s\n' "${versiondate}" >"${distdir}/versiondate"
 printf 'Cleaning files in %s/\n' "${distdir}"
 
 # Clean old builds.
-(cd "${distdir}/" && ./build clean all)
+(cd "${distdir}/" && ./oldbuild clean all)
 printf '\n'
 
 # Delete Git repositories and properties and Subversion administrative

@@ -95,7 +95,7 @@ printf '%s\n' "${versiondate}" >"${distdir}/versiondate"
 # Include it statically compiled
 cp -R "bucts" "bucts_/"
 # make it statically compile
-./build module bucts static
+./oldbuild module bucts static
 mkdir -p "${distdir}/bucts/${arch}/"
 mv "bucts/bucts" "${distdir}/bucts/${arch}/"
 rm -Rf "bucts/"
@@ -108,7 +108,7 @@ mv "bucts_/" "bucts/"
 # Include it statically compiled
 cp -R "flashrom/" "flashrom_/"
 # make it statically compile
-./build module flashrom static
+./oldbuild module flashrom static
 mkdir -p "${distdir}/flashrom/${arch}/"
 mv "flashrom/flashrom" "${distdir}/flashrom/${arch}/"
 mv "flashrom/flashrom_lenovobios_sst" "${distdir}/flashrom/${arch}/"

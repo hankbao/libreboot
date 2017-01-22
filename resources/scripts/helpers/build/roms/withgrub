@@ -61,7 +61,7 @@ done
 buildrom() {
 	board="$1"
 	if [ -f "resources/libreboot/config/grub/${board}/config" ]; then
-		./build roms withgrub_helper "${board}"
+		./oldbuild roms withgrub_helper "${board}"
 	fi
 }
 

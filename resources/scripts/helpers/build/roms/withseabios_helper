@@ -37,8 +37,8 @@ else
 fi
 
 if (( $# != 1 )); then
-	printf "Usage: ./buildrom-withseabios boardname\n"
-	printf "Example: ./buildrom-withseabios x60\n"
+	printf "Usage: ./oldbuild rom withseabios boardname\n"
+	printf "Example: ./oldbuild rom withseabios x60\n"
 	printf "You need to specify exactly 1 argument\n"
 	exit 1
 fi
