@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+   <style type="text/css">
+      @import url('../css/main.css');
+   </style>
+
+   <title>GRUB secure boot with PGP</title>
+</head>
+
+<body>
+   <div class="section">
+      <h1>
+         GRUB secure boot with PGP
+      </h1>
+
+         <p>
+            This tutorial assumes you have a libreboot image (rom) that you wish to modify,
+            to which we shall henceforth refer to as "my.rom".
+            This tutorial modifies grubtest.cfg, this means signing and password protection
+            will work after switching to it in the main boot menu and bricking due to
+            incorrect configuration will be impossible.
+            After you are satisfied with the setup, you should transfer the new settings
+            to grub.cfg to make your machine actually secure.
+         </p>
+
+         <p>
+            First extract the old grubtest.cfg and remove it from the libreboot image:
+<pre>
+cbfstool my.rom extract -n grubtest.cfg -f my.grubtest.cfg
+cbfstool my.rom remove -n grubtest.cfg
+</pre>
+         </p>
+         <p>
+            Helpful links:
+            <ul>
+            <li><a href="https://www.gnu.org/software/grub/manual/html_node/Security.html#Security">
+            GRUB manual #security</a></li>
+            <li><a href="http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi">
+            GRUB info pages</a></li>
+            <li><a href="https://libreboot.org/faq/#firmware-hddssd">
+            SATA connected storage considered dangerous until proven otherwise.</a></li>
+            <li><a href="https://www.coreboot.org/GRUB2#Security">
+            Coreboot GRUB security howto</a></li>
+            </ul>
+         </p>
+   </div>
+   <div class="section">
+      <h1>
+         GRUB Password
+      </h1>
+         <p>
+            The security of this setup depends on a good GRUB password as PGP signature
+            checking can be disabled through the interactive console:
+         </p>
+             <pre>set check_signatures=no</pre>
+         <p>
+            This is good in that it allows you to occasionally boot unsigned liveCDs and such.
+            You may think of supplying signatures on an usb key, but the signature
+            checking code currently looks for &lt;/path/to/filename&gt;.sig when verifying
+            &lt;/path/to/filename&gt; and as such it is not possible to supply signatures
+            in an alternate location.
+         </p>
+         <p>
+            Note that this is not your LUKS password, but it's a password that you have to
+            enter in order to use "restricted" functionality (such as console). This
+            protects your system from an attacker simply booting a live USB and re-flashing
+            your firmware.
+            <b>This should be different than your LUKS passphrase and user password.</b>
+         </p>
+<!--
+   Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
+   WTF is a diceware method?!
+         <p style="font-size:2em;">
+            MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
+            Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
+            Then copy that to grub.cfg once you're satisfied.
+            WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
+         </p>
+         <p>
+            (emphasis added, because it's needed. This is a common roadblock for users)
+         </p>
+-->
+         <p>
+            The GRUB password can be entered in two ways:
+            <ul>
+            <li>plaintext</li>
+            <li>protected with <a href="https://en.wikipedia.org/wiki/Pbkdf2">PBKDF2</a></li>
+            </ul>
+            We will (obviously) use the later. Generating the PBKDF2 derived key is done
+            using the <b>grub-mkpasswd-pbkdf2</b> utility. You can get it by installing
+            GRUB version 2. Generate a key by giving it a password:
+         </p>
+         <pre>grub-mkpasswd-pbkdf2</pre>
+         <p>
+            Its output will be a string of the following form:
+            grub.pbkdf2.sha512.10000.HEXDIGITS.MOREHEXDIGITS
+         </p>
+         <p>
+            Now open my.grubtest.cfg and put the following before the menu entries (prefered
+            above the functions and after other directives). Of course use the pbdkf string
+            that you had generated yourself:
+         </p>
+         <pre>
+set superusers=&quot;root&quot;
+password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</pre>
+         <p>
+            Obviously, replace it with the correct hash that you actually got for the password
+            that you entered. Meaning, not the hash that you see above!
+         </p>
+         <p>
+            As enabling password protection as above means that you have to input it on
+            every single boot, we will make one menu entry work without it. Remember that
+            we will have PGP signing active, thus a potential attacker will not be able
+            to boot an arbitrary operating system. We do this by adding option
+            <b>--unrestricted</b> to a menuentry definition:
+         </p>
+         <pre>menuentry 'Load Operating System (incl. fully encrypted disks)  [o]' --hotkey='o' --unrestricted {
+...</pre>
+         <p>
+            Another good thing to do, if we chose to load signed on-disk GRUB configurations,
+            is to remove (or comment out) <b>unset superusers</b> in function try_user_config:
+         </p>
+         <pre>
+function try_user_config {
+   set root="${1}"
+   for dir in boot grub grub2 boot/grub boot/grub2; do
+      for name in '' autoboot_ libreboot_ coreboot_; do
+         if [ -f /"${dir}"/"${name}"grub.cfg ]; then
+            #unset superusers
+            configfile /"${dir}"/"${name}"grub.cfg
+         fi
+      done
+   done
+}</pre>
+         <p>
+            Why? We allowed booting normally without entering a password above.
+            When we unset superusers and then load a signed GRUB configuration file,
+            we can easily use the command line as password protection will be completely
+            disabled. Disabling signature checking and booting whatever an attacker wants
+            is then just a few GRUB commands away.
+         </p>
+
+         <p>
+            As far as basic password setup is concerned we are done and we can now move on to signing.
+         </p>
+   </div>
+   <div class="section">
+      <h1>
+         PGP keys
+      </h1>
+         <p>
+            First generate a PGP keypair to use for signing. Option RSA (sign only) is ok.
+         </p>
+         <p>
+            <b>Warning:</b> GRUB does not read ASCII armored keys.
+            When attempting to trust ... a key filename it will print error: bad signature
+         </p>
+         <pre>
+mkdir --mode 0700 keys
+gpg --homedir keys --gen-key
+gpg --homedir keys --export-secret-keys --armor > boot.secret.key # backup
+gpg --homedir keys --export > boot.key</pre>
+
+         <p>
+            Now that we have a key, we can sign some files with it. We have to sign:
+            <ul>
+            <li>a kernel</li>
+            <li>(if we have one) an initramfs</li>
+            <li>(if we wish to transfer control to it) an on-disk grub.cfg</li>
+            <li>grubtest.cfg (this is so one can go back to grubtest.cfg after signature
+               checking is enforced. You can always get back to grub.cfg by pressing ESC,
+               but afterwards grubtest.cfg is not signed and it will not load.</li>
+            </ul>
+
+            Suppose that we have a pair of <b>my.kernel</b> and <b>my.initramfs</b>
+            and an on-disk <b>libreboot_grub.cfg</b>. We sign them by issuing the
+            following commands:
+         </p>
+<pre>
+gpg --homedir keys --detach-sign my.initramfs
+gpg --homedir keys --detach-sign my.kernel
+gpg --homedir keys --detach-sign libreboot_grub.cfg
+gpg --homedir keys --detach-sign my.grubtest.cfg
+</pre>
+         <p>
+            Of course some further modifications to my.grubtest.cfg will be required.
+            We have to trust the key and enable signature enforcement
+            (put this before menu entries):
+         </p>
+<pre>
+trust (cbfsdisk)/boot.key
+set check_signatures=enforce
+</pre>
+         <p>
+            What remains now is to include the modifications into the image (rom):
+         </p>
+<pre>
+cbfstool my.rom add -n boot.key -f boot.key -t raw
+cbfstool my.rom add -n grubtest.cfg -f my.grubtest.cfg -t raw
+cbfstool my.rom add -n grubtest.cfg.sig -f my.grubtest.cfg.sig -t raw
+</pre>
+         <p>
+            ... and flashing it.
+         </p>
+   </div>
+
+   <div class="section">
+
+      <p>
+         Copyright &copy; 2017 Fedja Beader &lt;fedja@protonmail.ch&gt;<br/>
+         Copyright &copy; 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;<br/>
+         Permission is granted to copy, distribute and/or modify this document
+         under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
+         or any later version published by Creative Commons;
+
+         A copy of the license can be found at <a href="../cc-by-sa-4.0.txt">../cc-by-sa-4.0.txt</a>
+      </p>
+
+      <p>
+         Updated versions of the license (when available) can be found at
+         <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">https://creativecommons.org/licenses/by-sa/4.0/legalcode</a>
+      </p>
+
+      <p>
+         UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
+         EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
+         AND AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF
+         ANY KIND CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS,
+         IMPLIED, STATUTORY, OR OTHER. THIS INCLUDES, WITHOUT LIMITATION,
+         WARRANTIES OF TITLE, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+         PURPOSE, NON-INFRINGEMENT, ABSENCE OF LATENT OR OTHER DEFECTS,
+         ACCURACY, OR THE PRESENCE OR ABSENCE OF ERRORS, WHETHER OR NOT
+         KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF WARRANTIES ARE NOT
+         ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT APPLY TO YOU.
+      </p>
+      <p>
+         TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE
+         TO YOU ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION,
+         NEGLIGENCE) OR OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT,
+         INCIDENTAL, CONSEQUENTIAL, PUNITIVE, EXEMPLARY, OR OTHER LOSSES,
+         COSTS, EXPENSES, OR DAMAGES ARISING OUT OF THIS PUBLIC LICENSE OR
+         USE OF THE LICENSED MATERIAL, EVEN IF THE LICENSOR HAS BEEN
+         ADVISED OF THE POSSIBILITY OF SUCH LOSSES, COSTS, EXPENSES, OR
+         DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT ALLOWED IN FULL OR
+         IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+      </p>
+      <p>
+         The disclaimer of warranties and limitation of liability provided
+         above shall be interpreted in a manner that, to the extent
+         possible, most closely approximates an absolute disclaimer and
+         waiver of all liability.
+      </p>
+   </div>
+
+</body>
+</html>
