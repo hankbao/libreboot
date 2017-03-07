@@ -80,17 +80,19 @@ cbfstool my.rom remove -n grubtest.cfg
             your firmware.
             <b>This should be different than your LUKS passphrase and user password.</b>
          </p>
-<!--
-   Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
-   WTF is a diceware method?!
-         <p style="font-size:2em;">
-            MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
-            Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
-            Then copy that to grub.cfg once you're satisfied.
-            WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
-         </p>
-         <p>
-            (emphasis added, because it's needed. This is a common roadblock for users)
+
+        <p>
+            Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
+            Diceware method involves using dice to generate random numbers, which are
+            then used as an index to pick a random word from a large dictionary of words.
+            You can use any language (e.g. English, German).
+            Look it up on a search engine. Diceware method is a way to generate
+            secure passphrases that are very hard (almost impossible, with enough words)
+            to crack, while being easy enough to remember. On the other hand, most
+            kinds of secure passwords are hard to remember and easier to crack.
+            Diceware passphrases are harder to crack because of far higher entropy
+            (there are many words available to use, but only about 50 commonly used symbols
+            in pass<em>words</em>).
          </p>
 -->
          <p>
