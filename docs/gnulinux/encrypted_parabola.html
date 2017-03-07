@@ -572,52 +572,10 @@ initrd /boot/initramfs-linux-libre<u>-lts</u>.img
 				You can also specify -u UUID or -a (device).
 			</p>
 
-			<p>
-				Now, to protect your system from an attacker simply booting a live usb distro and re-flashing the boot firmware, we are going to add a password for GRUB.
-				In a new terminal window, if you are not yet online, start dhcp on ethernet:<br/>
-				# <b>systemctl start dhcpcd.service</b>
-				Or make sure to get connected to the internet in any other way you prefer, at least.
-			</p>
-
-			<p>
-				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
-			</p>
-
-			<p style="font-size:2em;">
-				AGAIN: MAKE SURE TO DO THIS WHOLE SECTION ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
-				(When we get there, upon reboot, select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
-				Only once you are satisfied, copy that to grub.cfg. Only a few steps to go, though.)
-				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
-			</p>
-
-			<p>
-				(emphasis added, because it's needed: this is a common roadblock for users.)
-			</p>
-
-			<p>
-				We need a utility that comes with GRUB, so we will download it temporarily. (Remember that GRUB isn't needed for booting, since it's already included as a payload in libreboot.)
-				Also, we will use flashrom, and I installed dmidecode. You only need base-devel (compilers and so on) to build and use cbfstool. It was already installed if you followed this tutorial, but here 
-				it is:<br/>
-				# <b>pacman -S grub flashrom dmidecode base-devel</b><br/>
-				Next, do:<br/>
-				# <b>grub-mkpasswd-pbkdf2</b><br/>
-				Enter your chosen password at the prompt and your hash will be shown. Copy this string - you will add it to your grubtest.cfg.
-			</p>
-
-			<p>	
-				The password below (it's <b>password</b>, by the way) after <i>'password_pbkdf2 root'</i> <i>should be changed</i> to your own.
-				Make sure to specify a password that is different from both your LUKS *and* your root/user password.
-				Obviously, do not simply copy and paste the examples shown here...
-			</p>
-
-			<p>
-				Next, back in grubtest.cfg, above the first 'Load Operating System' menu entry, you should now add your GRUB password, like so
-				(replace with your own name (I used <b>root</b> on both lines, feel free to choose another one) and the password hash which you copied):
-			</p>
-<pre>
-set superusers=&quot;root&quot;
-password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711
-</pre>
+            <p>
+                <a href="grub_hardening.html">Refer to this guide</a> for further guidance
+                on hardening your GRUB configuration, for security purposes.
+            </p>
 
 			<p>
 				Save your changes in grubtest.cfg, then delete the unmodified config from the ROM image:<br/>

@@ -333,53 +333,16 @@
 				You can also specify -u UUID or -a (device).
 			</p>
 
-			<p>
-				Additionally, you should set a GRUB password. This is not your LUKS password, but it's a password that you have to enter to see
-				GRUB. This protects your system from an attacker simply booting a live USB and re-flashing your firmware. <b>This should be different than your LUKS passphrase and user password.</b>
-			</p>
-			<p>
-				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (as opposed to passwords).
-			</p>
+            <p>
+                <a href="grub_hardening.html">Refer to this guide</a> for further guidance
+                on hardening your GRUB configuration, for security purposes.
+            </p>
 
 			<p>
-				The GRUB utility can be used like so:<br/>
-				$ <b>grub-mkpasswd-pbkdf2</b>
-			</p>
-
-			<p>
-				Give it a password (remember, it has to be secure) and it'll output something like:<br/>
-				<b>grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
-			</p>
-			<p>
-				Use of the <i>diceware method</i> is recommended, for generating secure passphrases (instead of passwords).
-			</p>
-
-			<p>
-				Put that in the grub.cfg (the one for CBFS inside the ROM) before the 'Load Operating System' menu entry like so (example):<br/>
-			</p>
-			<pre>
-<b>set superusers=&quot;root&quot;</b>
-<b>password_pbkdf2 root grub.pbkdf2.sha512.10000.711F186347156BC105CD83A2ED7AF1EB971AA2B1EB2640172F34B0DEFFC97E654AF48E5F0C3B7622502B76458DA494270CC0EA6504411D676E6752FD1651E749.8DD11178EB8D1F633308FD8FCC64D0B243F949B9B99CCEADE2ECA11657A757D22025986B0FA116F1D5191E0A22677674C994EDBFADE62240E9D161688266A711</b>
-			</pre>
-			<p style="font-size:2em;">
-				MAKE SURE TO DO THIS ON grubtest.cfg *BEFORE* DOING IT ON grub.cfg.
-				Then select the menu entry that says <i>Switch to grubtest.cfg</i> and test that it works.
-				Then copy that to grub.cfg once you're satisfied.
-				WHY? BECAUSE AN INCORRECTLY SET PASSWORD CONFIG MEANS YOU CAN'T AUTHENTICATE, WHICH MEANS 'BRICK'.
-			</p>
-			<p>
-				(emphasis added, because it's needed. This is a common roadblock for users)
-			</p>
-
-			<p>
-				Obviously, replace it with the correct hash that you actually got for the password that you entered. Meaning, not the hash that you see above!
-			</p>
-
-			<p>
-				After this, you will have a modified ROM with the menu entry for cryptomount, and the entry before that for the GRUB password. Flash the modified ROM 
+				Flash the modified ROM
 				using <a href="../install/#flashrom">this tutorial</a>.
 			</p>
-			
+
 	</div>
 
 	<div class="section">
@@ -487,7 +450,7 @@ Supported CD-RW media types according to MMC-4 feature 0x37:
 			Permission is granted to copy, distribute and/or modify this document
 			under the terms of the Creative Commons Attribution-ShareAlike 4.0 International license
 			or any later version published by Creative Commons;
-			
+
 			A copy of the license can be found at <a href="../cc-by-sa-4.0.txt">../cc-by-sa-4.0.txt</a>
 		</p>
 
