@@ -140,7 +140,7 @@ int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName)
 	fprintf(fp, "#include <string.h>\n");
 	fprintf(fp, "#include \"../descriptor/descriptor.h\"\n\n");
 	
-	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe);\n");
+	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize);\n");
 	
 	fprintf(fp, "#endif\n");
 	
@@ -176,7 +176,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "/* Generate a 4KiB Descriptor struct, with default values. */\n");
 	fprintf(fp, "/* Read ../descriptor/descriptor.h for an explanation of the default values used here */\n\n");
 	
-	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe)\n");
+	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    int i;\n");
 	fprintf(fp, "    struct DESCRIPTORREGIONRECORD descriptorStruct;\n");
@@ -192,8 +192,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NC = 0x%01x;\n", descriptorStruct.flMaps.flMap0.NC);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.reserved1 = 0x%02x;\n", descriptorStruct.flMaps.flMap0.reserved1);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.FRBA = 0x%02x;\n", descriptorStruct.flMaps.flMap0.FRBA);
-	fprintf(fp, "    /* descriptorStruct.flMaps.flMap0.NR = 0x%01x; */ /* see ../descriptor/descriptor.c */\n", descriptorStruct.flMaps.flMap0.NR);
-	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NR = hasGbe ? 0x2 : 0x1; /* see ../descriptor/descriptor.c */\n");
+	fprintf(fp, "    descriptorStruct.flMaps.flMap0.NR = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.flMaps.flMap0.NR);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap0.reserved2 = 0x%02x;\n", descriptorStruct.flMaps.flMap0.reserved2);
 	fprintf(fp, "    /* FLMAP1 */\n");
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.FMBA = 0x%02x;\n", descriptorStruct.flMaps.flMap1.FMBA);
@@ -209,10 +208,8 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	/* Component Section Record */
 	fprintf(fp, "    /* Component Section Record */\n");
 	fprintf(fp, "    /* FLCOMP */\n");
-	fprintf(fp, "    /* descriptorStruct.componentSection.flcomp.component1Density = 0x%01x; */\n", descriptorStruct.componentSection.flcomp.component1Density);
-	fprintf(fp, "    /* descriptorStruct.componentSection.flcomp.component2Density = 0x%01x; */\n", descriptorStruct.componentSection.flcomp.component2Density);
-	fprintf(fp, "    descriptorStruct.componentSection.flcomp.component1Density = componentDensity(romSize);\n");
-	fprintf(fp, "    descriptorStruct.componentSection.flcomp.component2Density = componentDensity(romSize);\n");
+	fprintf(fp, "    descriptorStruct.componentSection.flcomp.component1Density = 0x%01x;\n", descriptorStruct.componentSection.flcomp.component1Density);
+	fprintf(fp, "    descriptorStruct.componentSection.flcomp.component2Density = 0x%01x;\n", descriptorStruct.componentSection.flcomp.component2Density);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.reserved1 = 0x%01x;\n", descriptorStruct.componentSection.flcomp.reserved1);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.reserved2 = 0x%02x;\n", descriptorStruct.componentSection.flcomp.reserved2);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.reserved3 = 0x%01x;\n", descriptorStruct.componentSection.flcomp.reserved3);
@@ -249,11 +246,9 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg0.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg0.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg0.reserved2);
 	fprintf(fp, "    /* FLREG1 (BIOS) */\n");
-	fprintf(fp, "    /* descriptorStruct.regionSection.flReg1.BASE = 0x%04x; */\n", descriptorStruct.regionSection.flReg1.BASE);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + (hasGbe ? GBEREGIONSIZE_8K : 0)) >> FLREGIONBITSHIFT; /* see ../descriptor/descriptor.c */\n");
+	fprintf(fp, "    descriptorStruct.regionSection.flReg1.BASE = 0x%04x;\n", descriptorStruct.regionSection.flReg1.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved1);
-	fprintf(fp, "    /* descriptorStruct.regionSection.flReg1.LIMIT = 0x%04x; */\n", descriptorStruct.regionSection.flReg1.LIMIT);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = ((romSize >> FLREGIONBITSHIFT) - 1); /* see ../descriptor/descriptor.c */\n");
+	fprintf(fp, "    descriptorStruct.regionSection.flReg1.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg1.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg1.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg1.reserved2);
 	fprintf(fp, "    /* FLREG2 (ME) */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg2.BASE);
@@ -261,11 +256,9 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.LIMIT = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg2.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg2.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg2.reserved2);
 	fprintf(fp, "    /* FLREG3 (Gbe) */\n");
-	fprintf(fp, "    /* descriptorStruct.regionSection.flReg3.BASE = 0x%04x; */\n", descriptorStruct.regionSection.flReg3.BASE);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = hasGbe ? (DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT) : 0x1fff; /* see ../descriptor/descriptor.c */\n");
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.BASE = 0x%04x;\n", descriptorStruct.regionSection.flReg3.BASE);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved1 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved1);
-	fprintf(fp, "    /* descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x; */\n", descriptorStruct.regionSection.flReg3.LIMIT);
-	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = hasGbe ? (GBEREGIONSIZE_8K >> FLREGIONBITSHIFT) : 0x0000; /* see ../descriptor/descriptor.c */\n");
+	fprintf(fp, "    descriptorStruct.regionSection.flReg3.LIMIT = 0x%04x;\n", descriptorStruct.regionSection.flReg3.LIMIT);
 	fprintf(fp, "    descriptorStruct.regionSection.flReg3.reserved2 = 0x%01x;\n", descriptorStruct.regionSection.flReg3.reserved2);
 	fprintf(fp, "    /* FLREG4 (Platform) */\n");
 	fprintf(fp, "    descriptorStruct.regionSection.flReg4.BASE = 0x%04x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.regionSection.flReg4.BASE);
@@ -356,8 +349,8 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.bmcMode = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.bmcMode);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.tripPointSelect = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.tripPointSelect);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved2 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.reserved2);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.integratedGbe = hasGbe ? 0x1 : 0x0;\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.lanPhy = hasGbe ? 0x1 : 0x0;\n");
+	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x1;\n");
+	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;\n");
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved3 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.reserved3);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.dmiRequesterId = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.dmiRequesterId);
 	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.smBus2Address = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.smBus2Address);

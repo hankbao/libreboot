@@ -22,5 +22,5 @@
 #include <string.h>
 #include "../descriptor/descriptor.h"
 
-struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe);
+struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize);
 #endif
