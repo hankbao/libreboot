@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014 Leah Rowe <info@minifree.org>
+ *  Copyright (C) 2017 Leah Rowe <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -20,7 +20,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 #include "../gbe/gbe.h"
 
 struct GBEREGIONRECORD_4K generatedGbeStruct4k();
