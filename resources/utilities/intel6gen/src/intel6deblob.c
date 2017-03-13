@@ -44,7 +44,6 @@ int main()
 	
 	char* romFilename = "factory.rom";
 	char* descriptorGbeFilename = "deblobbed_descriptor.bin";
-	char* descriptorNoGbeFilename = "deblobbed_4kdescriptor.bin";
 	
 	unsigned int bufferLength;
 	unsigned int romSize;
@@ -120,7 +119,7 @@ int main()
 	 */
 
 	/* Delete the ME/Platform regions, place Gbe after the descriptor, resize BIOS region to fill the gap */
-	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct, romSize);
+	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct);
 
 	/* The ME is disallowed read-write access to all regions
 	 * (this is probably redundant, since the ME firmware is already removed from libreboot) */
@@ -129,12 +128,7 @@ int main()
 	 * This makes flashrom -p internal work */
 	descriptorStruct = descriptorHostRegionsUnlocked(descriptorStruct);
 
-	/* Set OEM string */
-	descriptorStruct = descriptorOemString(descriptorStruct);
-
-	/* Modify the Gbe region (see function for details) */
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-		gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
+	gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
 
 	/* Debugging (after modifying the descriptor and gbe regions) */
 	printDescriptorRegionLocations(descriptorStruct, "Modified");

@@ -100,7 +100,7 @@ uint8_t componentDensity(unsigned int romSizeInBytes)
 
 /* From a factory.rom image, create a modified descriptor region, suitable
  * for use by the libreboot project */
-struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
+struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
 	/* Disable the ME itself, so that it doesn't try to start when this descriptor is in use */
 	descriptorStruct = descriptorDisableMe(descriptorStruct);
