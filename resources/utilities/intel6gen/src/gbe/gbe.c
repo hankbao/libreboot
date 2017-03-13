@@ -53,17 +53,6 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 /* modify the gbe region extracted from a factory.rom dump */
 struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k) 
 {	
-	unsigned int i;
-	
-	/*
-	 * http://www.intel.co.uk/content/dam/doc/application-note/82573-nvm-map-appl-note.pdf
-	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT. 
-	 * Writing over it doesn't seem to cause any harm, since the ME/AMT is already removed in libreboot.
-	 */
-	for(i = 0; i < sizeof(gbeStruct8k.backup.padding); i++) {
-		gbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
-	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
-	
 	/* Fix the checksum */
 	gbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.backup, GBECHECKSUMTOTAL);
 	

@@ -26,9 +26,6 @@
  * modify the flash descriptor to remove all regions except descriptor,
  * Gbe and BIOS. Set BIOS region to full size of the ROM image (after
  * the flash descriptor and gbe). Basically, deblob the descriptor.
- * 
- * This will will generate a concatenated descriptor+gbe dump suitable
- * for use in libreboot. Currently tested: ThinkPad X200 (coreboot/libreboot)
  */ 
 
 #include "intel6deblob.h"

@@ -26,12 +26,7 @@ int main(int argc, char *argv[])
 	int i, j;
 	
 	struct GBEREGIONRECORD_8K gbeStruct8k = generatedGbeStruct8k();
-	struct DESCRIPTORREGIONRECORD descriptorStruct4M = generatedDescriptorStruct(ROMSIZE_4MB, WITHGBE);
 	struct DESCRIPTORREGIONRECORD descriptorStruct8M = generatedDescriptorStruct(ROMSIZE_8MB, WITHGBE);
-	struct DESCRIPTORREGIONRECORD descriptorStruct16M = generatedDescriptorStruct(ROMSIZE_16MB, WITHGBE);
-	struct DESCRIPTORREGIONRECORD descriptorStructNoGbe4M = generatedDescriptorStruct(ROMSIZE_4MB, WITHOUTGBE);
-	struct DESCRIPTORREGIONRECORD descriptorStructNoGbe8M = generatedDescriptorStruct(ROMSIZE_8MB, WITHOUTGBE);
-	struct DESCRIPTORREGIONRECORD descriptorStructNoGbe16M = generatedDescriptorStruct(ROMSIZE_16MB, WITHOUTGBE);
 	
 	/* Only for the compatibility checks */
 	struct DESCRIPTORREGIONRECORD dummyDescriptorStruct;
@@ -117,17 +112,10 @@ int main(int argc, char *argv[])
 	 * ------------------------------------------------------------------
 	 */
 	
-	if (notCreatedDescriptorGbeFile(descriptorStruct4M, gbeStruct8k, "intel6fdgbe_4m.bin")) {
-		return 1;
-	}
-	
 	if (notCreatedDescriptorGbeFile(descriptorStruct8M, gbeStruct8k, "intel6fdgbe_8m.bin")) {
 		return 1;
 	}
 	
-	if (notCreatedDescriptorGbeFile(descriptorStruct16M, gbeStruct8k, "intel6fdgbe_16m.bin")) {
-		return 1;
-	}
 	/*
 	 * ------------------------------------------------------------------
 	 * Generate the 4KiB files (descriptors without GbE), ready to be used in a libreboot image
@@ -135,16 +123,6 @@ int main(int argc, char *argv[])
 	 * ------------------------------------------------------------------
 	 */
 	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe4M, "intel6fdnogbe_4m.bin")) {
-		return 1;
-	}
-	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe8M, "intel6fdnogbe_8m.bin")) {
-		return 1;
-	}
-	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe16M, "intel6fdnogbe_16m.bin")) {
-		return 1;
-	}
+
 	return 0;
 }
