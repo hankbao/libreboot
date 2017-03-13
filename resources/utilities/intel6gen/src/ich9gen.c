@@ -19,7 +19,7 @@
 /* Generate deblobbed descriptor and gbe 12KiB file from scratch
  * without relying on a factory.rom dump */
  
-#include "ich9gen.h"
+#include "intel6gen.h"
 
 int main(int argc, char *argv[]) 
 {
@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Compatibility checks. This version of ich9deblob is not yet portable.
+	 * Compatibility checks. This version of intel6deblob is not yet portable.
 	 * ------------------------------------------------------------------
 	 */
 
@@ -56,19 +56,19 @@ int main(int argc, char *argv[])
 	if(argc==3) {
 		
 		/* If user provides their own MAC address, it will be used.
-		 * Otherwise, ich9gen will simply use the default one. 
+		 * Otherwise, intel6gen will simply use the default one. 
 		 * 
-		 * However, if the user provides an invalid MAC address, then ich9gen
+		 * However, if the user provides an invalid MAC address, then intel6gen
 		 * will exit. */
 		if(0==strcmp(argv[1],"--macaddress")) {
 			/* 6 hex chars format (example): AA:BB:CC:DD:EE:FF */
 			if (strlen(argv[2]) != 17) {
-				printf("ich9gen: invalid mac address format (wrong length)\n");
+				printf("intel6gen: invalid mac address format (wrong length)\n");
 				return 1;
 			}
 			for(i=2; i<14; i+=3) {
 				if(argv[2][i]!=':') {
-					printf("ich9gen: invalid mac address format (non-colon characters used as spacing)\n");
+					printf("intel6gen: invalid mac address format (non-colon characters used as spacing)\n");
 					return 1;
 				}
 			}
@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
 					else if(argv[2][(i*3)+j]>='0' && argv[2][(i*3)+j]<='9')
 						gbeStruct8k.main.macAddress[i] |= (uint8_t)((argv[2][(i*3)+j] - 48) << ((j^1) << 2));
 					else {
-						printf("ich9gen: invalid mac address format (non-hex characters)\n");
+						printf("intel6gen: invalid mac address format (non-hex characters)\n");
 						return 1;
 					}
 				}
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
 			gbeStruct8k.main.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.main, GBECHECKSUMTOTAL); /* Fix the checksum */
 			memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K); /* Copy to the backup */
 			
-			/* Generate ich9gen data (C code for Gbe region): */
+			/* Generate intel6gen data (C code for Gbe region): */
 
 			/* mkgbe.h */
 			if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 			printf("You selected to change the MAC address in the Gbe section. This has been done.\n\n");
 			
 			printf("The modified gbe region has also been dumped as src files: mkgbe.c, mkgbe.h\n");
-			printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+			printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
 		}
 		
 	}
@@ -117,15 +117,15 @@ int main(int argc, char *argv[])
 	 * ------------------------------------------------------------------
 	 */
 	
-	if (notCreatedDescriptorGbeFile(descriptorStruct4M, gbeStruct8k, "ich9fdgbe_4m.bin")) {
+	if (notCreatedDescriptorGbeFile(descriptorStruct4M, gbeStruct8k, "intel6fdgbe_4m.bin")) {
 		return 1;
 	}
 	
-	if (notCreatedDescriptorGbeFile(descriptorStruct8M, gbeStruct8k, "ich9fdgbe_8m.bin")) {
+	if (notCreatedDescriptorGbeFile(descriptorStruct8M, gbeStruct8k, "intel6fdgbe_8m.bin")) {
 		return 1;
 	}
 	
-	if (notCreatedDescriptorGbeFile(descriptorStruct16M, gbeStruct8k, "ich9fdgbe_16m.bin")) {
+	if (notCreatedDescriptorGbeFile(descriptorStruct16M, gbeStruct8k, "intel6fdgbe_16m.bin")) {
 		return 1;
 	}
 	/*
@@ -135,15 +135,15 @@ int main(int argc, char *argv[])
 	 * ------------------------------------------------------------------
 	 */
 	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe4M, "ich9fdnogbe_4m.bin")) {
+	if (notCreated4kDescriptorFile(descriptorStructNoGbe4M, "intel6fdnogbe_4m.bin")) {
 		return 1;
 	}
 	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe8M, "ich9fdnogbe_8m.bin")) {
+	if (notCreated4kDescriptorFile(descriptorStructNoGbe8M, "intel6fdnogbe_8m.bin")) {
 		return 1;
 	}
 	
-	if (notCreated4kDescriptorFile(descriptorStructNoGbe16M, "ich9fdnogbe_16m.bin")) {
+	if (notCreated4kDescriptorFile(descriptorStructNoGbe16M, "intel6fdnogbe_16m.bin")) {
 		return 1;
 	}
 	return 0;

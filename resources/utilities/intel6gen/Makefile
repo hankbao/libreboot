@@ -1,5 +1,5 @@
 # 
-# Makefile for ich9deblob utility from libreboot project
+# Makefile for intel6deblob utility from libreboot project
 #
 # Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
 #
@@ -22,23 +22,23 @@ FORCEC99=-std=c99
 CFLAGS=-I. -Wall -Wextra -g $(FORCEC99)
 NOLINKER=-c
 
-all: ich9deblob ich9gen demefactory
+all: intel6deblob intel6gen demefactory
 
-ich9deblob: obj/ich9deblob.o obj/common/descriptor_gbe.o \
+intel6deblob: obj/intel6deblob.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
 		
-	$(CC) $(CFLAGS) obj/ich9deblob.o obj/common/descriptor_gbe.o \
+	$(CC) $(CFLAGS) obj/intel6deblob.o obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
-		 -o ich9deblob
+		 -o intel6deblob
 		 
-ich9gen: obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
+intel6gen: obj/intel6gen.o obj/intel6gen/mkdescriptor.o obj/intel6gen/mkgbe.o \
 		obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
 		
-	$(CC) $(CFLAGS) obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
+	$(CC) $(CFLAGS) obj/intel6gen.o obj/intel6gen/mkdescriptor.o obj/intel6gen/mkgbe.o \
 	 obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
-		 -o ich9gen
+		 -o intel6gen
 
 demefactory: obj/demefactory.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
@@ -53,25 +53,25 @@ demefactory: obj/demefactory.o obj/common/descriptor_gbe.o \
 obj/demefactory.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/demefactory.c -o obj/demefactory.o
 
-# for ich9deblob
+# for intel6deblob
 # ----------------------------------------------------------------------
 
-obj/ich9deblob.o:
-	$(CC) $(CFLAGS) $(NOLINKER) src/ich9deblob.c -o obj/ich9deblob.o
+obj/intel6deblob.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/intel6deblob.c -o obj/intel6deblob.o
 
-# for ich9gen
+# for intel6gen
 # ----------------------------------------------------------------------
 
-obj/ich9gen.o:
-	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen.c -o obj/ich9gen.o
+obj/intel6gen.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/intel6gen.c -o obj/intel6gen.o
 	
-obj/ich9gen/mkdescriptor.o:
-	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen/mkdescriptor.c -o obj/ich9gen/mkdescriptor.o
+obj/intel6gen/mkdescriptor.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/intel6gen/mkdescriptor.c -o obj/intel6gen/mkdescriptor.o
 
-obj/ich9gen/mkgbe.o:
-	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen/mkgbe.c -o obj/ich9gen/mkgbe.o
+obj/intel6gen/mkgbe.o:
+	$(CC) $(CFLAGS) $(NOLINKER) src/intel6gen/mkgbe.c -o obj/intel6gen/mkgbe.o
 
-# for demefactory, ich9deblob and ich9gen:
+# for demefactory, intel6deblob and intel6gen:
 # ----------------------------------------------------------------------
 
 obj/common/descriptor_gbe.o:
@@ -89,4 +89,4 @@ obj/gbe/gbe.o:
 # make clean
 # ----------------------------------------------------------------------
 clean:
-	rm -Rf ich9deblob ich9gen demefactory obj/*.o obj/*/*.o
+	rm -Rf intel6deblob intel6gen demefactory obj/*.o obj/*/*.o

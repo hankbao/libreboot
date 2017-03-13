@@ -2,7 +2,7 @@
  *  demefactory.c
  *  This file is part of the demefactory utility from the libreboot project
  * 
- * Purpose: disable ME on GM45 factory firmware, but leave region intact
+ * Purpose: disable ME on sandybridge factory firmware, but leave region intact
  * 			enable read-write on all regions
  *
  *	 Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
@@ -43,7 +43,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Compatibility checks. This version of ich9deblob is not yet portable.
+	 * Compatibility checks. This version of intel6deblob is not yet portable.
 	 * ------------------------------------------------------------------
 	 */
 
@@ -123,7 +123,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Generate ich9gen data (C code that will recreate the deactivatedME descriptor from scratch)
+	 * Generate intel6gen data (C code that will recreate the deactivatedME descriptor from scratch)
 	 * ------------------------------------------------------------------
 	 */
 	/* Code for generating the Descriptor struct */

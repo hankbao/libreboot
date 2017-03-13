@@ -1,6 +1,6 @@
 /*
  *  descriptor/descriptor.c
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
  *	 Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>   
@@ -266,11 +266,11 @@ int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName)
 
 	/* ------------------------------ */
 	
-	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
+	fprintf(fp, "/* %s: generated C code from intel6deblob */\n", outFileName);
 	fprintf(fp, "/* .h header file for the descriptor-generating C code (%s) */\n\n", cFileName);
 	
-	fprintf(fp, "#ifndef ICH9GEN_MKDESCRIPTOR_H\n");
-	fprintf(fp, "#define ICH9GEN_MKDESCRIPTOR_H\n\n");
+	fprintf(fp, "#ifndef INTEL6GEN_MKDESCRIPTOR_H\n");
+	fprintf(fp, "#define INTEL6GEN_MKDESCRIPTOR_H\n\n");
 	
 	fprintf(fp, "#include <stdio.h>\n");
 	fprintf(fp, "#include <string.h>\n");
@@ -304,7 +304,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 
 	/* ------------------------------ */
 	
-	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
+	fprintf(fp, "/* %s: generated C code from intel6deblob */\n", outFileName);
 	fprintf(fp, "/* .c source file for the descriptor-generating C code */\n\n");
 	
 	fprintf(fp, "#include \"%s\"\n\n", headerFileName);

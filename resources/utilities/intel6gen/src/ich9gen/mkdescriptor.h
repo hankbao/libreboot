@@ -15,8 +15,8 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ICH9GEN_MKDESCRIPTOR_H
-#define ICH9GEN_MKDESCRIPTOR_H
+#ifndef INTEL6GEN_MKDESCRIPTOR_H
+#define INTEL6GEN_MKDESCRIPTOR_H
 
 #include <stdio.h>
 #include <string.h>

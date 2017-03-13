@@ -1,8 +1,8 @@
 /*
  *  x86compatibility.c
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
- * Purpose: compiler/cpu compatibility checks. ich9deblob is not portable, yet.
+ * Purpose: compiler/cpu compatibility checks. intel6deblob is not portable, yet.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Leah Rowe <info@minifree.org>
@@ -147,7 +147,7 @@ int structBitfieldWrongOrder()
 	return 0;
 }
 
-/* Compatibility checks. This version of ich9deblob is not yet porable. */
+/* Compatibility checks. This version of intel6deblob is not yet porable. */
 int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k) 
 {
 	if (structSizesIncorrect(descriptorStruct, gbeStruct8k)) return 1;

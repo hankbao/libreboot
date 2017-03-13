@@ -1,10 +1,10 @@
 /*
  *  gbe_descriptor.h
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
  * Purpose: header file for descriptor_gbe.c
  *
- *  Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
+ *  Copyright (C) 2014, 2015, 2017 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify

@@ -15,18 +15,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-/* Header file for ich9gen.c */
+/* Header file for intel6gen.c */
  
-#ifndef ICH9GEN_H
-#define ICH9GEN_H
+#ifndef INTEL6GEN_H
+#define INTEL6GEN_H
 
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 
-#include "ich9gen/mkdescriptor.h"
-#include "ich9gen/mkgbe.h"
-#include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by ich9deblob */
+#include "intel6gen/mkdescriptor.h"
+#include "intel6gen/mkgbe.h"
+#include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by intel6deblob */
 #include "common/x86compatibility.h" /* system/compiler compatibility checks. This code is not portable. */
 #include "descriptor/descriptor.h"   /* structs describing what's in the descriptor region */
 #include "gbe/gbe.h"                 /* structs describing what's in the gbe region */

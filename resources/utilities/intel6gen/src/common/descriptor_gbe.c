@@ -1,8 +1,8 @@
 /*
  *  descriptor_gbe.c
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
- * Purpose: common descriptor/gbe functions used by ich9deblob
+ * Purpose: common descriptor/gbe functions used by intel6deblob
  *
  *  Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>

@@ -1,8 +1,8 @@
 /*
- *  ich9deblob.h
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  intel6deblob.h
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
- * Purpose: header file for ich9deblob.c
+ * Purpose: header file for intel6deblob.c
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *                     Leah Rowe <info@minifree.org>
@@ -21,14 +21,14 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-#ifndef ICH9DEBLOB_H
-#define ICH9DEBLOB_H
+#ifndef INTEL6DEBLOB_H
+#define INTEL6DEBLOB_H
 
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 
-#include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by ich9deblob */
+#include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by intel6deblob */
 #include "common/x86compatibility.h" /* system/compiler compatibility checks. This code is not portable. */
 #include "descriptor/descriptor.h"   /* structs describing what's in the descriptor region */
 #include "gbe/gbe.h"                 /* structs describing what's in the gbe region */

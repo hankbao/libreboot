@@ -1,6 +1,6 @@
 /*
  *  x86compatibility.h
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
  * Purpose: keep gcc/make happy. no actual code here, just function definitions.
  *

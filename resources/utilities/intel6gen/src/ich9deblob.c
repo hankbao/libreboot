@@ -1,8 +1,8 @@
 /*
- *  ich9deblob.c
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  intel6deblob.c
+ *  This file is part of the intel6deblob utility from the libreboot project
  * 
- * Purpose: disable and remove the ME from ich9m/gm45 systems in coreboot.
+ * Purpose: disable and remove the ME from intel6m/sandybridge systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *  Copyright (C) 2014,2015 Leah Rowe <info@minifree.org>
@@ -21,31 +21,17 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-/* Initially based on proof of concept by Steve Shenton. */
-/* Original utility can be found at https://gitorious.org/ich9descriptortool */
- 
 /*
- * Read a factory.rom dump (ich9m/gm45 systems) and 
+ * Read a factory.rom dump (intel6m/sandybridge systems) and 
  * modify the flash descriptor to remove all regions except descriptor,
  * Gbe and BIOS. Set BIOS region to full size of the ROM image (after
  * the flash descriptor and gbe). Basically, deblob the descriptor.
  * 
  * This will will generate a concatenated descriptor+gbe dump suitable
  * for use in libreboot. Currently tested: ThinkPad X200 (coreboot/libreboot)
- */
- 
-/*
- * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
- * 
- * Info about flash descriptor (read page 845 onwards):
- * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
- * 
- * Info about Gbe region (read whole datasheet):
- * http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf
- * https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums
- */
+ */ 
 
-#include "ich9deblob.h"
+#include "intel6deblob.h"
 
 int main()
 {
@@ -65,7 +51,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Compatibility checks. This version of ich9deblob is not yet portable.
+	 * Compatibility checks. This version of intel6deblob is not yet portable.
 	 * ------------------------------------------------------------------
 	 */
 
@@ -182,7 +168,7 @@ int main()
 	
 	/*
 	 * ------------------------------------------------------------------
-	 * Generate ich9gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
+	 * Generate intel6gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
 	 * ------------------------------------------------------------------
 	 */
 	/* Code for generating the Descriptor struct */
@@ -209,12 +195,12 @@ int main()
 	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
 		printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");
-		printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+		printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
 	}
 	else
 	{
 		printf("The modified descriptor region have also been dumped as src files: mkdescriptor.c, mkdescriptor.h\n");
-		printf("To use these in ich9gen, place them in src/ich9gen/ and re-build ich9gen.\n\n");
+		printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
 	}
 
 	return 0;

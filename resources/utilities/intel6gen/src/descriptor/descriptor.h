@@ -1,6 +1,6 @@
 /*
  *  descriptor/descriptor.h
- *  This file is part of the ich9deblob utility from the libreboot project
+ *  This file is part of the intel6deblob utility from the libreboot project
  *
  *  Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -25,16 +25,9 @@
  * structs. This makes working with descriptor really easy.
  *
  * bit fields used, corresponding to datasheet. See links to datasheets
- * and documentation in ich9deblob.c
+ * and documentation in intel6deblob.c
  */
  
-/*
- * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
- * 
- * Info about flash descriptor (read page 845 onwards):
- * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
- */
-
 #ifndef DESCRIPTORSTRUCT_H
 #define DESCRIPTORSTRUCT_H
 
