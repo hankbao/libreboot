@@ -86,25 +86,22 @@ int main()
 	}
 	printf("\ndescriptor region read successfully\n");
 	
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-	{
-		gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
+	gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
 
-		/*
-		 * Set offset so that we can read the data from
-		 * the gbe region
-		 */
-		fseek(fp, gbeRegionStart, SEEK_SET);
-		/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
-		bufferLength = fread(gbeBuffer8k, 1, GBEREGIONSIZE_8K, fp);
-		if (GBEREGIONSIZE_8K != bufferLength)
-		{
-			printf("\nerror: could not read GBe region from %s (%i) bytes read\n", romFilename, bufferLength);
-			fclose(fp);
-			return 1;
-		}
-		printf("\ngbe (8KiB) region read successfully\n");
+	/*
+	 * Set offset so that we can read the data from
+	 * the gbe region
+	 */
+	fseek(fp, gbeRegionStart, SEEK_SET);
+	/* Read the gbe data from the factory.rom and put it in factoryGbeBuffer8k */
+	bufferLength = fread(gbeBuffer8k, 1, GBEREGIONSIZE_8K, fp);
+	if (GBEREGIONSIZE_8K != bufferLength)
+	{
+		printf("\nerror: could not read GBe region from %s (%i) bytes read\n", romFilename, bufferLength);
+		fclose(fp);
+		return 1;
 	}
+	printf("\ngbe (8KiB) region read successfully\n");
 
 	fseek(fp, 0L, SEEK_END);
 	romSize = ftell(fp);
@@ -114,9 +111,7 @@ int main()
 	
 	/* Debugging (before modification) */
 	printDescriptorRegionLocations(descriptorStruct, "Original");
-	if (descriptorDefinesGbeRegion(descriptorStruct)) 
-		printGbeChecksumDataFromStruct8k(gbeStruct8k, "Original");
-	else printf("NO GBE REGION\n");
+	printGbeChecksumDataFromStruct8k(gbeStruct8k, "Original");
 	
 	/*
 	 * ------------------------------------------------------------------
@@ -143,9 +138,7 @@ int main()
 
 	/* Debugging (after modifying the descriptor and gbe regions) */
 	printDescriptorRegionLocations(descriptorStruct, "Modified");
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-		printGbeChecksumDataFromStruct8k(gbeStruct8k, "Modified");
-	else printf("NO GBE REGION\n");
+	printGbeChecksumDataFromStruct8k(gbeStruct8k, "Modified");
 
 	/*
 	 * ------------------------------------------------------------------
@@ -153,17 +146,8 @@ int main()
 	 * ------------------------------------------------------------------
 	 */
 	printf("\n");
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-	{
-		if (notCreatedDescriptorGbeFile(descriptorStruct, gbeStruct8k, descriptorGbeFilename)) {
-			return 1;
-		}
-	}
-	else
-	{
-		if (notCreated4kDescriptorFile(descriptorStruct, descriptorNoGbeFilename)) {
-			return 1;
-		}
+    if (notCreatedDescriptorGbeFile(descriptorStruct, gbeStruct8k, descriptorGbeFilename)) {
+		return 1;
 	}
 	
 	/*
@@ -180,28 +164,17 @@ int main()
 		return 1;
 	}
 
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-	{
-		/* Code for generating the Gbe struct */
-		/* mkgbe.h */
-		if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
-			return 1;
-		} /* and now mkgbe.c */
-		if (notCreatedCFileFromGbeStruct4k(gbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
-			return 1;
-		}
+    /* Code for generating the Gbe struct */
+	/* mkgbe.h */
+	if (notCreatedHFileForGbeCFile("mkgbe.h", "mkgbe.c")) {
+		return 1;
+	} /* and now mkgbe.c */
+	if (notCreatedCFileFromGbeStruct4k(gbeStruct8k.backup, "mkgbe.c", "mkgbe.h")) {
+		return 1;
 	}
-	
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-	{
-		printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");
-		printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
-	}
-	else
-	{
-		printf("The modified descriptor region have also been dumped as src files: mkdescriptor.c, mkdescriptor.h\n");
-		printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
-	}
+
+	printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");
+	printf("To use these in intel6gen, place them in src/intel6gen/ and re-build intel6gen.\n\n");
 
 	return 0;
 }

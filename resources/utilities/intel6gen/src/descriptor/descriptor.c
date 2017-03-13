@@ -66,24 +66,6 @@ struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGI
    return descriptorStruct;
 }
 
-/* Disable (delete) the ME region */
-struct DESCRIPTORREGIONRECORD descriptorMeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	descriptorStruct.regionSection.flReg2.BASE = 0x1FFF;
-	descriptorStruct.regionSection.flReg2.LIMIT = 0;
-
-	return descriptorStruct;
-}
-
-/* Disable (delete) the Platform region */
-struct DESCRIPTORREGIONRECORD descriptorPlatformRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	descriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
-	descriptorStruct.regionSection.flReg4.LIMIT = 0;
-	
-	return descriptorStruct;
-}
-
 /* Disable the ME in ICHSTRAP0 and MCHSTRAP0 */
 struct DESCRIPTORREGIONRECORD descriptorDisableMe(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
@@ -98,116 +80,6 @@ struct DESCRIPTORREGIONRECORD descriptorDisableTpm(struct DESCRIPTORREGIONRECORD
 {
 	descriptorStruct.mchStraps.mchStrap0.tpmDisable = 1;
 	
-	return descriptorStruct;
-}
-
-/* Relocate the Gbe region to begin at 4KiB (immediately after the flash descriptor) */
-struct DESCRIPTORREGIONRECORD descriptorMoveGbeToStart(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
-	descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
-	
-	return descriptorStruct;
-}
-
-/* Disable (delete) the GbE region */
-struct DESCRIPTORREGIONRECORD descriptorGbeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	descriptorStruct.regionSection.flReg3.BASE = 0x1FFF;
-	descriptorStruct.regionSection.flReg3.LIMIT = 0;
-	
-	return descriptorStruct;
-}
-
-/* BIOS Region begin after descriptor+gbe at first 12KiB, fills the rest of the image */
-struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
-{
-	descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
-	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
-	
-	return descriptorStruct;
-}
-
-/* BIOS Region begin after descriptor at first 4KiB, fills the rest of the image */
-struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterDescriptor(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
-{
-	descriptorStruct.regionSection.flReg1.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
-	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
-	
-	return descriptorStruct;
-}
-
-/* Set OEM string to "LIBERATE" */
-struct DESCRIPTORREGIONRECORD descriptorOemString(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	descriptorStruct.oemSection.magicString[0] = 0x4C;
-	descriptorStruct.oemSection.magicString[1] = 0x49;
-	descriptorStruct.oemSection.magicString[2] = 0x42;
-	descriptorStruct.oemSection.magicString[3] = 0x45;
-	descriptorStruct.oemSection.magicString[4] = 0x52;
-	descriptorStruct.oemSection.magicString[5] = 0x41;
-	descriptorStruct.oemSection.magicString[6] = 0x54;
-	descriptorStruct.oemSection.magicString[7] = 0x45;
-
-	return descriptorStruct;
-} 
-
-/* Check whether a GbE region is defined by this descriptor.
- * Not thorough, but should work in most cases */
-int descriptorDefinesGbeRegion(struct DESCRIPTORREGIONRECORD descriptorStruct)
-{
-	if (
-		(descriptorStruct.regionSection.flReg3.BASE == 0x1FFF || descriptorStruct.regionSection.flReg3.BASE == 0xFFF)
-		&&
-		(descriptorStruct.regionSection.flReg3.LIMIT == 0)
-	)
-		return 0; /* has no GbE region */
-	else if (
-		descriptorStruct.ichStraps.ichStrap0.integratedGbe == 0
-		||
-		descriptorStruct.ichStraps.ichStrap0.lanPhy == 0
-	)
-		return 0; /* has no GbE region */
-	else
-		return 1; /* has a GbE region */
-}
-
-/* Configure the BIOS and GbE regions, as required by libreboot.
- * Enable or disable the GbE region, based on what's in the descriptor */
-struct DESCRIPTORREGIONRECORD librebootSetGbeBiosDescriptorRegions(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
-{
-	if (descriptorDefinesGbeRegion(descriptorStruct))
-	{
-		/* 
-		 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
-		 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
-		 */
-		descriptorStruct.flMaps.flMap0.NR = 2;
-		/* Move GbE region to the start of the image (after the descriptor) */
-		descriptorStruct = descriptorMoveGbeToStart(descriptorStruct);
-		/* BIOS region fills the remaining space */
-		descriptorStruct = descriptorBiosRegionFillImageAfterGbe(descriptorStruct, romSize);
-
-		/* GbE region means that an Intel NIC is to be present */
-		descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x1;
-		descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;
-	}
-	else {
-		/* 
-		 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 1
-		 * means 2. We want 2 regions: descriptor and bios, in that order)
-		 */
-		descriptorStruct.flMaps.flMap0.NR = 1;
-		/* Disable the GbE region */
-		descriptorStruct = descriptorGbeRegionRemoved(descriptorStruct);
-		/* BIOS region fills the remaining space, after the descriptor */
-		descriptorStruct = descriptorBiosRegionFillImageAfterDescriptor(descriptorStruct, romSize);
-
-		/* No GbE region means that an onboard NIC is still used, but it's discrete (eg Broadcom) */
-		descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x0;
-		descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x0;
-	}
-
 	return descriptorStruct;
 }
 
@@ -230,14 +102,6 @@ uint8_t componentDensity(unsigned int romSizeInBytes)
  * for use by the libreboot project */
 struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize)
 {
-	/* Enable or disable the GbE region, from what's in the descriptor */
-	descriptorStruct = librebootSetGbeBiosDescriptorRegions(descriptorStruct, romSize);
-
-	/* Disable the ME/TPM and remove the ME/Platform regions: */
-	descriptorStruct = descriptorMeRegionRemoved(descriptorStruct);
-	/* Disable the ME/TPM and remove the ME/Platform regions: */
-	descriptorStruct = descriptorPlatformRegionRemoved(descriptorStruct);
-	
 	/* Disable the ME itself, so that it doesn't try to start when this descriptor is in use */
 	descriptorStruct = descriptorDisableMe(descriptorStruct);
 	/* Also disable the TPM, by default */
