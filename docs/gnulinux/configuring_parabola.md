@@ -638,7 +638,7 @@ start lxde without lxdm. Read
 
 Open LXterminal:
 
-    \$ cp /etc/skel/.xinitrc \~
+    $ cp /etc/skel/.xinitrc \~
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.
 

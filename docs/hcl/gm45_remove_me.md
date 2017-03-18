@@ -38,7 +38,7 @@ ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
 source with:
 
-    \$ ./oldbuild module ich9deblob
+    $ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:
@@ -70,7 +70,7 @@ onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:
 
-    \$ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
+    $ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -170,7 +170,7 @@ under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:
 
-    \$ ./oldbuild module ich9deblob
+    $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 

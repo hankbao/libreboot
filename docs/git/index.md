@@ -28,12 +28,12 @@ statically compiled executables for the utilities are included.**
 For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:
 
-    \$ sudo ./oldbuild dependencies debian
+    $ sudo ./oldbuild dependencies debian
 (this will also work in Devuan)
 
 For Parabola, you can run the following command:
 
-    \$ sudo ./oldbuild dependencies parabola
+    $ sudo ./oldbuild dependencies parabola
 or:
 
 # **./oldbuild dependencies parabola**
@@ -57,18 +57,18 @@ Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
 requirement is:
 
-    \$ git config \--global user.name "Your Name"
-    \$ git config \--global user.email your@emailaddress.com
+    $ git config \--global user.name "Your Name"
+    $ git config \--global user.email your@emailaddress.com
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
 <http://git-scm.com/doc>.
 
 Another nice config for you (optional, but recommended):
 
-    \$ git config \--global core.editor nano
-    \$ git config \--global color.status auto
-    \$ git config \--global color.branch auto
-    \$ git config \--global color.interactive auto
+    $ git config \--global core.editor nano
+    $ git config \--global color.status auto
+    $ git config \--global color.branch auto
+    $ git config \--global color.interactive auto
 \$ **git config \--global color.diff auto**
 
 After that, run the script:
@@ -220,13 +220,13 @@ modulename*. To see the possible values for *modulename*, use:
 
 After that, build the ROM images (for all boards):
 
-    \$ ./oldbuild roms withgrub
+    $ ./oldbuild roms withgrub
 Alternatively, you can build for a specific board or set of boards. For
 example:
 
-    \$ ./oldbuild roms withgrub x60
-    \$ ./oldbuild roms withgrub x200\_8mb
-    \$ ./oldbuild roms withgrub x60 x200\_8mb
+    $ ./oldbuild roms withgrub x60
+    $ ./oldbuild roms withgrub x200\_8mb
+    $ ./oldbuild roms withgrub x60 x200\_8mb
 The list of board options can be found by looking at the directory names
 in **resources/libreboot/config/grub/**.
 
@@ -311,7 +311,7 @@ libreboot\_util, for:
 If you are building binaries on a live system or chroot (for
 flashrom/bucts), you can use the following to statically link them:
 
-    \$ ./oldbuild module flashrom static
+    $ ./oldbuild module flashrom static
 \$ **./oldbuild module bucts static**
 
 The same conditions as above apply for ARM (except, building bucts on
@@ -323,7 +323,7 @@ restrictions).
 The command that you used for generating the release archives will also
 run the following command:
 
-    \$ ./oldbuild release tobuild
+    $ ./oldbuild release tobuild
 The archive **tobuild.tar.xz** will have been created under
 **release/oldbuildsystem/**, containing bucts, flashrom and all other
 required resources for building them.

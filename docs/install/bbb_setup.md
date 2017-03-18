@@ -189,8 +189,8 @@ contents of this file with:
     #!/bin/sh -e
     ### BEGIN INIT INFO
     # Provides:          led_aging.sh
-    # Required-Start:    \$local_fs
-    # Required-Stop:     \$local_fs
+    # Required-Start:    $local_fs
+    # Required-Stop:     $local_fs
     # Default-Start:     2 3 4 5
     # Default-Stop:      0 1 6
     # Short-Description: Start LED aging

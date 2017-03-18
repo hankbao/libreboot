@@ -407,7 +407,7 @@ for whatever reason, since they include a lot of useful information.
 
 Backups created using wget:
 
-    \$ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
+    $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
 **\$ wget -m -p -E -k -K -np
 http://macbook.donderklumpen.de/coreboot/**
 

@@ -134,13 +134,13 @@ arm-linux-gnueabihf setup on your *host*.
 
 <!-- -->
 
-    \$ cd \$work_dir
-    \$ git clone https://github.com/beagleboard/kernel.git
-    \$ cd kernel
-    \$ git checkout \$mav (see above)
-    \$ ./patch.sh
-    \$ wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
-    \$ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
+    $ cd \$work_dir
+    $ git clone https://github.com/beagleboard/kernel.git
+    $ cd kernel
+    $ git checkout \$mav (see above)
+    $ ./patch.sh
+    $ wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
+    $ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
 
 -   Download the patch from
     [here](http://www.coreboot.org/images/8/88/Ehci-debug-gadget-patches.tar.gz)
@@ -150,7 +150,7 @@ arm-linux-gnueabihf setup on your *host*.
     the two different version of the kernel (3.8 and 3.10). I will use
     3.8. (If using kernel 3.12 patch\_1 is not needed)
 -   cd kernel (note that this is one more level: you should be in
-    \$work\_dir/kernel/kernel)
+    $work\_dir/kernel/kernel)
 -   Apply the patches:
 
 <!-- -->
@@ -180,12 +180,12 @@ arm-linux-gnueabihf setup on your *host*.
 
 <!-- -->
 
-    \$ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 (is it possoble to build only the gadget modules)
-    \$ mkdir ../tmp && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=../tmp modules_install
+    $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 (is it possoble to build only the gadget modules)
+    $ mkdir ../tmp && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=../tmp modules_install
 
 -   on BBB, backup /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
     (i.e. mv /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
-    \$HOME)
+    $HOME)
 -   copy the freshly compiled usb/gadget dir to
     /lib/modules/3.8.13-bone70/kernel/drivers/usb
 -   restart BBB
