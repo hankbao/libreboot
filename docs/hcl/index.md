@@ -90,10 +90,12 @@ handling.
 How to find what EC version you have (i945/GM45) {#ecversion}
 ================================================
 
-In GNU+Linux, you can try this:\
+In GNU+Linux, you can try this:
+
 **grep 'at EC' /proc/asound/cards**
 
-Sample output:\
+Sample output:
+
 **ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6**
 
 7WHT19WW is the version in different notation, use search engine to find
@@ -348,8 +350,10 @@ cannot be used with libreboot under any circumstances.
 
 The following T60 motherboard (see area highlighted in white) shows an
 empty space where the ATI GPU would be (this particular motherboard has
-an Intel GPU):\
-\
+an Intel GPU):
+
+
+
 ![](../images/t60_dev/t60_unbrick.jpg)
 
 The reason that the ATI GPU on T60 is unsupported is due to the VBIOS
@@ -359,7 +363,8 @@ work in libreboot.
 
 The 'Video BIOS' is what initializes graphics.
 
-See: <https://en.wikipedia.org/wiki/Video_BIOS>.\
+See: <https://en.wikipedia.org/wiki/Video_BIOS>.
+
 In fact, lack of free VBIOS in general is a big problem in coreboot, and
 is one reason (among others) why many ports for coreboot are unsuitable
 for libreboot's purpose.
@@ -434,10 +439,12 @@ Referenced below are copies (up to date at the time of writing,
 the macbook2,1. They are included here in case the main site goes down
 for whatever reason, since they include a lot of useful information.
 
-Backups created using wget:\
+Backups created using wget:
+
     $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
 **$ wget -m -p -E -k -K -np
-http://macbook.donderklumpen.de/coreboot/**\
+http://macbook.donderklumpen.de/coreboot/**
+
 Use **-e robots=off** if using this trick for other sites and the site
 restricts using robots.txt
 
@@ -588,7 +595,8 @@ libreboot git repository.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

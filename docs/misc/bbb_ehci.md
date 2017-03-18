@@ -126,7 +126,8 @@ next step.
 ### Patch BBB's g\_dbgp module (optional, but highly recommended) {#PatchBBBsgdbgpmoduleoptionalbuthighlyrecommended}
 
 For the reasons why you need this, see: [EHCI Gadget
-Debug](http://www.coreboot.org/EHCI_Gadget_Debug).\
+Debug](http://www.coreboot.org/EHCI_Gadget_Debug).
+
 Make sure that you have cross compiling environment for
 arm-linux-gnueabihf setup on your *host*.
 
@@ -198,7 +199,8 @@ arm-linux-gnueabihf setup on your *host*.
 ### Configure libreboot with EHCI debug {#ConfigurelibrebootwithEHCIdebug}
 
 Libreboot(coreboot) should be configured with debug turned on and to
-push debug messages to the EHCI debug port.\
+push debug messages to the EHCI debug port.
+
 If you've downloaded the binary distribution, you can check if it is
 properly configured in the following way:
 
@@ -234,7 +236,8 @@ documented
 [here](https://johnlewis.ie/coreboot-ehci-debug-gadget-demonstration/)
 (also tested/verified).
 
-Then:\
+Then:
+
 
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
@@ -255,7 +258,8 @@ refer to the doc(**FIXME: link** about compiling libreboot.
 #### Selecting HCD Index and USB Debug port {#SelectingHCDIndexandUSBDebugport}
 
 This applies (and works) only if the USB controller that supports debug
-(found in the first section) is from Intel.\
+(found in the first section) is from Intel.
+
 If the PCI ID of the port you found in the first section is 0000:00:1a.0
 or 0000:00:1d.0 , you are ok. Otherwise you have to try without
 guarantee that will work.
@@ -266,10 +270,12 @@ then for CONFIG\_USBDEBUG\_HCD\_INDEX choose 2, otherwise choose 0 .
 For CONFIG\_USBDEBUG\_DEFAULT\_PORT choose the port from the first
 section that correspond to the PCI ID
 
-Notes:\
+Notes:
+
 The above is based on the implementation of
 coreboot/src/southbridge/intel/common/usb\_debug.c :
-pci\_ehci\_dbg\_dev() .\
+pci\_ehci\_dbg\_dev() .
+
 This is enough as it applies for the supported GM45/G45 Thinkpads.
 coreboot support some other contollers too, but they are irellevent for
 libreboot (for now).
@@ -356,7 +362,8 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
 
 
 
-Copyright © 2015 Alex David <opdecirkel@gmail.com>\
+Copyright © 2015 Alex David <opdecirkel@gmail.com>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

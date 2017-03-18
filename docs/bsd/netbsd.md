@@ -57,17 +57,21 @@ Prepare the USB drive (in LibertyBSD or NetBSD)
 If you downloaded your ISO on a LibertyBSD or NetBSD system, here is how
 to create the bootable NetBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:\
+Check to confirm which drive it is, for example, if you think its sd3:
+
     $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-NetBSD installer to it with dd. For example:\
+NetBSD installer to it with dd. For example:
+
     $ doas netbsd.iso of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
@@ -80,18 +84,22 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable NetBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg
-Check lsblk to confirm which drive it is:\
+Check lsblk to confirm which drive it is:
+
     $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ sudo umount /dev/sdX*
     # umount /dev/sdX*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
+distro ISO to it with dd. For example:
+
     $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
     # dd if=netbsd.iso of=/dev/sdX bs=8M; sync
 
@@ -149,9 +157,12 @@ On your NetBSD root partition, create the **/grub** directory and add
 the file **libreboot\_grub.cfg** to it. Inside the
 **libreboot\_grub.cfg** add these lines:
 
-**default=0 timeout=3 menuentry "NetBSD" {\
-    knetbsd -r wd0a (ahci0,netbsd1)/netbsd\
-}\
+**default=0 timeout=3 menuentry "NetBSD" {
+
+    knetbsd -r wd0a (ahci0,netbsd1)/netbsd
+
+}
+
 **
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
@@ -182,8 +193,10 @@ numbers may differ. Use TAB completion.
 
 
 
-Copyright © 2016 Leah Rowe <info@minifree.org>\
-Copyright © 2016 Scott Bonds <scott@ggr.com>\
+Copyright © 2016 Leah Rowe <info@minifree.org>
+
+Copyright © 2016 Scott Bonds <scott@ggr.com>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

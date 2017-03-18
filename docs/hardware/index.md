@@ -18,7 +18,8 @@ This section relates to hardware maintenance on supported targets.
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

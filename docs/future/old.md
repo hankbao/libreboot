@@ -45,7 +45,8 @@ That's all! **This has also been backported into libreboot 5th release
 (line 1233 in src/mainboard/lenovo/x60/i915io.c)**. GNUtoo (Denis
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
-running the VBIOS:\
+running the VBIOS:
+
     # devmem2 0xe4361254 w
 
 The change is also included in libreboot 6.
@@ -200,8 +201,10 @@ For historical purposes, here is a collection of IRC logs that once
 existed on this page, related to the issue:
 [kernel312\_irc](dumps/kernel312_irc).
 
-PGETBL\_CTL differs between VBIOS (-) and native graphics init (+).\
-- PGETBL\_CTL: 0x3ffc0001\
+PGETBL\_CTL differs between VBIOS (-) and native graphics init (+).
+
+- PGETBL\_CTL: 0x3ffc0001
+
 + PGETBL\_CTL: 0x3f800001
 
 GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
@@ -225,7 +228,8 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -61,17 +61,21 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:\
+Check to confirm which drive it is, for example, if you think its sd3:
+
     $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-FreeBSD installer to it with dd. For example:\
+FreeBSD installer to it with dd. For example:
+
     $ doas dd if=freebsd.img of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
@@ -84,18 +88,22 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg
-Check lsblk to confirm which drive it is:\
+Check lsblk to confirm which drive it is:
+
     $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ sudo umount /dev/sdX*
     # umount /dev/sdX*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
+distro ISO to it with dd. For example:
+
     $ sudo dd if=freebsd.img of=/dev/sdX bs=8M; sync
     # dd if=freebsd.img of=/dev/sdX bs=8M; sync
 
@@ -165,8 +173,10 @@ numbers may differ. Use TAB completion.
 
 
 
-Copyright © 2016 Leah Rowe <info@minifree.org>\
-Copyright © 2016 Scott Bonds <scott@ggr.com>\
+Copyright © 2016 Leah Rowe <info@minifree.org>
+
+Copyright © 2016 Scott Bonds <scott@ggr.com>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

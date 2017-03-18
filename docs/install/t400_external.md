@@ -77,7 +77,8 @@ See [#paste](#paste).
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
+Use this to find out:
+
 # **flashrom -p internal -V**
 
 [Back to top of page.](#pagetop)
@@ -137,72 +138,90 @@ for SOIC-8 (clip: Pomona 5250):
 The procedure
 -------------
 
-Remove *all* screws, placing them in the order that you removed them:\
+Remove *all* screws, placing them in the order that you removed them:
+
 ![](images/t400/0001.jpg) ![](images/t400/0002.jpg)
 
-Remove those three screws then remove the rear bezel:\
+Remove those three screws then remove the rear bezel:
+
 ![](images/t400/0003.jpg) ![](images/t400/0004.jpg)
 ![](images/t400/0005.jpg) ![](images/t400/0006.jpg)
 
-Remove the speakers:\
+Remove the speakers:
+
 ![](images/t400/0007.jpg) ![](images/t400/0008.jpg)
 ![](images/t400/0009.jpg) ![](images/t400/0010.jpg)
 ![](images/t400/0011.jpg)
 
-Remove the wifi:\
+Remove the wifi:
+
 ![](images/t400/0012.jpg) ![](images/t400/0013.jpg)
 
-Remove this cable:\
+Remove this cable:
+
 ![](images/t400/0014.jpg) ![](images/t400/0015.jpg)
 ![](images/t400/0016.jpg) ![](images/t400/0017.jpg)
 ![](images/t400/0018.jpg)
 
-Unroute those antenna wires:\
+Unroute those antenna wires:
+
 ![](images/t400/0019.jpg) ![](images/t400/0020.jpg)
 ![](images/t400/0021.jpg) ![](images/t400/0022.jpg)
 ![](images/t400/0023.jpg)
 
-Remove the LCD assembly:\
+Remove the LCD assembly:
+
 ![](images/t400/0024.jpg) ![](images/t400/0025.jpg)
 ![](images/t400/0026.jpg) ![](images/t400/0027.jpg)
 ![](images/t400/0028.jpg) ![](images/t400/0029.jpg)
 ![](images/t400/0030.jpg) ![](images/t400/0031.jpg)
 
-Disconnect the NVRAM battery:\
+Disconnect the NVRAM battery:
+
 ![](images/t400/0033.jpg)
 
-Disconnect the fan:\
+Disconnect the fan:
+
 ![](images/t400/0034.jpg)
 
-Unscrew these:\
+Unscrew these:
+
 ![](images/t400/0035.jpg) ![](images/t400/0036.jpg)
 ![](images/t400/0037.jpg) ![](images/t400/0038.jpg)
 
-Unscrew the heatsink, then lift it off:\
+Unscrew the heatsink, then lift it off:
+
 ![](images/t400/0039.jpg) ![](images/t400/0040.jpg)
 
-Disconnect the power jack:\
+Disconnect the power jack:
+
 ![](images/t400/0041.jpg) ![](images/t400/0042.jpg)
 
-Loosen this:\
+Loosen this:
+
 ![](images/t400/0043.jpg)
 
-Remove this:\
+Remove this:
+
 ![](images/t400/0044.jpg) ![](images/t400/0045.jpg)
 ![](images/t400/0046.jpg) ![](images/t400/0047.jpg)
 ![](images/t400/0048.jpg)
 
-Unscrew these:\
+Unscrew these:
+
 ![](images/t400/0049.jpg) ![](images/t400/0050.jpg)
 
-Remove this:\
+Remove this:
+
 ![](images/t400/0051.jpg) ![](images/t400/0052.jpg)
 
-Unscrew this:\
+Unscrew this:
+
 ![](images/t400/0053.jpg)
 
 Remove the motherboard (the cage is still attached) from the right hand
-side, then lift it out:\
+side, then lift it out:
+
 ![](images/t400/0054.jpg) ![](images/t400/0055.jpg)
 ![](images/t400/0056.jpg)
 
@@ -212,19 +231,23 @@ later): ![](images/t400/0057.jpg) ![](images/t400/0058.jpg)
 ![](images/t400/0059.jpg) ![](images/t400/0060.jpg)
 ![](images/t400/0061.jpg) ![](images/t400/0062.jpg)
 
-Separate the motherboard:\
+Separate the motherboard:
+
 ![](images/t400/0063.jpg) ![](images/t400/0064.jpg)
 
-Connect your programmer, then connect GND and 3.3V\
+Connect your programmer, then connect GND and 3.3V
+
 ![](images/t400/0065.jpg) ![](images/t400/0066.jpg)
 ![](images/t400/0067.jpg) ![](images/t400/0069.jpg)
 ![](images/t400/0070.jpg) ![](images/t400/0071.jpg)
 
 A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is
-also fine:\
+also fine:
+
 ![](images/t400/0072.jpg)
 
-Of course, make sure to turn on your PSU:\
+Of course, make sure to turn on your PSU:
+
 ![](images/x200/disassembly/0013.jpg)
 
 Now, you should be ready to install libreboot.
@@ -236,7 +259,8 @@ source code which can be built.
 Log in as root on your BBB, using the instructions in
 [bbb\_setup.html#bbb\_access](bbb_setup.html#bbb_access).
 
-Test that flashrom works:\
+Test that flashrom works:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 In this case, the output was:
 
@@ -250,17 +274,23 @@ In this case, the output was:
     Please specify which chip definition to use with the -c <chipname> option.
 
 How to backup factory.rom (change the -c option as neeed, for your flash
-chip):\
+chip):
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory.rom**\
+factory.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory1.rom**\
+factory1.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory2.rom**\
+factory2.rom**
+
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
-have been removed.\
-Now compare the 3 images:\
+have been removed.
+
+Now compare the 3 images:
+
     # sha512sum factory*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
@@ -275,7 +305,8 @@ flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
-Now flash it:\
+Now flash it:
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 path/to/libreboot/rom/image.rom -V**
 
@@ -340,7 +371,8 @@ whitelist of approved chips, and it will refuse to boot if you use an
 'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
-the Intel chip that this T400 came with:\
+the Intel chip that this T400 came with:
+
 ![](images/t400/0012.jpg) ![](images/t400/ar5b95.jpg)
 
 
@@ -370,7 +402,8 @@ Make sure that the RAM you buy is the 2Rx8 density.
 be useful for RAM compatibility info (note: coreboot raminit is
 different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:\
+The following photo shows 8GiB (2x4GiB) of RAM installed:
+
 ![](images/t400/memory.jpg)
 
 
@@ -386,7 +419,8 @@ Now [install GNU+Linux](../gnulinux/).
 
 
 
-Copyright © 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

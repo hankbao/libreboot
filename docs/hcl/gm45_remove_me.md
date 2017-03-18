@@ -40,11 +40,13 @@ factory.bin dump.
 
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
-source with:\
+source with:
+
     $ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
-Run:\
+Run:
+
 $ **./ich9gen**
 
 Running ich9gen this way (without any arguments) generates a default
@@ -70,7 +72,8 @@ the little sticker on the bottom/base of the laptop.
 On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
-the Gbe checksum updated to match). Run:\
+the Gbe checksum updated to match). Run:
+
     $ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
@@ -86,16 +89,23 @@ Two new files will be created:
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 file to where **libreboot.rom** is located and then insert the
-descriptor+gbe file into the ROM image.\
-For 16MiB flash chips:\
+descriptor+gbe file into the ROM image.
+
+For 16MiB flash chips:
+
 $ **dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
-For 8MiB flash chips:\
+conv=notrunc**
+
+For 8MiB flash chips:
+
 $ **dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
-For 4MiB flash chips:\
+conv=notrunc**
+
+For 4MiB flash chips:
+
 $ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
+conv=notrunc**
+
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
 back to [../install/#flashrom](../install/#flashrom) for how to flash
@@ -165,7 +175,8 @@ regions for your libreboot ROM image.
 If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
-from the main directory (./), otherwise you can build it like so:\
+from the main directory (./), otherwise you can build it like so:
+
     $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
@@ -177,7 +188,8 @@ GNU+Linux) under ./ich9deblob/.
 Place the factory.rom from your system (can be obtained using the
 external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
-ich9deblob executable, then run the tool:\
+ich9deblob executable, then run the tool:
+
 $ **./ich9deblob**
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
@@ -194,7 +206,8 @@ Intel. Only the Intel NICs need a GbE region in the flash chip.
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 **deblobbed\_descriptor.bin** file to where **libreboot.rom** is located
-and then run:\
+and then run:
+
 $ **dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
@@ -233,16 +246,19 @@ The ME interferes with flash read/write in flashrom, and the default
 descriptor locks some regions. The idea is that doing this will remove
 all of those restrictions.
 
-Simply run (with factory.rom in the same directory):\
+Simply run (with factory.rom in the same directory):
+
 $ **./demefactory**
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.
-Keep the original factory.rom stored safely somewhere):\
+Keep the original factory.rom stored safely somewhere):
+
 $ **dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
 count=4k conv=notrunc**
 
-TODO: test this.\
+TODO: test this.
+
 TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
 flash. Modify the assembly code inside. Note: the factory.rom (BIOS
 region) from lenovobios is in a compressed format, which you have to
@@ -305,7 +321,8 @@ Flash chips {#flashchips}
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006075.pdf>
     **~~- Page 20 and page 9 refer to SDA\_HDO or SDA\_HDOUT~~** only on
     series 6 or higher chipsets. ICH9-M (X200) does it with a strap
-    connected to GPIO33 pin (see IRC notes below)\
+    connected to GPIO33 pin (see IRC notes below)
+
     - According to page 29, the X200 can have any of the following flash
     chips:
     -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip
@@ -540,7 +557,8 @@ It has only a 448 byte fragment different from 0x00 or 0xFF.
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

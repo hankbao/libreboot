@@ -30,18 +30,22 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on an existing GNU+Linux system, here is how
 to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg
-Check lsblk to confirm which drive it is:\
+Check lsblk to confirm which drive it is:
+
     $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ sudo umount /dev/sdX*
     # umount /dev/sdX*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
+distro ISO to it with dd. For example:
+
     $ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
     # dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
 
@@ -72,17 +76,21 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:\
+Check to confirm which drive it is, for example, if you think its sd3:
+
     $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:\
+OpenBSD installer to it with dd. For example:
+
     $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
@@ -108,16 +116,26 @@ Debian or Devuan net install?
 Download the Debian or Devuan net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/), or [the
 Devuan homepage](https://www.devuan.org/) for Devuan. Use this on the
-GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
-**set root='usb0'\
-linux /install.amd/vmlinuz\
-initrd /install.amd/initrd.gz\
-boot\
-** If you are on a 32-bit system (e.g. X60):\
-**set root='usb0'\
-linux /install.386/vmlinuz\
-initrd /install.386/initrd.gz\
-boot**\
+GRUB terminal to boot it from USB (for 64-bit Intel or AMD):
+
+**set root='usb0'
+
+linux /install.amd/vmlinuz
+
+initrd /install.amd/initrd.gz
+
+boot
+
+** If you are on a 32-bit system (e.g. X60):
+
+**set root='usb0'
+
+linux /install.386/vmlinuz
+
+initrd /install.386/initrd.gz
+
+boot**
+
 We recommend using the *MATE* desktop.
 
 
@@ -142,13 +160,17 @@ distribution. You must adapt them appropriately, for whatever GNU+Linux
 distribution it is that you are trying to install.*
 
 If the ISOLINUX parser or *Search for GRUB configuration* options won't
-work, then press C in GRUB to access the command line.\
+work, then press C in GRUB to access the command line.
+
 grub>     ls
-Get the device from above output, eg (usb0). Example:\
+Get the device from above output, eg (usb0). Example:
+
 grub>     cat (usb0)/isolinux/isolinux.cfg
 Either this will show the ISOLINUX menuentries for that ISO, or link to
-other .cfg files, for example /isolinux/foo.cfg.\
-If it did that, then you do:\
+other .cfg files, for example /isolinux/foo.cfg.
+
+If it did that, then you do:
+
 grub>     cat (usb0)/isolinux/foo.cfg
 And so on, until you find the correct menuentries for ISOLINUX. **The
 file */isolinux/foo.cfg* is a fictional example. Do not actually use
@@ -165,11 +187,15 @@ options in txt.cfg. This is important if you want 64-bit booting on your
 system. Devuan versions based on Debian 8.x may also have the same
 issue.
 
-Now look at the ISOLINUX menuentry. It'll look like:\
-**kernel /path/to/kernel\
-append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS\
+Now look at the ISOLINUX menuentry. It'll look like:
+
+**kernel /path/to/kernel
+
+append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS
+
 ** GRUB works the same way, but in it's own way. Example GRUB
-commands:\
+commands:
+
 grub>     set root='usb0'
 grub>     linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS
 grub>     initrd /path/to/initrd
@@ -207,7 +233,8 @@ When using the ROM images that use coreboot's "text mode" instead of
 the coreboot framebuffer, booting the Debian or Devuan net installer
 results in graphical corruption because it is trying to switch to a
 framebuffer which doesn't exist. Use that kernel parameter on the
-'linux' line when booting it:\
+'linux' line when booting it:
+
 **vga=normal fb=false**
 
 This forces debian-installer to start in text-mode, instead of trying to
@@ -225,8 +252,10 @@ debian-installer (text mode) net install method.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-Copyright © 2016 Scott Bonds <scott@ggr.com>\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+
+Copyright © 2016 Scott Bonds <scott@ggr.com>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

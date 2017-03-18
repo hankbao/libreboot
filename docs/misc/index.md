@@ -58,10 +58,12 @@ On the X60 with coreboot or libreboot, there is a high pitched sound
 when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
-Be root\
+Be root
+
     $ su -
 
-Installed powertop:\
+Installed powertop:
+
     # pacman -S powertop
 
 and added the following to /etc/systemd/system/powertop.service :
@@ -79,7 +81,8 @@ and added the following to /etc/systemd/system/powertop.service :
     [Install]
     WantedBy=multi-user.target
 
-Finally, as root do that:\
+Finally, as root do that:
+
     # systemctl enable powertop
     # systemctl start powertop
 
@@ -107,7 +110,8 @@ included inside the ROM. Connect your null modem cable to the serial
 port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
-On the 2nd system, you can try this (using GNU Screen):\
+On the 2nd system, you can try this (using GNU Screen):
+
     $ sudo screen /dev/ttyUSB0 115200
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
@@ -122,7 +126,8 @@ can also configure your distro so that a terminal (TTY) is accessible
 from the serial console.
 
 The following guide is for Ubuntu, but it should work in Debian and
-Devuan, to enable a serial console using GeTTY:\
+Devuan, to enable a serial console using GeTTY:
+
 <https://help.ubuntu.com/community/SerialConsoleHowto> (we DO NOT
 recommend Ubuntu, because it contains non-free software in the default
 repos. Use Debian or Devuan)
@@ -226,11 +231,13 @@ battery goes to a critically low charge level, a beep occurs. Nvramtool
 is included in libreboot, and can be used to enable or disable this
 behaviour.
 
-Disable or enable beeps when removing/adding the charger:\
+Disable or enable beeps when removing/adding the charger:
+
     $ sudo ./nvramtool -w power\_management\_beeps=Enable
 $ **sudo ./nvramtool -w power\_management\_beeps=Disable**
 
-Disable or enable beeps when battery is low:\
+Disable or enable beeps when battery is low:
+
     $ sudo ./nvramtool -w low\_battery\_beep=Enable
 $ **sudo ./nvramtool -w low\_battery\_beep=Disable**
 
@@ -245,10 +252,12 @@ Get the panel name with     sudo get-edid | strings
 Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
-package i2c-tools.\
+package i2c-tools.
+
     $ sudo modprobe i2c-dev
 $ **sudo i2cdump -y 5 0x50** (you might have to change the value for
--y)\
+-y)
+
     $ sudo rmmod i2c-dev
 You'll see the panel name in the output (from the EDID dump).
 
@@ -268,14 +277,16 @@ needed for cause):
 
     e1000e 0000:00:19.0 enp0s25: Detected Hardware Unit Hang
 
-Possible workaround, tested by Nazara: Disable C-STATES.\
+Possible workaround, tested by Nazara: Disable C-STATES.
+
 **NOTE: this also disables power management, because disabling C-States
 means that your CPU will now be running at full capacity (and therefore
 using more power) non-stop, which will drain battery life if this is a
 laptop. If power usage is a concern, then you should not use this.
 (we're also not sure whether this workaround is appropriate)**
 
-To disable c-states, do this in GNU+Linux:\
+To disable c-states, do this in GNU+Linux:
+
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
 > $i; done**
 
@@ -296,7 +307,8 @@ Put this script in /etc/init.d/ on debian-based systems.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

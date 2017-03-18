@@ -32,13 +32,16 @@ statically compiled executables for the utilities are included.**
 
 
 For Debian Stretch (may also work on Debian Jessie), you can run the
-following command:\
+following command:
+
     $ sudo ./oldbuild dependencies debian
 (this will also work in Devuan)
 
-For Parabola, you can run the following command:\
+For Parabola, you can run the following command:
+
     $ sudo ./oldbuild dependencies parabola
-or:\
+or:
+
 # **./oldbuild dependencies parabola**
 
 
@@ -62,21 +65,24 @@ First, [install the build dependencies](#build_dependencies).
 
 Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
-requirement is:\
+requirement is:
+
     $ git config \--global user.name "Your Name"
     $ git config \--global user.email your@emailaddress.com
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
 <http://git-scm.com/doc>.
 
-Another nice config for you (optional, but recommended):\
+Another nice config for you (optional, but recommended):
+
     $ git config \--global core.editor nano
     $ git config \--global color.status auto
     $ git config \--global color.branch auto
     $ git config \--global color.interactive auto
 $ **git config \--global color.diff auto**
 
-After that, run the script:\
+After that, run the script:
+
 $ **./download all**
 
 What this did was download everything (grub, coreboot, memtest86+,
@@ -122,7 +128,8 @@ the mainboard. Removing that battery removes power to BUC.TS, resetting
 the bit back to 0 (if you previously set it to 1).
 
 BUC.TS utility is included in libreboot\_src.tar.xz and
-libreboot\_util.tar.xz.\
+libreboot\_util.tar.xz.
+
 **If you downloaded from git, follow [#build\_meta](#build_meta) before
 you proceed.**
 
@@ -135,10 +142,12 @@ If you have the binary release archive, you'll find executables under
 
 First, [install the build dependencies](#build_dependencies).
 
-To build bucts, do this in the main directory:\
+To build bucts, do this in the main directory:
+
 $ **./oldbuild module bucts**
 
-To statically compile it, do this:\
+To statically compile it, do this:
+
 $ **./oldbuild module bucts static**
 
 The "builddeps" script in libreboot\_src also makes use of
@@ -155,7 +164,8 @@ Flashrom is the utility for flashing/dumping ROM images. This is what
 you will use to install libreboot.
 
 Flashrom source code is included in libreboot\_src.tar.xz and
-libreboot\_util.tar.xz.\
+libreboot\_util.tar.xz.
+
 **If you downloaded from git, follow [#build\_meta](#build_meta) before
 you proceed.**
 
@@ -166,10 +176,12 @@ flashrom from source, continue reading.
 
 First, [install the build dependencies](#build_dependencies).
 
-To build it, do the following in the main directory:\
+To build it, do the following in the main directory:
+
 $ **./oldbuild module flashrom**
 
-To statically compile it, do the following in the main directory:\
+To statically compile it, do the following in the main directory:
+
 $ **./oldbuild module flashrom static**
 
 After you've done that, under ./flashrom/ you will find the following
@@ -213,24 +225,29 @@ First, [install the build dependencies](#build_dependencies).
 If you downloaded libreboot from git, refer to
 [#build\_meta](#build_meta).
 
-Build all of the components used in libreboot:\
+Build all of the components used in libreboot:
+
 $ **./oldbuild module all**
 
 You can also build each modules separately, using *./oldbuild module
-modulename*. To see the possible values for *modulename*, use:\
+modulename*. To see the possible values for *modulename*, use:
+
 $ **./oldbuild module list**
 
-After that, build the ROM images (for all boards):\
+After that, build the ROM images (for all boards):
+
     $ ./oldbuild roms withgrub
 Alternatively, you can build for a specific board or set of boards. For
-example:\
+example:
+
     $ ./oldbuild roms withgrub x60
     $ ./oldbuild roms withgrub x200\_8mb
     $ ./oldbuild roms withgrub x60 x200\_8mb
 The list of board options can be found by looking at the directory names
 in **resources/libreboot/config/grub/**.
 
-To clean (reverse) everything, do the following:\
+To clean (reverse) everything, do the following:
+
 $ **./oldbuild clean all**
 
 The ROM images will be stored under **bin/*payload*/**, where *payload*
@@ -258,23 +275,29 @@ ${version} string on the directory under *release/oldbuildsystem/*, and
 in the file names of the archives. Otherwise, whatever git uses for *git
 describe \--tags HEAD* will be used.
 
-Utilities (static executables):\
+Utilities (static executables):
+
 $ **./oldbuild release util**
 
-Archive containing flashrom and bucts source code:\
+Archive containing flashrom and bucts source code:
+
 $ **./oldbuild release tobuild**
 
 Documentation archive (**does not work on \_src release archive, only
-git**):\
+git**):
+
 $ **./oldbuild release docs**
 
-ROM image archives:\
+ROM image archives:
+
 $ **./oldbuild release roms**
 
-Source code archive:\
+Source code archive:
+
 $ **./oldbuild release src**
 
-SHA512 sums of all other release archives that have been generated:\
+SHA512 sums of all other release archives that have been generated:
+
 $ **./oldbuild release sha512sums**
 
 If you are building on an i686 host, this will build statically linked
@@ -303,7 +326,8 @@ libreboot\_util, for:
 -   flashrom
 
 If you are building binaries on a live system or chroot (for
-flashrom/bucts), you can use the following to statically link them:\
+flashrom/bucts), you can use the following to statically link them:
+
     $ ./oldbuild module flashrom static
 $ **./oldbuild module bucts static**
 
@@ -314,7 +338,8 @@ an X60/T60 while lenovo bios is present, working around the security
 restrictions).
 
 The command that you used for generating the release archives will also
-run the following command:\
+run the following command:
+
     $ ./oldbuild release tobuild
 The archive **tobuild.tar.xz** will have been created under
 **release/oldbuildsystem/**, containing bucts, flashrom and all other
@@ -331,7 +356,8 @@ under **release/oldbuildsystem/rom/**.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

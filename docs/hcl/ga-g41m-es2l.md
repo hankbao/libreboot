@@ -11,7 +11,8 @@ using an IDE SATA adapter. The SATA ports do work.
 
 You need to set a custom MAC address in GNU+Linux for the NIC to work.
 In /etc/network/interfaces on debian-based systems like Debian or
-Devuan, this would be in the entry for your NIC:\
+Devuan, this would be in the entry for your NIC:
+
 hwaddress ether macaddressgoeshere
 
 Flashing instructions can be found at
@@ -19,7 +20,8 @@ Flashing instructions can be found at
 
 
 
-Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

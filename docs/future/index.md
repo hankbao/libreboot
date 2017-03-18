@@ -71,39 +71,60 @@ i945 VRAM size {#i945_vram_size}
 ==============
 
 Apparently, only 8MB VRAM is available on i945 GPUs (though it could do
-64MB):\
+64MB):
+
 phcoder: No. Hardware default is 8 MiB. When I wanted to make it
 configurable, I saw that docs mention only one other alternative: 1MiB.
 Later isn't event enough for 1024x768 at 24bpp without any acceleration
 or double buffering. It's possible that there are undocumented values.
 Which options do you have in vendor BIOS? How to find out how much vram
-you have:\
-phcoder: TOM - BSM\
-phcoder: check what vendor BIOS offers as options\
-vimuser: I thought it could do 64MB usually\
-phcoder: not accorging to doc.\
-phcoder: see mobile-945-express-chipset-datasheet page 93\
+you have:
+
+phcoder: TOM - BSM
+
+phcoder: check what vendor BIOS offers as options
+
+vimuser: I thought it could do 64MB usually
+
+phcoder: not accorging to doc.
+
+phcoder: see mobile-945-express-chipset-datasheet page 93
+
 phcoder: see also
-src/northbridge/intel/i945/{early\_init,northbridge,gma}.c\
-vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for\
-vimuser: frame buffer."\
-vimuser: "Others - reserved"\
+src/northbridge/intel/i945/{early\_init,northbridge,gma}.c
+
+vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for
+
+vimuser: frame buffer."
+
+vimuser: "Others - reserved"
+
 phcoder: the easiest way is a loop at this position which tries
-different values and reads (and prints) BSM with them\
+different values and reads (and prints) BSM with them
+
 stefanct: vimuser: they suggest that you change the value and look how
-BSM reacts to that\
-stefanct: as they pointed out earlier vram size = TOM - BSM\
-stefanct: different values of GMS\
+BSM reacts to that
+
+stefanct: as they pointed out earlier vram size = TOM - BSM
+
+stefanct: different values of GMS
+
 stefanct: phcoder: hm... this could be a hint. look at the text
-description of TOLUD at page 103\
-stefanct: it mentions 64 MB in the text about BSM as well\
-stefanct: table 18...\
+description of TOLUD at page 103
+
+stefanct: it mentions 64 MB in the text about BSM as well
+
+stefanct: table 18...
+
 phcoder: stefanct: I have a guess which value make is 64 but I will not
-tell to avoid skewing test results\
+tell to avoid skewing test results
+
 stefanct: phcoder: sure... i assumed you were not sure if it supports
-it at all. testing it properly is of course a good idea :)\
+it at all. testing it properly is of course a good idea :)
+
 stefanct: test the various possible (but reserved) values of GMS and see
-what the resulting VRAM size is\
+what the resulting VRAM size is
+
 vimuser: so, TOM - BSM
 
 [Back to top of page.](#pagetop)
@@ -146,7 +167,8 @@ Original getregs.py script can be found at
 <http://hg.mtjm.eu/scripts/file/tip/intel-regs.py> written by Michał
 Masłowski.
 
-About fixing remaining LCD panels on 5345:\
+About fixing remaining LCD panels on 5345:
+
 'polarity' is mentioned in coreboot log (cbmem -c). compare output
 (with working and non-working panel). (and see the other notes in
 docs/future/)
@@ -162,9 +184,11 @@ How to dump EDID:
 
     # apt-get install i2c-tools
     # modprobe i2c-dev
-Find out the correct ID to use:\
+Find out the correct ID to use:
+
     # i2cdetect -l
-Example:\
+Example:
+
 # **i2cdump -y 2 0x50**
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:
@@ -324,8 +348,10 @@ Get intelvbttool here: <http://review.coreboot.org/#/c/5842>
 (util/intelvbttool).
 
 Now dump a copy of the running VGA BIOS: **$ sudo dd if=/dev/mem bs=64k
-of=runningvga.bin skip=12 count=1**\
-Then do (and record the output):\
+of=runningvga.bin skip=12 count=1**
+
+Then do (and record the output):
+
     $ ./intelvbttool runningvga.bin > intelvbttool\_out
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
@@ -406,7 +432,8 @@ Other - unlisted (low priority) {#other}
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

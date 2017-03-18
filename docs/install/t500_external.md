@@ -67,7 +67,8 @@ See [#paste](#paste).
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
+Use this to find out:
+
 # **flashrom -p internal -V**
 
 [Back to top of page.](#pagetop)
@@ -127,20 +128,26 @@ for SOIC-8 (clip: Pomona 5250):
 The procedure
 -------------
 
-Remove all screws:\
-![](images/t500/0000.jpg)\
+Remove all screws:
+
+![](images/t500/0000.jpg)
+
 It is also advisable to, throughout the disassembly, place any screws
 and/or components that you removed in the same layout or arrangement.
-The follow photos demonstrate this:\
+The follow photos demonstrate this:
+
 ![](images/t500/0001.jpg) ![](images/t500/0002.jpg)
 
-Remove the HDD/SSD and optical drive:\
+Remove the HDD/SSD and optical drive:
+
 ![](images/t500/0003.jpg) ![](images/t500/0004.jpg)
 
-Remove the palm rest:\
+Remove the palm rest:
+
 ![](images/t500/0005.jpg) ![](images/t500/0006.jpg)
 
-Remove the keyboard and rear bezel:\
+Remove the keyboard and rear bezel:
+
 ![](images/t500/0007.jpg) ![](images/t500/0008.jpg)
 ![](images/t500/0009.jpg) ![](images/t500/0010.jpg)
 ![](images/t500/0011.jpg) ![](images/t500/0012.jpg)
@@ -148,88 +155,109 @@ Remove the keyboard and rear bezel:\
 If you have a WWAN/3G card and/or sim card reader, remove them
 permanently. The WWAN-3G card has proprietary firmware inside; the
 technology is identical to what is used in mobile phones, so it can also
-track your movements:\
+track your movements:
+
 ![](images/t500/0013.jpg) ![](images/t500/0017.jpg)
 ![](images/t500/0018.jpg)
 
-Remove this frame, and then remove the wifi chip:\
+Remove this frame, and then remove the wifi chip:
+
 ![](images/t500/0014.jpg) ![](images/t500/0015.jpg)
 ![](images/t500/0016.jpg)
 
-Remove the speakers:\
+Remove the speakers:
+
 ![](images/t500/0019.jpg) ![](images/t500/0020.jpg)
 ![](images/t500/0021.jpg) ![](images/t500/0022.jpg)
 ![](images/t500/0023.jpg) ![](images/t500/0024.jpg)
 ![](images/t500/0025.jpg)
 
-Remove the NVRAM battery (already removed in this photo):\
+Remove the NVRAM battery (already removed in this photo):
+
 ![](images/t500/0026.jpg)
 
 When you re-assemble, you will be replacing the wifi chip with another.
 These two screws don't hold anything together, but they are included in
 your system because the screw holes for half-height cards are a
 different size, so use these if you will be installing a half-height
-card:\
+card:
+
 ![](images/t500/0027.jpg)
 
-Unroute the antenna wires:\
+Unroute the antenna wires:
+
 ![](images/t500/0028.jpg) ![](images/t500/0029.jpg)
 ![](images/t500/0030.jpg) ![](images/t500/0031.jpg)
 
-Disconnect the LCD cable from the motherboard:\
+Disconnect the LCD cable from the motherboard:
+
 ![](images/t500/0032.jpg) ![](images/t500/0033.jpg)
 
-Remove the LCD assembly hinge screws, and then remove the LCD assembly:\
+Remove the LCD assembly hinge screws, and then remove the LCD assembly:
+
 ![](images/t500/0034.jpg) ![](images/t500/0035.jpg)
 ![](images/t500/0036.jpg)
 
-Remove the fan and heatsink:\
+Remove the fan and heatsink:
+
 ![](images/t500/0037.jpg) ![](images/t500/0038.jpg)
 ![](images/t500/0039.jpg)
 
-Remove this screw:\
+Remove this screw:
+
 ![](images/t500/0040.jpg)
 
 Remove these cables, keeping note of how and in what arrangement they
-are connected:\
+are connected:
+
 ![](images/t500/0041.jpg) ![](images/t500/0042.jpg)
 ![](images/t500/0043.jpg) ![](images/t500/0044.jpg)
 ![](images/t500/0045.jpg) ![](images/t500/0046.jpg)
 ![](images/t500/0047.jpg) ![](images/t500/0048.jpg)
 ![](images/t500/0049.jpg)
 
-Disconnect the power jack:\
+Disconnect the power jack:
+
 ![](images/t500/0050.jpg) ![](images/t500/0051.jpg)
 
 Remove the motherboard and cage from the base (the marked hole is where
-those cables were routed through):\
+those cables were routed through):
+
 ![](images/t500/0052.jpg) ![](images/t500/0053.jpg)
 
 Remove all screws, arranging them in the same layout when placing the
 screws on a surface and marking each screw hole (this is to reduce the
-possibility of putting them back in the wrong holes):\
+possibility of putting them back in the wrong holes):
+
 ![](images/t500/0054.jpg) ![](images/t500/0055.jpg)
 
-Also remove this:\
+Also remove this:
+
 ![](images/t500/0056.jpg) ![](images/t500/0057.jpg)
 
-Separate the motherboard from the cage:\
+Separate the motherboard from the cage:
+
 ![](images/t500/0058.jpg) ![](images/t500/0059.jpg)
 
 The flash chip is next to the memory slots. On this system, it was a
-SOIC-8 (4MiB or 32Mb) flash chip:\
+SOIC-8 (4MiB or 32Mb) flash chip:
+
 ![](images/t500/0060.jpg)
 
-Connect your programmer, then connect GND and 3.3V\
-![](images/t500/0061.jpg)\
+Connect your programmer, then connect GND and 3.3V
+
+![](images/t500/0061.jpg)
+
 ![](images/t400/0067.jpg) ![](images/t400/0069.jpg)
 ![](images/t400/0070.jpg) ![](images/t400/0071.jpg)
 
 A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is
-also fine:\
+also fine:
+
 ![](images/t400/0072.jpg)
 
-Of course, make sure to turn on your PSU:\
+Of course, make sure to turn on your PSU:
+
 ![](images/x200/disassembly/0013.jpg)
 
 Now, you should be ready to install libreboot.
@@ -241,7 +269,8 @@ source code which can be built.
 Log in as root on your BBB, using the instructions in
 [bbb\_setup.html#bbb\_access](bbb_setup.html#bbb_access).
 
-Test that flashrom works:\
+Test that flashrom works:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 In this case, the output was:
 
@@ -255,17 +284,23 @@ In this case, the output was:
     Please specify which chip definition to use with the -c <chipname> option.
 
 How to backup factory.rom (change the -c option as neeed, for your flash
-chip):\
+chip):
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory.rom**\
+factory.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory1.rom**\
+factory1.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory2.rom**\
+factory2.rom**
+
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
-have been removed.\
-Now compare the 3 images:\
+have been removed.
+
+Now compare the 3 images:
+
     # sha512sum factory*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
@@ -280,7 +315,8 @@ flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
-Now flash it:\
+Now flash it:
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 path/to/libreboot/rom/image.rom -V**
 
@@ -345,7 +381,8 @@ whitelist of approved chips, and it will refuse to boot if you use an
 'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
-the Intel chip that this T500 came with:\
+the Intel chip that this T500 came with:
+
 ![](images/t400/0012.jpg) ![](images/t400/ar5b95.jpg)
 
 
@@ -375,7 +412,8 @@ Make sure that the RAM you buy is the 2Rx8 density.
 be useful for RAM compatibility info (note: coreboot raminit is
 different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:\
+The following photo shows 8GiB (2x4GiB) of RAM installed:
+
 ![](images/t400/memory.jpg)
 
 
@@ -391,7 +429,8 @@ Now [install GNU+Linux](../gnulinux/).
 
 
 
-Copyright © 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -16,15 +16,20 @@ same place, and it's the same procedure.
 Just follow these steps, and then reverse {#recovery}
 =========================================
 
-![](../images/x60_keyboard/1.JPG)\
-![](../images/x60_keyboard/2.JPG)\
-![](../images/x60_keyboard/3.JPG)\
-![](../images/x60_keyboard/4.JPG)\
+![](../images/x60_keyboard/1.JPG)
+
+![](../images/x60_keyboard/2.JPG)
+
+![](../images/x60_keyboard/3.JPG)
+
+![](../images/x60_keyboard/4.JPG)
+
 ![](../images/x60_keyboard/5.JPG)
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -427,10 +427,14 @@ box.](http://www.flashrom.org/RaspberryPi)
 
 
 
-Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>\
-Copyright © 2015 snuffeluffegus <>\
-Copyright © 2015 Kevin Keijzer <>\
-Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>
+
+Copyright © 2015 snuffeluffegus <>
+
+Copyright © 2015 Kevin Keijzer <>
+
+Copyright © 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

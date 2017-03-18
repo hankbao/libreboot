@@ -72,7 +72,8 @@ See [#paste](#paste).
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
+Use this to find out:
+
     # flashrom -p internal -V
 
 [Back to top of page.](#pagetop)
@@ -131,73 +132,95 @@ for SOIC-8 (clip: Pomona 5250):
 Disassembly
 -----------
 
-Remove all screws:\
-![](images/r400/0000.jpg)\
-Remove the HDD and optical drive:\
-![](images/r400/0001.jpg)\
-Remove the hinge screws:\
+Remove all screws:
+
+![](images/r400/0000.jpg)
+
+Remove the HDD and optical drive:
+
+![](images/r400/0001.jpg)
+
+Remove the hinge screws:
+
 ![](images/r400/0002.jpg) ![](images/r400/0003.jpg)
 
-Remove the palm rest and keyboard:\
+Remove the palm rest and keyboard:
+
 ![](images/r400/0004.jpg) ![](images/r400/0005.jpg)
 
-Remove these screws, and then remove the bezel:\
+Remove these screws, and then remove the bezel:
+
 ![](images/r400/0006.jpg) ![](images/r400/0007.jpg)
 
 Remove the speaker screws, but don't remove the speakers yet (just set
-them loose):\
+them loose):
+
 ![](images/r400/0008.jpg) ![](images/r400/0009.jpg)
 ![](images/r400/0010.jpg)
 
-Remove these screws, and then remove the metal plate:\
+Remove these screws, and then remove the metal plate:
+
 ![](images/r400/0011.jpg) ![](images/r400/0012.jpg)
 ![](images/r400/0013.jpg)
 
-Remove the antennas from the wifi card, and then start unrouting them:\
+Remove the antennas from the wifi card, and then start unrouting them:
+
 ![](images/r400/0014.jpg) ![](images/r400/0015.jpg)
 ![](images/r400/0016.jpg) ![](images/r400/0017.jpg)
 ![](images/r400/0018.jpg) ![](images/r400/0019.jpg)
 
-Disconnect the LCD cable from the motherboard:\
+Disconnect the LCD cable from the motherboard:
+
 ![](images/r400/0020.jpg) ![](images/r400/0021.jpg)
 ![](images/r400/0022.jpg) ![](images/r400/0023.jpg)
 
-Remove the hinge screws, and then remove the LCD panel:\
+Remove the hinge screws, and then remove the LCD panel:
+
 ![](images/r400/0024.jpg) ![](images/r400/0025.jpg)
 ![](images/r400/0026.jpg) ![](images/r400/0027.jpg)
 
-Remove this:\
+Remove this:
+
 ![](images/r400/0028.jpg) ![](images/r400/0029.jpg)
 
-Remove this long cable (there are 3 connections):\
+Remove this long cable (there are 3 connections):
+
 ![](images/r400/0030.jpg) ![](images/r400/0031.jpg)
 ![](images/r400/0032.jpg) ![](images/r400/0033.jpg)
 
-Disconnect the speaker cable, and remove the speakers:\
+Disconnect the speaker cable, and remove the speakers:
+
 ![](images/r400/0034.jpg)
 
 Remove the heatsink screws, remove the fan and then remove the
-heatsink/fan:\
+heatsink/fan:
+
 ![](images/r400/0035.jpg) ![](images/r400/0036.jpg)
 ![](images/r400/0037.jpg) ![](images/r400/0038.jpg)
 
-Remove the NVRAM battery:\
+Remove the NVRAM battery:
+
 ![](images/r400/0039.jpg) ![](images/r400/0040.jpg)
 
-Remove this screw:\
+Remove this screw:
+
 ![](images/r400/0041.jpg) ![](images/r400/0042.jpg)
 
-Disconnect the AC jack:\
+Disconnect the AC jack:
+
 ![](images/r400/0043.jpg) ![](images/r400/0044.jpg)
 
-Remove this screw and then remove what is under it:\
+Remove this screw and then remove what is under it:
+
 ![](images/r400/0045.jpg)
 
-Remove this:\
+Remove this:
+
 ![](images/r400/0046.jpg)
 
 Lift the motherboard (which is still inside the cage) from the side on
-the right, removing it completely:\
+the right, removing it completely:
+
 ![](images/r400/0047.jpg) ![](images/r400/0048.jpg)
 
 Remove all screws, marking each hole so that you know where to re-insert
@@ -206,19 +229,23 @@ that they were in before removal: ![](images/r400/0049.jpg)
 ![](images/r400/0050.jpg)
 
 Remove the motherboard from the cage, and the SPI flash chip will be
-next to the memory slots:\
+next to the memory slots:
+
 ![](images/r400/0051.jpg) ![](images/r400/0052.jpg)
 
-Connect your programmer, then connect GND and 3.3V\
+Connect your programmer, then connect GND and 3.3V
+
 ![](images/t400/0065.jpg) ![](images/t400/0066.jpg)
 ![](images/t400/0067.jpg) ![](images/t400/0069.jpg)
 ![](images/t400/0070.jpg) ![](images/t400/0071.jpg)
 
 A dedicated 3.3V PSU was used to create this guide, but at ATX PSU is
-also fine:\
+also fine:
+
 ![](images/t400/0072.jpg)
 
-Of course, make sure to turn on your PSU:\
+Of course, make sure to turn on your PSU:
+
 ![](images/x200/disassembly/0013.jpg)
 
 Now, you should be ready to install libreboot.
@@ -230,7 +257,8 @@ source code which can be built.
 Log in as root on your BBB, using the instructions in
 [bbb\_setup.html#bbb\_access](bbb_setup.html#bbb_access).
 
-Test that flashrom works:\
+Test that flashrom works:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 In this case, the output was:
 
@@ -244,17 +272,23 @@ In this case, the output was:
     Please specify which chip definition to use with the -c <chipname> option.
 
 How to backup factory.rom (change the -c option as neeed, for your flash
-chip):\
+chip):
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory.rom**\
+factory.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory1.rom**\
+factory1.rom**
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory2.rom**\
+factory2.rom**
+
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
-have been removed.\
-Now compare the 3 images:\
+have been removed.
+
+Now compare the 3 images:
+
     # sha512sum factory*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
@@ -269,7 +303,8 @@ flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
-Now flash it:\
+Now flash it:
+
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 path/to/libreboot/rom/image.rom -V**
 
@@ -334,7 +369,8 @@ whitelist of approved chips, and it will refuse to boot if you use an
 'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
-the Intel chip that this R400 came with:\
+the Intel chip that this R400 came with:
+
 ![](images/t400/0012.jpg) ![](images/t400/ar5b95.jpg)
 
 
@@ -364,7 +400,8 @@ Make sure that the RAM you buy is the 2Rx8 density.
 be useful for RAM compatibility info (note: coreboot raminit is
 different, so this page might be BS)
 
-The following photo shows 8GiB (2x4GiB) of RAM installed:\
+The following photo shows 8GiB (2x4GiB) of RAM installed:
+
 ![](images/t400/memory.jpg)
 
 
@@ -380,7 +417,8 @@ Now [install GNU+Linux](../gnulinux/).
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

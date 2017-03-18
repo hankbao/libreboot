@@ -253,7 +253,8 @@ ROM image, and it should work.**
 Flash chip size
 ---------------
 
-Use this to find out:\
+Use this to find out:
+
 # **flashrom -p internal -V**
 
 All good?
@@ -273,14 +274,16 @@ appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
 
-How to update the flash chip contents:\
+How to update the flash chip contents:
+
 $ **sudo ./flash update [yourrom.rom](#rom)**
 
 
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
-correct ROM image, then run this alternative command:\
+correct ROM image, then run this alternative command:
+
 $ **sudo ./flash forceupdate [yourrom.rom](#rom)**
 
 
@@ -319,16 +322,19 @@ the flashing script. do this: *rm -f patch && wget -O flash
 https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
 && chmod +x flash***
 
-The first half of the procedure is as follows:\
+The first half of the procedure is as follows:
+
 $ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
 
 
 
-You should see within the output the following:\
+You should see within the output the following:
+
 **"Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000
 are swapped"**.
 
-You should also see within the output the following:\
+You should also see within the output the following:
+
 **"Your flash chip is in an unknown state"**, **"FAILED"** and
     "DO NOT REBOOT OR POWEROFF"
 Seeing this means that the operation was a **resounding** success!
@@ -343,20 +349,24 @@ and then boot; libreboot is running, but there is a 2nd procedure
 
 
 
-When you have booted up again, you must also do this:\
+When you have booted up again, you must also do this:
+
 $ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
 
-If flashing fails at this stage, try the following:\
+If flashing fails at this stage, try the following:
+
 $ **sudo ./flashrom/i686/flashrom -p
 internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
 
 
 
-You should see within the output the following:\
+You should see within the output the following:
+
 **"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
 untranslated"**
 
-You should also see within the output the following:\
+You should also see within the output the following:
+
 **"Verifying flash... VERIFIED."**
 
 
@@ -392,12 +402,14 @@ Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
 
 
-Use this flashing script, to install libreboot:\
+Use this flashing script, to install libreboot:
+
 $ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
 
 
 
-You should also see within the output the following:\
+You should also see within the output the following:
+
 **"Verifying flash... VERIFIED."**
 
 Shut down.
@@ -407,7 +419,8 @@ Shut down.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

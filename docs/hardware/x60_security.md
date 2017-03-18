@@ -47,42 +47,59 @@ purely theoretical for the time being.
 Disassembly {#procedure}
 ===========
 
-Firstly remove the bluetooth (if your X60 has this):\
-The marked screws are underneath those stickers (marked in those 3
-locations at the bottom of the LCD assembly):\
-![](../images/x60_security/0000_bluetooth0.jpg)\
-Now gently pry off the bottom part of the front bezel, and the bluetooth
-module is on the left (easily removable):\
-![](../images/x60_security/0000_bluetooth.jpg)\
+Firstly remove the bluetooth (if your X60 has this):
 
-If your model was WWAN, remove the simcard (check anyway):\
-Uncover those 2 screws at the bottom:\
-![](../images/x60_security/0000_simcard0.jpg)\
-SIM card (not present in the picture) is in the marked location:\
-![](../images/x60_security/0000_simcard1.jpg)\
+The marked screws are underneath those stickers (marked in those 3
+locations at the bottom of the LCD assembly):
+
+![](../images/x60_security/0000_bluetooth0.jpg)
+
+Now gently pry off the bottom part of the front bezel, and the bluetooth
+module is on the left (easily removable):
+
+![](../images/x60_security/0000_bluetooth.jpg)
+
+
+If your model was WWAN, remove the simcard (check anyway):
+
+Uncover those 2 screws at the bottom:
+
+![](../images/x60_security/0000_simcard0.jpg)
+
+SIM card (not present in the picture) is in the marked location:
+
+![](../images/x60_security/0000_simcard1.jpg)
+
 Replacement: USB dongle.
 
 Now get into the motherboard.
 
-Remove those screws:\
+Remove those screws:
+
 ![](../images/x60_security/0000.jpg)
 
-Push the keyboard forward (carefully):\
+Push the keyboard forward (carefully):
+
 ![](../images/x60_security/0001.jpg)
 
-Lift the keyboard up and disconnect it from the board:\
+Lift the keyboard up and disconnect it from the board:
+
 ![](../images/x60_security/0002.jpg)
 
 Grab the right-hand side of the chassis and force it off (gently) and
-pry up the rest of the chassis:\
+pry up the rest of the chassis:
+
 ![](../images/x60_security/0003.jpg)
 
-You should now have this:\
+You should now have this:
+
 ![](../images/x60_security/0004.jpg)
 
 The following is a summary of what you will remove (already done to this
-system):\
-![](../images/x60_security/0001_overview.jpg)\
+system):
+
+![](../images/x60_security/0001_overview.jpg)
+
 Note: the blue lines represent antenna cables and modem cables. You
 don't need to remove these, but you can if you want (to make it tidier
 after removing other parts). I removed the antenna wires, the modem
@@ -91,8 +108,10 @@ part where the wwan antenna goes (wasn't sure what it was, but I knew
 it wasn't needed). **This is optional**
 
 Remove the microphone (can desolder it, but you can also easily pull it
-off with you hands). Already removed here:\
-![](../images/x60_security/0001_microphone.jpg)\
+off with you hands). Already removed here:
+
+![](../images/x60_security/0001_microphone.jpg)
+
     Rationale:
 Another reason to remove the microphone: If your computer
 gets[\[1\]](#ref1) compromised, it can record what you say, and use it
@@ -102,31 +121,42 @@ could theoretically be programmed to accept remote commands from some
 speaker somewhere (remote security hole). **In other words, the system
 could already be compromised from the factory.**
 
-Remove the modem:\
-![](../images/x60_security/0001_modem.jpg)\
+Remove the modem:
+
+![](../images/x60_security/0001_modem.jpg)
+
 (useless, obsolete device)
 
-Remove the speaker:\
-![](../images/x60_security/0001_speaker.jpg)\
+Remove the speaker:
+
+![](../images/x60_security/0001_speaker.jpg)
+
 Reason: combined with the microphone issue, this could be used to leak
-data.\
+data.
+
 If your computer gets[\[1\]](#ref1) compromised, it can be used to
 transmit data to nearby compromised devices. It's unknown if it can be
-turned into a microphone[\[2\]](#ref2).\
+turned into a microphone[\[2\]](#ref2).
+
 Replacement: headphones/speakers (line-out) or external DAC (USB).
 
-Remove the wlan (also remove wwan if you have it):\
-![](../images/x60_security/0001_wlan_wwan.jpg)\
+Remove the wlan (also remove wwan if you have it):
+
+![](../images/x60_security/0001_wlan_wwan.jpg)
+
 Reason: has direct (and very fast) memory access, and could
-(theoretically) leak data over a side-channel.\
+(theoretically) leak data over a side-channel.
+
 **Wifi:** The ath5k/ath9k cards might not have firmware at all. They
 might safe but could have access to the computer's RAM trough DMA. If
 people have an intel card(most X60s come with Intel wifi by default,
 until you change it),then that card runs a non-free firwamre and has
 access to the computer's RAM trough DMA! So the risk-level is very
-high.\
+high.
+
 **Wwan (3g modem):** They run proprietary software! It's like AMT but
-over the GSM network which is probably even worse.\
+over the GSM network which is probably even worse.
+
 Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note,
 this has all the same privacy issues as mobile phones. wwan not
 recommended).
@@ -154,7 +184,8 @@ half of the video to see how to do the above.
 Also not covered yet:
 ---------------------
 
--   Intrusion detection: randomized seal on screws\
+-   Intrusion detection: randomized seal on screws
+
     Just put nail polish with lot of glider on the important screws,
     take some good pictures. Keep the pictueres and make sure of their
     integrity. Compare the nail polish with the pictures before powering
@@ -259,7 +290,8 @@ transport), the spies probably already have that since a long time.
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

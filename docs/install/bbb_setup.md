@@ -137,7 +137,8 @@ to a thicker piece of wire (you could use a paper clip), or wedge the
 male end of the jumper cable into the sides of the hole in the
 connector, instead of going through the centre.
 
-Here is an example set up:\
+Here is an example set up:
+
 ![](images/x200/psu33.jpg "Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net> see license notice at the end of this document")
 
 
@@ -157,14 +158,18 @@ Alternatives to SSH (in case SSH fails)
 ---------------------------------------
 
 You can also use a serial FTDI debug board with GNU Screen, to access
-the serial console.\
+the serial console.
+
     # screen /dev/ttyUSB0 115200
-Here are some example photos:\
-![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
+Here are some example photos:
+
+![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)
+
 
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
-directly accessible from SSH, or screen:\
+directly accessible from SSH, or screen:
+
 # **screen /dev/ttyACM0 115200**
 
 You can also access the uboot console, using the serial method instead
@@ -210,13 +215,15 @@ contents of this file with:
 
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
-Check that the firmware exists:\
+Check that the firmware exists:
+
     # ls /lib/firmware/BB-SPI0-01-00A0.*
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
-Then:\
+Then:
+
     # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots
     # cat /sys/devices/bone\_capemgr.*/slots
 Output:
@@ -229,14 +236,16 @@ Output:
      5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
-Verify that the spidev device now exists:\
+Verify that the spidev device now exists:
+
     # ls -al /dev/spid*
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 
 Now the BBB is ready to be used for flashing. Make this persist across
-reboots:\
+reboots:
+
 In /etc/default/capemgr add **CAPE=BB-SPI0-01** at the end (or change
 the existing **CAPE=** entry to say that, if an entry already exists.
 
@@ -252,7 +261,8 @@ libreboot\_src, and put the ARM binary for it on your BBB.
 Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
-Now test flashrom:\
+Now test flashrom:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 Output:
 
@@ -333,7 +343,8 @@ should.**
 if you need to extend the 3.3v psu leads, just use the same colour M-F
 leads, **but** keep all other leads short (10cm or less)
 
-You should now have something that looks like this:\
+You should now have something that looks like this:
+
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)
 
 [Back to top of page.](#pagetop)
@@ -360,9 +371,12 @@ following configuration:
 
 
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
-Copyright © 2015 Albin Söderqvist\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+
+Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>
+
+Copyright © 2015 Albin Söderqvist
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

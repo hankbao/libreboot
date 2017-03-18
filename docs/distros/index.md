@@ -20,7 +20,8 @@ FSF-endorsed distros
 
 Many FSF-endorsed GNU+Linux distributions are considered unfit for
 general use by the libreboot project. You can read about their problems
-here:\
+here:
+
 [Why we can't endorse many FSF-endorsed
 distributions](../fsf-distros/).
 
@@ -100,7 +101,8 @@ We recommend using the *MATE* desktop.
 
 
 
-Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Leah Rowe <info@minifree.org>
+
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative
