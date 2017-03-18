@@ -22,13 +22,9 @@ your libreboot system, using nothing more than a USB flash drive (and
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 install60.fs is the installation image for OpenBSD 6.0. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
@@ -58,7 +54,6 @@ OpenBSD installer to it with dd. For example:
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
-
 
 Prepare the USB drive (in NetBSD)
 ---------------------------------
@@ -105,9 +100,6 @@ distro ISO to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-
-
-
 Installing OpenBSD without full disk encryption
 -----------------------------------------------
 
@@ -118,9 +110,6 @@ grub> **boot**
 
 It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
-
-
-
 
 Installing OpenBSD with full disk encryption
 --------------------------------------------
@@ -150,9 +139,6 @@ installations would be possible, but probably not feasible; it's an
 alien codebase to the OpenBSD project, not tightly integrated and the
 OpenBSD bootloader already works.
 
-
-
-
 Booting
 -------
 
@@ -162,9 +148,6 @@ grub>     kopenbsd -r sd0a (ahci0,openbsd1)/bsd
 grub> **boot**
 
 OpenBSD will start booting. Yay!
-
-
-
 
 Configuring Grub
 ----------------
@@ -190,9 +173,6 @@ The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
 seconds OpenBSD will boot, or you can hit enter to boot.
 
-
-
-
 Troubleshooting
 ===============
 
@@ -210,9 +190,6 @@ won't boot...something about file not found
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
-
-
-
 
 Copyright © 2016 Scott Bonds <scott@ggr.com>
 

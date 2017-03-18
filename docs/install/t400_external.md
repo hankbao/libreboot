@@ -16,9 +16,6 @@ the screws on page 144 (with title "1130 Keyboard bezel") are swapped
 and if you follow the HMM you will punch a hole through the bezel in the
 upper right corner.
 
-
-
-
 T400 laptops with libreboot pre-installed {#preinstall}
 =========================================
 
@@ -28,16 +25,12 @@ GNU+Linux distribution.
 
 Check the [suppliers](../../suppliers) page for more information.
 
-
-
 Serial port {#serial_port}
 -----------
 
 EHCI debug might not be needed. It has been reported that the docking
 station for this laptop has a serial port, so it might be possible to
 use that instead.
-
-
 
 A note about CPUs
 =================
@@ -51,8 +44,6 @@ Quad-core CPUs
 --------------
 
 Incompatible. Do not use.
-
-
 
 A note about GPUs
 =================
@@ -72,8 +63,6 @@ CPU paste required
 
 See [#paste](#paste).
 
-
-
 Flash chip size {#flashchips}
 ===============
 
@@ -82,8 +71,6 @@ Use this to find out:
 # **flashrom -p internal -V**
 
 [Back to top of page.](#pagetop)
-
-
 
 MAC address {#macaddress}
 ===========
@@ -97,8 +84,6 @@ image before flashing it. It will be written in one of these locations:
 
 ![](images/t400/macaddress0.jpg) ![](images/t400/macaddress1.jpg)
 ![](images/x200/disassembly/0001.jpg)
-
-
 
 Initial BBB configuration
 =========================
@@ -333,8 +318,6 @@ Example output from running the command (see above):
 
 [Back to top of page.](#pagetop)
 
-
-
 Thermal paste (IMPORTANT)
 =========================
 
@@ -351,8 +334,6 @@ better than the default paste used on these systems.
 NOTE: the photo above is for illustration purposes only, and does not
 show how to properly apply the thermal paste. Other guides online detail
 the proper application procedure.
-
-
 
 Wifi
 ====
@@ -375,8 +356,6 @@ the Intel chip that this T400 came with:
 
 ![](images/t400/0012.jpg) ![](images/t400/ar5b95.jpg)
 
-
-
 WWAN
 ====
 
@@ -386,8 +365,6 @@ technology is identical to what is used in mobile phones, so it can also
 track your movements.
 
 Not to be confused with wifi (wifi is fine).
-
-
 
 Memory
 ======
@@ -406,8 +383,6 @@ The following photo shows 8GiB (2x4GiB) of RAM installed:
 
 ![](images/t400/memory.jpg)
 
-
-
 Boot it!
 --------
 
@@ -416,8 +391,6 @@ You should see something like this:
 ![](images/t400/boot0.jpg) ![](images/t400/boot1.jpg)
 
 Now [install GNU+Linux](../gnulinux/).
-
-
 
 Copyright © 2015 Leah Rowe <info@minifree.org>
 

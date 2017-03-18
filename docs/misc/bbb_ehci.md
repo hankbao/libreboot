@@ -4,8 +4,6 @@ EHCI debugging on the BeagleBone Black
 
 [Back to previous index](./)
 
-
-
 EHCI debugging
 ==============
 
@@ -238,7 +236,6 @@ documented
 
 Then:
 
-
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
 Also Debugging \-\--> Output verbose XYZ ) (**FIXME** somebody verify
@@ -359,8 +356,6 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
     targets is selected as defualt
 3.  Patch and compule g\_dbgp on BBB instead cross-compile
 4.  Find a simple way to send debug messages from targets userland
-
-
 
 Copyright © 2015 Alex David <opdecirkel@gmail.com>
 

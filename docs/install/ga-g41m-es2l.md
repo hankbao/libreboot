@@ -5,9 +5,6 @@ GA-G41M-ES2L flashing tutorial
 This guide is for those who want libreboot on their Intel GA-G41M-ES2L
 motherboard while they still have the original BIOS present.
 
-
-
-
 Flash chip size {#flashchips}
 ===============
 
@@ -16,8 +13,6 @@ Use this to find out:
 # **flashrom -p internal -V**
 
 [Back to top of page.](#pagetop)
-
-
 
 Flashing instructions {#clip}
 =====================
@@ -54,8 +49,6 @@ their SVN or Git repos.
 NOTE: due to a bug in the hardware, the MAC address is hardcoded in
 coreboot-libre. Therefore, you must set your own MAC address in your
 operating system.
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

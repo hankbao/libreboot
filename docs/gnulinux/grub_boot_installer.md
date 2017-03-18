@@ -16,13 +16,9 @@ flash drive (and *dd*).
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -51,7 +47,6 @@ distro ISO to it with dd. For example:
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
-
 
 Prepare the USB drive (in NetBSD)
 ---------------------------------
@@ -96,9 +91,6 @@ OpenBSD installer to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-
-
-
 Installing GNU+Linux with full disk encryption
 ----------------------------------------------
 
@@ -106,9 +98,6 @@ Installing GNU+Linux with full disk encryption
     (including /boot)](encrypted_debian.html)
 -   [Installing Parabola GNU+Linux with full disk encryption (including
     /boot)](encrypted_parabola.html)
-
-
-
 
 Debian or Devuan net install?
 -----------------------------
@@ -138,9 +127,6 @@ boot**
 
 We recommend using the *MATE* desktop.
 
-
-
-
 Booting ISOLINUX images (automatic method)
 ------------------------------------------
 
@@ -148,9 +134,6 @@ Boot it in GRUB using the *Parse ISOLINUX config (USB)* option. A new
 menu should appear in GRUB, showing the boot options for that distro;
 this is a GRUB menu, converted from the usual ISOLINUX menu provided by
 that distro.
-
-
-
 
 Booting ISOLINUX images (manual method)
 ---------------------------------------
@@ -205,9 +188,6 @@ GRUB, to see a list of USB devices/partitions. Of course this will vary
 from distro to distro. If you did all of that correctly, then it should
 now be booting your USB drive in the way that you specified.
 
-
-
-
 Troubleshooting
 ===============
 
@@ -248,9 +228,6 @@ This workaround was found on the page:
 <https://www.debian.org/releases/stable/i386/ch05s04.html>. It should
 also work for Debian, Devuan and any other apt-get distro that provides
 debian-installer (text mode) net install method.
-
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
 

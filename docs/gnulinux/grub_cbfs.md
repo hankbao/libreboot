@@ -29,8 +29,6 @@ depthcharge payload, ignore this section entirely.**
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 =================
 
@@ -44,8 +42,6 @@ Table of Contents
         image](#reinsert_modified_testconfig)
     -   [Testing](#testing)
     -   [Final steps](#final_steps)
-
-
 
 Introduction
 ------------
@@ -66,8 +62,6 @@ result in a bricked system (recovery is easy if you have the
 If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
-
-
 
 1st option: don't re-flash {#option1_dont_reflash}
 ---------------------------
@@ -107,8 +101,6 @@ for libreboot\_grub.cfg otherwise it will loop.**.
 
 [Back to top of page.](#pagetop)
 
-
-
 2nd option: re-flash {#option2_reflash}
 --------------------
 
@@ -116,8 +108,6 @@ You can modify what is stored inside the flash chip quite easily. Read
 on to find out how.
 
 [Back to top of page.](#pagetop)
-
-
 
 Acquire the necessary utilities {#tools}
 -------------------------------
@@ -130,8 +120,6 @@ available from the repositories:
 # **pacman -S flashrom**
 
 [Back to top of page.](#pagetop)
-
-
 
 Acquiring the correct ROM image {#rom}
 -------------------------------
@@ -152,8 +140,6 @@ to the command, for example:
 # **flashrom -c MX25L6405 -p internal -r libreboot.rom**
 
 [Back to top of page.](#pagetop)
-
-
 
 Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
@@ -176,8 +162,6 @@ Modify the grubtest.cfg accordingly.
 
 [Back to top of page.](#pagetop)
 
-
-
 Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testconfig}
 ------------------------------------------------------
 
@@ -192,8 +176,6 @@ Next, insert the modified version:
 raw**
 
 [Back to top of page.](#pagetop)
-
-
 
 Testing
 -------
@@ -222,8 +204,6 @@ new configuration is safe (or desirable) to use.**
 
 [Back to top of page.](#pagetop)
 
-
-
 Final steps {#final_steps}
 -----------
 
@@ -240,7 +220,6 @@ $ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg**
 
-
 Delete the grub.cfg that remained inside the ROM:
 
     $ ./cbfstool libreboot.rom remove -n grub.cfg
@@ -255,8 +234,6 @@ flash it. It's the same method as you used before. Shut down and then
 boot up with your new configuration.**
 
 [Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

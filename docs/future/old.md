@@ -7,8 +7,6 @@ For current notes, see [](./).
 These are old (obsolete) notes that mare kept because they might become
 useful again in the future.
 
-
-
 Table of contents
 =================
 
@@ -20,8 +18,6 @@ Table of contents
     5320](#5320_kernel312fix)
 -   [i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay
     code)](#x60_cb5927_testing)
-
-
 
 X60 native graphics initialization (with backlight controls) {#x60_native_notes}
 ============================================================
@@ -98,9 +94,6 @@ phcoder (Vladimir Serbinenko) who is author of 5320
 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering
 frequency'.
 
-
-
-
 T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 ============================================================
 
@@ -127,9 +120,6 @@ Supported panels
 [../hcl/#supported\_t60\_list](../hcl/#supported_t60_list).
 
 See [#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
-
-
-
 
 i945: 3D fix (based on 5927) for kernel 3.12+ on 5320 {#5320_kernel312fix}
 =====================================================
@@ -171,9 +161,6 @@ apt-get repositories) using tool "intel\_gtt":
 -   kernel 3.2.0-60 (from apt-get repositories):
     -   with coreboot (no vbios or native init):
         <http://paste.debian.net/104341>
-
-
-
 
 i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code) {#x60_cb5927_testing}
 ========================================================================
@@ -224,9 +211,6 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
     -   [cbmem -c](dumps/5927_cbmemc)
     -   [/sys/class/drm/card0/error](dumps/5927_crashdump)
     -   [.config](dumps/5927_config)
-
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

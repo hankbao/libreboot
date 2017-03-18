@@ -6,8 +6,6 @@ Using this guide you can also change/upgrade the CPU.
 
 [Back to previous index](./)
 
-
-
 Hardware requirements {#hardware_requirements}
 =====================
 
@@ -15,15 +13,11 @@ Hardware requirements {#hardware_requirements}
     changing CPU heatsink (procedure involves removing heatsink)
 -   thermal compound/paste (Arctic MX-4 is good. Others are also good.)
 
-
-
 Software requirements {#software_requirements}
 =====================
 
 -   xsensors
 -   stress
-
-
 
 Disassembly {#recovery}
 ===========
@@ -95,8 +89,6 @@ Always stress test ('stress -c 2' and xsensors. below 90C is ok) when
 replacing cpu paste/heatsink:
 
 ![](../images/t60_dev/0074.JPG)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

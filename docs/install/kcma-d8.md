@@ -21,9 +21,6 @@ TODO: show photos here, and other info.
     preinstalled](#preinstall)
 -   [External programmer](#programmer)
 
-
-
-
 External programmer {#programmer}
 ===================
 
@@ -34,8 +31,6 @@ The flash chip is in a PDIP 8 socket (SPI flash chip) on the
 motherboard, which you take out and then re-flash with libreboot, using
 the programmer. **DO NOT** remove the chip with your hands. Use a chip
 extractor tool.
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

@@ -7,8 +7,6 @@ see [old.html](old.html).
 
 Or go [back to main task list](../tasks.html).
 
-
-
 Table of contents
 =================
 
@@ -20,8 +18,6 @@ Table of contents
 -   [i945 X60/T60 VBT implementation (experimental: testing)](#i945_vbt)
 -   [IntelVbtTool results](#intelvbttool_results)
 -   [Fallback patches for i945](#fallback_patches)
-
-
 
 standard test {#standard_test}
 =============
@@ -47,8 +43,6 @@ on i945 (X60 and T60).
 
 [Back to top of page.](#pagetop)
 
-
-
 T60 cpu microcode {#t60_cpu_microcode}
 =================
 
@@ -64,8 +58,6 @@ look at the debugging results collected in [t7200q](../t7200q) directory
 Every other T7200 tested so far has worked without microcode updates.
 
 [Back to top of page.](#pagetop)
-
-
 
 i945 VRAM size {#i945_vram_size}
 ==============
@@ -128,8 +120,6 @@ what the resulting VRAM size is
 vimuser: so, TOM - BSM
 
 [Back to top of page.](#pagetop)
-
-
 
 LCD panels on i945 - fix incompatible panels {#lcd_i945_incompatibility}
 ============================================
@@ -257,8 +247,6 @@ LTN141XA-L01: revert to libreboot git commit c943281 to see this
 
 [Back to top of page.](#pagetop)
 
-
-
 i945 gfx: X60/T60 VBT implementation (experimental: testing) {#i945_vbt}
 ============================================================
 
@@ -320,9 +308,6 @@ Results (# means untested):
 -   **T50 15" QXGA**
     -   IDtech IAQX10N: #
     -   IDtech IAQX10S: #
-
-
-
 
 intelvbttool test results (VGA ROM dumps) {#intelvbttool_results}
 =========================================
@@ -398,8 +383,6 @@ Test results (# means untested and all had docks, unless noted).
 
 [Back to top of page.](#pagetop)
 
-
-
 Fallback patches {#fallback_patches}
 ================
 
@@ -408,8 +391,6 @@ Fallback patches {#fallback_patches}
     log](gnutoo_fallback_patch) (warning, not cleaned up)
 
 [Back to top of page.](#pagetop)
-
-
 
 Other - unlisted (low priority) {#other}
 ===============================
@@ -429,8 +410,6 @@ Other - unlisted (low priority) {#other}
         SXGA+ and UXGA, where GRUB actually display graphics.
 
 [Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

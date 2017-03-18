@@ -2,9 +2,6 @@
 Notes about DMA and the docking station (X60/T60)
 =================================================
 
-
-
-
     Use case:
     ---------
     Usually when people do full disk encryption, it's not really full disk,
@@ -66,7 +63,6 @@ Notes about DMA and the docking station (X60/T60)
                    | ICH7                  |
                    |_______________________|
 
-
     The code:
     ---------
     Now if I look at the existing code, there is some superio drivers, like
@@ -120,8 +116,6 @@ Notes about DMA and the docking station (X60/T60)
     >         help
     >           The dock autodetection is tried only if it is also enabled
     > trough nvram.
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

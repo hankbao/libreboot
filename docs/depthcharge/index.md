@@ -4,7 +4,6 @@ Depthcharge payload
 
 This section relates to the depthcharge payload used in libreboot.
 
-
 -   [CrOS security model](#cros_security_model)
 -   [Developer mode screen](#developer_mode_screen)
     -   Holding the developer mode screen
@@ -18,8 +17,6 @@ This section relates to the depthcharge payload used in libreboot.
 -   [Configuring verified boot
     parameters](#configuring_verified_boot_parameters)
 
-
-
 CrOS security model {#cros_security_model}
 ===================
 
@@ -29,14 +26,10 @@ compromised, that is implemented as the verified boot (vboot) reference,
 most of which is executed within depthcharge. A detailed overview of the
 CrOS security model is available on the dedicated page.
 
-
 In spite of the CrOS security model, depthcharge won't allow booting
 kernels without verifying their signature and booting from external
 media or legacy payload unless explicitly allowed: see [configuring
 verified boot parameters](#configuring_verified_boot_parameters).
-
-
-
 
 Developer mode screen {#developer_mode_screen}
 =====================
@@ -52,15 +45,12 @@ external media (when enabled), booting from legacy payload (when
 enabled), showing information about the device and disabling developer
 mode.
 
-
 Holding the developer mode screen {#holding_developer_mode_screen}
 ---------------------------------
 
 As instructed on the developer mode screen, the screen can be held by
 pressing **Ctrl + H** in the first 3 seconds after the screen is shown.
 After that delay, depthcharge will resume booting normally.
-
-
 
 Booting normally {#booting_normally}
 ----------------
@@ -70,8 +60,6 @@ after **3 seconds** (if developer mode screen is not held).
 
 The default boot medium (internal storage, external media, legacy
 payload) is shown on screen.
-
-
 
 Booting from different mediums {#booting_different_mediums}
 ------------------------------
@@ -88,8 +76,6 @@ can be triggered by pressing various key combinations:
 -   External media: **Ctrl + U** (when enabled)
 -   Legacy payload: **Ctrl + L** (when enabled)
 
-
-
 Showing device information {#showing_device_information}
 --------------------------
 
@@ -98,9 +84,6 @@ can be triggered by pressing **Ctrl + I** or **Tab**.
 
 Various information is shown, including vboot non-volatile data, TPM
 status, GBB flags and key hashes.
-
-
-
 
 Warnings
 --------
@@ -111,9 +94,6 @@ The developer mode screen will show warnings when:
 -   Booting from external media is enabled
 -   Booting legacy payloads is enabled
 
-
-
-
 Recovery mode screen {#recovery_mode_screen}
 ====================
 
@@ -123,7 +103,6 @@ The recovery mode screen can be accessed in depthcharge, by pressing
 It allows recovering the device from a bad state by booting from a
 trusted recovery media. When accessed with the device in a good state,
 it also allows enabling developer mode.
-
 
 Recovering from a bad state {#recovering_bad_state}
 ---------------------------
@@ -154,8 +133,6 @@ replaced. When the recovery private key is available (e.g. when using
 self-generated keys), it can be used to sign a kernel for recovery
 purposes.
 
-
-
 Enabling developer mode {#enabling_developer_mode}
 -----------------------
 
@@ -164,9 +141,6 @@ by pressing **Ctrl + D**.
 
 Instructions to confirm enabling developer mode are then shown on
 screen.
-
-
-
 
 Configuring verified boot parameters {#configuring_verified_boot_parameters}
 ====================================
@@ -193,7 +167,6 @@ Some of these parameters have the potential of **weakening the security
 of the device**. In particular, disabling kernels signature
 verification, external media boot and legacy payload boot can weaken the
 security of the device.
-
 
 The following parameters can be configured:
 
@@ -228,9 +201,6 @@ The following parameters can be configured:
     -   Legacy payload:
 
         # **crossystem dev\_default\_boot=legacy**
-
-
-
 
 Copyright © 2015 Paul Kocialkowski <contact@paulk.fr>
 

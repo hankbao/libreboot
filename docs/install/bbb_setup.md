@@ -32,8 +32,6 @@ Onto the Beaglebone black...
 
 [Back to previous index](./)
 
-
-
 Hardware requirements
 =====================
 
@@ -104,8 +102,6 @@ Shopping list (pictures of this hardware is shown later):
 
 [Back to top of page.](#pagetop)
 
-
-
 Setting up the 3.3V DC PSU
 ==========================
 
@@ -141,8 +137,6 @@ Here is an example set up:
 
 ![](images/x200/psu33.jpg "Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net> see license notice at the end of this document")
 
-
-
 Accessing the operating system on the BBB
 =========================================
 
@@ -165,7 +159,6 @@ Here are some example photos:
 
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)
 
-
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
 directly accessible from SSH, or screen:
@@ -174,8 +167,6 @@ directly accessible from SSH, or screen:
 
 You can also access the uboot console, using the serial method instead
 of SSH.
-
-
 
 Setting up spidev on the BBB
 ============================
@@ -273,8 +264,6 @@ Output:
 This means that it's working (the clip isn't connected to any flash
 chip, so the error is fine).
 
-
-
 Connecting the Pomona 5250/5252
 ===============================
 
@@ -349,8 +338,6 @@ You should now have something that looks like this:
 
 [Back to top of page.](#pagetop)
 
-
-
 Notes about stability {#stability}
 =====================
 
@@ -368,8 +355,6 @@ following configuration:
 -   Twisted pair used as core (in case more capacitors are needed)
 -   See this image: <http://i.imgur.com/qHGxKpj.jpg>
 -   He was able to flash at 50MHz (lower speeds are also fine).
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

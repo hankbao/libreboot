@@ -23,13 +23,9 @@ for the initial instructions.
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 netbsd.iso is the installation image for NetBSD. Adapt the filename
 accordingly, for your version of NetBSD.
@@ -77,7 +73,6 @@ NetBSD installer to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
 
@@ -106,9 +101,6 @@ distro ISO to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-
-
-
 Installing NetBSD without full disk encryption
 ----------------------------------------------
 
@@ -121,16 +113,10 @@ grub> **boot**
 It will start booting into the NetBSD installer. Follow the normal
 process for installing NetBSD.
 
-
-
-
 Installing NetBSD with full disk encryption
 -------------------------------------------
 
 TODO
-
-
-
 
 Booting
 -------
@@ -141,9 +127,6 @@ grub>     knetbsd -r wd0a (ahci0,netbsd1)/netbsd
 grub> **boot**
 
 NetBSD will start booting. Yay!
-
-
-
 
 Configuring Grub
 ----------------
@@ -169,9 +152,6 @@ The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only NetBSD on the list. After 3
 seconds NetBSD will boot, or you can hit enter to boot.
 
-
-
-
 Troubleshooting
 ===============
 
@@ -189,9 +169,6 @@ won't boot...something about file not found
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
-
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

@@ -5,17 +5,12 @@ Changing the fan/heatsink on the ThinkPad X60
 This guide will teach you how to replace the fan and heatsink on your
 ThinkPad X60.
 
-
-
-
 Table of Contents
 =================
 
 -   [Hardware Requirements](#hardware_requirements)
 -   [Software Requirements](#software_requirements)
 -   [Disassembly](#procedure)
-
-
 
 Hardware requirements {#hardware_requirements}
 =====================
@@ -26,15 +21,11 @@ Hardware requirements {#hardware_requirements}
     'ok')
 -   Something to spread the paste with
 
-
-
 Software requirements (for CPU stress testing) {#software_requirements}
 ==============================================
 
 -   xsensors utility
 -   stress utility
-
-
 
 Disassembly {#procedure}
 ===========
@@ -123,8 +114,6 @@ the heatsink, reversing previous steps.
 **stress -c 2** command can be used to push the CPU to 100%, and
 **xsensors** (or **watch sensors** command) can be used to monitor heat.
 Below 90C is ok.
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

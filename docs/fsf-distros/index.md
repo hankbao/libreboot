@@ -9,9 +9,6 @@ To learn more about the GNU+Linux systems that we do endorse, check out
 our list of [free GNU+Linux distributions](../distros/). The *only*
 FSF-endorsed distribution that we endorse there is *Parabola*.
 
-
-
-
 Blag
 ----
 
@@ -70,9 +67,6 @@ Ututo
 -----
 
 It's a dead project.
-
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

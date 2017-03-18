@@ -7,8 +7,6 @@ your ThinkPad X60 Tablet from booting.
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 -----------------
 
@@ -17,8 +15,6 @@ Table of Contents
     -   [Brick type 2: bad rom (or user error), system won't
         boot](#recovery)
 
-
-
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
 
@@ -26,15 +22,11 @@ You still have Lenovo BIOS, or you had libreboot running and you flashed
 another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if
 Lenovo BIOS was present and libreboot wasn't flashed.
 
-
-
 In this case, unbricking is easy: reset BUC.TS to 0 by removing that
 yellow cmos coin (it's a battery) and putting it back after a minute or
 two:
 
 ![](../images/x60t_unbrick/0008.JPG)
-
-
 
 *Those dd commands should be applied to all newly compiled X60 ROM
 images (the ROM images in libreboot binary archives already have this
@@ -52,8 +44,6 @@ coreboot.rom) - 0x20000\] count=64k conv=notrunc
 (doing this makes the ROM suitable for use when flashing a system that
 still has Lenovo BIOS running, using those instructions:
 <http://www.coreboot.org/Board:lenovo/x60/Installation>.
-
-
 
 bad rom (or user error), system won't boot {#recovery}
 ===========================================
@@ -152,8 +142,6 @@ complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
 
 Reverse the steps to re-assemble your system.
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

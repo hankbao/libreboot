@@ -28,9 +28,6 @@ distributions](../fsf-distros/).
 [How to install GNU+Linux on a libreboot
 system](../gnulinux/grub_boot_installer.html)
 
-
-
-
 Debian
 ------
 
@@ -98,8 +95,6 @@ guide](https://wiki.parabola.nu/Migration_from_the_GNU+Linux_distribution_of_Arc
 [Visit the Parabola website](https://www.parabola.nu/)
 
 We recommend using the *MATE* desktop.
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

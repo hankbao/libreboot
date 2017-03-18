@@ -9,8 +9,6 @@ uses LXDE because it's lightweight, but we recommend the *MATE* desktop
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 =================
 
@@ -42,8 +40,6 @@ Table of Contents
     -   [LXDE - battery monitor](#lxde_battery)
     -   [LXDE - network manager](#lxde_network)
 
-
-
 While not strictly related to the libreboot project, this guide is
 intended to be useful for those interested in installing Parabola on
 their libreboot system.
@@ -59,8 +55,6 @@ will be made to maintain it.
 to be made at the present date, please get in touch with the libreboot
 project!**
 
-
-
 You do not necessarily have to follow this guide word-for-word;
 *parabola* is extremely flexible. The aim here is to provide a common
 setup that most users will be happy with. While Parabola can seem
@@ -72,8 +66,6 @@ Paradoxically, as you get more advanced Parabola can actually become
 *easier to use* when you want to set up your system in a special way
 compared to what most distributions provide. You will find over time
 that other distributions tend to *get in your way*.
-
-
 
 **This guide assumes that you already have Parabola installed. If you
 have not yet installed Parabola, then [this
@@ -93,8 +85,6 @@ system Linux, using the term open-source (or closed-source), and it will
 sometimes recommend the use of proprietary software. You need to be
 careful about this when reading anything on the Arch wiki.
 
-
-
 Some of these steps require internet access. I'll go into networking
 later but for now, I just connected my system to a switch and did:
 
@@ -106,8 +96,6 @@ For most people this should be enough, but if you don't have DHCP on
 your network then you should setup your network connection first:
 
 [Setup network connection in Parabola](#network)
-
-
 
 Configure pacman {#pacman_configure}
 ----------------
@@ -124,8 +112,6 @@ sure to read and understand this, it's very important) and
 <https://wiki.parabolagnulinux.org/Official_Repositories>
 
 [Back to top of page.](#pagetop)
-
-
 
 Updating Parabola {#pacman_update}
 -----------------
@@ -180,8 +166,6 @@ event that they do occur.
 
 [Back to top of page.](#pagetop)
 
-
-
 Maintaining Parabola {#pacman_maintain}
 --------------------
 
@@ -233,8 +217,6 @@ their equivalent in pacman:
 
 [Back to top of page.](#pagetop)
 
-
-
 your-freedom {#yourfreedom}
 ------------
 
@@ -248,8 +230,6 @@ recommended solution is then to delete the offending packages, and
 continue installing *your-freedom*.
 
 [Back to top of page.](#pagetop)
-
-
 
 Add a user {#useradd}
 ----------
@@ -272,9 +252,6 @@ Set a password:
 
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
-
-
-
 
 systemd
 -------
@@ -351,9 +328,6 @@ Read that manpage, and then continue studying all the files.
 The systemd developers tell me that it isn't usually necessary to touch
 the systemd-tmpfiles utility manually at all.
 
-
-
-
 Interesting repositories {#interesting_repos}
 ------------------------
 
@@ -382,8 +356,6 @@ In the end, I decided not to install anything from it but I kept the
 repository enabled regardless.
 
 [Back to top of page.](#pagetop)
-
-
 
 Setup a network connection in Parabola {#network}
 --------------------------------------
@@ -485,8 +457,6 @@ systemd. NetworkManager will be setup later, after installing LXDE.
 
 [Back to top of page.](#pagetop)
 
-
-
 System Maintenance {#system_maintain}
 ------------------
 
@@ -505,8 +475,6 @@ use it.
 
 [Back to top of page.](#pagetop)
 
-
-
 Configuring the desktop {#desktop}
 -----------------------
 
@@ -517,7 +485,6 @@ everything else that you would expect on other distributions that
 provide LXDE by default.
 
 [Back to top of page.](#pagetop)
-
 
 ### Installing Xorg {#desktop_xorg}
 
@@ -569,8 +536,6 @@ xorg-xclock xterm**
 </optional>
 
 [Back to top of page.](#pagetop)
-
-
 
 ### Xorg keyboard layout {#desktop_kblayout}
 
@@ -628,8 +593,6 @@ you use a US Qwerty keyboard, then you don't even need to do anything
 (though it might help, for the sake of being explicit).
 
 [Back to top of page.](#pagetop)
-
-
 
 ### Install LXDE {#desktop_lxde}
 
@@ -689,8 +652,6 @@ export LANGUAGE=en\_GB.UTF-8
 
 export LANG=en\_GB.UTF-8
 
-
-
 # Start lxde desktop
 
 exec startlxde
@@ -701,8 +662,6 @@ $ **chmod +x .xinitrc**
 
 [Back to top of page.](#pagetop)
 
-
-
 ### LXDE - clock {#lxde_clock}
 
 In **Digital Clock Settings** (right click the clock) I set the Clock
@@ -710,15 +669,11 @@ Format to *%Y/%m/%d %H:%M:%S*
 
 [Back to top of page.](#pagetop)
 
-
-
 ### LXDE - font {#lxde_font}
 
 NOTE TO SELF: come back to this later.
 
 [Back to top of page.](#pagetop)
-
-
 
 ### LXDE - screenlock {#lxde_screenlock}
 
@@ -735,8 +690,6 @@ menu.
 
 [Back to top of page.](#pagetop)
 
-
-
 ### LXDE - automounting {#lxde_automount}
 
 Refer to
@@ -746,16 +699,12 @@ I chose to ignore this for now. NOTE TO SELF: come back to this later.
 
 [Back to top of page.](#pagetop)
 
-
-
 ### LXDE - disable suspend {#lxde_suspend}
 
 When closing the laptop lid, the system suspends. This is annoying at
 least to me. NOTE TO SELF: disable it, then document the steps here.
 
 [Back to top of page.](#pagetop)
-
-
 
 ### LXDE - battery monitor {#lxde_battery}
 
@@ -766,8 +715,6 @@ the applet and go to *Battery Monitor Settings*, check the box that says
 cursor over it, it'll show information about the battery.
 
 [Back to top of page.](#pagetop)
-
-
 
 ### LXDE - Network Manager {#lxde_network}
 
@@ -815,9 +762,6 @@ add a new applet). I also later changed the icons to use the gnome icon
 theme, in *lxappearance*.
 
 [Back to top of page.](#pagetop)
-
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

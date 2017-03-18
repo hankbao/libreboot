@@ -23,8 +23,6 @@ instructions have yet to be written.**
 -   [How to harden your GRUB configuration, for
     security](grub_hardening.html)
 
-
-
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
 Permission is granted to copy, distribute and/or modify this document

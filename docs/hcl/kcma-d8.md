@@ -19,8 +19,6 @@ without using external hardware.
 
 [Back to previous index](./).
 
-
-
 CPU compatibility
 =================
 
@@ -28,14 +26,10 @@ CPU compatibility
 virt).** 4300 series needs microcode updates, so avoid those CPUs. 4100
 series is too old, and mostly untested.
 
-
-
 Board status (compatibility) {#boardstatus}
 ============================
 
 See <https://raptorengineeringinc.com/coreboot/kcma-d8-status.php>.
-
-
 
 Form factor {#formfactor}
 ===========
@@ -43,8 +37,6 @@ Form factor {#formfactor}
 These boards use the SSI EEB 3.61 form factor; make sure that your case
 supports this. This form factor is similar to E-ATX in that the size is
 identical, but the position of the screws are different.
-
-
 
 IPMI iKVM module add-on {#ipmi}
 =======================
@@ -55,8 +47,6 @@ Engine](http://libreboot.org/faq/#intelme). Fortunately, the firmware is
 unsigned (possibly to replace) and physically separate from the
 mainboard since it's on the add-on module, which you don't have to
 install.
-
-
 
 Flash chips {#flashchips}
 ===========
@@ -74,15 +64,11 @@ flash chip is 2MiB).
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-
-
 Native graphics initialization {#graphics}
 ==============================
 
 Only text-mode is known to work, but linux(kernel) can initialize the
 framebuffer display (if it has KMS - kernel mode setting).
-
-
 
 Current issues {#issues}
 ==============
@@ -105,14 +91,10 @@ Current issues {#issues}
     the very least, it's not a major inconvenience to not have it).
 -   Graphics: only text-mode works. See [#graphics](#graphics)
 
-
-
 Hardware specifications {#specifications}
 -----------------------
 
 Check the ASUS website.
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>
 

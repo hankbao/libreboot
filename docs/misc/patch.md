@@ -6,8 +6,6 @@ This is just a quick guide for reference, use 'man' to know more.
 
 [Back to index](./)
 
-
-
 Apply a patch
 =============
 
@@ -50,8 +48,6 @@ Removing a patch using the -R flag
 
 [Back to top of page.](#pagetop)
 
-
-
 Create a patch with diff
 ========================
 
@@ -68,8 +64,6 @@ Do whatever you want in new/ and then diff it:
     $ diff -rupN original/ new/ > original.patch
 
 [Back to top of page.](#pagetop)
-
-
 
 git diff
 ========
@@ -93,8 +87,6 @@ Replace N with the number of commits that you want to show.
 
 [Back to top of page.](#pagetop)
 
-
-
 git apply
 =========
 
@@ -114,8 +106,6 @@ instead of **git apply patch.git**. git-am will re-create the commits
 aswell, instead of just applying the patch.
 
 [Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 

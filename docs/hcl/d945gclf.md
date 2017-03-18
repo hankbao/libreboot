@@ -51,8 +51,6 @@ And SPI SOIC8 flash chip
 
 ![](../images/d945gclf/20160923_141550.jpg){width="50%" height="50%"}
 
-
-
 How to replace thermal paste and fan
 ------------------------------------
 
@@ -82,7 +80,6 @@ cpu silicon iis shown on that image)
 
 ![](../images/d945gclf/20160923_142031.jpg){width="50%" height="50%"}
 
-
 Before assembling new fan, some need new longer screws, make sure having
 these (on the left is original one, too short for new fan)
 
@@ -94,8 +91,6 @@ After that, assemble your new fan into CPU cooler
 
 Finally assemle both coolers on both chips, do not forget put in the CPU
 fan connector back, and you are done.
-
-
 
 Copyright © 2016 Arthur Heymans <arthur@aheymans.xyz>
 
