@@ -1,5 +1,5 @@
 
-ASUS KGPE-D16 server/workstation board {#pagetop}
+ASUS KGPE-D16 server/workstation board 
 ======================================
 
 This is a server board using AMD hardware (Fam10h **and Fam15h** CPUs

@@ -1,5 +1,5 @@
 
-Miscellaneous {#pagetop}
+Miscellaneous 
 =============
 
 

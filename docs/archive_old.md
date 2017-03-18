@@ -1,5 +1,5 @@
 
-Libreboot release information (old) {#pagetop}
+Libreboot release information (old) 
 ===================================
 
 Information for this release can be found at

@@ -1,5 +1,5 @@
 
-How to program an SPI flash chip with the Raspberry Pi {#pagetop}
+How to program an SPI flash chip with the Raspberry Pi 
 ======================================================
 
 This document exists as a guide for reading from or writing to an SPI

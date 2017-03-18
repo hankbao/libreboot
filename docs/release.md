@@ -1,5 +1,5 @@
 
-Libreboot release information {#pagetop}
+Libreboot release information 
 =============================
 
 Updated versions of libreboot can be found at

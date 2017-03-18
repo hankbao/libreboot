@@ -1,5 +1,5 @@
 
-Development notes (old/obsolete notes) {#pagetop}
+Development notes (old/obsolete notes) 
 ======================================
 
 For current notes, see [](./).

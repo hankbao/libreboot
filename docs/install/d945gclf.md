@@ -1,5 +1,5 @@
 
-Intel D945GCLF flashing tutorial {#pagetop}
+Intel D945GCLF flashing tutorial 
 ================================
 
 This guide is for those who want libreboot on their Intel D945GCLF

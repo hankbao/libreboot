@@ -1,5 +1,5 @@
 
-Configuring Parabola (post-install) {#pagetop}
+Configuring Parabola (post-install) 
 ===================================
 
 Post-installation configuration steps for Parabola GNU+Linux-libre.

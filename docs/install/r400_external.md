@@ -1,5 +1,5 @@
 
-Flashing the R400 with a BeagleBone Black {#pagetop}
+Flashing the R400 with a BeagleBone Black 
 =========================================
 
 Initial flashing instructions for R400.

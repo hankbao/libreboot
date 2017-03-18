@@ -5,7 +5,7 @@ included in the BUILD\_HOWTO file in libreboot.git or \_src.
 
 
 
-Building libreboot from source {#pagetop}
+Building libreboot from source 
 ==============================
 
 This section relates to building libreboot from source, and working with

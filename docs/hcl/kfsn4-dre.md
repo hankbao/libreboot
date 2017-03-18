@@ -1,5 +1,5 @@
 
-ASUS KFSN4-DRE server/workstation board {#pagetop}
+ASUS KFSN4-DRE server/workstation board 
 =======================================
 
 This is a server board using AMD hardware (Fam10h). It can also be used

@@ -1,5 +1,5 @@
 
-Development notes {#pagetop}
+Development notes 
 =================
 
 These are development notes, for future use. For old (obselete) notes,

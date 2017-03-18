@@ -1,5 +1,5 @@
 
-GNU+Linux distributions {#pagetop}
+GNU+Linux distributions 
 =======================
 
 This section relates to dealing with GNU+Linux distributions: preparing

@@ -1,5 +1,5 @@
 
-BSD projects {#pagetop}
+BSD projects 
 ============
 
 This section relates to dealing with BSD projects: preparing bootable

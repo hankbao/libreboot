@@ -1,5 +1,5 @@
 
-ASUS KCMA-D8 desktop/workstation board {#pagetop}
+ASUS KCMA-D8 desktop/workstation board 
 ======================================
 
 This is a desktop board using AMD hardware (Fam10h **and Fam15h** CPUs

@@ -1,5 +1,5 @@
 
-Intel D945GCLF desktop board {#pagetop}
+Intel D945GCLF desktop board 
 ============================
 
 [Back to previous index](https://libreboot.org/docs/hcl/)

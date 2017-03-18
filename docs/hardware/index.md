@@ -1,5 +1,5 @@
 
-Hardware modifications {#pagetop}
+Hardware modifications 
 ======================
 
 This section relates to hardware maintenance on supported targets.

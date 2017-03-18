@@ -1,5 +1,5 @@
 
-Libreboot documentation {#pagetop}
+Libreboot documentation 
 =======================
 
 Information about this release can be found at

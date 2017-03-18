@@ -1,5 +1,5 @@
 
-List of recommended GNU+Linux distributions for libreboot {#pagetop}
+List of recommended GNU+Linux distributions for libreboot 
 =========================================================
 
 Any distribution should work, so long as it uses kernel mode setting for

@@ -1,5 +1,5 @@
 
-GA-G41M-ES2L flashing tutorial {#pagetop}
+GA-G41M-ES2L flashing tutorial 
 ==============================
 
 This guide is for those who want libreboot on their Intel GA-G41M-ES2L
