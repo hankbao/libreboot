@@ -28,7 +28,7 @@ flashing on the ThinkPad X200, but it should work for other targets.
 here is a photo of the setup for the teensy:
 <http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg>
 
-Onto the Beaglebone black\...
+Onto the Beaglebone black...
 
 [Back to previous index](./)
 

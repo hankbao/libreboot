@@ -259,7 +259,7 @@ Use this to find out:\
 All good?
 ---------
 
-Excellent! Moving on\...
+Excellent! Moving on...
 
 Download the *libreboot\_util.tar.xz* archive, and extract it. Inside,
 you will find a directory called *flashrom*. This contains statically
@@ -285,7 +285,7 @@ $ **sudo ./flash forceupdate [yourrom.rom](#rom)**
 
 
 
-You should see **"Verifying flash\... VERIFIED."** written at the end
+You should see **"Verifying flash... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
 
@@ -357,7 +357,7 @@ You should see within the output the following:\
 untranslated"**
 
 You should also see within the output the following:\
-**"Verifying flash\... VERIFIED."**
+**"Verifying flash... VERIFIED."**
 
 
 [Back to top of page.](#pagetop)
@@ -398,7 +398,7 @@ $ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
 
 
 You should also see within the output the following:\
-**"Verifying flash\... VERIFIED."**
+**"Verifying flash... VERIFIED."**
 
 Shut down.
 

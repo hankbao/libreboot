@@ -145,7 +145,7 @@ SSH'd into the BBB:\
 # **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 yourrom.rom**
 
-It should be **Verifying flash\... VERIFIED** at the end. If flashrom
+It should be **Verifying flash... VERIFIED** at the end. If flashrom
 complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
 

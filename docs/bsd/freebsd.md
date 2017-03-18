@@ -156,7 +156,7 @@ because it doesn't exist.
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won't boot\...something about file not found
+won't boot...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and

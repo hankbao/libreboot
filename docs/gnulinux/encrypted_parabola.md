@@ -571,7 +571,7 @@ Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
     # ./flash forceupdate libreboot.rom
-You should see "Verifying flash\... VERIFIED." written at the end of
+You should see "Verifying flash... VERIFIED." written at the end of
 the flashrom output.
 
 With this new configuration, Parabola can boot automatically and you
@@ -609,7 +609,7 @@ Now you have a modified ROM. Once more, refer to
 <http://libreboot.org/docs/install/#flashrom>. Cd to the libreboot\_util
 directory and update the flash chip contents:\
     # ./flash update libreboot.rom
-And wait for the "Verifying flash\... VERIFIED." Once you have done
+And wait for the "Verifying flash... VERIFIED." Once you have done
 that, shut down and then boot up with your new configuration.
 
 When done, delete GRUB (remember, we only needed it for the

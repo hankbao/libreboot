@@ -146,7 +146,7 @@ First generate a GPG keypair to use for signing. Option RSA (sign only)
 is ok.
 
 **Warning:** GRUB does not read ASCII armored keys. When attempting to
-trust \... a key filename it will print error: bad signature
+trust ... a key filename it will print error: bad signature
 
     mkdir --mode 0700 keys
     gpg --homedir keys --gen-key
@@ -184,7 +184,7 @@ What remains now is to include the modifications into the image (rom):
     cbfstool my.rom add -n grubtest.cfg -f my.grubtest.cfg -t raw
     cbfstool my.rom add -n grubtest.cfg.sig -f my.grubtest.cfg.sig -t raw
 
-\... and flashing it.
+... and flashing it.
 
 
 

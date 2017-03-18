@@ -94,13 +94,13 @@ stefanct: vimuser: they suggest that you change the value and look how
 BSM reacts to that\
 stefanct: as they pointed out earlier vram size = TOM - BSM\
 stefanct: different values of GMS\
-stefanct: phcoder: hm\... this could be a hint. look at the text
+stefanct: phcoder: hm... this could be a hint. look at the text
 description of TOLUD at page 103\
 stefanct: it mentions 64 MB in the text about BSM as well\
-stefanct: table 18\...\
+stefanct: table 18...\
 phcoder: stefanct: I have a guess which value make is 64 but I will not
 tell to avoid skewing test results\
-stefanct: phcoder: sure\... i assumed you were not sure if it supports
+stefanct: phcoder: sure... i assumed you were not sure if it supports
 it at all. testing it properly is of course a good idea :)\
 stefanct: test the various possible (but reserved) values of GMS and see
 what the resulting VRAM size is\

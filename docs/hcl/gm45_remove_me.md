@@ -440,7 +440,7 @@ actually be others on the X200.
 0xBABA"*
 
 In honour of the song *Baba O'Reilly* by *The Who* apparently. We're
-not making this stuff up\...
+not making this stuff up...
 
 0x3ABA, 0x34BA, 0x40BA and more have been observed in the main Gbe
 regions on the X200 factory.rom dumps. The checksums of the backup
