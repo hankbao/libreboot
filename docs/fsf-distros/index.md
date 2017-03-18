@@ -1,6 +1,4 @@
-
-Explaining Why We Don't Endorse FSF-endorsed Systems 
-=====================================================
+% Explaining Why We Don't Endorse FSF-endorsed Systems 
 
 We are asked why we don't endorse most FSF-endorsed distributions,
 usually well-known within the FSF community.

@@ -1,6 +1,4 @@
-
-Hardware compatibility list 
-===========================
+% Hardware compatibility list 
 
 This sections relates to known hardware compatibility in libreboot.
 

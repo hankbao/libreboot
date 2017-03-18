@@ -1,6 +1,4 @@
-
-Flashing the T500 with a BeagleBone Black 
-=========================================
+% Flashing the T500 with a BeagleBone Black 
 
 Initial flashing instructions for T500.
 

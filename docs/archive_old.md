@@ -1,6 +1,4 @@
-
-Libreboot release information (old) 
-===================================
+% Libreboot release information (old) 
 
 Information for this release can be found at
 [release.html](release.html). Updated versions of libreboot can be found

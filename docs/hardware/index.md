@@ -1,6 +1,4 @@
-
-Hardware modifications 
-======================
+% Hardware modifications 
 
 This section relates to hardware maintenance on supported targets.
 

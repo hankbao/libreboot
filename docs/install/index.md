@@ -1,6 +1,4 @@
-
-Installing libreboot 
-====================
+% Installing libreboot 
 
 This section relates to installing libreboot on supported targets.
 

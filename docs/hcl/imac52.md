@@ -1,6 +1,4 @@
-
-Apple iMac 5,2 
-==============
+% Apple iMac 5,2 
 
 Information to be written soon, but this board is merged in libreboot.
 

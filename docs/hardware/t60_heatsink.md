@@ -1,6 +1,4 @@
-
-Changing heatsink (or CPU) on the ThinkPad T60
-==============================================
+% Changing heatsink (or CPU) on the ThinkPad T60
 
 Using this guide you can also change/upgrade the CPU.
 

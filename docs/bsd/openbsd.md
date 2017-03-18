@@ -1,6 +1,4 @@
-
-How to install LibertyBSD or OpenBSD on a libreboot system
-==========================================================
+% How to install LibertyBSD or OpenBSD on a libreboot system
 
 NOTE: This guide was written for OpenBSD by the person who contributed
 it, but the libreboot project recommends LibertyBSD. LibertyBSD is a
