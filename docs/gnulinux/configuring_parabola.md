@@ -512,7 +512,7 @@ Mostly you will rely on a display manager, but in case you ever want to
 start X without one:\
 \# **pacman -S xorg-xinit**
 
-&lt;optional&gt;\
+<optional>\
    Arch wiki recommends installing these, for testing that X works:\
    \# **pacman -S xorg-twm xorg-xclock xterm**\
    Refer to <https://wiki.archlinux.org/index.php/Xinitrc>. and test X:\
@@ -521,7 +521,7 @@ start X without one:\
 session.\
    Uninstall them (clutter. eww): \# **pacman -S xorg-xinit xorg-twm
 xorg-xclock xterm**\
-&lt;/optional&gt;
+</optional>
 
 [Back to top of page.](#pagetop)
 
@@ -737,7 +737,7 @@ theme, in *lxappearance*.
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

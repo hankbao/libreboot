@@ -85,7 +85,7 @@ header.
 showed me how to do this. It recommends doing the first 3MiB. Now, that
 guide is recommending putting zero there. I'm going to use urandom. Do
 this:\
-\# **head -c 3145728 /dev/urandom &gt; /dev/sda; sync**\
+\# **head -c 3145728 /dev/urandom > /dev/sda; sync**\
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It's 'secure', but 'potentially' a risk).
 
@@ -266,7 +266,7 @@ again)\
 In my case I did the steps in the next paragraph, and followed the steps
 in this paragraph again.
 
-&lt;troubleshooting&gt;\
+<troubleshooting>\
    The following is based on 'Verification of package signatures' in
 the Parabola install guide.\
    Check there first to see if steps differ by now.\
@@ -281,7 +281,7 @@ key and, therefore, you should do:\
    To be honest, you should do the above anyway. Parabola has a lot of
 maintainers, and a lot of keys. Really!\
    If you get an error mentioning dirmngr, do:\
-   \# **dirmngr &lt;/dev/null**\
+   \# **dirmngr </dev/null**\
    Also, it says that if the clock is set incorrectly then you have to
 manually set the correct time\
    (if keys are listed as expired because of it):\
@@ -297,7 +297,7 @@ Specifically, I had this error:\
    I rm -Rf'd the file and then pacman worked. I'm told that the
 following would have also made it work:\
    \# **pacman -Sf licenses**\
-&lt;/troubleshooting&gt;\
+</troubleshooting>\
 
 I also like to install other packages (base-devel, compilers and so on)
 and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
@@ -313,7 +313,7 @@ Configure the system
 Generate an fstab - UUIDs are used because they have certain advantages
 (see <https://wiki.parabola.nu/Fstab#Identifying_filesystems>. If you
 prefer labels instead, replace the -U option with -L):\
-\# **genfstab -U -p /mnt &gt;&gt; /mnt/etc/fstab**\
+\# **genfstab -U -p /mnt >> /mnt/etc/fstab**\
 Check the created file:\
 \# **cat /mnt/etc/fstab**\
 (If there are any errors, edit the file. Do **NOT** run the genfstab
@@ -342,7 +342,7 @@ Locale:\
 Uncomment your needed localisations. For example en\_GB.UTF-8 (UTF-8 is
 highly recommended over other options).\
 \# **locale-gen**\
-\# **echo LANG=en\_GB.UTF-8 &gt; /etc/locale.conf**\
+\# **echo LANG=en\_GB.UTF-8 > /etc/locale.conf**\
 \# **export LANG=en\_GB.UTF-8**
 
 Console font and keymap:\
@@ -361,7 +361,7 @@ Hardware clock:\
 
 Hostname: Write your hostname to /etc/hostname. For example, if your
 hostname is parabola:\
-\# **echo parabola &gt; /etc/hostname**\
+\# **echo parabola > /etc/hostname**\
 Add the same hostname to /etc/hosts:\
 \# **vi /etc/hosts**\
 
@@ -477,12 +477,12 @@ Initially you will have to boot manually. Press C to get to the GRUB
 command line. The underlined parts are optional (using those 2
 underlines will boot lts kernel instead of normal).
 
-grub&gt; **cryptomount -a**\
-grub&gt; **set root='lvm/matrix-root'**\
-grub&gt; **linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root
+grub> **cryptomount -a**\
+grub> **set root='lvm/matrix-root'**\
+grub> **linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root
 cryptdevice=/dev/sda1:root**\
-grub&gt; **initrd /boot/initramfs-linux-libre-lts.img**\
-grub&gt; **boot**\
+grub> **initrd /boot/initramfs-linux-libre-lts.img**\
+grub> **boot**\
 
 You could also make it load /boot/vmlinuz-linux-libre-grsec and
 /boot/initramfs-linux-libre-grsec.img
@@ -598,7 +598,7 @@ this guide again in the future (modifying the already modified config).
 Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
 with the following command:\
 \$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
-'s:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt;
+'s:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg**\
 Delete the grub.cfg that remained inside the ROM:\
 \$ **./cbfstool libreboot.rom remove -n grub.cfg**\
@@ -755,8 +755,8 @@ problems. Removing that worked around the issue.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2015 Jeroen Quint &lt;jezza@diplomail.ch&gt;\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

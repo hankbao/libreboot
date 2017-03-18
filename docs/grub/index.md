@@ -78,7 +78,7 @@ Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
 Keymaps are stored in resources/utilities/grub-assemble/keymap/.
 
 Example (French Azerty):\
-**\$ ckbcomp fr &gt; frazerty**\
+**\$ ckbcomp fr > frazerty**\
 \
 Go in grub directory:\
 **cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
@@ -113,7 +113,7 @@ file was created
 
 
 
-Copyright © 2014 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

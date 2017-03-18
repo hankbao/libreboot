@@ -109,8 +109,8 @@ Installing NetBSD without full disk encryption
 You might have to use an external USB keyboard during the installation.
 Press C to access the GRUB terminal.
 
-grub&gt; **knetbsd -r sd0a (usb0,netbsd1)/netbsd**\
-grub&gt; **boot**
+grub> **knetbsd -r sd0a (usb0,netbsd1)/netbsd**\
+grub> **boot**
 
 It will start booting into the NetBSD installer. Follow the normal
 process for installing NetBSD.
@@ -133,8 +133,8 @@ Booting
 
 Press C in GRUB to access the command line:
 
-grub&gt; **knetbsd -r wd0a (ahci0,netbsd1)/netbsd**\
-grub&gt; **boot**
+grub> **knetbsd -r wd0a (ahci0,netbsd1)/netbsd**\
+grub> **boot**
 
 NetBSD will start booting. Yay!
 
@@ -189,8 +189,8 @@ numbers may differ. Use TAB completion.
 
 
 
-Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
+Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

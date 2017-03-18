@@ -17,7 +17,7 @@ instructions have yet to be written.**
 
 
 
-Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

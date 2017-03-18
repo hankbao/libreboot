@@ -521,7 +521,7 @@ The data in the descriptor region is little endian, and it represents
 bits 24:12 of the address (bits 12-24, written this way since bit 24 is
 nearer to left than bit 12 in the binary representation).
 
-So, *x &lt;&lt; 12 = address*
+So, *x << 12 = address*
 
 If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
 
@@ -540,7 +540,7 @@ It has only a 448 byte fragment different from 0x00 or 0xFF.
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

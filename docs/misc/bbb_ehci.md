@@ -168,17 +168,17 @@ arm-linux-gnueabihf setup on your *host*.
     [fsfla website](http://www.fsfla.org/ikiwiki/selibre/linux-libre/) -
     see
     [scripts](http://www.fsfla.org/svn/fsfla/software/linux-libre/scripts/).
--   Get your current BBB kernel config (from: /boot/config-&lt;ver&gt;)
+-   Get your current BBB kernel config (from: /boot/config-<ver>)
     and copy it to your host as \$work\_dir/kernel/kernel/.config
 -   Set proper version number:
     -   On your host, edit \$work\_dir/kernel/kernel/.config (the one
         you've just copied from BBB), find the line
-        CONFIG\_LOCALVERSION="&lt;something or empty&gt;" and change
+        CONFIG\_LOCALVERSION="<something or empty>" and change
         it to CONFIG\_LOCALVERSION="-\$lv", so it will look something
         like: CONFIG\_LOCALVERSION="-bone70"
 -   Also, make sure that: CONFIG\_USB\_G\_DBGP=m (If not, make
-    menuconfig, and set @Device Drivers-&gt; USB Support -&gt; USB
-    Gadget Support -&gt; EHCI Debug Device Gadget=m
+    menuconfig, and set @Device Drivers-> USB Support -> USB
+    Gadget Support -> EHCI Debug Device Gadget=m
 -   Build the module:
 
 <!-- -->
@@ -192,7 +192,7 @@ arm-linux-gnueabihf setup on your *host*.
 -   copy the freshly compiled usb/gadget dir to
     /lib/modules/3.8.13-bone70/kernel/drivers/usb
 -   restart BBB
--   Remove all g\_\* modules (rmmod g\_&lt;&gt;)
+-   Remove all g\_\* modules (rmmod g\_<>)
 -   modprobpe g\_dbgp
 
 ### Configure libreboot with EHCI debug {#ConfigurelibrebootwithEHCIdebug}
@@ -238,7 +238,7 @@ Then:\
 
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
-Also Debugging \-\--&gt; Output verbose XYZ ) (**FIXME** somebody verify
+Also Debugging \-\--> Output verbose XYZ ) (**FIXME** somebody verify
 these):
 
     CONFIG_DEBUG_CBFS=y (Output verbose CBFS debug messages )
@@ -302,14 +302,14 @@ rmmod g\_\* and modprobe g\_dbgp
 You have to know how to compile kernel for your target.
 
 1.  Check if early debugging is already enabled: grep
-    CONFIG\_EARLY\_PRINTK\_DBGP /boot/config-&lt;ver&gt;
+    CONFIG\_EARLY\_PRINTK\_DBGP /boot/config-<ver>
 2.  If enabled, you do not have to compile the kernel (skip this step).
     Otherwise, prepare kernel source for your distribution and select
-    (Kernel hacking -&gt; Early printk via EHCI debug port). Compile and
+    (Kernel hacking -> Early printk via EHCI debug port). Compile and
     install the new kernel.
 3.  Edit your grub configuration and add following to the kenel
     parameters^[20](#___fn20)[21](#___fn21)^: earlyprintk=dbgp,keep.
-    Also, try: earlyprintk=dbgp&lt;N&gt;,keep where N is the debug port
+    Also, try: earlyprintk=dbgp<N>,keep where N is the debug port
     id if the first does not work.
 
 ### References {#References}
@@ -356,7 +356,7 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
 
 
 
-Copyright © 2015 Alex David &lt;opdecirkel@gmail.com&gt;\
+Copyright © 2015 Alex David <opdecirkel@gmail.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

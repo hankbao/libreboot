@@ -148,13 +148,13 @@ distribution it is that you are trying to install.*
 
 If the ISOLINUX parser or *Search for GRUB configuration* options won't
 work, then press C in GRUB to access the command line.\
-grub&gt; **ls**\
+grub> **ls**\
 Get the device from above output, eg (usb0). Example:\
-grub&gt; **cat (usb0)/isolinux/isolinux.cfg**\
+grub> **cat (usb0)/isolinux/isolinux.cfg**\
 Either this will show the ISOLINUX menuentries for that ISO, or link to
 other .cfg files, for example /isolinux/foo.cfg.\
 If it did that, then you do:\
-grub&gt; **cat (usb0)/isolinux/foo.cfg**\
+grub> **cat (usb0)/isolinux/foo.cfg**\
 And so on, until you find the correct menuentries for ISOLINUX. **The
 file */isolinux/foo.cfg* is a fictional example. Do not actually use
 this example, unless you actually have that file, if it is
@@ -175,10 +175,10 @@ Now look at the ISOLINUX menuentry. It'll look like:\
 append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS\
 ** GRUB works the same way, but in it's own way. Example GRUB
 commands:\
-grub&gt; **set root='usb0'**\
-grub&gt; **linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS**\
-grub&gt; **initrd /path/to/initrd**\
-grub&gt; **boot**\
+grub> **set root='usb0'**\
+grub> **linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS**\
+grub> **initrd /path/to/initrd**\
+grub> **boot**\
 Note: *usb0* may be incorrect. Check the output of the *ls* command in
 GRUB, to see a list of USB devices/partitions. Of course this will vary
 from distro to distro. If you did all of that correctly, then it should
@@ -232,8 +232,8 @@ debian-installer (text mode) net install method.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

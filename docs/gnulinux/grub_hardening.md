@@ -57,7 +57,7 @@ signature checking can be disabled through the interactive console:
 This is good in that it allows you to occasionally boot unsigned liveCDs
 and such. You may think of supplying signatures on an usb key, but the
 signature checking code currently looks for
-&lt;/path/to/filename&gt;.sig when verifying &lt;/path/to/filename&gt;
+</path/to/filename>.sig when verifying </path/to/filename>
 and as such it is not possible to supply signatures in an alternate
 location.
 
@@ -79,7 +79,7 @@ remember and easier to crack. Diceware passphrases are harder to crack
 because of far higher entropy (there are many words available to use,
 but only about 50 commonly used symbols in pass*words*).
 
-\--&gt;
+\-->
 The GRUB password can be entered in two ways:
 
 -   plaintext
@@ -188,7 +188,7 @@ What remains now is to include the modifications into the image (rom):
 
 
 
-Copyright © 2017 Fedja Beader &lt;fedja@protonmail.ch&gt;\
+Copyright © 2017 Fedja Beader <fedja@protonmail.ch>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -187,12 +187,12 @@ At this point, you will have finished the installation. At your GRUB
 payload, press C to get to the command line.
 
 Do that:\
-grub&gt; **cryptomount -a**\
-grub&gt; **set root='lvm/matrix-rootvol'**\
-grub&gt; **linux /vmlinuz root=/dev/mapper/matrix-rootvol
+grub> **cryptomount -a**\
+grub> **set root='lvm/matrix-rootvol'**\
+grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
-grub&gt; **initrd /initrd.img**\
-grub&gt; **boot**
+grub> **initrd /initrd.img**\
+grub> **boot**
 
 
 
@@ -208,7 +208,7 @@ Immediately after logging in, do that:\
 This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note
 somewhere secret. Ideally, you should memorize it and then burn the note
-(or not even write it down, and memorize it still)&gt;
+(or not even write it down, and memorize it still)>
 
 
 
@@ -328,7 +328,7 @@ problems. Removing that worked around the issue.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

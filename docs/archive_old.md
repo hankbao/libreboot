@@ -1219,9 +1219,9 @@ Development notes
     -   'processor.max\_cstate=2' instead of 'idle=halt' for booting
         default kernel
 -   coreboot.rom (faster boot speeds, debugging disabled):
-    -   Disabled coreboot serial output (Console-&gt; in "make
+    -   Disabled coreboot serial output (Console-> in "make
         menuconfig")
-    -   Set coreboot debug level to 0 instead of 8 (Console-&gt; in
+    -   Set coreboot debug level to 0 instead of 8 (Console-> in
         "make menuconfig")
     -   Changed GRUB timeout to 1 second instead of 2 (in grub.cfg
     -   Removed background image in GRUB.
@@ -1232,7 +1232,7 @@ Development notes
     -   has serial port enabled. How this is achieved (from
         X60\_source): Turn on debugging level to 8, and enable serial
         output
--   (in Console-&gt; in coreboot "make menuconfig")
+-   (in Console-> in coreboot "make menuconfig")
 -   (and build with grub\_serial.cfg and grub\_memdisk\_serial.cfg)
 
 [Back to top of page.](#pagetop)
@@ -1340,7 +1340,7 @@ Development notes
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

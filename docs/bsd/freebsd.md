@@ -112,9 +112,9 @@ Installing FreeBSD without full disk encryption
 
 Press C in GRUB to access the command line:
 
-grub&gt; **kfreebsd (usb0,gpt3)/boot/kernel/kernel**\
-grub&gt; **set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3**\
-grub&gt; **boot**
+grub> **kfreebsd (usb0,gpt3)/boot/kernel/kernel**\
+grub> **set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3**\
+grub> **boot**
 
 It will start booting into the FreeBSD installer. Follow the normal
 process for installing FreeBSD.
@@ -172,8 +172,8 @@ numbers may differ. Use TAB completion.
 
 
 
-Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
+Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -151,7 +151,7 @@ on intel gpu's is included in intel-gpu-tools. Install intel-gpu-tools:
 **sudo apt-get install intel-gpu-tools**
 
 You can set values: **sudo intel\_reg write 0x00061254
-&ltyour\_value&gt;**
+&ltyour\_value>**
 
 The value set has the following structure: bits \[31:16\] is PWM
 divider. PWM / PWM\_divider = frequency bits \[15:0\] is the duty cycle
@@ -211,7 +211,7 @@ duty cycle. see <https://review.coreboot.org/#/c/10624/> on bit 16. The
 cause of this issue is that i945, in contrast with to GM45, is set to
 work in BLM Legacy Mode. This makes backlight more complicated since the
 duty cycle is derived from 3 instead of 2 registers using the following
-formula: if(BPC\[7:0\] &lt;&gt; xFF) then BPCR\[15:0\] \* BPC\[7:0\]
+formula: if(BPC\[7:0\] <> xFF) then BPCR\[15:0\] \* BPC\[7:0\]
 Else BPCR\[15:0\] BPC is LBB - PCI Backlight Control Register, described
 on <http://www.mouser.com/pdfdocs/945gmedatasheet.pdf> on page 315. BPCR
 is BLC\_PWM\_CTL described in
@@ -280,7 +280,7 @@ laptop. If power usage is a concern, then you should not use this.
 
 To disable c-states, do this in GNU+Linux:\
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
-&gt; \$i; done**
+> \$i; done**
 
 You can reproduce this issue more easily by sending lots of traffic
 across subnets on the same interface (NIC).
@@ -299,7 +299,7 @@ Put this script in /etc/init.d/ on debian-based systems.
 
 
 
-Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

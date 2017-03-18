@@ -327,7 +327,7 @@ Get intelvbttool here: <http://review.coreboot.org/#/c/5842>
 Now dump a copy of the running VGA BIOS: **\$ sudo dd if=/dev/mem bs=64k
 of=runningvga.bin skip=12 count=1**\
 Then do (and record the output):\
-**\$ ./intelvbttool runningvga.bin &gt; intelvbttool\_out**
+**\$ ./intelvbttool runningvga.bin > intelvbttool\_out**
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
 to match the system and LCD panel used.
@@ -407,7 +407,7 @@ Other - unlisted (low priority) {#other}
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

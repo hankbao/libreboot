@@ -217,7 +217,7 @@ Output:
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
 Then:\
-\# **echo BB-SPI0-01 &gt; /sys/devices/bone\_capemgr.\*/slots**\
+\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots**\
 \# **cat /sys/devices/bone\_capemgr.\*/slots**\
 Output:
 
@@ -360,8 +360,8 @@ following configuration:
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2015 Patrick "P. J." McDermott &lt;pj@pehjota.net&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
 Copyright © 2015 Albin Söderqvist\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0

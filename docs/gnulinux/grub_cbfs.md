@@ -226,7 +226,7 @@ to grubtest.cfg, so that you don't have to manually switch to it, in
 case you ever want to follow this guide again in the future (modifying
 the already modified config). From /libreboot\_util/cbfstool, do:\
 \$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
-'s:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt;
+'s:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg**\
 
 Delete the grub.cfg that remained inside the ROM:\
@@ -244,8 +244,8 @@ boot up with your new configuration.**
 
 
 
-Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2015 Jeroen Quint &lt;jezza@diplomail.ch&gt;\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

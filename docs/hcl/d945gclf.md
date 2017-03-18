@@ -78,8 +78,8 @@ fan connector back, and you are done.
 
 
 
-Copyright © 2016 Arthur Heymans &lt;arthur@aheymans.xyz&gt;\
-Copyright © 2016 Vitaly Castaño Solana &lt;vita\_cell@hotmail.com&gt;\
+Copyright © 2016 Arthur Heymans <arthur@aheymans.xyz>\
+Copyright © 2016 Vitaly Castaño Solana <vita\_cell@hotmail.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative
