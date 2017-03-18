@@ -36,7 +36,7 @@ boot**
 [This guide](grub_boot_installer.html) shows how to create a boot USB
 drive with the Debian ISO image.
 
-**This guide is \*only\* for the GRUB payload. If you use the
+**This guide is *only* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
 Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a
@@ -203,7 +203,7 @@ If you didn't encrypt your home directory, then you can safely ignore
 this section.
 
 Immediately after logging in, do that:\
-\$ **sudo ecryptfs-unwrap-passphrase**
+$ **sudo ecryptfs-unwrap-passphrase**
 
 This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note

@@ -30,7 +30,7 @@ Included with libreboot is a script called 'powertop.debian'. Run this
 as root and it will setup powertop to run with \--auto-tune at boot
 time. Load the file in your text editor to see how it does that.
 
-\$ **sudo ./resources/scripts/misc/powertop.debian**
+$ **sudo ./resources/scripts/misc/powertop.debian**
 
 Might want to run with \--calibrate first
 
@@ -60,7 +60,7 @@ when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
 Be root\
-**\$ su -**
+**$ su -**
 
 Installed powertop:\
 **\# pacman -S powertop**
@@ -110,7 +110,7 @@ port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
 On the 2nd system, you can try this (using GNU Screen):\
-**\$ sudo screen /dev/ttyUSB0 115200**
+**$ sudo screen /dev/ttyUSB0 115200**
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
 Y.
@@ -211,7 +211,7 @@ duty cycle. see <https://review.coreboot.org/#/c/10624/> on bit 16. The
 cause of this issue is that i945, in contrast with to GM45, is set to
 work in BLM Legacy Mode. This makes backlight more complicated since the
 duty cycle is derived from 3 instead of 2 registers using the following
-formula: if(BPC\[7:0\] <> xFF) then BPCR\[15:0\] \* BPC\[7:0\]
+formula: if(BPC\[7:0\] <> xFF) then BPCR\[15:0\] * BPC\[7:0\]
 Else BPCR\[15:0\] BPC is LBB - PCI Backlight Control Register, described
 on <http://www.mouser.com/pdfdocs/945gmedatasheet.pdf> on page 315. BPCR
 is BLC\_PWM\_CTL described in
@@ -230,12 +230,12 @@ is included in libreboot, and can be used to enable or disable this
 behaviour.
 
 Disable or enable beeps when removing/adding the charger:\
-\$ **sudo ./nvramtool -w power\_management\_beeps=Enable**\
-\$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
+$ **sudo ./nvramtool -w power\_management\_beeps=Enable**\
+$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
 
 Disable or enable beeps when battery is low:\
-\$ **sudo ./nvramtool -w low\_battery\_beep=Enable**\
-\$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
+$ **sudo ./nvramtool -w low\_battery\_beep=Enable**\
+$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
 
 A reboot is required, for these changes to take effect.
 
@@ -249,10 +249,10 @@ Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
 package i2c-tools.\
-\$ **sudo modprobe i2c-dev**\
-\$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
+$ **sudo modprobe i2c-dev**\
+$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
 -y)\
-\$ **sudo rmmod i2c-dev**\
+$ **sudo rmmod i2c-dev**\
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically
@@ -280,7 +280,7 @@ laptop. If power usage is a concern, then you should not use this.
 
 To disable c-states, do this in GNU+Linux:\
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
-> \$i; done**
+> $i; done**
 
 You can reproduce this issue more easily by sending lots of traffic
 across subnets on the same interface (NIC).

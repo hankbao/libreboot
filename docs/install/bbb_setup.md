@@ -119,10 +119,10 @@ Short PS\_ON\# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
 it) using a wire/paperclip/jumper, then power on the PSU by grounding
 PS\_ON\# (this is also how an ATX motherboard turns on a PSU).
 
-**DO \*\*NOT\*\* use pin 4, 6, do \*\*NOT\*\* use pin 19 or 20 (on a
-20-pin ATX PSU), and DO \*\*NOT\*\* use pin 21, 22 or 23 (on a 24-pin
-ATX PSU). Those wires (the red ones) are 5V, and they \*\*WILL\*\* kill
-your flash chip. \*\*\*NEVER\*\*\* supply more than 3.3V to your flash
+**DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a
+20-pin ATX PSU), and DO **NOT** use pin 21, 22 or 23 (on a 24-pin
+ATX PSU). Those wires (the red ones) are 5V, and they **WILL** kill
+your flash chip. ***NEVER*** supply more than 3.3V to your flash
 chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI flash chips
 do exist, but they are rare. Always check what voltage your chip takes.
 Most of them take 3.3V).**
@@ -211,14 +211,14 @@ contents of this file with:
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
 Check that the firmware exists:\
-\# **ls /lib/firmware/BB-SPI0-01-00A0.\***\
+\# **ls /lib/firmware/BB-SPI0-01-00A0.***\
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
 Then:\
-\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots**\
-\# **cat /sys/devices/bone\_capemgr.\*/slots**\
+\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots**\
+\# **cat /sys/devices/bone\_capemgr.*/slots**\
 Output:
 
      0: 54:PF--- 
@@ -230,7 +230,7 @@ Output:
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
 Verify that the spidev device now exists:\
-\# **ls -al /dev/spid\***\
+\# **ls -al /dev/spid***\
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0

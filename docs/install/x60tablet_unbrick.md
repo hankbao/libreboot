@@ -23,7 +23,7 @@ Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
 
 You still have Lenovo BIOS, or you had libreboot running and you flashed
-another ROM; and you had bucts 1 set and the ROM wasn't dd'd.\* or if
+another ROM; and you had bucts 1 set and the ROM wasn't dd'd.* or if
 Lenovo BIOS was present and libreboot wasn't flashed.\
 \
 In this case, unbricking is easy: reset BUC.TS to 0 by removing that
@@ -31,14 +31,14 @@ yellow cmos coin (it's a battery) and putting it back after a minute or
 two:\
 ![](../images/x60t_unbrick/0008.JPG)\
 \
-\*Those dd commands should be applied to all newly compiled X60 ROM
+*Those dd commands should be applied to all newly compiled X60 ROM
 images (the ROM images in libreboot binary archives already have this
 applied!):\
-dd if=coreboot.rom of=top64k.bin bs=1 skip=\$\[\$(stat -c %s
+dd if=coreboot.rom of=top64k.bin bs=1 skip=$\[$(stat -c %s
 coreboot.rom) - 0x10000\] count=64k\
-dd if=coreboot.rom bs=1 skip=\$\[\$(stat -c %s coreboot.rom) - 0x20000\]
+dd if=coreboot.rom bs=1 skip=$\[$(stat -c %s coreboot.rom) - 0x20000\]
 count=64k | hexdump\
-dd if=top64k.bin of=coreboot.rom bs=1 seek=\$\[\$(stat -c %s
+dd if=top64k.bin of=coreboot.rom bs=1 seek=$\[$(stat -c %s
 coreboot.rom) - 0x20000\] count=64k conv=notrunc\
 (doing this makes the ROM suitable for use when flashing a system that
 still has Lenovo BIOS running, using those instructions:

@@ -47,14 +47,14 @@ one](http://sourceforge.net/projects/dejavu/files/dejavu/2.34/dejavu-fonts-ttf-2
 This is a free font that is also contained in GNU+Linux distributions
 like Debian, Devuan or Parabola.
 
-**\$ cd libreboot\_src/grub**\
+**$ cd libreboot\_src/grub**\
 compile grub (the build scripts info on how to do this)\
 come back out into libreboot\_src/resources/grub:\
-**\$ cd ../libreboot\_src/resources/grub/font**
+**$ cd ../libreboot\_src/resources/grub/font**
 
 I took Dejavu Sans Mono from dejavu (included in this version of
 libreboot) and did:\
-**\$ ../../../grub/grub-mkfont -o dejavusansmono.pf2
+**$ ../../../grub/grub-mkfont -o dejavusansmono.pf2
 dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf**
 
 I then added the instructions to 'gen.sh' script in grub-assemble to
@@ -78,7 +78,7 @@ Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
 Keymaps are stored in resources/utilities/grub-assemble/keymap/.
 
 Example (French Azerty):\
-**\$ ckbcomp fr > frazerty**\
+**$ ckbcomp fr > frazerty**\
 \
 Go in grub directory:\
 **cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
@@ -106,7 +106,7 @@ ukdvorak had to be created manually, based on usdvorak. diff them (under
 resources/utilities/grub-assemble/keymap/original) to see how ukdvorak
 file was created
 
-**\$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb**
+**$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb**
 
 [Back to top of page](#pagetop)
 

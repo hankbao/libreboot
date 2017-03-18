@@ -17,7 +17,7 @@ volume. Not so with libreboot! Since GRUB is already included directly
 as a payload, even /boot can be encrypted. This protects /boot from
 tampering by someone with physical access to the system.
 
-**This guide is \*only\* for the GRUB payload. If you use the
+**This guide is *only* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
 This guide is intended for the Parabola distribution, but it should also
@@ -526,11 +526,11 @@ If flashrom complains about multiple flash chips detected, add a *-c*
 option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
 would be really nice):\
-\$ **./cbfstool libreboot.rom print**\
+$ **./cbfstool libreboot.rom print**\
 Extract grubtest.cfg:\
-\$ **./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**\
+$ **./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**\
 And modify:\
-\$ **vi grubtest.cfg**
+$ **vi grubtest.cfg**
 
 In grubtest.cfg, inside the 'Load Operating System' menu entry, change
 the contents to:
@@ -559,9 +559,9 @@ hardening your GRUB configuration, for security purposes.
 
 Save your changes in grubtest.cfg, then delete the unmodified config
 from the ROM image:\
-\$ **./cbfstool libreboot.rom remove -n grubtest.cfg**\
+$ **./cbfstool libreboot.rom remove -n grubtest.cfg**\
 and insert the modified grubtest.cfg:\
-\$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
+$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**\
 
 Now refer to <http://libreboot.org/docs/install/#flashrom>. Cd (up) to
@@ -584,7 +584,7 @@ LUKS passphrase and login as root/your user. All went well? Great!
 If it does not work like you want it to, if you are unsure or sceptical
 in any way, don't despair: you have been wise and did not brick your
 device! Reboot and login the default way, and then modify your
-grubtest.cfg until you get it right! **Do \*not\* proceed past this
+grubtest.cfg until you get it right! **Do *not* proceed past this
 point unless you are 100% sure that your new configuration is safe (or
 desirable) to use.**
 
@@ -597,13 +597,13 @@ don't have to manually switch to it, in case you ever want to follow
 this guide again in the future (modifying the already modified config).
 Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
 with the following command:\
-\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg**\
 Delete the grub.cfg that remained inside the ROM:\
-\$ **./cbfstool libreboot.rom remove -n grub.cfg**\
+$ **./cbfstool libreboot.rom remove -n grub.cfg**\
 Add the modified version that you just made:\
-\$ **./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**\
+$ **./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**\
 
 Now you have a modified ROM. Once more, refer to
 <http://libreboot.org/docs/install/#flashrom>. Cd to the libreboot\_util

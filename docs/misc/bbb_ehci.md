@@ -103,7 +103,7 @@ section):
 
     ls /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget/g_dbgp.ko
 
-Unload all other g\_\* modules:
+Unload all other g\_* modules:
 
     # lsmod
     # rmmod g_multi
@@ -131,7 +131,7 @@ Make sure that you have cross compiling environment for
 arm-linux-gnueabihf setup on your *host*.
 
 -   On BBB: uname -r - this will give you version number like
-    3.8.13-bone70 (I will refer to this as: \$mav.\$miv-\$lv: where
+    3.8.13-bone70 (I will refer to this as: $mav.$miv-$lv: where
     mav=3.8, miv=13, lv=bone70
 -   Get the BBB kernel ready on your host for cross-compiling:
 
@@ -153,7 +153,7 @@ arm-linux-gnueabihf setup on your *host*.
     the two different version of the kernel (3.8 and 3.10). I will use
     3.8. (If using kernel 3.12 patch\_1 is not needed)
 -   cd kernel (note that this is one more level: you should be in
-    \$work\_dir/kernel/kernel)
+    $work\_dir/kernel/kernel)
 -   Apply the patches:
 
 <!-- -->
@@ -169,12 +169,12 @@ arm-linux-gnueabihf setup on your *host*.
     see
     [scripts](http://www.fsfla.org/svn/fsfla/software/linux-libre/scripts/).
 -   Get your current BBB kernel config (from: /boot/config-<ver>)
-    and copy it to your host as \$work\_dir/kernel/kernel/.config
+    and copy it to your host as $work\_dir/kernel/kernel/.config
 -   Set proper version number:
-    -   On your host, edit \$work\_dir/kernel/kernel/.config (the one
+    -   On your host, edit $work\_dir/kernel/kernel/.config (the one
         you've just copied from BBB), find the line
         CONFIG\_LOCALVERSION="<something or empty>" and change
-        it to CONFIG\_LOCALVERSION="-\$lv", so it will look something
+        it to CONFIG\_LOCALVERSION="-$lv", so it will look something
         like: CONFIG\_LOCALVERSION="-bone70"
 -   Also, make sure that: CONFIG\_USB\_G\_DBGP=m (If not, make
     menuconfig, and set @Device Drivers-> USB Support -> USB
@@ -188,11 +188,11 @@ arm-linux-gnueabihf setup on your *host*.
 
 -   on BBB, backup /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
     (i.e. mv /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
-    \$HOME)
+    $HOME)
 -   copy the freshly compiled usb/gadget dir to
     /lib/modules/3.8.13-bone70/kernel/drivers/usb
 -   restart BBB
--   Remove all g\_\* modules (rmmod g\_<>)
+-   Remove all g\_* modules (rmmod g\_<>)
 -   modprobpe g\_dbgp
 
 ### Configure libreboot with EHCI debug {#ConfigurelibrebootwithEHCIdebug}
@@ -202,8 +202,8 @@ push debug messages to the EHCI debug port.\
 If you've downloaded the binary distribution, you can check if it is
 properly configured in the following way:
 
--   Go to the libreboot dist root directory cd \$libreboot\_bin
--   Locate the rom image for your target (I will call it: \$img\_path)
+-   Go to the libreboot dist root directory cd $libreboot\_bin
+-   Locate the rom image for your target (I will call it: $img\_path)
 -   Running the following command will extract the config in a file
     ./my\_config:
 
@@ -282,7 +282,7 @@ libreboot (for now).
 
 -   Plug the USB cable in the target's debug port (the one you found in
     step 1) and BBB's mini-B USB
--   Make sure no other then g\_dbgp of the g\_\* modules is loaded on
+-   Make sure no other then g\_dbgp of the g\_* modules is loaded on
     your BBB
 -   On the BBB:
 
@@ -295,7 +295,7 @@ libreboot (for now).
 -   You should see debug logs comming on your BBB console
 
 Note that this is not permanent on BBB, if you reboot it, you have to
-rmmod g\_\* and modprobe g\_dbgp
+rmmod g\_* and modprobe g\_dbgp
 
 ### Eneble EHCI Debug on the target's kernel (optional, recommended) {#EnebleEHCIDebugonthetargetskerneloptionalrecommended}
 

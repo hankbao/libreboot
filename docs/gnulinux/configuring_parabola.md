@@ -306,7 +306,7 @@ Restart journald:\
 \# **systemctl restart systemd-journald**
 
 The wiki recommends that if the journal gets too large, you can also
-simply delete (rm -Rf) everything inside /var/log/journald/\* but
+simply delete (rm -Rf) everything inside /var/log/journald/* but
 recommends backing it up. This shouldn't be necessary, since you
 already set the size limit above and systemd will automatically start to
 delete older records when the journal size reaches it's limit
@@ -591,7 +591,7 @@ I didn't want the following, so I removed them:\
 \# **pacman -R lxmusic lxtask**
 
 I also lazily installed all fonts:\
-\# **pacman -S \$(pacman -Ssq ttf-)**
+\# **pacman -S $(pacman -Ssq ttf-)**
 
 And a mail client:\
 \# **pacman -S icedove**
@@ -613,7 +613,7 @@ start lxde without lxdm. Read
 <https://wiki.archlinux.org/index.php/Xinitrc>.
 
 Open LXterminal:\
-\$ **cp /etc/skel/.xinitrc \~**\
+$ **cp /etc/skel/.xinitrc \~**\
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.\
 *\# Probably not needed. The same locale info that we set before\
@@ -624,7 +624,7 @@ export LANG=en\_GB.UTF-8\
 \# Start lxde desktop\
 exec startlxde\
 * Now make sure that it is executable:\
-\$ **chmod +x .xinitrc**
+$ **chmod +x .xinitrc**
 
 [Back to top of page.](#pagetop)
 

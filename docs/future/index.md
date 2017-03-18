@@ -324,10 +324,10 @@ getting this output.
 Get intelvbttool here: <http://review.coreboot.org/#/c/5842>
 (util/intelvbttool).
 
-Now dump a copy of the running VGA BIOS: **\$ sudo dd if=/dev/mem bs=64k
+Now dump a copy of the running VGA BIOS: **$ sudo dd if=/dev/mem bs=64k
 of=runningvga.bin skip=12 count=1**\
 Then do (and record the output):\
-**\$ ./intelvbttool runningvga.bin > intelvbttool\_out**
+**$ ./intelvbttool runningvga.bin > intelvbttool\_out**
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
 to match the system and LCD panel used.

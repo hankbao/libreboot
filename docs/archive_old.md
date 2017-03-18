@@ -7,7 +7,7 @@ Information for this release can be found at
 at [libreboot.org](http://libreboot.org/).
 
 
-**This page is \*obsolete\*, provided for historical purposes.**
+**This page is *obsolete*, provided for historical purposes.**
 
 
 
@@ -102,7 +102,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     again in the next release)
 -   coreboot-libre: delete unused code (reduce size of src archive)
 -   Flashing guides: make them more friendly to colourblind people
--   docs/gnulinux/encrypted\_\*.html: Remove mention of password
+-   docs/gnulinux/encrypted\_*.html: Remove mention of password
     length - it was arbitrary and pointless.
 -   docs/maintain/: Finish the guide
 -   scripts/download/coreboot: use diffs included in libreboot, not
@@ -125,7 +125,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   demefactory (new utility): create GM45 factory.rom without the ME
 -   ich9deblob: re-factor descriptor.c functions
 -   docs/hcl/t500.html: add hardware logs
--   docs/gnulinux/encrypted\_\*.html: No password for default entry
+-   docs/gnulinux/encrypted\_*.html: No password for default entry
 -   docs/git/: Add more details about BUC.TS
 -   grub.cfg: Also scan for grub2/grub.cfg, not just grub/grub.cfg
 -   docs/maintain/ (new section. WIP!): Maintaining libreboot
@@ -133,7 +133,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   docs/tasks.html: Better categorization between intel/amd/arm
 -   docs/install/bbb\_setup.html: notes about SPI flashing stability
 -   docs/install/bbb\_setup.html: more names for the 0.1" cables
--   docs/install/\*\_external.html: add disclaimer about thermal paste
+-   docs/install/*\_external.html: add disclaimer about thermal paste
 -   docs/install/bbb\_setup.html: Fix broken links
 -   docs/install/bbb\_setup.html: preliminary notes about EHCI debug
 -   docs/hcl/gm45\_remove\_me.html: Link to websites talking about the
@@ -164,7 +164,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
         included (merged upstream)
 -   coreboot-libre: don't list vortex86ex kbd firmware as microcode
     (list it separately)
--   coreboot-libre: don't rm \*/early\_setup\_ss.h (these are not
+-   coreboot-libre: don't rm */early\_setup\_ss.h (these are not
     blobs)
 -   coreboot-libre: add GPLv3 license to the findblobs script
 -   coreboot-libreboot: don't rm raminit\_tables (nahelem/sandybridge)
@@ -374,7 +374,7 @@ Changes for this release (latest changes first, earliest changes last)
     completely.
 -   Enabled cstates 1 and 2 on macbook21. This reduces idle heat / power
     consumption.
--   buildrom-withgrub: disabled creation of \*txtmode\*.rom for X200
+-   buildrom-withgrub: disabled creation of *txtmode*.rom for X200
     (only framebuffer graphics work)
 -   Updated SeaBIOS (again)
 -   docs/install/\#flashrom\_x200: improve instructions
@@ -613,11 +613,11 @@ Revisions for r20140911 (7th beta) (11th September 2014)
 Revisions for r20140903 (6th beta) (3rd September 2014)
 -------------------------------------------------------
 
--   Added modified builddeb\* scripts for Parabola GNU+Linux-libre:
+-   Added modified builddeb* scripts for Parabola GNU+Linux-libre:
     buildpac, buildpac-flashrom, buildpac-bucts (courtesy of Noah
     Vesely)
 -   Documentation: updated all relevant areas to mention use of
-    buildpac\* scripts for Parabola users.
+    buildpac* scripts for Parabola users.
 -   Documentation: added information showing how to enable or disable
     bluetooth on the X60
 -   MacBook1,1 tested! See **hcl/\#macbook11**
@@ -657,7 +657,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   Updated getcb script and DEBLOB script.
 -   Updated configuration files under resources/libreboot/config/ to
     accomodate new coreboot version.
--   Removed grub\_serial\*.cfg and libreboot\_serial\*.rom, all
+-   Removed grub\_serial*.cfg and libreboot\_serial*.rom, all
     configs/rom files are now unified (containing same configuration as
     serial rom files from before).
     -   Documentation: updated \#rom to reflect the above.
@@ -701,13 +701,13 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   'build' script: removed the parts that generated libreboot\_bin
     and added them to a new script: 'build-release'
     -   Documentation: \#build updated to reflect the above.
--   ~~Added all gcry\_\* modules to grub (luks/cryptomount):
+-   ~~Added all gcry\_* modules to grub (luks/cryptomount):
     gcry\_arcfour gcry\_camellia gcry\_crc gcry\_dsa gcry\_md4
     gcry\_rfc2268 gcry\_rmd160 gcry\_seed gcry\_sha1 gcry\_sha512
     gcry\_twofish gcry\_blowfish gcry\_cast5 gcry\_des gcry\_idea
     gcry\_md5 gcry\_rijndael gcry\_rsa gcry\_serpent gcry\_sha256
     gcry\_tiger gcry\_whirlpool~~
--   Added GNUtoo's list of GRUB modules (includes all of the gcry\_\*
+-   Added GNUtoo's list of GRUB modules (includes all of the gcry\_*
     modules above), cryptomount should be working now.
 -   Removed builddeb-bucts and builddeb-flashrom, merged them with
     builddeb ( updated accordingly)
@@ -733,7 +733,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
     for each system: one with text-mode, one with coreboot framebuffer.
 -   Documentation: updated \#rom to reflect the above
 -   Deleted unused README and COPYING file from main directory
--   Removed some rm -Rf .git\* instructions from the get\* scripts and
+-   Removed some rm -Rf .git* instructions from the get* scripts and
     moved them to build-release script
 -   Split up default grub.cfg into 6 parts:
     extra/{common.cfg,txtmode.cfg,vesafb.cfg} and
@@ -828,7 +828,7 @@ Revisions for r20140729 (4th beta) (29th July 2014)
         needed. Removing it reduces the size of the archive. flashrom
         development should be upstream.
 -   Added ROMs with Qwerty (Italian) layout in GRUB
-    (libreboot\*itqwerty.rom)
+    (libreboot*itqwerty.rom)
 -   Added resources/utilities/i945gpu/intel-regs.py for debugging issues
     related to LCD panel compatibility on X60 Tablet and T60. (courtesy
     of [Michał Masłowski](http://mtjm.eu))
@@ -860,7 +860,7 @@ Revisions for r20140720 (3rd beta) (20th July 2014)
         coreboot\_usqwerty.rom and coreboot\_serial\_usqwerty.rom
     -   coreboot\_dvorak and coreboot\_serial\_dvorak.rom renamed to
         coreboot\_usdvorak.rom and coreboot\_serial\_usdvorak.rom
-    -   Renamed coreboot\*rom to libreboot\*rom
+    -   Renamed coreboot*rom to libreboot*rom
     -   Made flash, lenovobios\_firstflash and lenovobios\_secondflash
         scripts fail if the specified file does not exist.
     -   Updated all relevant parts of the documentation to reflect the
@@ -870,9 +870,9 @@ Revisions for r20140720 (3rd beta) (20th July 2014)
 -   Updated buildrom-withgrub to use background.jpg instead of
     background.png
 -   Updated buildrom-withgrub to use gnulove.jpg aswell
--   Updated resources/grub/config/macbook21/grub\*cfg to use gnulove.jpg
+-   Updated resources/grub/config/macbook21/grub*cfg to use gnulove.jpg
     background.
--   Updated resources/grub/config/{x60,t60,x60t}/grub\*cfg to use
+-   Updated resources/grub/config/{x60,t60,x60t}/grub*cfg to use
     background.jpg background.
 -   Documentation: updated docs/\#grub\_custom\_keyboard to be more
     generally useful.
@@ -925,10 +925,10 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     macbook21 with Apple EFI firmware) and linked in in main index.
 -   Documentation: added a copy of Mono's Coreboot page (for macbook21)
     and linked it in main index.
--   T60: Copy CD option from the grub.cfg files for T60 \*serial\*.rom
+-   T60: Copy CD option from the grub.cfg files for T60 *serial*.rom
     images into the grub configs for non-serial images. (T60s have
     CD/DVD drive on main laptop)
--   macbook21: remove options in build-macbook21 for \*serial\*.rom
+-   macbook21: remove options in build-macbook21 for *serial*.rom
     (there is no dock or serial port available for macbook21)
 -   Added patches for backlight controls on X60 and T60 with help from
     Denis Carikli (see ./resources/libreboot/patch/gitdiff and ./getcb
@@ -1069,7 +1069,7 @@ Revisions for r20140711 (1st beta) (11th July 2014)
         libreboot\_bin
 -   Documentation: made docs/gnulinux/grub\_cbfs.html slightly easier to
     follow.
--   Annotate the 'build\*' scripts with 'echo' commands, to help the
+-   Annotate the 'build*' scripts with 'echo' commands, to help the
     user understand what it actually happening during the build process.
 -   Documentation: added information about how 'dmidecode' data was
     put in the coreboot configs
@@ -1269,7 +1269,7 @@ Development notes
 
 The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB, and
 automatically converts it to a grub config and switches to the boot menu
-of that distro. This makes booting ISOs \*much\* easier than before.
+of that distro. This makes booting ISOs *much* easier than before.
 
 [Back to top of page.](#pagetop)
 

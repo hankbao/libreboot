@@ -18,7 +18,7 @@ SOIC-16).
 [](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
+The Raspberry Pi (a multipurpose $25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 
 > **Note:** The Raspberry Pi Model A is not supported, since it has no
@@ -351,13 +351,13 @@ for great good!
 [](#raspberry-pi-c720-chromebook){#user-content-raspberry-pi-c720-chromebook .anchor}Raspberry Pi (C720 Chromebook)
 -------------------------------------------------------------------------------------------------------------------
 
-The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
+The Raspberry Pi (a multipurpose $25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 
 ### [](#what-you-need){#user-content-what-you-need .anchor}What you need
 
--   \$25 - Raspberry Pi Model B (Rev.2 or higher)
--   \$10-20 - SOIC-8 Pomona Clip
+-   $25 - Raspberry Pi Model B (Rev.2 or higher)
+-   $10-20 - SOIC-8 Pomona Clip
     -   Usually comes bundled with nice, color-colored *female to
         female* wires
 
@@ -367,8 +367,8 @@ GPIO Pinouts:
 
 ![](images/rpi/0009.png) ![](images/rpi/0010.png)
 
-> \*Diagram made by ["Pacman" from Win-Raid
-> Forums\*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
+> *Diagram made by ["Pacman" from Win-Raid
+> Forums*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
 
 SOIC Pinouts:
 

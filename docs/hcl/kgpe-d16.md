@@ -144,8 +144,8 @@ The information here is adapted, from the ASUS website.
 -   **Total Slots:** 16 (4-channel per CPU, 8 DIMM per CPU), ECC
 -   **Capacity:** Maximum up to 256GB RDIMM
 -   **Memory Type that is compatible:**
-    -   DDR3 1600/1333/1066/800 UDIMM\*
-    -   DDR3 1600/1333/1066/800 RDIMM\*
+    -   DDR3 1600/1333/1066/800 UDIMM*
+    -   DDR3 1600/1333/1066/800 RDIMM*
 -   **Compatible sizes per memory module:**
     -   16GB, 8GB, 4GB, 3GB, 2GB, 1GB RDIMM
     -   8GB, 4GB, 2GB, 1GB UDIMM
@@ -223,7 +223,7 @@ The information here is adapted, from the ASUS website.
 
 ### Note:
 
--   \* DDR3 1600 can only be supported with AMD Opteron 6300/6200 series
+-   * DDR3 1600 can only be supported with AMD Opteron 6300/6200 series
     processor
 
 

@@ -24,7 +24,7 @@ the libreboot GRUB payload will automatically search for.
 Here is an excellent writeup about CBFS (coreboot filesystem):
 <http://lennartb.home.xs4all.nl/coreboot/col5.html>.
 
-**This guide is \*only\* for the GRUB payload. If you use the
+**This guide is *only* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
 [Back to previous index](./)
@@ -141,7 +141,7 @@ image file is named *libreboot.rom*, so please make sure to adapt.
 
 ROM images are included pre-compiled in libreboot. You can also dump
 your current firmware, using flashrom:\
-\$ **sudo flashrom -p internal -r libreboot.rom**\
+$ **sudo flashrom -p internal -r libreboot.rom**\
 \# **flashrom -p internal -r libreboot.rom**\
 If you are told to specify the chip, add the option **-c {your chip}**
 to the command, for example:\
@@ -155,7 +155,7 @@ Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
 
 You can check the contents of the ROM image, inside CBFS:\
-**\$ cd \.../libreboot\_util/cbfstool** **\$ ./cbfstool libreboot.rom
+**$ cd \.../libreboot\_util/cbfstool** **$ ./cbfstool libreboot.rom
 print**
 
 The files *grub.cfg* and *grubtest.cfg* should be present. grub.cfg is
@@ -164,7 +164,7 @@ this tutorial, you will first modify and test *grubtest.cfg*. This is to
 reduce the possibility of bricking your device, so DO NOT SKIP THIS!
 
 Extract grubtest.cfg from the ROM image:\
-**\$ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**
+**$ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**
 
 Modify the grubtest.cfg accordingly.
 
@@ -177,10 +177,10 @@ Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testc
 
 Once your grubtest.cfg is modified and saved, delete the unmodified
 config from the ROM image:\
-**\$ ./cbfstool libreboot.rom remove -n grubtest.cfg**
+**$ ./cbfstool libreboot.rom remove -n grubtest.cfg**
 
 Next, insert the modified version:\
-**\$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
+**$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**
 
 [Back to top of page.](#pagetop)
@@ -193,7 +193,7 @@ Testing
 **Now you have a modified ROM. Refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it.\
-\$ **cd /libreboot\_util** \# **./flash update libreboot.rom**\
+$ **cd /libreboot\_util** \# **./flash update libreboot.rom**\
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
@@ -207,7 +207,7 @@ works, then your config is safe and you can continue below.
 
 **If it does not work like you want it to, if you are unsure or
 sceptical in any way, then re-do the steps above until you get it right!
-Do \*not\* proceed past this point unless you are 100% sure that your
+Do *not* proceed past this point unless you are 100% sure that your
 new configuration is safe (or desirable) to use.**
 
 [Back to top of page.](#pagetop)
@@ -225,15 +225,15 @@ grubtest.cfg. This is so that the main config still links (in the menu)
 to grubtest.cfg, so that you don't have to manually switch to it, in
 case you ever want to follow this guide again in the future (modifying
 the already modified config). From /libreboot\_util/cbfstool, do:\
-\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg**\
 
 Delete the grub.cfg that remained inside the ROM:\
-**\$ ./cbfstool libreboot.rom remove -n grub.cfg**
+**$ ./cbfstool libreboot.rom remove -n grub.cfg**
 
 Add the modified version that you just made:\
-**\$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**
+**$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**
 
 **Now you have a modified ROM. Again, refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to

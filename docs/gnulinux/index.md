@@ -5,7 +5,7 @@ GNU+Linux distributions
 This section relates to dealing with GNU+Linux distributions: preparing
 bootable USB drives, changing the default GRUB menu and so on.
 
-**This section is only for the \*GRUB\* payload. For depthcharge,
+**This section is only for the *GRUB* payload. For depthcharge,
 instructions have yet to be written.**
 
 [Back to previous index](../).
