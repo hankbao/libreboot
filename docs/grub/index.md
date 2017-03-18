@@ -4,7 +4,6 @@ GRUB payload {#pagetop}
 
 This section relates to the GRUB payload used in libreboot.
 
-Or [Back to main index](../).
 
 -   [Changing the background image in GRUB](#grub_background)
 -   [Setting font in GRUB](#grub_font)

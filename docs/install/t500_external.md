@@ -8,7 +8,6 @@ This guide is for those who want libreboot on their ThinkPad T500 while
 they still have the original Lenovo BIOS present. This guide can also be
 followed (adapted) if you brick your T500, to know how to recover.
 
-[Back to main index](./)
 
 
 

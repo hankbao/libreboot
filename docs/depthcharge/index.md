@@ -4,7 +4,6 @@ Depthcharge payload {#pagetop}
 
 This section relates to the depthcharge payload used in libreboot.
 
-Or [Back to main index](../).
 
 -   [CrOS security model](#cros_security_model)
 -   [Developer mode screen](#developer_mode_screen)

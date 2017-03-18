@@ -11,7 +11,6 @@ Building libreboot from source {#pagetop}
 This section relates to building libreboot from source, and working with
 the git repository.
 
-Or [Back to main index](../).
 
 -   [Install build dependencies](#build_dependencies)
 -   [Get the full source code from metadata (git clone)](#build_meta)

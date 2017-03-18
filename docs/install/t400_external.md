@@ -16,7 +16,6 @@ the screws on page 144 (with title \"1130 Keyboard bezel\") are swapped
 and if you follow the HMM you will punch a hole through the bezel in the
 upper right corner.
 
-[Back to main index](./)
 
 
 

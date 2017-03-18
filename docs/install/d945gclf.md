@@ -8,7 +8,6 @@ motherboard while they still have the original BIOS present.
 For information about this board, go to
 [../hcl/d945gclf.html](../hcl/d945gclf.html)
 
-[Back to main index](./)
 
 
 

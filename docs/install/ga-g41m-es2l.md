@@ -5,7 +5,6 @@ GA-G41M-ES2L flashing tutorial {#pagetop}
 This guide is for those who want libreboot on their Intel GA-G41M-ES2L
 motherboard while they still have the original BIOS present.
 
-[Back to main index](./)
 
 
 

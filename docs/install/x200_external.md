@@ -18,7 +18,6 @@ followed (adapted) if you brick your X200, to know how to recover.
 -   [Memory](#memory)
 -   [X200S and X200 Tablet users: GPIO33 trick will not work.](#gpio33)
 
-[Back to main index](./)
 
 
 

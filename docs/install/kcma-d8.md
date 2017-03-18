@@ -21,7 +21,6 @@ TODO: show photos here, and other info.
     preinstalled](#preinstall)
 -   [External programmer](#programmer)
 
-[Back to main index](./)
 
 
 

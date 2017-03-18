@@ -9,7 +9,6 @@ To learn more about the GNU+Linux systems that we do endorse, check out
 our list of [free GNU+Linux distributions](../distros/). The *only*
 FSF-endorsed distribution that we endorse there is *Parabola*.
 
-[Back to main index](../)
 
 
 

@@ -27,7 +27,6 @@ distributions](../fsf-distros/).
 [How to install GNU+Linux on a libreboot
 system](../gnulinux/grub_boot_installer.html)
 
-[Back to main index](../)
 
 
 

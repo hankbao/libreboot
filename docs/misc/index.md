@@ -2,7 +2,6 @@
 Miscellaneous {#pagetop}
 =============
 
-Or [Back to main index](../).
 
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or
     Devuan)](#debian_powertop)

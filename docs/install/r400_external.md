@@ -13,7 +13,6 @@ ROM properly first. Although ROM images are provided pre-built in
 libreboot, there are some modifications that you need to make to the one
 you chose before flashing. (instructions referenced later in this guide)
 
-[Back to main index](./)
 
 
 
