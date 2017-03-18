@@ -12,7 +12,7 @@ work), merged into libreboot.
 recommend avoiding Kingston modules.**
 
 Flashing instructions can be found at
-[../install/\#flashrom](../install/#flashrom) - note that external
+[../install/#flashrom](../install/#flashrom) - note that external
 flashing is required (e.g. BBB), if the proprietary (ASUS) firmware is
 currently installed. If you already have libreboot, by default it is
 possible to re-flash using software running in GNU+Linux on the
@@ -104,7 +104,7 @@ Current issues {#issues}
     to derive from, for those who want to work on a free replacement. In
     practise, out-of-band management isn't very useful anyway (or at
     the very least, it's not a major inconvenience to not have it).
--   Graphics: only text-mode works. See [\#graphics](#graphics)
+-   Graphics: only text-mode works. See [#graphics](#graphics)
 
 
 
@@ -162,7 +162,7 @@ The information here is adapted, from the ASUS website.
 -   **Slot Location 6:** PCI-E x16 (Gen2 X16 Link), Auto turn off if
     slot 5 is occupied, For 1U FH/FL Card, MIO supported
 -   **Additional Slot 1:** PIKE slot (for SAS drives. See notes above)
--   Follow SSI Location\#
+-   Follow SSI Location#
 
 ### Form factor {#form-factor}
 

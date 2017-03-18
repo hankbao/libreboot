@@ -62,7 +62,7 @@ Be root\
 **$ su -**
 
 Installed powertop:\
-**\# pacman -S powertop**
+**# pacman -S powertop**
 
 and added the following to /etc/systemd/system/powertop.service :
 
@@ -80,8 +80,8 @@ and added the following to /etc/systemd/system/powertop.service :
     WantedBy=multi-user.target
 
 Finally, as root do that:\
-    \# systemctl enable powertop
-**\# systemctl start powertop**
+    # systemctl enable powertop
+**# systemctl start powertop**
 
 The next time you boot the system, the buzz will be gone.
 
@@ -227,11 +227,11 @@ is included in libreboot, and can be used to enable or disable this
 behaviour.
 
 Disable or enable beeps when removing/adding the charger:\
-$     sudo ./nvramtool -w power\_management\_beeps=Enable
+    $ sudo ./nvramtool -w power\_management\_beeps=Enable
 $ **sudo ./nvramtool -w power\_management\_beeps=Disable**
 
 Disable or enable beeps when battery is low:\
-$     sudo ./nvramtool -w low\_battery\_beep=Enable
+    $ sudo ./nvramtool -w low\_battery\_beep=Enable
 $ **sudo ./nvramtool -w low\_battery\_beep=Disable**
 
 A reboot is required, for these changes to take effect.
@@ -246,10 +246,10 @@ Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
 package i2c-tools.\
-$     sudo modprobe i2c-dev
+    $ sudo modprobe i2c-dev
 $ **sudo i2cdump -y 5 0x50** (you might have to change the value for
 -y)\
-$     sudo rmmod i2c-dev
+    $ sudo rmmod i2c-dev
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically

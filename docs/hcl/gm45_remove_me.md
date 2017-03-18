@@ -41,7 +41,7 @@ factory.bin dump.
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
 source with:\
-$     ./oldbuild module ich9deblob
+    $ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:\
@@ -71,7 +71,7 @@ On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:\
-$     ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
+    $ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -98,7 +98,7 @@ $ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**\
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
-back to [../install/\#flashrom](../install/#flashrom) for how to flash
+back to [../install/#flashrom](../install/#flashrom) for how to flash
 it.
 
 Write-protecting the flash chip
@@ -131,7 +131,7 @@ flashing later on; for example, see
 [../install/bbb\_setup.html](../install/bbb_setup.html).
 
 Change them all to 0x0, then re-compile ich9gen. After you have done
-that, follow the notes in [\#ich9gen](#ich9gen) to generate a new
+that, follow the notes in [#ich9gen](#ich9gen) to generate a new
 descriptor+gbe image and insert that into your ROM image, then flash it.
 The next time you boot, the flash chip will be read-only in software
 (hardware re-flashing will still work, which you will need for
@@ -166,7 +166,7 @@ If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:\
-$     ./oldbuild module ich9deblob
+    $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -218,7 +218,7 @@ need for a factory.rom dump!
 
 You should now have a **libreboot.rom** image containing the correct 4K
 descriptor and 8K gbe regions, which will then be safe to flash. Refer
-back to [../install/\#flashrom](../install/#flashrom) for how to flash
+back to [../install/#flashrom](../install/#flashrom) for how to flash
 it.
 
 
@@ -247,7 +247,7 @@ TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
 flash. Modify the assembly code inside. Note: the factory.rom (BIOS
 region) from lenovobios is in a compressed format, which you have to
 extract. bios\_extract upstream won't work, but the following was said
-in \#coreboot on freenode IRC:
+in #coreboot on freenode IRC:
 
     <roxfan> vimuser: try bios_extract with ffv patch http://patchwork.coreboot.org/patch/3444/
     <roxfan> or https://github.com/coreboot/bios_extract/blob/master/phoenix_extract.py

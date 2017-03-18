@@ -36,12 +36,12 @@ Flash chip size {#flashchips}
 ===============
 
 Use this to find out:\
-\# **flashrom -p internal -V**
+# **flashrom -p internal -V**
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
 the motherboard (this requires removal of the motherboard). **Not all
 X200S/X200T are supported; see
-[../hcl/x200.html\#x200s](../hcl/x200.html#x200s).**
+[../hcl/x200.html#x200s](../hcl/x200.html#x200s).**
 
 [Back to top of page.](#pagetop)
 
@@ -114,7 +114,7 @@ The following image shows how this is done:**\
 In this image, a pin header was soldered onto the WSON. Another solution
 might be to de-solder the WSON-8 chip and put a SOIC-8 there instead.
 Check the list of SOIC-8 flash chips at
-[../hcl/gm45\_remove\_me.html\#flashchips](../hcl/gm45_remove_me.html#flashchips)
+[../hcl/gm45\_remove\_me.html#flashchips](../hcl/gm45_remove_me.html#flashchips)
 but do note that these are only 4MiB (32Mb) chips. The only X200 SPI
 chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
 the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
@@ -168,10 +168,10 @@ libreboot\_util. Alternatively, libreboot also distributes flashrom
 source code which can be built.
 
 Log in as root on your BBB, using the instructions in
-[bbb\_setup.html\#bbb\_access](bbb_setup.html#bbb_access).
+[bbb\_setup.html#bbb\_access](bbb_setup.html#bbb_access).
 
 Test that flashrom works:\
-\#     ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 In this case, the output was:
 
     flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -185,17 +185,17 @@ In this case, the output was:
 
 How to backup factory.rom (change the -c option as neeed, for your flash
 chip):\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory1.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory2.rom**\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
 Now compare the 3 images:\
-\#     sha512sum factory*.rom
+    # sha512sum factory*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable
@@ -203,14 +203,14 @@ behaviour in the original firmware that could be replicated in coreboot
 and libreboot.
 
 Follow the instructions at
-[../hcl/gm45\_remove\_me.html\#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
+[../hcl/gm45\_remove\_me.html#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
 to change the MAC address inside the libreboot ROM image, before
 flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
 Now flash it:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
+# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 path/to/libreboot/rom/image.rom -V**
 
 ![](images/x200/disassembly/0015.jpg)
@@ -244,7 +244,7 @@ Wifi
 The X200 typically comes with an Intel wifi chipset, which does not work
 without proprietary software. For a list of wifi chipsets that work
 without proprietary software, see
-[../hcl/\#recommended\_wifi](../hcl/#recommended_wifi).
+[../hcl/#recommended\_wifi](../hcl/#recommended_wifi).
 
 Some X200 laptops come with an Atheros chipset, but this is 802.11g
 only.
@@ -340,7 +340,7 @@ here:
 
 On a related note, libreboot has a utility that could help with
 investigating this:
-[../hcl/gm45\_remove\_me.html\#demefactory](../hcl/gm45_remove_me.html#demefactory)
+[../hcl/gm45\_remove\_me.html#demefactory](../hcl/gm45_remove_me.html#demefactory)
 
 
 

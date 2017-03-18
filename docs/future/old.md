@@ -29,7 +29,7 @@ X60 native graphics initialization (with backlight controls) {#x60_native_notes}
 **This is now obsolete. A better way was found (included in libreboot):
 <http://review.coreboot.org/#/c/6731/>**
 
-***Also check [\#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
+***Also check [#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
 kernel 3.12/higher)***
 
 **The fix below was done on 5320/6 (from review.coreboot.org) but should
@@ -46,13 +46,13 @@ That's all! **This has also been backported into libreboot 5th release
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
 running the VBIOS:\
-**\# devmem2 0xe4361254 w**
+**# devmem2 0xe4361254 w**
 
 The change is also included in libreboot 6.
 
 When doing this, it gave back that value. The same trick was used to get
 backlight controls for T60 (see
-[\#t60\_native\_notes](#t60_native_notes)).
+[#t60\_native\_notes](#t60_native_notes)).
 
 Further notes
 -------------
@@ -91,7 +91,7 @@ to calculate it without hardcoded laptop-specific values. Therefore, I
 am supposed to find out the 'display core frequency' (mtjm says there
 might be a register for it; also, it might be in 5320 or the replay
 code) and the PWM modulation frequency.
-https://en.wikipedia.org/wiki/Backlight\#Flicker\_due\_to\_backlight\_dimming
+https://en.wikipedia.org/wiki/Backlight#Flicker\_due\_to\_backlight\_dimming
 
 phcoder (Vladimir Serbinenko) who is author of 5320
 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering
@@ -106,7 +106,7 @@ T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 **This is now obsolete. A better way was found (included in libreboot):
 <http://review.coreboot.org/#/c/6731/>**
 
-***Also check [\#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
+***Also check [#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
 kernel 3.12/higher)***
 
 **The fix below was done on an earlier version of 5345 changeset
@@ -117,15 +117,15 @@ included in libreboot 6**
 change **gpu\_backlight** to **0x58BF58BE**
 
 Hold on! Check
-[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname) to know
+[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname) to know
 what LCD panel you have. This is important for the next step!
 
 Supported panels
 ----------------
 
-[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list).
+[../hcl/#supported\_t60\_list](../hcl/#supported_t60_list).
 
-See [\#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
+See [#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
 
 
 
@@ -144,7 +144,7 @@ is also now included in libreboot 6 (using the proper way, not the
 now obsolete. This needs to be re-done for the latest version of 5320.
 The fix below is (in practise) only for reference, therefore.**
 
-See [\#x60\_cb5927\_testing](#x60_cb5927_testing) for the original (and
+See [#x60\_cb5927\_testing](#x60_cb5927_testing) for the original (and
 current) fix, for the replay code. Now we want to implement that on top
 of <http://review.coreboot.org/#/c/5320> which is the current code for
 native graphics initialization on i945.

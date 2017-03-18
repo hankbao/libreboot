@@ -36,7 +36,7 @@ image:
 Helpful links:
 
 -   [GRUB manual
-    \#security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
+    #security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
 -   [GRUB info
     pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
 -   [SATA connected storage considered dangerous until proven

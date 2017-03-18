@@ -77,7 +77,7 @@ as the keymap in GNU+Linux is concerned.
 
 Keymaps are named appropriately according to each keyboard layout
 support in GRUB. To learn how these keymaps are created, see
-[../grub/\#grub\_keyboard](../grub/#grub_keyboard)
+[../grub/#grub\_keyboard](../grub/#grub_keyboard)
 
 QEMU
 ----
@@ -113,7 +113,7 @@ system.
 
 
 **If you are using libreboot\_src or git, then make sure that you built
-the sources first (see [../git/\#build](../git/#build)).**
+the sources first (see [../git/#build](../git/#build)).**
 
 
 Look at the [list of ROM images](#rom) to see which image is compatible
@@ -127,8 +127,8 @@ coreboot), then the flashing instructions for your system are going to
 be different.
 
 X60/T60 users running the proprietary firmware should refer to
-[\#flashrom\_lenovobios](#flashrom_lenovobios). MacBook2,1 users running
-Apple EFI should refer to [\#flashrom\_macbook21](#flashrom_macbook21)
+[#flashrom\_lenovobios](#flashrom_lenovobios). MacBook2,1 users running
+Apple EFI should refer to [#flashrom\_macbook21](#flashrom_macbook21)
 
 X200 users, refer to [x200\_external.html](x200_external.html), R400
 users refer to [r400\_external.html](r400_external.html), T400 users
@@ -231,7 +231,7 @@ onboard ethernet chipset is located inside the flash chip. Libreboot ROM
 images for these laptops contain a generic MAC address by default, but
 this is not what you want. *Make sure to change the MAC address inside
 the ROM image, before flashing it. The instructions on
-[../hcl/gm45\_remove\_me.html\#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
+[../hcl/gm45\_remove\_me.html#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
 show how to do this.*
 
 It is important that you change the default MAC address, before
@@ -254,7 +254,7 @@ Flash chip size
 ---------------
 
 Use this to find out:\
-\# **flashrom -p internal -V**
+# **flashrom -p internal -V**
 
 All good?
 ---------
@@ -298,14 +298,14 @@ ThinkPad X60/T60: Initial installation guide (if running the proprietary firmwar
 
 **This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you
 already have coreboot or libreboot running, then go to
-[\#flashrom](#flashrom) instead!**
+[#flashrom](#flashrom) instead!**
 
 **If you are flashing a Lenovo ThinkPad T60, be sure to read
-[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list)**
+[../hcl/#supported\_t60\_list](../hcl/#supported_t60_list)**
 
 
 **If you are using libreboot\_src or git, then make sure that you built
-the sources first (see [../git/\#build](../git/#build)).**
+the sources first (see [../git/#build](../git/#build)).**
 
 
 **Warning: this guide will not instruct the user how to backup the
@@ -369,15 +369,15 @@ MacBook2,1: Initial installation guide (if running the proprietary firmware) {#f
 
 
 **If you have a MacBook1,1, refer to
-[../hcl/\#macbook11](../hcl/#macbook11) for flashing instructions.**
+[../hcl/#macbook11](../hcl/#macbook11) for flashing instructions.**
 
 
 **This is for the MacBook2,1 while running Apple EFI firmware. If you
 already have coreboot or libreboot running, then go to
-[\#flashrom](#flashrom) instead!**
+[#flashrom](#flashrom) instead!**
 
 Be sure to read the information in
-[../hcl/\#macbook21](../hcl/#macbook21).
+[../hcl/#macbook21](../hcl/#macbook21).
 
 **Warning: this guide will not instruct the user how to backup the
 original Apple EFI firmware. For that, please refer to
@@ -385,7 +385,7 @@ original Apple EFI firmware. For that, please refer to
 
 
 **If you are using libreboot\_src or git, then make sure that you built
-the sources first (see [../git/\#build](../git/#build)).**
+the sources first (see [../git/#build](../git/#build)).**
 
 
 Look at the [list of ROM images](#rom) to see which image is compatible

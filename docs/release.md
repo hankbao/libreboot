@@ -46,7 +46,7 @@ Libreboot 20160818 {#release20160818}
 Release date: 18th August 2016.
 
 Installation instructions can be found at ***docs/install/***. Building
-instructions (for source code) can be found at ***docs/git/\#build***.
+instructions (for source code) can be found at ***docs/git/#build***.
 
 Machines supported in this release:
 -----------------------------------
@@ -74,22 +74,22 @@ Machines supported in this release:
         also fit inside an X60/X60s.
 -   **ThinkPad X60 Tablet** (1024x768 and 1400x1050) with digitizer
     support
-    -   See ***docs/hcl/\#supported\_x60t\_list*** for list of supported
+    -   See ***docs/hcl/#supported\_x60t\_list*** for list of supported
         LCD panels
     -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
-        ***docs/hcl/\#supported\_t60\_list*** for known working LCD
+        ***docs/hcl/#supported\_t60\_list*** for known working LCD
         panels.
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
-    -   See ***docs/future/\#t60\_cpu\_microcode***.
+    -   See ***docs/future/#t60\_cpu\_microcode***.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
-        supported: ***docs/hcl/\#t60\_ati\_intel***
+        supported: ***docs/hcl/#t60\_ati\_intel***
 -   **ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
-        ***docs/hcl/x200.html\#x200s***
+        ***docs/hcl/x200.html#x200s***
     -   **ME/AMT**: libreboot removes this, permanently.
         ***docs/hcl/gm45\_remove\_me.html***
 -   **ThinkPad R400**
@@ -105,10 +105,10 @@ Machines supported in this release:
     -   **ME/AMT**: libreboot removes this, permanently.
         ***docs/hcl/gm45\_remove\_me.html***
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See ***docs/hcl/\#macbook11***.
+    -   See ***docs/hcl/#macbook11***.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See ***docs/hcl/\#macbook21***.
+    -   See ***docs/hcl/#macbook21***.
 
 Changes for this release, relative to r20150518 (earliest changes last, recent changes first)
 ---------------------------------------------------------------------------------------------

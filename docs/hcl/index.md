@@ -132,12 +132,12 @@ BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS'), all
 known LCD panels are currently compatible:
 
 To find what LCD panel you have, see:
-[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
 
--   TMD-Toshiba LTD121ECHB: \#
--   CMO N121X5-L06: \#
--   Samsung LTN121XJ-L07: \#
--   BOE-Hydis HT121X01-101: \#
+-   TMD-Toshiba LTD121ECHB: #
+-   CMO N121X5-L06: #
+-   Samsung LTN121XJ-L07: #
+-   BOE-Hydis HT121X01-101: #
 
 You can remove an X61/X61s motherboard from the chassis and install an
 X60/X60s motherboard in it's place (for flashing libreboot). The
@@ -149,7 +149,7 @@ at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
-[\#recommended\_wifi](#recommended_wifi) for replacements.
+[#recommended\_wifi](#recommended_wifi) for replacements.
 
 [Back to top of page.](#pagetop)
 
@@ -163,7 +163,7 @@ proprietary VGA Option ROM ('[Video
 BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
-[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
 
 There are 5 known LCD panels for the X60 Tablet:
 
@@ -190,7 +190,7 @@ work at all without proprietary firmware, and while Lenovo BIOS is
 running the system will refuse to boot if you replace the card.
 Fortunately it is very easily replaced; just remove the card and install
 another one **after** libreboot is installed. See
-[\#recommended\_wifi](#recommended_wifi) for replacements.
+[#recommended\_wifi](#recommended_wifi) for replacements.
 
 A user with a X60T that has digitizer+finger support, reported that they
 could get finger input working. They used linuxwacom at git tag
@@ -217,16 +217,16 @@ could get finger input working. They used linuxwacom at git tag
          Identifier  "WTouch"
          Driver      "wacom"
          Option      "Device" "/dev/ttyS0"
-    #    Option      "DebugLevel" "12"
+        #Option      "DebugLevel" "12"
          Option      "BaudRate" "38400"
          Option      "Type" "touch"
          Option      "Touch" "on"
          Option      "Gesture" "on"
          Option      "ForceDevice" "ISDV4"
-    #    Option      "KeepShape" "on"
+        #Option      "KeepShape" "on"
          Option      "Mode" "Absolute"
          Option      "RawSample" "2"
-    #    Option      "TPCButton" "off"
+        #Option      "TPCButton" "off"
          Option      "TopX" "17"
          Option      "TopY" "53"
          Option      "BottomX" "961"
@@ -251,10 +251,10 @@ proprietary VGA Option ROM ('[Video
 BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
-[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
 
 **Some T60s have ATI GPUs, and all T60P laptops have ATI GPUs These are
-incompatible! See [\#t60\_ati\_intel](#t60_ati_intel) for how to remedy
+incompatible! See [#t60\_ati\_intel](#t60_ati_intel) for how to remedy
 this.**
 
 Tested LCD panels: **working(compatible)**
@@ -273,7 +273,7 @@ Tested LCD panels: **working(compatible)**
 
 
 Tested LCD panels: **not working yet (incompatible; see
-[../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
+[../future/#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
 
 -   Samsung LTN141XA-L01 (14.1" 1024x768)
 -   LG-Philips LP150X09 (15.1" 1024x768)
@@ -321,7 +321,7 @@ at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
-[\#recommended\_wifi](#recommended_wifi) for replacements.
+[#recommended\_wifi](#recommended_wifi) for replacements.
 
 
 [Back to top of page.](#pagetop)
@@ -382,7 +382,7 @@ same i945 chipset as the ThinkPad X60/T60. A developer ported the
 [MacBook2,1](#macbook21) to coreboot, the ROM images also work on the
 macbook1,1.
 
-You can refer to [\#macbook21](#macbook21) for most of this. Macbook2,1
+You can refer to [#macbook21](#macbook21) for most of this. Macbook2,1
 laptops come with Core 2 Duo processors which support 64-bit operating
 systems (and 32-bit). The MacBook1,1 uses Core Duo processors (supports
 32-bit OS but not 64-bit), and it is believed that this is the only
@@ -403,11 +403,11 @@ Specifically (Order No. / Model No. / CPU):
 
 
 Also of interest:
-[../git/\#config\_macbook21](../git/#config_macbook21).
+[../git/#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
-page (see [\#macbook21](#macbook21)) shows the location of the SPI flash
+page (see [#macbook21](#macbook21)) shows the location of the SPI flash
 chip on the motherboard. [How to remove the
 motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
 
@@ -461,7 +461,7 @@ hold Alt/Control once more. The installation (on the HDD) will once
 again be seen as 'Windows'. (it's not actually Windows, but Apple
 likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
-[../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
+[../install/#flashrom\_macbook21](../install/#flashrom_macbook21).
 
 
 
@@ -499,7 +499,7 @@ Specifically (Order No. / Model No. / CPU):
 
 
 Also of interest:
-[../git/\#config\_macbook21](../git/#config_macbook21).
+[../git/#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's

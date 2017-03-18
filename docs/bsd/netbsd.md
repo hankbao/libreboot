@@ -88,12 +88,12 @@ Check lsblk to confirm which drive it is:\
 Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
     $ sudo umount /dev/sdX*
-**\# umount /dev/sdX***
+**# umount /dev/sdX***
 
 dmesg told you what device it is. Overwrite the drive, writing your
 distro ISO to it with dd. For example:\
     $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
-**\# dd if=netbsd.iso of=/dev/sdX bs=8M; sync**
+**# dd if=netbsd.iso of=/dev/sdX bs=8M; sync**
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.

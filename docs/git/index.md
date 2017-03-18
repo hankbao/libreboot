@@ -33,13 +33,13 @@ statically compiled executables for the utilities are included.**
 
 For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:\
-$     sudo ./oldbuild dependencies debian
+    $ sudo ./oldbuild dependencies debian
 (this will also work in Devuan)
 
 For Parabola, you can run the following command:\
-$     sudo ./oldbuild dependencies parabola
+    $ sudo ./oldbuild dependencies parabola
 or:\
-\# **./oldbuild dependencies parabola**
+# **./oldbuild dependencies parabola**
 
 
 For other GNU+Linux distributions, you can adapt the existing scripts.
@@ -63,17 +63,17 @@ First, [install the build dependencies](#build_dependencies).
 Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
 requirement is:\
-$     git config \--global user.name "Your Name"
-$     git config \--global user.email your@emailaddress.com
+    $ git config \--global user.name "Your Name"
+    $ git config \--global user.email your@emailaddress.com
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
 <http://git-scm.com/doc>.
 
 Another nice config for you (optional, but recommended):\
-$     git config \--global core.editor nano
-$     git config \--global color.status auto
-$     git config \--global color.branch auto
-$     git config \--global color.interactive auto
+    $ git config \--global core.editor nano
+    $ git config \--global color.status auto
+    $ git config \--global color.branch auto
+    $ git config \--global color.interactive auto
 $ **git config \--global color.diff auto**
 
 After that, run the script:\
@@ -83,7 +83,7 @@ What this did was download everything (grub, coreboot, memtest86+,
 bucts, flashrom) at the versions last tested for this release, and patch
 them. Read the script in a text editor to learn more.
 
-To build the ROM images, see [\#build](#build).
+To build the ROM images, see [#build](#build).
 
 [Back to top of page.](#pagetop)
 
@@ -105,7 +105,7 @@ file*. This corresponds to the final two 64K regions in the flash chip.
 Lenovo BIOS will prevent you from writing the final one, so running
 "**bucts 1**" will set the system to boot from the other block instead
 (which is writeable along with everything beneath it when using a
-patched flashrom. see [\#build\_flashrom](#build_flashrom)). After
+patched flashrom. see [#build\_flashrom](#build_flashrom)). After
 shutting down and booting up after the first flash of libreboot, the
 final 64K block is writeable so you flash the ROM again with an
 unpatched flashrom and run "**bucts 0**" to make the system boot from
@@ -123,7 +123,7 @@ the bit back to 0 (if you previously set it to 1).
 
 BUC.TS utility is included in libreboot\_src.tar.xz and
 libreboot\_util.tar.xz.\
-**If you downloaded from git, follow [\#build\_meta](#build_meta) before
+**If you downloaded from git, follow [#build\_meta](#build_meta) before
 you proceed.**
 
 "BUC" means "**B**ack**u**p **C**ontrol" (it's a register) and
@@ -156,7 +156,7 @@ you will use to install libreboot.
 
 Flashrom source code is included in libreboot\_src.tar.xz and
 libreboot\_util.tar.xz.\
-**If you downloaded from git, follow [\#build\_meta](#build_meta) before
+**If you downloaded from git, follow [#build\_meta](#build_meta) before
 you proceed.**
 
 If you are using the binary release archive, then there are already
@@ -211,7 +211,7 @@ MacBook1,1 laptops are all 32-bit only.
 First, [install the build dependencies](#build_dependencies).
 
 If you downloaded libreboot from git, refer to
-[\#build\_meta](#build_meta).
+[#build\_meta](#build_meta).
 
 Build all of the components used in libreboot:\
 $ **./oldbuild module all**
@@ -221,12 +221,12 @@ modulename*. To see the possible values for *modulename*, use:\
 $ **./oldbuild module list**
 
 After that, build the ROM images (for all boards):\
-$     ./oldbuild roms withgrub
+    $ ./oldbuild roms withgrub
 Alternatively, you can build for a specific board or set of boards. For
 example:\
-$     ./oldbuild roms withgrub x60
-$     ./oldbuild roms withgrub x200\_8mb
-$     ./oldbuild roms withgrub x60 x200\_8mb
+    $ ./oldbuild roms withgrub x60
+    $ ./oldbuild roms withgrub x200\_8mb
+    $ ./oldbuild roms withgrub x60 x200\_8mb
 The list of board options can be found by looking at the directory names
 in **resources/libreboot/config/grub/**.
 
@@ -304,7 +304,7 @@ libreboot\_util, for:
 
 If you are building binaries on a live system or chroot (for
 flashrom/bucts), you can use the following to statically link them:\
-$     ./oldbuild module flashrom static
+    $ ./oldbuild module flashrom static
 $ **./oldbuild module bucts static**
 
 The same conditions as above apply for ARM (except, building bucts on
@@ -315,7 +315,7 @@ restrictions).
 
 The command that you used for generating the release archives will also
 run the following command:\
-$     ./oldbuild release tobuild
+    $ ./oldbuild release tobuild
 The archive **tobuild.tar.xz** will have been created under
 **release/oldbuildsystem/**, containing bucts, flashrom and all other
 required resources for building them.

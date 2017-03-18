@@ -188,26 +188,26 @@ The following parameters can be configured:
 
 -   Kernels signature verification:
     -   Enabled with:\
-        \# **crossystem dev\_boot\_signed\_only=1**
+        # **crossystem dev\_boot\_signed\_only=1**
     -   Disabled with:\
-        \# **crossystem dev\_boot\_signed\_only=0**
+        # **crossystem dev\_boot\_signed\_only=0**
 -   External media boot:
     -   Enabled with:\
-        \# **crossystem dev\_boot\_usb=1**
+        # **crossystem dev\_boot\_usb=1**
     -   Disabled with:\
-        \# **crossystem dev\_boot\_usb=0**
+        # **crossystem dev\_boot\_usb=0**
 -   Legacy payload boot:
     -   Enabled with:\
-        \# **crossystem dev\_boot\_legacy=1**
+        # **crossystem dev\_boot\_legacy=1**
     -   Disabled with:\
-        \# **crossystem dev\_boot\_legacy=0**
+        # **crossystem dev\_boot\_legacy=0**
 -   Default boot medium:
     -   Internal storage:\
-        \# **crossystem dev\_default\_boot=disk**
+        # **crossystem dev\_default\_boot=disk**
     -   External media:\
-        \# **crossystem dev\_default\_boot=usb**
+        # **crossystem dev\_default\_boot=usb**
     -   Legacy payload:\
-        \# **crossystem dev\_default\_boot=legacy**
+        # **crossystem dev\_default\_boot=legacy**
 
 
 

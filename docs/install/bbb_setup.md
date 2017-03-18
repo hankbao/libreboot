@@ -114,10 +114,10 @@ page](https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diag
 
 You can use pin 1 or 2 (orange wire) on a 20-pin or 24-pin ATX PSU for
 3.3V, and any of the ground/earth sources (black cables) for ground.
-Short PS\_ON\# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
+Short PS\_ON# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
 14 on a 20-pin ATX PSU) to a ground (black; there is one right next to
 it) using a wire/paperclip/jumper, then power on the PSU by grounding
-PS\_ON\# (this is also how an ATX motherboard turns on a PSU).
+PS\_ON# (this is also how an ATX motherboard turns on a PSU).
 
 **DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a
 20-pin ATX PSU), and DO **NOT** use pin 21, 22 or 23 (on a 24-pin
@@ -128,7 +128,7 @@ do exist, but they are rare. Always check what voltage your chip takes.
 Most of them take 3.3V).**
 
 You only need one 3.3V supply and one ground for the flash chip, after
-grounding PS\_ON\#.
+grounding PS\_ON#.
 
 The male end of a 0.1" or 2.54mm header cable is not thick enough to
 remain permanently connected to the ATX PSU on its own. When connecting
@@ -158,14 +158,14 @@ Alternatives to SSH (in case SSH fails)
 
 You can also use a serial FTDI debug board with GNU Screen, to access
 the serial console.\
-\#     screen /dev/ttyUSB0 115200
+    # screen /dev/ttyUSB0 115200
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
 directly accessible from SSH, or screen:\
-\# **screen /dev/ttyACM0 115200**
+# **screen /dev/ttyACM0 115200**
 
 You can also access the uboot console, using the serial method instead
 of SSH.
@@ -176,7 +176,7 @@ Setting up spidev on the BBB
 ============================
 
 Log on as root on the BBB, using either SSH or a serial console as
-defined in [\#bbb\_access](#bbb_access). Make sure that you have
+defined in [#bbb\_access](#bbb_access). Make sure that you have
 internet access on your BBB.
 
 Follow the instructions at
@@ -211,14 +211,14 @@ contents of this file with:
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
 Check that the firmware exists:\
-\#     ls /lib/firmware/BB-SPI0-01-00A0.*
+    # ls /lib/firmware/BB-SPI0-01-00A0.*
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
 Then:\
-\#     echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots
-\#     cat /sys/devices/bone\_capemgr.*/slots
+    # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots
+    # cat /sys/devices/bone\_capemgr.*/slots
 Output:
 
      0: 54:PF--- 
@@ -230,7 +230,7 @@ Output:
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
 Verify that the spidev device now exists:\
-\#     ls -al /dev/spid*
+    # ls -al /dev/spid*
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
@@ -253,7 +253,7 @@ Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
 Now test flashrom:\
-\#     ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 Output:
 
     Calibrating delay loop... OK.
@@ -348,7 +348,7 @@ not always. That page has some notes about using resistors to affect
 stability. Currently, we use spispeed=512 (512kHz) but it is possible to
 use higher speeds while maintaining stability.
 
-tty0\_ in \#libreboot was able to get better flashing speeds with the
+tty0\_ in #libreboot was able to get better flashing speeds with the
 following configuration:
 
 -   "coax" with 0.1 mm core and aluminum foley (from my kitchen), add

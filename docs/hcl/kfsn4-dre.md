@@ -6,7 +6,7 @@ This is a server board using AMD hardware (Fam10h). It can also be used
 for building a high-powered workstation. Powered by libreboot.
 
 Flashing instructions can be found at
-[../install/\#flashrom](../install/#flashrom)
+[../install/#flashrom](../install/#flashrom)
 
 [Back to previous index](./).
 

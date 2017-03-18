@@ -114,7 +114,7 @@ LCD panels on i945 - fix incompatible panels {#lcd_i945_incompatibility}
 ============================================
 
 Fix T60 issues (see incompatible panels listed at
-[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list)).
+[../hcl/#supported\_t60\_list](../hcl/#supported_t60_list)).
 
 Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on
 systems with the offending panels in:
@@ -160,12 +160,12 @@ working and nonworking panels.
 
 How to dump EDID:
 
-\#     apt-get install i2c-tools
-\#     modprobe i2c-dev
+    # apt-get install i2c-tools
+    # modprobe i2c-dev
 Find out the correct ID to use:\
-\#     i2cdetect -l
+    # i2cdetect -l
 Example:\
-\# **i2cdump -y 2 0x50**
+# **i2cdump -y 2 0x50**
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:
 
@@ -260,42 +260,42 @@ You are supposed to:
 
 With each boot, make notes about what you see and get logs using the
 [standard test](#standard_test). You will need the files from
-[\#intelvbttool\_results](#intelvbttool_results) for each system.
+[#intelvbttool\_results](#intelvbttool_results) for each system.
 
-Results (\# means untested):
+Results (# means untested):
 -   **X60/X60s:**
-    -   TMD-Toshiba LTD121ECHB: \#
-    -   CMO N121X5-L06: \#
-    -   Samsung LTN121XJ-L07: \#
-    -   BOE-Hydis HT121X01-101: \#
+    -   TMD-Toshiba LTD121ECHB: #
+    -   CMO N121X5-L06: #
+    -   Samsung LTN121XJ-L07: #
+    -   BOE-Hydis HT121X01-101: #
 -   **X60T XGA:**
-    -   BOE-Hydis HV121X03-100: \#
+    -   BOE-Hydis HV121X03-100: #
 -   **X60T SXGA+:**
-    -   BOE-Hydis HV121P01-100: \#
+    -   BOE-Hydis HV121P01-100: #
 -   **T60 14" XGA:**
-    -   Samsung LTN141XA-L01: \#
-    -   CMO N141XC: \#
-    -   BOE-Hydis HT14X14: \#
-    -   TMD-Toshiba LTD141ECMB: \#
+    -   Samsung LTN141XA-L01: #
+    -   CMO N141XC: #
+    -   BOE-Hydis HT14X14: #
+    -   TMD-Toshiba LTD141ECMB: #
 -   **T60 14" SXGA+**
-    -   TMD-Toshiba LTD141EN9B: \#
-    -   Samsung LTN141P4-L02: \#
-    -   Boe-Hydis HT14P12: \#
+    -   TMD-Toshiba LTD141EN9B: #
+    -   Samsung LTN141P4-L02: #
+    -   Boe-Hydis HT14P12: #
 -   **T60 15" XGA**
-    -   Samsung LTN150XG-L08: \#
-    -   LG-Philips LP150X09: \#
-    -   13N7068 (IDtech): \#
-    -   13N7069 (CMO): \#
+    -   Samsung LTN150XG-L08: #
+    -   LG-Philips LP150X09: #
+    -   13N7068 (IDtech): #
+    -   13N7069 (CMO): #
 -   **T60 15" SXGA+**
-    -   LG-Philips LP150E05-A2K1: \#
-    -   BOE-Hydis HV150P01-100: \#
+    -   LG-Philips LP150E05-A2K1: #
+    -   BOE-Hydis HV150P01-100: #
 -   **T60 15" UXGA**
-    -   BOE-Hydis HV150UX1-100: \#
-    -   IDTech N150U3-L01: \#
-    -   BOE-Hydis HV150UX1-102: \#
+    -   BOE-Hydis HV150UX1-100: #
+    -   IDTech N150U3-L01: #
+    -   BOE-Hydis HV150UX1-102: #
 -   **T50 15" QXGA**
-    -   IDtech IAQX10N: \#
-    -   IDtech IAQX10S: \#
+    -   IDtech IAQX10N: #
+    -   IDtech IAQX10S: #
 
 
 
@@ -330,45 +330,45 @@ Then do (and record the output):\
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
 to match the system and LCD panel used.
-[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname) will show
+[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname) will show
 you how to get the name (model) of the LCD panel used.
 
-Test results (\# means untested and all had docks, unless noted).
+Test results (# means untested and all had docks, unless noted).
 -----------------------------------------------------------------
 
 -   **X60/X60s:**
-    -   TMD-Toshiba LTD121ECHB: \#
-    -   CMO N121X5-L06: \#
-    -   Samsung LTN121XJ-L07: \#
-    -   BOE-Hydis HT121X01-101: \#
+    -   TMD-Toshiba LTD121ECHB: #
+    -   CMO N121X5-L06: #
+    -   Samsung LTN121XJ-L07: #
+    -   BOE-Hydis HT121X01-101: #
 -   **X60T XGA (1024x768):**
-    -   BOE-Hydis HV121X03-100: \#
+    -   BOE-Hydis HV121X03-100: #
 -   **X60T SXGA+ (1400x1050):**
-    -   BOE-Hydis HV121P01-100: \#
+    -   BOE-Hydis HV121P01-100: #
 -   **T60 14" XGA (1024x768):**
-    -   Samsung LTN141XA-L01: \#
-    -   CMO N141XC: \#
-    -   BOE-Hydis HT14X14: \#
-    -   TMD-Toshiba LTD141ECMB: \#
+    -   Samsung LTN141XA-L01: #
+    -   CMO N141XC: #
+    -   BOE-Hydis HT14X14: #
+    -   TMD-Toshiba LTD141ECMB: #
 -   **T60 14" SXGA+ (1400x1050):**
-    -   TMD-Toshiba LTD141EN9B: \#
-    -   Samsung LTN141P4-L02: \#
-    -   Boe-Hydis HT14P12: \#
+    -   TMD-Toshiba LTD141EN9B: #
+    -   Samsung LTN141P4-L02: #
+    -   Boe-Hydis HT14P12: #
 -   **T60 15" XGA (1024x768):**
-    -   Samsung LTN150XG-L08: \#
-    -   LG-Philips LP150X09: \#
-    -   13N7068 (IDtech): \#
-    -   13N7069 (CMO): \#
+    -   Samsung LTN150XG-L08: #
+    -   LG-Philips LP150X09: #
+    -   13N7068 (IDtech): #
+    -   13N7069 (CMO): #
 -   **T60 15" SXGA+ (1400x1050):**
-    -   LG-Philips LP150E05-A2K1: \#
-    -   BOE-Hydis HV150P01-100: \#
+    -   LG-Philips LP150E05-A2K1: #
+    -   BOE-Hydis HV150P01-100: #
 -   **T60 15" UXGA (1600x1200):**
-    -   BOE-Hydis HV150UX1-100: \#
-    -   IDTech N150U3-L01: \#
-    -   BOE-Hydis HV150UX1-102: \#
+    -   BOE-Hydis HV150UX1-100: #
+    -   IDTech N150U3-L01: #
+    -   BOE-Hydis HV150UX1-102: #
 -   **T60 15" QXGA (2048x1536):**
-    -   IDtech IAQX10N: \#
-    -   IDtech IAQX10S: \#
+    -   IDtech IAQX10N: #
+    -   IDtech IAQX10S: #
 
 [Back to top of page.](#pagetop)
 

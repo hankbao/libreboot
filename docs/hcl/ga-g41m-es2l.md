@@ -15,7 +15,7 @@ Devuan, this would be in the entry for your NIC:\
 hwaddress ether macaddressgoeshere
 
 Flashing instructions can be found at
-[../install/\#flashrom](../install/#flashrom)
+[../install/#flashrom](../install/#flashrom)
 
 
 
