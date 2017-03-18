@@ -1,0 +1,164 @@
+<div class="section">
+
+GRUB payload {#pagetop}
+============
+
+This section relates to the GRUB payload used in libreboot.
+
+Or [Back to main index](../).
+
+-   [Changing the background image in GRUB](#grub_background)
+-   [Setting font in GRUB](#grub_font)
+-   [GRUB keyboard layouts](#grub_keyboard)
+    -   [Custom keyboard layout in GRUB](#grub_custom_keyboard)
+    -   [UK Dvorak keyboard layout in GRUB](#grub_ukdvorak_keyboard)
+
+</div>
+
+<div class="section">
+
+Changing the background image in GRUB {#grub_background}
+=====================================
+
+Use cbfstool from libreboot\_util, or
+libreboot\_src/coreboot/util/cbfstool/ if you want to build from source.
+
+./cbfstool yourrom.rom remove background.png -n background.png\
+./cbfstool yourrom.rom add -f background.png -n background.png -t raw
+
+When you\'ve done this, re-flash your ROM and you should have a new
+background at boot time.
+
+</div>
+
+<div class="section">
+
+Setting font in GRUB (for reference) {#grub_font}
+====================================
+
+You don\'t need to do this unless you would like to change the default
+font yourself. (this is just for reference. It has already been done for
+you)
+
+The old font used was Unifont, and this had some missing characters: for
+instance, the border showed ??? characters instead of lines.
+
+I tried DeJavu Sans Mono from this website:
+[dejavu-fonts.org](http://dejavu-fonts.org/wiki/Download)
+
+Specifically, the version that I chose was the latest at the time of
+writing (Saturday 21 June 2014): [this
+one](http://sourceforge.net/projects/dejavu/files/dejavu/2.34/dejavu-fonts-ttf-2.34.tar.bz2)
+
+This is a free font that is also contained in GNU+Linux distributions
+like Debian, Devuan or Parabola.
+
+**\$ cd libreboot\_src/grub**\
+compile grub (the build scripts info on how to do this)\
+come back out into libreboot\_src/resources/grub:\
+**\$ cd ../libreboot\_src/resources/grub/font**
+
+I took Dejavu Sans Mono from dejavu (included in this version of
+libreboot) and did:\
+**\$ ../../../grub/grub-mkfont -o dejavusansmono.pf2
+dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf**
+
+I then added the instructions to \'gen.sh\' script in grub-assemble to
+include resources/grub/dejavusansmono.pf2 in all of the ROM images, at
+the root of the GRUB memdisk.\
+I then added that instructions to the grub.cfg files (to load the
+font):\
+**loadfont (memdisk)/dejavusansmono.pf2**
+
+[Back to top of page](#pagetop)
+
+</div>
+
+<div class="section">
+
+GRUB keyboard layouts (for reference) {#grub_keyboard}
+=====================================
+
+<div class="subsection">
+
+Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
+----------------------------------------------
+
+Keymaps are stored in resources/utilities/grub-assemble/keymap/.
+
+Example (French Azerty):\
+**\$ ckbcomp fr &gt; frazerty**\
+\
+Go in grub directory:\
+**cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
+
+You must make sure that the files are named keymap and keymap.gkb (where
+\'keymap\' can be whatever you want).
+
+Then from the above example, you would put **frazerty** in
+**resources/utilities/grub-assemble/keymap/original/** and the
+**frazerty.gkb** file goes under
+**resources/utilities/grub-assemble/keymap/**
+
+The build scripts will automatically see this, and automatically build
+ROM images with your custom layout (given the name) and include them
+under bin. Example: **libreboot\_frazerty.rom**.
+
+[Back to top of page](#pagetop)
+
+</div>
+
+<div class="subsection">
+
+UK Dvorak keyboard layout in GRUB (for reference) {#grub_ukdvorak_keyboard}
+-------------------------------------------------
+
+ukdvorak had to be created manually, based on usdvorak. diff them (under
+resources/utilities/grub-assemble/keymap/original) to see how ukdvorak
+file was created
+
+**\$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb**
+
+[Back to top of page](#pagetop)
+
+</div>
+
+</div>
+
+<div class="section">
+
+Copyright © 2014 Leah Rowe &lt;info@minifree.org&gt;\
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the Creative Commons Attribution-ShareAlike 4.0
+International license or any later version published by Creative
+Commons; A copy of the license can be found at
+[../cc-by-sa-4.0.txt](../cc-by-sa-4.0.txt)
+
+Updated versions of the license (when available) can be found at
+<https://creativecommons.org/licenses/by-sa/4.0/legalcode>
+
+UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT
+POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND
+AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND
+CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY,
+OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE,
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT,
+ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE
+OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF
+WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT
+APPLY TO YOU.
+
+TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU
+ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR
+OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL,
+PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES
+ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN
+IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES,
+COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT
+ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
+
+The disclaimer of warranties and limitation of liability provided above
+shall be interpreted in a manner that, to the extent possible, most
+closely approximates an absolute disclaimer and waiver of all liability.
+
+</div>
