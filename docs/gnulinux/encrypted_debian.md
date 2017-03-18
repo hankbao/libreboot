@@ -193,7 +193,7 @@ this section.
 
 Immediately after logging in, do that:
 
-$ **sudo ecryptfs-unwrap-passphrase**
+\$ **sudo ecryptfs-unwrap-passphrase**
 
 This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note

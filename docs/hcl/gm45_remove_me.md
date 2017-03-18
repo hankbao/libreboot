@@ -38,12 +38,12 @@ ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
 source with:
 
-    $ ./oldbuild module ich9deblob
+    \$ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:
 
-$ **./ich9gen**
+\$ **./ich9gen**
 
 Running ich9gen this way (without any arguments) generates a default
 descriptor+gbe image with a generic MAC address. You probably don't
@@ -70,7 +70,7 @@ onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:
 
-    $ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
+    \$ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -89,17 +89,17 @@ descriptor+gbe file into the ROM image.
 
 For 16MiB flash chips:
 
-$ **dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
+\$ **dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
 For 8MiB flash chips:
 
-$ **dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
+\$ **dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
 For 4MiB flash chips:
 
-$ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
+\$ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
@@ -170,7 +170,7 @@ under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:
 
-    $ ./oldbuild module ich9deblob
+    \$ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -183,7 +183,7 @@ external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
 ich9deblob executable, then run the tool:
 
-$ **./ich9deblob**
+\$ **./ich9deblob**
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
 this and the factory.rom stored in a safe location!** The first 4KiB
@@ -201,11 +201,11 @@ Assuming that your libreboot image is named **libreboot.rom**, copy the
 **deblobbed\_descriptor.bin** file to where **libreboot.rom** is located
 and then run:
 
-$ **dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
+\$ **dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
 Alternatively, if you got a the **deblobbed\_4kdescriptor.bin** file (no
-GbE defined), do this: $ **dd if=deblobbed\_4kdescriptor.bin
+GbE defined), do this: \$ **dd if=deblobbed\_4kdescriptor.bin
 of=libreboot.rom bs=1 count=4k conv=notrunc**
 
 The utility will also generate 4 additional files:
@@ -239,13 +239,13 @@ all of those restrictions.
 
 Simply run (with factory.rom in the same directory):
 
-$ **./demefactory**
+\$ **./demefactory**
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.
 Keep the original factory.rom stored safely somewhere):
 
-$ **dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
+\$ **dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
 count=4k conv=notrunc**
 
 TODO: test this.

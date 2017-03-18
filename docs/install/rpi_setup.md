@@ -14,7 +14,7 @@ SOIC-16).
 [](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-The Raspberry Pi (a multipurpose $25 GNU+Linux computer) can be used as
+The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 
 > **Note:** The Raspberry Pi Model A is not supported, since it has no
@@ -206,7 +206,7 @@ GPG signature as well.
 
     x86# gpg --keyserver prefered.keyserver.org --recv-keys 0x656F212E
 
-    x86# for signature in $(ls *.sig); do gpg --verify $signature; done
+    x86# for signature in \$(ls *.sig); do gpg --verify \$signature; done
 
 Extract NOOBS and libreboot.
 
@@ -347,13 +347,13 @@ for great good!
 [](#raspberry-pi-c720-chromebook){#user-content-raspberry-pi-c720-chromebook .anchor}Raspberry Pi (C720 Chromebook)
 -------------------------------------------------------------------------------------------------------------------
 
-The Raspberry Pi (a multipurpose $25 GNU+Linux computer) can be used as
+The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 
 ### [](#what-you-need){#user-content-what-you-need .anchor}What you need
 
--   $25 - Raspberry Pi Model B (Rev.2 or higher)
--   $10-20 - SOIC-8 Pomona Clip
+-   \$25 - Raspberry Pi Model B (Rev.2 or higher)
+-   \$10-20 - SOIC-8 Pomona Clip
     -   Usually comes bundled with nice, color-colored *female to
         female* wires
 

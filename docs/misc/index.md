@@ -24,7 +24,7 @@ Included with libreboot is a script called 'powertop.debian'. Run this
 as root and it will setup powertop to run with \--auto-tune at boot
 time. Load the file in your text editor to see how it does that.
 
-$ **sudo ./resources/scripts/misc/powertop.debian**
+\$ **sudo ./resources/scripts/misc/powertop.debian**
 
 Might want to run with \--calibrate first
 
@@ -50,7 +50,7 @@ GRUB. These consume power. Stop using them!
 
 Be root
 
-    $ su -
+    \$ su -
 
 Installed powertop:
 
@@ -99,7 +99,7 @@ USB Serial adapter.
 
 On the 2nd system, you can try this (using GNU Screen):
 
-    $ sudo screen /dev/ttyUSB0 115200
+    \$ sudo screen /dev/ttyUSB0 115200
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
 Y.
@@ -215,13 +215,13 @@ behaviour.
 
 Disable or enable beeps when removing/adding the charger:
 
-    $ sudo ./nvramtool -w power\_management\_beeps=Enable
-$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
+    \$ sudo ./nvramtool -w power\_management\_beeps=Enable
+\$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
 
 Disable or enable beeps when battery is low:
 
-    $ sudo ./nvramtool -w low\_battery\_beep=Enable
-$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
+    \$ sudo ./nvramtool -w low\_battery\_beep=Enable
+\$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
 
 A reboot is required, for these changes to take effect.
 
@@ -234,11 +234,11 @@ Or look in **/sys/class/drm/card0-LVDS-1/edid**
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
 package i2c-tools.
 
-    $ sudo modprobe i2c-dev
-$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
+    \$ sudo modprobe i2c-dev
+\$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
 -y)
 
-    $ sudo rmmod i2c-dev
+    \$ sudo rmmod i2c-dev
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically
@@ -266,7 +266,7 @@ laptop. If power usage is a concern, then you should not use this.
 To disable c-states, do this in GNU+Linux:
 
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
-> $i; done**
+> \$i; done**
 
 You can reproduce this issue more easily by sending lots of traffic
 across subnets on the same interface (NIC).

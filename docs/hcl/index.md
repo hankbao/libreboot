@@ -183,7 +183,7 @@ could get finger input working. They used linuxwacom at git tag
     # Now, for some reason (probably a bug in linuxwacom),
     # the 'Touch=on' directive gets reset to 'off'.
     # So you'll need to do
-    # $ xsetwacom --set WTouch Touch on
+    # \$ xsetwacom --set WTouch Touch on
     #
     # tested with linuxwacom git 42a42b2a8636abc9e105559e5dea467163499de7
 
@@ -407,8 +407,8 @@ for whatever reason, since they include a lot of useful information.
 
 Backups created using wget:
 
-    $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
-**$ wget -m -p -E -k -K -np
+    \$ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
+**\$ wget -m -p -E -k -K -np
 http://macbook.donderklumpen.de/coreboot/**
 
 Use **-e robots=off** if using this trick for other sites and the site

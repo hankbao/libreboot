@@ -128,19 +128,19 @@ Make sure that you have cross compiling environment for
 arm-linux-gnueabihf setup on your *host*.
 
 -   On BBB: uname -r - this will give you version number like
-    3.8.13-bone70 (I will refer to this as: $mav.$miv-$lv: where
+    3.8.13-bone70 (I will refer to this as: \$mav.\$miv-\$lv: where
     mav=3.8, miv=13, lv=bone70
 -   Get the BBB kernel ready on your host for cross-compiling:
 
 <!-- -->
 
-    $ cd $work_dir
-    $ git clone https://github.com/beagleboard/kernel.git
-    $ cd kernel
-    $ git checkout $mav (see above)
-    $ ./patch.sh
-    $ wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
-    $ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
+    \$ cd \$work_dir
+    \$ git clone https://github.com/beagleboard/kernel.git
+    \$ cd kernel
+    \$ git checkout \$mav (see above)
+    \$ ./patch.sh
+    \$ wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
+    \$ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
 
 -   Download the patch from
     [here](http://www.coreboot.org/images/8/88/Ehci-debug-gadget-patches.tar.gz)
@@ -150,7 +150,7 @@ arm-linux-gnueabihf setup on your *host*.
     the two different version of the kernel (3.8 and 3.10). I will use
     3.8. (If using kernel 3.12 patch\_1 is not needed)
 -   cd kernel (note that this is one more level: you should be in
-    $work\_dir/kernel/kernel)
+    \$work\_dir/kernel/kernel)
 -   Apply the patches:
 
 <!-- -->
@@ -166,12 +166,12 @@ arm-linux-gnueabihf setup on your *host*.
     see
     [scripts](http://www.fsfla.org/svn/fsfla/software/linux-libre/scripts/).
 -   Get your current BBB kernel config (from: /boot/config-<ver>)
-    and copy it to your host as $work\_dir/kernel/kernel/.config
+    and copy it to your host as \$work\_dir/kernel/kernel/.config
 -   Set proper version number:
-    -   On your host, edit $work\_dir/kernel/kernel/.config (the one
+    -   On your host, edit \$work\_dir/kernel/kernel/.config (the one
         you've just copied from BBB), find the line
         CONFIG\_LOCALVERSION="<something or empty>" and change
-        it to CONFIG\_LOCALVERSION="-$lv", so it will look something
+        it to CONFIG\_LOCALVERSION="-\$lv", so it will look something
         like: CONFIG\_LOCALVERSION="-bone70"
 -   Also, make sure that: CONFIG\_USB\_G\_DBGP=m (If not, make
     menuconfig, and set @Device Drivers-> USB Support -> USB
@@ -180,12 +180,12 @@ arm-linux-gnueabihf setup on your *host*.
 
 <!-- -->
 
-    $ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 (is it possoble to build only the gadget modules)
-    $ mkdir ../tmp && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=../tmp modules_install
+    \$ make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- -j4 (is it possoble to build only the gadget modules)
+    \$ mkdir ../tmp && make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- INSTALL_MOD_PATH=../tmp modules_install
 
 -   on BBB, backup /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
     (i.e. mv /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
-    $HOME)
+    \$HOME)
 -   copy the freshly compiled usb/gadget dir to
     /lib/modules/3.8.13-bone70/kernel/drivers/usb
 -   restart BBB
@@ -200,14 +200,14 @@ push debug messages to the EHCI debug port.
 If you've downloaded the binary distribution, you can check if it is
 properly configured in the following way:
 
--   Go to the libreboot dist root directory cd $libreboot\_bin
--   Locate the rom image for your target (I will call it: $img\_path)
+-   Go to the libreboot dist root directory cd \$libreboot\_bin
+-   Locate the rom image for your target (I will call it: \$img\_path)
 -   Running the following command will extract the config in a file
     ./my\_config:
 
 <!-- -->
 
-    ./cbfstool/i686/cbfstool $img_path extract -n config -f ./my_config
+    ./cbfstool/i686/cbfstool \$img_path extract -n config -f ./my_config
 
 -   Make sure that the following params in the config are set as
     following:

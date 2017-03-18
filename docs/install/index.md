@@ -80,9 +80,9 @@ Libreboot comes with ROM images built for QEMU, by default:
 
 Examples of how to use libreboot ROM images in QEMU:
 
--   $ **qemu-system-i386 -M q35 -m 512 -bios
+-   \$ **qemu-system-i386 -M q35 -m 512 -bios
     qemu\_q35\_ich9\_keymap\_mode.rom**
--   $ **qemu-system-i386 -M pc -m 512 -bios
+-   \$ **qemu-system-i386 -M pc -m 512 -bios
     qemu\_i440fx\_piix4\_keymap\_mode.rom**
 
 You can optionally specify the **-serial stdio** argument, so that QEMU
@@ -265,13 +265,13 @@ executables from the libreboot source code archives.
 
 How to update the flash chip contents:
 
-$ **sudo ./flash update [yourrom.rom](#rom)**
+\$ **sudo ./flash update [yourrom.rom](#rom)**
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
-$ **sudo ./flash forceupdate [yourrom.rom](#rom)**
+\$ **sudo ./flash forceupdate [yourrom.rom](#rom)**
 
 You should see **"Verifying flash... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
@@ -302,7 +302,7 @@ https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23
 
 The first half of the procedure is as follows:
 
-$ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
+\$ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
 
 You should see within the output the following:
 
@@ -325,11 +325,11 @@ and then boot; libreboot is running, but there is a 2nd procedure
 
 When you have booted up again, you must also do this:
 
-$ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
+\$ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
 
 If flashing fails at this stage, try the following:
 
-$ **sudo ./flashrom/i686/flashrom -p
+\$ **sudo ./flashrom/i686/flashrom -p
 internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
 
 You should see within the output the following:
@@ -368,7 +368,7 @@ with your device.
 
 Use this flashing script, to install libreboot:
 
-$ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
+\$ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
 
 You should also see within the output the following:
 

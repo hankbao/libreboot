@@ -611,7 +611,7 @@ I didn't want the following, so I removed them:
 
 I also lazily installed all fonts:
 
-# **pacman -S $(pacman -Ssq ttf-)**
+# **pacman -S \$(pacman -Ssq ttf-)**
 
 And a mail client:
 
@@ -638,7 +638,7 @@ start lxde without lxdm. Read
 
 Open LXterminal:
 
-    $ cp /etc/skel/.xinitrc \~
+    \$ cp /etc/skel/.xinitrc \~
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.
 
@@ -656,7 +656,7 @@ exec startlxde
 
 * Now make sure that it is executable:
 
-$ **chmod +x .xinitrc**
+\$ **chmod +x .xinitrc**
 
 [Back to top of page.](#pagetop)
 

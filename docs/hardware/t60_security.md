@@ -350,8 +350,8 @@ Explain that black hats, TAO, and so on might use a 0day to get in, and
 explain that in this case it mitigates what the attacker can do. Also
 the TAO do some evaluation before launching an attack: they take the
 probability of beeing caught into account, along with the kind of
-target. A 0day costs a lot of money, I heard that it was from 100000$
-to 400000$, some other websites had prices 10 times lower but that but
+target. A 0day costs a lot of money, I heard that it was from 100000\$
+to 400000\$, some other websites had prices 10 times lower but that but
 it was probably a typo. So if people increase their security it makes it
 more risky and more costly to attack people.
 

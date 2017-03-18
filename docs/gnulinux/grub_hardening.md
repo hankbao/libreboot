@@ -111,12 +111,12 @@ configurations, is to remove (or comment out) **unset superusers** in
 function try\_user\_config:
 
     function try_user_config {
-       set root="${1}"
+       set root="\${1}"
        for dir in boot grub grub2 boot/grub boot/grub2; do
           for name in '' autoboot_ libreboot_ coreboot_; do
-             if [ -f /"${dir}"/"${name}"grub.cfg ]; then
+             if [ -f /"\${dir}"/"\${name}"grub.cfg ]; then
                 #unset superusers
-                configfile /"${dir}"/"${name}"grub.cfg
+                configfile /"\${dir}"/"\${name}"grub.cfg
              fi
           done
        done
