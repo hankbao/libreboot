@@ -187,11 +187,11 @@ At this point, you will have finished the installation. At your GRUB
 payload, press C to get to the command line.
 
 Do that:\
-grub> **cryptomount -a**\
-grub> **set root='lvm/matrix-rootvol'**\
+grub>     cryptomount -a
+grub>     set root='lvm/matrix-rootvol'
 grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
-grub> **initrd /initrd.img**\
+grub>     initrd /initrd.img
 grub> **boot**
 
 
@@ -222,8 +222,8 @@ Modify your grub.cfg (in the firmware) [using this
 tutorial](grub_cbfs.html); just change the default menu entry 'Load
 Operating System' to say this inside:
 
-**cryptomount -a**\
-**set root='lvm/matrix-rootvol'**\
+    cryptomount -a
+    set root='lvm/matrix-rootvol'
 **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
 **initrd /initrd.img**

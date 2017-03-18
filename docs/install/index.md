@@ -330,7 +330,7 @@ are swapped"**.
 
 You should also see within the output the following:\
 **"Your flash chip is in an unknown state"**, **"FAILED"** and
-**"DO NOT REBOOT OR POWEROFF"**\
+    "DO NOT REBOOT OR POWEROFF"
 Seeing this means that the operation was a **resounding** success!
 **DON'T PANIC**.
 

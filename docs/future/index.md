@@ -160,10 +160,10 @@ working and nonworking panels.
 
 How to dump EDID:
 
-\# **apt-get install i2c-tools**\
-\# **modprobe i2c-dev**\
+\#     apt-get install i2c-tools
+\#     modprobe i2c-dev
 Find out the correct ID to use:\
-\# **i2cdetect -l**\
+\#     i2cdetect -l
 Example:\
 \# **i2cdump -y 2 0x50**
 

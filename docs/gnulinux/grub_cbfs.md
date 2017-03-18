@@ -141,8 +141,8 @@ image file is named *libreboot.rom*, so please make sure to adapt.
 
 ROM images are included pre-compiled in libreboot. You can also dump
 your current firmware, using flashrom:\
-$ **sudo flashrom -p internal -r libreboot.rom**\
-\# **flashrom -p internal -r libreboot.rom**\
+$     sudo flashrom -p internal -r libreboot.rom
+\#     flashrom -p internal -r libreboot.rom
 If you are told to specify the chip, add the option **-c {your chip}**
 to the command, for example:\
 \# **flashrom -c MX25L6405 -p internal -r libreboot.rom**
@@ -193,11 +193,11 @@ Testing
 **Now you have a modified ROM. Refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it.\
-$ **cd /libreboot\_util** \# **./flash update libreboot.rom**\
+$     cd /libreboot\_util** \# **./flash update libreboot.rom
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
-\# **./flash forceupdate libreboot.rom**\
+\#     ./flash forceupdate libreboot.rom
 You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. Once you have done that, shut down and then boot
 up with your new test configuration.**

@@ -93,7 +93,7 @@ it wasn't needed). **This is optional**
 Remove the microphone (can desolder it, but you can also easily pull it
 off with you hands). Already removed here:\
 ![](../images/x60_security/0001_microphone.jpg)\
-**Rationale:**\
+    Rationale:
 Another reason to remove the microphone: If your computer
 gets[\[1\]](#ref1) compromised, it can record what you say, and use it
 to receive data from nearby devices if they're compromised too. Also,

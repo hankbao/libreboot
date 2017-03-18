@@ -158,7 +158,7 @@ Alternatives to SSH (in case SSH fails)
 
 You can also use a serial FTDI debug board with GNU Screen, to access
 the serial console.\
-\# **screen /dev/ttyUSB0 115200**\
+\#     screen /dev/ttyUSB0 115200
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
@@ -211,14 +211,14 @@ contents of this file with:
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
 Check that the firmware exists:\
-\# **ls /lib/firmware/BB-SPI0-01-00A0.***\
+\#     ls /lib/firmware/BB-SPI0-01-00A0.*
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
 Then:\
-\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots**\
-\# **cat /sys/devices/bone\_capemgr.*/slots**\
+\#     echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots
+\#     cat /sys/devices/bone\_capemgr.*/slots
 Output:
 
      0: 54:PF--- 
@@ -230,7 +230,7 @@ Output:
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
 Verify that the spidev device now exists:\
-\# **ls -al /dev/spid***\
+\#     ls -al /dev/spid*
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
@@ -253,7 +253,7 @@ Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
 Now test flashrom:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512**\
+\#     ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 Output:
 
     Calibrating delay loop... OK.

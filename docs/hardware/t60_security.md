@@ -127,7 +127,7 @@ system:\
 Remove microphone (soldering iron not needed. Just wedge it out
 gently):\
 ![](../images/t60_dev/0039.JPG)\
-**Rationale:**\
+    Rationale:
 Another reason to remove the microphone: If your computer
 gets[\[1\]](#ref1) compromised, it can record what you say, and use it
 to receive data from nearby devices if they're compromised too. Also,
@@ -142,7 +142,7 @@ Remove infrared:\
 Remove cardbus (it's in a socket, no need to disable. Just remove the
 port itself):\
 ![](../images/t60_dev/0041.JPG)\
-**Rationale:**\
+    Rationale:
 It has direct memory access and can be used to extract sensitive details
 (such as LUKS keys). See 'GoodBIOS' video linked at the end (speaker
 is Peter Stuge, a coreboot hacker). The video covers X60 but the same

@@ -167,7 +167,7 @@ If you are at least 127 commits after release 20150518 (commit message
 **upstream** stable release of libreboot after 20150518), then you can
 press C at the GRUB console, and use this command to find out what
 version of libreboot you have:\
-**cat (cbfsdisk)/lbversion**\
+    cat (cbfsdisk)/lbversion
 This will also work on non-release images (the version string is
 automatically generated, using *git describe \--tags HEAD*), built from
 the git repository. A file named *version* will also be included in the
@@ -177,7 +177,7 @@ If it exists, you can also extract this *lbversion* file by using the
 *cbfstool* utility which libreboot includes, from a ROM image that you
 either dumped or haven't flashed yet. In your distribution, run
 cbfstool on your ROM image (*libreboot.rom*, in this example):\
-$ **./cbfstool libreboot.rom extract -n lbversion -f lbversion**\
+$     ./cbfstool libreboot.rom extract -n lbversion -f lbversion
 You will now have a file, named *lbversion*, which you can read in
 whatever program it is that you use for reading/writing text files.
 
@@ -188,7 +188,7 @@ repository below 127 commits after 20150518, you can find a file named
 *commitid* inside the archives. If you are using pre-built ROM images
 from the libreboot project, you can press C in GRUB for access to the
 terminal, and then run this command:\
-**lscoreboot**\
+    lscoreboot
 You may find a date in here, detailing when that ROM image was built.
 For pre-built images distributed by the libreboot project, this is a
 rough approximation of what version you have, because the version
