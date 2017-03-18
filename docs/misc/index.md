@@ -39,7 +39,6 @@ is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
 
-[Back to top of page](#pagetop)
 
 
 
@@ -92,7 +91,6 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-[Back to top of page](#pagetop)
 
 
 
@@ -133,7 +131,6 @@ Note: part of the tutorial above requires changing your grub.cfg. Just
 change the **linux** line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
 
-[Back to top of page](#pagetop)
 
 
 

@@ -55,7 +55,6 @@ OpenBSD installer to it with dd. For example:\
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
 
 Prepare the USB drive (in NetBSD)
 ---------------------------------
@@ -98,7 +97,6 @@ distro ISO to it with dd. For example:\
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
 
 
 
@@ -113,7 +111,6 @@ grub> **boot**
 It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
 
-[Back to top of page](#pagetop).
 
 
 
@@ -145,7 +142,6 @@ installations would be possible, but probably not feasible; it's an
 alien codebase to the OpenBSD project, not tightly integrated and the
 OpenBSD bootloader already works.
 
-[Back to top of page](#pagetop).
 
 
 
@@ -159,7 +155,6 @@ grub> **boot**
 
 OpenBSD will start booting. Yay!
 
-[Back to top of page](#pagetop).
 
 
 
@@ -184,7 +179,6 @@ The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
 seconds OpenBSD will boot, or you can hit enter to boot.
 
-[Back to top of page](#pagetop).
 
 
 
@@ -206,7 +200,6 @@ won't boot\...something about file not found
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
 
-[Back to top of page](#pagetop).
 
 
 

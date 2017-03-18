@@ -297,7 +297,6 @@ Results (\# means untested):
     -   IDtech IAQX10N: \#
     -   IDtech IAQX10S: \#
 
-[Back to top of page](#pagetop)
 
 
 

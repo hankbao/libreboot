@@ -44,7 +44,6 @@ or:\
 
 For other GNU+Linux distributions, you can adapt the existing scripts.
 
-[Back to top of page](#pagetop)
 
 
 
@@ -329,7 +328,6 @@ The ROM images will be stored in separate archives for each system,
 under **release/oldbuildsystem/rom/**.
 
 
-[Back to top of page](#pagetop)
 
 
 

@@ -64,7 +64,6 @@ I then added that instructions to the grub.cfg files (to load the
 font):\
 **loadfont (memdisk)/dejavusansmono.pf2**
 
-[Back to top of page](#pagetop)
 
 
 
@@ -95,7 +94,6 @@ The build scripts will automatically see this, and automatically build
 ROM images with your custom layout (given the name) and include them
 under bin. Example: **libreboot\_frazerty.rom**.
 
-[Back to top of page](#pagetop)
 
 
 
@@ -108,7 +106,6 @@ file was created
 
 **$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb**
 
-[Back to top of page](#pagetop)
 
 
 

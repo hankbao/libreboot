@@ -71,7 +71,6 @@ Ututo
 
 It's a dead project.
 
-[Back to top of page](#pagetop)
 
 
 

@@ -261,7 +261,6 @@ Set a password:\
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
-[Back to top of page](#pagetop)
 
 
 
@@ -332,7 +331,6 @@ Read that manpage, and then continue studying all the files.
 The systemd developers tell me that it isn't usually necessary to touch
 the systemd-tmpfiles utility manually at all.
 
-[Back to top of page](#pagetop)
 
 
 

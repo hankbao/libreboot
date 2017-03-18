@@ -62,7 +62,6 @@ working). There may be exceptions; in other words, this is a list of
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
 
-[Back to top of page](#pagetop)
 
 
 
@@ -85,7 +84,6 @@ only replaces the BIOS firmware, not EC.
 Updated EC firmware has several advantages e.g. bettery battery
 handling.
 
-[Back to top of page](#pagetop)
 
 
 
@@ -101,7 +99,6 @@ Sample output:\
 7WHT19WW is the version in different notation, use search engine to find
 out regular version - in this case it's a 1.06 for x200 tablet
 
-[Back to top of page](#pagetop)
 
 
 
@@ -123,7 +120,6 @@ project if these work with linux-libre kernel (TODO: test):
 -   \[0200\]: Qualcomm Atheros AR242x / AR542x Wireless Network Adapter
     (PCI-Express) \[168c:001c\]
 
-[Back to top of page](#pagetop)
 
 
 

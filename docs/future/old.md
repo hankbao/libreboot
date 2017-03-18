@@ -97,7 +97,6 @@ phcoder (Vladimir Serbinenko) who is author of 5320
 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering
 frequency'.
 
-[Back to top of page](#pagetop)
 
 
 
@@ -128,7 +127,6 @@ Supported panels
 
 See [\#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
 
-[Back to top of page](#pagetop)
 
 
 
@@ -173,7 +171,6 @@ apt-get repositories) using tool "intel\_gtt":
     -   with coreboot (no vbios or native init):
         <http://paste.debian.net/104341>
 
-[Back to top of page](#pagetop)
 
 
 
@@ -225,7 +222,6 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
     -   [/sys/class/drm/card0/error](dumps/5927_crashdump)
     -   [.config](dumps/5927_config)
 
-[Back to top of page](#pagetop)
 
 
 
