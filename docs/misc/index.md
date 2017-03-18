@@ -62,7 +62,7 @@ Be root\
     $ su -
 
 Installed powertop:\
-**# pacman -S powertop**
+    # pacman -S powertop
 
 and added the following to /etc/systemd/system/powertop.service :
 
@@ -81,7 +81,7 @@ and added the following to /etc/systemd/system/powertop.service :
 
 Finally, as root do that:\
     # systemctl enable powertop
-**# systemctl start powertop**
+    # systemctl start powertop
 
 The next time you boot the system, the buzz will be gone.
 
