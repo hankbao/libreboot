@@ -155,7 +155,7 @@ Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
 
 You can check the contents of the ROM image, inside CBFS:\
-**$ cd \.../libreboot\_util/cbfstool** **$ ./cbfstool libreboot.rom
+    $ cd \.../libreboot\_util/cbfstool** $ ./cbfstool libreboot.rom
 print**
 
 The files *grub.cfg* and *grubtest.cfg* should be present. grub.cfg is
@@ -164,7 +164,7 @@ this tutorial, you will first modify and test *grubtest.cfg*. This is to
 reduce the possibility of bricking your device, so DO NOT SKIP THIS!
 
 Extract grubtest.cfg from the ROM image:\
-**$ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**
+    $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg
 
 Modify the grubtest.cfg accordingly.
 
@@ -177,7 +177,7 @@ Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testc
 
 Once your grubtest.cfg is modified and saved, delete the unmodified
 config from the ROM image:\
-**$ ./cbfstool libreboot.rom remove -n grubtest.cfg**
+    $ ./cbfstool libreboot.rom remove -n grubtest.cfg
 
 Next, insert the modified version:\
 **$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
@@ -230,10 +230,10 @@ $ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 grub.cfg**\
 
 Delete the grub.cfg that remained inside the ROM:\
-**$ ./cbfstool libreboot.rom remove -n grub.cfg**
+    $ ./cbfstool libreboot.rom remove -n grub.cfg
 
 Add the modified version that you just made:\
-**$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**
+    $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw
 
 **Now you have a modified ROM. Again, refer back to
 [../install/#flashrom](../install/#flashrom) for information on how to

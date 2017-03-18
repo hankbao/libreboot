@@ -50,7 +50,7 @@ like Debian, Devuan or Parabola.
     $ cd libreboot\_src/grub
 compile grub (the build scripts info on how to do this)\
 come back out into libreboot\_src/resources/grub:\
-**$ cd ../libreboot\_src/resources/grub/font**
+    $ cd ../libreboot\_src/resources/grub/font
 
 I took Dejavu Sans Mono from dejavu (included in this version of
 libreboot) and did:\
@@ -104,7 +104,7 @@ ukdvorak had to be created manually, based on usdvorak. diff them (under
 resources/utilities/grub-assemble/keymap/original) to see how ukdvorak
 file was created
 
-**$ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb**
+    $ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb
 
 
 

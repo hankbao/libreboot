@@ -59,7 +59,7 @@ when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
 Be root\
-**$ su -**
+    $ su -
 
 Installed powertop:\
 **# pacman -S powertop**
@@ -108,7 +108,7 @@ port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
 On the 2nd system, you can try this (using GNU Screen):\
-**$ sudo screen /dev/ttyUSB0 115200**
+    $ sudo screen /dev/ttyUSB0 115200
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
 Y.

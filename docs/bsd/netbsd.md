@@ -60,7 +60,7 @@ to create the bootable NetBSD USB drive:
 Connect the USB drive. Check dmesg:\
     $ dmesg | tail
 Check to confirm which drive it is, for example, if you think its sd3:\
-**$ disklabel sd3**
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
@@ -83,7 +83,7 @@ the bootable NetBSD USB drive:
 Connect the USB drive. Check dmesg:\
     $ dmesg
 Check lsblk to confirm which drive it is:\
-**$ lsblk**
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
