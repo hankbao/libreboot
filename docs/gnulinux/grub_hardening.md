@@ -1,4 +1,3 @@
-<div class="section">
 
 GRUB hardening
 ==============
@@ -9,9 +8,7 @@ highly recommended by the Libreboot project.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 GRUB secure boot with GPG
 =========================
@@ -47,9 +44,7 @@ Helpful links:
 -   [Coreboot GRUB security
     howto](https://www.coreboot.org/GRUB2#Security)
 
-</div>
 
-<div class="section">
 
 GRUB Password
 =============
@@ -142,9 +137,7 @@ an attacker wants is then just a few GRUB commands away.
 As far as basic password setup is concerned we are done and we can now
 move on to signing.
 
-</div>
 
-<div class="section">
 
 GPG keys
 ========
@@ -193,9 +186,7 @@ What remains now is to include the modifications into the image (rom):
 
 \... and flashing it.
 
-</div>
 
-<div class="section">
 
 Copyright © 2017 Fedja Beader &lt;fedja@protonmail.ch&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -231,4 +222,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

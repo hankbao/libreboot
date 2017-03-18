@@ -1,4 +1,3 @@
-<div class="section">
 
 How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1 {#pagetop}
 ========================================================================
@@ -33,9 +32,7 @@ Onto the Beaglebone black\...
 
 [Back to previous index](./)
 
-</div>
 
-<div id="hardware_requirements" class="section">
 
 Hardware requirements
 =====================
@@ -107,9 +104,7 @@ Shopping list (pictures of this hardware is shown later):
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div id="psu33" class="section">
 
 Setting up the 3.3V DC PSU
 ==========================
@@ -145,9 +140,7 @@ connector, instead of going through the centre.
 Here is an example set up:\
 ![](images/x200/psu33.jpg "Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net> see license notice at the end of this document")
 
-</div>
 
-<div id="bbb_access" class="section">
 
 Accessing the operating system on the BBB
 =========================================
@@ -177,9 +170,7 @@ directly accessible from SSH, or screen:\
 You can also access the uboot console, using the serial method instead
 of SSH.
 
-</div>
 
-<div id="spidev" class="section">
 
 Setting up spidev on the BBB
 ============================
@@ -272,9 +263,7 @@ Output:
 This means that it\'s working (the clip isn\'t connected to any flash
 chip, so the error is fine).
 
-</div>
 
-<div id="clip" class="section">
 
 Connecting the Pomona 5250/5252
 ===============================
@@ -349,9 +338,7 @@ You should now have something that looks like this:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Notes about stability {#stability}
 =====================
@@ -371,9 +358,7 @@ following configuration:
 -   See this image: <http://i.imgur.com/qHGxKpj.jpg>
 -   He was able to flash at 50MHz (lower speeds are also fine).
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Copyright © 2015 Patrick \"P. J.\" McDermott &lt;pj@pehjota.net&gt;\
@@ -411,4 +396,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

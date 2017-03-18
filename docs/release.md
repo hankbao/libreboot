@@ -1,4 +1,3 @@
-<div class="section">
 
 Libreboot release information {#pagetop}
 =============================
@@ -6,9 +5,7 @@ Libreboot release information {#pagetop}
 Updated versions of libreboot can be found at
 [libreboot.org](http://libreboot.org/).
 
-</div>
 
-<div class="section">
 
 Old releases
 ------------
@@ -16,9 +13,7 @@ Old releases
 See [archive\_old.html](archive_old.html) for information about older
 libreboot releases.
 
-</div>
 
-<div class="section">
 
 Libreboot 20160907 {#release20160907}
 ==================
@@ -213,9 +208,7 @@ Kocialkowski)
 Various fixes to the ich9gen utility (e.g. flash component density is
 now set correctly in the descriptor, gbe-less descriptors now supported)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -251,4 +244,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

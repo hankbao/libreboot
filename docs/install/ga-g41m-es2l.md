@@ -1,4 +1,3 @@
-<div class="section">
 
 GA-G41M-ES2L flashing tutorial {#pagetop}
 ==============================
@@ -8,9 +7,7 @@ motherboard while they still have the original BIOS present.
 
 [Back to main index](./)
 
-</div>
 
-<div class="section">
 
 Flash chip size {#flashchips}
 ===============
@@ -20,9 +17,7 @@ Use this to find out:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Flashing instructions {#clip}
 =====================
@@ -57,9 +52,7 @@ NOTE: due to a bug in the hardware, the MAC address is hardcoded in
 coreboot-libre. Therefore, you must set your own MAC address in your
 operating system.
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -95,4 +88,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

@@ -1,4 +1,3 @@
-<div class="section">
 
 ThinkPad X60 Tablet: Recovery guide
 ===================================
@@ -8,9 +7,7 @@ your ThinkPad X60 Tablet from booting.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 -----------------
@@ -20,9 +17,7 @@ Table of Contents
     -   [Brick type 2: bad rom (or user error), system won\'t
         boot](#recovery)
 
-</div>
 
-<div class="section">
 
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
@@ -49,9 +44,7 @@ coreboot.rom) - 0x20000\] count=64k conv=notrunc\
 still has Lenovo BIOS running, using those instructions:
 <http://www.coreboot.org/Board:lenovo/x60/Installation>.
 
-</div>
 
-<div class="section">
 
 bad rom (or user error), system won\'t boot {#recovery}
 ===========================================
@@ -137,9 +130,7 @@ one of them following the instructions in the output.
 
 Reverse the steps to re-assemble your system.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -175,4 +166,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

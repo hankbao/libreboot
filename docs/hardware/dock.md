@@ -1,11 +1,8 @@
-<div class="section">
 
 Notes about DMA and the docking station (X60/T60)
 =================================================
 
-</div>
 
-<div class="section">
 
 
     Use case:
@@ -124,9 +121,7 @@ Notes about DMA and the docking station (X60/T60)
     >           The dock autodetection is tried only if it is also enabled
     > trough nvram.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -162,4 +157,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

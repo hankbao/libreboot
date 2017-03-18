@@ -1,4 +1,3 @@
-<div class="section">
 
 Intel D945GCLF flashing tutorial {#pagetop}
 ================================
@@ -11,9 +10,7 @@ For information about this board, go to
 
 [Back to main index](./)
 
-</div>
 
-<div class="section">
 
 Flashing instructions {#clip}
 =====================
@@ -24,9 +21,7 @@ external flashing.
 Here is an image of the flash chip:\
 ![](../images/d945gclf/d945gclf_spi.jpg)
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -62,4 +57,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

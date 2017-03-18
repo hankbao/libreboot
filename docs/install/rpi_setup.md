@@ -1,4 +1,3 @@
-<div class="section">
 
 How to program an SPI flash chip with the Raspberry Pi {#pagetop}
 ======================================================
@@ -14,9 +13,7 @@ SOIC-16).
 
 [Back to previous index](../)
 
-</div>
 
-<div class="section">
 
 [](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -428,9 +425,7 @@ box.](http://www.flashrom.org/RaspberryPi)
     -   [Win-Raid - Recover from Failed BIOS Flashing using Raspberry
         Pi](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Lawrence Wu &lt;sagnessagiel@gmail.com&gt;\
 Copyright © 2015 snuffeluffegus &lt;&gt;\
@@ -469,4 +464,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

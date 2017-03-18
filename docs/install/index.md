@@ -1,4 +1,3 @@
-<div class="section">
 
 Installing libreboot {#pagetop}
 ====================
@@ -12,9 +11,7 @@ that has CONFIG\_STRICT\_DEVMEM not enabled.
 
 [Back to previous index](../)
 
-</div>
 
-<div class="section">
 
 General information
 -------------------
@@ -55,9 +52,7 @@ Flashing via hardware methods, on system:
 -   [ThinkPad T400](t400_external.html)
 -   [ThinkPad T500](t500_external.html)
 
-</div>
 
-<div class="section">
 
 Information about libreboot ROM images {#rom}
 ======================================
@@ -105,9 +100,7 @@ information.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 How to update or install libreboot (if you are already running libreboot or coreboot) {#flashrom}
 =====================================================================================
@@ -118,12 +111,10 @@ any dedicated hardware. In other words, you can do everything entirely
 in software, directly from the OS that is running on your libreboot
 system.
 
-<div class="important">
 
 **If you are using libreboot\_src or git, then make sure that you built
 the sources first (see [../git/\#build](../git/#build)).**
 
-</div>
 
 Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
@@ -281,35 +272,27 @@ what CPU architecture you have (e.g. i686, x86\_64) and use the
 appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
-<div class="important">
 
 How to update the flash chip contents:\
 \$ **sudo ./flash update [yourrom.rom](#rom)**
 
-</div>
 
-<div class="important">
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
 \$ **sudo ./flash forceupdate [yourrom.rom](#rom)**
 
-</div>
 
-<div class="important">
 
 You should see **\"Verifying flash\... VERIFIED.\"** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
 
-</div>
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware) {#flashrom_lenovobios}
 ==================================================================================
@@ -321,19 +304,16 @@ already have coreboot or libreboot running, then go to
 **If you are flashing a Lenovo ThinkPad T60, be sure to read
 [../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list)**
 
-<div class="important">
 
 **If you are using libreboot\_src or git, then make sure that you built
 the sources first (see [../git/\#build](../git/#build)).**
 
-</div>
 
 **Warning: this guide will not instruct the user how to backup the
 original Lenovo BIOS firmware. These backups are tied to each system,
 and will not work on any other. For that, please refer to
 <http://www.coreboot.org/Board:lenovo/x60/Installation>.**
 
-<div class="important">
 
 **If you\'re using libreboot 20150518, note that there is a mistake in
 the flashing script. do this: *rm -f patch && wget -O flash
@@ -343,9 +323,7 @@ https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23
 The first half of the procedure is as follows:\
 \$ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
 
-</div>
 
-<div class="important">
 
 You should see within the output the following:\
 **\"Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000
@@ -364,9 +342,7 @@ If the above is what you see, then **SHUT DOWN**. Wait a few seconds,
 and then boot; libreboot is running, but there is a 2nd procedure
 **\*needed\*** (see below).
 
-</div>
 
-<div class="important">
 
 When you have booted up again, you must also do this:\
 \$ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
@@ -375,9 +351,7 @@ If flashing fails at this stage, try the following:\
 \$ **sudo ./flashrom/i686/flashrom -p
 internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
 
-</div>
 
-<div class="important">
 
 You should see within the output the following:\
 **\"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
@@ -386,23 +360,18 @@ untranslated\"**
 You should also see within the output the following:\
 **\"Verifying flash\... VERIFIED.\"**
 
-</div>
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 MacBook2,1: Initial installation guide (if running the proprietary firmware) {#flashrom_macbook21}
 ============================================================================
 
-<div class="important">
 
 **If you have a MacBook1,1, refer to
 [../hcl/\#macbook11](../hcl/#macbook11) for flashing instructions.**
 
-</div>
 
 **This is for the MacBook2,1 while running Apple EFI firmware. If you
 already have coreboot or libreboot running, then go to
@@ -415,37 +384,29 @@ Be sure to read the information in
 original Apple EFI firmware. For that, please refer to
 <http://www.coreboot.org/Board:apple/macbook21>.**
 
-<div class="important">
 
 **If you are using libreboot\_src or git, then make sure that you built
 the sources first (see [../git/\#build](../git/#build)).**
 
-</div>
 
 Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
 
-<div class="important">
 
 Use this flashing script, to install libreboot:\
 \$ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
 
-</div>
 
-<div class="important">
 
 You should also see within the output the following:\
 **\"Verifying flash\... VERIFIED.\"**
 
 Shut down.
 
-</div>
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -481,4 +442,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

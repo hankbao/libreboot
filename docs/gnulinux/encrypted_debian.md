@@ -1,4 +1,3 @@
-<div class="section">
 
 Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)
 =================================================================================
@@ -46,9 +45,7 @@ drive.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Set a strong user password (lots of lowercase/uppercase, numbers and
 symbols).
@@ -66,9 +63,7 @@ therefore optional, and not recommended. Choose \'no\'.**
 you will set later on. Your LUKS password should, like the user
 password, be secure.**
 
-</div>
 
-<div class="section">
 
 Partitioning
 ============
@@ -109,9 +104,7 @@ Choose \'Manual\' partitioning:
     -   name: **swap** (user this exact name)
     -   size: press enter
 
-</div>
 
-<div class="section">
 
 Further partitioning
 ====================
@@ -128,9 +121,7 @@ mountpoints and filesystems to use.
     -   done setting up partition
 -   Now you select \'Finished partitioning and write changes to disk\'.
 
-</div>
 
-<div class="section">
 
 Kernel
 ======
@@ -138,9 +129,7 @@ Kernel
 Installation will ask what kernel you want to use. linux-generic is
 fine.
 
-</div>
 
-<div class="section">
 
 Tasksel
 =======
@@ -162,9 +151,7 @@ instead, which contains the most up to date versions of the Linux
 kernel. These kernels are also deblobbed, like Debian\'s kernels, so you
 can be sure that no binary blobs are present.
 
-</div>
 
-<div class="section">
 
 Postfix configuration
 =====================
@@ -172,9 +159,7 @@ Postfix configuration
 If asked, choose *\"No Configuration\"* here (or maybe you want to
 select something else. It\'s up to you.)
 
-</div>
 
-<div class="section">
 
 Install the GRUB boot loader to the master boot record
 ======================================================
@@ -186,18 +171,14 @@ Choice is irrelevant here.
 *You do not need to install GRUB at all, since in libreboot you are
 using the GRUB payload (for libreboot) to boot your system directly.*
 
-</div>
 
-<div class="section">
 
 Clock UTC
 =========
 
 Just say \'Yes\'.
 
-</div>
 
-<div class="section">
 
 Booting your system
 ===================
@@ -213,9 +194,7 @@ cryptdevice=/dev/mapper/matrix-rootvol:root**\
 grub&gt; **initrd /initrd.img**\
 grub&gt; **boot**
 
-</div>
 
-<div class="section">
 
 ecryptfs
 ========
@@ -231,9 +210,7 @@ directory from another system, so write it down and keep the note
 somewhere secret. Ideally, you should memorize it and then burn the note
 (or not even write it down, and memorize it still)&gt;
 
-</div>
 
-<div class="section">
 
 Modify grub.cfg (CBFS)
 ======================
@@ -259,9 +236,7 @@ hardening your GRUB configuration, for security purposes.
 
 Flash the modified ROM using [this tutorial](../install/#flashrom).
 
-</div>
 
-<div class="section">
 
 Troubleshooting
 ===============
@@ -351,9 +326,7 @@ problems. Removing that worked around the issue.
       Does write ultra high speed  CD-RW media
       Does not write ultra high speed+ CD-RW media
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -389,4 +362,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

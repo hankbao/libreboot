@@ -1,4 +1,3 @@
-<div class="section">
 
 ThinkPad T60: Recovery guide
 ============================
@@ -8,9 +7,7 @@ your ThinkPad T60 from booting.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 -----------------
@@ -20,9 +17,7 @@ Table of Contents
     -   [Brick type 2: bad rom (or user error), system won\'t
         boot](#recovery)
 
-</div>
 
-<div class="section">
 
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
@@ -50,9 +45,7 @@ still has Lenovo BIOS running, using those instructions:
 <http://www.coreboot.org/Board:lenovo/x60/Installation>. (it says x60,
 but instructions for t60 are identical)
 
-</div>
 
-<div class="section">
 
 bad rom (or user error), system won\'t boot {#recovery}
 ===========================================
@@ -218,9 +211,7 @@ Always stress test (\'stress -c 2\' and xsensors. below 90C is ok) when
 replacing cpu paste/heatsink:\
 ![](../images/t60_dev/0074.JPG)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -256,4 +247,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

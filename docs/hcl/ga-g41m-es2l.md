@@ -1,4 +1,3 @@
-<div class="section">
 
 Gigabyte GA-G41M-ES2L desktop board {#pagetop}
 ===================================
@@ -18,9 +17,7 @@ hwaddress ether macaddressgoeshere
 Flashing instructions can be found at
 [../install/\#flashrom](../install/#flashrom)
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -56,4 +53,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

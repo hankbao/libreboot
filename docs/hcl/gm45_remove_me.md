@@ -1,4 +1,3 @@
-<div class="section">
 
 GM45 chipsets: remove the ME (manageability engine) {#pagetop}
 ===================================================
@@ -29,9 +28,7 @@ Another project recently found: <http://io.smashthestack.org/me/>
 
 [Back to previous index](./).
 
-</div>
 
-<div class="section">
 
 ICH9 gen utility {#ich9gen}
 ================
@@ -148,9 +145,7 @@ brick your laptop.
 
 For external flashing guides, refer to [../install/](../install/).
 
-</div>
 
-<div class="section">
 
 ICH9 deblob utility {#ich9deblob}
 ===================
@@ -226,9 +221,7 @@ descriptor and 8K gbe regions, which will then be safe to flash. Refer
 back to [../install/\#flashrom](../install/#flashrom) for how to flash
 it.
 
-</div>
 
-<div class="section">
 
 demefactory utility {#demefactory}
 ===================
@@ -271,16 +264,13 @@ disassemble and re-flash externally unless you brick the device.
 demefactory is part of the ich9deblob src, found at
 *resources/utilities/ich9deblob/*
 
-</div>
 
-<div class="section">
 
 The sections below are adapted from (mostly) IRC logs related to early
 development getting the ME removed on GM45. They are useful for
 background information. This could not have been done without sgsit\'s
 help.
 
-<div class="subsection">
 
 Early notes {#early_notes}
 -----------
@@ -304,13 +294,9 @@ Early notes {#early_notes}
     what the X201 uses:
     <http://www.intel.co.uk/content/dam/www/public/us/en/documents/datasheets/6-chipset-c200-chipset-datasheet.pdf>
 
-</div>
 
-</div>
 
-<div class="section">
 
-<div class="subsection">
 
 Flash chips {#flashchips}
 -----------
@@ -335,11 +321,8 @@ Flash chips {#flashchips}
 -   Schematics for X200s laptop:
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006104.pdf>.
 
-</div>
 
-</div>
 
-<div class="section">
 
 Early development notes {#early_development_notes}
 -----------------------
@@ -412,9 +395,7 @@ X200. End justified means, and the utility is no longer needed since the
 ich9deblob utility (documented on this page) can now be used to create
 deblobbed descriptors.
 
-</div>
 
-<div class="section">
 
 GBE (gigabit ethernet) region in SPI flash {#gbe_region}
 ------------------------------------------
@@ -448,7 +429,6 @@ is set to put gbe directly after the initial 4K flash descriptor. So the
 first 4K of the ROM is the descriptor, and then the next 8K is the gbe
 region.
 
-<div class="subsection">
 
 ### GBE region: change MAC address {#gbe_region_changemacaddress}
 
@@ -479,11 +459,8 @@ Look at resources/utilities/ich9deblob/ich9deblob.c.
     to 0xBABA. In other words, the checksum is 0xBABA minus the total of
     the first 0x3E 16bit numbers (unsigned), ignoring any overflow.
 
-</div>
 
-</div>
 
-<div class="section">
 
 Flash descriptor region {#flash_descriptor_region}
 -----------------------
@@ -548,9 +525,7 @@ So, *x &lt;&lt; 12 = address*
 
 If it\'s in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
 
-</div>
 
-<div class="section">
 
 platform data partition in boot flash (factory.rom / lenovo bios) {#platform_data_region}
 -----------------------------------------------------------------
@@ -563,9 +538,7 @@ This is a 32K region from the factory image. It could be data
 
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -601,4 +574,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

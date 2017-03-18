@@ -1,4 +1,3 @@
-<div id="pagetop" class="section">
 
 How to install NetBSD on a libreboot system
 ===========================================
@@ -24,17 +23,13 @@ for the initial instructions.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
 
-</div>
 
-<div id="prepare" class="section">
 
 netbsd.iso is the installation image for NetBSD. Adapt the filename
 accordingly, for your version of NetBSD.
@@ -106,9 +101,7 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="noencryption" class="section">
 
 Installing NetBSD without full disk encryption
 ----------------------------------------------
@@ -124,9 +117,7 @@ process for installing NetBSD.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="encryption" class="section">
 
 Installing NetBSD with full disk encryption
 -------------------------------------------
@@ -135,9 +126,7 @@ TODO
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="booting" class="section">
 
 Booting
 -------
@@ -151,9 +140,7 @@ NetBSD will start booting. Yay!
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="configuring_grub" class="section">
 
 Configuring Grub
 ----------------
@@ -178,9 +165,7 @@ seconds NetBSD will boot, or you can hit enter to boot.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="troubleshooting" class="section">
 
 Troubleshooting
 ===============
@@ -202,9 +187,7 @@ numbers may differ. Use TAB completion.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
@@ -241,4 +224,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

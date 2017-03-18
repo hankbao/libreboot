@@ -1,4 +1,3 @@
-<div class="section">
 
 Configuring Parabola (post-install) {#pagetop}
 ===================================
@@ -10,9 +9,7 @@ uses LXDE because it\'s lightweight, but we recommend the *MATE* desktop
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 =================
@@ -45,9 +42,7 @@ Table of Contents
     -   [LXDE - battery monitor](#lxde_battery)
     -   [LXDE - network manager](#lxde_network)
 
-</div>
 
-<div class="section">
 
 While not strictly related to the libreboot project, this guide is
 intended to be useful for those interested in installing Parabola on
@@ -64,9 +59,7 @@ will be made to maintain it.
 to be made at the present date, please get in touch with the libreboot
 project!**
 
-</div>
 
-<div class="section">
 
 You do not necessarily have to follow this guide word-for-word;
 *parabola* is extremely flexible. The aim here is to provide a common
@@ -80,9 +73,7 @@ Paradoxically, as you get more advanced Parabola can actually become
 compared to what most distributions provide. You will find over time
 that other distributions tend to *get in your way*.
 
-</div>
 
-<div class="section">
 
 **This guide assumes that you already have Parabola installed. If you
 have not yet installed Parabola, then [this
@@ -102,9 +93,7 @@ system Linux, using the term open-source (or closed-source), and it will
 sometimes recommend the use of proprietary software. You need to be
 careful about this when reading anything on the Arch wiki.
 
-</div>
 
-<div class="section">
 
 Some of these steps require internet access. I\'ll go into networking
 later but for now, I just connected my system to a switch and did:\
@@ -115,9 +104,7 @@ For most people this should be enough, but if you don\'t have DHCP on
 your network then you should setup your network connection first:\
 [Setup network connection in Parabola](#network)
 
-</div>
 
-<div class="section">
 
 Configure pacman {#pacman_configure}
 ----------------
@@ -135,9 +122,7 @@ sure to read and understand this, it\'s very important) and
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Updating Parabola {#pacman_update}
 -----------------
@@ -189,9 +174,7 @@ event that they do occur.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Maintaining Parabola {#pacman_maintain}
 --------------------
@@ -240,9 +223,7 @@ their equivalent in pacman:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 your-freedom {#yourfreedom}
 ------------
@@ -258,9 +239,7 @@ continue installing *your-freedom*.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Add a user {#useradd}
 ----------
@@ -284,9 +263,7 @@ passphrases (instead of passwords).
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 systemd
 -------
@@ -357,9 +334,7 @@ the systemd-tmpfiles utility manually at all.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Interesting repositories {#interesting_repos}
 ------------------------
@@ -386,9 +361,7 @@ repository enabled regardless.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Setup a network connection in Parabola {#network}
 --------------------------------------
@@ -479,9 +452,7 @@ systemd. NetworkManager will be setup later, after installing LXDE.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 System Maintenance {#system_maintain}
 ------------------
@@ -500,9 +471,7 @@ use it.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Configuring the desktop {#desktop}
 -----------------------
@@ -515,7 +484,6 @@ provide LXDE by default.
 
 [Back to top of page.](#pagetop)
 
-<div class="subsection">
 
 ### Installing Xorg {#desktop_xorg}
 
@@ -557,9 +525,7 @@ xorg-xclock xterm**\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### Xorg keyboard layout {#desktop_kblayout}
 
@@ -607,9 +573,7 @@ you use a US Qwerty keyboard, then you don\'t even need to do anything
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### Install LXDE {#desktop_lxde}
 
@@ -664,9 +628,7 @@ exec startlxde\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - clock {#lxde_clock}
 
@@ -675,9 +637,7 @@ Format to *%Y/%m/%d %H:%M:%S*
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - font {#lxde_font}
 
@@ -685,9 +645,7 @@ NOTE TO SELF: come back to this later.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - screenlock {#lxde_screenlock}
 
@@ -703,9 +661,7 @@ menu.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - automounting {#lxde_automount}
 
@@ -716,9 +672,7 @@ I chose to ignore this for now. NOTE TO SELF: come back to this later.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - disable suspend {#lxde_suspend}
 
@@ -727,9 +681,7 @@ least to me. NOTE TO SELF: disable it, then document the steps here.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - battery monitor {#lxde_battery}
 
@@ -741,9 +693,7 @@ cursor over it, it\'ll show information about the battery.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 ### LXDE - Network Manager {#lxde_network}
 
@@ -784,11 +734,8 @@ theme, in *lxappearance*.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -824,4 +771,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

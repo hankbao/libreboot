@@ -1,4 +1,3 @@
-<div class="section">
 
 Depthcharge payload {#pagetop}
 ===================
@@ -20,9 +19,7 @@ Or [Back to main index](../).
 -   [Configuring verified boot
     parameters](#configuring_verified_boot_parameters)
 
-</div>
 
-<div class="section">
 
 CrOS security model {#cros_security_model}
 ===================
@@ -33,18 +30,14 @@ compromised, that is implemented as the verified boot (vboot) reference,
 most of which is executed within depthcharge. A detailed overview of the
 CrOS security model is available on the dedicated page.
 
-<div class="subsection">
 
 In spite of the CrOS security model, depthcharge won\'t allow booting
 kernels without verifying their signature and booting from external
 media or legacy payload unless explicitly allowed: see [configuring
 verified boot parameters](#configuring_verified_boot_parameters).
 
-</div>
 
-</div>
 
-<div class="section">
 
 Developer mode screen {#developer_mode_screen}
 =====================
@@ -59,7 +52,6 @@ external media (when enabled), booting from legacy payload (when
 enabled), showing information about the device and disabling developer
 mode.
 
-<div class="subsection">
 
 Holding the developer mode screen {#holding_developer_mode_screen}
 ---------------------------------
@@ -68,9 +60,7 @@ As instructed on the developer mode screen, the screen can be held by
 pressing **Ctrl + H** in the first 3 seconds after the screen is shown.
 After that delay, depthcharge will resume booting normally.
 
-</div>
 
-<div class="subsection">
 
 Booting normally {#booting_normally}
 ----------------
@@ -80,9 +70,7 @@ after **3 seconds** (if developer mode screen is not held).\
 The default boot medium (internal storage, external media, legacy
 payload) is shown on screen.
 
-</div>
 
-<div class="subsection">
 
 Booting from different mediums {#booting_different_mediums}
 ------------------------------
@@ -98,9 +86,7 @@ can be triggered by pressing various key combinations:
 -   External media: **Ctrl + U** (when enabled)
 -   Legacy payload: **Ctrl + L** (when enabled)
 
-</div>
 
-<div class="subsection">
 
 Showing device information {#showing_device_information}
 --------------------------
@@ -110,9 +96,7 @@ can be triggered by pressing **Ctrl + I** or **Tab**.\
 Various information is shown, including vboot non-volatile data, TPM
 status, GBB flags and key hashes.\
 
-</div>
 
-<div class="subsection">
 
 Warnings
 --------
@@ -123,11 +107,8 @@ The developer mode screen will show warnings when:
 -   Booting from external media is enabled
 -   Booting legacy payloads is enabled
 
-</div>
 
-</div>
 
-<div class="section">
 
 Recovery mode screen {#recovery_mode_screen}
 ====================
@@ -139,7 +120,6 @@ It allows recovering the device from a bad state by booting from a
 trusted recovery media. When accessed with the device in a good state,
 it also allows enabling developer mode.
 
-<div class="subsection">
 
 Recovering from a bad state {#recovering_bad_state}
 ---------------------------
@@ -167,9 +147,7 @@ replaced. When the recovery private key is available (e.g. when using
 self-generated keys), it can be used to sign a kernel for recovery
 purposes.
 
-</div>
 
-<div class="subsection">
 
 Enabling developer mode {#enabling_developer_mode}
 -----------------------
@@ -179,11 +157,8 @@ by pressing **Ctrl + D**.\
 Instructions to confirm enabling developer mode are then shown on
 screen.
 
-</div>
 
-</div>
 
-<div class="section">
 
 Configuring verified boot parameters {#configuring_verified_boot_parameters}
 ====================================
@@ -209,7 +184,6 @@ of the device**. In particular, disabling kernels signature
 verification, external media boot and legacy payload boot can weaken the
 security of the device.
 
-<div class="subsection">
 
 The following parameters can be configured:
 
@@ -236,11 +210,8 @@ The following parameters can be configured:
     -   Legacy payload:\
         \# **crossystem dev\_default\_boot=legacy**
 
-</div>
 
-</div>
 
-<div class="section">
 
 Copyright © 2015 Paul Kocialkowski &lt;contact@paulk.fr&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -276,4 +247,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

@@ -1,4 +1,3 @@
-<div class="section">
 
 Diff and patch {#pagetop}
 ==============
@@ -7,9 +6,7 @@ This is just a quick guide for reference, use \'man\' to know more.
 
 [Back to index](./)
 
-</div>
 
-<div class="section">
 
 Apply a patch
 =============
@@ -47,9 +44,7 @@ Removing a patch using the -R flag\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Create a patch with diff
 ========================
@@ -65,9 +60,7 @@ Do whatever you want in new/ and then diff it:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 git diff
 ========
@@ -88,9 +81,7 @@ Replace N with the number of commits that you want to show.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 git apply
 =========
@@ -110,9 +101,7 @@ aswell, instead of just applying the patch.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -148,4 +137,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

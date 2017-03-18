@@ -1,4 +1,3 @@
-<div class="section">
 
 Development notes (old/obsolete notes) {#pagetop}
 ======================================
@@ -8,9 +7,7 @@ For current notes, see [](./).
 These are old (obsolete) notes that mare kept because they might become
 useful again in the future.
 
-</div>
 
-<div class="section">
 
 Table of contents
 =================
@@ -24,9 +21,7 @@ Table of contents
 -   [i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay
     code)](#x60_cb5927_testing)
 
-</div>
 
-<div class="section">
 
 X60 native graphics initialization (with backlight controls) {#x60_native_notes}
 ============================================================
@@ -104,9 +99,7 @@ frequency\'.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 ============================================================
@@ -137,9 +130,7 @@ See [\#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 i945: 3D fix (based on 5927) for kernel 3.12+ on 5320 {#5320_kernel312fix}
 =====================================================
@@ -184,9 +175,7 @@ apt-get repositories) using tool \"intel\_gtt\":
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code) {#x60_cb5927_testing}
 ========================================================================
@@ -238,9 +227,7 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -276,4 +263,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

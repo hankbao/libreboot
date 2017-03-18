@@ -1,4 +1,3 @@
-<div class="section">
 
 Changing the fan/heatsink on the ThinkPad X60
 =============================================
@@ -8,9 +7,7 @@ ThinkPad X60.
 
 [Back to main index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 =================
@@ -19,9 +16,7 @@ Table of Contents
 -   [Software Requirements](#software_requirements)
 -   [Disassembly](#procedure)
 
-</div>
 
-<div class="section">
 
 Hardware requirements {#hardware_requirements}
 =====================
@@ -32,9 +27,7 @@ Hardware requirements {#hardware_requirements}
     \'ok\')
 -   Something to spread the paste with
 
-</div>
 
-<div class="section">
 
 Software requirements (for CPU stress testing) {#software_requirements}
 ==============================================
@@ -42,9 +35,7 @@ Software requirements (for CPU stress testing) {#software_requirements}
 -   xsensors utility
 -   stress utility
 
-</div>
 
-<div class="section">
 
 Disassembly {#procedure}
 ===========
@@ -117,9 +108,7 @@ the heatsink, reversing previous steps.
 **xsensors** (or **watch sensors** command) can be used to monitor heat.
 Below 90C is ok.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -155,4 +144,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

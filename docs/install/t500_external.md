@@ -1,4 +1,3 @@
-<div class="section">
 
 Flashing the T500 with a BeagleBone Black {#pagetop}
 =========================================
@@ -11,9 +10,7 @@ followed (adapted) if you brick your T500, to know how to recover.
 
 [Back to main index](./)
 
-</div>
 
-<div class="section">
 
 Libreboot T400 {#t400}
 ==============
@@ -21,9 +18,7 @@ Libreboot T400 {#t400}
 You may also be interested in the smaller, more portable [Libreboot
 T400](t400_external.html).
 
-</div>
 
-<div class="section">
 
 Serial port {#serial_port}
 -----------
@@ -32,9 +27,7 @@ EHCI debug might not be needed. It has been reported that the docking
 station for this laptop has a serial port, so it might be possible to
 use that instead.
 
-</div>
 
-<div id="cpu_compatibility" class="section">
 
 A note about CPUs
 =================
@@ -50,9 +43,7 @@ Quad-core CPUs
 
 Incompatible. Do not use.
 
-</div>
 
-<div id="switchable_graphics" class="section">
 
 A note about GPUs
 =================
@@ -72,9 +63,7 @@ CPU paste required
 
 See [\#paste](#paste).
 
-</div>
 
-<div class="section">
 
 Flash chip size {#flashchips}
 ===============
@@ -84,9 +73,7 @@ Use this to find out:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section photos">
 
 MAC address {#macaddress}
 ===========
@@ -101,9 +88,7 @@ image before flashing it. It will be written in one of these locations:
 ![](images/t400/macaddress0.jpg) ![](images/t400/macaddress1.jpg)
 ![](images/x200/disassembly/0001.jpg)
 
-</div>
 
-<div class="section photos">
 
 Initial BBB configuration
 =========================
@@ -323,9 +308,7 @@ Example output from running the command (see above):
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div id="paste" class="section photos">
 
 Thermal paste (IMPORTANT)
 =========================
@@ -344,9 +327,7 @@ NOTE: the photo above is for illustration purposes only, and does not
 show how to properly apply the thermal paste. Other guides online detail
 the proper application procedure.
 
-</div>
 
-<div class="section">
 
 Wifi
 ====
@@ -368,9 +349,7 @@ The following photos show an Atheros AR5B95 being installed, to replace
 the Intel chip that this T500 came with:\
 ![](images/t400/0012.jpg) ![](images/t400/ar5b95.jpg)
 
-</div>
 
-<div class="section">
 
 WWAN
 ====
@@ -382,9 +361,7 @@ also track your movements.
 
 Not to be confused with wifi (wifi is fine).
 
-</div>
 
-<div class="section photos">
 
 Memory
 ======
@@ -402,9 +379,7 @@ different, so this page might be BS)
 The following photo shows 8GiB (2x4GiB) of RAM installed:\
 ![](images/t400/memory.jpg)
 
-</div>
 
-<div class="section photos">
 
 Boot it!
 --------
@@ -415,9 +390,7 @@ You should see something like this:
 
 Now [install GNU+Linux](../gnulinux/).
 
-</div>
 
-<div class="section">
 
 Copyright © 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -453,4 +426,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

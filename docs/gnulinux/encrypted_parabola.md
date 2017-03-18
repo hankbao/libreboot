@@ -1,4 +1,3 @@
-<div class="section">
 
 Installing Parabola or Arch GNU+Linux with full disk encryption (including /boot)
 =================================================================================
@@ -35,9 +34,7 @@ drive.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Boot Parabola\'s install environment. [How to boot a GNU+Linux
 installer](grub_boot_installer.html).
@@ -54,9 +51,7 @@ to the Parabola wiki at a later date. For up to date Parabola install
 guide, go to the Parabola wiki. This guide essentially cherry picks the
 useful information (valid at the time of writing: 2015-08-25).
 
-</div>
 
-<div class="section">
 
 This section deals with wiping the storage device on which you plan to
 install Parabola GNU+Linux. Follow these steps, but if you use an SSD,
@@ -94,9 +89,7 @@ this:\
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It\'s \'secure\', but \'potentially\' a risk).
 
-</div>
 
-<div class="section">
 
 Change keyboard layout
 ----------------------
@@ -107,9 +100,7 @@ list the available keymaps and use yours:\
 \# **loadkeys LAYOUT**\
 For me, LAYOUT would have been dvorak-uk.
 
-</div>
 
-<div class="section">
 
 Establish an internet connection
 --------------------------------
@@ -118,9 +109,7 @@ Refer to [this
 guide](https://wiki.parabola.nu/Beginners%27_guide#Establish_an_internet_connection).
 Wired is recommended, but wireless is also explained there.
 
-</div>
 
-<div class="section">
 
 Getting started
 ---------------
@@ -129,9 +118,7 @@ The beginning is based on
 <https://wiki.parabolagnulinux.org/Installation_Guide>. Then I referred
 to <https://wiki.archlinux.org/index.php/Partitioning> at first.
 
-</div>
 
-<div class="section">
 
 dm-mod
 ------
@@ -192,9 +179,7 @@ without writing it down or storing it anywhere.
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
-</div>
 
-<div class="section">
 
 Create LVM
 ----------
@@ -236,9 +221,7 @@ Verify that the logical volumes were created, using the following
 command:\
 \# **lvdisplay**
 
-</div>
 
-<div class="section">
 
 Create / and swap partitions, and mount
 ---------------------------------------
@@ -254,9 +237,7 @@ For the root LV I use:\
 Mount the root (/) partition:\
 \# **mount /dev/matrix/root /mnt**
 
-</div>
 
-<div class="section">
 
 Continue with Parabola installation
 -----------------------------------
@@ -324,9 +305,7 @@ the install:\
 \# **pacstrap /mnt base base-devel wpa\_supplicant dialog iw
 wpa\_actiond**
 
-</div>
 
-<div class="section">
 
 Configure the system
 --------------------
@@ -441,9 +420,7 @@ your LUKS password.
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
-</div>
 
-<div class="section">
 
 Extra security tweaks
 ---------------------
@@ -469,9 +446,7 @@ Configure sudo - not covered here. Will be covered post-installation in
 another tutorial, at a later date. If this is a single-user system, you
 don\'t really need sudo.
 
-</div>
 
-<div class="section">
 
 Unmount, reboot!
 ----------------
@@ -493,9 +468,7 @@ Lock the encrypted partition (close it):\
 \# **shutdown -h now**\
 Remove the installation media, then boot up again.
 
-</div>
 
-<div class="section">
 
 Booting from GRUB
 -----------------
@@ -514,9 +487,7 @@ grub&gt; **boot**\
 You could also make it load /boot/vmlinuz-linux-libre-grsec and
 /boot/initramfs-linux-libre-grsec.img
 
-</div>
 
-<div class="section">
 
 Follow-up tutorial: configuring Parabola
 ----------------------------------------
@@ -533,9 +504,7 @@ means that you are in control. For more information, read [The Arch
 Way](https://wiki.archlinux.org/index.php/The_Arch_Way) (Parabola also
 follows it).
 
-</div>
 
-<div class="section">
 
 Modify grub.cfg inside the ROM
 ------------------------------
@@ -648,17 +617,13 @@ When done, delete GRUB (remember, we only needed it for the
 flashed alongside it as a *payload*):\
 \# **pacman -R grub**
 
-</div>
 
-<div class="section">
 
 If you followed all that correctly, you should now have a fully
 encrypted Parabola installation. Refer to the wiki for how to do the
 rest.
 
-</div>
 
-<div class="section">
 
 Bonus: Using a key file to unlock /boot/
 ----------------------------------------
@@ -690,9 +655,7 @@ above! -, or add it in the kernel command line for GRUB:\
 You can also place this inside the grub.cfg that exists in CBFS:
 [grub\_cbfs.html](grub_cbfs.html).
 
-</div>
 
-<div class="section">
 
 Further security tips
 ---------------------
@@ -700,9 +663,7 @@ Further security tips
 <https://wiki.archlinux.org/index.php/Security>.\
 <https://wiki.parabolagnulinux.org/User:GNUtoo/laptop>
 
-</div>
 
-<div class="section">
 
 Troubleshooting
 ===============
@@ -792,9 +753,7 @@ problems. Removing that worked around the issue.
       Does write ultra high speed  CD-RW media
       Does not write ultra high speed+ CD-RW media
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Copyright © 2015 Jeroen Quint &lt;jezza@diplomail.ch&gt;\
@@ -831,4 +790,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

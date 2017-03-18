@@ -1,4 +1,3 @@
-<div class="section">
 
 Miscellaneous {#pagetop}
 =============
@@ -19,14 +18,11 @@ Or [Back to main index](../).
     Black](bbb_ehci.html)
 -   [e1000e driver trouble shooting (Intel NICs)](#e1000-hang)
 
-</div>
 
-<div class="section">
 
 High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_powertop}
 ======================================================================
 
-<div class="subsection">
 
 Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
@@ -43,13 +39,10 @@ If powertop doesn\'t work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-</div>
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_parabola}
 ==============================================================
@@ -102,9 +95,7 @@ using [this guide](../gnulinux/grub_cbfs.html).
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 X60/T60: Serial port - how to use (for dock owners) {#serial}
 ===================================================
@@ -145,9 +136,7 @@ change the **linux** line to add instructions for enabling getty. See
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div id="backlight control" class="section">
 
 Finetune backlight control on intel gpu's
 =========================================
@@ -231,9 +220,7 @@ is BLC\_PWM\_CTL described in
 on page 94. More research needs to be done on this target so proceed
 with care.
 
-</div>
 
-<div id="powerbeeps" class="section">
 
 Power Management Beeps on Thinkpads
 ===================================
@@ -253,9 +240,7 @@ Disable or enable beeps when battery is low:\
 
 A reboot is required, for these changes to take effect.
 
-</div>
 
-<div class="section">
 
 Get EDID: Find out the name (model) of your LCD panel {#get_edid_panelname}
 =====================================================
@@ -277,9 +262,7 @@ printed on the back.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 e1000e driver trouble shooting (Intel NICs) {#e1000-hang}
 ===========================================
@@ -306,9 +289,7 @@ across subnets on the same interface (NIC).
 More information, including logs, can be found on [this
 page](https://notabug.org/vimuser/libreboot/issues/23).
 
-</div>
 
-<div class="section">
 
 USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
 ===================================
@@ -317,9 +298,7 @@ Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
 
 Put this script in /etc/init.d/ on debian-based systems.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -355,4 +334,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

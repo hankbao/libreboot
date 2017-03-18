@@ -1,4 +1,3 @@
-<div class="section">
 
 ASUS KFSN4-DRE server/workstation board {#pagetop}
 =======================================
@@ -11,9 +10,7 @@ Flashing instructions can be found at
 
 [Back to previous index](./).
 
-</div>
 
-<div class="section">
 
 Form factor {#formfactor}
 ===========
@@ -22,9 +19,7 @@ These boards use the SSI EEB 3.61 form factor; make sure that your case
 supports this. This form factor is similar to E-ATX in that the size is
 identical, but the position of the screws are different.
 
-</div>
 
-<div class="section">
 
 Flash chips {#flashchips}
 ===========
@@ -39,9 +34,7 @@ example of a 2MiB (16Mbits) chip, which might work. It is believed that
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-</div>
 
-<div class="section">
 
 Native graphics initialization {#graphics}
 ==============================
@@ -49,18 +42,14 @@ Native graphics initialization {#graphics}
 Native graphics initialization exists (XGI Z9s) for this board.
 Framebuffer- and text-mode both work. A serial port is also available.
 
-</div>
 
-<div class="section">
 
 Memory
 ======
 
 DDR2 533/667 Registered ECC. 16 slots. Total capacity up to 64GiB.
 
-</div>
 
-<div class="section">
 
 Hex-core CPUs {#hexcore}
 =============
@@ -70,9 +59,7 @@ number will be printed on the board), because it can use dual hex-core
 CPUs (Opteron 2400/8400 series). Other revisions are believed to only
 support dual quad-core CPUs.
 
-</div>
 
-<div class="section">
 
 Current issues {#issues}
 ==============
@@ -89,18 +76,14 @@ Current issues {#issues}
     disappears if using KMS, once the kernel starts. The jitter will
     remain, if booting the kernel in text-mode).
 
-</div>
 
-<div class="section">
 
 Other information
 =================
 
 [specifications](ftp://ftp.sgi.com/public/Technical%20Support/Pdf%20files/Asus/kfsn4-dre.pdf)
 
-</div>
 
-<div class="section">
 
 Copyright © 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -136,4 +119,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

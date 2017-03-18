@@ -1,4 +1,3 @@
-<div id="pagetop" class="section">
 
 How to install GNU+Linux on a libreboot system
 ==============================================
@@ -17,17 +16,13 @@ flash drive (and *dd*).
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
 
-</div>
 
-<div id="prepare" class="section">
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -96,9 +91,7 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="encryption" class="section">
 
 Installing GNU+Linux with full disk encryption
 ----------------------------------------------
@@ -110,9 +103,7 @@ Installing GNU+Linux with full disk encryption
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="debian_netinstall" class="section">
 
 Debian or Devuan net install?
 -----------------------------
@@ -134,9 +125,7 @@ We recommend using the *MATE* desktop.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="parse_isolinux" class="section">
 
 Booting ISOLINUX images (automatic method)
 ------------------------------------------
@@ -148,9 +137,7 @@ that distro.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="manual_isolinux" class="section">
 
 Booting ISOLINUX images (manual method)
 ---------------------------------------
@@ -199,9 +186,7 @@ now be booting your USB drive in the way that you specified.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="troubleshooting" class="section">
 
 Troubleshooting
 ===============
@@ -245,9 +230,7 @@ debian-installer (text mode) net install method.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
@@ -284,4 +267,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

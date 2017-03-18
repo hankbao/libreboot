@@ -1,4 +1,3 @@
-<div class="section">
 
 How to replace the default GRUB configuration file on a libreboot system {#pagetop}
 ========================================================================
@@ -30,9 +29,7 @@ depthcharge payload, ignore this section entirely.**
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 =================
@@ -48,9 +45,7 @@ Table of Contents
     -   [Testing](#testing)
     -   [Final steps](#final_steps)
 
-</div>
 
-<div class="section">
 
 Introduction
 ------------
@@ -71,9 +66,7 @@ If you aren\'t up to that then don\'t worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
 
-</div>
 
-<div class="section">
 
 1st option: don\'t re-flash {#option1_dont_reflash}
 ---------------------------
@@ -113,9 +106,7 @@ for libreboot\_grub.cfg otherwise it will loop.**.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 2nd option: re-flash {#option2_reflash}
 --------------------
@@ -125,9 +116,7 @@ on to find out how.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Acquire the necessary utilities {#tools}
 -------------------------------
@@ -140,9 +129,7 @@ available from the repositories:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Acquiring the correct ROM image {#rom}
 -------------------------------
@@ -162,9 +149,7 @@ to the command, for example:\
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
@@ -185,9 +170,7 @@ Modify the grubtest.cfg accordingly.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testconfig}
 ------------------------------------------------------
@@ -202,9 +185,7 @@ raw**
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Testing
 -------
@@ -231,9 +212,7 @@ new configuration is safe (or desirable) to use.**
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Final steps {#final_steps}
 -----------
@@ -263,9 +242,7 @@ boot up with your new configuration.**
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Copyright © 2015 Jeroen Quint &lt;jezza@diplomail.ch&gt;\
@@ -302,4 +279,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

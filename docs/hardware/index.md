@@ -1,4 +1,3 @@
-<div class="section">
 
 Hardware modifications {#pagetop}
 ======================
@@ -17,9 +16,7 @@ This section relates to hardware maintenance on supported targets.
 -   [ThinkPad X60/X60S: hardware security](x60_security.html)
 -   [ThinkPad T60: hardware security](t60_security.html)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -55,4 +52,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

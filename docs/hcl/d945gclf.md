@@ -1,4 +1,3 @@
-<div class="section">
 
 Intel D945GCLF desktop board {#pagetop}
 ============================
@@ -47,9 +46,7 @@ Here is an image of the D945GCLF2 board:\
 And SPI SOIC8 flash chip\
 ![](../images/d945gclf/20160923_141550.jpg){width="50%" height="50%"}
 
-</div>
 
-<div class="section">
 
 How to replace thermal paste and fan
 ------------------------------------
@@ -79,9 +76,7 @@ After that, assemble your new fan into CPU cooler\
 Finally assemle both coolers on both chips, do not forget put in the CPU
 fan connector back, and you are done.
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Arthur Heymans &lt;arthur@aheymans.xyz&gt;\
 Copyright © 2016 Vitaly Castaño Solana &lt;vita\_cell@hotmail.com&gt;\
@@ -118,4 +113,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

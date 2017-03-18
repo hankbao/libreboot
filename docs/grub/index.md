@@ -1,4 +1,3 @@
-<div class="section">
 
 GRUB payload {#pagetop}
 ============
@@ -13,9 +12,7 @@ Or [Back to main index](../).
     -   [Custom keyboard layout in GRUB](#grub_custom_keyboard)
     -   [UK Dvorak keyboard layout in GRUB](#grub_ukdvorak_keyboard)
 
-</div>
 
-<div class="section">
 
 Changing the background image in GRUB {#grub_background}
 =====================================
@@ -29,9 +26,7 @@ libreboot\_src/coreboot/util/cbfstool/ if you want to build from source.
 When you\'ve done this, re-flash your ROM and you should have a new
 background at boot time.
 
-</div>
 
-<div class="section">
 
 Setting font in GRUB (for reference) {#grub_font}
 ====================================
@@ -72,14 +67,11 @@ font):\
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 GRUB keyboard layouts (for reference) {#grub_keyboard}
 =====================================
 
-<div class="subsection">
 
 Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
 ----------------------------------------------
@@ -106,9 +98,7 @@ under bin. Example: **libreboot\_frazerty.rom**.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="subsection">
 
 UK Dvorak keyboard layout in GRUB (for reference) {#grub_ukdvorak_keyboard}
 -------------------------------------------------
@@ -121,11 +111,8 @@ file was created
 
 [Back to top of page](#pagetop)
 
-</div>
 
-</div>
 
-<div class="section">
 
 Copyright © 2014 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -161,4 +148,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

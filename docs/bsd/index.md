@@ -1,4 +1,3 @@
-<div class="section">
 
 BSD projects {#pagetop}
 ============
@@ -16,9 +15,7 @@ instructions have yet to be written.**
     system](openbsd.html)
 -   [How to install FreeBSD on a libreboot system](freebsd.html)
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -54,4 +51,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

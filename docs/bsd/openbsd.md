@@ -1,4 +1,3 @@
-<div id="pagetop" class="section">
 
 How to install LibertyBSD or OpenBSD on a libreboot system
 ==========================================================
@@ -23,17 +22,13 @@ your libreboot system, using nothing more than a USB flash drive (and
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
 
-</div>
 
-<div id="prepare" class="section">
 
 install60.fs is the installation image for OpenBSD 6.0. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
@@ -105,9 +100,7 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="noencryption" class="section">
 
 Installing OpenBSD without full disk encryption
 -----------------------------------------------
@@ -122,9 +115,7 @@ process for installing OpenBSD.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="encryption" class="section">
 
 Installing OpenBSD with full disk encryption
 --------------------------------------------
@@ -156,9 +147,7 @@ OpenBSD bootloader already works.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="booting" class="section">
 
 Booting
 -------
@@ -172,9 +161,7 @@ OpenBSD will start booting. Yay!
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="configuring_grub" class="section">
 
 Configuring Grub
 ----------------
@@ -199,9 +186,7 @@ seconds OpenBSD will boot, or you can hit enter to boot.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div id="troubleshooting" class="section">
 
 Troubleshooting
 ===============
@@ -223,9 +208,7 @@ numbers may differ. Use TAB completion.
 
 [Back to top of page](#pagetop).
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Scott Bonds &lt;scott@ggr.com&gt;\
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
@@ -262,4 +245,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

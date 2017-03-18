@@ -1,4 +1,3 @@
-<div class="section">
 
 Changing the LCD panel on X60
 =============================
@@ -7,9 +6,7 @@ This tutorial is incomplete, and only pictures for now.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 ![](../images/x60_lcd_change/0001.JPG)
 ![](../images/x60_lcd_change/0002.JPG)
@@ -19,9 +16,7 @@ This tutorial is incomplete, and only pictures for now.
 ![](../images/x60_lcd_change/0006.JPG)
 ![](../images/x60_lcd_change/0007.JPG)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -57,4 +52,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

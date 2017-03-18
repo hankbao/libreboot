@@ -1,13 +1,10 @@
-<div class="section">
 
 EHCI debugging on the BeagleBone Black {#pagetop}
 ======================================
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 EHCI debugging
 ==============
@@ -357,9 +354,7 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
 3.  Patch and compule g\_dbgp on BBB instead cross-compile
 4.  Find a simple way to send debug messages from targets userland
 
-</div>
 
-<div class="section">
 
 Copyright © 2015 Alex David &lt;opdecirkel@gmail.com&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -395,4 +390,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

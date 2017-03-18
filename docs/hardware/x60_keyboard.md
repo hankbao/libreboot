@@ -1,4 +1,3 @@
-<div class="section">
 
 Thinkpad X60/X60s/X60t: Change keyboard
 =======================================
@@ -12,9 +11,7 @@ same place, and it\'s the same procedure.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Just follow these steps, and then reverse {#recovery}
 =========================================
@@ -25,9 +22,7 @@ Just follow these steps, and then reverse {#recovery}
 ![](../images/x60_keyboard/4.JPG)\
 ![](../images/x60_keyboard/5.JPG)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -63,4 +58,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

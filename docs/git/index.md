@@ -1,12 +1,9 @@
-<div class="section">
 
 Depthcharge is currently not documented, since it is in the new build
 system. Instructions for how to build boards that have depthcharge are
 included in the BUILD\_HOWTO file in libreboot.git or \_src.
 
-</div>
 
-<div class="section">
 
 Building libreboot from source {#pagetop}
 ==============================
@@ -23,9 +20,7 @@ Or [Back to main index](../).
 -   [How to build \"flashrom\"](#build_flashrom)
 -   [How to build the ROM images](#build)
 
-</div>
 
-<div class="section">
 
 Install build dependencies {#build_dependencies}
 ==========================
@@ -36,7 +31,6 @@ libreboot\_src.tar.xz or git. **If you are using libreboot\_util.tar.xz
 (binary archive) then you can ignore this, because ROM images and
 statically compiled executables for the utilities are included.**
 
-<div class="important">
 
 For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:\
@@ -48,15 +42,12 @@ For Parabola, you can run the following command:\
 or:\
 \# **./oldbuild dependencies parabola**
 
-</div>
 
 For other GNU+Linux distributions, you can adapt the existing scripts.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Get the full source code from metadata (git clone) {#build_meta}
 ==================================================
@@ -98,9 +89,7 @@ To build the ROM images, see [\#build](#build).
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 How to build \"bucts\" (for LenovoBIOS X60/X60S/X60T/T60) {#build_bucts}
 =========================================================
@@ -159,9 +148,7 @@ builddeps-bucts.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 How to build \"flashrom\" {#build_flashrom}
 =========================
@@ -204,9 +191,7 @@ builddeps-flashrom.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 How to build the ROM images {#build}
 ===========================
@@ -254,7 +239,6 @@ The ROM images will be stored under **bin/*payload*/**, where *payload*
 could be *grub*, *seabios*, or whatever other payload those images were
 built for.
 
-<div class="subsection">
 
 Preparing release archives (optional)
 -------------------------------------
@@ -345,13 +329,10 @@ libreboot\_src.tar.xz have been created, under
 The ROM images will be stored in separate archives for each system,
 under **release/oldbuildsystem/rom/**.
 
-</div>
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -387,4 +368,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

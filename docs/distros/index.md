@@ -1,4 +1,3 @@
-<div class="section">
 
 List of recommended GNU+Linux distributions for libreboot {#pagetop}
 =========================================================
@@ -30,9 +29,7 @@ system](../gnulinux/grub_boot_installer.html)
 
 [Back to main index](../)
 
-</div>
 
-<div class="section">
 
 Debian
 ------
@@ -102,9 +99,7 @@ guide](https://wiki.parabola.nu/Migration_from_the_GNU+Linux_distribution_of_Arc
 
 We recommend using the *MATE* desktop.
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -140,4 +135,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

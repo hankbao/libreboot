@@ -1,4 +1,3 @@
-<div class="section">
 
 Flashing the X200 with a BeagleBone Black {#pagetop}
 =========================================
@@ -21,9 +20,7 @@ followed (adapted) if you brick your X200, to know how to recover.
 
 [Back to main index](./)
 
-</div>
 
-<div class="section">
 
 X200 laptops with libreboot pre-installed {#preinstall}
 =========================================
@@ -34,9 +31,7 @@ GNU+Linux distribution.
 
 Check the [suppliers](../../suppliers) page for more information.
 
-</div>
 
-<div class="section">
 
 Flash chip size {#flashchips}
 ===============
@@ -51,9 +46,7 @@ X200S/X200T are supported; see
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 MAC address {#macaddress}
 ===========
@@ -69,9 +62,7 @@ image before flashing it. It will be written in one of these locations:
 ![](images/x200/disassembly/0002.jpg)
 ![](images/x200/disassembly/0001.jpg)
 
-</div>
 
-<div class="section">
 
 Initial BBB configuration {#clip}
 =========================
@@ -246,9 +237,7 @@ Example output from running the command (see above):
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Wifi
 ====
@@ -271,9 +260,7 @@ the Intel chip that this X200 came with:\
 ![](images/x200/disassembly/0016.jpg)
 ![](images/x200/disassembly/0017.jpg)
 
-</div>
 
-<div class="section">
 
 WWAN
 ====
@@ -285,9 +272,7 @@ track your movements.
 
 Not to be confused with wifi (wifi is fine).
 
-</div>
 
-<div class="section">
 
 Memory
 ======
@@ -304,9 +289,7 @@ Make sure that the RAM you buy is the 2Rx8 density.
 In this photo, 8GiB of RAM (2x4GiB) is installed:\
 ![](images/x200/disassembly/0018.jpg)
 
-</div>
 
-<div class="section">
 
 Boot it! {#boot}
 --------
@@ -317,9 +300,7 @@ You should see something like this:
 
 Now [install GNU+Linux](../gnulinux/).
 
-</div>
 
-<div class="section">
 
 X200S and X200 Tablet users: GPIO33 trick will not work. {#gpio33}
 --------------------------------------------------------
@@ -362,9 +343,7 @@ On a related note, libreboot has a utility that could help with
 investigating this:
 [../hcl/gm45\_remove\_me.html\#demefactory](../hcl/gm45_remove_me.html#demefactory)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -400,4 +379,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

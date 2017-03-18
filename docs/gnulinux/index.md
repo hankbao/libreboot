@@ -1,4 +1,3 @@
-<div class="section">
 
 GNU+Linux distributions {#pagetop}
 =======================
@@ -24,9 +23,7 @@ instructions have yet to be written.**
 -   [How to harden your GRUB configuration, for
     security](grub_hardening.html)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -62,4 +59,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

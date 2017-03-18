@@ -1,4 +1,3 @@
-<div class="section">
 
 Hardware compatibility list {#pagetop}
 ===========================
@@ -18,9 +17,7 @@ This sections relates to known hardware compatibility in libreboot.
 
 [Back to previous index](../).
 
-</div>
 
-<div class="section">
 
 List of supported hardware {#supported_list}
 --------------------------
@@ -67,9 +64,7 @@ It is also possible to build ROM images (from source) for other systems
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400) {#ecupdate}
 ==============================================================
@@ -92,9 +87,7 @@ handling.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 How to find what EC version you have (i945/GM45) {#ecversion}
 ================================================
@@ -110,9 +103,7 @@ out regular version - in this case it\'s a 1.06 for x200 tablet
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Recommended wifi chipsets {#recommended_wifi}
 -------------------------
@@ -134,9 +125,7 @@ project if these work with linux-libre kernel (TODO: test):
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 List of supported ThinkPad X60s {#supported_x60_list}
 -------------------------------
@@ -168,9 +157,7 @@ is very easily replaced; just remove the card and install another one
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 List of supported ThinkPad X60 Tablets {#supported_x60t_list}
 --------------------------------------
@@ -258,9 +245,7 @@ could get finger input working. They used linuxwacom at git tag
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Supported T60 list {#supported_t60_list}
 ------------------
@@ -290,7 +275,6 @@ Tested LCD panels: **working(compatible)**
 -   BOE-Hydis HV150UX1-100 (15.1\" 1600x1200) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
 
-<div class="subsection">
 
 Tested LCD panels: **not working yet (incompatible; see
 [../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
@@ -308,9 +292,7 @@ Tested LCD panels: **not working yet (incompatible; see
     GNU+Linux works) (P/N 42T0078 FRU 42T0079 or P/N 41W1338 recommended
     for the inverter board)
 
-</div>
 
-<div class="subsection">
 
 *The following LCD panels are **UNTESTED**. If you have one of these
 panels then please submit a report!*:
@@ -345,13 +327,10 @@ is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
-</div>
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences. {#t60_ati_intel}
 ----------------------------------------------------------------
@@ -397,9 +376,7 @@ server setup (with serial and/or ssh console as the display).
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Information about the macbook1,1 {#macbook11}
 --------------------------------
@@ -419,7 +396,6 @@ It is believed that all models are compatible, listed here:
 
 -   <http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook1,1>
 
-<div class="subsection">
 
 ### Compatible models
 
@@ -429,7 +405,6 @@ Specifically (Order No. / Model No. / CPU):
 -   MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 **(tested - working)**
 -   MA472LL/A / A1181 (EMC 2092) / Core Duo T2500 (untested)
 
-</div>
 
 Also of interest:
 [../git/\#config\_macbook21](../git/#config_macbook21).
@@ -447,9 +422,7 @@ refer to [../install/bbb\_setup.html](../install/bbb_setup.html).
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Information about the macbook2,1 {#macbook21}
 --------------------------------
@@ -478,7 +451,6 @@ distribute them, but I need to ask this person to tell me what license
 these works fall under first. Otherwise, the above URLs should be fine.
 NOTE TO SELF: REMOVE THIS WHEN DONE**
 
-<div class="subsection">
 
 ### Installing GNU+Linux distributions (on Apple EFI firmware)
 
@@ -495,26 +467,20 @@ likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
 [../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
 
-</div>
 
-<div class="subsection">
 
 ### Information about coreboot
 
 -   [Coreboot on the macbook2,1](#) (this is a copy of Mono\'s page, see
     above)
 
-</div>
 
-<div class="subsection">
 
 ### coreboot wiki page
 
 -   <https://www.coreboot.org/Board:apple/macbook21>
 
-</div>
 
-<div class="subsection">
 
 ### Compatible models
 
@@ -535,7 +501,6 @@ Specifically (Order No. / Model No. / CPU):
 -   MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 **(tested -
     working)**
 
-</div>
 
 Also of interest:
 [../git/\#config\_macbook21](../git/#config_macbook21).
@@ -625,9 +590,7 @@ libreboot git repository.
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -663,4 +626,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

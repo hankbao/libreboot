@@ -1,4 +1,3 @@
-<div class="section">
 
 Security on the ThinkPad X60
 ============================
@@ -8,9 +7,7 @@ tutorial is **incomplete** at the time of writing.
 
 [Back to previous index](./)
 
-</div>
 
-<div class="section">
 
 Table of Contents
 =================
@@ -19,9 +16,7 @@ Table of Contents
 -   [Software Requirements](#software_requirements)
 -   [The procedure](#procedure)
 
-</div>
 
-<div class="section">
 
 Hardware requirements {#hardware_requirements}
 =====================
@@ -36,9 +31,7 @@ Software requirements {#software_requirements}
 -   none (at least in the scope of the article as-is)
 -   You probably want to encrypt your GNU+Linux install using LUKS
 
-</div>
 
-<div class="section">
 
 Rationale
 =========
@@ -181,9 +174,7 @@ Also not covered yet:
 -   <https://en.wikipedia.org/wiki/Tempest_%28codename%29>
 -   https://gitorious.org/gnutoo-for-coreboot/grub-assemble/source/a61f636797777a742f65f4c9c58032aa6a9b23c3:
 
-</div>
 
-<div class="section">
 
 Extra notes
 ===========
@@ -202,7 +193,6 @@ with the help of an SDR and some directional antennas[\[3\]](#ref3).
 controller](http://www.coreboot.org/Intel_82573_Ethernet_controller) on
 the X60 seems safe, according to Denis.
 
-<div class="subsection">
 
 Risk level
 ----------
@@ -214,11 +204,8 @@ Risk level
 -   Speakers: only problematic if the computer gets compromised.
 -   EC: can be mitigated if following the guide on software security.
 
-</div>
 
-</div>
 
-<div class="section">
 
 Further reading material (software security)
 ============================================
@@ -229,14 +216,11 @@ Further reading material (software security)
     /boot)](../gnulinux/encrypted_parabola.html)
 -   [Notes about DMA access and the docking station](dock.html)
 
-</div>
 
-<div class="section">
 
 References
 ==========
 
-<div class="subsection">
 
 \[1\] physical access {#ref1}
 ---------------------
@@ -250,9 +234,7 @@ to 400000\$, some other websites had prices 10 times lower but that but
 it was probably a typo. So if people increase their security it makes it
 more risky and more costly to attack people.
 
-</div>
 
-<div class="subsection">
 
 \[2\] microphone {#ref2}
 ----------------
@@ -264,9 +246,7 @@ microphone jack can now become a headphone plug, that\'s called
 retasking. There is some support for it in GNU+Linux but it\'s not very
 well known.
 
-</div>
 
-<div class="subsection">
 
 \[3\] Video (CCC) {#ref3}
 -----------------
@@ -276,11 +256,8 @@ their demo is experimental(their hardware also got damaged during the
 transport), the spies probably already have that since a long time.
 <http://berlin.ftp.media.ccc.de/congress/2013/webm/30c3-5356-en-Firmware_Fat_Camp_webm.webm>
 
-</div>
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -316,4 +293,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

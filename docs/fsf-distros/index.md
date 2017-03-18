@@ -1,4 +1,3 @@
-<div class="section">
 
 Explaining Why We Don\'t Endorse FSF-endorsed Systems {#pagetop}
 =====================================================
@@ -12,9 +11,7 @@ FSF-endorsed distribution that we endorse there is *Parabola*.
 
 [Back to main index](../)
 
-</div>
 
-<div class="section">
 
 Blag
 ----
@@ -77,9 +74,7 @@ It\'s a dead project.
 
 [Back to top of page](#pagetop)
 
-</div>
 
-<div class="section">
 
 Copyright © 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -115,4 +110,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>

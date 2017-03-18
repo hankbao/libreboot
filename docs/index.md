@@ -1,4 +1,3 @@
-<div class="section">
 
 Libreboot documentation {#pagetop}
 =======================
@@ -12,9 +11,7 @@ Information about this release can be found at
 [Answers to frequently asked questions about
 Libreboot](https://libreboot.org/faq/)
 
-</div>
 
-<div class="section">
 
 Libreboot is compatible with GNU+Linux and several BSD systems.
 
@@ -53,9 +50,7 @@ Other information
 -   [Hardware modifications](hardware/)
 -   [Miscellaneous](misc/)
 
-</div>
 
-<div id="why" class="section">
 
 About the libreboot project
 ===========================
@@ -162,9 +157,7 @@ Libreboot is a \'stable\' version of coreboot
 
 [Back to top of page.](#pagetop)
 
-</div>
 
-<div id="version" class="section">
 
 How do I know what version I\'m running?
 ========================================
@@ -219,9 +212,7 @@ libreboot that you are using.
 Generally speaking, it is advisable to use the latest version of
 libreboot.
 
-</div>
 
-<div class="section">
 
 Copyright © 2014, 2015, 2016 Leah Rowe &lt;info@minifree.org&gt;\
 Permission is granted to copy, distribute and/or modify this document
@@ -257,4 +248,3 @@ The disclaimer of warranties and limitation of liability provided above
 shall be interpreted in a manner that, to the extent possible, most
 closely approximates an absolute disclaimer and waiver of all liability.
 
-</div>
