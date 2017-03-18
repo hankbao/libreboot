@@ -79,7 +79,7 @@ It lives!\
 ![](../images/t60_dev/0071.JPG) ![](../images/t60_dev/0072.JPG)
 ![](../images/t60_dev/0073.JPG)
 
-Always stress test (\'stress -c 2\' and xsensors. below 90C is ok) when
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when
 replacing cpu paste/heatsink:\
 ![](../images/t60_dev/0074.JPG)
 

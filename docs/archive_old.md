@@ -49,13 +49,13 @@ Machines supported in this release:
     support
     -   See ***docs/hcl/\#supported\_x60t\_list*** for list of supported
         LCD panels
-    -   It is unknown whether an X61 Tablet can have it\'s mainboard
+    -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
         ***docs/hcl/\#supported\_t60\_list*** for known working LCD
         panels.
-    -   It is unknown whether a T61 can have it\'s mainboard replaced
+    -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
@@ -91,7 +91,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   Updated flashrom (to SVN revision 1889)
     -   X200 whitelist patch removed (merged upstream)
     -   X200 whitelist modified to include X200S and X200 Tablet
--   libreboot\_util: don\'t include cmos layout files (not needed
+-   libreboot\_util: don't include cmos layout files (not needed
     anymore)
 -   **coreboot-libre: backport patches for X200 Tablet digitizer
     support**
@@ -120,7 +120,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     T400/T500 with the ATI+Intel hybrid GPU setup will work (ATI
     disabled, Intel permanently enabled). power\_on\_after\_fail nvram
     option added to all GM45 boards, defaulting to No, so that plugging
-    it AC doesn\'t boot up the system against the users will. Net20DC is
+    it AC doesn't boot up the system against the users will. Net20DC is
     now the default debug dongle on all boards (compatible with BBB).
 -   demefactory (new utility): create GM45 factory.rom without the ME
 -   ich9deblob: re-factor descriptor.c functions
@@ -132,7 +132,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   docs/gnulinux/grub\_boot\_installer.html: Fix hazardous instruction
 -   docs/tasks.html: Better categorization between intel/amd/arm
 -   docs/install/bbb\_setup.html: notes about SPI flashing stability
--   docs/install/bbb\_setup.html: more names for the 0.1\" cables
+-   docs/install/bbb\_setup.html: more names for the 0.1" cables
 -   docs/install/\*\_external.html: add disclaimer about thermal paste
 -   docs/install/bbb\_setup.html: Fix broken links
 -   docs/install/bbb\_setup.html: preliminary notes about EHCI debug
@@ -140,7 +140,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     ME
 -   docs/install/{t400,t500,r400}\_external.html: Notes about CPU
     compatibility
--   Delete the ich9macchange script. It\'s useless, and confuses people
+-   Delete the ich9macchange script. It's useless, and confuses people
 -   docs/hcl/gm45\_remove\_me.html: prioritize ich9gen executable path
 -   docs/hcl/gm45\_remove\_me.html: prioritize changing mac address
 -   docs/hcl/gm45\_remove\_me.html: less confusing notes about ich9gen
@@ -162,16 +162,16 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
         upstream)
     -   Patch to disable use of timestamps in coreboot no longer
         included (merged upstream)
--   coreboot-libre: don\'t list vortex86ex kbd firmware as microcode
+-   coreboot-libre: don't list vortex86ex kbd firmware as microcode
     (list it separately)
--   coreboot-libre: don\'t rm \*/early\_setup\_ss.h (these are not
+-   coreboot-libre: don't rm \*/early\_setup\_ss.h (these are not
     blobs)
 -   coreboot-libre: add GPLv3 license to the findblobs script
--   coreboot-libreboot: don\'t rm raminit\_tables (nahelem/sandybridge)
+-   coreboot-libreboot: don't rm raminit\_tables (nahelem/sandybridge)
     (they are not blobs)
--   coreboot-libre: don\'t delete the .spd.hex files (they are not
+-   coreboot-libre: don't delete the .spd.hex files (they are not
     blobs)
--   build/release/archives: don\'t put rmodtool in libreboot\_util
+-   build/release/archives: don't put rmodtool in libreboot\_util
 -   docs/install/x200\_external.html: recommend installing GNU+Linux at
     the end
 -   docs/install/x200\_external.html: add more photos, improve
@@ -210,8 +210,8 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     not needed in libreboot\_src (release archive) because it contains a
     coreboot revision that has already been deblobbed.
 -   flash (script): Use *build* instead of *DEBLOB* to know if in src
--   docs/install/r400\_external.html: Show images, don\'t link.
--   docs/install/x200\_external.html: Show images, don\'t link.
+-   docs/install/r400\_external.html: Show images, don't link.
+-   docs/install/x200\_external.html: Show images, don't link.
 -   docs/install/bbb\_setup.html: Show images, instead of linking
 -   Documentation: optimize all images (reduce file sizes)
 -   Remove download links from the release page (and the archive page) -
@@ -244,7 +244,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   build-release: remove the bin/ directory from libreboot\_util
 -   cleandeps: delete the bin/ directory
 -   buildrom-withgrub: create the bin directory if it does not exist
--   coreboot-libre: don\'t use git for version timestamp
+-   coreboot-libre: don't use git for version timestamp
 -   i945-pwm: add clean command to Makefile
 -   i945-pwm: add -lz to Makefile
 -   docs/install/x200\_external: Mention GPIO33 non-descriptor mode
@@ -253,7 +253,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   build-release: Separate ROM images into individual archives
 -   build-release: rename libreboot\_bin to libreboot\_util
 -   **New board:** ThinkPad R400 support added to libreboot.
--   bbb\_setup.html: tell user to use libreboot\'s own flashrom
+-   bbb\_setup.html: tell user to use libreboot's own flashrom
 
 
 
@@ -273,13 +273,13 @@ Machines supported in this release:
     digitizer support
     -   See **hcl/\#supported\_x60t\_list** for list of supported LCD
         panels
-    -   It is unknown whether an X61 Tablet can have it\'s mainboard
+    -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **Lenovo ThinkPad T60** (Intel GPU) (there are
     issuesinstall/x200\_external.html; see below):
     -   See notes below for exceptions, and
         **hcl/\#supported\_t60\_list** for known working LCD panels.
-    -   It is unknown whether a T61 can have it\'s mainboard replaced
+    -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See **future/\#t60\_cpu\_microcode**.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
@@ -302,7 +302,7 @@ Revisions for r20150208 (relative to r20150126)
 -----------------------------------------------
 
 This is a maintenance release (polishing) based on r20150126. Users who
-installed r20150126 don\'t really need to update to this release.
+installed r20150126 don't really need to update to this release.
 
 -   buildrom-withgrub: use gnulove.jpg background on 16:10 laptops
     (MacBook2,1 and X200)
@@ -313,7 +313,7 @@ installed r20150126 don\'t really need to update to this release.
 -   grub-assemble: merge scripts into a single script gen.sh
 -   Documentation: implement theme, drastically improve readability
 -   docs/hcl/: update list of compatible T60 LCD panels
--   docs/: more clarification of libreboot\'s stated purpose.
+-   docs/: more clarification of libreboot's stated purpose.
 -   build-release: include the commitid file in the release archives
 -   docs/: Further emphasize the GNU+Linux requirement.
 -   lenovobios\_firstflash: fix BASH errors
@@ -339,12 +339,12 @@ This is a bug fix release based on r20150124. It contains a few small
 changes:
 
 -   grub.cfg: hardcode the list of partitions to search (speeds up
-    booting considerably. GRUB regexp isn\'t very well optimized)
+    booting considerably. GRUB regexp isn't very well optimized)
 -   Docs (x200.html hcl): Remove incorrect information
 -   Documentation (bbb\_setup.html): Fix typos
 -   build-release: delete ich9fdgbe\_{4m,8m}.bin files from ich9gen
     -   These were accidentically included in the r20150124 release.
-        They are generated from ich9gen so it\'s ok, but they don\'t
+        They are generated from ich9gen so it's ok, but they don't
         need to be in the archive.
 -   Documentation (grub\_cbfs.html): Looping in libreboot\_grub.cfg (Add
     notes about it if the user copied from grub.cfg in CBFS.)
@@ -443,7 +443,7 @@ Changes for this release (latest changes first, earliest changes last)
 -   scripts (all): add proper error checking (fail fast, fail early. Do
     not continue if there are errors)
 -   buildrom-withgrub: rename image to boardname\_layout\_romtype.rom
--   buildrom-withgrub: don\'t move cbfstool, execute directly
+-   buildrom-withgrub: don't move cbfstool, execute directly
 -   resources/utilities/grub-assemble: add French Dvorak (BEPO) keyboard
     layout.
 -   Documentation: add docs/hardware/x60\_keyboard.html (show how to
@@ -459,7 +459,7 @@ Changes for this release (latest changes first, earliest changes last)
     -   This was put there before for users upgrading from libreboot r5
         to r6, but also allows the user to flash the wrong image. For
         example, the user could flash a T60 image on an X60, thus
-        bricking the system. It\'s almost certain that most people have
+        bricking the system. It's almost certain that most people have
         upgraded by now, so remove this potentially dangerous option.
 -   Documentation: update compatibility list for X60T LCD panels.
 -   docs/release.html: add note about X60 Tablet board in X60/X60s
@@ -516,9 +516,9 @@ Changes for this release (latest changes first, earliest changes last)
 -   Cleaned up the documentation, removed unneeded files.
 -   ec/lenovo/h8 (x60/x60s/x60t/t60): Enable
     wifi/bluetooth/wwan/touchpad/trackpoint by default.
--   Documentation: Updated list of T60 LCDs (Samsung LTN150XG 15\" XGA
+-   Documentation: Updated list of T60 LCDs (Samsung LTN150XG 15" XGA
     listed as non-working).
--   builddeps-coreboot: Don\'t build libpayload (not needed. This was
+-   builddeps-coreboot: Don't build libpayload (not needed. This was
     leftover by mistake, when trying out the TINT payload).
 -   Replaced most diff files (patches) for coreboot with gerrit
     checkouts (cherry-pick).
@@ -529,8 +529,8 @@ Changes for this release (latest changes first, earliest changes last)
 -   Documentation: configuring\_parabola.html: basic post-install steps
     for Parabola GNU+Linux (helpful, since libreboot development is
     being moved to Parabola at the time of writing).
--   builddeps-coreboot: use \'make crossgcc-i386\' instead of \'make
-    crossgcc\'. Libreboot only targets x86 at the time of writing.
+-   builddeps-coreboot: use 'make crossgcc-i386' instead of 'make
+    crossgcc'. Libreboot only targets x86 at the time of writing.
 -   ROM images no longer include SeaBIOS. Instead, the user adds it
     afterwards. Documentation and scripts updated.
 -   docs/images/encrypted\_parabola.html: Notes about linux-libre-grsec
@@ -592,11 +592,11 @@ Revisions for r20140911 (7th beta) (11th September 2014)
 --------------------------------------------------------
 
 -   The changes below were made in a git repository, unlike in previous
-    releases. Descriptions below are copied from \'git log\'.
+    releases. Descriptions below are copied from 'git log'.
 -   Update .gitignore for new dependencies.
 -   Use a submodule for i945-pwm.
--   Don\'t clean packages that fail or don\'t need cleaning.
--   Don\'t clean i945-pwm, it\'s not needed.
+-   Don't clean packages that fail or don't need cleaning.
+-   Don't clean i945-pwm, it's not needed.
 -   Regression fix: Parabola live ISO boot issues
 -   Re-enable background images in ISOLINUX/SYSLINUX GRUB parser menus
 -   Regression fix: Re-add CD-ROM (ata0) in GRUB
@@ -625,7 +625,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
     changed to get-edid)
 -   Documentation: added images/x60\_lcd\_change/ (pics only for now)
 -   Added gcry\_serpent and gcry\_whirlpool to the GRUB module list in
-    the \'build\' script (for luks users)
+    the 'build' script (for luks users)
 -   **Libreboot is now based on a new coreboot version from August 23rd,
     2014:\
     Merged commits (relates to boards that were already supported in
@@ -667,7 +667,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   Updated flashrom to new version from August 20th, 2014
 -   Added getseabios and builddeps-seabios (builddeps and getall were
     also updated)
-    -   Added instructions to \'buildrom-withgrub\' to include
+    -   Added instructions to 'buildrom-withgrub' to include
         bios.bin.elf and vgaroms/vgabios.bin from SeaBIOS inside the
         ROM.
 -   Added seabios (and sgavgabios) to grub as payload option in menu
@@ -691,15 +691,15 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
     systems.
     -   Added instructions for it in builddeps, builddeps-i945pwm,
         builddeb and cleandeps
--   \'build\' script: removed the parts that generated sha512sum
+-   'build' script: removed the parts that generated sha512sum
     manifests (not needed, since release tarballs are GPG-signed)
--   \'build\' script: removed the parts that generated libreboot\_meta
+-   'build' script: removed the parts that generated libreboot\_meta
     directory (not needed anymore, since \_meta will be hosted in git)
     -   Updated \#build\_meta (and other parts of documentation) to
         accomodate this change.
 -   Documentation: simplified (refactored) the notes in \#rom
--   \'build\' script: removed the parts that generated libreboot\_bin
-    and added them to a new script: \'build-release\'
+-   'build' script: removed the parts that generated libreboot\_bin
+    and added them to a new script: 'build-release'
     -   Documentation: \#build updated to reflect the above.
 -   ~~Added all gcry\_\* modules to grub (luks/cryptomount):
     gcry\_arcfour gcry\_camellia gcry\_crc gcry\_dsa gcry\_md4
@@ -707,7 +707,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
     gcry\_twofish gcry\_blowfish gcry\_cast5 gcry\_des gcry\_idea
     gcry\_md5 gcry\_rijndael gcry\_rsa gcry\_serpent gcry\_sha256
     gcry\_tiger gcry\_whirlpool~~
--   Added GNUtoo\'s list of GRUB modules (includes all of the gcry\_\*
+-   Added GNUtoo's list of GRUB modules (includes all of the gcry\_\*
     modules above), cryptomount should be working now.
 -   Removed builddeb-bucts and builddeb-flashrom, merged them with
     builddeb ( updated accordingly)
@@ -721,7 +721,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   build-release: flashrom, nvramtool, cbfstool and bucts are no longer
     provided pre-compiled in binary archives, and are now in source form
     only. (to maximize distro compatibility).
--   \'build\' script: replaced grub.elf assembly instructons, it is now
+-   'build' script: replaced grub.elf assembly instructons, it is now
     handled by a utility added under resources/utilities/grub-assemble
 -   Moved resources/grub/keymap to
     resources/utilities/grub-assemble/keymap, and updated that utility
@@ -729,7 +729,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   Documentation: removed useless links to pictures of keyboard layouts
     and unmodified layouts.
 -   Removed all unused fonts from dejavu-fonts-ttf-2.34/ directory
--   \'buildrom-withgrub\' script: updated it to create 2 sets of ROMs
+-   'buildrom-withgrub' script: updated it to create 2 sets of ROMs
     for each system: one with text-mode, one with coreboot framebuffer.
 -   Documentation: updated \#rom to reflect the above
 -   Deleted unused README and COPYING file from main directory
@@ -768,7 +768,7 @@ Corrections to r20140811 (5th beta) (11th August 2014)
 Revisions for r20140811 (5th beta) (11th August 2014)
 -----------------------------------------------------
 
--   build: added \'luks\', \'lvm\', \'cmosdump\' and \'cmostest\' to the
+-   build: added 'luks', 'lvm', 'cmosdump' and 'cmostest' to the
     list of modules for grub.elf
 -   Documentation: added pics showing T60 unbricking (still need to
     write a tutorial)
@@ -781,7 +781,7 @@ Revisions for r20140811 (5th beta) (11th August 2014)
 -   Documentation: added **install/t60\_security.html**
 -   Documentation: added **install/t60\_heatsink.html**
 -   Documentation: Renamed RELEASE.html to release.html
--   Documentation: removed pcmcia reference in x60\_security.html (it\'s
+-   Documentation: removed pcmcia reference in x60\_security.html (it's
     cardbus)
 -   Documentation: added preliminary information about randomized seal
     (for physical intrusion detection) in x60\_security.html and
@@ -802,7 +802,7 @@ Revisions for r20140811 (5th beta) (11th August 2014)
 -   Split resources/libreboot/patch/gitdiff into separate patch files
     (getcb script updated to accomodate this change).
 -   Re-added .git files to bucts
--   Fixed the oversight where macbook21\_firstflash wasn\'t included in
+-   Fixed the oversight where macbook21\_firstflash wasn't included in
     binary archives
 -   Release archives are now compressed using .tar.xz for better
     compression
@@ -813,7 +813,7 @@ Revisions for r20140729 (4th beta) (29th July 2014)
 -   Documentation: improved (more explanations, background info) in
     docs/security/x60\_security.html (courtesy of Denis Carikli)
 -   MacBook2,1 tested (confirmed)
--   macbook21: Added script \'macbook21\_firstflash\' for flashing
+-   macbook21: Added script 'macbook21\_firstflash' for flashing
     libreboot while Apple EFI firmware is running.
 -   Documentation: macbook21: added software-based flashing instructions
     for flashing libreboot while Apple EFI firmware is running.
@@ -886,7 +886,7 @@ Revisions for r20140716 (2nd beta) (16th July 2014)
 ---------------------------------------------------
 
 -   Deleted all git-related files from the coreboot directory. This was
-    necessary because with those it is possible to run \'git diff\'
+    necessary because with those it is possible to run 'git diff'
     which shows the changes made in the form of a patch (diff format);
     this includes the blobs that were deleted during deblobbing.
 
@@ -894,36 +894,36 @@ Revisions for r20140711 (1st beta) (11th July 2014)
 ---------------------------------------------------
 
 -   Initial release (new coreboot base, dated 1st June 2014. See
-    \'getcb\' script for reference)
+    'getcb' script for reference)
 -   DEBLOBBED coreboot
--   Removed the part from memtest86+ \'make\' where it tried to connect
+-   Removed the part from memtest86+ 'make' where it tried to connect
     to some scp server while compiling. (commented out line 24 in the
     Makefile)
 -   X60 now uses a single .config (for coreboot)
 -   X60 now uses a single grub.cfg (for grub memdisk)
 -   X60 now uses a single grub.elf (payload)
--   Added new native graphics code for X60 (replaces the old \'replay\'
+-   Added new native graphics code for X60 (replaces the old 'replay'
     code) from Vladimir Serbinenko: 5320/9 from review.coreboot.org
 -   T60 is now supported, with native graphics. (5345/4 from
     review.coreboot.org, cherry-picked on top of 5320/9 checkout)
 -   Added macbook2,1 support (from Mono Moosbart and Vladimir
-    Serbinenko) from review.coreboot.org (see \'getcb\' script to know
+    Serbinenko) from review.coreboot.org (see 'getcb' script to know
     how that was done)
     -   Documentation: added information linking to correct page and
         talking about which models are supported.
     -   Added resources/libreboot/config/macbook21config
-    -   macbook21: Added \'build-macbook21\' script and linked to it in
-        \'build\' (ROMs included under bin/macbook21/)
+    -   macbook21: Added 'build-macbook21' script and linked to it in
+        'build' (ROMs included under bin/macbook21/)
     -   macbook21: Removed dd instructions from build-macbook21 script
         (macbook21 does not need bucts when flashing libreboot while
         Apple EFI firmware is running)
     -   Documentation: Added macbook21 ROMs to the list of ROMs in
         docs/\#rom
-    -   Documentation: Write documentation linking to Mono Moosbart\'s
+    -   Documentation: Write documentation linking to Mono Moosbart's
         macbook21 and parabola page (and include a copy)
--   Documentation: added a copy of Mono\'s Parabola install guide (for
+-   Documentation: added a copy of Mono's Parabola install guide (for
     macbook21 with Apple EFI firmware) and linked in in main index.
--   Documentation: added a copy of Mono\'s Coreboot page (for macbook21)
+-   Documentation: added a copy of Mono's Coreboot page (for macbook21)
     and linked it in main index.
 -   T60: Copy CD option from the grub.cfg files for T60 \*serial\*.rom
     images into the grub configs for non-serial images. (T60s have
@@ -947,55 +947,55 @@ Revisions for r20140711 (1st beta) (11th July 2014)
 -   Improved thinkpad\_acpi support (from coreboot ): xsensors shows
     more information.
     -   From 4650/29 in review.coreboot.org (merged in coreboot
-        \'master\' on June 1st 2014)
+        'master' on June 1st 2014)
 -   Merged changes for digitizer (X60 Tablet) and IR (X60 and T60) based
     on 5243/17, 5242/17 and 5239/19 from review.coreboot.org
     -   (see ./resources/libreboot/patch/gitdiff and ./getcb)
 -   Documentation: added information about building flashrom using
-    \'builddeps-flashrom\' script.
+    'builddeps-flashrom' script.
 -   Re-created resources/libreboot/config/x60config
 -   Re-created resources/libreboot/config/t60config
--   Added \'x60tconfig\' in resources/libreboot/config (because X60
+-   Added 'x60tconfig' in resources/libreboot/config (because X60
     Tablet has different information about serial/model/version in
-    \'dmidecode\')
-    -   Added \'build-x60t\' script
-    -   Updated \'build\' script to use \'build-x60t\'
+    'dmidecode')
+    -   Added 'build-x60t' script
+    -   Updated 'build' script to use 'build-x60t'
     -   Documentation: added to \#config section the section
         \#config\_x60t (libreboot configuration and dmidecode info)
     -   Documentation: added x60t ROMs to the list of ROMs
--   Tidied up the \'builddeps\' script (easier to read)
--   Tidied up the \'cleandeps\' script (easier to read)
--   Annotated the \'buildall\' script
--   Added \'getcb\' script for getting coreboot revision used from git,
+-   Tidied up the 'builddeps' script (easier to read)
+-   Tidied up the 'cleandeps' script (easier to read)
+-   Annotated the 'buildall' script
+-   Added 'getcb' script for getting coreboot revision used from git,
     and patching it.
--   Added \'getgrub\' script for getting the GRUB revision used from
+-   Added 'getgrub' script for getting the GRUB revision used from
     git, and patching it.
--   Added \'getmt86\' script for getting the memtest86+ version used,
+-   Added 'getmt86' script for getting the memtest86+ version used,
     and patching it.
--   Added \'getbucts\' script for getting the bucts version used.
--   Added \'getflashrom\' script for getting the flashrom version used,
+-   Added 'getbucts' script for getting the bucts version used.
+-   Added 'getflashrom' script for getting the flashrom version used,
     and patching it
--   Added \'getall\' script which runs all of the other \'get\' scripts.
--   Add instructions to the \'build\' script to prepare
+-   Added 'getall' script which runs all of the other 'get' scripts.
+-   Add instructions to the 'build' script to prepare
     libreboot\_meta.tar.gz
     -   New archive: libreboot\_meta.tar.gz - minimal archive, using the
-        \'get\' scripts to download all the dependencies (coreboot,
+        'get' scripts to download all the dependencies (coreboot,
         memtest, grub and so on).
--   Documentation: added information about where \'build\' script
+-   Documentation: added information about where 'build' script
     prepares the libreboot\_meta.tar.gz archive.
--   Documentation: added information about how to use the \'get\'
+-   Documentation: added information about how to use the 'get'
     scripts in libreboot\_meta.tar.gz (to generate
     libreboot\_src.tar.gz)
-    -   Documentation: mention that meta doesn\'t create libreboot\_src/
+    -   Documentation: mention that meta doesn't create libreboot\_src/
         directory, but that libreboot\_meta itself becomes the same.
     -   Documentation: advise to rename libreboot\_meta to
-        libreboot\_src after running \'getall\'.
--   Annotated the \'builddeb\' script, to say what each set of
+        libreboot\_src after running 'getall'.
+-   Annotated the 'builddeb' script, to say what each set of
     dependencies are for.
 -   Separated bucts/flashrom builddeb sections into separate scripts:
     builddeb-flashrom, builddeb-bucts.
 -   Documentation: Updated relevant parts based on the above.
--   Added instructions to \'build\' script for including builddeb-bucts
+-   Added instructions to 'build' script for including builddeb-bucts
     and builddeb-flashrom in libreboot\_bin
 -   Updated flashrom checkout (r1822 2014-06-16) from SVN
     (http://flashrom.org/Downloads).
@@ -1008,39 +1008,39 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     -   Updated builddeps to build flashrom\_lenovobios\_sst and
         flashrom\_lenovobios\_macronix, for X60/T60 users with Lenovo
         BIOS
-    -   moved the flashrom build instructions from \'builddeps\' and put
-        them in \'builddeps-flashrom\', excecuting that from
-        \'builddeps\'.
+    -   moved the flashrom build instructions from 'builddeps' and put
+        them in 'builddeps-flashrom', excecuting that from
+        'builddeps'.
     -   Added builddeps-flashrom to libreboot\_bin.tar.gz
 -   flashrom: added patched flashchips.c to resources/flashrom/patch
     (automatically use correct macronix chip on libreboot, without using
-    \'-c\' switch)
-    -   removed \'MX25L1605\' and \'MX25L1605A/MX25L1606E\' entries in
+    '-c' switch)
+    -   removed 'MX25L1605' and 'MX25L1605A/MX25L1606E' entries in
         flashchips.c for the patched version of flashchips.c
-    -   added instructions to \'builddeps-flashrom\' to automatically
+    -   added instructions to 'builddeps-flashrom' to automatically
         use this modified flashchips.c in the default build
 -   Added builddeb to libreboot\_bin.tar.gz
--   Moved \'bucts\' build instructions from builddeps to builddeps-bucts
-    -   builddeps now runs \'builddeps-bucts\' instead
-    -   Added \'builddeps-bucts\' to libreboot\_bin.tar.gz
-    -   Documentation: Added information about using \'builddep-bucts\'
+-   Moved 'bucts' build instructions from builddeps to builddeps-bucts
+    -   builddeps now runs 'builddeps-bucts' instead
+    -   Added 'builddeps-bucts' to libreboot\_bin.tar.gz
+    -   Documentation: Added information about using 'builddep-bucts'
         to build the BUC.TS utility.
--   Added \'lenovobios\_firstflash\' and \'lenovobios\_secondflash\'
+-   Added 'lenovobios\_firstflash' and 'lenovobios\_secondflash'
     scripts
-    -   Added instructions to \'build\' script for including those files
+    -   Added instructions to 'build' script for including those files
         in libreboot\_bin
     -   Documentation: Add tutorial for flashing while Lenovo BIOS is
         running (on X60/T60)
--   Added \'flash\' script (make sure to run builddeps-flashrom first)
+-   Added 'flash' script (make sure to run builddeps-flashrom first)
     which (while libreboot is already running) can use flashrom to flash
     a ROM
-    -   eg: \"sudo ./flash bin/x60/coreboot\_serial\_ukdvorak.rom\"
-        equivalent to \"sudo ./flashrom/flashrom -p internal -w
-        bin/x60/coreboot\_uk\_dvorak.rom\"
-    -   updated \'build\' script to include the \'flash\' script in
+    -   eg: "sudo ./flash bin/x60/coreboot\_serial\_ukdvorak.rom"
+        equivalent to "sudo ./flashrom/flashrom -p internal -w
+        bin/x60/coreboot\_uk\_dvorak.rom"
+    -   updated 'build' script to include the 'flash' script in
         libreboot\_bin.tar.gz
 -   Documentation: replaced default flashrom tutorial to recommend the
-    \'flash\' script instead.
+    'flash' script instead.
 -   Re-add cbfstool source code back into libreboot\_bin.tar.gz, as
     cbfstool\_standalone
     -   Patched that version to work (able to be built and used) without
@@ -1050,38 +1050,38 @@ Revisions for r20140711 (1st beta) (11th July 2014)
         -   see coreboot/util/cbfstool/rmodule.c and then the patched
             version in resources/cbfstool/patch/rmodule.c
         -   see coreboot/src/include/rmodule-defs.h and the rule in
-            \'build\' for including this in
+            'build' for including this in
             ../libreboot\_bin/cbfstool\_standalone
-    -   Added instructions to \'build\' script for applying this patch
+    -   Added instructions to 'build' script for applying this patch
         to the cbfstool\_standalone source in libreboot\_bin
-    -   Added instructions to \'build\' script for then re-compiling
+    -   Added instructions to 'build' script for then re-compiling
         cbfstool\_standalone in libreboot\_bin after applying the patch
-    -   Added a \'builddeps-cbfstool\' script (in src, but only used in
-        bin and put in bin by \'build\') that compiles
+    -   Added a 'builddeps-cbfstool' script (in src, but only used in
+        bin and put in bin by 'build') that compiles
         cbfstool\_standalone in libreboot\_bin (make), moves the
         cbfstool and rmodtool binaries into libreboot\_bin/ and then
-        does \'make clean\' in libreboot\_bin/cbfstool\_standalone
-    -   Updated the \'build\' script to put \'builddeps-cbfstool\' in
+        does 'make clean' in libreboot\_bin/cbfstool\_standalone
+    -   Updated the 'build' script to put 'builddeps-cbfstool' in
         libreboot\_bin
-    -   Updated the \'build\' script in the cbfstool (standalone) part
+    -   Updated the 'build' script in the cbfstool (standalone) part
         to accomodate the above.
     -   Documentation: added notes about cbfstool (standalone) in
         libreboot\_bin
 -   Documentation: made docs/gnulinux/grub\_cbfs.html slightly easier to
     follow.
--   Annotate the \'build\*\' scripts with \'echo\' commands, to help the
+-   Annotate the 'build\*' scripts with 'echo' commands, to help the
     user understand what it actually happening during the build process.
--   Documentation: added information about how \'dmidecode\' data was
+-   Documentation: added information about how 'dmidecode' data was
     put in the coreboot configs
-    -   Documentation: In fact, document how the \'config\' files in
+    -   Documentation: In fact, document how the 'config' files in
         resources/libreboot/config/ were created
 -   Documentation: Added information about which ThinkPad T60s are
     supported, and which are not.
 -   Documentation: added information about LCD inverters (for upgrading
-    the LCD panel on a T60 14.1\' XGA or 15.1\' XGA)
-    -   it\'s FRU P/N 41W1478 (on T60 14.1\") so this was added to the
+    the LCD panel on a T60 14.1' XGA or 15.1' XGA)
+    -   it's FRU P/N 41W1478 (on T60 14.1") so this was added to the
         docs.
-    -   it\'s P/N 42T0078 FRU 42T0079 or P/N 41W1338 (on T60 15.1\") so
+    -   it's P/N 42T0078 FRU 42T0079 or P/N 41W1338 (on T60 15.1") so
         this was added to the docs.
 -   Documentation: added information about names of LCD panels for T60
     to the relevant parts of the documentation.
@@ -1090,22 +1090,22 @@ Revisions for r20140711 (1st beta) (11th July 2014)
 -   Documentation: added pictures of keyboard layouts (US/UK
     Qwerty/Dvorak) to the ROM list, to let the user compare with their
     own keyboard.
--   Move the coreboot build instructions in \'builddeps\' into
-    \'builddeps-coreboot\' and link it in \'builddeps\'
-    -   Link to \'builddeps-coreboot\' in final stage of \'getcb\'
--   Move GRUB build instructions from \'builddeps\' into
-    \'builddeps-grub\', link from \'builddeps\'
-    -   Link to \'builddeps-grub\' in final stage of \'getgrub\'
--   Move MemTest86+ build instructions from \'builddeps\' into
-    \'builddeps-memtest86\', link from \'builddeps\'
-    -   Link to \'builddeps-memtest86\' in final stage of \'getmt86\'
--   made \'build\' script put resources/ directory in libreboot\_bin, to
+-   Move the coreboot build instructions in 'builddeps' into
+    'builddeps-coreboot' and link it in 'builddeps'
+    -   Link to 'builddeps-coreboot' in final stage of 'getcb'
+-   Move GRUB build instructions from 'builddeps' into
+    'builddeps-grub', link from 'builddeps'
+    -   Link to 'builddeps-grub' in final stage of 'getgrub'
+-   Move MemTest86+ build instructions from 'builddeps' into
+    'builddeps-memtest86', link from 'builddeps'
+    -   Link to 'builddeps-memtest86' in final stage of 'getmt86'
+-   made 'build' script put resources/ directory in libreboot\_bin, to
     make builddeps-flashrom work in libreboot\_bin
--   Removed instructions for building source code in the \'get\' script
-    (they don\'t really belong there)
+-   Removed instructions for building source code in the 'get' script
+    (they don't really belong there)
 -   Added libfuse-dev and liblzma-dev to the list of GRUB dependencies
-    in \'builddeb\' script.
--   Converted the \'RELEASE\' file to \'docs/RELEASE.html\'
+    in 'builddeb' script.
+-   Converted the 'RELEASE' file to 'docs/RELEASE.html'
 -   Added those dependencies to builddeb script (for GRUB part): gawk
     libdevmapper-dev libtool libfreetype6-dev
 -   Added to build script the instruction at the end to create a
@@ -1151,7 +1151,7 @@ Revision notes (22nd June 2014)
 
 -   updated GRUB (git 4b8b9135f1676924a8458da528d264bbc7bbb301, 20th
     April 2014)
--   Made \"DeJavu Sans Mono\" the default font in GRUB (fixes border
+-   Made "DeJavu Sans Mono" the default font in GRUB (fixes border
     corruption).
 -   re-added background image in GRUB (meditating GNU)
 -   added 6 more images:
@@ -1173,11 +1173,11 @@ Revision notes (22nd June 2014)
 -   tidied up the menu entries in GRUB
 -   tidied up the root directory of X60\_source/, sorted more files into
     subdirectories
--   improved the commenting inside the \'build\' script (should make
+-   improved the commenting inside the 'build' script (should make
     modifying it easier)
 -   Renamed X60\_binary.tar.gz and X60\_source.tar.gz to
     libreboot\_bin.tar.gz and libreboot\_src.tar.gz, respectively.
--   Replaced \"GNU GRUB version\" with \"FREE AS IN FREEDOM\" on GNU
+-   Replaced "GNU GRUB version" with "FREE AS IN FREEDOM" on GNU
     GRUB start screen.
 -   Added sha512.txt files in libreboot\_src and libreboot\_bin. (inside
     the archives)
@@ -1187,8 +1187,8 @@ Revision notes (22nd June 2014)
 Revision notes (11th June 2014):
 --------------------------------
 
--   removed \'CD\' boot option from coreboot.rom (not needed)
--   removed \'processor.max\_cstate=2\' and \'idle=halt\' options (see
+-   removed 'CD' boot option from coreboot.rom (not needed)
+-   removed 'processor.max\_cstate=2' and 'idle=halt' options (see
     README.powertop file)
 
 Revision notes (5th June 2014):
@@ -1196,7 +1196,7 @@ Revision notes (5th June 2014):
 
 -   added backlight support (Fn+Home and Fn+End) on X60
 -   fixed broken/unstable 3D when using kernel 3.12 or higher
--   (see \'BACKPORT\' file)
+-   (see 'BACKPORT' file)
 
 Revision notes (9th March 2015):
 --------------------------------
@@ -1216,13 +1216,13 @@ Development notes
     -   With serial output disabled and memtest86+ excluded (faster boot
         speeds) (debugging disabled)
 -   Reduced impact on battery life:
-    -   \'processor.max\_cstate=2\' instead of \'idle=halt\' for booting
+    -   'processor.max\_cstate=2' instead of 'idle=halt' for booting
         default kernel
 -   coreboot.rom (faster boot speeds, debugging disabled):
-    -   Disabled coreboot serial output (Console-&gt; in \"make
-        menuconfig\")
+    -   Disabled coreboot serial output (Console-&gt; in "make
+        menuconfig")
     -   Set coreboot debug level to 0 instead of 8 (Console-&gt; in
-        \"make menuconfig\")
+        "make menuconfig")
     -   Changed GRUB timeout to 1 second instead of 2 (in grub.cfg
     -   Removed background image in GRUB.
     -   Removed memtest86+ payload (since it relies on serial output)
@@ -1232,7 +1232,7 @@ Development notes
     -   has serial port enabled. How this is achieved (from
         X60\_source): Turn on debugging level to 8, and enable serial
         output
--   (in Console-&gt; in coreboot \"make menuconfig\")
+-   (in Console-&gt; in coreboot "make menuconfig")
 -   (and build with grub\_serial.cfg and grub\_memdisk\_serial.cfg)
 
 [Back to top of page.](#pagetop)
@@ -1264,10 +1264,10 @@ Development notes
 -   Added new menu entries:
     -   Parse ISOLINUX config (USB)
     -   Parse ISOLINUX config (CD)
-    -   Added \'cat\' module for use on GRUB command line.
--   \"set pager=1\" is set in grub.cfg, for less-like functionality
+    -   Added 'cat' module for use on GRUB command line.
+-   "set pager=1" is set in grub.cfg, for less-like functionality
 
-The \"Parse\" options read ./isolinux/isolinux.cfg on a CD or USB, and
+The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB, and
 automatically converts it to a grub config and switches to the boot menu
 of that distro. This makes booting ISOs \*much\* easier than before.
 

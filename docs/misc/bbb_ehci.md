@@ -13,14 +13,14 @@ EHCI debugging
     debug](#FindUSBportonthetargetthatsupportsEHCIdebug)
 2.  [Initial setup of BBB to act as EHCI debug
     dongle](#InitialsetupofBBBtoactasEHCIdebugdongle)
-3.  [Patch BBB\'s `g_dbgp` module (optional, but highly
+3.  [Patch BBB's `g_dbgp` module (optional, but highly
     recommended)](#PatchBBBsgdbgpmoduleoptionalbuthighlyrecommended)
 4.  [Configure libreboot with EHCI
     debug](#ConfigurelibrebootwithEHCIdebug)
     1.  [Selecting `HCD Index` and
         `USB Debug port`](#SelectingHCDIndexandUSBDebugport)
 5.  [How to get the debug logs](#Howtogetthedebuglogs)
-6.  [Eneble EHCI Debug on the target\'s kernel (optional,
+6.  [Eneble EHCI Debug on the target's kernel (optional,
     recommended)](#EnebleEHCIDebugonthetargetskerneloptionalrecommended)
 7.  [References](#References)
 
@@ -173,9 +173,9 @@ arm-linux-gnueabihf setup on your *host*.
 -   Set proper version number:
     -   On your host, edit \$work\_dir/kernel/kernel/.config (the one
         you've just copied from BBB), find the line
-        CONFIG\_LOCALVERSION=\"&lt;something or empty&gt;\" and change
-        it to CONFIG\_LOCALVERSION=\"-\$lv\", so it will look something
-        like: CONFIG\_LOCALVERSION=\"-bone70\"
+        CONFIG\_LOCALVERSION="&lt;something or empty&gt;" and change
+        it to CONFIG\_LOCALVERSION="-\$lv", so it will look something
+        like: CONFIG\_LOCALVERSION="-bone70"
 -   Also, make sure that: CONFIG\_USB\_G\_DBGP=m (If not, make
     menuconfig, and set @Device Drivers-&gt; USB Support -&gt; USB
     Gadget Support -&gt; EHCI Debug Device Gadget=m

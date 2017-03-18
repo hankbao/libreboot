@@ -58,7 +58,7 @@ About the libreboot project
 Libreboot is a free BIOS or UEFI replacement ([free as in
 freedom](https://en.wikipedia.org/wiki/Free_software)); libre *boot
 firmware* that initializes the hardware and starts a bootloader for your
-operating system. It\'s also an open source BIOS, but open source fails
+operating system. It's also an open source BIOS, but open source fails
 to promote freedom; *please call libreboot **[free
 software](https://en.wikipedia.org/wiki/Free_software)***.
 
@@ -67,14 +67,14 @@ by the [Ministry of Freedom](https://minifree.org) to achieve RYF
 endorsement for a modified ThinkPad X60 (the first system to ever be
 added to libreboot), which it did then achieve.
 
-Back then, the name *libreboot* didn\'t exist; the project was nameless,
+Back then, the name *libreboot* didn't exist; the project was nameless,
 referring to itself as a *deblobbed version of coreboot*. The project
 named itself libreboot at some point during early 2014, and has since
 rapidly expanded to support more hardware and become more user-friendly.
 
 Libreboot is a [coreboot](http://coreboot.org/) distribution (distro)
 with proprietary software removed, intended to be a
-[free](https://en.wikipedia.org/wiki/Free_software) (libre) \'BIOS\'
+[free](https://en.wikipedia.org/wiki/Free_software) (libre) 'BIOS'
 replacement for your computer. The project is aimed at users, attempting
 to make coreboot as easy to use as possible.
 
@@ -92,7 +92,7 @@ The libreboot project has three main goals:
     on some systems. Examples can include things like CPU microcode
     updates, memory initialization blobs and so on. The coreboot project
     sometimes recommends adding more blobs which it does not distribute,
-    such as the Video BIOS or Intel\'s *Management Engine*. However, a
+    such as the Video BIOS or Intel's *Management Engine*. However, a
     lot of dedicated and talented individuals in coreboot work hard to
     replace these blobs whenever possible.
 -   ***Support as much hardware as possible!*** Libreboot supports less
@@ -140,7 +140,7 @@ at a later date, when it updates itself.
 The deblobbed coreboot tree used in libreboot is referred to as
 *coreboot-libre*, to distinguish it as a component of *libreboot*.
 
-Libreboot is a \'stable\' version of coreboot
+Libreboot is a 'stable' version of coreboot
 ---------------------------------------------
 
 -   Coreboot uses the [rolling
@@ -159,7 +159,7 @@ Libreboot is a \'stable\' version of coreboot
 
 
 
-How do I know what version I\'m running?
+How do I know what version I'm running?
 ========================================
 
 If you are at least 127 commits after release 20150518 (commit message
@@ -175,13 +175,13 @@ archives that you downloaded (if you are using release archives).
 
 If it exists, you can also extract this *lbversion* file by using the
 *cbfstool* utility which libreboot includes, from a ROM image that you
-either dumped or haven\'t flashed yet. In your distribution, run
+either dumped or haven't flashed yet. In your distribution, run
 cbfstool on your ROM image (*libreboot.rom*, in this example):\
 \$ **./cbfstool libreboot.rom extract -n lbversion -f lbversion**\
 You will now have a file, named *lbversion*, which you can read in
 whatever program it is that you use for reading/writing text files.
 
-For git, it\'s easy. Just check the git log.
+For git, it's easy. Just check the git log.
 
 For releases on or below 20150518, or snapshots generated from the git
 repository below 127 commits after 20150518, you can find a file named

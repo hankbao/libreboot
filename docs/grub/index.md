@@ -22,7 +22,7 @@ libreboot\_src/coreboot/util/cbfstool/ if you want to build from source.
 ./cbfstool yourrom.rom remove background.png -n background.png\
 ./cbfstool yourrom.rom add -f background.png -n background.png -t raw
 
-When you\'ve done this, re-flash your ROM and you should have a new
+When you've done this, re-flash your ROM and you should have a new
 background at boot time.
 
 
@@ -30,7 +30,7 @@ background at boot time.
 Setting font in GRUB (for reference) {#grub_font}
 ====================================
 
-You don\'t need to do this unless you would like to change the default
+You don't need to do this unless you would like to change the default
 font yourself. (this is just for reference. It has already been done for
 you)
 
@@ -57,7 +57,7 @@ libreboot) and did:\
 **\$ ../../../grub/grub-mkfont -o dejavusansmono.pf2
 dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf**
 
-I then added the instructions to \'gen.sh\' script in grub-assemble to
+I then added the instructions to 'gen.sh' script in grub-assemble to
 include resources/grub/dejavusansmono.pf2 in all of the ROM images, at
 the root of the GRUB memdisk.\
 I then added that instructions to the grub.cfg files (to load the
@@ -84,7 +84,7 @@ Go in grub directory:\
 **cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
 
 You must make sure that the files are named keymap and keymap.gkb (where
-\'keymap\' can be whatever you want).
+'keymap' can be whatever you want).
 
 Then from the above example, you would put **frazerty** in
 **resources/utilities/grub-assemble/keymap/original/** and the

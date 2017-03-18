@@ -14,9 +14,9 @@ the git repository.
 
 -   [Install build dependencies](#build_dependencies)
 -   [Get the full source code from metadata (git clone)](#build_meta)
--   [How to build \"bucts\" (for LenovoBIOS
+-   [How to build "bucts" (for LenovoBIOS
     X60/X60S/X60T/T60)](#build_bucts)
--   [How to build \"flashrom\"](#build_flashrom)
+-   [How to build "flashrom"](#build_flashrom)
 -   [How to build the ROM images](#build)
 
 
@@ -54,7 +54,7 @@ Get the full source code from metadata (git clone) {#build_meta}
 If you downloaded libreboot from git, then there are some steps to
 download and patch the source code for all relevant dependencies. The
 archive in the git repository used to be available as a tarball called
-\'libreboot\_meta.tar.gz\'. It contains \'metadata\' (scripts) which
+'libreboot\_meta.tar.gz'. It contains 'metadata' (scripts) which
 define how the source was created (where it came from).
 
 You can use the scripts included to download everything.
@@ -64,7 +64,7 @@ First, [install the build dependencies](#build_dependencies).
 Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
 requirement is:\
-\$ **git config \--global user.name \"Your Name\"**\
+\$ **git config \--global user.name "Your Name"**\
 \$ **git config \--global user.email your@emailaddress.com**\
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
@@ -90,13 +90,13 @@ To build the ROM images, see [\#build](#build).
 
 
 
-How to build \"bucts\" (for LenovoBIOS X60/X60S/X60T/T60) {#build_bucts}
+How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60) {#build_bucts}
 =========================================================
 
 **This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and
 T60. If you have coreboot or libreboot running already, ignore this.**
 
-BUC.TS isn\'t really specific to these laptops, but is a bit inside the
+BUC.TS isn't really specific to these laptops, but is a bit inside the
 a register in the chipset on some Intel systems.
 
 Bucts is needed when flashing in software the X60/X60S/X60T/T60 ROM
@@ -104,16 +104,16 @@ while Lenovo BIOS is running; external flashing will be safe regardless.
 Each ROM contains identical data inside the two final 64K region in the
 file\*. This corresponds to the final two 64K regions in the flash chip.
 Lenovo BIOS will prevent you from writing the final one, so running
-\"**bucts 1**\" will set the system to boot from the other block instead
+"**bucts 1**" will set the system to boot from the other block instead
 (which is writeable along with everything beneath it when using a
 patched flashrom. see [\#build\_flashrom](#build_flashrom)). After
 shutting down and booting up after the first flash of libreboot, the
 final 64K block is writeable so you flash the ROM again with an
-unpatched flashrom and run \"**bucts 0**\" to make the system boot from
+unpatched flashrom and run "**bucts 0**" to make the system boot from
 the normal (highest) block again.
 
 \*Libreboot ROM images have identical data in those two 64KiB regions
-because dd is used to do that, by the build system. If you\'re building
+because dd is used to do that, by the build system. If you're building
 from upstream (coreboot), you have to do it manually.
 
 BUC.TS is backed up (powered) by the NVRAM battery (or CMOS battery, as
@@ -127,11 +127,11 @@ libreboot\_util.tar.xz.\
 **If you downloaded from git, follow [\#build\_meta](#build_meta) before
 you proceed.**
 
-\"BUC\" means \"**B**ack**u**p **C**ontrol\" (it\'s a register) and
-\"TS\" means \"**T**op **S**wap\" (it\'s a status bit). Hence \"bucts\"
+"BUC" means "**B**ack**u**p **C**ontrol" (it's a register) and
+"TS" means "**T**op **S**wap" (it's a status bit). Hence "bucts"
 (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
 
-If you have the binary release archive, you\'ll find executables under
+If you have the binary release archive, you'll find executables under
 ./bucts/. Otherwise if you need to build from source, continue reading.
 
 First, [install the build dependencies](#build_dependencies).
@@ -142,14 +142,14 @@ To build bucts, do this in the main directory:\
 To statically compile it, do this:\
 \$ **./oldbuild module bucts static**
 
-The \"builddeps\" script in libreboot\_src also makes use of
+The "builddeps" script in libreboot\_src also makes use of
 builddeps-bucts.
 
 [Back to top of page.](#pagetop)
 
 
 
-How to build \"flashrom\" {#build_flashrom}
+How to build "flashrom" {#build_flashrom}
 =========================
 
 Flashrom is the utility for flashing/dumping ROM images. This is what
@@ -173,7 +173,7 @@ To build it, do the following in the main directory:\
 To statically compile it, do the following in the main directory:\
 \$ **./oldbuild module flashrom static**
 
-After you\'ve done that, under ./flashrom/ you will find the following
+After you've done that, under ./flashrom/ you will find the following
 executables:
 
 -   **flashrom**
@@ -185,7 +185,7 @@ executables:
     -   This is patched for flashing while Lenovo BIOS is running on an
         X60 or T60 with the MX25L1605D (Macronix) flash chip.
 
-The \"builddeps\" script in libreboot\_src also makes use of
+The "builddeps" script in libreboot\_src also makes use of
 builddeps-flashrom.
 
 [Back to top of page.](#pagetop)
@@ -195,7 +195,7 @@ builddeps-flashrom.
 How to build the ROM images {#build}
 ===========================
 
-You don\'t need to do much, as there are scripts already written for you
+You don't need to do much, as there are scripts already written for you
 that can build everything automatically.
 
 You can build libreboot from source on a 32-bit (i686) or 64-bit
@@ -321,7 +321,7 @@ The archive **tobuild.tar.xz** will have been created under
 **release/oldbuildsystem/**, containing bucts, flashrom and all other
 required resources for building them.
 
-You\'ll find that the files libreboot\_util.tar.xz and
+You'll find that the files libreboot\_util.tar.xz and
 libreboot\_src.tar.xz have been created, under
 **release/oldbuildsystem/**.
 

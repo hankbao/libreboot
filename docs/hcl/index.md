@@ -54,10 +54,10 @@ Libreboot supports the following systems in this release:
 -   [Apple MacBook1,1](#macbook11)
 -   [Apple MacBook2,1](#macbook21)
 
-\'Supported\' means that the build scripts know how to build ROM images
+'Supported' means that the build scripts know how to build ROM images
 for these systems, and that the systems have been tested (confirmed
 working). There may be exceptions; in other words, this is a list of
-\'officially\' supported systems.
+'officially' supported systems.
 
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
@@ -71,7 +71,7 @@ EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400) {#ecupdate}
 
 It is recommended that you update to the latest EC firmware version. The
 [EC firmware](https://libreboot.org/faq/#firmware-ec) is separate from
-libreboot, so we don\'t actually provide that, but if you still have
+libreboot, so we don't actually provide that, but if you still have
 Lenovo BIOS then you can just run the Lenovo BIOS update utility, which
 will update both the BIOS and EC version. See:
 
@@ -93,13 +93,13 @@ How to find what EC version you have (i945/GM45) {#ecversion}
 ================================================
 
 In GNU+Linux, you can try this:\
-**grep \'at EC\' /proc/asound/cards**
+**grep 'at EC' /proc/asound/cards**
 
 Sample output:\
 **ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6**
 
 7WHT19WW is the version in different notation, use search engine to find
-out regular version - in this case it\'s a 1.06 for x200 tablet
+out regular version - in this case it's a 1.06 for x200 tablet
 
 [Back to top of page](#pagetop)
 
@@ -116,7 +116,7 @@ The following are known to work well:
 -   Any of the chipsets listed at
     <https://h-node.org/wifi/catalogue/en/1/1/undef/undef/yes?>
 
-The following was mentioned (on IRC), but it\'s unknown to the libreboot
+The following was mentioned (on IRC), but it's unknown to the libreboot
 project if these work with linux-libre kernel (TODO: test):
 
 -   ar5bhb116 ar9382 ABGN
@@ -130,9 +130,9 @@ project if these work with linux-libre kernel (TODO: test):
 List of supported ThinkPad X60s {#supported_x60_list}
 -------------------------------
 
-Native gpu initialization (\'native graphics\') which replaces the
-proprietary VGA Option ROM (\'[Video
-BIOS](https://en.wikipedia.org/wiki/Video_BIOS)\' or \'VBIOS\'), all
+Native gpu initialization ('native graphics') which replaces the
+proprietary VGA Option ROM ('[Video
+BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS'), all
 known LCD panels are currently compatible:
 
 To find what LCD panel you have, see:
@@ -144,7 +144,7 @@ To find what LCD panel you have, see:
 -   BOE-Hydis HT121X01-101: \#
 
 You can remove an X61/X61s motherboard from the chassis and install an
-X60/X60s motherboard in it\'s place (for flashing libreboot). The
+X60/X60s motherboard in it's place (for flashing libreboot). The
 chassis is mostly identical and the motherboards are the same
 shape/size.
 
@@ -162,9 +162,9 @@ is very easily replaced; just remove the card and install another one
 List of supported ThinkPad X60 Tablets {#supported_x60t_list}
 --------------------------------------
 
-Native gpu initialization (\'native graphics\') which replaces the
-proprietary VGA Option ROM (\'[Video
-BIOS](https://en.wikipedia.org/wiki/Video_BIOS)\' or \'VBIOS\').
+Native gpu initialization ('native graphics') which replaces the
+proprietary VGA Option ROM ('[Video
+BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
@@ -180,7 +180,7 @@ There are 5 known LCD panels for the X60 Tablet:
     -   BOE-Hydis HV121P01-101 (works)
 
 Most X60Ts only have digitizer (pen), but some have finger (touch)
-aswell as pen; finger/multitouch doesn\'t work, only digitizer (pen)
+aswell as pen; finger/multitouch doesn't work, only digitizer (pen)
 does.
 
 You can remove an X61/X61s motherboard from the chassis and install an
@@ -250,9 +250,9 @@ could get finger input working. They used linuxwacom at git tag
 Supported T60 list {#supported_t60_list}
 ------------------
 
-Native gpu initialization (\'native graphics\') which replaces the
-proprietary VGA Option ROM (\'[Video
-BIOS](https://en.wikipedia.org/wiki/Video_BIOS)\' or \'VBIOS\').
+Native gpu initialization ('native graphics') which replaces the
+proprietary VGA Option ROM ('[Video
+BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
@@ -263,32 +263,32 @@ this.**
 
 Tested LCD panels: **working(compatible)**
 
--   TMD-Toshiba LTD141EN9B (14.1\" 1400x1050) (FRU P/N 41W1478
+-   TMD-Toshiba LTD141EN9B (14.1" 1400x1050) (FRU P/N 41W1478
     recommended for the inverter board)
--   Samsung LTN141P4-L02 (14.1\" 1400x1050) (FRU P/N 41W1478 recommended
+-   Samsung LTN141P4-L02 (14.1" 1400x1050) (FRU P/N 41W1478 recommended
     for the inverter board)
--   LG-Philips LP150E05-A2K1 (15.1\" 1400x1050) (P/N 42T0078 FRU 42T0079
+-   LG-Philips LP150E05-A2K1 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
--   Samsung LTN150P4-L01 (15.1\" 1400x1050) (P/N 42T0078 FRU 42T0079 or
+-   Samsung LTN150P4-L01 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079 or
     P/N 41W1338 recommended for the inverter board) (not a T60 screen
     afaik, but it works)
--   BOE-Hydis HV150UX1-100 (15.1\" 1600x1200) (P/N 42T0078 FRU 42T0079
+-   BOE-Hydis HV150UX1-100 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
 
 
 Tested LCD panels: **not working yet (incompatible; see
 [../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
 
--   Samsung LTN141XA-L01 (14.1\" 1024x768)
--   LG-Philips LP150X09 (15.1\" 1024x768)
--   Samsung LTN150XG (15.1\" 1024x768)
--   LG-Philips LP150E06-A5K4 (15.1\" 1400x1050) (also, not an official
+-   Samsung LTN141XA-L01 (14.1" 1024x768)
+-   LG-Philips LP150X09 (15.1" 1024x768)
+-   Samsung LTN150XG (15.1" 1024x768)
+-   LG-Philips LP150E06-A5K4 (15.1" 1400x1050) (also, not an official
     T60 screen)
--   Samsung LTN154X3-L0A (15.4\" 1280x800)
--   IDtech IAQX10N (15.1\" 2048x1536) (no display in GRUB, display in
+-   Samsung LTN154X3-L0A (15.4" 1280x800)
+-   IDtech IAQX10N (15.1" 2048x1536) (no display in GRUB, display in
     GNU+Linux is temperamental) (P/N 42T0078 FRU 42T0079 or P/N 41W1338
     recommended for the inverter board)
--   IDtech N150U3-L01 (15.1\" 1600x1200) (no display in GRUB, display in
+-   IDtech N150U3-L01 (15.1" 1600x1200) (no display in GRUB, display in
     GNU+Linux works) (P/N 42T0078 FRU 42T0079 or P/N 41W1338 recommended
     for the inverter board)
 
@@ -297,27 +297,27 @@ Tested LCD panels: **not working yet (incompatible; see
 *The following LCD panels are **UNTESTED**. If you have one of these
 panels then please submit a report!*:
 
--   CMO(IDtech?) N141XC (14.1\" 1024x768)
--   BOE-Hydis HT14X14 (14.1\" 1024x768)
--   TMD-Toshiba LTD141ECMB (14.1\" 1024x768)
--   Boe-Hydis HT14P12 (14.1\" 1400x1050) (FRU P/N 41W1478 recommended
+-   CMO(IDtech?) N141XC (14.1" 1024x768)
+-   BOE-Hydis HT14X14 (14.1" 1024x768)
+-   TMD-Toshiba LTD141ECMB (14.1" 1024x768)
+-   Boe-Hydis HT14P12 (14.1" 1400x1050) (FRU P/N 41W1478 recommended
     for the inverter board)
--   CMO (IDtech?) 13N7068 (15.1\" 1024x768)
--   CMO (IDtech?) 13N7069 (15.1\" 1024x768)
--   BOE-Hydis HV150P01-100 (15.1\" 1400x1050) (P/N 42T0078 FRU 42T0079
+-   CMO (IDtech?) 13N7068 (15.1" 1024x768)
+-   CMO (IDtech?) 13N7069 (15.1" 1024x768)
+-   BOE-Hydis HV150P01-100 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
--   BOE-Hydis HV150UX1-102 (15.1\" 1600x1200) (P/N 42T0078 FRU 42T0079
+-   BOE-Hydis HV150UX1-102 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
--   IDtech IAQX10S (15.1\" 2048x1536) (P/N 42T0078 FRU 42T0079 or P/N
+-   IDtech IAQX10S (15.1" 2048x1536) (P/N 42T0078 FRU 42T0079 or P/N
     41W1338 recommended for the inverter board)
--   Samsung LTN154P2-L05 (42X4641 42T0329) (15.4\" 1680x1050)
--   LG-Philips LP154W02-TL10 (13N7020 42T0423) (15.4\" 1680x1050)
--   LG-Philips LP154WU1-TLB1 (42T0361) (15.4\" 1920x1200) **(for T61p
+-   Samsung LTN154P2-L05 (42X4641 42T0329) (15.4" 1680x1050)
+-   LG-Philips LP154W02-TL10 (13N7020 42T0423) (15.4" 1680x1050)
+-   LG-Philips LP154WU1-TLB1 (42T0361) (15.4" 1920x1200) **(for T61p
     but it might work in T60. Unknown!)**
--   Samsung LTN154U2-L05 (42T0408 42T0574) (15.4\" 1920x1200) **(for
+-   Samsung LTN154U2-L05 (42T0408 42T0574) (15.4" 1920x1200) **(for
     T61p but it might work in T60. Unknown!)**
 
-It is unknown whether the 1680x1050 (15.4\") and 1920x1200 (15.4\")
+It is unknown whether the 1680x1050 (15.4") and 1920x1200 (15.4")
 panels use a different inverter board than the 1280x800 panels.
 
 The T60 typically comes with an Intel wifi chipset which does not work
@@ -335,17 +335,17 @@ is very easily replaced; just remove the card and install another one
 ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences. {#t60_ati_intel}
 ----------------------------------------------------------------
 
-If your T60 is a 14.1\" or 15.1\" model with an ATI GPU, it won\'t work
+If your T60 is a 14.1" or 15.1" model with an ATI GPU, it won't work
 with libreboot by default but you can replace the motherboard with
 another T60 motherboard that has an Intel GPU, and then libreboot should
 work.
 
-As far as I know, 14.1\" (Intel GPU) and 15.1\" (Intel GPU) T60
-motherboards are the same, where \'spacers\' are used on the 15.1\" T60.
+As far as I know, 14.1" (Intel GPU) and 15.1" (Intel GPU) T60
+motherboards are the same, where 'spacers' are used on the 15.1" T60.
 In any case, it makes sense to find one that is guaranteed to fit in
 your chassis.
 
-There is also a 15.4\" T60 with Intel GPU.
+There is also a 15.4" T60 with Intel GPU.
 
 Note: the T60**p** laptops all have ATI graphics. The T60p laptops
 cannot be used with libreboot under any circumstances.
@@ -361,17 +361,17 @@ The reason that the ATI GPU on T60 is unsupported is due to the VBIOS
 has been reverse engineered, and replaced with Free Software and so will
 work in libreboot.
 
-The \'Video BIOS\' is what initializes graphics.
+The 'Video BIOS' is what initializes graphics.
 
 See: <https://en.wikipedia.org/wiki/Video_BIOS>.\
 In fact, lack of free VBIOS in general is a big problem in coreboot, and
 is one reason (among others) why many ports for coreboot are unsuitable
-for libreboot\'s purpose.
+for libreboot's purpose.
 
 Theoretically, the ThinkPad T60 with ATI GPU can work with libreboot and
 have ROM images compiled for it, however in practise it would not be
 usable as a laptop because there would be no visual display at all. That
-being said, such a configuration is acceptable for use in a \'headless\'
+being said, such a configuration is acceptable for use in a 'headless'
 server setup (with serial and/or ssh console as the display).
 
 [Back to top of page.](#pagetop)
@@ -410,7 +410,7 @@ Also of interest:
 [../git/\#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
-guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono\'s
+guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
 page (see [\#macbook21](#macbook21)) shows the location of the SPI flash
 chip on the motherboard. [How to remove the
 motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
@@ -445,7 +445,7 @@ http://macbook.donderklumpen.de/coreboot/**\
 Use **-e robots=off** if using this trick for other sites and the site
 restricts using robots.txt
 
-**Links to wget backups (and the backups themselves) of Mono\'s pages
+**Links to wget backups (and the backups themselves) of Mono's pages
 (see above) removed temporarily. Mono has given me permission to
 distribute them, but I need to ask this person to tell me what license
 these works fall under first. Otherwise, the above URLs should be fine.
@@ -455,14 +455,14 @@ NOTE TO SELF: REMOVE THIS WHEN DONE**
 ### Installing GNU+Linux distributions (on Apple EFI firmware)
 
 -   [Parabola GNU+Linux installation on a macbook2,1 with Apple EFI
-    firmware](#) (this is a copy of Mono\'s page, see above)
+    firmware](#) (this is a copy of Mono's page, see above)
 
 How to boot an ISO: burn it to a CD (like you would normally) and hold
 down the Alt/Control key while booting. The bootloader will detect the
-GNU+Linux CD as \'Windows\' (because Apple doesn\'t think GNU+Linux
+GNU+Linux CD as 'Windows' (because Apple doesn't think GNU+Linux
 exists). Install it like you normally would. When you boot up again,
 hold Alt/Control once more. The installation (on the HDD) will once
-again be seen as \'Windows\'. (it\'s not actually Windows, but Apple
+again be seen as 'Windows'. (it's not actually Windows, but Apple
 likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
 [../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
@@ -471,7 +471,7 @@ install libreboot, follow
 
 ### Information about coreboot
 
--   [Coreboot on the macbook2,1](#) (this is a copy of Mono\'s page, see
+-   [Coreboot on the macbook2,1](#) (this is a copy of Mono's page, see
     above)
 
 
@@ -506,7 +506,7 @@ Also of interest:
 [../git/\#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
-guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono\'s
+guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
 page (see above) shows the location of the SPI flash chip on the
 motherboard. [How to remove the
 motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
@@ -515,7 +515,7 @@ For external flashing, refer to
 [../install/bbb\_setup.html](../install/bbb_setup.html).
 
 You need to replace OS X with GNU+Linux before flashing libreboot. (OSX
-won\'t run at all in libreboot).
+won't run at all in libreboot).
 
 There are some issues with this system (compared to other computers that
 libreboot supports):
@@ -584,7 +584,7 @@ A user reported that the above is only for linux kernel 3.15 or lower.
 For newer kernels, the touchpad works fine out of the box, except middle
 tapping.
 
-A user submitted a utility to enable 3-finger tap on this laptop. It\'s
+A user submitted a utility to enable 3-finger tap on this laptop. It's
 available at *resources/utilities/macbook21-three-finger-tap* in the
 libreboot git repository.
 

@@ -74,8 +74,8 @@ Apparently, only 8MB VRAM is available on i945 GPUs (though it could do
 64MB):\
 phcoder: No. Hardware default is 8 MiB. When I wanted to make it
 configurable, I saw that docs mention only one other alternative: 1MiB.
-Later isn\'t event enough for 1024x768 at 24bpp without any acceleration
-or double buffering. It\'s possible that there are undocumented values.
+Later isn't event enough for 1024x768 at 24bpp without any acceleration
+or double buffering. It's possible that there are undocumented values.
 Which options do you have in vendor BIOS? How to find out how much vram
 you have:\
 phcoder: TOM - BSM\
@@ -85,9 +85,9 @@ phcoder: not accorging to doc.\
 phcoder: see mobile-945-express-chipset-datasheet page 93\
 phcoder: see also
 src/northbridge/intel/i945/{early\_init,northbridge,gma}.c\
-vimuser: \"011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for\
-vimuser: frame buffer.\"\
-vimuser: \"Others - reserved\"\
+vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for\
+vimuser: frame buffer."\
+vimuser: "Others - reserved"\
 phcoder: the easiest way is a loop at this position which tries
 different values and reads (and prints) BSM with them\
 stefanct: vimuser: they suggest that you change the value and look how
@@ -147,7 +147,7 @@ Original getregs.py script can be found at
 Masłowski.
 
 About fixing remaining LCD panels on 5345:\
-\'polarity\' is mentioned in coreboot log (cbmem -c). compare output
+'polarity' is mentioned in coreboot log (cbmem -c). compare output
 (with working and non-working panel). (and see the other notes in
 docs/future/)
 
@@ -240,7 +240,7 @@ i945 gfx: X60/T60 VBT implementation (experimental: testing) {#i945_vbt}
 
 intel\_bios\_dumper in intel-gpu-tools seems interesting.
 
-**Use \'drm.debug=0x06\' kernel parameter when booting in grub!**
+**Use 'drm.debug=0x06' kernel parameter when booting in grub!**
 
 Before each test run, boot a live USB and delete the old logs in
 /var/log (kernel log, xorg log, dmesg and so on).
@@ -272,28 +272,28 @@ Results (\# means untested):
     -   BOE-Hydis HV121X03-100: \#
 -   **X60T SXGA+:**
     -   BOE-Hydis HV121P01-100: \#
--   **T60 14\" XGA:**
+-   **T60 14" XGA:**
     -   Samsung LTN141XA-L01: \#
     -   CMO N141XC: \#
     -   BOE-Hydis HT14X14: \#
     -   TMD-Toshiba LTD141ECMB: \#
--   **T60 14\" SXGA+**
+-   **T60 14" SXGA+**
     -   TMD-Toshiba LTD141EN9B: \#
     -   Samsung LTN141P4-L02: \#
     -   Boe-Hydis HT14P12: \#
--   **T60 15\" XGA**
+-   **T60 15" XGA**
     -   Samsung LTN150XG-L08: \#
     -   LG-Philips LP150X09: \#
     -   13N7068 (IDtech): \#
     -   13N7069 (CMO): \#
--   **T60 15\" SXGA+**
+-   **T60 15" SXGA+**
     -   LG-Philips LP150E05-A2K1: \#
     -   BOE-Hydis HV150P01-100: \#
--   **T60 15\" UXGA**
+-   **T60 15" UXGA**
     -   BOE-Hydis HV150UX1-100: \#
     -   IDTech N150U3-L01: \#
     -   BOE-Hydis HV150UX1-102: \#
--   **T50 15\" QXGA**
+-   **T50 15" QXGA**
     -   IDtech IAQX10N: \#
     -   IDtech IAQX10S: \#
 
@@ -314,7 +314,7 @@ the X60, X60 Tablet and T60 (Intel GPU).
 Here is an example of how VBT was implemented on the ThinkPad X230:
 <http://review.coreboot.org/#/c/5396>.
 
-You\'ll need to build a T60 ROM with SeaBIOS and the VGA ROM (for Intel
+You'll need to build a T60 ROM with SeaBIOS and the VGA ROM (for Intel
 GPU). An X60 ROM is also needed (same configuration, using the VGA ROM
 for X60).
 
@@ -346,28 +346,28 @@ Test results (\# means untested and all had docks, unless noted).
     -   BOE-Hydis HV121X03-100: \#
 -   **X60T SXGA+ (1400x1050):**
     -   BOE-Hydis HV121P01-100: \#
--   **T60 14\" XGA (1024x768):**
+-   **T60 14" XGA (1024x768):**
     -   Samsung LTN141XA-L01: \#
     -   CMO N141XC: \#
     -   BOE-Hydis HT14X14: \#
     -   TMD-Toshiba LTD141ECMB: \#
--   **T60 14\" SXGA+ (1400x1050):**
+-   **T60 14" SXGA+ (1400x1050):**
     -   TMD-Toshiba LTD141EN9B: \#
     -   Samsung LTN141P4-L02: \#
     -   Boe-Hydis HT14P12: \#
--   **T60 15\" XGA (1024x768):**
+-   **T60 15" XGA (1024x768):**
     -   Samsung LTN150XG-L08: \#
     -   LG-Philips LP150X09: \#
     -   13N7068 (IDtech): \#
     -   13N7069 (CMO): \#
--   **T60 15\" SXGA+ (1400x1050):**
+-   **T60 15" SXGA+ (1400x1050):**
     -   LG-Philips LP150E05-A2K1: \#
     -   BOE-Hydis HV150P01-100: \#
--   **T60 15\" UXGA (1600x1200):**
+-   **T60 15" UXGA (1600x1200):**
     -   BOE-Hydis HV150UX1-100: \#
     -   IDTech N150U3-L01: \#
     -   BOE-Hydis HV150UX1-102: \#
--   **T60 15\" QXGA (2048x1536):**
+-   **T60 15" QXGA (2048x1536):**
     -   IDtech IAQX10N: \#
     -   IDtech IAQX10S: \#
 
@@ -378,7 +378,7 @@ Test results (\# means untested and all had docks, unless noted).
 Fallback patches {#fallback_patches}
 ================
 
--   Todo: test gnutoo\'s fallback patches:
+-   Todo: test gnutoo's fallback patches:
     <http://www.coreboot.org/Fallback_mechanism> see [this IRC
     log](gnutoo_fallback_patch) (warning, not cleaned up)
 
@@ -393,11 +393,11 @@ Other - unlisted (low priority) {#other}
     <http://review.coreboot.org/#/c/6718/>
     -   [dmesg](future/dumps/pte_x60_6718/dmesg)
     -   [kern.log](future/dumps/pte_x60_6718/kern.log)
-    -   This doesn\'t seem to cause any issues for general use.
+    -   This doesn't seem to cause any issues for general use.
 -   Implement INT 10H support in i945 native graphics. (this will be a
     lot of work. SeaBIOS has code for some geode boards, to get a
     general idea).
--   T60 15\" QXGA (2048x1536): fixed issue where GRUB wouldn\'t show any
+-   T60 15" QXGA (2048x1536): fixed issue where GRUB wouldn't show any
     graphics. (Not many people have this panel)
     -   It might be the same issue I ran into with Paul on the X60 (not
         enough memory being allocated) since the same code works on T60

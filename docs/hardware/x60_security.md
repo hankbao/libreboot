@@ -84,11 +84,11 @@ The following is a summary of what you will remove (already done to this
 system):\
 ![](../images/x60_security/0001_overview.jpg)\
 Note: the blue lines represent antenna cables and modem cables. You
-don\'t need to remove these, but you can if you want (to make it tidier
+don't need to remove these, but you can if you want (to make it tidier
 after removing other parts). I removed the antenna wires, the modem
 jack, the modem cable and also (on another model) a device inside the
-part where the wwan antenna goes (wasn\'t sure what it was, but I knew
-it wasn\'t needed). **This is optional**
+part where the wwan antenna goes (wasn't sure what it was, but I knew
+it wasn't needed). **This is optional**
 
 Remove the microphone (can desolder it, but you can also easily pull it
 off with you hands). Already removed here:\
@@ -96,7 +96,7 @@ off with you hands). Already removed here:\
 **Rationale:**\
 Another reason to remove the microphone: If your computer
 gets[\[1\]](#ref1) compromised, it can record what you say, and use it
-to receive data from nearby devices if they\'re compromised too. Also,
+to receive data from nearby devices if they're compromised too. Also,
 we do not know what the built-in microcode (in the CPU) is doing; it
 could theoretically be programmed to accept remote commands from some
 speaker somewhere (remote security hole). **In other words, the system
@@ -111,7 +111,7 @@ Remove the speaker:\
 Reason: combined with the microphone issue, this could be used to leak
 data.\
 If your computer gets[\[1\]](#ref1) compromised, it can be used to
-transmit data to nearby compromised devices. It\'s unknown if it can be
+transmit data to nearby compromised devices. It's unknown if it can be
 turned into a microphone[\[2\]](#ref2).\
 Replacement: headphones/speakers (line-out) or external DAC (USB).
 
@@ -120,12 +120,12 @@ Remove the wlan (also remove wwan if you have it):\
 Reason: has direct (and very fast) memory access, and could
 (theoretically) leak data over a side-channel.\
 **Wifi:** The ath5k/ath9k cards might not have firmware at all. They
-might safe but could have access to the computer\'s RAM trough DMA. If
+might safe but could have access to the computer's RAM trough DMA. If
 people have an intel card(most X60s come with Intel wifi by default,
 until you change it),then that card runs a non-free firwamre and has
-access to the computer\'s RAM trough DMA! So the risk-level is very
+access to the computer's RAM trough DMA! So the risk-level is very
 high.\
-**Wwan (3g modem):** They run proprietary software! It\'s like AMT but
+**Wwan (3g modem):** They run proprietary software! It's like AMT but
 over the GSM network which is probably even worse.\
 Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note,
 this has all the same privacy issues as mobile phones. wwan not
@@ -180,11 +180,11 @@ Extra notes
 ===========
 
 EC: Cannot be removed but can be mitigated: it contains non-free
-non-loadable code, but it has no access to the computer\'s RAM. It has
+non-loadable code, but it has no access to the computer's RAM. It has
 access to the on-switch of the wifi, bluetooth, modem and some other
 power management features. The issue is that it has access to the
 keyboard, however if the software security howto **(not yet written)**
-is followed correctly, it won\'t be able to leak data to a local
+is followed correctly, it won't be able to leak data to a local
 attacker. It has no network access but it may still be able to leak data
 remotely, but that requires someone to be nearby to recover the data
 with the help of an SDR and some directional antennas[\[3\]](#ref3).
@@ -239,11 +239,11 @@ more risky and more costly to attack people.
 \[2\] microphone {#ref2}
 ----------------
 
-It\'s possible to turn headphones into a microphone, you could try
-yourself, however they don\'t record loud at all. Also intel cards have
-the capability to change a connector\'s function, for instance the
-microphone jack can now become a headphone plug, that\'s called
-retasking. There is some support for it in GNU+Linux but it\'s not very
+It's possible to turn headphones into a microphone, you could try
+yourself, however they don't record loud at all. Also intel cards have
+the capability to change a connector's function, for instance the
+microphone jack can now become a headphone plug, that's called
+retasking. There is some support for it in GNU+Linux but it's not very
 well known.
 
 

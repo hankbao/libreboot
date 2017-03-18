@@ -5,14 +5,14 @@ Installing Parabola or Arch GNU+Linux with full disk encryption (including /boot
 Libreboot on x86 uses the GRUB
 [payload](http://www.coreboot.org/Payloads#GRUB_2) by default, which
 means that the GRUB configuration file (where your GRUB menu comes from)
-is stored directly alongside libreboot and it\'s GRUB payload
+is stored directly alongside libreboot and it's GRUB payload
 executable, inside the flash chip. In context, this means that
 installing distributions and managing them is handled slightly
 differently compared to traditional BIOS systems.
 
 On most systems, the /boot partition has to be left unencrypted while
 the others are encrypted. This is so that GRUB, and therefore the
-kernel, can be loaded and executed since the firmware can\'t open a LUKS
+kernel, can be loaded and executed since the firmware can't open a LUKS
 volume. Not so with libreboot! Since GRUB is already included directly
 as a payload, even /boot can be encrypted. This protects /boot from
 tampering by someone with physical access to the system.
@@ -36,7 +36,7 @@ drive.
 
 
 
-Boot Parabola\'s install environment. [How to boot a GNU+Linux
+Boot Parabola's install environment. [How to boot a GNU+Linux
 installer](grub_boot_installer.html).
 
 For this guide I used the 2015 08 01 image to boot the live installer
@@ -62,7 +62,7 @@ security issues if you do enable it. See [this
 page](https://wiki.archlinux.org/index.php/Dm-crypt/Specialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29)
 for more info.
 
-- make sure it\'s brand-new (or barely used). Or, otherwise, be sure
+- make sure it's brand-new (or barely used). Or, otherwise, be sure
 that it never previously contained plaintext copies of your data.
 
 - make sure to read [this
@@ -79,15 +79,15 @@ example if it was 2MiB:\
 \# **dd if=/dev/urandom of=/dev/sda bs=2M; sync**
 
 If your drive was already LUKS encrypted (maybe you are re-installing
-your distro) then it is already \'wiped\'. You should just wipe the LUKS
+your distro) then it is already 'wiped'. You should just wipe the LUKS
 header.
 <https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/>
 showed me how to do this. It recommends doing the first 3MiB. Now, that
-guide is recommending putting zero there. I\'m going to use urandom. Do
+guide is recommending putting zero there. I'm going to use urandom. Do
 this:\
 \# **head -c 3145728 /dev/urandom &gt; /dev/sda; sync**\
 (Wiping the LUKS header is important, since it has hashed passphrases
-and so on. It\'s \'secure\', but \'potentially\' a risk).
+and so on. It's 'secure', but 'potentially' a risk).
 
 
 
@@ -142,7 +142,7 @@ I am using MBR partitioning, so I use cfdisk:\
 \# **cfdisk /dev/sda**
 
 I create a single large sda1 filling the whole drive, leaving it as the
-default type \'Linux\' (83).
+default type 'Linux' (83).
 
 Now I refer to
 <https://wiki.archlinux.org/index.php/Dm-crypt/Drive_preparation#Partitioning>:\
@@ -198,7 +198,7 @@ Show that you just created it:\
 Now I create the volume group, inside of which the logical volumes will
 be created:\
 \# **vgcreate matrix /dev/mapper/lvm**\
-(volume group name is \'matrix\' - choose your own name, if you like)
+(volume group name is 'matrix' - choose your own name, if you like)
 Show that you created it:\
 \# **vgdisplay**
 
@@ -214,7 +214,7 @@ the rest of the space, named root)\
 You can also be flexible here, for example you can specify a /boot, a /,
 a /home, a /var, a /usr, etc. For example, if you will be running a
 web/mail server then you want /var in its own partition (so that if it
-fills up with logs, it won\'t crash your system). For a home/laptop
+fills up with logs, it won't crash your system). For a home/laptop
 system (typical use case), a root and a swap will do (really).
 
 Verify that the logical volumes were created, using the following
@@ -267,13 +267,13 @@ In my case I did the steps in the next paragraph, and followed the steps
 in this paragraph again.
 
 &lt;troubleshooting&gt;\
-   The following is based on \'Verification of package signatures\' in
+   The following is based on 'Verification of package signatures' in
 the Parabola install guide.\
    Check there first to see if steps differ by now.\
    Now you have to update the default Parabola keyring. This is used for
 signing and verifying packages:\
    \# **pacman -Sy parabola-keyring**\
-   It says that if you get GPG errors, then it\'s probably an expired
+   It says that if you get GPG errors, then it's probably an expired
 key and, therefore, you should do:\
    \# **pacman-key \--populate parabola**\
    \# **pacman-key \--refresh-keys**\
@@ -294,7 +294,7 @@ me from using it.\
    I deleted the files that it mentioned and then it worked.
 Specifically, I had this error:\
    *licenses: /usr/share/licenses/common/MPS exists in filesystem*\
-   I rm -Rf\'d the file and then pacman worked. I\'m told that the
+   I rm -Rf'd the file and then pacman worked. I'm told that the
 following would have also made it work:\
    \# **pacman -Sf licenses**\
 &lt;/troubleshooting&gt;\
@@ -322,7 +322,7 @@ command again!)
 Chroot into new system:\
 \# **arch-chroot /mnt /bin/bash**
 
-It\'s a good idea to have this installed:\
+It's a good idea to have this installed:\
 \# **pacman -S linux-libre-lts**
 
 It was also suggested that you should install this kernel (read up on
@@ -330,7 +330,7 @@ what GRSEC is):\
 \# **pacman -S linux-libre-grsec**
 
 This is another kernel that sits inside /boot, which you can use. LTS
-means \'long-term support\'. These are so-called \'stable\' kernels that
+means 'long-term support'. These are so-called 'stable' kernels that
 can be used as a fallback during updates, if a bad kernel causes issues
 for you.
 
@@ -380,13 +380,13 @@ information about each hook.) Specifically, for this use case:\
 \# **vi /etc/mkinitcpio.conf**\
 Then modify the file like so:
 
--   MODULES=\"i915\"
+-   MODULES="i915"
 -   This forces the driver to load earlier, so that the console font
-    isn\'t wiped out after getting to login). Macbook21 users will also
+    isn't wiped out after getting to login). Macbook21 users will also
     need **hid-generic, hid and hid-apple to have a working keyboard
     when asked to enter the LUKS password.**
--   HOOKS=\"base udev autodetect modconf block keyboard keymap
-    consolefont encrypt lvm2 filesystems fsck shutdown\"
+-   HOOKS="base udev autodetect modconf block keyboard keymap
+    consolefont encrypt lvm2 filesystems fsck shutdown"
 -   Explanation:
 -   keymap adds to initramfs the keymap that you specified in
     /etc/vconsole.conf
@@ -412,7 +412,7 @@ Set the root password: At the time of writing, Parabola used SHA512 by
 default for its password hashing. I referred to
 <https://wiki.archlinux.org/index.php/SHA_password_hashes>.\
 \# **vi /etc/pam.d/passwd**\
-Add rounds=65536 at the end of the uncommented \'password\' line.\
+Add rounds=65536 at the end of the uncommented 'password' line.\
 \# **passwd root**\
 Make sure to set a secure password! Also, it must never be the same as
 your LUKS password.
@@ -444,7 +444,7 @@ failed login attempts.
 
 Configure sudo - not covered here. Will be covered post-installation in
 another tutorial, at a later date. If this is a single-user system, you
-don\'t really need sudo.
+don't really need sudo.
 
 
 
@@ -458,7 +458,7 @@ unmount:\
 \# **umount -R /mnt**\
 \# **swapoff -a**
 
-deactivate the lvm lv\'s:\
+deactivate the lvm lv's:\
 \# **lvchange -an /dev/matrix/root**\
 \# **lvchange -an /dev/matrix/swapvol**\
 
@@ -478,7 +478,7 @@ command line. The underlined parts are optional (using those 2
 underlines will boot lts kernel instead of normal).
 
 grub&gt; **cryptomount -a**\
-grub&gt; **set root=\'lvm/matrix-root\'**\
+grub&gt; **set root='lvm/matrix-root'**\
 grub&gt; **linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root
 cryptdevice=/dev/sda1:root**\
 grub&gt; **initrd /boot/initramfs-linux-libre-lts.img**\
@@ -514,7 +514,7 @@ Modify grub.cfg inside the ROM
 automatically with this configuration. [grub\_cbfs.html](grub_cbfs.html)
 shows you how. Follow that guide, using the configuration details below.
 If you go for option 2 (re-flash), promise to do this on grubtest.cfg
-first! We can\'t emphasise this enough. This is to reduce the
+first! We can't emphasise this enough. This is to reduce the
 possibility of bricking your device!
 
 I will go for the re-flash option here. Firstly, cd to the
@@ -532,7 +532,7 @@ Extract grubtest.cfg:\
 And modify:\
 \$ **vi grubtest.cfg**
 
-In grubtest.cfg, inside the \'Load Operating System\' menu entry, change
+In grubtest.cfg, inside the 'Load Operating System' menu entry, change
 the contents to:
 
     cryptomount -a
@@ -571,18 +571,18 @@ Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
 \# **./flash forceupdate libreboot.rom**\
-You should see \"Verifying flash\... VERIFIED.\" written at the end of
+You should see "Verifying flash\... VERIFIED." written at the end of
 the flashrom output.
 
 With this new configuration, Parabola can boot automatically and you
 will have to enter a password at boot time, in GRUB, before being able
-to use any of the menu entries or switch to the terminal. Let\'s test it
+to use any of the menu entries or switch to the terminal. Let's test it
 out: reboot and choose grubtest.cfg from the GRUB menu, using the arrow
 keys on your keyboard. Enter the name you chose, the GRUB password, your
 LUKS passphrase and login as root/your user. All went well? Great!
 
 If it does not work like you want it to, if you are unsure or sceptical
-in any way, don\'t despair: you have been wise and did not brick your
+in any way, don't despair: you have been wise and did not brick your
 device! Reboot and login the default way, and then modify your
 grubtest.cfg until you get it right! **Do \*not\* proceed past this
 point unless you are 100% sure that your new configuration is safe (or
@@ -590,15 +590,15 @@ desirable) to use.**
 
 Now, we can easily and safely create a copy of grubtest.cfg, called
 grub.cfg. This will be the same except for one difference: the menuentry
-\'Switch to grub.cfg\' is changed to \'Switch to grubtest.cfg\' and,
+'Switch to grub.cfg' is changed to 'Switch to grubtest.cfg' and,
 inside it, all instances of grub.cfg to grubtest.cfg. This is so that
 the main config still links (in the menu) to grubtest.cfg, so that you
-don\'t have to manually switch to it, in case you ever want to follow
+don't have to manually switch to it, in case you ever want to follow
 this guide again in the future (modifying the already modified config).
 Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
 with the following command:\
-\$ **sed -e \'s:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g\' -e
-\'s:Switch to grub.cfg:Switch to grubtest.cfg:g\' &lt; grubtest.cfg &gt;
+\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+'s:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt;
 grub.cfg**\
 Delete the grub.cfg that remained inside the ROM:\
 \$ **./cbfstool libreboot.rom remove -n grub.cfg**\
@@ -609,7 +609,7 @@ Now you have a modified ROM. Once more, refer to
 <http://libreboot.org/docs/install/#flashrom>. Cd to the libreboot\_util
 directory and update the flash chip contents:\
 \# **./flash update libreboot.rom**\
-And wait for the \"Verifying flash\... VERIFIED.\" Once you have done
+And wait for the "Verifying flash\... VERIFIED." Once you have done
 that, shut down and then boot up with your new configuration.
 
 When done, delete GRUB (remember, we only needed it for the
@@ -643,7 +643,7 @@ Insert it into the luks volume:\
 \# **cryptsetup luksAddKey /dev/sdX /etc/mykeyfile**\
 and enter your LUKS passphrase when prompted. Add the keyfile to the
 initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:\
-\# **FILES=\"/etc/mykeyfile\"**\
+\# **FILES="/etc/mykeyfile"**\
 Create the initramfs image from scratch:\
 \# **mkinitcpio -p linux-libre**\
 \# **mkinitcpio -p linux-libre-lts**\

@@ -11,7 +11,7 @@ This section relates to hardware maintenance on supported targets.
 -   [ThinkPad X60/X60S: change the fan/heatsink](x60_heatsink.html)
 -   [ThinkPad X60/X60s: How to change the LCD
     panel](x60_lcd_change.html) (incomplete. pics only for now)
--   [ThinkPad T60 15.1\" changing LCD panel](t60_lcd_15.html)
+-   [ThinkPad T60 15.1" changing LCD panel](t60_lcd_15.html)
 -   [ThinkPad T60: change the fan/heatsink](t60_heatsink.html)
 -   [ThinkPad X60/X60S: hardware security](x60_security.html)
 -   [ThinkPad T60: hardware security](t60_security.html)

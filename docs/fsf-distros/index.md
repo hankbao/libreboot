@@ -1,8 +1,8 @@
 
-Explaining Why We Don\'t Endorse FSF-endorsed Systems 
+Explaining Why We Don't Endorse FSF-endorsed Systems 
 =====================================================
 
-We are asked why we don\'t endorse most FSF-endorsed distributions,
+We are asked why we don't endorse most FSF-endorsed distributions,
 usually well-known within the FSF community.
 
 To learn more about the GNU+Linux systems that we do endorse, check out
@@ -15,29 +15,29 @@ FSF-endorsed distribution that we endorse there is *Parabola*.
 Blag
 ----
 
-It\'s a dead project.
+It's a dead project.
 
 Dynebolic
 ---------
 
-It\'s a dead project.
+It's a dead project.
 
 gNewSense
 ---------
 
-It\'s a dead project.
+It's a dead project.
 
 GuixSD
 ------
 
-It\'s the GNU project\'s official distribution. [Libreboot is opposed to
-the GNU project](../../gnu/). It\'s actively developed, but it\'s not
+It's the GNU project's official distribution. [Libreboot is opposed to
+the GNU project](../../gnu/). It's actively developed, but it's not
 yet ready for use by most end users.
 
 Musix
 -----
 
-It\'s a dead project.
+It's a dead project.
 
 Trisquel
 --------
@@ -69,7 +69,7 @@ recommendations](../distros/).
 Ututo
 -----
 
-It\'s a dead project.
+It's a dead project.
 
 [Back to top of page](#pagetop)
 

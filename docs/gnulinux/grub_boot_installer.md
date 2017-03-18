@@ -35,7 +35,7 @@ Connect the USB drive. Check dmesg:\
 Check lsblk to confirm which drive it is:\
 **\$ lsblk**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ sudo umount /dev/sdX\***\
 **\# umount /dev/sdX\***
@@ -78,7 +78,7 @@ Connect the USB drive. Check dmesg:\
 Check to confirm which drive it is, for example, if you think its sd3:\
 **\$ disklabel sd3**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ doas umount /dev/sd3i**\
 
@@ -112,12 +112,12 @@ Download the Debian or Devuan net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/), or [the
 Devuan homepage](https://www.devuan.org/) for Devuan. Use this on the
 GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
-**set root=\'usb0\'\
+**set root='usb0'\
 linux /install.amd/vmlinuz\
 initrd /install.amd/initrd.gz\
 boot\
 ** If you are on a 32-bit system (e.g. X60):\
-**set root=\'usb0\'\
+**set root='usb0'\
 linux /install.386/vmlinuz\
 initrd /install.386/initrd.gz\
 boot**\
@@ -146,7 +146,7 @@ Booting ISOLINUX images (manual method)
 distribution. You must adapt them appropriately, for whatever GNU+Linux
 distribution it is that you are trying to install.*
 
-If the ISOLINUX parser or *Search for GRUB configuration* options won\'t
+If the ISOLINUX parser or *Search for GRUB configuration* options won't
 work, then press C in GRUB to access the command line.\
 grub&gt; **ls**\
 Get the device from above output, eg (usb0). Example:\
@@ -170,12 +170,12 @@ options in txt.cfg. This is important if you want 64-bit booting on your
 system. Devuan versions based on Debian 8.x may also have the same
 issue.
 
-Now look at the ISOLINUX menuentry. It\'ll look like:\
+Now look at the ISOLINUX menuentry. It'll look like:\
 **kernel /path/to/kernel\
 append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS\
-** GRUB works the same way, but in it\'s own way. Example GRUB
+** GRUB works the same way, but in it's own way. Example GRUB
 commands:\
-grub&gt; **set root=\'usb0\'**\
+grub&gt; **set root='usb0'**\
 grub&gt; **linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS**\
 grub&gt; **initrd /path/to/initrd**\
 grub&gt; **boot**\
@@ -191,16 +191,16 @@ now be booting your USB drive in the way that you specified.
 Troubleshooting
 ===============
 
-Most of these issues occur when using libreboot with coreboot\'s \'text
-mode\' instead of the coreboot framebuffer. This mode is useful for
+Most of these issues occur when using libreboot with coreboot's 'text
+mode' instead of the coreboot framebuffer. This mode is useful for
 booting payloads like memtest86+ which expect text-mode, but for
 GNU+Linux distributions it can be problematic when they are trying to
-switch to a framebuffer because it doesn\'t exist.
+switch to a framebuffer because it doesn't exist.
 
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-parabola won\'t boot in text-mode
+parabola won't boot in text-mode
 ---------------------------------
 
 Use one of the ROM images with vesafb in the filename (uses coreboot
@@ -209,11 +209,11 @@ framebuffer instead of text-mode).
 debian-installer graphical corruption in text-mode (Debian and Devuan)
 ----------------------------------------------------------------------
 
-When using the ROM images that use coreboot\'s \"text mode\" instead of
+When using the ROM images that use coreboot's "text mode" instead of
 the coreboot framebuffer, booting the Debian or Devuan net installer
 results in graphical corruption because it is trying to switch to a
-framebuffer which doesn\'t exist. Use that kernel parameter on the
-\'linux\' line when booting it:\
+framebuffer which doesn't exist. Use that kernel parameter on the
+'linux' line when booting it:\
 **vga=normal fb=false**
 
 This forces debian-installer to start in text-mode, instead of trying to

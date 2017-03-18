@@ -69,7 +69,7 @@ B+ with 40 pins, start counting from the right and leave 14 pins):
   8        3.3V           *red*        White         [3.3V PSU RED](http://libreboot.org/docs/install/bbb_setup.html)      17
 
 Make sure the pinouts are correct; otherwise, Flashrom will fail to
-detect a chip, or it will \"detect\" a `0x0` chip. Finally, make sure
+detect a chip, or it will "detect" a `0x0` chip. Finally, make sure
 that the Pomona clip makes contact with the metal wires of the chip. It
 can be a challenge, but keep trying.
 
@@ -148,7 +148,7 @@ successfully. If not, just flash again.
 -   [Scruss - Simple ADC with the Raspberry
     Pi](http://scruss.com/blog/2013/02/02/simple-adc-with-the-raspberry-pi/)
 -   [Flashing coreboot on a T60 with a Raspberry Pi -
-    the\_unconventional\'s
+    the\_unconventional's
     blog](https://blogs.fsfe.org/the_unconventional/2015/05/08/flashing-coreboot-on-a-t60-with-a-raspberry-pi/)
 -   **Pomona SOIC Clip flashing**
     -   [Arch Linux Wiki - Installing Arch Linux on
@@ -201,7 +201,7 @@ Download NOOBS from [The Raspberry Pi
 Foundation.](https://www.raspberrypi.org/downloads/) Torrent download
 recommended, and remember to seed. :)
 
-If you\'re running Raspian, you can do **sudo raspi-config**, enable SPI
+If you're running Raspian, you can do **sudo raspi-config**, enable SPI
 under Advanced and then spidev will be enabled. Simple, eh?
 
 [Download Libreboot from their releases
@@ -227,7 +227,7 @@ Install Noobs to your fat32 formatted SD card
 ### [](#set-up-noobs-on-raspberry-pi){#user-content-set-up-noobs-on-raspberry-pi .anchor}Set up NOOBS on Raspberry Pi
 
 Plug in the NOOBs SDCard to your Raspberry Pi, and enable the following
-under \'Advanced Options\':
+under 'Advanced Options':
 
 SSH server
 
@@ -318,9 +318,9 @@ At this point connect your SOIC clip to the rom chip before powering on
 your PI.
 
 Power on your Pi, and run the following. Ensure you swap out
-\"your\_chip\_name\" with the proper name/model of your chip. Check that
+"your\_chip\_name" with the proper name/model of your chip. Check that
 it can be read successfully. If you cannot read the chip and receive an
-error similar to \"no EEPROM Detected\" or \"0x0 Chip detected\" then
+error similar to "no EEPROM Detected" or "0x0 Chip detected" then
 you may want to try powering off your PI, and switching the two pins
 which are connected to the IO ports. I.E. Connect pins (clip)8 to (pi)19
 and pins (clip)15 to (pi)21
@@ -336,13 +336,13 @@ and pins (clip)15 to (pi)21
     pi# sha512sum romread*.rom
 
 If they are identical sha512 hashes then you can generally assume that
-it\'s safe to flash your rom.
+it's safe to flash your rom.
 
     pi# ./flashrom -p linux_spi:dev=/dev/spidev0.0,spispeed=512 --chip <your_chip_name> -w libreboot.rom
 
 It may fail a couple times, but keep at it and when you get the message
 `Verifying flash... Verified` or
-`Warning: Chip content is identical to the requested image` then you\'re
+`Warning: Chip content is identical to the requested image` then you're
 done.
 
 Shut down your pi, put your box back together, and install a libre OS
@@ -367,7 +367,7 @@ GPIO Pinouts:
 
 ![](images/rpi/0009.png) ![](images/rpi/0010.png)
 
-> \*Diagram made by [\"Pacman\" from Win-Raid
+> \*Diagram made by ["Pacman" from Win-Raid
 > Forums\*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
 
 SOIC Pinouts:
@@ -382,7 +382,7 @@ clip).
 
 ![SOIC Pinouts for C720 Chromebook](images/rpi/0003.png)
 
-(C720 Only?) The diagram depicts a \"bridged\" connection. You will need
+(C720 Only?) The diagram depicts a "bridged" connection. You will need
 to fashion one with some copper wire:
 
 ![Bridged wires](images/rpi/0004.jpg)
@@ -395,7 +395,7 @@ Plug in the other end of the wires to the Raspberry Pi as shown below:
 
 ![Raspberry Pi connections](images/rpi/0006.jpg)
 
-(C720 only?) Plug in the \"bridged\" wires as shown below:
+(C720 only?) Plug in the "bridged" wires as shown below:
 
 ![Bridged wires connected](images/rpi/0007.jpg)
 
@@ -405,7 +405,7 @@ Finally, put the Pomona SOIC clip on the chip:
 
 ### [](#flashrom){#user-content-flashrom .anchor}Flashrom
 
-[Once it\'s all set up, flashrom works out of the
+[Once it's all set up, flashrom works out of the
 box.](http://www.flashrom.org/RaspberryPi)
 
 ### [](#sources-1){#user-content-sources-1 .anchor}Sources

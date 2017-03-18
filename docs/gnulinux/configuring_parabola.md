@@ -4,7 +4,7 @@ Configuring Parabola (post-install)
 
 Post-installation configuration steps for Parabola GNU+Linux-libre.
 Parabola is extremely flexible; this is just an example. This example
-uses LXDE because it\'s lightweight, but we recommend the *MATE* desktop
+uses LXDE because it's lightweight, but we recommend the *MATE* desktop
 (which is actually about as lightweight as LXDE).
 
 [Back to previous index](./)
@@ -52,7 +52,7 @@ It details configuration steps that I took after installing the base
 system, as a follow up to
 [encrypted\_parabola.html](encrypted_parabola.html). This guide is
 likely to become obsolete at a later date (due to the volatile
-\'rolling-release\' model that Arch/Parabola both use), but attempts
+'rolling-release' model that Arch/Parabola both use), but attempts
 will be made to maintain it.
 
 **This guide was valid on 2014-09-21. If you see any changes that should
@@ -95,12 +95,12 @@ careful about this when reading anything on the Arch wiki.
 
 
 
-Some of these steps require internet access. I\'ll go into networking
+Some of these steps require internet access. I'll go into networking
 later but for now, I just connected my system to a switch and did:\
 \# **systemctl start dhcpcd.service**\
 You can stop it later by running:\
 \# **systemctl stop dhcpcd.service**\
-For most people this should be enough, but if you don\'t have DHCP on
+For most people this should be enough, but if you don't have DHCP on
 your network then you should setup your network connection first:\
 [Setup network connection in Parabola](#network)
 
@@ -111,13 +111,13 @@ Configure pacman {#pacman_configure}
 
 pacman (**pac**kage **man**ager) is the name of the package management
 system in Arch, which Parabola (as a deblobbed parallel effort) also
-uses. Like with \'apt-get\' on Debian or Devuan, this can be used to
+uses. Like with 'apt-get' on Debian or Devuan, this can be used to
 add/remove and update the software on your computer.
 
 Based on
 <https://wiki.parabolagnulinux.org/Installation_Guide#Configure_pacman>
 and from reading <https://wiki.archlinux.org/index.php/Pacman> (make
-sure to read and understand this, it\'s very important) and
+sure to read and understand this, it's very important) and
 <https://wiki.parabolagnulinux.org/Official_Repositories>
 
 [Back to top of page.](#pagetop)
@@ -127,7 +127,7 @@ sure to read and understand this, it\'s very important) and
 Updating Parabola {#pacman_update}
 -----------------
 
-In the end, I didn\'t change my configuration for pacman. When you are
+In the end, I didn't change my configuration for pacman. When you are
 updating, resync with the latest package names/versions:\
 \# **pacman -Syy**\
 (according to the wiki, -Syy is better than Sy because it refreshes the
@@ -136,7 +136,7 @@ when switching to another mirror).\
 Then, update the system:\
 \# **pacman -Syu**
 
-**Before installing packages with \'pacman -S\', always update first,
+**Before installing packages with 'pacman -S', always update first,
 using the notes above.**
 
 Keep an eye out on the output, or read it in /var/log/pacman.log.
@@ -145,12 +145,12 @@ will need to perform with certain files (typically configurations) after
 the update. Also, you should check both the Parabola and Arch home pages
 to see if they mention any issues. If a new kernel is installed, you
 should also update to be able to use it (the currently running kernel
-will also be fine). It\'s generally good enough to update Parabola once
-every week, or maybe twice. As a rolling release distribution, it\'s a
+will also be fine). It's generally good enough to update Parabola once
+every week, or maybe twice. As a rolling release distribution, it's a
 good idea never to leave your install too outdated; update regularly.
 This is simply because of the way the project works; old packages are
 deleted from the repositories quickly, once they are updated. A system
-that hasn\'t been updated for quite a while will mean potentially more
+that hasn't been updated for quite a while will mean potentially more
 reading of previous posts through the website, and more maintenance
 work.
 
@@ -166,7 +166,7 @@ sending an email to an important person before an allocated deadline,
 and so on.
 
 Relax - packages are well-tested regularly when new updates are made to
-the repositories. Separate \'testing\' repositories exist for this exact
+the repositories. Separate 'testing' repositories exist for this exact
 reason. Despite what many people will tell you, Parabola is fairly
 stable and trouble-free, so long as you are aware of how to check for
 issues, and are willing to spend some time fixing issues in the rare
@@ -194,7 +194,7 @@ re-install it or install the distro on another computer, for example).
 maintain your Parabola system:\
 <https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache>.
 Essentially, this guide talks about a directory that has to be cleaned
-once in a while, to prevent it from growing too big (it\'s a cache of
+once in a while, to prevent it from growing too big (it's a cache of
 old package information, updated automatically when you do anything in
 pacman).**
 
@@ -203,8 +203,8 @@ To clean out all old packages that are cached:\
 
 The wiki cautions that this should be used with care. For example, since
 older packages are deleted from the repo, if you encounter issues and
-want to revert back to an older package then it\'s useful to have the
-caches available. Only do this if you are sure that you won\'t need it.
+want to revert back to an older package then it's useful to have the
+caches available. Only do this if you are sure that you won't need it.
 
 The wiki also mentions this method for removing everything from the
 cache, including currently installed packages that are cached:\
@@ -247,7 +247,7 @@ Add a user {#useradd}
 Based on <https://wiki.archlinux.org/index.php/Users_and_Groups>.
 
 It is important (for security reasons) to create and use a non-root
-(non-admin) user account for everyday use. The default \'root\' account
+(non-admin) user account for everyday use. The default 'root' account
 is intended only for critical administrative work, since it has complete
 access to the entire operating system.
 
@@ -275,20 +275,20 @@ It is a good idea to become familiar with it. Read
 gain a full understanding. **This is very important! Make sure to read
 them.**
 
-An example of a \'service\' could be a webserver (such as lighttpd), or
+An example of a 'service' could be a webserver (such as lighttpd), or
 sshd (openssh), dhcp, etc. There are countless others.
 
 <https://bbs.archlinux.org/viewtopic.php?pid=1149530#p1149530> explains
-the background behind the decision by Arch (Parabola\'s upstream
+the background behind the decision by Arch (Parabola's upstream
 supplier) to use systemd.
 
 The manpage should also help:\
 \# **man systemd**\
-The section on \'unit types\' is especially useful.
+The section on 'unit types' is especially useful.
 
-According to the wiki, systemd \'journal\' keeps logs of a size up to
+According to the wiki, systemd 'journal' keeps logs of a size up to
 10% of the total size your / partition takes up. on a 60GB root this
-would mean 6GB. That\'s not exactly practical, and can have performance
+would mean 6GB. That's not exactly practical, and can have performance
 implications later when the log gets too big. Based on instructions from
 the wiki, I will reduce the total size of the journal to 50MiB (the wiki
 recommends 50MiB).
@@ -307,20 +307,20 @@ Restart journald:\
 
 The wiki recommends that if the journal gets too large, you can also
 simply delete (rm -Rf) everything inside /var/log/journald/\* but
-recommends backing it up. This shouldn\'t be necessary, since you
+recommends backing it up. This shouldn't be necessary, since you
 already set the size limit above and systemd will automatically start to
-delete older records when the journal size reaches it\'s limit
+delete older records when the journal size reaches it's limit
 (according to systemd developers).
 
-Finally, the wiki mentions \'temporary\' files and the utility for
+Finally, the wiki mentions 'temporary' files and the utility for
 managing them.\
 \# **man systemd-tmpfiles**\
-The command for \'clean\' is:\
+The command for 'clean' is:\
 \# **systemd-tmpfiles \--clean**\
-According to the manpage, this *\"cleans all files and directories with
-an age parameter\"*. According to the Arch wiki, this reads information
+According to the manpage, this *"cleans all files and directories with
+an age parameter"*. According to the Arch wiki, this reads information
 in /etc/tmpfiles.d/ and /usr/lib/tmpfiles.d/ to know what actions to
-perform. Therefore, it is a good idea to read what\'s stored in these
+perform. Therefore, it is a good idea to read what's stored in these
 locations to get a better understanding.
 
 I looked in /etc/tmpfiles.d/ and found that it was empty on my system.
@@ -329,7 +329,7 @@ etc.conf, containing information and a reference to this manpage:\
 \# **man tmpfiles.d**\
 Read that manpage, and then continue studying all the files.
 
-The systemd developers tell me that it isn\'t usually necessary to touch
+The systemd developers tell me that it isn't usually necessary to touch
 the systemd-tmpfiles utility manually at all.
 
 [Back to top of page](#pagetop)
@@ -341,12 +341,12 @@ Interesting repositories {#interesting_repos}
 
 Parabola wiki at
 <https://wiki.parabolagnulinux.org/Repositories#kernels> mentions about
-a repository called \[kernels\] for custom kernels that aren\'t in the
+a repository called \[kernels\] for custom kernels that aren't in the
 default base. It might be worth looking into what is available there,
 depending on your use case.
 
 I enabled it on my system, to see what was in it. Edit /etc/pacman.conf
-and below the \'extra\' section add:\
+and below the 'extra' section add:\
 *\[kernels\]\
 Include = /etc/pacman.d/mirrorlist*
 
@@ -386,8 +386,8 @@ Add the same hostname to /etc/hosts, on each line. Example:\
 *127.0.0.1 localhost.localdomain localhost myhostname\
 ::1 localhost.localdomain localhost myhostname*
 
-You\'ll note that I set both lines; the 2nd line is for IPv6. More and
-more ISPs are providing this now (mine does) so it\'s good to be
+You'll note that I set both lines; the 2nd line is for IPv6. More and
+more ISPs are providing this now (mine does) so it's good to be
 forward-thinking here.
 
 The *hostname* utility is part of the *inetutils* package and is in
@@ -400,12 +400,12 @@ core/, installed by default (as part of *base*).
 According to the Arch wiki,
 [udev](https://wiki.archlinux.org/index.php/Udev) should already detect
 the ethernet chipset and load the driver for it automatically at boot
-time. You can check this in the *\"Ethernet controller\"* section when
+time. You can check this in the *"Ethernet controller"* section when
 running this command:\
 \# **lspci -v**
 
-Look at the remaining sections *\'Kernel driver in use\'* and *\'Kernel
-modules\'*. In my case it was as follows:\
+Look at the remaining sections *'Kernel driver in use'* and *'Kernel
+modules'*. In my case it was as follows:\
 *Kernel driver in use: e1000e\
 Kernel modules: e1000e*
 
@@ -463,8 +463,8 @@ continuing. Also read
 is important, so make sure to read them!**
 
 Install smartmontools (it can be used to check smart data. HDDs use
-non-free firmware inside, but it\'s transparent to you but the smart
-data comes from it. Therefore, don\'t rely on it too much):\
+non-free firmware inside, but it's transparent to you but the smart
+data comes from it. Therefore, don't rely on it too much):\
 \# **pacman -S smartmontools**\
 Read <https://wiki.archlinux.org/index.php/S.M.A.R.T.> to learn how to
 use it.
@@ -502,7 +502,7 @@ For other systems you can try:\
 \# **pacman -Ss xf86-video- | less**\
 Combined with looking at your *lspci* output, you can determine which
 driver is needed. By default, Xorg will revert to xf86-video-vesa which
-is a generic driver and doesn\'t provide true hardware acceleration.
+is a generic driver and doesn't provide true hardware acceleration.
 
 Other drivers (not just video) can be found by looking at the
 *xorg-drivers* group:\
@@ -541,9 +541,9 @@ X:\
 \# **setxkbmap -print -verbose 10**
 
 In my case, I wanted to use the Dvorak (UK) keyboard which is quite
-different from Xorg\'s default Qwerty (US) layout.
+different from Xorg's default Qwerty (US) layout.
 
-I\'ll just say it now: *XkbModel* can be *pc105* in this case (ThinkPad
+I'll just say it now: *XkbModel* can be *pc105* in this case (ThinkPad
 X60, with a 105-key UK keyboard). If you use an American keyboard
 (typically 104 keys) you will want to use *pc104*.
 
@@ -559,16 +559,16 @@ and\
 In my case, I chose to use the *configuration file* method:\
 Create the file /etc/X11/xorg.conf.d/10-keyboard.conf and put this
 inside:\
-*Section \"InputClass\"\
-        Identifier \"system-keyboard\"\
-        MatchIsKeyboard \"on\"\
-        Option \"XkbLayout\" \"gb\"\
-        Option \"XkbModel\" \"pc105\"\
-        Option \"XkbVariant\" \"dvorak\"\
+*Section "InputClass"\
+        Identifier "system-keyboard"\
+        MatchIsKeyboard "on"\
+        Option "XkbLayout" "gb"\
+        Option "XkbModel" "pc105"\
+        Option "XkbVariant" "dvorak"\
 EndSection*
 
 For you, the steps above may differ if you have a different layout. If
-you use a US Qwerty keyboard, then you don\'t even need to do anything
+you use a US Qwerty keyboard, then you don't even need to do anything
 (though it might help, for the sake of being explicit).
 
 [Back to top of page.](#pagetop)
@@ -577,17 +577,17 @@ you use a US Qwerty keyboard, then you don\'t even need to do anything
 
 ### Install LXDE {#desktop_lxde}
 
-Desktop choice isn\'t that important to me, so for simplicity I decided
-to use LXDE. It\'s lightweight and does everything that I need. If you
+Desktop choice isn't that important to me, so for simplicity I decided
+to use LXDE. It's lightweight and does everything that I need. If you
 would like to try something different, refer to
 <https://wiki.archlinux.org/index.php/Desktop_environment>
 
 Refer to <https://wiki.archlinux.org/index.php/LXDE>.
 
-Install it, choosing \'all\' when asked for the default package list:\
+Install it, choosing 'all' when asked for the default package list:\
 \# **pacman -S lxde obconf**
 
-I didn\'t want the following, so I removed them:\
+I didn't want the following, so I removed them:\
 \# **pacman -R lxmusic lxtask**
 
 I also lazily installed all fonts:\
@@ -689,7 +689,7 @@ Right click lxde panel and *Add/Remove Panel Items*. Click *Add* and
 select *Battery Monitor*, then click *Add*. Close and then right-click
 the applet and go to *Battery Monitor Settings*, check the box that says
 *Show Extended Information*. Now click *Close*. When you hover the
-cursor over it, it\'ll show information about the battery.
+cursor over it, it'll show information about the battery.
 
 [Back to top of page.](#pagetop)
 

@@ -27,7 +27,7 @@ TODO: show photos here, and other info.
 KGPE-D16 boards (and full systems) with libreboot preinstalled {#preinstall}
 ==============================================================
 
-If you don\'t want to install libreboot yourself, companies exist that
+If you don't want to install libreboot yourself, companies exist that
 sell these boards with libreboot pre-installed, along with a free
 GNU+Linux distribution.
 

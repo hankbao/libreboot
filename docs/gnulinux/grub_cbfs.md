@@ -10,12 +10,12 @@ inside the flash chip. In context, this means that installing
 distributions and managing them is handled slightly differently compared
 to traditional BIOS systems.
 
-A libreboot (or coreboot) ROM image is not simply \"flat\"; there is an
+A libreboot (or coreboot) ROM image is not simply "flat"; there is an
 actual filesystem inside called CBFS (coreboot filesystem). A utility
-called \'cbfstool\' allows you to change the contents of the ROM image.
-In this case, libreboot is configured such that the \'grub.cfg\' and
-\'grubtest.cfg\' files exist directly inside CBFS instead of inside the
-GRUB payload \'memdisk\' (which is itself stored in CBFS).
+called 'cbfstool' allows you to change the contents of the ROM image.
+In this case, libreboot is configured such that the 'grub.cfg' and
+'grubtest.cfg' files exist directly inside CBFS instead of inside the
+GRUB payload 'memdisk' (which is itself stored in CBFS).
 
 You can either modify the GRUB configuration stored in the flash chip,
 or you can modify a GRUB configuration file on the main storage which
@@ -35,7 +35,7 @@ Table of Contents
 =================
 
 -   [Introduction](#introduction)
--   [1st option: don\'t re-flash](#option1_dont_reflash)
+-   [1st option: don't re-flash](#option1_dont_reflash)
 -   [2nd option: re-flash](#option2_reflash)
     -   [Acquire the necessary utilities](#tools)
     -   [Acquiring the correct ROM image](#rom)
@@ -61,14 +61,14 @@ in CBFS, but this also means that you have to flash a new libreboot ROM
 image on your system (some users feel intimidated by this, to say the
 least). Doing so can be risky if not handled correctly, because it can
 result in a bricked system (recovery is easy if you have the
-[equipment](../install/bbb_setup.html) for it, but most people don\'t).
-If you aren\'t up to that then don\'t worry; it is possible to use a
+[equipment](../install/bbb_setup.html) for it, but most people don't).
+If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
 
 
 
-1st option: don\'t re-flash {#option1_dont_reflash}
+1st option: don't re-flash {#option1_dont_reflash}
 ---------------------------
 
 By default, GRUB in libreboot is configured to scan all partitions on
@@ -198,7 +198,7 @@ Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
 \# **./flash forceupdate libreboot.rom**\
-You should see **\"Verifying flash\... VERIFIED.\"** written at the end
+You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. Once you have done that, shut down and then boot
 up with your new test configuration.**
 
@@ -219,14 +219,14 @@ Final steps {#final_steps}
 
 When you are satisfied booting from grubtest.cfg, you can create a copy
 of grubtest.cfg, called grub.cfg. This is the same except for one
-difference: the menuentry \'Switch to grub.cfg\' will be changed to
-\'Switch to grubtest.cfg\' and inside it, all instances of grub.cfg to
+difference: the menuentry 'Switch to grub.cfg' will be changed to
+'Switch to grubtest.cfg' and inside it, all instances of grub.cfg to
 grubtest.cfg. This is so that the main config still links (in the menu)
-to grubtest.cfg, so that you don\'t have to manually switch to it, in
+to grubtest.cfg, so that you don't have to manually switch to it, in
 case you ever want to follow this guide again in the future (modifying
 the already modified config). From /libreboot\_util/cbfstool, do:\
-\$ **sed -e \'s:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g\' -e
-\'s:Switch to grub.cfg:Switch to grubtest.cfg:g\' &lt; grubtest.cfg &gt;
+\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+'s:Switch to grub.cfg:Switch to grubtest.cfg:g' &lt; grubtest.cfg &gt;
 grub.cfg**\
 
 Delete the grub.cfg that remained inside the ROM:\
@@ -237,7 +237,7 @@ Add the modified version that you just made:\
 
 **Now you have a modified ROM. Again, refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
-flash it. It\'s the same method as you used before. Shut down and then
+flash it. It's the same method as you used before. Shut down and then
 boot up with your new configuration.**
 
 [Back to top of page.](#pagetop)

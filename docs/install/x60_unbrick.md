@@ -14,7 +14,7 @@ Table of Contents
 
 -   Types of brick:
     -   [Brick type 1: bucts not reset](#bucts_brick)
-    -   [Brick type 2: bad rom (or user error), system won\'t
+    -   [Brick type 2: bad rom (or user error), system won't
         boot](#recovery)
 
 
@@ -23,11 +23,11 @@ Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
 
 You still have Lenovo BIOS, or you had libreboot running and you flashed
-another ROM; and you had bucts 1 set and the ROM wasn\'t dd\'d.\* or if
-Lenovo BIOS was present and libreboot wasn\'t flashed.\
+another ROM; and you had bucts 1 set and the ROM wasn't dd'd.\* or if
+Lenovo BIOS was present and libreboot wasn't flashed.\
 \
 In this case, unbricking is easy: reset BUC.TS to 0 by removing that
-yellow cmos coin (it\'s a battery) and putting it back after a minute or
+yellow cmos coin (it's a battery) and putting it back after a minute or
 two:\
 ![](../images/x60_unbrick/0004.jpg)\
 \
@@ -46,7 +46,7 @@ still has Lenovo BIOS running, using those instructions:
 
 
 
-bad rom (or user error), system won\'t boot {#recovery}
+bad rom (or user error), system won't boot {#recovery}
 ===========================================
 
 In this scenario, you compiled a ROM that had an incorrect
@@ -55,8 +55,8 @@ booting. Or, maybe, you set BUC.TS to 0 and shut down after first flash
 while Lenovo BIOS was running. In any case, your system is bricked and
 will not boot at all.
 
-\"Unbricking\" means flashing a known-good (working) ROM. The problem:
-you can\'t boot the system, making this difficult. In this situation,
+"Unbricking" means flashing a known-good (working) ROM. The problem:
+you can't boot the system, making this difficult. In this situation,
 external hardware (see hardware requirements above) is needed which can
 flash the SPI chip (where libreboot resides).
 
@@ -116,11 +116,11 @@ flash chip:\
 Now wire up the BBB and the Pomona with your PSU.\
 Refer to [bbb\_setup.html](bbb_setup.html) for how to setup the BBB for
 flashing.\
-**Note, the guide mentions a 3.3v DC PSU but you don\'t need this on the
-X60: if you don\'t have or don\'t want to use an external PSU, then make
+**Note, the guide mentions a 3.3v DC PSU but you don't need this on the
+X60: if you don't have or don't want to use an external PSU, then make
 sure not to connect the 3.3v leads mentioned in the guide; instead,
 connect the AC adapter (the one that normally charges your battery) so
-that the board has power (but don\'t boot it up)**
+that the board has power (but don't boot it up)**
 ![](../images/x60_unbrick/0017.jpg)\
 Correlate the following with the BBB guide linked above:
 
@@ -141,7 +141,7 @@ Flashrom binaries for ARM (tested on a BBB) are distributed in
 libreboot\_util. Alternatively, libreboot also distributes flashrom
 source code which can be built.
 
-SSH\'d into the BBB:\
+SSH'd into the BBB:\
 \# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 yourrom.rom**
 
@@ -195,7 +195,7 @@ Route the antenna and modem cables neatly like so:\
 ![](../images/x60_unbrick/0039.jpg)
 
 Connect the wifi antenna cables. At the start of the tutorial, this
-system had an Intel wifi chip. Here you see I\'ve replaced it with an
+system had an Intel wifi chip. Here you see I've replaced it with an
 Atheros AR5B95 (supports 802.11n and can be used without blobs):\
 ![](../images/x60_unbrick/0040.jpg)
 

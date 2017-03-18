@@ -4,7 +4,7 @@ How to install NetBSD on a libreboot system
 
 This section relates to preparing, booting and installing NetBSD on your
 libreboot system, using nothing more than a USB flash drive (and *dd*).
-They\'ve only been tested on a librebooted ThinkPad X60.
+They've only been tested on a librebooted ThinkPad X60.
 
 It is expected that you use text mode in libreboot (txtmode images), for
 the early boot process in NetBSD. **Suspend/hibernate is broken,
@@ -62,7 +62,7 @@ Connect the USB drive. Check dmesg:\
 Check to confirm which drive it is, for example, if you think its sd3:\
 **\$ disklabel sd3**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ doas umount /dev/sd3i**\
 
@@ -86,7 +86,7 @@ Connect the USB drive. Check dmesg:\
 Check lsblk to confirm which drive it is:\
 **\$ lsblk**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ sudo umount /dev/sdX\***\
 **\# umount /dev/sdX\***
@@ -145,22 +145,22 @@ NetBSD will start booting. Yay!
 Configuring Grub
 ----------------
 
-If you don\'t want to drop to the GRUB command line and type in a
+If you don't want to drop to the GRUB command line and type in a
 command to boot NetBSD every time, you can create a GRUB configuration
-that\'s aware of your NetBSD installation and that will automatically be
+that's aware of your NetBSD installation and that will automatically be
 used by libreboot.
 
 On your NetBSD root partition, create the **/grub** directory and add
 the file **libreboot\_grub.cfg** to it. Inside the
 **libreboot\_grub.cfg** add these lines:
 
-**default=0 timeout=3 menuentry \"NetBSD\" {\
+**default=0 timeout=3 menuentry "NetBSD" {\
     knetbsd -r wd0a (ahci0,netbsd1)/netbsd\
 }\
 **
 
-The next time you boot, you\'ll see the old Grub menu for a few seconds,
-then you\'ll see the a new menu with only NetBSD on the list. After 3
+The next time you boot, you'll see the old Grub menu for a few seconds,
+then you'll see the a new menu with only NetBSD on the list. After 3
 seconds NetBSD will boot, or you can hit enter to boot.
 
 [Back to top of page](#pagetop).
@@ -170,16 +170,16 @@ seconds NetBSD will boot, or you can hit enter to boot.
 Troubleshooting
 ===============
 
-Most of these issues occur when using libreboot with coreboot\'s \'text
-mode\' instead of the coreboot framebuffer. This mode is useful for
+Most of these issues occur when using libreboot with coreboot's 'text
+mode' instead of the coreboot framebuffer. This mode is useful for
 booting payloads like memtest86+ which expect text-mode, but for NetBSD
 it can be problematic when they are trying to switch to a framebuffer
-because it doesn\'t exist.
+because it doesn't exist.
 
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won\'t boot\...something about file not found
+won't boot\...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and

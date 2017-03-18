@@ -15,7 +15,7 @@ to traditional BIOS systems.
 
 On most systems, the /boot partition has to be left unencrypted while
 the others are encrypted. This is so that GRUB, and therefore the
-kernel, can be loaded and executed since the firmware can\'t open a LUKS
+kernel, can be loaded and executed since the firmware can't open a LUKS
 volume. Not so with libreboot! Since GRUB is already included directly
 as a payload, even /boot can be encrypted. This protects /boot from
 tampering by someone with physical access to the system.
@@ -23,12 +23,12 @@ tampering by someone with physical access to the system.
 This guide is written for Debian net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/). Use this on
 the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
-**set root=\'usb0\'\
+**set root='usb0'\
 linux /install.amd/vmlinuz\
 initrd /install.amd/initrd.gz\
 boot\
 ** If you are on a 32-bit system (e.g. X60):\
-**set root=\'usb0\'\
+**set root='usb0'\
 linux /install.386/vmlinuz\
 initrd /install.386/initrd.gz\
 boot**
@@ -54,10 +54,10 @@ Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
 when the installer asks you to set up encryption (ecryptfs) for your
-home directory, select \'Yes\' if you want to: **LUKS is already secure
+home directory, select 'Yes' if you want to: **LUKS is already secure
 and performs well. Having ecryptfs on top of it will add noticeable
 performance penalty, for little security gain in most use cases. This is
-therefore optional, and not recommended. Choose \'no\'.**
+therefore optional, and not recommended. Choose 'no'.**
 
 **Your user password should be different from the LUKS password which
 you will set later on. Your LUKS password should, like the user
@@ -68,7 +68,7 @@ password, be secure.**
 Partitioning
 ============
 
-Choose \'Manual\' partitioning:
+Choose 'Manual' partitioning:
 
 -   Select drive and create new partition table
 -   Single large partition. The following are mostly defaults:
@@ -77,9 +77,9 @@ Choose \'Manual\' partitioning:
     -   key size: whatever default is given to you
     -   IV algorithm: whatever default is given to you
     -   Encryption key: passphrase
-    -   erase data: Yes (only choose \'No\' if it\'s a new drive that
-        doesn\'t contain your private data)
--   Select \'configure encrypted volumes\'
+    -   erase data: Yes (only choose 'No' if it's a new drive that
+        doesn't contain your private data)
+-   Select 'configure encrypted volumes'
     -   Create encrypted volumes
     -   Select your partition
     -   Finish
@@ -89,7 +89,7 @@ Choose \'Manual\' partitioning:
         minute to make sure that the LUKS header is wiped out)
 -   Select encrypted space:
     -   use as: physical volume for LVM
-    -   Choose \'done setting up the partition\'
+    -   Choose 'done setting up the partition'
 -   Configure the logical volume manager:
     -   Keep settings: Yes
 -   Create volume group:
@@ -119,7 +119,7 @@ mountpoints and filesystems to use.
 -   LVM LV swap
     -   use as: swap area
     -   done setting up partition
--   Now you select \'Finished partitioning and write changes to disk\'.
+-   Now you select 'Finished partitioning and write changes to disk'.
 
 
 
@@ -135,7 +135,7 @@ Tasksel
 =======
 
 For Debian, use the *MATE* option, or one of the others if you want. The
-libreboot project recommends MATE, unless you\'re saavy enough to choose
+libreboot project recommends MATE, unless you're saavy enough to choose
 something else.
 
 If you want debian-testing, then you should only select barebones
@@ -145,10 +145,10 @@ install to point to the new distro, and then run **apt-get update** and
 root. This is to avoid downloading large packages twice.
 
 NOTE: If you want the latest up to date version of the Linux kernel,
-Debian\'s kernel is sometimes outdated, even in the testing distro. You
+Debian's kernel is sometimes outdated, even in the testing distro. You
 might consider using [this repository](https://jxself.org/linux-libre/)
 instead, which contains the most up to date versions of the Linux
-kernel. These kernels are also deblobbed, like Debian\'s kernels, so you
+kernel. These kernels are also deblobbed, like Debian's kernels, so you
 can be sure that no binary blobs are present.
 
 
@@ -156,16 +156,16 @@ can be sure that no binary blobs are present.
 Postfix configuration
 =====================
 
-If asked, choose *\"No Configuration\"* here (or maybe you want to
-select something else. It\'s up to you.)
+If asked, choose *"No Configuration"* here (or maybe you want to
+select something else. It's up to you.)
 
 
 
 Install the GRUB boot loader to the master boot record
 ======================================================
 
-Choose \'Yes\'. It will fail, but don\'t worry. Then at the main menu,
-choose \'Continue without a bootloader\'. You could also choose \'No\'.
+Choose 'Yes'. It will fail, but don't worry. Then at the main menu,
+choose 'Continue without a bootloader'. You could also choose 'No'.
 Choice is irrelevant here.
 
 *You do not need to install GRUB at all, since in libreboot you are
@@ -176,7 +176,7 @@ using the GRUB payload (for libreboot) to boot your system directly.*
 Clock UTC
 =========
 
-Just say \'Yes\'.
+Just say 'Yes'.
 
 
 
@@ -188,7 +188,7 @@ payload, press C to get to the command line.
 
 Do that:\
 grub&gt; **cryptomount -a**\
-grub&gt; **set root=\'lvm/matrix-rootvol\'**\
+grub&gt; **set root='lvm/matrix-rootvol'**\
 grub&gt; **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
 grub&gt; **initrd /initrd.img**\
@@ -199,7 +199,7 @@ grub&gt; **boot**
 ecryptfs
 ========
 
-If you didn\'t encrypt your home directory, then you can safely ignore
+If you didn't encrypt your home directory, then you can safely ignore
 this section.
 
 Immediately after logging in, do that:\
@@ -219,11 +219,11 @@ Now you need to set it up so that the system will automatically boot,
 without having to type a bunch of commands.
 
 Modify your grub.cfg (in the firmware) [using this
-tutorial](grub_cbfs.html); just change the default menu entry \'Load
-Operating System\' to say this inside:
+tutorial](grub_cbfs.html); just change the default menu entry 'Load
+Operating System' to say this inside:
 
 **cryptomount -a**\
-**set root=\'lvm/matrix-rootvol\'**\
+**set root='lvm/matrix-rootvol'**\
 **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
 **initrd /initrd.img**

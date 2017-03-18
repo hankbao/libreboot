@@ -49,11 +49,11 @@ identical, but the position of the screws are different.
 IPMI iKVM module add-on {#ipmi}
 =======================
 
-Don\'t use it. It uses proprietary firmware and adds a backdoor (remote
+Don't use it. It uses proprietary firmware and adds a backdoor (remote
 out-of-band management chip, similar to the [Intel Management
 Engine](http://libreboot.org/faq/#intelme). Fortunately, the firmware is
 unsigned (possibly to replace) and physically separate from the
-mainboard since it\'s on the add-on module, which you don\'t have to
+mainboard since it's on the add-on module, which you don't have to
 install.
 
 
@@ -61,7 +61,7 @@ install.
 Flash chips {#flashchips}
 ===========
 
-2MiB flash chips are included by default, on these boards. It\'s on a
+2MiB flash chips are included by default, on these boards. It's on a
 P-DIP 8 slot (SPI chip). The flash chip can be upgraded to higher sizes:
 4MiB, 8MiB or 16MiB. With at least 8MiB, you could feasibly fit a
 compressed linux+initramfs image (BusyBox+Linux system) into CBFS and
@@ -94,15 +94,15 @@ Current issues {#issues}
     can be on a SAS drive. The linux kernel can use those SAS drives
     (via PIKE module) without an option ROM).
 -   IPMI iKVM module (optional add-on card) uses proprietary firmware.
-    Since it\'s for remote out-of-band management, it\'s theoretically a
+    Since it's for remote out-of-band management, it's theoretically a
     backdoor similar to the Intel Management Engine. Fortunately, unlike
     the ME, this firmware is unsigned which means that a free
     replacement is theoretically possible. For now, the libreboot
     project recommends not installing the module. [This
     project](https://github.com/facebook/openbmc) might be interesting
     to derive from, for those who want to work on a free replacement. In
-    practise, out-of-band management isn\'t very useful anyway (or at
-    the very least, it\'s not a major inconvenience to not have it).
+    practise, out-of-band management isn't very useful anyway (or at
+    the very least, it's not a major inconvenience to not have it).
 -   Graphics: only text-mode works. See [\#graphics](#graphics)
 
 

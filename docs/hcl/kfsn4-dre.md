@@ -67,11 +67,11 @@ Current issues {#issues}
 -   There seems to be a 30 second bootblock delay (observed by
     tpearson); the system otherwise boots and works as expected. See
     [text/kfsn4-dre/bootlog.txt](text/kfsn4-dre/bootlog.txt) - this uses
-    the \'simple\' bootblock, while tpearson uses the \'normal\'
+    the 'simple' bootblock, while tpearson uses the 'normal'
     bootblock, which tpearson suspects may be a possible cause. This
     person says that they will look into it. [This
     config](http://review.coreboot.org/gitweb?p=board-status.git;a=blob;f=asus/kfsn4-dre/4.0-10101-g039edeb/2015-06-27T03:59:16Z/config.txt;h=4742905c185a93fbda8eb14322dd82c70641aef0;hb=055f5df4e000a97453dfad6c91c2d06ea22b8545)
-    doesn\'t have the issue.
+    doesn't have the issue.
 -   Text-mode is a bit jittery (but still usable). (the jitter
     disappears if using KMS, once the kernel starts. The jitter will
     remain, if booting the kernel in text-mode).

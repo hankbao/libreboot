@@ -30,7 +30,7 @@ most of which is executed within depthcharge. A detailed overview of the
 CrOS security model is available on the dedicated page.
 
 
-In spite of the CrOS security model, depthcharge won\'t allow booting
+In spite of the CrOS security model, depthcharge won't allow booting
 kernels without verifying their signature and booting from external
 media or legacy payload unless explicitly allowed: see [configuring
 verified boot parameters](#configuring_verified_boot_parameters).
@@ -138,7 +138,7 @@ that hold a kernel signed with the recovery key.
 
 Google provides images of such recovery media for Chrome OS (which are
 not advised to users as they contain proprietary software).\
-They are signed with Google\'s recovery keys, that are pre-installed on
+They are signed with Google's recovery keys, that are pre-installed on
 the device when it ships.
 
 When replacing the full flash of the device, the pre-installed keys are
@@ -162,7 +162,7 @@ screen.
 Configuring verified boot parameters {#configuring_verified_boot_parameters}
 ====================================
 
-Depthcharge\'s behavior relies on the verified boot (vboot) reference
+Depthcharge's behavior relies on the verified boot (vboot) reference
 implementation, that can be configured with parameters stored in the
 verified boot non-volatile storage.\
 These parameters can be modified with the **crossystem** tool, that

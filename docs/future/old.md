@@ -41,7 +41,7 @@ Tablet (1024x768) and X60 Tablet (1400x1050)
 **Add backlight controls:** in *src/mainboard/lenovo/x60/devicetree.cb*,
 change **gpu\_backlight** to **0x879F879E**
 
-That\'s all! **This has also been backported into libreboot 5th release
+That's all! **This has also been backported into libreboot 5th release
 (line 1233 in src/mainboard/lenovo/x60/i915io.c)**. GNUtoo (Denis
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
@@ -58,15 +58,15 @@ Further notes
 -------------
 
 Reading **0xe4361254** (address) in Lenovo BIOS always yields FFFFFFFF,
-even when writing to it (and writing to it doesn\'t affect brightness
-controls). \'mtjm\' on IRC found that the buttons (Fn keys) control
+even when writing to it (and writing to it doesn't affect brightness
+controls). 'mtjm' on IRC found that the buttons (Fn keys) control
 /sys/class/backlight/acpi\_video0 which has no affect on 61254
 (BLC\_PWM\_CTL). This person says intel\_backlight has different values
 and uses the register. devmem2 works, needs checking **lspci -vv** for
 where the memory is mapped, which is different than on coreboot; mtjm
 found that it was 0xec061254 on his system (X60 Tablet), and the
 register value is different too. **This is relevant, because we still
-don\'t know how backlight controls are actually handled. We got it
+don't know how backlight controls are actually handled. We got it
 working by accident. We need to know more.**.
 
 Intel-gpu-tools may prove useful for further debugging:
@@ -88,14 +88,14 @@ works**.
 mtjm goes on to say, that the register specifies the frequency used for
 PWM in its depending on the GPU core frequency, so it might be possible
 to calculate it without hardcoded laptop-specific values. Therefore, I
-am supposed to find out the \'display core frequency\' (mtjm says there
+am supposed to find out the 'display core frequency' (mtjm says there
 might be a register for it; also, it might be in 5320 or the replay
 code) and the PWM modulation frequency.
 https://en.wikipedia.org/wiki/Backlight\#Flicker\_due\_to\_backlight\_dimming
 
 phcoder (Vladimir Serbinenko) who is author of 5320
-(review.coreboot.org) talks about \'duty cycle limit\' and \'flickering
-frequency\'.
+(review.coreboot.org) talks about 'duty cycle limit' and 'flickering
+frequency'.
 
 [Back to top of page](#pagetop)
 
@@ -163,7 +163,7 @@ The correct way to do it is to set gtt address to (end of stolen memory
 - gtt size), which is what later versions of 5927 do (successfully).
 
 Here is some debugging output using intel\_gpu\_tools v1.2-1 (from
-apt-get repositories) using tool \"intel\_gtt\":
+apt-get repositories) using tool "intel\_gtt":
 
 -   kernel 3.14.4:
     -   with libreboot 5th release (using the 7c0000 gtt hack from
@@ -184,12 +184,12 @@ i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code) {#x60_c
 <http://review.coreboot.org/#/c/5927/>**
 
 **The latest version as-is (5927/11) has not been tested by me yet.
-Always boot with \'drm.debug=0x06\' kernel parameter when testing
+Always boot with 'drm.debug=0x06' kernel parameter when testing
 this.**
 
 This is the fix for 3D on kernel 3.12 and higher on i945 (ThinkPad X60
 in this case). This is for the replay code. Libreboot 5th release has a
-version of this backported already (based on 5927/3 using the \'7c0000\'
+version of this backported already (based on 5927/3 using the '7c0000'
 hack).
 
 **The replay code is obsolete (see 5320 changeset on review.coreboot.org
@@ -217,10 +217,10 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
 -   5927/5: [5927\_5.tar.gz](dumps/5927_5.tar.gz) (GRUB graphics
     corrupt, 3D/everything still works after GRUB)
 -   5927/3: [5927\_3.tar.gz](dumps/5927_3.tar.gz) (3D still works!
-    kernel 3.14.4) - the \'7c0000\' hack
+    kernel 3.14.4) - the '7c0000' hack
 -   5927/2: [5927\_2.tar.gz](dumps/5927_2.tar.gz) (3D works! kernel
-    3.14.4) - the \'7c0000\' hack
--   5927/1 (didn\'t fix the 3D issue):
+    3.14.4) - the '7c0000' hack
+-   5927/1 (didn't fix the 3D issue):
     -   [cbmem -c](dumps/5927_cbmemc)
     -   [/sys/class/drm/card0/error](dumps/5927_crashdump)
     -   [.config](dumps/5927_config)

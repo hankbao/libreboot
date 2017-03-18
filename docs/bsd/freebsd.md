@@ -4,11 +4,11 @@ How to install FreeBSD on a libreboot system
 
 This section relates to preparing, booting and installing FreeBSD on
 your libreboot system, using nothing more than a USB flash drive (and
-*dd*). They\'ve only been tested on a Lenovo ThinkPad x200.
+*dd*). They've only been tested on a Lenovo ThinkPad x200.
 
 It is expected that you use text mode in libreboot (txtmode images), for
 the early boot process in FreeBSD. **Booting the installer results in a
-red flickering text display, and doesn\'t boot.**
+red flickering text display, and doesn't boot.**
 
 Thanks go to ioxcide in [this Reddit
 post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
@@ -16,7 +16,7 @@ for the initial instructions.
 
 TODO: test FreeBSD more extensively, and make sure it works (and fix it
 if it does not). Instructions are provided here, to boot and install
-FreeBSD but we\'re not sure whether it is currently fully compatible
+FreeBSD but we're not sure whether it is currently fully compatible
 with libreboot.
 
 -   [Prepare the USB drive (in FreeBSD)](#prepare)
@@ -66,7 +66,7 @@ Connect the USB drive. Check dmesg:\
 Check to confirm which drive it is, for example, if you think its sd3:\
 **\$ disklabel sd3**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ doas umount /dev/sd3i**\
 
@@ -90,7 +90,7 @@ Connect the USB drive. Check dmesg:\
 Check lsblk to confirm which drive it is:\
 **\$ lsblk**
 
-Check that it wasn\'t automatically mounted. If it was, unmount it. For
+Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
 **\$ sudo umount /dev/sdX\***\
 **\# umount /dev/sdX\***
@@ -153,16 +153,16 @@ TODO
 Troubleshooting
 ===============
 
-Most of these issues occur when using libreboot with coreboot\'s \'text
-mode\' instead of the coreboot framebuffer. This mode is useful for
+Most of these issues occur when using libreboot with coreboot's 'text
+mode' instead of the coreboot framebuffer. This mode is useful for
 booting payloads like memtest86+ which expect text-mode, but for FreeBSD
 it can be problematic when they are trying to switch to a framebuffer
-because it doesn\'t exist.
+because it doesn't exist.
 
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won\'t boot\...something about file not found
+won't boot\...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and

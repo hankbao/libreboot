@@ -26,7 +26,7 @@ High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_
 Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
 
-Included with libreboot is a script called \'powertop.debian\'. Run this
+Included with libreboot is a script called 'powertop.debian'. Run this
 as root and it will setup powertop to run with \--auto-tune at boot
 time. Load the file in your text editor to see how it does that.
 
@@ -34,7 +34,7 @@ time. Load the file in your text editor to see how it does that.
 
 Might want to run with \--calibrate first
 
-If powertop doesn\'t work, another way (reduces battery life slightly)
+If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
@@ -48,11 +48,11 @@ High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_para
 
 The following removes most of the noise. It reduces what is a high
 frequency whine (that not everyone can hear) to a slight buzz (which
-most people can\'t hear or doesn\'t bother most people).
+most people can't hear or doesn't bother most people).
 
 This is not perfect! The full solution is still not discovered but this
 is a step towards that. Also, in some instances you will need to run
-\'sudo powertop \--auto-tune\' again. This needs to be implemented
+'sudo powertop \--auto-tune' again. This needs to be implemented
 properly in coreboot itself!
 
 On the X60 with coreboot or libreboot, there is a high pitched sound
@@ -88,7 +88,7 @@ The next time you boot the system, the buzz will be gone.
 
 Might want to run with \--calibrate first
 
-If powertop doesn\'t work, another way (reduces battery life slightly)
+If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
@@ -99,11 +99,11 @@ using [this guide](../gnulinux/grub_cbfs.html).
 X60/T60: Serial port - how to use (for dock owners) {#serial}
 ===================================================
 
-For the Thinkpad X60 you can use the **\"UltraBase X6\"** dock (for the
+For the Thinkpad X60 you can use the **"UltraBase X6"** dock (for the
 X60 Tablet it is called X6 Tablet UltraBase). For the ThinkPad T60, you
-can use the **\"Advanced Mini Dock\"**.
+can use the **"Advanced Mini Dock"**.
 
-If you are using one of the ROM images with \'serial\' in the name, then
+If you are using one of the ROM images with 'serial' in the name, then
 you have serial port enabled in libreboot and you have memtest86+
 included inside the ROM. Connect your null modem cable to the serial
 port on the dock and connect the other end to a 2nd system using your
@@ -253,7 +253,7 @@ package i2c-tools.\
 \$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
 -y)\
 \$ **sudo rmmod i2c-dev**\
-You\'ll see the panel name in the output (from the EDID dump).
+You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically
 removing the LCD panel is an option. Usually, there will be information
@@ -276,7 +276,7 @@ Possible workaround, tested by Nazara: Disable C-STATES.\
 means that your CPU will now be running at full capacity (and therefore
 using more power) non-stop, which will drain battery life if this is a
 laptop. If power usage is a concern, then you should not use this.
-(we\'re also not sure whether this workaround is appropriate)**
+(we're also not sure whether this workaround is appropriate)**
 
 To disable c-states, do this in GNU+Linux:\
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1

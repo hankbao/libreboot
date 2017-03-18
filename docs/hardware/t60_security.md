@@ -71,10 +71,10 @@ Now remove that bezel. Remove wifi, nvram battery and speaker connector
 Reason: has direct (and very fast) memory access, and could
 (theoretically) leak data over a side-channel.\
 **Wifi:** The ath5k/ath9k cards might not have firmware at all. They
-might safe but could have access to the computer\'s RAM trough DMA. If
+might safe but could have access to the computer's RAM trough DMA. If
 people have an intel card(most T60 laptops come with Intel wifi by
 default, until you change it),then that card runs a non-free firwamre
-and has access to the computer\'s RAM trough DMA! So the risk-level is
+and has access to the computer's RAM trough DMA! So the risk-level is
 very high.
 
 Remove those screws:\
@@ -130,7 +130,7 @@ gently):\
 **Rationale:**\
 Another reason to remove the microphone: If your computer
 gets[\[1\]](#ref1) compromised, it can record what you say, and use it
-to receive data from nearby devices if they\'re compromised too. Also,
+to receive data from nearby devices if they're compromised too. Also,
 we do not know what the built-in microcode (in the CPU) is doing; it
 could theoretically be programmed to accept remote commands from some
 speaker somewhere (remote security hole). **In other words, the system
@@ -139,12 +139,12 @@ could already be compromised from the factory.**
 Remove infrared:\
 ![](../images/t60_dev/0040.JPG) ![](../images/t60_dev/0042.JPG)
 
-Remove cardbus (it\'s in a socket, no need to disable. Just remove the
+Remove cardbus (it's in a socket, no need to disable. Just remove the
 port itself):\
 ![](../images/t60_dev/0041.JPG)\
 **Rationale:**\
 It has direct memory access and can be used to extract sensitive details
-(such as LUKS keys). See \'GoodBIOS\' video linked at the end (speaker
+(such as LUKS keys). See 'GoodBIOS' video linked at the end (speaker
 is Peter Stuge, a coreboot hacker). The video covers X60 but the same
 topics apply to T60.
 
@@ -153,20 +153,20 @@ Before re-installing the upper chassis, remove the speaker:\
 Reason: combined with the microphone issue, this could be used to leak
 data.\
 If your computer gets[\[1\]](#ref1) compromised, it can be used to
-transmit data to nearby compromised devices. It\'s unknown if it can be
+transmit data to nearby compromised devices. It's unknown if it can be
 turned into a microphone[\[2\]](#ref2).\
 Replacement: headphones/speakers (line-out) or external DAC (USB).
 
 Remove the wwan:\
 ![](../images/t60_dev/0045.JPG)\
-**Wwan (3g modem):** They run proprietary software! It\'s like AMT but
+**Wwan (3g modem):** They run proprietary software! It's like AMT but
 over the GSM network which is probably even worse.\
 Replacement: external USB wifi dongle. (or USB wwan/3g dongle; note,
 this has all the same privacy issues as mobile phones. wwan not
 recommended).
 
 This is where the simcard connector is soldered. See notes above about
-wwan. Remove simcard by removing battery and then it\'s accessible (so,
+wwan. Remove simcard by removing battery and then it's accessible (so,
 remember to do this when you re-assemble. or you could do it now?)\
 ![](../images/t60_dev/0046.JPG)
 
@@ -221,7 +221,7 @@ It lives!\
 ![](../images/t60_dev/0071.JPG) ![](../images/t60_dev/0072.JPG)
 ![](../images/t60_dev/0073.JPG)
 
-Always stress test (\'stress -c 2\' and xsensors. below 90C is ok) when
+Always stress test ('stress -c 2' and xsensors. below 90C is ok) when
 replacing cpu paste/heatsink:\
 ![](../images/t60_dev/0074.JPG)
 
@@ -273,11 +273,11 @@ Extra notes
 ===========
 
 EC: Cannot be removed but can be mitigated: it contains non-free
-non-loadable code, but it has no access to the computer\'s RAM. It has
+non-loadable code, but it has no access to the computer's RAM. It has
 access to the on-switch of the wifi, bluetooth, modem and some other
 power management features. The issue is that it has access to the
 keyboard, however if the software security howto **(not yet written)**
-is followed correctly, it won\'t be able to leak data to a local
+is followed correctly, it won't be able to leak data to a local
 attacker. It has no network access but it may still be able to leak data
 remotely, but that requires someone to be nearby to recover the data
 with the help of an SDR and some directional antennas[\[3\]](#ref3).
@@ -332,11 +332,11 @@ more risky and more costly to attack people.
 \[2\] microphone {#ref2}
 ----------------
 
-It\'s possible to turn headphones into a microphone, you could try
-yourself, however they don\'t record loud at all. Also intel cards have
-the capability to change a connector\'s function, for instance the
-microphone jack can now become a headphone plug, that\'s called
-retasking. There is some support for it in GNU+Linux but it\'s not very
+It's possible to turn headphones into a microphone, you could try
+yourself, however they don't record loud at all. Also intel cards have
+the capability to change a connector's function, for instance the
+microphone jack can now become a headphone plug, that's called
+retasking. There is some support for it in GNU+Linux but it's not very
 well known.
 
 

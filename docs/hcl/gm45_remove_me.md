@@ -48,7 +48,7 @@ Run:\
 \$ **./ich9gen**
 
 Running ich9gen this way (without any arguments) generates a default
-descriptor+gbe image with a generic MAC address. You probably don\'t
+descriptor+gbe image with a generic MAC address. You probably don't
 want to use the generic one; the ROM images in libreboot contain a
 descriptor+gbe image by default (already inserted) just to prevent or
 mitigate the risk of bricking your laptop, but with the generic MAC
@@ -61,10 +61,10 @@ correct MAC address in your ROM), dump it (flashrom -r) and read the
 first 6 bytes from position 0x1000 (or 0x2000) in a hex editor (or,
 rename it to factory.rom and run it in ich9deblob: in the newly created
 mkgbe.c will be the individual bytes of your MAC address). If you are
-currently running the stock firmware and haven\'t installed libreboot
+currently running the stock firmware and haven't installed libreboot
 yet, you can also run that through ich9deblob to get the mac address.
 
-An even simpler way to get the MAC address would be to read what\'s on
+An even simpler way to get the MAC address would be to read what's on
 the little sticker on the bottom/base of the laptop.
 
 On GM45 laptops that use flash descriptors, the MAC address or the
@@ -140,7 +140,7 @@ protection or to flash yet another ROM image with write protection set
 in the descriptor).
 
 Flashrom will tell you that you can still forcefully re-flash, using *-p
-internal:ich\_spi\_force=yes* but this won\'t actually work; it\'ll just
+internal:ich\_spi\_force=yes* but this won't actually work; it'll just
 brick your laptop.
 
 For external flashing guides, refer to [../install/](../install/).
@@ -246,7 +246,7 @@ TODO: test this.\
 TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
 flash. Modify the assembly code inside. Note: the factory.rom (BIOS
 region) from lenovobios is in a compressed format, which you have to
-extract. bios\_extract upstream won\'t work, but the following was said
+extract. bios\_extract upstream won't work, but the following was said
 in \#coreboot on freenode IRC:
 
     <roxfan> vimuser: try bios_extract with ffv patch http://patchwork.coreboot.org/patch/3444/
@@ -268,7 +268,7 @@ demefactory is part of the ich9deblob src, found at
 
 The sections below are adapted from (mostly) IRC logs related to early
 development getting the ME removed on GM45. They are useful for
-background information. This could not have been done without sgsit\'s
+background information. This could not have been done without sgsit's
 help.
 
 
@@ -281,15 +281,15 @@ Early notes {#early_notes}
 -   ~~**See reference to HDA\_SDO (disable descriptor security)**~~
     strap connected GPIO33 pin is it on ICH9-M (X200). HDA\_SDO applies
     to later chipsets (series 6 or higher). Disabling descriptor
-    security also disables the ethernet according to sgsit. sgsit\'s
-    method involves use of \'soft straps\' (see IRC logs below) instead
+    security also disables the ethernet according to sgsit. sgsit's
+    method involves use of 'soft straps' (see IRC logs below) instead
     of disabling the descriptor.
 -   **and the location of GPIO33 on the x200s: (was an external link.
     Putting it here instead)**
     [images/x200/gpio33\_location.jpg](images/x200/gpio33_location.jpg) -
-    it\'s above the number 7 on TP37 (which is above the big intel chip
+    it's above the number 7 on TP37 (which is above the big intel chip
     at the bottom)
--   The ME datasheet may not be for the mobile chipsets but it doesn\'t
+-   The ME datasheet may not be for the mobile chipsets but it doesn't
     vary that much. This one gives some detail and covers QM67 which is
     what the X201 uses:
     <http://www.intel.co.uk/content/dam/www/public/us/en/documents/datasheets/6-chipset-c200-chipset-datasheet.pdf>
@@ -386,7 +386,7 @@ Early development notes {#early_development_notes}
     --------------
     Flash Erase Size = 0x1000
 
-It\'s a utility called \'Flash Image Tool\' for ME 4.x that was used for
+It's a utility called 'Flash Image Tool' for ME 4.x that was used for
 this. You drag a complete image into in and the utility decomposes the
 various components, allowing you to set soft straps.
 
@@ -419,7 +419,7 @@ The only actual content found was:
     DD  CC  18  00  11  20  17  00  DD  DD  18  00  12  20  17  00  
     00  80  1D  00  00  00  1F  
 
-The first part is the MAC address set to all 0x1F. It\'s repeated haly
+The first part is the MAC address set to all 0x1F. It's repeated haly
 way through the 8K area, and the rest is all 0xFF. This is all
 documented in the datasheet.
 
@@ -432,14 +432,14 @@ region.
 
 ### GBE region: change MAC address {#gbe_region_changemacaddress}
 
-According to the datasheet, it\'s supposed to add up to 0xBABA but can
+According to the datasheet, it's supposed to add up to 0xBABA but can
 actually be others on the X200.
 <https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums>
 
-*\"One of those engineers loves classic rock music, so they selected
-0xBABA\"*
+*"One of those engineers loves classic rock music, so they selected
+0xBABA"*
 
-In honour of the song *Baba O\'Reilly* by *The Who* apparently. We\'re
+In honour of the song *Baba O'Reilly* by *The Who* apparently. We're
 not making this stuff up\...
 
 0x3ABA, 0x34BA, 0x40BA and more have been observed in the main Gbe
@@ -487,9 +487,9 @@ How to deblob:
     length to 0
 -   and you change the number of regions from 4 (zero based) to 2
 
-There\'s an interesting parameter called \'ME Alternate disable\', which
+There's an interesting parameter called 'ME Alternate disable', which
 allows the ME to only handle hardware errata in the southbridge, but
-disables any other functionality. This is similar to the \'ignition\' in
+disables any other functionality. This is similar to the 'ignition' in
 the 5 series and higher but using the standard firmware instead of a
 small 128K version. Useless for libreboot, though.
 
@@ -507,10 +507,10 @@ How to patch the descriptor from the factory.rom dump
 -   extract the 8k GBe region and append that to the end of the 4k
     descriptor
 -   output the 12k concatenated chunk
--   Then it can be dd\'d into the first 12K part of a coreboot image.
+-   Then it can be dd'd into the first 12K part of a coreboot image.
 -   the GBe region always starts 0x20A000 bytes from the end of the ROM
 
-This means that libreboot\'s descriptor region will simply define the
+This means that libreboot's descriptor region will simply define the
 following regions:
 
 -   descriptor (4K)
@@ -523,7 +523,7 @@ nearer to left than bit 12 in the binary representation).
 
 So, *x &lt;&lt; 12 = address*
 
-If it\'s in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
+If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
 
 
 
@@ -531,10 +531,10 @@ platform data partition in boot flash (factory.rom / lenovo bios) {#platform_dat
 -----------------------------------------------------------------
 
 Basically useless for libreboot, since it appears to be a blob. Removing
-it didn\'t cause any issues in libreboot.
+it didn't cause any issues in libreboot.
 
 This is a 32K region from the factory image. It could be data
-(non-functional) that the original Lenovo BIOS used, but we don\'t know.
+(non-functional) that the original Lenovo BIOS used, but we don't know.
 
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 

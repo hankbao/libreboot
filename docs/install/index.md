@@ -59,7 +59,7 @@ Information about libreboot ROM images {#rom}
 
 Libreboot distributes pre-compiled ROM images, built from the libreboot
 source code. These images are provided for user convenience, so that
-they don\'t have to build anything from source on their own.
+they don't have to build anything from source on their own.
 
 The ROM images in each archive use the following at the end of the file
 name, if they are built with the GRUB payload:
@@ -72,7 +72,7 @@ used by coreboot native graphics initialization.
 
 *keymap* can be one of several keymaps that keyboard supports (there are
 quite a few), which affects the keyboard layout configuration that is
-used in GRUB. It doesn\'t matter which ROM image you choose here, as far
+used in GRUB. It doesn't matter which ROM image you choose here, as far
 as the keymap in GNU+Linux is concerned.
 
 Keymaps are named appropriately according to each keyboard layout
@@ -195,7 +195,7 @@ Do check the HCL entry: [../hcl/kcma-d8.html](../hcl/kcma-d8.html)
 Intel D945GCLF?
 ---------------
 
-If you\'re running the original Intel factory BIOS, then you will need
+If you're running the original Intel factory BIOS, then you will need
 to flash externally. For instructions on how to do that, refer to
 [d945gclf.html](d945gclf.html).
 
@@ -210,7 +210,7 @@ flash chip, please refer to [x60\_unbrick.html](x60_unbrick.html),
 [x60tablet\_unbrick.html](x60tablet_unbrick.html) or
 [t60\_unbrick.html](t60_unbrick.html). *This probably does not apply to
 you. Most people do not write-protect the flash chip, so you probably
-didn\'t either.*
+didn't either.*
 
 Similarly, it is possible to write-protect the flash chip in coreboot or
 libreboot on GM45 laptops (X200/R400/T400/T500). If you did this, then
@@ -246,7 +246,7 @@ Apple iMac 5,2?
 Internal flashing works, even when flashing from Apple EFI to libreboot.
 Continue reading the instructions below.
 
-**NOTE: If you\'re flashing an older version of Libreboot, the iMac5,2
+**NOTE: If you're flashing an older version of Libreboot, the iMac5,2
 motherboard is compatible with the MacBook2,1. Simply flash a MacBook2,1
 ROM image, and it should work.**
 
@@ -285,7 +285,7 @@ correct ROM image, then run this alternative command:\
 
 
 
-You should see **\"Verifying flash\... VERIFIED.\"** written at the end
+You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
 
@@ -315,7 +315,7 @@ and will not work on any other. For that, please refer to
 <http://www.coreboot.org/Board:lenovo/x60/Installation>.**
 
 
-**If you\'re using libreboot 20150518, note that there is a mistake in
+**If you're using libreboot 20150518, note that there is a mistake in
 the flashing script. do this: *rm -f patch && wget -O flash
 https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
 && chmod +x flash***
@@ -326,14 +326,14 @@ The first half of the procedure is as follows:\
 
 
 You should see within the output the following:\
-**\"Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000
-are swapped\"**.
+**"Updated BUC.TS=1 - 64kb address ranges at 0xFFFE0000 and 0xFFFF0000
+are swapped"**.
 
 You should also see within the output the following:\
-**\"Your flash chip is in an unknown state\"**, **\"FAILED\"** and
-**\"DO NOT REBOOT OR POWEROFF\"**\
+**"Your flash chip is in an unknown state"**, **"FAILED"** and
+**"DO NOT REBOOT OR POWEROFF"**\
 Seeing this means that the operation was a **resounding** success!
-**DON\'T PANIC**.
+**DON'T PANIC**.
 
 See this link for more details:
 <http://thread.gmane.org/gmane.linux.bios.flashrom/575>.
@@ -354,11 +354,11 @@ internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
 
 
 You should see within the output the following:\
-**\"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
-untranslated\"**
+**"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
+untranslated"**
 
 You should also see within the output the following:\
-**\"Verifying flash\... VERIFIED.\"**
+**"Verifying flash\... VERIFIED."**
 
 
 [Back to top of page.](#pagetop)
@@ -399,7 +399,7 @@ Use this flashing script, to install libreboot:\
 
 
 You should also see within the output the following:\
-**\"Verifying flash\... VERIFIED.\"**
+**"Verifying flash\... VERIFIED."**
 
 Shut down.
 

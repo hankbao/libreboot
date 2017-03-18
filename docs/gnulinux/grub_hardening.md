@@ -20,7 +20,7 @@ on the [GPG project website](https://www.gnu.org/software/gnupg/). GRUB
 has some GPG support built in, for checking signatures.
 
 This tutorial assumes you have a libreboot image (rom) that you wish to
-modify, to which we shall henceforth refer to as \"my.rom\". This
+modify, to which we shall henceforth refer to as "my.rom". This
 tutorial modifies grubtest.cfg, this means signing and password
 protection will work after switching to it in the main boot menu and
 bricking due to incorrect configuration will be impossible. After you
@@ -61,8 +61,8 @@ signature checking code currently looks for
 and as such it is not possible to supply signatures in an alternate
 location.
 
-Note that this is not your LUKS password, but it\'s a password that you
-have to enter in order to use \"restricted\" functionality (such as
+Note that this is not your LUKS password, but it's a password that you
+have to enter in order to use "restricted" functionality (such as
 console). This protects your system from an attacker simply booting a
 live USB and re-flashing your firmware. **This should be different than
 your LUKS passphrase and user password.**

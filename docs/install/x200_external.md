@@ -24,7 +24,7 @@ followed (adapted) if you brick your X200, to know how to recover.
 X200 laptops with libreboot pre-installed {#preinstall}
 =========================================
 
-If you don\'t want to install libreboot yourself, companies exist that
+If you don't want to install libreboot yourself, companies exist that
 sell these laptops with libreboot pre-installed, along with a free
 GNU+Linux distribution.
 
@@ -191,7 +191,7 @@ factory.rom**\
 factory1.rom**\
 \# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory2.rom**\
-Note: the **-c** option is not required in libreboot\'s patched
+Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
 Now compare the 3 images:\
@@ -216,7 +216,7 @@ path/to/libreboot/rom/image.rom -V**
 ![](images/x200/disassembly/0015.jpg)
 
 You might see errors, but if it says **Verifying flash\... VERIFIED** at
-the end, then it\'s flashed and should boot. If you see errors, try
+the end, then it's flashed and should boot. If you see errors, try
 again (and again, and again); the message **Chip content is identical to
 the requested image** is also an indication of a successful
 installation.
@@ -252,7 +252,7 @@ only.
 It is recommended that you install a new wifi chipset. This can only be
 done after installing libreboot, because the original firmware has a
 whitelist of approved chips, and it will refuse to boot if you use an
-\'unauthorized\' wifi card.
+'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
 the Intel chip that this X200 came with:\
@@ -277,7 +277,7 @@ Memory
 ======
 
 You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
-(speed/size). Non-matching pairs won\'t work. You can also install a
+(speed/size). Non-matching pairs won't work. You can also install a
 single module (meaning, one of the slots will be empty) in slot 0.
 
 NOTE: according to users repors, non matching pairs (e.g. 1+2 GiB) might
@@ -309,7 +309,7 @@ disable the flashing protections by the descriptor and stop the ME from
 starting (which itself interferes with flashing attempts). The theory
 was proven correct; however, it is still useless in practise.
 
-Look just above the 7 in TP37 (that\'s GPIO33):\
+Look just above the 7 in TP37 (that's GPIO33):\
 ![](../hcl/images/x200/gpio33_location.jpg)
 
 By default we would see this in lenovobios, when trying flashrom -p
@@ -334,7 +334,7 @@ The part in bold is what got us. This was still observed:
 It is actually possible to disable these protections. Lenovobios does,
 when updating the BIOS (proprietary one). One possible way to go about
 this would be to debug the BIOS update utility from Lenovo, to find out
-how it\'s disabling these protections. Some more research is available
+how it's disabling these protections. Some more research is available
 here:
 <http://www.coreboot.org/Board:lenovo/x200/internal_flashing_research>
 

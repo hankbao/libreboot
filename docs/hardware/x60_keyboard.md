@@ -7,7 +7,7 @@ for X60s and X60 Tablet.
 
 Although slightly different, this guide can also be followed for the
 ThinkPad X200, X200S and X200 Tablet. The screws are in more or less the
-same place, and it\'s the same procedure.
+same place, and it's the same procedure.
 
 [Back to previous index](./)
 

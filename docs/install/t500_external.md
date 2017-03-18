@@ -48,7 +48,7 @@ A note about GPUs
 =================
 
 Some models have an Intel GPU, while others have both an ATI and an
-Intel GPU; this is referred to as \"switchable graphics\". In the *BIOS
+Intel GPU; this is referred to as "switchable graphics". In the *BIOS
 setup* program for lenovobios, you can specify that the system will use
 one or the other (but not both).
 
@@ -166,7 +166,7 @@ Remove the NVRAM battery (already removed in this photo):\
 ![](images/t500/0026.jpg)
 
 When you re-assemble, you will be replacing the wifi chip with another.
-These two screws don\'t hold anything together, but they are included in
+These two screws don't hold anything together, but they are included in
 your system because the screw holes for half-height cards are a
 different size, so use these if you will be installing a half-height
 card:\
@@ -262,7 +262,7 @@ factory.rom**\
 factory1.rom**\
 \# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory2.rom**\
-Note: the **-c** option is not required in libreboot\'s patched
+Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
 Now compare the 3 images:\
@@ -287,7 +287,7 @@ path/to/libreboot/rom/image.rom -V**
 ![](images/x200/disassembly/0015.jpg)
 
 You might see errors, but if it says **Verifying flash\... VERIFIED** at
-the end, then it\'s flashed and should boot. If you see errors, try
+the end, then it's flashed and should boot. If you see errors, try
 again (and again, and again); the message **Chip content is identical to
 the requested image** is also an indication of a successful
 installation.
@@ -342,7 +342,7 @@ Some T500 laptops might come with an Atheros chipset, but this is
 It is recommended that you install a new wifi chipset. This can only be
 done after installing libreboot, because the original firmware has a
 whitelist of approved chips, and it will refuse to boot if you use an
-\'unauthorized\' wifi card.
+'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
 the Intel chip that this T500 came with:\
@@ -366,7 +366,7 @@ Memory
 ======
 
 You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
-(speed/size). Non-matching pairs won\'t work. You can also install a
+(speed/size). Non-matching pairs won't work. You can also install a
 single module (meaning, one of the slots will be empty) in slot 0.
 
 Make sure that the RAM you buy is the 2Rx8 density.

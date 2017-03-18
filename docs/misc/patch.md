@@ -2,7 +2,7 @@
 Diff and patch 
 ==============
 
-This is just a quick guide for reference, use \'man\' to know more.
+This is just a quick guide for reference, use 'man' to know more.
 
 [Back to index](./)
 
@@ -11,18 +11,18 @@ This is just a quick guide for reference, use \'man\' to know more.
 Apply a patch
 =============
 
-To apply a patch to a single file, do that in it\'s directory:\
+To apply a patch to a single file, do that in it's directory:\
 **\$ patch &lt; foo.patch**
 
 Assuming that the patch is distributed in unified format identifying the
 file the patch should be applied to, the above will work. Otherwise:\
 **\$ patch foo.txt &lt; bar.patch**
 
-You can apply a patch to an entire directory, but note the \"p level\".
+You can apply a patch to an entire directory, but note the "p level".
 What this means is that inside patch files will be the files that you
 intend to patch, identified by path names that might be different when
 the files ane located on your own computer instead of on the computer
-where the patch was created. \'p\' level instructs the \'patch\' utility
+where the patch was created. 'p' level instructs the 'patch' utility
 to ignore parts of the path name to identify the files correctly.
 Usually a p level of 1 will work, so you would use:\
 **\$ patch -p1 &lt; baz.patch**
@@ -52,7 +52,7 @@ Create a patch with diff
 Diff can create a patch for a single file:\
 **\$ diff -u original.c new.c &gt; original.patch**
 
-For diff\'ing a source tree:\
+For diff'ing a source tree:\
 **\$ cp -R original new**
 
 Do whatever you want in new/ and then diff it:\
@@ -67,7 +67,7 @@ git diff
 
 git is something special.
 
-Note: this won\'t show new files created.
+Note: this won't show new files created.
 
 Just make whatever changes you want to a git clone and then:\
 **\$ git diff &gt; patch.git**

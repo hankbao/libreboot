@@ -40,13 +40,13 @@ Hardware requirements
 Shopping list (pictures of this hardware is shown later):
 
 -   A [Flashrom](http://flashrom.org)-compatible external SPI
-    programmer: **BeagleBone Black**, sometimes referred to as \'BBB\',
+    programmer: **BeagleBone Black**, sometimes referred to as 'BBB',
     (rev. C) is highly recommended. You can buy one from
     [Adafruit](https://www.adafruit.com) (USA),
     [ElectroKit](http://electrokit.com) (Sweden) or any of the
     distributors listed [here](http://beagleboard.org/black) (look below
-    \'Purchase\'). We recommend this product because we know that it
-    works well for our purposes and doesn\'t require any non-free
+    'Purchase'). We recommend this product because we know that it
+    works well for our purposes and doesn't require any non-free
     software.
 -   Electrical/insulative tape: cover the entire bottom surface of the
     BBB (the part that rests on a surface). This is important, when
@@ -63,14 +63,14 @@ Shopping list (pictures of this hardware is shown later):
     ships to many countries. Some people find these clips difficult to
     get hold of, especially in South America. If you know of any good
     suppliers, please contact the libreboot project with the relevant
-    information. **If you can\'t get hold of a pomona clip, some other
+    information. **If you can't get hold of a pomona clip, some other
     clips might work, e.g. 3M, but they are not always reliable. You can
     also directly solder the wires to the chip, if that suits you; the
     clip is just for convenience, really.**
 -   **External 3.3V DC power supply**, for powering the flash chip: an
     ATX power supply / PSU (common on Intel/AMD desktop computers) will
     work for this. A lab PSU (DC) will also work (adjusted to 3.3V).
-    -   Getting a multimeter might be worthwhile, to verify that it\'s
+    -   Getting a multimeter might be worthwhile, to verify that it's
         supplying 3.3V.
 -   **External 5V DC power supply** (barrel connector), for powering the
     BBB: the latter can have power supplied via USB, but a dedicated
@@ -78,7 +78,7 @@ Shopping list (pictures of this hardware is shown later):
     places that sell electronics. **OPTIONAL. Only needed if not
     powering with the USB cable, or if you want to use [EHCI
     debug](../misc/bbb_ehci.html)**.
--   **Pin header / jumper cables** (2.54mm / 0.1\" headers): you should
+-   **Pin header / jumper cables** (2.54mm / 0.1" headers): you should
     get male\--male, male\--female and female\--female cables in 10cm
     size. Just get a load of them. Other possible names for these
     cables/wires/leads are as follows:
@@ -123,14 +123,14 @@ PS\_ON\# (this is also how an ATX motherboard turns on a PSU).
 20-pin ATX PSU), and DO \*\*NOT\*\* use pin 21, 22 or 23 (on a 24-pin
 ATX PSU). Those wires (the red ones) are 5V, and they \*\*WILL\*\* kill
 your flash chip. \*\*\*NEVER\*\*\* supply more than 3.3V to your flash
-chip (that is, if it\'s a 3.3V flash chip; 5V and 1.8V SPI flash chips
+chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI flash chips
 do exist, but they are rare. Always check what voltage your chip takes.
 Most of them take 3.3V).**
 
 You only need one 3.3V supply and one ground for the flash chip, after
 grounding PS\_ON\#.
 
-The male end of a 0.1\" or 2.54mm header cable is not thick enough to
+The male end of a 0.1" or 2.54mm header cable is not thick enough to
 remain permanently connected to the ATX PSU on its own. When connecting
 header cables to the connector on the ATX PSU, use a female end attached
 to a thicker piece of wire (you could use a paper clip), or wedge the
@@ -188,7 +188,7 @@ element14 brand BBB (sold by Premier Farnell plc. stores like Farnell
 element14, Newark element14, and Embest), you may need to [work around a
 bug](https://groups.google.com/forum/?_escaped_fragment_=msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ#!msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ)
 in the LED aging init script before you can update your software. If you
-don\'t have a file named /etc/init.d/led\_aging.sh, you can skip this
+don't have a file named /etc/init.d/led\_aging.sh, you can skip this
 step and update your software as described below. Otherwise, replace the
 contents of this file with:
 
@@ -260,7 +260,7 @@ Output:
     No EEPROM/flash device found.
     Note: flashrom can never write if the flash chip isn't found automatically.
 
-This means that it\'s working (the clip isn\'t connected to any flash
+This means that it's working (the clip isn't connected to any flash
 chip, so the error is fine).
 
 
@@ -351,7 +351,7 @@ use higher speeds while maintaining stability.
 tty0\_ in \#libreboot was able to get better flashing speeds with the
 following configuration:
 
--   \"coax\" with 0.1 mm core and aluminum foley (from my kitchen), add
+-   "coax" with 0.1 mm core and aluminum foley (from my kitchen), add
     100 Ohm resistors (serial)
 -   put heatshrink above the foley, for: CS, CLK, D0, D1
 -   Twisted pair used as core (in case more capacitors are needed)
@@ -361,7 +361,7 @@ following configuration:
 
 
 Copyright © 2014, 2015 Leah Rowe &lt;info@minifree.org&gt;\
-Copyright © 2015 Patrick \"P. J.\" McDermott &lt;pj@pehjota.net&gt;\
+Copyright © 2015 Patrick "P. J." McDermott &lt;pj@pehjota.net&gt;\
 Copyright © 2015 Albin Söderqvist\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0

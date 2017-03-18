@@ -29,7 +29,7 @@ This release adds one new mainboard to libreboot:
 Other bugfixes:
 
 -   Various improvements to the documentation
--   re-added \"unset superusers\" to the grub.cfg, which was needed for
+-   re-added "unset superusers" to the grub.cfg, which was needed for
     some users depending on the distros that they used
 
 Libreboot 20160902 {#release20160922}
@@ -76,13 +76,13 @@ Machines supported in this release:
     support
     -   See ***docs/hcl/\#supported\_x60t\_list*** for list of supported
         LCD panels
-    -   It is unknown whether an X61 Tablet can have it\'s mainboard
+    -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
         ***docs/hcl/\#supported\_t60\_list*** for known working LCD
         panels.
-    -   It is unknown whether a T61 can have it\'s mainboard replaced
+    -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
