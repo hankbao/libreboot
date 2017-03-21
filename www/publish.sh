@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo $1
 FILE=${1%.md}
 
 # get title block
@@ -23,4 +24,4 @@ TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc")
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart")
 
 # chuck through pandoc
-pandoc --self-contained -f markdown $SMART -t html temp.md -s --css global.css --section-divs -T Libreboot $TOC > $FILE.html
+pandoc $SMART temp.md -s --css /global.css --section-divs -T Libreboot $TOC > $FILE.html
