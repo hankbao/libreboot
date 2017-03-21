@@ -1,0 +1,38 @@
+html {
+    background-color: #eee;
+}
+
+body {
+    background-color: #fff;
+    margin: 0 auto;
+    max-width: 60em;
+    padding: 0.2em 1em;
+    box-shadow: 0 0 6px;
+}
+
+body {
+    line-height: 1.6;
+    font-family: Cantarell, sans-serif;
+    font-size: 1.1em;
+
+    color: #222;
+}
+
+h1 {
+    font-size: 2.0em;
+    text-align: center;
+}
+
+#logo {
+    width: 25%;
+    float: right;
+}
+
+a {
+    text-decoration: none;
+    color: #22D;
+}
+
+a:hover {
+    color: #008;
+}
