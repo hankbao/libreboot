@@ -11,8 +11,13 @@ if [ "${FILE}" != "./index" ]; then
 	printf "[Go back to homepage](/index.md)\n\n" >> temp.md
 fi
 
-#read rest of file
+# read rest of file
 tail -n +5 $FILE.md >> temp.md
+
+# add license notice where applicable
+if [[ "${FILE} != "docs*""]]
+    cat license.md >> temp.md
+fi
 
 # change out .md -> .html
 sed temp.md -i -e 's/.md\(#[a-z\-]*\)*)/.html\1)/g'
