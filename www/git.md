@@ -98,13 +98,12 @@ How to submit your patches
 
 ### Method 0: Use NotABug pull requests
 
-NotABug, libreboot's main git hosting provider, now provides a *pull
-requests* feature. <https://notabug.org/vimuser/> has the libreboot and
-libreboot-website repositories. Create an account on the website, then
-view the libreboot or libreboot-website repo and click "fork" and
-clone your fork. Then commit your patch on top, and push into your
-repository (we recommend into a non-master branch). NotABug guides you
-through the process of pushing patches to it.
+NotABug, libreboot's main git hosting provider, now provides a *pull requests*
+feature. <https://notabug.org/vimuser/> has the libreboot repository. Create an
+account on the website, then view the libreboot repo and click "fork" and clone
+your fork. Then commit your patch on top, and push into your repository (we
+recommend into a non-master branch). NotABug guides you through the process of
+pushing patches to it.
 
 Once you have pushed your patches, go to the relevant repository on
 <https://notabug.org/vimuser/> and click "Pull Requests". Then click

@@ -21,8 +21,7 @@ How to send a bug report
 The bug tracker lists current tasks, with information on what is being
 done about them.
 
-<https://notabug.org/vimuser/libreboot/issues>\
-<https://notabug.org/vimuser/libreboot-website/issues>
+<https://notabug.org/vimuser/libreboot/issues>
 
 People of interest {#tasks}
 ------------------
