@@ -7,7 +7,7 @@ FILE=${1%.md}
 head -n 4 $FILE.md > temp.md
 
 # if not homepage, add a link back to the homepage
-if [ "${FILE}" != "index" ]; then
+if [ "${FILE}" != "./index" ]; then
 	printf "[Go back to homepage](index.md)\n\n" >> temp.md
 fi
 

@@ -8,7 +8,6 @@
 .tarfiles
 .epoch
 push
-*.s[a-w]?
 *.vim
 /TODO/
 /docs/version
