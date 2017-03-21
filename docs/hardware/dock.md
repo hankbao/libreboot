@@ -1,4 +1,9 @@
-% Notes about DMA and the docking station (X60/T60)
+
+Notes about DMA and the docking station (X60/T60)
+=================================================
+
+
+
 
     Use case:
     ---------
@@ -61,6 +66,7 @@
                    | ICH7                  |
                    |_______________________|
 
+
     The code:
     ---------
     Now if I look at the existing code, there is some superio drivers, like
@@ -115,8 +121,9 @@
     >           The dock autodetection is tried only if it is also enabled
     > trough nvram.
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

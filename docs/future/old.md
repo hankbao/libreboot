@@ -1,9 +1,13 @@
-% Development notes (old/obsolete notes) 
+
+Development notes (old/obsolete notes) 
+======================================
 
 For current notes, see [](./).
 
 These are old (obsolete) notes that mare kept because they might become
 useful again in the future.
+
+
 
 Table of contents
 =================
@@ -17,13 +21,15 @@ Table of contents
 -   [i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay
     code)](#x60_cb5927_testing)
 
+
+
 X60 native graphics initialization (with backlight controls) {#x60_native_notes}
 ============================================================
 
 **This is now obsolete. A better way was found (included in libreboot):
 <http://review.coreboot.org/#/c/6731/>**
 
-***Also check [#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
+***Also check [\#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
 kernel 3.12/higher)***
 
 **The fix below was done on 5320/6 (from review.coreboot.org) but should
@@ -39,15 +45,14 @@ That's all! **This has also been backported into libreboot 5th release
 (line 1233 in src/mainboard/lenovo/x60/i915io.c)**. GNUtoo (Denis
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
-running the VBIOS:
-
-    # devmem2 0xe4361254 w
+running the VBIOS:\
+**\# devmem2 0xe4361254 w**
 
 The change is also included in libreboot 6.
 
 When doing this, it gave back that value. The same trick was used to get
 backlight controls for T60 (see
-[#t60\_native\_notes](#t60_native_notes)).
+[\#t60\_native\_notes](#t60_native_notes)).
 
 Further notes
 -------------
@@ -86,11 +91,15 @@ to calculate it without hardcoded laptop-specific values. Therefore, I
 am supposed to find out the 'display core frequency' (mtjm says there
 might be a register for it; also, it might be in 5320 or the replay
 code) and the PWM modulation frequency.
-https://en.wikipedia.org/wiki/Backlight#Flicker\_due\_to\_backlight\_dimming
+https://en.wikipedia.org/wiki/Backlight\#Flicker\_due\_to\_backlight\_dimming
 
 phcoder (Vladimir Serbinenko) who is author of 5320
 (review.coreboot.org) talks about 'duty cycle limit' and 'flickering
 frequency'.
+
+[Back to top of page](#pagetop)
+
+
 
 T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 ============================================================
@@ -98,7 +107,7 @@ T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 **This is now obsolete. A better way was found (included in libreboot):
 <http://review.coreboot.org/#/c/6731/>**
 
-***Also check [#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
+***Also check [\#5320\_kernel312fix](#5320_kernel312fix) (to fix 3D on
 kernel 3.12/higher)***
 
 **The fix below was done on an earlier version of 5345 changeset
@@ -109,15 +118,19 @@ included in libreboot 6**
 change **gpu\_backlight** to **0x58BF58BE**
 
 Hold on! Check
-[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname) to know
+[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname) to know
 what LCD panel you have. This is important for the next step!
 
 Supported panels
 ----------------
 
-[../hcl/#supported\_t60\_list](../hcl/#supported_t60_list).
+[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list).
 
-See [#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
+See [\#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
+
+[Back to top of page](#pagetop)
+
+
 
 i945: 3D fix (based on 5927) for kernel 3.12+ on 5320 {#5320_kernel312fix}
 =====================================================
@@ -133,7 +146,7 @@ is also now included in libreboot 6 (using the proper way, not the
 now obsolete. This needs to be re-done for the latest version of 5320.
 The fix below is (in practise) only for reference, therefore.**
 
-See [#x60\_cb5927\_testing](#x60_cb5927_testing) for the original (and
+See [\#x60\_cb5927\_testing](#x60_cb5927_testing) for the original (and
 current) fix, for the replay code. Now we want to implement that on top
 of <http://review.coreboot.org/#/c/5320> which is the current code for
 native graphics initialization on i945.
@@ -159,6 +172,10 @@ apt-get repositories) using tool "intel\_gtt":
 -   kernel 3.2.0-60 (from apt-get repositories):
     -   with coreboot (no vbios or native init):
         <http://paste.debian.net/104341>
+
+[Back to top of page](#pagetop)
+
+
 
 i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code) {#x60_cb5927_testing}
 ========================================================================
@@ -186,10 +203,8 @@ For historical purposes, here is a collection of IRC logs that once
 existed on this page, related to the issue:
 [kernel312\_irc](dumps/kernel312_irc).
 
-PGETBL\_CTL differs between VBIOS (-) and native graphics init (+).
-
-- PGETBL\_CTL: 0x3ffc0001
-
+PGETBL\_CTL differs between VBIOS (-) and native graphics init (+).\
+- PGETBL\_CTL: 0x3ffc0001\
 + PGETBL\_CTL: 0x3f800001
 
 GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
@@ -210,8 +225,11 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
     -   [/sys/class/drm/card0/error](dumps/5927_crashdump)
     -   [.config](dumps/5927_config)
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
+[Back to top of page](#pagetop)
 
+
+
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -1,9 +1,11 @@
-% GNU+Linux distributions 
+
+GNU+Linux distributions 
+=======================
 
 This section relates to dealing with GNU+Linux distributions: preparing
 bootable USB drives, changing the default GRUB menu and so on.
 
-**This section is only for the *GRUB* payload. For depthcharge,
+**This section is only for the \*GRUB\* payload. For depthcharge,
 instructions have yet to be written.**
 
 [Back to previous index](../).
@@ -21,8 +23,9 @@ instructions have yet to be written.**
 -   [How to harden your GRUB configuration, for
     security](grub_hardening.html)
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

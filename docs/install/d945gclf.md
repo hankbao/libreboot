@@ -1,4 +1,6 @@
-% Intel D945GCLF flashing tutorial 
+
+Intel D945GCLF flashing tutorial 
+================================
 
 This guide is for those who want libreboot on their Intel D945GCLF
 motherboard while they still have the original BIOS present.
@@ -6,18 +8,21 @@ motherboard while they still have the original BIOS present.
 For information about this board, go to
 [../hcl/d945gclf.html](../hcl/d945gclf.html)
 
+
+
+
 Flashing instructions {#clip}
 =====================
 
 Refer to [bbb\_setup.html](bbb_setup.html) for how to set up the BBB for
 external flashing.
 
-Here is an image of the flash chip:
-
+Here is an image of the flash chip:\
 ![](../images/d945gclf/d945gclf_spi.jpg)
 
-Copyright © 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

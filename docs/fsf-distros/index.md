@@ -1,4 +1,6 @@
-% Explaining Why We Don't Endorse FSF-endorsed Systems 
+
+Explaining Why We Don't Endorse FSF-endorsed Systems 
+=====================================================
 
 We are asked why we don't endorse most FSF-endorsed distributions,
 usually well-known within the FSF community.
@@ -6,6 +8,9 @@ usually well-known within the FSF community.
 To learn more about the GNU+Linux systems that we do endorse, check out
 our list of [free GNU+Linux distributions](../distros/). The *only*
 FSF-endorsed distribution that we endorse there is *Parabola*.
+
+
+
 
 Blag
 ----
@@ -66,8 +71,11 @@ Ututo
 
 It's a dead project.
 
-Copyright © 2016 Leah Rowe <info@minifree.org>
+[Back to top of page](#pagetop)
 
+
+
+Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

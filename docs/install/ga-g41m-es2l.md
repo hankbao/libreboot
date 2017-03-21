@@ -1,16 +1,22 @@
-% GA-G41M-ES2L flashing tutorial 
+
+GA-G41M-ES2L flashing tutorial 
+==============================
 
 This guide is for those who want libreboot on their Intel GA-G41M-ES2L
 motherboard while they still have the original BIOS present.
 
+
+
+
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:
-
-# **flashrom -p internal -V**
+Use this to find out:\
+\# **flashrom -p internal -V**
 
 [Back to top of page.](#pagetop)
+
+
 
 Flashing instructions {#clip}
 =====================
@@ -22,19 +28,16 @@ by connecting 3v3 to /CS of that chip, so you will actually need 2 test
 clips (you also need to connect GND on the chip that you're
 disabling).**
 
-Here is an image of the flash chip:
-
+Here is an image of the flash chip:\
 ![](../images/ga-g41m-es2l/ga-g41m-es2l.jpg)
 
 Internal flashing is possible. Boot with the proprietary BIOS and
 GNU+Linux. There are 2 flash chips (one is backup).
 
-Flash the first chip:
-
+Flash the first chip:\
 **./flashrom -p internal:dualbiosindex=0 -w libreboot.rom**
 
-Flash the second chip:
-
+Flash the second chip:\
 **./flashrom -p internal:dualbiosindex=1 -w libreboot.rom**
 
 NOTE: you can still boot the system with just the main flash chip
@@ -48,8 +51,9 @@ NOTE: due to a bug in the hardware, the MAC address is hardcoded in
 coreboot-libre. Therefore, you must set your own MAC address in your
 operating system.
 
-Copyright © 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

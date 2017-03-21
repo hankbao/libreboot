@@ -1,4 +1,6 @@
-% How to install GNU+Linux on a libreboot system
+
+How to install GNU+Linux on a libreboot system
+==============================================
 
 This section relates to preparing, booting and installing a GNU+Linux
 distribution on your libreboot system, using nothing more than a USB
@@ -14,9 +16,13 @@ flash drive (and *dd*).
 
 [Back to previous index](./)
 
+
+
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
+
+
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -24,27 +30,25 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on an existing GNU+Linux system, here is how
 to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg
-Check lsblk to confirm which drive it is:
-
-    $ lsblk
+Connect the USB drive. Check dmesg:\
+**\$ dmesg**\
+Check lsblk to confirm which drive it is:\
+**\$ lsblk**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ sudo umount /dev/sdX*
-    # umount /dev/sdX*
+example:\
+**\$ sudo umount /dev/sdX\***\
+**\# umount /dev/sdX\***
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:
-
-    $ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
-    # dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
+distro ISO to it with dd. For example:\
+**\$ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**\
+**\# dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
 
 Prepare the USB drive (in NetBSD)
 ---------------------------------
@@ -69,25 +73,25 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:
-
-    $ disklabel sd3
+Connect the USB drive. Check dmesg:\
+**\$ dmesg | tail**\
+Check to confirm which drive it is, for example, if you think its sd3:\
+**\$ disklabel sd3**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ doas umount /dev/sd3i
+example:\
+**\$ doas umount /dev/sd3i**\
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:
-
-    $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
+OpenBSD installer to it with dd. For example:\
+**\$ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync**\
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
+
+
 
 Installing GNU+Linux with full disk encryption
 ----------------------------------------------
@@ -97,33 +101,31 @@ Installing GNU+Linux with full disk encryption
 -   [Installing Parabola GNU+Linux with full disk encryption (including
     /boot)](encrypted_parabola.html)
 
+[Back to top of page](#pagetop).
+
+
+
 Debian or Devuan net install?
 -----------------------------
 
 Download the Debian or Devuan net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/), or [the
 Devuan homepage](https://www.devuan.org/) for Devuan. Use this on the
-GRUB terminal to boot it from USB (for 64-bit Intel or AMD):
-
-**set root='usb0'
-
-linux /install.amd/vmlinuz
-
-initrd /install.amd/initrd.gz
-
-boot
-
-** If you are on a 32-bit system (e.g. X60):
-
-**set root='usb0'
-
-linux /install.386/vmlinuz
-
-initrd /install.386/initrd.gz
-
-boot**
-
+GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
+**set root='usb0'\
+linux /install.amd/vmlinuz\
+initrd /install.amd/initrd.gz\
+boot\
+** If you are on a 32-bit system (e.g. X60):\
+**set root='usb0'\
+linux /install.386/vmlinuz\
+initrd /install.386/initrd.gz\
+boot**\
 We recommend using the *MATE* desktop.
+
+[Back to top of page](#pagetop).
+
+
 
 Booting ISOLINUX images (automatic method)
 ------------------------------------------
@@ -133,6 +135,10 @@ menu should appear in GRUB, showing the boot options for that distro;
 this is a GRUB menu, converted from the usual ISOLINUX menu provided by
 that distro.
 
+[Back to top of page](#pagetop).
+
+
+
 Booting ISOLINUX images (manual method)
 ---------------------------------------
 
@@ -141,18 +147,14 @@ distribution. You must adapt them appropriately, for whatever GNU+Linux
 distribution it is that you are trying to install.*
 
 If the ISOLINUX parser or *Search for GRUB configuration* options won't
-work, then press C in GRUB to access the command line.
-
-grub>     ls
-Get the device from above output, eg (usb0). Example:
-
-grub>     cat (usb0)/isolinux/isolinux.cfg
+work, then press C in GRUB to access the command line.\
+grub> **ls**\
+Get the device from above output, eg (usb0). Example:\
+grub> **cat (usb0)/isolinux/isolinux.cfg**\
 Either this will show the ISOLINUX menuentries for that ISO, or link to
-other .cfg files, for example /isolinux/foo.cfg.
-
-If it did that, then you do:
-
-grub>     cat (usb0)/isolinux/foo.cfg
+other .cfg files, for example /isolinux/foo.cfg.\
+If it did that, then you do:\
+grub> **cat (usb0)/isolinux/foo.cfg**\
 And so on, until you find the correct menuentries for ISOLINUX. **The
 file */isolinux/foo.cfg* is a fictional example. Do not actually use
 this example, unless you actually have that file, if it is
@@ -168,23 +170,23 @@ options in txt.cfg. This is important if you want 64-bit booting on your
 system. Devuan versions based on Debian 8.x may also have the same
 issue.
 
-Now look at the ISOLINUX menuentry. It'll look like:
-
-**kernel /path/to/kernel
-
-append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS
-
+Now look at the ISOLINUX menuentry. It'll look like:\
+**kernel /path/to/kernel\
+append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS\
 ** GRUB works the same way, but in it's own way. Example GRUB
-commands:
-
-grub>     set root='usb0'
-grub>     linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS
-grub>     initrd /path/to/initrd
-grub>     boot
+commands:\
+grub> **set root='usb0'**\
+grub> **linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS**\
+grub> **initrd /path/to/initrd**\
+grub> **boot**\
 Note: *usb0* may be incorrect. Check the output of the *ls* command in
 GRUB, to see a list of USB devices/partitions. Of course this will vary
 from distro to distro. If you did all of that correctly, then it should
 now be booting your USB drive in the way that you specified.
+
+[Back to top of page](#pagetop).
+
+
 
 Troubleshooting
 ===============
@@ -211,8 +213,7 @@ When using the ROM images that use coreboot's "text mode" instead of
 the coreboot framebuffer, booting the Debian or Devuan net installer
 results in graphical corruption because it is trying to switch to a
 framebuffer which doesn't exist. Use that kernel parameter on the
-'linux' line when booting it:
-
+'linux' line when booting it:\
 **vga=normal fb=false**
 
 This forces debian-installer to start in text-mode, instead of trying to
@@ -227,10 +228,12 @@ This workaround was found on the page:
 also work for Debian, Devuan and any other apt-get distro that provides
 debian-installer (text mode) net install method.
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+[Back to top of page](#pagetop).
 
-Copyright © 2016 Scott Bonds <scott@ggr.com>
 
+
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

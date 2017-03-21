@@ -1,4 +1,6 @@
-% How to install LibertyBSD or OpenBSD on a libreboot system
+
+How to install LibertyBSD or OpenBSD on a libreboot system
+==========================================================
 
 NOTE: This guide was written for OpenBSD by the person who contributed
 it, but the libreboot project recommends LibertyBSD. LibertyBSD is a
@@ -20,9 +22,13 @@ your libreboot system, using nothing more than a USB flash drive (and
 
 [Back to previous index](./)
 
+
+
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
+
+
 
 install60.fs is the installation image for OpenBSD 6.0. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
@@ -33,25 +39,23 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable LibertyBSD/OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:
-
-    $ disklabel sd3
+Connect the USB drive. Check dmesg:\
+**\$ dmesg | tail**\
+Check to confirm which drive it is, for example, if you think its sd3:\
+**\$ disklabel sd3**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ doas umount /dev/sd3i
+example:\
+**\$ doas umount /dev/sd3i**\
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:
-
-    $ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync
+OpenBSD installer to it with dd. For example:\
+**\$ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync**\
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
 
 Prepare the USB drive (in NetBSD)
 ---------------------------------
@@ -76,38 +80,42 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg
-Check lsblk to confirm which drive it is:
-
-    $ lsblk
+Connect the USB drive. Check dmesg:\
+**\$ dmesg**\
+Check lsblk to confirm which drive it is:\
+**\$ lsblk**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ sudo umount /dev/sdX*
-    # umount /dev/sdX*
+example:\
+**\$ sudo umount /dev/sdX\***\
+**\# umount /dev/sdX\***
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:
-
-    $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
-    # dd if=install60.fs of=/dev/sdX bs=8M; sync
+distro ISO to it with dd. For example:\
+**\$ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync**\
+**\# dd if=install60.fs of=/dev/sdX bs=8M; sync**
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
+
+
 
 Installing OpenBSD without full disk encryption
 -----------------------------------------------
 
 Press C in GRUB to access the command line:
 
-grub>     kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd
+grub> **kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd**\
 grub> **boot**
 
 It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
+
+[Back to top of page](#pagetop).
+
+
 
 Installing OpenBSD with full disk encryption
 --------------------------------------------
@@ -137,15 +145,23 @@ installations would be possible, but probably not feasible; it's an
 alien codebase to the OpenBSD project, not tightly integrated and the
 OpenBSD bootloader already works.
 
+[Back to top of page](#pagetop).
+
+
+
 Booting
 -------
 
 Press C in GRUB to access the command line:
 
-grub>     kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+grub> **kopenbsd -r sd0a (ahci0,openbsd1)/bsd**\
 grub> **boot**
 
 OpenBSD will start booting. Yay!
+
+[Back to top of page](#pagetop).
+
+
 
 Configuring Grub
 ----------------
@@ -159,17 +175,18 @@ On your OpenBSD root partition, create the **/grub** directory and add
 the file **libreboot\_grub.cfg** to it. Inside the
 **libreboot\_grub.cfg** add these lines:
 
-**default=0 timeout=3 menuentry "OpenBSD" {
-
-    kopenbsd -r sd0a (ahci0,openbsd1)/bsd
-
-}
-
+**default=0 timeout=3 menuentry "OpenBSD" {\
+    kopenbsd -r sd0a (ahci0,openbsd1)/bsd\
+}\
 **
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
 seconds OpenBSD will boot, or you can hit enter to boot.
+
+[Back to top of page](#pagetop).
+
+
 
 Troubleshooting
 ===============
@@ -183,16 +200,18 @@ because it doesn't exist.
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won't boot...something about file not found
+won't boot\...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
 
-Copyright © 2016 Scott Bonds <scott@ggr.com>
+[Back to top of page](#pagetop).
 
-Copyright © 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
+Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

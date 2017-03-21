@@ -1,4 +1,6 @@
-% How to install FreeBSD on a libreboot system
+
+How to install FreeBSD on a libreboot system
+============================================
 
 This section relates to preparing, booting and installing FreeBSD on
 your libreboot system, using nothing more than a USB flash drive (and
@@ -26,9 +28,13 @@ with libreboot.
 
 [Back to previous index](./)
 
+
+
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
+
+
 
 freebsd.img is the installation image for FreeBSD. Adapt the filename
 accordingly, for whatever FreeBSD version you use.
@@ -55,25 +61,23 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg | tail
-Check to confirm which drive it is, for example, if you think its sd3:
-
-    $ disklabel sd3
+Connect the USB drive. Check dmesg:\
+**\$ dmesg | tail**\
+Check to confirm which drive it is, for example, if you think its sd3:\
+**\$ disklabel sd3**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ doas umount /dev/sd3i
+example:\
+**\$ doas umount /dev/sd3i**\
 
 dmesg told you what device it is. Overwrite the drive, writing the
-FreeBSD installer to it with dd. For example:
-
-    $ doas dd if=freebsd.img of=/dev/rsdXc bs=1M; sync
+FreeBSD installer to it with dd. For example:\
+**\$ doas dd if=freebsd.img of=/dev/rsdXc bs=1M; sync**\
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -81,54 +85,70 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:
-
-    $ dmesg
-Check lsblk to confirm which drive it is:
-
-    $ lsblk
+Connect the USB drive. Check dmesg:\
+**\$ dmesg**\
+Check lsblk to confirm which drive it is:\
+**\$ lsblk**
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
-
-    $ sudo umount /dev/sdX*
-    # umount /dev/sdX*
+example:\
+**\$ sudo umount /dev/sdX\***\
+**\# umount /dev/sdX\***
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:
-
-    $ sudo dd if=freebsd.img of=/dev/sdX bs=8M; sync
-    # dd if=freebsd.img of=/dev/sdX bs=8M; sync
+distro ISO to it with dd. For example:\
+**\$ sudo dd if=freebsd.img of=/dev/sdX bs=8M; sync**\
+**\# dd if=freebsd.img of=/dev/sdX bs=8M; sync**
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
+
+[Back to top of page](#pagetop).
+
+
 
 Installing FreeBSD without full disk encryption
 -----------------------------------------------
 
 Press C in GRUB to access the command line:
 
-grub>     kfreebsd (usb0,gpt3)/boot/kernel/kernel
-grub>     set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3
+grub> **kfreebsd (usb0,gpt3)/boot/kernel/kernel**\
+grub> **set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3**\
 grub> **boot**
 
 It will start booting into the FreeBSD installer. Follow the normal
 process for installing FreeBSD.
+
+[Back to top of page](#pagetop).
+
+
 
 Installing FreeBSD with full disk encryption
 --------------------------------------------
 
 TODO
 
+[Back to top of page](#pagetop).
+
+
+
 Booting
 -------
 
 TODO
 
+[Back to top of page](#pagetop).
+
+
+
 Configuring Grub
 ----------------
 
 TODO
+
+[Back to top of page](#pagetop).
+
+
 
 Troubleshooting
 ===============
@@ -142,16 +162,18 @@ because it doesn't exist.
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won't boot...something about file not found
+won't boot\...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
 
-Copyright © 2016 Leah Rowe <info@minifree.org>
+[Back to top of page](#pagetop).
 
-Copyright © 2016 Scott Bonds <scott@ggr.com>
 
+
+Copyright © 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

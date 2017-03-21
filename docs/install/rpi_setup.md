@@ -1,4 +1,6 @@
-% How to program an SPI flash chip with the Raspberry Pi 
+
+How to program an SPI flash chip with the Raspberry Pi 
+======================================================
 
 This document exists as a guide for reading from or writing to an SPI
 flash chip with the Raspberry Pi, using the
@@ -10,6 +12,8 @@ This only covers SOIC-8 flash chips, for now. SOIC-16 guide coming later
 SOIC-16).
 
 [Back to previous index](../)
+
+
 
 [](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -53,7 +57,7 @@ B+ with 40 pins, start counting from the right and leave 14 pins):
             1234
     ~~~ Palmrest (back) ~~
 
-  Pin #   SPI Pin Name   BP (Seeed)   BP (Spkfun)   [Beagleboard Black](http://beagleboard.org/Support/bone101#headers)   [Raspberry Pi](images/rpi/0000.jpg)
+  Pin \#   SPI Pin Name   BP (Seeed)   BP (Spkfun)   [Beagleboard Black](http://beagleboard.org/Support/bone101#headers)   [Raspberry Pi](images/rpi/0000.jpg)
   -------- -------------- ------------ ------------- --------------------------------------------------------------------- -------------------------------------
   1        CS             White        Red           Pin 17                                                                24
   2        MISO           Black        Brown         Pin 21                                                                21
@@ -156,7 +160,7 @@ successfully. If not, just flash again.
 
 ### [](#raspberry-pi-pinout-diagrams){#user-content-raspberry-pi-pinout-diagrams .anchor}Raspberry Pi Pinout Diagrams
 
-  MCP   3008 Pin   Pi GPIO Pin #   Pi Pin Name
+  MCP   3008 Pin   Pi GPIO Pin \#   Pi Pin Name
   ----- ---------- ---------------- --------------------
   16    `VDD`      1                `3.3 V`
   15    `VREF`     1                `3.3 V`
@@ -206,7 +210,7 @@ GPG signature as well.
 
     x86# gpg --keyserver prefered.keyserver.org --recv-keys 0x656F212E
 
-    x86# for signature in \$(ls *.sig); do gpg --verify \$signature; done
+    x86# for signature in $(ls *.sig); do gpg --verify $signature; done
 
 Extract NOOBS and libreboot.
 
@@ -281,7 +285,7 @@ text.
 
 ![](images/rpi/0002.jpg)
 
-  Pin #   SPI Pin Name   Raspberry Pi Pin \#
+  Pin \#   SPI Pin Name   Raspberry Pi Pin \#
   -------- -------------- ---------------------
   1        *not used*     *not used*
   2        3.3V           1
@@ -289,7 +293,7 @@ text.
   4        *not used*     *not used*
   5        *not used*     *not used*
   6        *not used*     *not used*
-  7        CS    #       24
+  7        CS\#           24
   8        S0/SIO1        21
   9        *not used*     *not used*
   10       GND            25
@@ -363,8 +367,8 @@ GPIO Pinouts:
 
 ![](images/rpi/0009.png) ![](images/rpi/0010.png)
 
-> *Diagram made by ["Pacman" from Win-Raid
-> Forums*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
+> \*Diagram made by ["Pacman" from Win-Raid
+> Forums\*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
 
 SOIC Pinouts:
 
@@ -421,14 +425,12 @@ box.](http://www.flashrom.org/RaspberryPi)
     -   [Win-Raid - Recover from Failed BIOS Flashing using Raspberry
         Pi](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
 
-Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>
 
-Copyright © 2015 snuffeluffegus <>
 
-Copyright © 2015 Kevin Keijzer <>
-
-Copyright © 2016 Leah Rowe <info@minifree.org>
-
+Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>\
+Copyright © 2015 snuffeluffegus <>\
+Copyright © 2015 Kevin Keijzer <>\
+Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

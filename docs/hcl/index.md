@@ -1,4 +1,6 @@
-% Hardware compatibility list 
+
+Hardware compatibility list 
+===========================
 
 This sections relates to known hardware compatibility in libreboot.
 
@@ -14,6 +16,8 @@ This sections relates to known hardware compatibility in libreboot.
 -   [Recommended wifi chipsets](#recommended_wifi)
 
 [Back to previous index](../).
+
+
 
 List of supported hardware {#supported_list}
 --------------------------
@@ -58,6 +62,10 @@ working). There may be exceptions; in other words, this is a list of
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
 
+[Back to top of page](#pagetop)
+
+
+
 EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400) {#ecupdate}
 ==============================================================
 
@@ -77,19 +85,25 @@ only replaces the BIOS firmware, not EC.
 Updated EC firmware has several advantages e.g. bettery battery
 handling.
 
+[Back to top of page](#pagetop)
+
+
+
 How to find what EC version you have (i945/GM45) {#ecversion}
 ================================================
 
-In GNU+Linux, you can try this:
-
+In GNU+Linux, you can try this:\
 **grep 'at EC' /proc/asound/cards**
 
-Sample output:
-
+Sample output:\
 **ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6**
 
 7WHT19WW is the version in different notation, use search engine to find
 out regular version - in this case it's a 1.06 for x200 tablet
+
+[Back to top of page](#pagetop)
+
+
 
 Recommended wifi chipsets {#recommended_wifi}
 -------------------------
@@ -109,6 +123,10 @@ project if these work with linux-libre kernel (TODO: test):
 -   \[0200\]: Qualcomm Atheros AR242x / AR542x Wireless Network Adapter
     (PCI-Express) \[168c:001c\]
 
+[Back to top of page](#pagetop)
+
+
+
 List of supported ThinkPad X60s {#supported_x60_list}
 -------------------------------
 
@@ -118,12 +136,12 @@ BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS'), all
 known LCD panels are currently compatible:
 
 To find what LCD panel you have, see:
-[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
--   TMD-Toshiba LTD121ECHB: #
--   CMO N121X5-L06: #
--   Samsung LTN121XJ-L07: #
--   BOE-Hydis HT121X01-101: #
+-   TMD-Toshiba LTD121ECHB: \#
+-   CMO N121X5-L06: \#
+-   Samsung LTN121XJ-L07: \#
+-   BOE-Hydis HT121X01-101: \#
 
 You can remove an X61/X61s motherboard from the chassis and install an
 X60/X60s motherboard in it's place (for flashing libreboot). The
@@ -135,9 +153,11 @@ at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
-[#recommended\_wifi](#recommended_wifi) for replacements.
+[\#recommended\_wifi](#recommended_wifi) for replacements.
 
 [Back to top of page.](#pagetop)
+
+
 
 List of supported ThinkPad X60 Tablets {#supported_x60t_list}
 --------------------------------------
@@ -147,7 +167,7 @@ proprietary VGA Option ROM ('[Video
 BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
-[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
 There are 5 known LCD panels for the X60 Tablet:
 
@@ -174,7 +194,7 @@ work at all without proprietary firmware, and while Lenovo BIOS is
 running the system will refuse to boot if you replace the card.
 Fortunately it is very easily replaced; just remove the card and install
 another one **after** libreboot is installed. See
-[#recommended\_wifi](#recommended_wifi) for replacements.
+[\#recommended\_wifi](#recommended_wifi) for replacements.
 
 A user with a X60T that has digitizer+finger support, reported that they
 could get finger input working. They used linuxwacom at git tag
@@ -183,7 +203,7 @@ could get finger input working. They used linuxwacom at git tag
     # Now, for some reason (probably a bug in linuxwacom),
     # the 'Touch=on' directive gets reset to 'off'.
     # So you'll need to do
-    # \$ xsetwacom --set WTouch Touch on
+    # $ xsetwacom --set WTouch Touch on
     #
     # tested with linuxwacom git 42a42b2a8636abc9e105559e5dea467163499de7
 
@@ -201,16 +221,16 @@ could get finger input working. They used linuxwacom at git tag
          Identifier  "WTouch"
          Driver      "wacom"
          Option      "Device" "/dev/ttyS0"
-        #Option      "DebugLevel" "12"
+    #    Option      "DebugLevel" "12"
          Option      "BaudRate" "38400"
          Option      "Type" "touch"
          Option      "Touch" "on"
          Option      "Gesture" "on"
          Option      "ForceDevice" "ISDV4"
-        #Option      "KeepShape" "on"
+    #    Option      "KeepShape" "on"
          Option      "Mode" "Absolute"
          Option      "RawSample" "2"
-        #Option      "TPCButton" "off"
+    #    Option      "TPCButton" "off"
          Option      "TopX" "17"
          Option      "TopY" "53"
          Option      "BottomX" "961"
@@ -225,6 +245,8 @@ could get finger input working. They used linuxwacom at git tag
 
 [Back to top of page.](#pagetop)
 
+
+
 Supported T60 list {#supported_t60_list}
 ------------------
 
@@ -233,10 +255,10 @@ proprietary VGA Option ROM ('[Video
 BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 
 To find what LCD panel you have, see:
-[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname).
+[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
 **Some T60s have ATI GPUs, and all T60P laptops have ATI GPUs These are
-incompatible! See [#t60\_ati\_intel](#t60_ati_intel) for how to remedy
+incompatible! See [\#t60\_ati\_intel](#t60_ati_intel) for how to remedy
 this.**
 
 Tested LCD panels: **working(compatible)**
@@ -253,8 +275,9 @@ Tested LCD panels: **working(compatible)**
 -   BOE-Hydis HV150UX1-100 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079
     or P/N 41W1338 recommended for the inverter board)
 
+
 Tested LCD panels: **not working yet (incompatible; see
-[../future/#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
+[../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
 
 -   Samsung LTN141XA-L01 (14.1" 1024x768)
 -   LG-Philips LP150X09 (15.1" 1024x768)
@@ -268,6 +291,8 @@ Tested LCD panels: **not working yet (incompatible; see
 -   IDtech N150U3-L01 (15.1" 1600x1200) (no display in GRUB, display in
     GNU+Linux works) (P/N 42T0078 FRU 42T0079 or P/N 41W1338 recommended
     for the inverter board)
+
+
 
 *The following LCD panels are **UNTESTED**. If you have one of these
 panels then please submit a report!*:
@@ -300,9 +325,12 @@ at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
-[#recommended\_wifi](#recommended_wifi) for replacements.
+[\#recommended\_wifi](#recommended_wifi) for replacements.
+
 
 [Back to top of page.](#pagetop)
+
+
 
 ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences. {#t60_ati_intel}
 ----------------------------------------------------------------
@@ -324,8 +352,8 @@ cannot be used with libreboot under any circumstances.
 
 The following T60 motherboard (see area highlighted in white) shows an
 empty space where the ATI GPU would be (this particular motherboard has
-an Intel GPU):
-
+an Intel GPU):\
+\
 ![](../images/t60_dev/t60_unbrick.jpg)
 
 The reason that the ATI GPU on T60 is unsupported is due to the VBIOS
@@ -335,8 +363,7 @@ work in libreboot.
 
 The 'Video BIOS' is what initializes graphics.
 
-See: <https://en.wikipedia.org/wiki/Video_BIOS>.
-
+See: <https://en.wikipedia.org/wiki/Video_BIOS>.\
 In fact, lack of free VBIOS in general is a big problem in coreboot, and
 is one reason (among others) why many ports for coreboot are unsuitable
 for libreboot's purpose.
@@ -349,6 +376,8 @@ server setup (with serial and/or ssh console as the display).
 
 [Back to top of page.](#pagetop)
 
+
+
 Information about the macbook1,1 {#macbook11}
 --------------------------------
 
@@ -357,7 +386,7 @@ same i945 chipset as the ThinkPad X60/T60. A developer ported the
 [MacBook2,1](#macbook21) to coreboot, the ROM images also work on the
 macbook1,1.
 
-You can refer to [#macbook21](#macbook21) for most of this. Macbook2,1
+You can refer to [\#macbook21](#macbook21) for most of this. Macbook2,1
 laptops come with Core 2 Duo processors which support 64-bit operating
 systems (and 32-bit). The MacBook1,1 uses Core Duo processors (supports
 32-bit OS but not 64-bit), and it is believed that this is the only
@@ -367,6 +396,7 @@ It is believed that all models are compatible, listed here:
 
 -   <http://www.everymac.com/ultimate-mac-lookup/?search_keywords=MacBook1,1>
 
+
 ### Compatible models
 
 Specifically (Order No. / Model No. / CPU):
@@ -375,12 +405,13 @@ Specifically (Order No. / Model No. / CPU):
 -   MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 **(tested - working)**
 -   MA472LL/A / A1181 (EMC 2092) / Core Duo T2500 (untested)
 
+
 Also of interest:
-[../git/#config\_macbook21](../git/#config_macbook21).
+[../git/\#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
-page (see [#macbook21](#macbook21)) shows the location of the SPI flash
+page (see [\#macbook21](#macbook21)) shows the location of the SPI flash
 chip on the motherboard. [How to remove the
 motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
 
@@ -390,6 +421,8 @@ externally. Reading from flash seems to work. For external flashing,
 refer to [../install/bbb\_setup.html](../install/bbb_setup.html).
 
 [Back to top of page.](#pagetop)
+
+
 
 Information about the macbook2,1 {#macbook21}
 --------------------------------
@@ -405,12 +438,10 @@ Referenced below are copies (up to date at the time of writing,
 the macbook2,1. They are included here in case the main site goes down
 for whatever reason, since they include a lot of useful information.
 
-Backups created using wget:
-
-    $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
+Backups created using wget:\
+**\$ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/**\
 **\$ wget -m -p -E -k -K -np
-http://macbook.donderklumpen.de/coreboot/**
-
+http://macbook.donderklumpen.de/coreboot/**\
 Use **-e robots=off** if using this trick for other sites and the site
 restricts using robots.txt
 
@@ -419,6 +450,7 @@ restricts using robots.txt
 distribute them, but I need to ask this person to tell me what license
 these works fall under first. Otherwise, the above URLs should be fine.
 NOTE TO SELF: REMOVE THIS WHEN DONE**
+
 
 ### Installing GNU+Linux distributions (on Apple EFI firmware)
 
@@ -433,16 +465,22 @@ hold Alt/Control once more. The installation (on the HDD) will once
 again be seen as 'Windows'. (it's not actually Windows, but Apple
 likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
-[../install/#flashrom\_macbook21](../install/#flashrom_macbook21).
+[../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
+
+
 
 ### Information about coreboot
 
 -   [Coreboot on the macbook2,1](#) (this is a copy of Mono's page, see
     above)
 
+
+
 ### coreboot wiki page
 
 -   <https://www.coreboot.org/Board:apple/macbook21>
+
+
 
 ### Compatible models
 
@@ -463,8 +501,9 @@ Specifically (Order No. / Model No. / CPU):
 -   MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 **(tested -
     working)**
 
+
 Also of interest:
-[../git/#config\_macbook21](../git/#config_macbook21).
+[../git/\#config\_macbook21](../git/#config_macbook21).
 
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
@@ -551,8 +590,9 @@ libreboot git repository.
 
 [Back to top of page.](#pagetop)
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

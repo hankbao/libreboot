@@ -1,10 +1,14 @@
-% GRUB hardening
+
+GRUB hardening
+==============
 
 This guide deals with various ways in which you can harden your GRUB
 configuration, for security purposes. These steps are optional, but
 highly recommended by the Libreboot project.
 
 [Back to previous index](./)
+
+
 
 GRUB secure boot with GPG
 =========================
@@ -32,13 +36,15 @@ image:
 Helpful links:
 
 -   [GRUB manual
-    #security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
+    \#security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
 -   [GRUB info
     pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
 -   [SATA connected storage considered dangerous until proven
     otherwise.](https://libreboot.org/faq/#firmware-hddssd)
 -   [Coreboot GRUB security
     howto](https://www.coreboot.org/GRUB2#Security)
+
+
 
 GRUB Password
 =============
@@ -111,12 +117,12 @@ configurations, is to remove (or comment out) **unset superusers** in
 function try\_user\_config:
 
     function try_user_config {
-       set root="\${1}"
+       set root="${1}"
        for dir in boot grub grub2 boot/grub boot/grub2; do
           for name in '' autoboot_ libreboot_ coreboot_; do
-             if [ -f /"\${dir}"/"\${name}"grub.cfg ]; then
+             if [ -f /"${dir}"/"${name}"grub.cfg ]; then
                 #unset superusers
-                configfile /"\${dir}"/"\${name}"grub.cfg
+                configfile /"${dir}"/"${name}"grub.cfg
              fi
           done
        done
@@ -131,6 +137,8 @@ an attacker wants is then just a few GRUB commands away.
 As far as basic password setup is concerned we are done and we can now
 move on to signing.
 
+
+
 GPG keys
 ========
 
@@ -138,7 +146,7 @@ First generate a GPG keypair to use for signing. Option RSA (sign only)
 is ok.
 
 **Warning:** GRUB does not read ASCII armored keys. When attempting to
-trust ... a key filename it will print error: bad signature
+trust \... a key filename it will print error: bad signature
 
     mkdir --mode 0700 keys
     gpg --homedir keys --gen-key
@@ -176,10 +184,11 @@ What remains now is to include the modifications into the image (rom):
     cbfstool my.rom add -n grubtest.cfg -f my.grubtest.cfg -t raw
     cbfstool my.rom add -n grubtest.cfg.sig -f my.grubtest.cfg.sig -t raw
 
-... and flashing it.
+\... and flashing it.
 
-Copyright © 2017 Fedja Beader <fedja@protonmail.ch>
 
+
+Copyright © 2017 Fedja Beader <fedja@protonmail.ch>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

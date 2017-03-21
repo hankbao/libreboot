@@ -1,4 +1,6 @@
-% Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)
+
+Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)
+=================================================================================
 
 This guide is written for the Debian distribution, but it should also
 work for Devuan with the net installer.
@@ -20,30 +22,21 @@ tampering by someone with physical access to the system.
 
 This guide is written for Debian net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/). Use this on
-the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):
-
-**set root='usb0'
-
-linux /install.amd/vmlinuz
-
-initrd /install.amd/initrd.gz
-
-boot
-
-** If you are on a 32-bit system (e.g. X60):
-
-**set root='usb0'
-
-linux /install.386/vmlinuz
-
-initrd /install.386/initrd.gz
-
+the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
+**set root='usb0'\
+linux /install.amd/vmlinuz\
+initrd /install.amd/initrd.gz\
+boot\
+** If you are on a 32-bit system (e.g. X60):\
+**set root='usb0'\
+linux /install.386/vmlinuz\
+initrd /install.386/initrd.gz\
 boot**
 
 [This guide](grub_boot_installer.html) shows how to create a boot USB
 drive with the Debian ISO image.
 
-**This guide is *only* for the GRUB payload. If you use the
+**This guide is \*only\* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
 Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a
@@ -51,6 +44,8 @@ step during boot to fail. If this happens to you, try removing the
 drive.
 
 [Back to previous index](./)
+
+
 
 Set a strong user password (lots of lowercase/uppercase, numbers and
 symbols).
@@ -67,6 +62,8 @@ therefore optional, and not recommended. Choose 'no'.**
 **Your user password should be different from the LUKS password which
 you will set later on. Your LUKS password should, like the user
 password, be secure.**
+
+
 
 Partitioning
 ============
@@ -107,6 +104,8 @@ Choose 'Manual' partitioning:
     -   name: **swap** (user this exact name)
     -   size: press enter
 
+
+
 Further partitioning
 ====================
 
@@ -122,11 +121,15 @@ mountpoints and filesystems to use.
     -   done setting up partition
 -   Now you select 'Finished partitioning and write changes to disk'.
 
+
+
 Kernel
 ======
 
 Installation will ask what kernel you want to use. linux-generic is
 fine.
+
+
 
 Tasksel
 =======
@@ -148,11 +151,15 @@ instead, which contains the most up to date versions of the Linux
 kernel. These kernels are also deblobbed, like Debian's kernels, so you
 can be sure that no binary blobs are present.
 
+
+
 Postfix configuration
 =====================
 
 If asked, choose *"No Configuration"* here (or maybe you want to
 select something else. It's up to you.)
+
+
 
 Install the GRUB boot loader to the master boot record
 ======================================================
@@ -164,10 +171,14 @@ Choice is irrelevant here.
 *You do not need to install GRUB at all, since in libreboot you are
 using the GRUB payload (for libreboot) to boot your system directly.*
 
+
+
 Clock UTC
 =========
 
 Just say 'Yes'.
+
+
 
 Booting your system
 ===================
@@ -175,15 +186,15 @@ Booting your system
 At this point, you will have finished the installation. At your GRUB
 payload, press C to get to the command line.
 
-Do that:
-
-grub>     cryptomount -a
-grub>     set root='lvm/matrix-rootvol'
+Do that:\
+grub> **cryptomount -a**\
+grub> **set root='lvm/matrix-rootvol'**\
 grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
-cryptdevice=/dev/mapper/matrix-rootvol:root**
-
-grub>     initrd /initrd.img
+cryptdevice=/dev/mapper/matrix-rootvol:root**\
+grub> **initrd /initrd.img**\
 grub> **boot**
+
+
 
 ecryptfs
 ========
@@ -191,14 +202,15 @@ ecryptfs
 If you didn't encrypt your home directory, then you can safely ignore
 this section.
 
-Immediately after logging in, do that:
-
+Immediately after logging in, do that:\
 \$ **sudo ecryptfs-unwrap-passphrase**
 
 This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note
 somewhere secret. Ideally, you should memorize it and then burn the note
 (or not even write it down, and memorize it still)>
+
+
 
 Modify grub.cfg (CBFS)
 ======================
@@ -210,11 +222,10 @@ Modify your grub.cfg (in the firmware) [using this
 tutorial](grub_cbfs.html); just change the default menu entry 'Load
 Operating System' to say this inside:
 
-    cryptomount -a
-    set root='lvm/matrix-rootvol'
+**cryptomount -a**\
+**set root='lvm/matrix-rootvol'**\
 **linux /vmlinuz root=/dev/mapper/matrix-rootvol
-cryptdevice=/dev/mapper/matrix-rootvol:root**
-
+cryptdevice=/dev/mapper/matrix-rootvol:root**\
 **initrd /initrd.img**
 
 Without specifying a device, the *-a* parameter tries to unlock all
@@ -224,6 +235,8 @@ detected LUKS volumes. You can also specify -u UUID or -a (device).
 hardening your GRUB configuration, for security purposes.
 
 Flash the modified ROM using [this tutorial](../install/#flashrom).
+
+
 
 Troubleshooting
 ===============
@@ -235,6 +248,7 @@ station.
 
 Further investigation revealed that it was the DVD drive causing
 problems. Removing that worked around the issue.
+
 
     "sudo wodim -prcap" shows information about the drive:
     Device was not specified. Trying to find an appropriate drive...
@@ -312,8 +326,9 @@ problems. Removing that worked around the issue.
       Does write ultra high speed  CD-RW media
       Does not write ultra high speed+ CD-RW media
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

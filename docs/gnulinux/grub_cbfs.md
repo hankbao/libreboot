@@ -1,4 +1,6 @@
-% How to replace the default GRUB configuration file on a libreboot system 
+
+How to replace the default GRUB configuration file on a libreboot system 
+========================================================================
 
 Libreboot on x86 uses the GRUB
 [payload](http://www.coreboot.org/Payloads#GRUB_2) by default, which
@@ -22,10 +24,12 @@ the libreboot GRUB payload will automatically search for.
 Here is an excellent writeup about CBFS (coreboot filesystem):
 <http://lennartb.home.xs4all.nl/coreboot/col5.html>.
 
-**This guide is *only* for the GRUB payload. If you use the
+**This guide is \*only\* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
 [Back to previous index](./)
+
+
 
 Table of Contents
 =================
@@ -41,13 +45,14 @@ Table of Contents
     -   [Testing](#testing)
     -   [Final steps](#final_steps)
 
+
+
 Introduction
 ------------
 
-Download the latest release from <http://libreboot.org/>
-
+Download the latest release from <http://libreboot.org/>\
 **If you downloaded from git, refer to
-[../git/#build\_meta](../git/#build_meta) before continuing.**
+[../git/\#build\_meta](../git/#build_meta) before continuing.**
 
 [Back to top of page.](#pagetop)
 
@@ -60,6 +65,8 @@ result in a bricked system (recovery is easy if you have the
 If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
+
+
 
 1st option: don't re-flash {#option1_dont_reflash}
 ---------------------------
@@ -87,8 +94,8 @@ coreboot payload) that is located in a partition on the main storage.
 
 If you want to adapt a copy of the existing *libreboot* GRUB
 configuration and use that for the libreboot\_grub.cfg file, then follow
-[#tools](#tools), [\#rom](#rom) and
-[#extract\_testconfig](#extract_testconfig) to get the
+[\#tools](#tools), [\#rom](#rom) and
+[\#extract\_testconfig](#extract_testconfig) to get the
 ***grubtest.cfg***. Rename ***grubtest.cfg*** to
 ***libreboot\_grub.cfg*** and save it to ***/boot/grub/*** on the
 running system where it is intended to be used. Modify the file at that
@@ -99,6 +106,8 @@ for libreboot\_grub.cfg otherwise it will loop.**.
 
 [Back to top of page.](#pagetop)
 
+
+
 2nd option: re-flash {#option2_reflash}
 --------------------
 
@@ -107,17 +116,20 @@ on to find out how.
 
 [Back to top of page.](#pagetop)
 
+
+
 Acquire the necessary utilities {#tools}
 -------------------------------
 
 Use ***cbfstool*** and ***flashrom***. There are available in the
 *libreboot\_util* release archive, or they can be compiled (see
-[../git/#build\_flashrom](../git/#build_flashrom)). Flashrom is also
-available from the repositories:
-
-# **pacman -S flashrom**
+[../git/\#build\_flashrom](../git/#build_flashrom)). Flashrom is also
+available from the repositories:\
+\# **pacman -S flashrom**
 
 [Back to top of page.](#pagetop)
+
+
 
 Acquiring the correct ROM image {#rom}
 -------------------------------
@@ -128,23 +140,22 @@ flashed. For the purpose of this tutorial it is assumed that your ROM
 image file is named *libreboot.rom*, so please make sure to adapt.
 
 ROM images are included pre-compiled in libreboot. You can also dump
-your current firmware, using flashrom:
-
-    $ sudo flashrom -p internal -r libreboot.rom
-    # flashrom -p internal -r libreboot.rom
+your current firmware, using flashrom:\
+\$ **sudo flashrom -p internal -r libreboot.rom**\
+\# **flashrom -p internal -r libreboot.rom**\
 If you are told to specify the chip, add the option **-c {your chip}**
-to the command, for example:
-
-# **flashrom -c MX25L6405 -p internal -r libreboot.rom**
+to the command, for example:\
+\# **flashrom -c MX25L6405 -p internal -r libreboot.rom**
 
 [Back to top of page.](#pagetop)
+
+
 
 Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
 
-You can check the contents of the ROM image, inside CBFS:
-
-    $ cd .../libreboot\_util/cbfstool** \$ ./cbfstool libreboot.rom
+You can check the contents of the ROM image, inside CBFS:\
+**\$ cd \.../libreboot\_util/cbfstool** **\$ ./cbfstool libreboot.rom
 print**
 
 The files *grub.cfg* and *grubtest.cfg* should be present. grub.cfg is
@@ -152,43 +163,42 @@ loaded by default, with a menuentry for switching to grubtest.cfg. In
 this tutorial, you will first modify and test *grubtest.cfg*. This is to
 reduce the possibility of bricking your device, so DO NOT SKIP THIS!
 
-Extract grubtest.cfg from the ROM image:
-
-    $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg
+Extract grubtest.cfg from the ROM image:\
+**\$ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**
 
 Modify the grubtest.cfg accordingly.
 
 [Back to top of page.](#pagetop)
 
+
+
 Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testconfig}
 ------------------------------------------------------
 
 Once your grubtest.cfg is modified and saved, delete the unmodified
-config from the ROM image:
+config from the ROM image:\
+**\$ ./cbfstool libreboot.rom remove -n grubtest.cfg**
 
-    $ ./cbfstool libreboot.rom remove -n grubtest.cfg
-
-Next, insert the modified version:
-
+Next, insert the modified version:\
 **\$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**
 
 [Back to top of page.](#pagetop)
 
+
+
 Testing
 -------
 
 **Now you have a modified ROM. Refer back to
-[../install/#flashrom](../install/#flashrom) for information on how to
-flash it.
-
-    $ cd /libreboot\_util** # **./flash update libreboot.rom
+[../install/\#flashrom](../install/#flashrom) for information on how to
+flash it.\
+\$ **cd /libreboot\_util** \# **./flash update libreboot.rom**\
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
-correct ROM image, then run this alternative command:
-
-    # ./flash forceupdate libreboot.rom
-You should see **"Verifying flash... VERIFIED."** written at the end
+correct ROM image, then run this alternative command:\
+\# **./flash forceupdate libreboot.rom**\
+You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. Once you have done that, shut down and then boot
 up with your new test configuration.**
 
@@ -197,10 +207,12 @@ works, then your config is safe and you can continue below.
 
 **If it does not work like you want it to, if you are unsure or
 sceptical in any way, then re-do the steps above until you get it right!
-Do *not* proceed past this point unless you are 100% sure that your
+Do \*not\* proceed past this point unless you are 100% sure that your
 new configuration is safe (or desirable) to use.**
 
 [Back to top of page.](#pagetop)
+
+
 
 Final steps {#final_steps}
 -----------
@@ -212,31 +224,28 @@ difference: the menuentry 'Switch to grub.cfg' will be changed to
 grubtest.cfg. This is so that the main config still links (in the menu)
 to grubtest.cfg, so that you don't have to manually switch to it, in
 case you ever want to follow this guide again in the future (modifying
-the already modified config). From /libreboot\_util/cbfstool, do:
-
+the already modified config). From /libreboot\_util/cbfstool, do:\
 \$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
-grub.cfg**
+grub.cfg**\
 
-Delete the grub.cfg that remained inside the ROM:
+Delete the grub.cfg that remained inside the ROM:\
+**\$ ./cbfstool libreboot.rom remove -n grub.cfg**
 
-    $ ./cbfstool libreboot.rom remove -n grub.cfg
-
-Add the modified version that you just made:
-
-    $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw
+Add the modified version that you just made:\
+**\$ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw**
 
 **Now you have a modified ROM. Again, refer back to
-[../install/#flashrom](../install/#flashrom) for information on how to
+[../install/\#flashrom](../install/#flashrom) for information on how to
 flash it. It's the same method as you used before. Shut down and then
 boot up with your new configuration.**
 
 [Back to top of page.](#pagetop)
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
-Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>
 
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

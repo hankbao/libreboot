@@ -1,9 +1,13 @@
-% Development notes 
+
+Development notes 
+=================
 
 These are development notes, for future use. For old (obselete) notes,
 see [old.html](old.html).
 
 Or go [back to main task list](../tasks.html).
+
+
 
 Table of contents
 =================
@@ -16,6 +20,8 @@ Table of contents
 -   [i945 X60/T60 VBT implementation (experimental: testing)](#i945_vbt)
 -   [IntelVbtTool results](#intelvbttool_results)
 -   [Fallback patches for i945](#fallback_patches)
+
+
 
 standard test {#standard_test}
 =============
@@ -41,6 +47,8 @@ on i945 (X60 and T60).
 
 [Back to top of page.](#pagetop)
 
+
+
 T60 cpu microcode {#t60_cpu_microcode}
 =================
 
@@ -57,73 +65,56 @@ Every other T7200 tested so far has worked without microcode updates.
 
 [Back to top of page.](#pagetop)
 
+
+
 i945 VRAM size {#i945_vram_size}
 ==============
 
 Apparently, only 8MB VRAM is available on i945 GPUs (though it could do
-64MB):
-
+64MB):\
 phcoder: No. Hardware default is 8 MiB. When I wanted to make it
 configurable, I saw that docs mention only one other alternative: 1MiB.
 Later isn't event enough for 1024x768 at 24bpp without any acceleration
 or double buffering. It's possible that there are undocumented values.
 Which options do you have in vendor BIOS? How to find out how much vram
-you have:
-
-phcoder: TOM - BSM
-
-phcoder: check what vendor BIOS offers as options
-
-vimuser: I thought it could do 64MB usually
-
-phcoder: not accorging to doc.
-
-phcoder: see mobile-945-express-chipset-datasheet page 93
-
+you have:\
+phcoder: TOM - BSM\
+phcoder: check what vendor BIOS offers as options\
+vimuser: I thought it could do 64MB usually\
+phcoder: not accorging to doc.\
+phcoder: see mobile-945-express-chipset-datasheet page 93\
 phcoder: see also
-src/northbridge/intel/i945/{early\_init,northbridge,gma}.c
-
-vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for
-
-vimuser: frame buffer."
-
-vimuser: "Others - reserved"
-
+src/northbridge/intel/i945/{early\_init,northbridge,gma}.c\
+vimuser: "011 = DVMT (UMA) mode, 8 MB of memory pre-allocated for\
+vimuser: frame buffer."\
+vimuser: "Others - reserved"\
 phcoder: the easiest way is a loop at this position which tries
-different values and reads (and prints) BSM with them
-
+different values and reads (and prints) BSM with them\
 stefanct: vimuser: they suggest that you change the value and look how
-BSM reacts to that
-
-stefanct: as they pointed out earlier vram size = TOM - BSM
-
-stefanct: different values of GMS
-
-stefanct: phcoder: hm... this could be a hint. look at the text
-description of TOLUD at page 103
-
-stefanct: it mentions 64 MB in the text about BSM as well
-
-stefanct: table 18...
-
+BSM reacts to that\
+stefanct: as they pointed out earlier vram size = TOM - BSM\
+stefanct: different values of GMS\
+stefanct: phcoder: hm\... this could be a hint. look at the text
+description of TOLUD at page 103\
+stefanct: it mentions 64 MB in the text about BSM as well\
+stefanct: table 18\...\
 phcoder: stefanct: I have a guess which value make is 64 but I will not
-tell to avoid skewing test results
-
-stefanct: phcoder: sure... i assumed you were not sure if it supports
-it at all. testing it properly is of course a good idea :)
-
+tell to avoid skewing test results\
+stefanct: phcoder: sure\... i assumed you were not sure if it supports
+it at all. testing it properly is of course a good idea :)\
 stefanct: test the various possible (but reserved) values of GMS and see
-what the resulting VRAM size is
-
+what the resulting VRAM size is\
 vimuser: so, TOM - BSM
 
 [Back to top of page.](#pagetop)
+
+
 
 LCD panels on i945 - fix incompatible panels {#lcd_i945_incompatibility}
 ============================================
 
 Fix T60 issues (see incompatible panels listed at
-[../hcl/#supported\_t60\_list](../hcl/#supported_t60_list)).
+[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list)).
 
 Run that tool (resources/utilities/i945gpu/intel-regs.py) as root on
 systems with the offending panels in:
@@ -155,8 +146,7 @@ Original getregs.py script can be found at
 <http://hg.mtjm.eu/scripts/file/tip/intel-regs.py> written by Michał
 Masłowski.
 
-About fixing remaining LCD panels on 5345:
-
+About fixing remaining LCD panels on 5345:\
 'polarity' is mentioned in coreboot log (cbmem -c). compare output
 (with working and non-working panel). (and see the other notes in
 docs/future/)
@@ -170,14 +160,12 @@ working and nonworking panels.
 
 How to dump EDID:
 
-    # apt-get install i2c-tools
-    # modprobe i2c-dev
-Find out the correct ID to use:
-
-    # i2cdetect -l
-Example:
-
-# **i2cdump -y 2 0x50**
+\# **apt-get install i2c-tools**\
+\# **modprobe i2c-dev**\
+Find out the correct ID to use:\
+\# **i2cdetect -l**\
+Example:\
+\# **i2cdump -y 2 0x50**
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:
 
@@ -245,6 +233,8 @@ LTN141XA-L01: revert to libreboot git commit c943281 to see this
 
 [Back to top of page.](#pagetop)
 
+
+
 i945 gfx: X60/T60 VBT implementation (experimental: testing) {#i945_vbt}
 ============================================================
 
@@ -270,42 +260,46 @@ You are supposed to:
 
 With each boot, make notes about what you see and get logs using the
 [standard test](#standard_test). You will need the files from
-[#intelvbttool\_results](#intelvbttool_results) for each system.
+[\#intelvbttool\_results](#intelvbttool_results) for each system.
 
-Results (# means untested):
+Results (\# means untested):
 -   **X60/X60s:**
-    -   TMD-Toshiba LTD121ECHB: #
-    -   CMO N121X5-L06: #
-    -   Samsung LTN121XJ-L07: #
-    -   BOE-Hydis HT121X01-101: #
+    -   TMD-Toshiba LTD121ECHB: \#
+    -   CMO N121X5-L06: \#
+    -   Samsung LTN121XJ-L07: \#
+    -   BOE-Hydis HT121X01-101: \#
 -   **X60T XGA:**
-    -   BOE-Hydis HV121X03-100: #
+    -   BOE-Hydis HV121X03-100: \#
 -   **X60T SXGA+:**
-    -   BOE-Hydis HV121P01-100: #
+    -   BOE-Hydis HV121P01-100: \#
 -   **T60 14" XGA:**
-    -   Samsung LTN141XA-L01: #
-    -   CMO N141XC: #
-    -   BOE-Hydis HT14X14: #
-    -   TMD-Toshiba LTD141ECMB: #
+    -   Samsung LTN141XA-L01: \#
+    -   CMO N141XC: \#
+    -   BOE-Hydis HT14X14: \#
+    -   TMD-Toshiba LTD141ECMB: \#
 -   **T60 14" SXGA+**
-    -   TMD-Toshiba LTD141EN9B: #
-    -   Samsung LTN141P4-L02: #
-    -   Boe-Hydis HT14P12: #
+    -   TMD-Toshiba LTD141EN9B: \#
+    -   Samsung LTN141P4-L02: \#
+    -   Boe-Hydis HT14P12: \#
 -   **T60 15" XGA**
-    -   Samsung LTN150XG-L08: #
-    -   LG-Philips LP150X09: #
-    -   13N7068 (IDtech): #
-    -   13N7069 (CMO): #
+    -   Samsung LTN150XG-L08: \#
+    -   LG-Philips LP150X09: \#
+    -   13N7068 (IDtech): \#
+    -   13N7069 (CMO): \#
 -   **T60 15" SXGA+**
-    -   LG-Philips LP150E05-A2K1: #
-    -   BOE-Hydis HV150P01-100: #
+    -   LG-Philips LP150E05-A2K1: \#
+    -   BOE-Hydis HV150P01-100: \#
 -   **T60 15" UXGA**
-    -   BOE-Hydis HV150UX1-100: #
-    -   IDTech N150U3-L01: #
-    -   BOE-Hydis HV150UX1-102: #
+    -   BOE-Hydis HV150UX1-100: \#
+    -   IDTech N150U3-L01: \#
+    -   BOE-Hydis HV150UX1-102: \#
 -   **T50 15" QXGA**
-    -   IDtech IAQX10N: #
-    -   IDtech IAQX10S: #
+    -   IDtech IAQX10N: \#
+    -   IDtech IAQX10S: \#
+
+[Back to top of page](#pagetop)
+
+
 
 intelvbttool test results (VGA ROM dumps) {#intelvbttool_results}
 =========================================
@@ -331,55 +325,55 @@ Get intelvbttool here: <http://review.coreboot.org/#/c/5842>
 (util/intelvbttool).
 
 Now dump a copy of the running VGA BIOS: **\$ sudo dd if=/dev/mem bs=64k
-of=runningvga.bin skip=12 count=1**
-
-Then do (and record the output):
-
-    $ ./intelvbttool runningvga.bin > intelvbttool\_out
+of=runningvga.bin skip=12 count=1**\
+Then do (and record the output):\
+**\$ ./intelvbttool runningvga.bin > intelvbttool\_out**
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
 to match the system and LCD panel used.
-[../misc/#get\_edid\_panelname](../misc/#get_edid_panelname) will show
+[../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname) will show
 you how to get the name (model) of the LCD panel used.
 
-Test results (# means untested and all had docks, unless noted).
+Test results (\# means untested and all had docks, unless noted).
 -----------------------------------------------------------------
 
 -   **X60/X60s:**
-    -   TMD-Toshiba LTD121ECHB: #
-    -   CMO N121X5-L06: #
-    -   Samsung LTN121XJ-L07: #
-    -   BOE-Hydis HT121X01-101: #
+    -   TMD-Toshiba LTD121ECHB: \#
+    -   CMO N121X5-L06: \#
+    -   Samsung LTN121XJ-L07: \#
+    -   BOE-Hydis HT121X01-101: \#
 -   **X60T XGA (1024x768):**
-    -   BOE-Hydis HV121X03-100: #
+    -   BOE-Hydis HV121X03-100: \#
 -   **X60T SXGA+ (1400x1050):**
-    -   BOE-Hydis HV121P01-100: #
+    -   BOE-Hydis HV121P01-100: \#
 -   **T60 14" XGA (1024x768):**
-    -   Samsung LTN141XA-L01: #
-    -   CMO N141XC: #
-    -   BOE-Hydis HT14X14: #
-    -   TMD-Toshiba LTD141ECMB: #
+    -   Samsung LTN141XA-L01: \#
+    -   CMO N141XC: \#
+    -   BOE-Hydis HT14X14: \#
+    -   TMD-Toshiba LTD141ECMB: \#
 -   **T60 14" SXGA+ (1400x1050):**
-    -   TMD-Toshiba LTD141EN9B: #
-    -   Samsung LTN141P4-L02: #
-    -   Boe-Hydis HT14P12: #
+    -   TMD-Toshiba LTD141EN9B: \#
+    -   Samsung LTN141P4-L02: \#
+    -   Boe-Hydis HT14P12: \#
 -   **T60 15" XGA (1024x768):**
-    -   Samsung LTN150XG-L08: #
-    -   LG-Philips LP150X09: #
-    -   13N7068 (IDtech): #
-    -   13N7069 (CMO): #
+    -   Samsung LTN150XG-L08: \#
+    -   LG-Philips LP150X09: \#
+    -   13N7068 (IDtech): \#
+    -   13N7069 (CMO): \#
 -   **T60 15" SXGA+ (1400x1050):**
-    -   LG-Philips LP150E05-A2K1: #
-    -   BOE-Hydis HV150P01-100: #
+    -   LG-Philips LP150E05-A2K1: \#
+    -   BOE-Hydis HV150P01-100: \#
 -   **T60 15" UXGA (1600x1200):**
-    -   BOE-Hydis HV150UX1-100: #
-    -   IDTech N150U3-L01: #
-    -   BOE-Hydis HV150UX1-102: #
+    -   BOE-Hydis HV150UX1-100: \#
+    -   IDTech N150U3-L01: \#
+    -   BOE-Hydis HV150UX1-102: \#
 -   **T60 15" QXGA (2048x1536):**
-    -   IDtech IAQX10N: #
-    -   IDtech IAQX10S: #
+    -   IDtech IAQX10N: \#
+    -   IDtech IAQX10S: \#
 
 [Back to top of page.](#pagetop)
+
+
 
 Fallback patches {#fallback_patches}
 ================
@@ -389,6 +383,8 @@ Fallback patches {#fallback_patches}
     log](gnutoo_fallback_patch) (warning, not cleaned up)
 
 [Back to top of page.](#pagetop)
+
+
 
 Other - unlisted (low priority) {#other}
 ===============================
@@ -409,8 +405,9 @@ Other - unlisted (low priority) {#other}
 
 [Back to top of page.](#pagetop)
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

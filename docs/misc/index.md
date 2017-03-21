@@ -1,4 +1,7 @@
-% Miscellaneous 
+
+Miscellaneous 
+=============
+
 
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or
     Devuan)](#debian_powertop)
@@ -14,8 +17,11 @@
     Black](bbb_ehci.html)
 -   [e1000e driver trouble shooting (Intel NICs)](#e1000-hang)
 
+
+
 High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_powertop}
 ======================================================================
+
 
 Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
@@ -31,6 +37,11 @@ Might want to run with \--calibrate first
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
+
+
+[Back to top of page](#pagetop)
+
+
 
 High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_parabola}
 ==============================================================
@@ -48,13 +59,11 @@ On the X60 with coreboot or libreboot, there is a high pitched sound
 when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
-Be root
+Be root\
+**\$ su -**
 
-    $ su -
-
-Installed powertop:
-
-    # pacman -S powertop
+Installed powertop:\
+**\# pacman -S powertop**
 
 and added the following to /etc/systemd/system/powertop.service :
 
@@ -71,10 +80,9 @@ and added the following to /etc/systemd/system/powertop.service :
     [Install]
     WantedBy=multi-user.target
 
-Finally, as root do that:
-
-    # systemctl enable powertop
-    # systemctl start powertop
+Finally, as root do that:\
+**\# systemctl enable powertop**\
+**\# systemctl start powertop**
 
 The next time you boot the system, the buzz will be gone.
 
@@ -83,6 +91,10 @@ Might want to run with \--calibrate first
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
+
+[Back to top of page](#pagetop)
+
+
 
 X60/T60: Serial port - how to use (for dock owners) {#serial}
 ===================================================
@@ -97,9 +109,8 @@ included inside the ROM. Connect your null modem cable to the serial
 port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
-On the 2nd system, you can try this (using GNU Screen):
-
-    $ sudo screen /dev/ttyUSB0 115200
+On the 2nd system, you can try this (using GNU Screen):\
+**\$ sudo screen /dev/ttyUSB0 115200**
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
 Y.
@@ -113,8 +124,7 @@ can also configure your distro so that a terminal (TTY) is accessible
 from the serial console.
 
 The following guide is for Ubuntu, but it should work in Debian and
-Devuan, to enable a serial console using GeTTY:
-
+Devuan, to enable a serial console using GeTTY:\
 <https://help.ubuntu.com/community/SerialConsoleHowto> (we DO NOT
 recommend Ubuntu, because it contains non-free software in the default
 repos. Use Debian or Devuan)
@@ -122,6 +132,10 @@ repos. Use Debian or Devuan)
 Note: part of the tutorial above requires changing your grub.cfg. Just
 change the **linux** line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
+
+[Back to top of page](#pagetop)
+
+
 
 Finetune backlight control on intel gpu's
 =========================================
@@ -197,13 +211,15 @@ duty cycle. see <https://review.coreboot.org/#/c/10624/> on bit 16. The
 cause of this issue is that i945, in contrast with to GM45, is set to
 work in BLM Legacy Mode. This makes backlight more complicated since the
 duty cycle is derived from 3 instead of 2 registers using the following
-formula: if(BPC\[7:0\] <> xFF) then BPCR\[15:0\] * BPC\[7:0\]
+formula: if(BPC\[7:0\] <> xFF) then BPCR\[15:0\] \* BPC\[7:0\]
 Else BPCR\[15:0\] BPC is LBB - PCI Backlight Control Register, described
 on <http://www.mouser.com/pdfdocs/945gmedatasheet.pdf> on page 315. BPCR
 is BLC\_PWM\_CTL described in
 <https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf>
 on page 94. More research needs to be done on this target so proceed
 with care.
+
+
 
 Power Management Beeps on Thinkpads
 ===================================
@@ -213,32 +229,30 @@ battery goes to a critically low charge level, a beep occurs. Nvramtool
 is included in libreboot, and can be used to enable or disable this
 behaviour.
 
-Disable or enable beeps when removing/adding the charger:
-
-    $ sudo ./nvramtool -w power\_management\_beeps=Enable
+Disable or enable beeps when removing/adding the charger:\
+\$ **sudo ./nvramtool -w power\_management\_beeps=Enable**\
 \$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
 
-Disable or enable beeps when battery is low:
-
-    $ sudo ./nvramtool -w low\_battery\_beep=Enable
+Disable or enable beeps when battery is low:\
+\$ **sudo ./nvramtool -w low\_battery\_beep=Enable**\
 \$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
 
 A reboot is required, for these changes to take effect.
 
+
+
 Get EDID: Find out the name (model) of your LCD panel {#get_edid_panelname}
 =====================================================
 
-Get the panel name with     sudo get-edid | strings
+Get the panel name with **sudo get-edid | strings**\
 Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
-package i2c-tools.
-
-    $ sudo modprobe i2c-dev
+package i2c-tools.\
+\$ **sudo modprobe i2c-dev**\
 \$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
--y)
-
-    $ sudo rmmod i2c-dev
+-y)\
+\$ **sudo rmmod i2c-dev**\
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically
@@ -246,6 +260,8 @@ removing the LCD panel is an option. Usually, there will be information
 printed on the back.
 
 [Back to top of page.](#pagetop)
+
+
 
 e1000e driver trouble shooting (Intel NICs) {#e1000-hang}
 ===========================================
@@ -255,16 +271,14 @@ needed for cause):
 
     e1000e 0000:00:19.0 enp0s25: Detected Hardware Unit Hang
 
-Possible workaround, tested by Nazara: Disable C-STATES.
-
+Possible workaround, tested by Nazara: Disable C-STATES.\
 **NOTE: this also disables power management, because disabling C-States
 means that your CPU will now be running at full capacity (and therefore
 using more power) non-stop, which will drain battery life if this is a
 laptop. If power usage is a concern, then you should not use this.
 (we're also not sure whether this workaround is appropriate)**
 
-To disable c-states, do this in GNU+Linux:
-
+To disable c-states, do this in GNU+Linux:\
 **for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
 > \$i; done**
 
@@ -274,6 +288,8 @@ across subnets on the same interface (NIC).
 More information, including logs, can be found on [this
 page](https://notabug.org/vimuser/libreboot/issues/23).
 
+
+
 USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
 ===================================
 
@@ -281,8 +297,9 @@ Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
 
 Put this script in /etc/init.d/ on debian-based systems.
 
-Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

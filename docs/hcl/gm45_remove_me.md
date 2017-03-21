@@ -1,4 +1,6 @@
-% GM45 chipsets: remove the ME (manageability engine) 
+
+GM45 chipsets: remove the ME (manageability engine) 
+===================================================
 
 This sections relates to disabling and removing the ME (Intel
 **M**anagement **E**ngine) on GM45. This was originally done on the
@@ -26,6 +28,8 @@ Another project recently found: <http://io.smashthestack.org/me/>
 
 [Back to previous index](./).
 
+
+
 ICH9 gen utility {#ich9gen}
 ================
 
@@ -36,13 +40,11 @@ factory.bin dump.
 
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
-source with:
-
-    $ ./oldbuild module ich9deblob
+source with:\
+\$ **./oldbuild module ich9deblob**\
 The executable will appear under resources/utilities/ich9deblob/
 
-Run:
-
+Run:\
 \$ **./ich9gen**
 
 Running ich9gen this way (without any arguments) generates a default
@@ -68,9 +70,8 @@ the little sticker on the bottom/base of the laptop.
 On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
-the Gbe checksum updated to match). Run:
-
-    $ ./ich9gen \--macaddress XX:XX:XX:XX:XX:XX
+the Gbe checksum updated to match). Run:\
+\$ **./ich9gen \--macaddress XX:XX:XX:XX:XX:XX**\
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -85,25 +86,19 @@ Two new files will be created:
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 file to where **libreboot.rom** is located and then insert the
-descriptor+gbe file into the ROM image.
-
-For 16MiB flash chips:
-
+descriptor+gbe file into the ROM image.\
+For 16MiB flash chips:\
 \$ **dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**
-
-For 8MiB flash chips:
-
+conv=notrunc**\
+For 8MiB flash chips:\
 \$ **dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**
-
-For 4MiB flash chips:
-
+conv=notrunc**\
+For 4MiB flash chips:\
 \$ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**
+conv=notrunc**\
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
-back to [../install/#flashrom](../install/#flashrom) for how to flash
+back to [../install/\#flashrom](../install/#flashrom) for how to flash
 it.
 
 Write-protecting the flash chip
@@ -130,13 +125,13 @@ for the following lines:
 NOTE: When you write-protect the flash chip, re-flashing is no longer
 possible unless you use dedicated external equipment, which also means
 disassembling the laptop. The same equipment can also be used to remove
-the write-protection later on, if you choose to do so. *Only*
+the write-protection later on, if you choose to do so. \*Only\*
 write-protect the chip if you have the right equipment for external
 flashing later on; for example, see
 [../install/bbb\_setup.html](../install/bbb_setup.html).
 
 Change them all to 0x0, then re-compile ich9gen. After you have done
-that, follow the notes in [#ich9gen](#ich9gen) to generate a new
+that, follow the notes in [\#ich9gen](#ich9gen) to generate a new
 descriptor+gbe image and insert that into your ROM image, then flash it.
 The next time you boot, the flash chip will be read-only in software
 (hardware re-flashing will still work, which you will need for
@@ -149,6 +144,8 @@ internal:ich\_spi\_force=yes* but this won't actually work; it'll just
 brick your laptop.
 
 For external flashing guides, refer to [../install/](../install/).
+
+
 
 ICH9 deblob utility {#ich9deblob}
 ===================
@@ -168,9 +165,8 @@ regions for your libreboot ROM image.
 If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
-from the main directory (./), otherwise you can build it like so:
-
-    $ ./oldbuild module ich9deblob
+from the main directory (./), otherwise you can build it like so:\
+\$ **./oldbuild module ich9deblob**\
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -181,8 +177,7 @@ GNU+Linux) under ./ich9deblob/.
 Place the factory.rom from your system (can be obtained using the
 external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
-ich9deblob executable, then run the tool:
-
+ich9deblob executable, then run the tool:\
 \$ **./ich9deblob**
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
@@ -199,8 +194,7 @@ Intel. Only the Intel NICs need a GbE region in the flash chip.
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 **deblobbed\_descriptor.bin** file to where **libreboot.rom** is located
-and then run:
-
+and then run:\
 \$ **dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc**
 
@@ -224,8 +218,10 @@ need for a factory.rom dump!
 
 You should now have a **libreboot.rom** image containing the correct 4K
 descriptor and 8K gbe regions, which will then be safe to flash. Refer
-back to [../install/#flashrom](../install/#flashrom) for how to flash
+back to [../install/\#flashrom](../install/#flashrom) for how to flash
 it.
+
+
 
 demefactory utility {#demefactory}
 ===================
@@ -237,24 +233,21 @@ The ME interferes with flash read/write in flashrom, and the default
 descriptor locks some regions. The idea is that doing this will remove
 all of those restrictions.
 
-Simply run (with factory.rom in the same directory):
-
+Simply run (with factory.rom in the same directory):\
 \$ **./demefactory**
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.
-Keep the original factory.rom stored safely somewhere):
-
+Keep the original factory.rom stored safely somewhere):\
 \$ **dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
 count=4k conv=notrunc**
 
-TODO: test this.
-
+TODO: test this.\
 TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
 flash. Modify the assembly code inside. Note: the factory.rom (BIOS
 region) from lenovobios is in a compressed format, which you have to
 extract. bios\_extract upstream won't work, but the following was said
-in #coreboot on freenode IRC:
+in \#coreboot on freenode IRC:
 
     <roxfan> vimuser: try bios_extract with ffv patch http://patchwork.coreboot.org/patch/3444/
     <roxfan> or https://github.com/coreboot/bios_extract/blob/master/phoenix_extract.py
@@ -271,10 +264,13 @@ disassemble and re-flash externally unless you brick the device.
 demefactory is part of the ich9deblob src, found at
 *resources/utilities/ich9deblob/*
 
+
+
 The sections below are adapted from (mostly) IRC logs related to early
 development getting the ME removed on GM45. They are useful for
 background information. This could not have been done without sgsit's
 help.
+
 
 Early notes {#early_notes}
 -----------
@@ -298,6 +294,10 @@ Early notes {#early_notes}
     what the X201 uses:
     <http://www.intel.co.uk/content/dam/www/public/us/en/documents/datasheets/6-chipset-c200-chipset-datasheet.pdf>
 
+
+
+
+
 Flash chips {#flashchips}
 -----------
 
@@ -305,8 +305,7 @@ Flash chips {#flashchips}
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006075.pdf>
     **~~- Page 20 and page 9 refer to SDA\_HDO or SDA\_HDOUT~~** only on
     series 6 or higher chipsets. ICH9-M (X200) does it with a strap
-    connected to GPIO33 pin (see IRC notes below)
-
+    connected to GPIO33 pin (see IRC notes below)\
     - According to page 29, the X200 can have any of the following flash
     chips:
     -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip
@@ -322,8 +321,12 @@ Flash chips {#flashchips}
 -   Schematics for X200s laptop:
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006104.pdf>.
 
+
+
+
 Early development notes {#early_development_notes}
 -----------------------
+
 
     Start (hex) End (hex)   Length (hex)    Area Name
     ----------- ---------   ------------    ---------
@@ -392,6 +395,8 @@ X200. End justified means, and the utility is no longer needed since the
 ich9deblob utility (documented on this page) can now be used to create
 deblobbed descriptors.
 
+
+
 GBE (gigabit ethernet) region in SPI flash {#gbe_region}
 ------------------------------------------
 
@@ -400,6 +405,7 @@ documented in this public datasheet:
 <http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf>
 
 The only actual content found was:
+
 
     00  1F  1F  1F  1F  1F  00  08  FF  FF  83  10  FF  FF  FF  FF  
     08  10  FF  FF  C3  10  EE  20  AA  17  F5  10  86  80  00  00  
@@ -417,11 +423,12 @@ The first part is the MAC address set to all 0x1F. It's repeated haly
 way through the 8K area, and the rest is all 0xFF. This is all
 documented in the datasheet.
 
-The GBe region starts at 0x20A000 bytes from the *end* of a factory
+The GBe region starts at 0x20A000 bytes from the \*end\* of a factory
 image and is 0x2000 bytes long. In libreboot (deblobbed) the descriptor
 is set to put gbe directly after the initial 4K flash descriptor. So the
 first 4K of the ROM is the descriptor, and then the next 8K is the gbe
 region.
+
 
 ### GBE region: change MAC address {#gbe_region_changemacaddress}
 
@@ -433,7 +440,7 @@ actually be others on the X200.
 0xBABA"*
 
 In honour of the song *Baba O'Reilly* by *The Who* apparently. We're
-not making this stuff up...
+not making this stuff up\...
 
 0x3ABA, 0x34BA, 0x40BA and more have been observed in the main Gbe
 regions on the X200 factory.rom dumps. The checksums of the backup
@@ -442,7 +449,7 @@ regions match BABA, however.
 By default, the X200 (as shipped by Lenovo) actually has an invalid main
 gbe checksum. The backup gbe region is correct, and is what these
 systems default to. Basically, you should do what you need on the
-*backup* gbe region, and then correct the main one by copying from the
+\*backup\* gbe region, and then correct the main one by copying from the
 backup.
 
 Look at resources/utilities/ich9deblob/ich9deblob.c.
@@ -451,6 +458,9 @@ Look at resources/utilities/ich9deblob/ich9deblob.c.
     together (this includes the checksum value) and that has to add up
     to 0xBABA. In other words, the checksum is 0xBABA minus the total of
     the first 0x3E 16bit numbers (unsigned), ignoring any overflow.
+
+
+
 
 Flash descriptor region {#flash_descriptor_region}
 -----------------------
@@ -515,6 +525,8 @@ So, *x << 12 = address*
 
 If it's in descriptor mode, then the first 4 bytes will be 5A A5 F0 0F.
 
+
+
 platform data partition in boot flash (factory.rom / lenovo bios) {#platform_data_region}
 -----------------------------------------------------------------
 
@@ -526,8 +538,9 @@ This is a 32K region from the factory image. It could be data
 
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -1,6 +1,10 @@
-% EHCI debugging on the BeagleBone Black 
+
+EHCI debugging on the BeagleBone Black 
+======================================
 
 [Back to previous index](./)
+
+
 
 EHCI debugging
 ==============
@@ -99,7 +103,7 @@ section):
 
     ls /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget/g_dbgp.ko
 
-Unload all other g\_* modules:
+Unload all other g\_\* modules:
 
     # lsmod
     # rmmod g_multi
@@ -122,8 +126,7 @@ next step.
 ### Patch BBB's g\_dbgp module (optional, but highly recommended) {#PatchBBBsgdbgpmoduleoptionalbuthighlyrecommended}
 
 For the reasons why you need this, see: [EHCI Gadget
-Debug](http://www.coreboot.org/EHCI_Gadget_Debug).
-
+Debug](http://www.coreboot.org/EHCI_Gadget_Debug).\
 Make sure that you have cross compiling environment for
 arm-linux-gnueabihf setup on your *host*.
 
@@ -134,10 +137,10 @@ arm-linux-gnueabihf setup on your *host*.
 
 <!-- -->
 
-    $ cd \$work_dir
+    $ cd $work_dir
     $ git clone https://github.com/beagleboard/kernel.git
     $ cd kernel
-    $ git checkout \$mav (see above)
+    $ git checkout $mav (see above)
     $ ./patch.sh
     $ wget http://arago-project.org/git/projects/?p=am33x-cm3.git\;a=blob_plain\;f=bin/am335x-pm-firmware.bin\;hb=HEAD -O kernel/firmware/am335x-pm-firmware.bin
     $ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
@@ -150,7 +153,7 @@ arm-linux-gnueabihf setup on your *host*.
     the two different version of the kernel (3.8 and 3.10). I will use
     3.8. (If using kernel 3.12 patch\_1 is not needed)
 -   cd kernel (note that this is one more level: you should be in
-    $work\_dir/kernel/kernel)
+    \$work\_dir/kernel/kernel)
 -   Apply the patches:
 
 <!-- -->
@@ -185,18 +188,17 @@ arm-linux-gnueabihf setup on your *host*.
 
 -   on BBB, backup /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
     (i.e. mv /lib/modules/3.8.13-bone70/kernel/drivers/usb/gadget
-    $HOME)
+    \$HOME)
 -   copy the freshly compiled usb/gadget dir to
     /lib/modules/3.8.13-bone70/kernel/drivers/usb
 -   restart BBB
--   Remove all g\_* modules (rmmod g\_<>)
+-   Remove all g\_\* modules (rmmod g\_<>)
 -   modprobpe g\_dbgp
 
 ### Configure libreboot with EHCI debug {#ConfigurelibrebootwithEHCIdebug}
 
 Libreboot(coreboot) should be configured with debug turned on and to
-push debug messages to the EHCI debug port.
-
+push debug messages to the EHCI debug port.\
 If you've downloaded the binary distribution, you can check if it is
 properly configured in the following way:
 
@@ -207,7 +209,7 @@ properly configured in the following way:
 
 <!-- -->
 
-    ./cbfstool/i686/cbfstool \$img_path extract -n config -f ./my_config
+    ./cbfstool/i686/cbfstool $img_path extract -n config -f ./my_config
 
 -   Make sure that the following params in the config are set as
     following:
@@ -232,7 +234,7 @@ documented
 [here](https://johnlewis.ie/coreboot-ehci-debug-gadget-demonstration/)
 (also tested/verified).
 
-Then:
+Then:\
 
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
@@ -253,8 +255,7 @@ refer to the doc(**FIXME: link** about compiling libreboot.
 #### Selecting HCD Index and USB Debug port {#SelectingHCDIndexandUSBDebugport}
 
 This applies (and works) only if the USB controller that supports debug
-(found in the first section) is from Intel.
-
+(found in the first section) is from Intel.\
 If the PCI ID of the port you found in the first section is 0000:00:1a.0
 or 0000:00:1d.0 , you are ok. Otherwise you have to try without
 guarantee that will work.
@@ -265,12 +266,10 @@ then for CONFIG\_USBDEBUG\_HCD\_INDEX choose 2, otherwise choose 0 .
 For CONFIG\_USBDEBUG\_DEFAULT\_PORT choose the port from the first
 section that correspond to the PCI ID
 
-Notes:
-
+Notes:\
 The above is based on the implementation of
 coreboot/src/southbridge/intel/common/usb\_debug.c :
-pci\_ehci\_dbg\_dev() .
-
+pci\_ehci\_dbg\_dev() .\
 This is enough as it applies for the supported GM45/G45 Thinkpads.
 coreboot support some other contollers too, but they are irellevent for
 libreboot (for now).
@@ -283,7 +282,7 @@ libreboot (for now).
 
 -   Plug the USB cable in the target's debug port (the one you found in
     step 1) and BBB's mini-B USB
--   Make sure no other then g\_dbgp of the g\_* modules is loaded on
+-   Make sure no other then g\_dbgp of the g\_\* modules is loaded on
     your BBB
 -   On the BBB:
 
@@ -296,7 +295,7 @@ libreboot (for now).
 -   You should see debug logs comming on your BBB console
 
 Note that this is not permanent on BBB, if you reboot it, you have to
-rmmod g\_* and modprobe g\_dbgp
+rmmod g\_\* and modprobe g\_dbgp
 
 ### Eneble EHCI Debug on the target's kernel (optional, recommended) {#EnebleEHCIDebugonthetargetskerneloptionalrecommended}
 
@@ -355,8 +354,9 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
 3.  Patch and compule g\_dbgp on BBB instead cross-compile
 4.  Find a simple way to send debug messages from targets userland
 
-Copyright © 2015 Alex David <opdecirkel@gmail.com>
 
+
+Copyright © 2015 Alex David <opdecirkel@gmail.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

@@ -1,4 +1,6 @@
-% How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1 
+
+How to program an SPI flash chip with the BeagleBone Black or Teensy 3.1 
+========================================================================
 
 This document exists as a guide for reading from or writing to an SPI
 flash chip with the BeagleBone Black, using the
@@ -26,9 +28,11 @@ flashing on the ThinkPad X200, but it should work for other targets.
 here is a photo of the setup for the teensy:
 <http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg>
 
-Onto the Beaglebone black...
+Onto the Beaglebone black\...
 
 [Back to previous index](./)
+
+
 
 Hardware requirements
 =====================
@@ -100,6 +104,8 @@ Shopping list (pictures of this hardware is shown later):
 
 [Back to top of page.](#pagetop)
 
+
+
 Setting up the 3.3V DC PSU
 ==========================
 
@@ -108,21 +114,21 @@ page](https://en.wikipedia.org/wiki/Power_supply_unit_%28computer%29#Wiring_diag
 
 You can use pin 1 or 2 (orange wire) on a 20-pin or 24-pin ATX PSU for
 3.3V, and any of the ground/earth sources (black cables) for ground.
-Short PS\_ON# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
+Short PS\_ON\# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
 14 on a 20-pin ATX PSU) to a ground (black; there is one right next to
 it) using a wire/paperclip/jumper, then power on the PSU by grounding
-PS\_ON# (this is also how an ATX motherboard turns on a PSU).
+PS\_ON\# (this is also how an ATX motherboard turns on a PSU).
 
-**DO **NOT** use pin 4, 6, do **NOT** use pin 19 or 20 (on a
-20-pin ATX PSU), and DO **NOT** use pin 21, 22 or 23 (on a 24-pin
-ATX PSU). Those wires (the red ones) are 5V, and they **WILL** kill
-your flash chip. ***NEVER*** supply more than 3.3V to your flash
+**DO \*\*NOT\*\* use pin 4, 6, do \*\*NOT\*\* use pin 19 or 20 (on a
+20-pin ATX PSU), and DO \*\*NOT\*\* use pin 21, 22 or 23 (on a 24-pin
+ATX PSU). Those wires (the red ones) are 5V, and they \*\*WILL\*\* kill
+your flash chip. \*\*\*NEVER\*\*\* supply more than 3.3V to your flash
 chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI flash chips
 do exist, but they are rare. Always check what voltage your chip takes.
 Most of them take 3.3V).**
 
 You only need one 3.3V supply and one ground for the flash chip, after
-grounding PS\_ON#.
+grounding PS\_ON\#.
 
 The male end of a 0.1" or 2.54mm header cable is not thick enough to
 remain permanently connected to the ATX PSU on its own. When connecting
@@ -131,9 +137,10 @@ to a thicker piece of wire (you could use a paper clip), or wedge the
 male end of the jumper cable into the sides of the hole in the
 connector, instead of going through the centre.
 
-Here is an example set up:
-
+Here is an example set up:\
 ![](images/x200/psu33.jpg "Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net> see license notice at the end of this document")
+
+
 
 Accessing the operating system on the BBB
 =========================================
@@ -150,27 +157,26 @@ Alternatives to SSH (in case SSH fails)
 ---------------------------------------
 
 You can also use a serial FTDI debug board with GNU Screen, to access
-the serial console.
-
-    # screen /dev/ttyUSB0 115200
-Here are some example photos:
-
-![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)
+the serial console.\
+\# **screen /dev/ttyUSB0 115200**\
+Here are some example photos:\
+![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
-directly accessible from SSH, or screen:
-
-# **screen /dev/ttyACM0 115200**
+directly accessible from SSH, or screen:\
+\# **screen /dev/ttyACM0 115200**
 
 You can also access the uboot console, using the serial method instead
 of SSH.
+
+
 
 Setting up spidev on the BBB
 ============================
 
 Log on as root on the BBB, using either SSH or a serial console as
-defined in [#bbb\_access](#bbb_access). Make sure that you have
+defined in [\#bbb\_access](#bbb_access). Make sure that you have
 internet access on your BBB.
 
 Follow the instructions at
@@ -197,24 +203,22 @@ contents of this file with:
     # Description:       Starts LED aging (whatever that is)
     ### END INIT INFO
 
-    x=\$(/bin/ps -ef | /bin/grep "[l]ed_acc")
-    if [ ! -n "\$x" -a -x /usr/bin/led_acc ]; then
+    x=$(/bin/ps -ef | /bin/grep "[l]ed_acc")
+    if [ ! -n "$x" -a -x /usr/bin/led_acc ]; then
         /usr/bin/led_acc &
     fi
 
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
-Check that the firmware exists:
-
-    # ls /lib/firmware/BB-SPI0-01-00A0.*
+Check that the firmware exists:\
+\# **ls /lib/firmware/BB-SPI0-01-00A0.\***\
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
-Then:
-
-    # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.*/slots
-    # cat /sys/devices/bone\_capemgr.*/slots
+Then:\
+\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots**\
+\# **cat /sys/devices/bone\_capemgr.\*/slots**\
 Output:
 
      0: 54:PF--- 
@@ -225,16 +229,14 @@ Output:
      5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
-Verify that the spidev device now exists:
-
-    # ls -al /dev/spid*
+Verify that the spidev device now exists:\
+\# **ls -al /dev/spid\***\
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
 
 Now the BBB is ready to be used for flashing. Make this persist across
-reboots:
-
+reboots:\
 In /etc/default/capemgr add **CAPE=BB-SPI0-01** at the end (or change
 the existing **CAPE=** entry to say that, if an entry already exists.
 
@@ -250,9 +252,8 @@ libreboot\_src, and put the ARM binary for it on your BBB.
 Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
-Now test flashrom:
-
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+Now test flashrom:\
+\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512**\
 Output:
 
     Calibrating delay loop... OK.
@@ -261,6 +262,8 @@ Output:
 
 This means that it's working (the clip isn't connected to any flash
 chip, so the error is fine).
+
+
 
 Connecting the Pomona 5250/5252
 ===============================
@@ -330,11 +333,12 @@ should.**
 if you need to extend the 3.3v psu leads, just use the same colour M-F
 leads, **but** keep all other leads short (10cm or less)
 
-You should now have something that looks like this:
-
+You should now have something that looks like this:\
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)
 
 [Back to top of page.](#pagetop)
+
+
 
 Notes about stability {#stability}
 =====================
@@ -344,7 +348,7 @@ not always. That page has some notes about using resistors to affect
 stability. Currently, we use spispeed=512 (512kHz) but it is possible to
 use higher speeds while maintaining stability.
 
-tty0\_ in #libreboot was able to get better flashing speeds with the
+tty0\_ in \#libreboot was able to get better flashing speeds with the
 following configuration:
 
 -   "coax" with 0.1 mm core and aluminum foley (from my kitchen), add
@@ -354,12 +358,11 @@ following configuration:
 -   See this image: <http://i.imgur.com/qHGxKpj.jpg>
 -   He was able to flash at 50MHz (lower speeds are also fine).
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
-Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>
 
-Copyright © 2015 Albin Söderqvist
-
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
+Copyright © 2015 Albin Söderqvist\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

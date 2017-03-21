@@ -1,12 +1,16 @@
-% ASUS KFSN4-DRE server/workstation board 
+
+ASUS KFSN4-DRE server/workstation board 
+=======================================
 
 This is a server board using AMD hardware (Fam10h). It can also be used
 for building a high-powered workstation. Powered by libreboot.
 
 Flashing instructions can be found at
-[../install/#flashrom](../install/#flashrom)
+[../install/\#flashrom](../install/#flashrom)
 
 [Back to previous index](./).
+
+
 
 Form factor {#formfactor}
 ===========
@@ -14,6 +18,8 @@ Form factor {#formfactor}
 These boards use the SSI EEB 3.61 form factor; make sure that your case
 supports this. This form factor is similar to E-ATX in that the size is
 identical, but the position of the screws are different.
+
+
 
 Flash chips {#flashchips}
 ===========
@@ -28,16 +34,22 @@ example of a 2MiB (16Mbits) chip, which might work. It is believed that
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
+
+
 Native graphics initialization {#graphics}
 ==============================
 
 Native graphics initialization exists (XGI Z9s) for this board.
 Framebuffer- and text-mode both work. A serial port is also available.
 
+
+
 Memory
 ======
 
 DDR2 533/667 Registered ECC. 16 slots. Total capacity up to 64GiB.
+
+
 
 Hex-core CPUs {#hexcore}
 =============
@@ -46,6 +58,8 @@ PCB revision 1.05G is the best version of this board (the revision
 number will be printed on the board), because it can use dual hex-core
 CPUs (Opteron 2400/8400 series). Other revisions are believed to only
 support dual quad-core CPUs.
+
+
 
 Current issues {#issues}
 ==============
@@ -62,13 +76,16 @@ Current issues {#issues}
     disappears if using KMS, once the kernel starts. The jitter will
     remain, if booting the kernel in text-mode).
 
+
+
 Other information
 =================
 
 [specifications](ftp://ftp.sgi.com/public/Technical%20Support/Pdf%20files/Asus/kfsn4-dre.pdf)
 
-Copyright © 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

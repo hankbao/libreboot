@@ -1,9 +1,11 @@
-% BSD projects 
+
+BSD projects 
+============
 
 This section relates to dealing with BSD projects: preparing bootable
 USB drives, changing the default GRUB menu and so on.
 
-**This section is only for the *GRUB* payload. For depthcharge,
+**This section is only for the \*GRUB\* payload. For depthcharge,
 instructions have yet to be written.**
 
 [Back to previous index](../).
@@ -13,8 +15,9 @@ instructions have yet to be written.**
     system](openbsd.html)
 -   [How to install FreeBSD on a libreboot system](freebsd.html)
 
-Copyright © 2016 Scott Bonds <scott@ggr.com>
 
+
+Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative

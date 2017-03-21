@@ -1,4 +1,6 @@
-% KGPE-D16 external flashing instructions 
+
+KGPE-D16 external flashing instructions 
+=======================================
 
 Initial flashing instructions for KGPE-D16.
 
@@ -19,6 +21,9 @@ TODO: show photos here, and other info.
     preinstalled](#preinstall)
 -   [External programmer](#programmer)
 
+
+
+
 KGPE-D16 boards (and full systems) with libreboot preinstalled {#preinstall}
 ==============================================================
 
@@ -27,6 +32,8 @@ sell these boards with libreboot pre-installed, along with a free
 GNU+Linux distribution.
 
 Check the [suppliers](../../suppliers) page for more information.
+
+
 
 External programmer {#programmer}
 ===================
@@ -39,8 +46,9 @@ motherboard, which you take out and then re-flash with libreboot, using
 the programmer. **DO NOT** remove the chip with your hands. Use a chip
 extractor tool.
 
-Copyright © 2015 Leah Rowe <info@minifree.org>
 
+
+Copyright © 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative
