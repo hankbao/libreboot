@@ -157,8 +157,8 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, in
     descriptorStruct.ichStraps.ichStrap0.bmcMode = 0x0;
     descriptorStruct.ichStraps.ichStrap0.tripPointSelect = 0x0;
     descriptorStruct.ichStraps.ichStrap0.reserved2 = 0x0;
-    descriptorStruct.ichStraps.ichStrap0.integratedGbe = hasGbe ? 0x1 : 0x0;
-    descriptorStruct.ichStraps.ichStrap0.lanPhy = hasGbe ? 0x1 : 0x0;
+    descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x1;
+    descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;
     descriptorStruct.ichStraps.ichStrap0.reserved3 = 0x0;
     descriptorStruct.ichStraps.ichStrap0.dmiRequesterId = 0x0;
     descriptorStruct.ichStraps.ichStrap0.smBus2Address = 0x00;

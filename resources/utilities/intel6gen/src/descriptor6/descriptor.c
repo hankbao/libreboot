@@ -46,6 +46,12 @@ struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREG
    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
 
+    /* Recommended by Intel, if all regions are opened (they are) */
+    /* that is, set both of them (3-bit values) to 111b */
+
+    descriptorStruct.masterAccessSection.flMstr1.reserved1 = 7;
+    descriptorStruct.masterAccessSection.flMstr1.reserved2 = 7;
+
    return descriptorStruct;
 }
 
