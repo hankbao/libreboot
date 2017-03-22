@@ -15,7 +15,7 @@ fi
 tail -n +5 $FILE.md >> temp.md
 
 # add license notice where applicable
-if [[ "${FILE} != "docs*""]]
+if [[ ${FILE} != "docs*" ]] ; then
     cat license.md >> temp.md
 fi
 

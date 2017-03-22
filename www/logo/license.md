@@ -1,3 +1,7 @@
+---
+title: Logo License
+...
+
 Copyright 2014 Marcus Moeller (license: CC-0)
 
 the stickers are made by Patrick McDermott in 2015, also CC-0

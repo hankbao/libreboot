@@ -3,7 +3,7 @@ title: Libreboot
 ...
 
 [![Libreboot
-logo](logo/logo.svg "Canteloupe, the libreboot mascot"){#logo}](logo.md)
+logo](logo/logo.svg "Canteloupe, the libreboot mascot"){#logo}](logo-info.md)
 
 [Downloads](download.md)                --
 [Documentation](docs/)                  --
