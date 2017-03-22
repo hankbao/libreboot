@@ -39,3 +39,5 @@ push
 /versiondate
 /gm45macaddress
 tocheck*
+*.html
+/www/temp.md
