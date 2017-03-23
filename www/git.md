@@ -70,9 +70,9 @@ authors (computer programs are literary works).
 
 When submitting any kind of documentation, try not to use the terms
 him/her, she/he, his/her, or anything that is gender biased. **Use
-their, they, them, those people, that person, and so on.** [You are
-making a huge
-difference](https://gist.githubusercontent.com/0xabad1dea/8870b192fd1758743f66/raw/a230fa3438ce60c538dba31830fa88143245b719/singularthey.md).
+their, they, them, those people, that person, and so on.** [You are making a
+huge
+difference](https://gist.github.com/0xabad1dea/8870b192fd1758743f66#file-singularthey-md)
 
 <https://www.gnu.org/licenses/license-list.html> (we will reject any
 documentation released under the GNU Free Documentation License, for
