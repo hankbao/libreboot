@@ -562,6 +562,22 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
     fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reserved3 = 0x%04x;\n", descriptorStruct.procStraps.procStrap0.reserved3);
     fprintf(fp, "\n");
 
+    /* padding */
+	fprintf(fp, "    /* Padding */\n");
+	for (i = 0; i < 3320; i++) {
+		if (descriptorStruct.procStraps.padding[i] != 0xFF) {
+			for (j = 0; j < 3320; j++) {
+				fprintf(fp, "    descriptorStruct.procStraps.padding[%d] = 0x%02x;\n", j, descriptorStruct.procStraps.padding[j]);
+			}
+			break;
+		} else if (i == 3319) {
+			fprintf(fp, "    for (i = 0; i < 3320; i++) {\n");
+			fprintf(fp, "        descriptorStruct.procStraps.padding[i] = 0xFF;\n");
+			fprintf(fp, "    }\n");
+			break;
+		}
+	}
+
     /* Descriptor Upper Map Section */
     fprintf(fp, "   /* Descriptor Upper Map Section */\n");
     fprintf(fp, "   descriptorStruct.descriptorUpperMapSection.VTBA = 0x%02x;\n", descriptorStruct.descriptorUpperMapSection.VTBA);
@@ -576,6 +592,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	for(i = 0; i < 256; i++) {
 		fprintf(fp, "    descriptorStruct.oemSection.magicString[%d] = 0x%02x;\n\n", i, descriptorStruct.oemSection[i]);
 	}
+	fprintf(fp, "\n");
 
 	fprintf(fp, "\n");
 	fprintf(fp, "    return descriptorStruct;\n");
