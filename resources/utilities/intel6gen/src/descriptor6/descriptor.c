@@ -2,7 +2,7 @@
  *  descriptor/descriptor.c
  *  This file is part of the intel6deblob utility from the libreboot project
  *
- *	Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
+ *	Copyright (C) 2014, 2015, 2017 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -75,6 +75,7 @@ struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGI
 /* Disable the ME in ICHSTRAP0 and MCHSTRAP0 */
 struct DESCRIPTORREGIONRECORD descriptorDisableMe(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
+    /* These are adapted from ICH9 and are totally guessed */
 	descriptorStruct.pchStraps.pchStrap0.reservedGuessedMeDisable = 1;
 	descriptorStruct.procStraps.procStrap0.reservedGuessedMeDisable = 1;
 
@@ -187,10 +188,25 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    int i;\n");
 	fprintf(fp, "    struct DESCRIPTORREGIONRECORD descriptorStruct;\n");
 	fprintf(fp, "\n");
+
 	/* Flash Valid Signature Register */
 	fprintf(fp, "    /* Flash Valid Signature Register */\n");
+	for (i = 0; i < 16; i++) {
+		if (descriptorStruct.componentSection.padding[i] != 0xFF) {
+			for (j = 0; j < 16; j++) {
+				fprintf(fp, "    descriptorStruct.flValSig.padding[%d] = 0x%02x;\n", j, descriptorStruct.flValSig.padding[j]);
+			}
+			break;
+		} else if (i == 15) {
+			fprintf(fp, "    for (i = 0; i < 16; i++) {\n");
+			fprintf(fp, "        descriptorStruct.flValSig.padding[i] = 0xFF;\n");
+			fprintf(fp, "    }\n");
+			break;
+		}
+	}
 	fprintf(fp, "    descriptorStruct.flValSig.signature = 0x%08x;\n", descriptorStruct.flValSig.signature);
 	fprintf(fp, "\n");
+
 	/* Flash Map Registers */
 	fprintf(fp, "    /* Flash Map Registers */\n");
 	fprintf(fp, "    /* FLMAP0 */\n");
@@ -204,13 +220,14 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.FMBA = 0x%02x;\n", descriptorStruct.flMaps.flMap1.FMBA);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.NM = 0x%01x;\n", descriptorStruct.flMaps.flMap1.NM);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.reserved = 0x%02x;\n", descriptorStruct.flMaps.flMap1.reserved);
-	fprintf(fp, "    descriptorStruct.flMaps.flMap1.FISBA = 0x%02x;\n", descriptorStruct.flMaps.flMap1.FISBA);
+	fprintf(fp, "    descriptorStruct.flMaps.flMap1.FPSBA = 0x%02x;\n", descriptorStruct.flMaps.flMap1.FPSBA);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap1.ISL = 0x%02x;\n", descriptorStruct.flMaps.flMap1.ISL);
 	fprintf(fp, "    /* FLMAP2 */\n");
-	fprintf(fp, "    descriptorStruct.flMaps.flMap2.FMSBA = 0x%02x;\n", descriptorStruct.flMaps.flMap2.FMSBA);
-	fprintf(fp, "    descriptorStruct.flMaps.flMap2.MSL = 0x%02x;\n", descriptorStruct.flMaps.flMap2.MSL);
+	fprintf(fp, "    descriptorStruct.flMaps.flMap2.FPSBA = 0x%02x;\n", descriptorStruct.flMaps.flMap2.FPSBA);
+	fprintf(fp, "    descriptorStruct.flMaps.flMap2.PSL = 0x%02x;\n", descriptorStruct.flMaps.flMap2.PSL);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap2.reserved = 0x%04x;\n", descriptorStruct.flMaps.flMap2.reserved);
 	fprintf(fp, "\n");
+
 	/* Component Section Record */
 	fprintf(fp, "    /* Component Section Record */\n");
 	fprintf(fp, "    /* FLCOMP */\n");
@@ -223,27 +240,36 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.fastReadSupport = 0x%01x;\n", descriptorStruct.componentSection.flcomp.fastReadSupport);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.fastreadClockFrequency = 0x%01x;\n", descriptorStruct.componentSection.flcomp.fastreadClockFrequency);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.writeEraseClockFrequency = 0x%01x;\n", descriptorStruct.componentSection.flcomp.writeEraseClockFrequency);
-	fprintf(fp, "    descriptorStruct.componentSection.flcomp.readStatusClockFrequency = 0x%01x;\n", descriptorStruct.componentSection.flcomp.readStatusClockFrequency);
+	fprintf(fp, "    descriptorStruct.componentSection.flcomp.readIdReadStatusClkFreq = 0x%01x;\n", descriptorStruct.componentSection.flcomp.readIdReadStatusClkFreq);
+	fprintf(fp, "    descriptorStruct.componentSection.flcomp.singleIoFastReadSupport = 0x%01x;\n", descriptorStruct.componentSection.flcomp.singleIoFastReadSupport);
 	fprintf(fp, "    descriptorStruct.componentSection.flcomp.reserved4 = 0x%01x;\n", descriptorStruct.componentSection.flcomp.reserved4);
-	fprintf(fp, "    /* FLILL */\n");
-	fprintf(fp, "    descriptorStruct.componentSection.flill = 0x%08x;\n", descriptorStruct.componentSection.flill);
+
+    fprintf(fp, "    /* FLILL */\n");
+	fprintf(fp, "    descriptorStruct.componentSection.flill.invalidInstruction0 = 0x%02x;\n", descriptorStruct.componentSection.flill.invalidInstruction0);
+	fprintf(fp, "    descriptorStruct.componentSection.flill.invalidInstruction1 = 0x%02x;\n", descriptorStruct.componentSection.flill.invalidInstruction1);
+	fprintf(fp, "    descriptorStruct.componentSection.flill.invalidInstruction2 = 0x%02x;\n", descriptorStruct.componentSection.flill.invalidInstruction2);
+	fprintf(fp, "    descriptorStruct.componentSection.flill.invalidInstruction3 = 0x%02x;\n", descriptorStruct.componentSection.flill.invalidInstruction3);
+
 	fprintf(fp, "    /* FLPB */\n");
-	fprintf(fp, "    descriptorStruct.componentSection.flpb = 0x%08x;\n", descriptorStruct.componentSection.flpb);
+	fprintf(fp, "    descriptorStruct.componentSection.flpb.FPBA = 0x%04x;\n", descriptorStruct.componentSection.flpb.FPBA);
+	fprintf(fp, "    descriptorStruct.componentSection.flpb.reserved = 0x%05x;\n", descriptorStruct.componentSection.flpb.reserved);
+
 	fprintf(fp, "    /* Padding */\n");
-	for (i = 0; i < 36; i++) {
+	for (i = 0; i < 4; i++) {
 		if (descriptorStruct.componentSection.padding[i] != 0xFF) {
-			for (j = 0; j < 36; j++) {
+			for (j = 0; j < 4; j++) {
 				fprintf(fp, "    descriptorStruct.componentSection.padding[%d] = 0x%02x;\n", j, descriptorStruct.componentSection.padding[j]);
 			}
 			break;
-		} else if (i == 35) {
-			fprintf(fp, "    for (i = 0; i < 36; i++) {\n");
+		} else if (i == 3) {
+			fprintf(fp, "    for (i = 0; i < 4; i++) {\n");
 			fprintf(fp, "        descriptorStruct.componentSection.padding[i] = 0xFF;\n");
 			fprintf(fp, "    }\n");
 			break;
 		}
 	}
 	fprintf(fp, "\n");
+
 	/* Flash Descriptor Region Section */
 	fprintf(fp, "    /* Flash Descriptor Region Section */\n");
 	fprintf(fp, "    /* FLREG0 (Descriptor) */\n");
@@ -286,6 +312,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 		}
 	}
 	fprintf(fp, "\n");
+
 	/* Master Access Section */
 	fprintf(fp, "    /* Master Access Section */\n");
 	fprintf(fp, "    /* FLMSTR1 (Host CPU / BIOS) */\n");
@@ -345,121 +372,211 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 		}
 	}
 	fprintf(fp, "\n");
-	/* ICH straps */
-	fprintf(fp, "    /* ICH straps */\n");
-	fprintf(fp, "    /* ICHSTRAP0 */\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.meDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.ichStraps.ichStrap0.meDisable);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved1 = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.reserved1);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.tcoMode = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.tcoMode);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.smBusAddress = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.smBusAddress);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.bmcMode = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.bmcMode);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.tripPointSelect = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.tripPointSelect);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved2 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.reserved2);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.integratedGbe = 0x1;\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.reserved3 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.reserved3);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.dmiRequesterId = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap0.dmiRequesterId);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap0.smBus2Address = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap0.smBus2Address);
-	fprintf(fp, "    /* ICHSTRAP1 */\n");
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.northMlink = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.northMlink);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.southMlink = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.southMlink);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.meSmbus = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.meSmbus);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.sstDynamic = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.sstDynamic);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.reserved1 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.reserved1);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.northMlink2 = 0x%01x;\n", descriptorStruct.ichStraps.ichStrap1.northMlink2);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.reserved2 = 0x%02x;\n", descriptorStruct.ichStraps.ichStrap1.reserved2);
-	fprintf(fp, "    descriptorStruct.ichStraps.ichStrap1.reserved3 = 0x%04x;\n", descriptorStruct.ichStraps.ichStrap1.reserved3);
+
+    /* PCH straps */
+
+    /* PCHSTRP0 */
+    fprintf(fp, "   /* PCHSTRP1 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reservedGuessedMeDisable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.reservedGuessedMeDisable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.chipConfigSoftstrap1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.chipConfigSoftstrap1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reserved1 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap0.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.meSmbusSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.meSmbusSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.meSmlink0enable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.meSmlink0enable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.meSmlink1enable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.meSmlink1enable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.smlink1frequency = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.smlink1frequency);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.intelMeSmbusFrequency = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.intelMeSmbusFrequency);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.smlink0frequency = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.smlink0frequency);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reserved2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.reserved2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.lanPhyPwrCtrlGpio12Sel = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.lanPhyPwrCtrlGpio12Sel);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.linkSecDisable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.linkSecDisable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reserved3 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.reserved3);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.dmiRequesterIdChkDisable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.dmiRequesterIdChkDisable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reserved4 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.reserved4);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.biosBootBlockSize = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.biosBootBlockSize);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap0.reserved5 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap0.reserved5);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP1 */
+    fprintf(fp, "   /* PCHSTRP1 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap1.chipConfigSoftstrap2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap1.chipConfigSoftstrap2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap1.unknown = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap1.unknown);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap1.chipConfigSoftstrap3 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap1.chipConfigSoftstrap3);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap1.reserved1 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap1.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap1.reserved2 = 0x%04x;\n", descriptorStruct.pchStraps.pchStrap1.reserved2);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP2 */
+    fprintf(fp, "   /* PCHSTRP2 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.reserved = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap2.reserved);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusAsdEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusAsdEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusAsdAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusAsdAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusMctpAddressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusMctpAddressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusMctpAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusMctpAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusI2cAddressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusI2cAddressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap2.intelMeSmbusI2cAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap2.intelMeSmbusI2cAddress);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP3 */
+    fprintf(fp, "   /* PCHSTRP3 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap3.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap3.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP4 */
+    fprintf(fp, "   /* PCHSTRP4 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.intelPhyConnectivity = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap4.intelPhyConnectivity);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.reserved1 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap4.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.gbeMacSmbusAddressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap4.gbeMacSmbusAddressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.gbeMacSmbusAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap4.gbeMacSmbusAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.reserved2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap4.reserved2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.gbePhySmbusAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap4.gbePhySmbusAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap4.reserved3 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap4.reserved3);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP5 */
+    fprintf(fp, "   /* PCHSTRP5 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap5.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap5.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP6 */
+    fprintf(fp, "   /* PCHSTRP6 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap6.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap6.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP7 */
+    fprintf(fp, "   /* PCHSTRP7 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap7.intelMeSubsystemVendorId = 0x%04x;\n", descriptorStruct.pchStraps.pchStrap7.intelMeSubsystemVendorId);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap7.intelMeSubsystemDeviceId = 0x%04x;\n", descriptorStruct.pchStraps.pchStrap7.intelMeSubsystemDeviceId);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP8 */
+    fprintf(fp, "   /* PCHSTRP8 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap8.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap8.reserved);
+    fprintf(fp, "\n");
+
+    fprintf(fp, "   /* PCHSTRP9 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.pciExpressPortConfigurationStrap1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.pciExpressPortConfigurationStrap1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.pciExpressPortConfigurationStrap2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.pciExpressPortConfigurationStrap2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.pcieLaneReversal1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.pcieLaneReversal1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.pcieLaneReversal2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.pcieLaneReversal2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.dmiAndIntelFdiReversal = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.dmiAndIntelFdiReversal);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.chipConfigSoftstrap4 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.chipConfigSoftstrap4);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.intelPhyPciePortSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.intelPhyPciePortSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.intelPhyOverPciExpressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.intelPhyOverPciExpressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.reserved1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.subtractiveDecodeAgentEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.subtractiveDecodeAgentEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.reserved2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.reserved2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.reserved3 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap9.reserved3);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.pchHotOrSml1AlertSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap9.pchHotOrSml1AlertSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap9.reserved4 = 0x%03x;\n", descriptorStruct.pchStraps.pchStrap9.reserved4);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP10 */
+    fprintf(fp, "   /* PCHSTRP10 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.reserved = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.reserved);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.meBootFlash = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.meBootFlash);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.reserved1 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap10.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.meDebugSmbusEmergencyModeEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.meDebugSmbusEmergencyModeEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.meDebugSmbusEmergencyModeAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap10.meDebugSmbusEmergencyModeAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.reserved2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.reserved2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.integratedClockingConfigurationSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.integratedClockingConfigurationSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.intelMeResetCaptureOnClRst1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.intelMeResetCaptureOnClRst1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.iccProfileSelection = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.iccProfileSelection);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.deepSxEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.deepSxEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.meDebugLanEmergencyMode = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap10.meDebugLanEmergencyMode);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap10.reserved3 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap10.reserved3);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP11 */
+    fprintf(fp, "   /* PCHSTRP11 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap11.smlink1GpAddressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap11.smlink1GpAddressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap11.swLink1GpAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap11.swLink1GpAddress);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap11.reserved1 = 0x%04x;\n", descriptorStruct.pchStraps.pchStrap11.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap11.smlink1I2cTargetAddressEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap11.smlink1I2cTargetAddressEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap11.smlink1I2cTargetAddress = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap11.smlink1I2cTargetAddress);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP12 */
+    fprintf(fp, "   /* PCHSTRP12 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap12.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap12.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP13 */
+    fprintf(fp, "   /* PCHSTRP13 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap13.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap13.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP14 */
+    fprintf(fp, "   /* PCHSTRP14 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap14.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap14.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP15 */
+    fprintf(fp, "   /* PCHSTRP15 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.chipConfigSoftstrap6 = 0x%02x;\n", descriptorStruct.pchStraps.pchStrap15.chipConfigSoftstrap6);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.intelIntegratedWiredLanEnable = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.intelIntegratedWiredLanEnable);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.reserved1 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.reserved1);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.chipConfigSoftstrap5 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.chipConfigSoftstrap5);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.reserved2 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.reserved2);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.smlink1ThermalReportingSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.smlink1ThermalReportingSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.slpLanGpio29Sel = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap15.slpLanGpio29Sel);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap15.reserved3 = 0x%04x;\n", descriptorStruct.pchStraps.pchStrap15.reserved3);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP16 */
+    fprintf(fp, "   /* PCHSTRP16 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap16.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap16.reserved);
+    fprintf(fp, "\n");
+
+    /* PCHSTRP17 */
+    fprintf(fp, "   /* PCHSTRP17 */\n");
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap17.integratedClockModeSelect = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap17.integratedClockModeSelect);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap17.chipConfigSoftstrap7 = 0x%01x;\n", descriptorStruct.pchStraps.pchStrap17.chipConfigSoftstrap7);
+    fprintf(fp, "   descriptorStruct.pchStraps.pchStrap17.reserved = 0x%08x;\n", descriptorStruct.pchStraps.pchStrap17.reserved);
+    fprintf(fp, "\n");
+
 	fprintf(fp, "    /* Padding */\n");
-	for (i = 0; i < 248; i++) {
-		if (descriptorStruct.ichStraps.padding[i] != 0xFF) {
-			for (j = 0; j < 248; j++) {
-				fprintf(fp, "    descriptorStruct.ichStraps.padding[%d] = 0x%02x;\n", j, descriptorStruct.ichStraps.padding[j]);
+	for (i = 0; i < 184; i++) {
+		if (descriptorStruct.pchStraps.padding[i] != 0xFF) {
+			for (j = 0; j < 184; j++) {
+				fprintf(fp, "    descriptorStruct.pchStraps.padding[%d] = 0x%02x;\n", j, descriptorStruct.pchStraps.padding[j]);
 			}
 			break;
-		} else if (i == 247) {
-			fprintf(fp, "    for (i = 0; i < 248; i++) {\n");
-			fprintf(fp, "        descriptorStruct.ichStraps.padding[i] = 0xFF;\n");
+		} else if (i == 183) {
+			fprintf(fp, "    for (i = 0; i < 184; i++) {\n");
+			fprintf(fp, "        descriptorStruct.pchStraps.padding[i] = 0xFF;\n");
 			fprintf(fp, "    }\n");
 			break;
 		}
 	}
 	fprintf(fp, "\n");
-	/* MCH straps */
-	fprintf(fp, "    /* MCH straps */\n");
-	fprintf(fp, "    /* MCHSTRAP0 */\n");
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.mchStraps.mchStrap0.meDisable);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meBootFromFlash = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.meBootFromFlash);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.tpmDisable = 0x%01x; /* see ../descriptor/descriptor.c */\n", descriptorStruct.mchStraps.mchStrap0.tpmDisable);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.reserved1 = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.reserved1);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.spiFingerprint = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.spiFingerprint);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.meAlternateDisable = 0x%01x;\n", descriptorStruct.mchStraps.mchStrap0.meAlternateDisable);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.reserved2 = 0x%02x;\n", descriptorStruct.mchStraps.mchStrap0.reserved2);
-	fprintf(fp, "    descriptorStruct.mchStraps.mchStrap0.reserved3 = 0x%04x;\n", descriptorStruct.mchStraps.mchStrap0.reserved3);
-	fprintf(fp, "    /* Padding */\n");
-	for (i = 0; i < 3292; i++) {
-		if (descriptorStruct.mchStraps.padding[i] != 0xFF) {
-			for (j = 0; j < 3292; j++) {
-				fprintf(fp, "    descriptorStruct.mchStraps.padding[%d] = 0x%02x;\n", j, descriptorStruct.mchStraps.padding[j]);
-			}
-			break;
-		} else if (i == 3291) {
-			fprintf(fp, "    for (i = 0; i < 3292; i++) {\n");
-			fprintf(fp, "        descriptorStruct.mchStraps.padding[i] = 0xFF;\n");
-			fprintf(fp, "    }\n");
-			break;
-		}
-	}
-	fprintf(fp, "\n");
-	/* ME VSCC Table */
-	fprintf(fp, "    /* ME VSCC Table */\n");
-	fprintf(fp, "    descriptorStruct.meVsccTable.jid0 = 0x%08x;\n", descriptorStruct.meVsccTable.jid0);
-	fprintf(fp, "    descriptorStruct.meVsccTable.vscc0 = 0x%08x;\n", descriptorStruct.meVsccTable.vscc0);
-	fprintf(fp, "    descriptorStruct.meVsccTable.jid1 = 0x%08x;\n", descriptorStruct.meVsccTable.jid1);
-	fprintf(fp, "    descriptorStruct.meVsccTable.vscc1 = 0x%08x;\n", descriptorStruct.meVsccTable.vscc1);
-	fprintf(fp, "    descriptorStruct.meVsccTable.jid2 = 0x%08x;\n", descriptorStruct.meVsccTable.jid2);
-	fprintf(fp, "    descriptorStruct.meVsccTable.vscc2 = 0x%08x;\n", descriptorStruct.meVsccTable.vscc2);
-	fprintf(fp, "    /* Padding */\n");
-	for (i = 0; i < 4; i++) {
-		if (descriptorStruct.meVsccTable.padding[i] != 0xFF) {
-			for (j = 0; j < 4; j++) {
-				fprintf(fp, "    descriptorStruct.meVsccTable.padding[%d] = 0x%02x;\n", j, descriptorStruct.meVsccTable.padding[j]);
-			}
-			break;
-		} else if (i == 3) {
-			fprintf(fp, "    for (i = 0; i < 4; i++) {\n");
-			fprintf(fp, "        descriptorStruct.meVsccTable.padding[i] = 0xFF;\n");
-			fprintf(fp, "    }\n");
-			break;
-		}
-	}
-	fprintf(fp, "\n");
-	/* Descriptor Map 2 Record */
-	fprintf(fp, "    /* Descriptor Map 2 Record */\n");
-	fprintf(fp, "    descriptorStruct.descriptor2Map.meVsccTableBaseAddress = 0x%02x;\n", descriptorStruct.descriptor2Map.meVsccTableBaseAddress);
-	fprintf(fp, "    descriptorStruct.descriptor2Map.meVsccTableLength = 0x%02x;\n", descriptorStruct.descriptor2Map.meVsccTableLength);
-	fprintf(fp, "    descriptorStruct.descriptor2Map.reserved = 0x%04x;\n", descriptorStruct.descriptor2Map.reserved);
-	fprintf(fp, "\n");
+
+    /* PROCSTRAP0 */
+    fprintf(fp, "   /* PROCSTRAP0 */\n");
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reservedGuessedMeDisable = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.reservedGuessedMeDisable);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.meBootFromFlash = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.meBootFromFlash);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reservedGuessedTpmDisable = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.reservedGuessedTpmDisable);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reserved1 = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.reserved1);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.spiFingerprint = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.spiFingerprint);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.meAlternateDisable = 0x%01x;\n", descriptorStruct.procStraps.procStrap0.meAlternateDisable);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reserved2 = 0x%02x;\n", descriptorStruct.procStraps.procStrap0.reserved2);
+    fprintf(fp, "   descriptorStruct.procStraps.procStrap0.reserved3 = 0x%04x;\n", descriptorStruct.procStraps.procStrap0.reserved3);
+    fprintf(fp, "\n");
+
+    /* Descriptor Upper Map Section */
+    fprintf(fp, "   /* Descriptor Upper Map Section */\n");
+    fprintf(fp, "   descriptorStruct.descriptorUpperMapSection.VTBA = 0x%02x;\n", descriptorStruct.descriptorUpperMapSection.VTBA);
+    fprintf(fp, "   descriptorStruct.descriptorUpperMapSection.VTL = 0x%02x;\n", descriptorStruct.descriptorUpperMapSection.VTL);
+    fprintf(fp, "   descriptorStruct.descriptorUpperMapSection.reserved = 0x%04x;\n", descriptorStruct.descriptorUpperMapSection.reserved);
+    fprintf(fp, "\n");
+
 	/* OEM section */
 	fprintf(fp, "    /* OEM section */\n");
 	fprintf(fp, "    /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    /* Magic String (ascii characters) */\n");
-	for(i = 0; i < 8; i++) {
-		fprintf(fp, "    descriptorStruct.oemSection.magicString[%d] = 0x%02x;\n", i, descriptorStruct.oemSection.magicString[i]);
+	for(i = 0; i < 256; i++) {
+		fprintf(fp, "    descriptorStruct.oemSection.magicString[%d] = 0x%02x;\n\n", i, descriptorStruct.oemSection[i]);
 	}
-	fprintf(fp, "    /* Padding */\n");
-	for (i = 0; i < 248; i++) {
-		if (descriptorStruct.oemSection.padding[i] != 0xFF) {
-			for (j = 0; j < 248; j++) {
-				fprintf(fp, "    descriptorStruct.oemSection.padding[%d] = 0x%02x;\n", j, descriptorStruct.oemSection.padding[j]);
-			}
-			break;
-		} else if (i == 247) {
-			fprintf(fp, "    for (i = 0; i < 248; i++) {\n");
-			fprintf(fp, "        descriptorStruct.oemSection.padding[i] = 0xFF;\n");
-			fprintf(fp, "    }\n");
-			break;
-		}
-	}
+
 	fprintf(fp, "\n");
 	fprintf(fp, "    return descriptorStruct;\n");
 	fprintf(fp, "}\n\n");
