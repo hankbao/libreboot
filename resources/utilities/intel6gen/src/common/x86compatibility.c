@@ -34,7 +34,7 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 {
 	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
 	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
-	
+
 	/* check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86 */
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
@@ -44,32 +44,43 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE_8K);
 		return 1;
 	}
-	
+
 	return 0;
 }
+
+struct BULLSHIT
+{
+	uint32_t jid0;
+	uint32_t vscc0;
+	uint32_t jid1;
+	uint32_t vscc1;
+	uint32_t jid2;
+	uint32_t vscc2;
+	uint8_t padding[4];
+};
 
 /* fail if members are presented in the wrong order */
 int structMembersWrongOrder()
 {
 	int i;
-	struct DESCRIPTORREGIONRECORD descriptorDummy;
-	uint8_t *meVsccTablePtr = (uint8_t*)&descriptorDummy.meVsccTable;
-	
+	struct BULLSHIT bullshit;
+	uint8_t *meVsccTablePtr = (uint8_t*)&bullshit;
+
 	/* These do not use bitfields.  */
-	descriptorDummy.meVsccTable.jid0 = 0x01020304;  /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.vscc0 = 0x10203040; /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.jid1 = 0x11223344;  /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.vscc1 = 0x05060708; /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.jid2 = 0x50607080;  /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.vscc2 = 0x55667788; /* unsigned int 32-bit */
-	descriptorDummy.meVsccTable.padding[0] = 0xAA;  /* unsigned char 8-bit */
-	descriptorDummy.meVsccTable.padding[1] = 0xBB;  /* unsigned char 8-bit */
-	descriptorDummy.meVsccTable.padding[2] = 0xCC;  /* unsigned char 8-bit */
-	descriptorDummy.meVsccTable.padding[3] = 0xDD;  /* unsigned char 8-bit */
-	
+	bullshit.jid0 = 0x01020304;  /* unsigned int 32-bit */
+	bullshit.vscc0 = 0x10203040; /* unsigned int 32-bit */
+	bullshit.jid1 = 0x11223344;  /* unsigned int 32-bit */
+	bullshit.vscc1 = 0x05060708; /* unsigned int 32-bit */
+	bullshit.jid2 = 0x50607080;  /* unsigned int 32-bit */
+	bullshit.vscc2 = 0x55667788; /* unsigned int 32-bit */
+	bullshit.padding[0] = 0xAA;  /* unsigned char 8-bit */
+	bullshit.padding[1] = 0xBB;  /* unsigned char 8-bit */
+	bullshit.padding[2] = 0xCC;  /* unsigned char 8-bit */
+	bullshit.padding[3] = 0xDD;  /* unsigned char 8-bit */
+
 	/*
 	 * Look from the top down, and concatenate the unsigned ints but
-	 * with each unsigned in little endian order. 
+	 * with each unsigned in little endian order.
 	 * Then, concatenate the unsigned chars in big endian order. (in the padding array)
 	 *
 	 * combined, these should become:
@@ -77,7 +88,7 @@ int structMembersWrongOrder()
 	 * 04030201 40302010 44332211 08070605 80706050 88776655 AA BB CC DD (ignore this. not byte-separated, just working it out:)
 	 * 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
 	 */
-	
+
 	if (
 			!
 			(
@@ -90,19 +101,19 @@ int structMembersWrongOrder()
 			&& *(meVsccTablePtr+24) == 0xAA && *(meVsccTablePtr+25) == 0xBB && *(meVsccTablePtr+26) == 0xCC && *(meVsccTablePtr+27) == 0xDD
 	      )
 	   ) {
-			
-		printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
+
+		printf("\nStruct member order check (bullshit data structure) with junk/dummy data:");
 		printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
 		printf("\nAnd it is: ");
-		
+
 		for (i = 0; i < 28; i++) {
 			printf("%02x ", *(meVsccTablePtr + i));	
 		}
-		printf("\nIncorrect order.\n");
-		
+		printf("\nIncorrect order. Patches welcome, or use a compatible CPU architecture to compile and run this code.\n");
+
 		return 1;
 	}
-	
+
 	return 0;
 }
 

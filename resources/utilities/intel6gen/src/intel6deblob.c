@@ -116,7 +116,7 @@ int main()
 	 */
 
 	/* Delete the ME/Platform regions, place Gbe after the descriptor, resize BIOS region to fill the gap */
-	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct);
+	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct, romSize);
 
 	gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
 

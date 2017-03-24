@@ -72,8 +72,6 @@ struct FLVALSIG /* DONE (sandybridge conversion) */
 	 * descriptor mode = 0FF0A55A (hex, big endian). Note: stored in ROM in little endian order.
 	 * Anything else is considered invalid and will put the system in non-descriptor mode.
 	 */
-    uint16_t padding[16];  /* 16 bytes is padding - set all of them to 0xFF */
-    /* This isn't actually part of FLVALSIG, it's just put here for simplicity. First 16 bytes of the chip is padding */
 	uint32_t signature                 : 32; /* Put 0x0FF0A55A here. confirmed in deblobbed_descriptor.bin */
     /* any other value means non-descriptor mode, which probably won't work on most sandybridge systems */
 };
@@ -85,12 +83,12 @@ struct FLVALSIG /* DONE (sandybridge conversion) */
 struct FLMAP0 /* DONE (sandybridge conversion) */
 {
 	/* least signicant bits */
-	uint8_t FCBA                      : 8; /* Flash Component Base Address. set this to 0x03 - this will define FCBA as 0x30 (0x03 shifted 4 bits left) */
-	uint8_t NC                        : 2; /* Number of Components (flash chips). 00 = 1 flash chip. 01 = 2 flash chips. X220 has 1 flash chip, so use 00b */
-	uint8_t reserved1                 : 6; /* unused? */
-	uint8_t FRBA                      : 8; /* Flash Region Base Address. set this to 0x04 - this will define FRBA as 0x40 */
-	uint8_t NR                        : 3; /* Number of Regions in the flash chip (NOTE: important for disabling ME) */
-	uint8_t reserved2                 : 5; /* unused? */
+	uint32_t FCBA                      : 8; /* Flash Component Base Address. set this to 0x03 - this will define FCBA as 0x30 (0x03 shifted 4 bits left) */
+	uint32_t NC                        : 2; /* Number of Components (flash chips). 00 = 1 flash chip. 01 = 2 flash chips. X220 has 1 flash chip, so use 00b */
+	uint32_t reserved1                 : 6; /* unused? */
+	uint32_t FRBA                      : 8; /* Flash Region Base Address. set this to 0x04 - this will define FRBA as 0x40 */
+	uint32_t NR                        : 3; /* Number of Regions in the flash chip (NOTE: important for disabling ME) */
+	uint32_t reserved2                 : 5; /* unused? */
 	/* most significant bits. */
 };
 
@@ -101,11 +99,11 @@ struct FLMAP0 /* DONE (sandybridge conversion) */
 struct FLMAP1 /* Recommended value 0x12100206 */
 {
 	/* least significant bits */
-	uint8_t FMBA                      : 8; /* Flash Master Base Address. set this to 0x06 (defines FMBA as 0x60) */
-	uint8_t NM                        : 3; /* Number of Masters. total number of flash masters (flash chips?) set this to 010b */
-	uint8_t reserved                  : 5; /* unused? */
-	uint8_t FPSBA                     : 8; /* Flash PCH Strap Base Address - set to 0x10 (defines it as 0x100) */
-	uint8_t ISL                       : 8; /* PCH Strap Length - 1s based number of dwords of PCH straps to be read - 0xFF means there are 255 DWords (is it actually 256 though?) - meaning, 1KiB of straps to be read. all zeroes means that there are no straps to be read.
+	uint32_t FMBA                      : 8; /* Flash Master Base Address. set this to 0x06 (defines FMBA as 0x60) */
+	uint32_t NM                        : 3; /* Number of Masters. total number of flash masters (flash chips?) set this to 010b */
+	uint32_t reserved                  : 5; /* unused? */
+	uint32_t FPSBA                     : 8; /* Flash PCH Strap Base Address - set to 0x10 (defines it as 0x100) */
+	uint32_t ISL                       : 8; /* PCH Strap Length - 1s based number of dwords of PCH straps to be read - 0xFF means there are 255 DWords (is it actually 256 though?) - meaning, 1KiB of straps to be read. all zeroes means that there are no straps to be read.
     ISL ****MUSH**** be set to 0x12 */
 	/* most significant bits */
 };
@@ -117,11 +115,19 @@ struct FLMAP1 /* Recommended value 0x12100206 */
 struct FLMAP2  /* recommended value 0x00000120 */
 {
 	/* least significant bits */
-	uint8_t FPSBA                     : 8; /* Flash Processor Strap Base Address. Set this to 0x20 (defines it as 0x200) */
-	uint8_t PSL                       : 8; /* PROC Strap Length. 1s based number of dwords of processor straps to be read. up to 255 dwords (1KB) max. all zeroes indicates that no straps are to be read. Set this to 0x01 */
-	uint16_t reserved                 : 16;
+	uint32_t FPSBA                     : 8; /* Flash Processor Strap Base Address. Set this to 0x20 (defines it as 0x200) */
+	uint32_t PSL                       : 8; /* PROC Strap Length. 1s based number of dwords of processor straps to be read. up to 255 dwords (1KB) max. all zeroes indicates that no straps are to be read. Set this to 0x01 */
+	uint32_t reserved                 : 16;
         /* Of interest: factory.rom on X220 showed this value (little endian) as 0x0021 (stored at 21 00 in the ROM) */
 	/* most significant bits */
+};
+
+/*
+    New FLMAP; added to sandybridge. Was not present in ICH9
+*/
+struct FLMAP3   /* reserved by Intel */
+{
+    uint32_t reserved                  : 32;
 };
 
 /* Flash Map Registers */
@@ -135,6 +141,7 @@ struct FLMAPS
 	struct FLMAP0 flMap0;
 	struct FLMAP1 flMap1;
 	struct FLMAP2 flMap2;
+    struct FLMAP3 flMap3;
 };
 
 /* 0x30 is default address in the flash chip */
@@ -535,8 +542,17 @@ struct DESCRIPTORUPPERMAPRECORD /* only contains FLUMAP1 - Flash Upper Map 1 / F
 /* 4KiB descriptor region, goes at the beginning of the ROM image */
 struct DESCRIPTORREGIONRECORD
 {
+    /*
+        this util currently fails because the structs are not set up properly.
+        it should be 4096 bytes for this struct, but it's 4100 bytes, so I'm
+        going through each struct and manually verifying that each one is correct
+    */
+    uint8_t padding[16];
 	struct FLVALSIG flValSig;                                   /* Flash Valid Signature Register */
 	struct FLMAPS flMaps;                                       /* Flash Map Registers */
+    uint8_t padding2[6];
+
+    /* everything below this line is not yet verified/corrected: */
 	struct COMPONENTSECTIONRECORD componentSection;             /* Component Section Record */
 	struct REGIONSECTIONRECORD regionSection;                   /* Flash Descriptor Region Section */
 	struct MASTERACCESSSECTIONRECORD masterAccessSection;       /* Master Access Section */
@@ -561,7 +577,7 @@ struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCR
 struct DESCRIPTORREGIONRECORD descriptorOemString(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD librebootSetGbeBiosDescriptorRegions(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
 uint8_t componentDensity(unsigned int romSizeInBytes);
-struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRIPTORREGIONRECORD descriptorStruct, unsigned int romSize);
 int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);

@@ -309,14 +309,14 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	/* Flash Valid Signature Register */
 	fprintf(fp, "    /* Flash Valid Signature Register */\n");
 	for (i = 0; i < 16; i++) {
-		if (descriptorStruct.componentSection.padding[i] != 0xFF) {
+		if (descriptorStruct.padding[i] != 0xFF) {
 			for (j = 0; j < 16; j++) {
-				fprintf(fp, "    descriptorStruct.flValSig.padding[%d] = 0x%02x;\n", j, descriptorStruct.flValSig.padding[j]);
+				fprintf(fp, "    descriptorStruct.padding[%d] = 0x%02x;\n", j, descriptorStruct.padding[j]);
 			}
 			break;
 		} else if (i == 15) {
 			fprintf(fp, "    for (i = 0; i < 16; i++) {\n");
-			fprintf(fp, "        descriptorStruct.flValSig.padding[i] = 0xFF;\n");
+			fprintf(fp, "        descriptorStruct.padding[i] = 0xFF;\n");
 			fprintf(fp, "    }\n");
 			break;
 		}
@@ -343,7 +343,23 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    descriptorStruct.flMaps.flMap2.FPSBA = 0x%02x;\n", descriptorStruct.flMaps.flMap2.FPSBA);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap2.PSL = 0x%02x;\n", descriptorStruct.flMaps.flMap2.PSL);
 	fprintf(fp, "    descriptorStruct.flMaps.flMap2.reserved = 0x%04x;\n", descriptorStruct.flMaps.flMap2.reserved);
+	fprintf(fp, "    /* FLMAP3 */\n");
+	fprintf(fp, "    descriptorStruct.flMaps.flMap3.reserved = 0x%08x;\n", descriptorStruct.flMaps.flMap3.reserved);
 	fprintf(fp, "\n");
+   
+	for (i = 0; i < 6; i++) {
+		if (descriptorStruct.padding2[i] != 0xFF) {
+			for (j = 0; j < 6; j++) {
+				fprintf(fp, "    descriptorStruct.padding2[%d] = 0x%02x;\n", j, descriptorStruct.padding2[j]);
+			}
+			break;
+		} else if (i == 5) {
+			fprintf(fp, "    for (i = 0; i < 16; i++) {\n");
+			fprintf(fp, "        descriptorStruct.padding2[i] = 0xFF;\n");
+			fprintf(fp, "    }\n");
+			break;
+		}
+	}
 
 	/* Component Section Record */
 	fprintf(fp, "    /* Component Section Record */\n");
