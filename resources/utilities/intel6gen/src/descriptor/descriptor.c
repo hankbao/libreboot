@@ -216,6 +216,10 @@ struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRI
 
 	descriptorStruct = descriptorOemString(descriptorStruct);
 
+    /* disable platform data region */
+    descriptorStruct.regionSection.flReg4.BASE = 0x1fff;
+    descriptorStruct.regionSection.flReg4.LIMIT = 0;
+
 	/* 
 	 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 	 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
@@ -723,7 +727,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "    /* see ../descriptor/descriptor.c */\n");
 	fprintf(fp, "    /* Magic String (ascii characters) */\n");
 	for(i = 0; i < 256; i++) {
-		fprintf(fp, "    descriptorStruct.oemSection.magicString[%d] = 0x%02x;\n\n", i, descriptorStruct.oemSection[i]);
+		fprintf(fp, "    descriptorStruct.oemSection[%d] = 0x%02x;\n\n", i, descriptorStruct.oemSection[i]);
 	}
 	fprintf(fp, "\n");
 

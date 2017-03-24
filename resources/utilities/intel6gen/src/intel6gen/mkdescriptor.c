@@ -91,9 +91,9 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     descriptorStruct.regionSection.flReg3.LIMIT = 0x0002;
     descriptorStruct.regionSection.flReg3.reserved2 = 0x0;
     /* FLREG4 (Platform) */
-    descriptorStruct.regionSection.flReg4.BASE = 0x0001; /* see ../descriptor/descriptor.c */
+    descriptorStruct.regionSection.flReg4.BASE = 0x1fff; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg4.reserved1 = 0x0;
-    descriptorStruct.regionSection.flReg4.LIMIT = 0x0002; /* see ../descriptor/descriptor.c */
+    descriptorStruct.regionSection.flReg4.LIMIT = 0x0000; /* see ../descriptor/descriptor.c */
     descriptorStruct.regionSection.flReg4.reserved2 = 0x0;
     /* Padding */
     descriptorStruct.regionSection.padding[0] = 0xff;
@@ -3770,517 +3770,517 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize)
     /* OEM section */
     /* see ../descriptor/descriptor.c */
     /* Magic String (ascii characters) */
-    descriptorStruct.oemSection.magicString[0] = 0x4c;
+    descriptorStruct.oemSection[0] = 0x4c;
 
-    descriptorStruct.oemSection.magicString[1] = 0x49;
+    descriptorStruct.oemSection[1] = 0x49;
 
-    descriptorStruct.oemSection.magicString[2] = 0x42;
+    descriptorStruct.oemSection[2] = 0x42;
 
-    descriptorStruct.oemSection.magicString[3] = 0x45;
+    descriptorStruct.oemSection[3] = 0x45;
 
-    descriptorStruct.oemSection.magicString[4] = 0x52;
+    descriptorStruct.oemSection[4] = 0x52;
 
-    descriptorStruct.oemSection.magicString[5] = 0x41;
+    descriptorStruct.oemSection[5] = 0x41;
 
-    descriptorStruct.oemSection.magicString[6] = 0x54;
+    descriptorStruct.oemSection[6] = 0x54;
 
-    descriptorStruct.oemSection.magicString[7] = 0x45;
+    descriptorStruct.oemSection[7] = 0x45;
 
-    descriptorStruct.oemSection.magicString[8] = 0xff;
+    descriptorStruct.oemSection[8] = 0xff;
 
-    descriptorStruct.oemSection.magicString[9] = 0xff;
+    descriptorStruct.oemSection[9] = 0xff;
 
-    descriptorStruct.oemSection.magicString[10] = 0xff;
+    descriptorStruct.oemSection[10] = 0xff;
 
-    descriptorStruct.oemSection.magicString[11] = 0xff;
+    descriptorStruct.oemSection[11] = 0xff;
 
-    descriptorStruct.oemSection.magicString[12] = 0xff;
+    descriptorStruct.oemSection[12] = 0xff;
 
-    descriptorStruct.oemSection.magicString[13] = 0xff;
+    descriptorStruct.oemSection[13] = 0xff;
 
-    descriptorStruct.oemSection.magicString[14] = 0xff;
+    descriptorStruct.oemSection[14] = 0xff;
 
-    descriptorStruct.oemSection.magicString[15] = 0xff;
+    descriptorStruct.oemSection[15] = 0xff;
 
-    descriptorStruct.oemSection.magicString[16] = 0xff;
+    descriptorStruct.oemSection[16] = 0xff;
 
-    descriptorStruct.oemSection.magicString[17] = 0xff;
+    descriptorStruct.oemSection[17] = 0xff;
 
-    descriptorStruct.oemSection.magicString[18] = 0xff;
+    descriptorStruct.oemSection[18] = 0xff;
 
-    descriptorStruct.oemSection.magicString[19] = 0xff;
+    descriptorStruct.oemSection[19] = 0xff;
 
-    descriptorStruct.oemSection.magicString[20] = 0xff;
+    descriptorStruct.oemSection[20] = 0xff;
 
-    descriptorStruct.oemSection.magicString[21] = 0xff;
+    descriptorStruct.oemSection[21] = 0xff;
 
-    descriptorStruct.oemSection.magicString[22] = 0xff;
+    descriptorStruct.oemSection[22] = 0xff;
 
-    descriptorStruct.oemSection.magicString[23] = 0xff;
+    descriptorStruct.oemSection[23] = 0xff;
 
-    descriptorStruct.oemSection.magicString[24] = 0xff;
+    descriptorStruct.oemSection[24] = 0xff;
 
-    descriptorStruct.oemSection.magicString[25] = 0xff;
+    descriptorStruct.oemSection[25] = 0xff;
 
-    descriptorStruct.oemSection.magicString[26] = 0xff;
+    descriptorStruct.oemSection[26] = 0xff;
 
-    descriptorStruct.oemSection.magicString[27] = 0xff;
+    descriptorStruct.oemSection[27] = 0xff;
 
-    descriptorStruct.oemSection.magicString[28] = 0xff;
+    descriptorStruct.oemSection[28] = 0xff;
 
-    descriptorStruct.oemSection.magicString[29] = 0xff;
+    descriptorStruct.oemSection[29] = 0xff;
 
-    descriptorStruct.oemSection.magicString[30] = 0xff;
+    descriptorStruct.oemSection[30] = 0xff;
 
-    descriptorStruct.oemSection.magicString[31] = 0xff;
+    descriptorStruct.oemSection[31] = 0xff;
 
-    descriptorStruct.oemSection.magicString[32] = 0xff;
+    descriptorStruct.oemSection[32] = 0xff;
 
-    descriptorStruct.oemSection.magicString[33] = 0xff;
+    descriptorStruct.oemSection[33] = 0xff;
 
-    descriptorStruct.oemSection.magicString[34] = 0xff;
+    descriptorStruct.oemSection[34] = 0xff;
 
-    descriptorStruct.oemSection.magicString[35] = 0xff;
+    descriptorStruct.oemSection[35] = 0xff;
 
-    descriptorStruct.oemSection.magicString[36] = 0xff;
+    descriptorStruct.oemSection[36] = 0xff;
 
-    descriptorStruct.oemSection.magicString[37] = 0xff;
+    descriptorStruct.oemSection[37] = 0xff;
 
-    descriptorStruct.oemSection.magicString[38] = 0xff;
+    descriptorStruct.oemSection[38] = 0xff;
 
-    descriptorStruct.oemSection.magicString[39] = 0xff;
+    descriptorStruct.oemSection[39] = 0xff;
 
-    descriptorStruct.oemSection.magicString[40] = 0xff;
+    descriptorStruct.oemSection[40] = 0xff;
 
-    descriptorStruct.oemSection.magicString[41] = 0xff;
+    descriptorStruct.oemSection[41] = 0xff;
 
-    descriptorStruct.oemSection.magicString[42] = 0xff;
+    descriptorStruct.oemSection[42] = 0xff;
 
-    descriptorStruct.oemSection.magicString[43] = 0xff;
+    descriptorStruct.oemSection[43] = 0xff;
 
-    descriptorStruct.oemSection.magicString[44] = 0xff;
+    descriptorStruct.oemSection[44] = 0xff;
 
-    descriptorStruct.oemSection.magicString[45] = 0xff;
+    descriptorStruct.oemSection[45] = 0xff;
 
-    descriptorStruct.oemSection.magicString[46] = 0xff;
+    descriptorStruct.oemSection[46] = 0xff;
 
-    descriptorStruct.oemSection.magicString[47] = 0xff;
+    descriptorStruct.oemSection[47] = 0xff;
 
-    descriptorStruct.oemSection.magicString[48] = 0xff;
+    descriptorStruct.oemSection[48] = 0xff;
 
-    descriptorStruct.oemSection.magicString[49] = 0xff;
+    descriptorStruct.oemSection[49] = 0xff;
 
-    descriptorStruct.oemSection.magicString[50] = 0xff;
+    descriptorStruct.oemSection[50] = 0xff;
 
-    descriptorStruct.oemSection.magicString[51] = 0xff;
+    descriptorStruct.oemSection[51] = 0xff;
 
-    descriptorStruct.oemSection.magicString[52] = 0xff;
+    descriptorStruct.oemSection[52] = 0xff;
 
-    descriptorStruct.oemSection.magicString[53] = 0xff;
+    descriptorStruct.oemSection[53] = 0xff;
 
-    descriptorStruct.oemSection.magicString[54] = 0xff;
+    descriptorStruct.oemSection[54] = 0xff;
 
-    descriptorStruct.oemSection.magicString[55] = 0xff;
+    descriptorStruct.oemSection[55] = 0xff;
 
-    descriptorStruct.oemSection.magicString[56] = 0xff;
+    descriptorStruct.oemSection[56] = 0xff;
 
-    descriptorStruct.oemSection.magicString[57] = 0xff;
+    descriptorStruct.oemSection[57] = 0xff;
 
-    descriptorStruct.oemSection.magicString[58] = 0xff;
+    descriptorStruct.oemSection[58] = 0xff;
 
-    descriptorStruct.oemSection.magicString[59] = 0xff;
+    descriptorStruct.oemSection[59] = 0xff;
 
-    descriptorStruct.oemSection.magicString[60] = 0xff;
+    descriptorStruct.oemSection[60] = 0xff;
 
-    descriptorStruct.oemSection.magicString[61] = 0xff;
+    descriptorStruct.oemSection[61] = 0xff;
 
-    descriptorStruct.oemSection.magicString[62] = 0xff;
+    descriptorStruct.oemSection[62] = 0xff;
 
-    descriptorStruct.oemSection.magicString[63] = 0xff;
+    descriptorStruct.oemSection[63] = 0xff;
 
-    descriptorStruct.oemSection.magicString[64] = 0xff;
+    descriptorStruct.oemSection[64] = 0xff;
 
-    descriptorStruct.oemSection.magicString[65] = 0xff;
+    descriptorStruct.oemSection[65] = 0xff;
 
-    descriptorStruct.oemSection.magicString[66] = 0xff;
+    descriptorStruct.oemSection[66] = 0xff;
 
-    descriptorStruct.oemSection.magicString[67] = 0xff;
+    descriptorStruct.oemSection[67] = 0xff;
 
-    descriptorStruct.oemSection.magicString[68] = 0xff;
+    descriptorStruct.oemSection[68] = 0xff;
 
-    descriptorStruct.oemSection.magicString[69] = 0xff;
+    descriptorStruct.oemSection[69] = 0xff;
 
-    descriptorStruct.oemSection.magicString[70] = 0xff;
+    descriptorStruct.oemSection[70] = 0xff;
 
-    descriptorStruct.oemSection.magicString[71] = 0xff;
+    descriptorStruct.oemSection[71] = 0xff;
 
-    descriptorStruct.oemSection.magicString[72] = 0xff;
+    descriptorStruct.oemSection[72] = 0xff;
 
-    descriptorStruct.oemSection.magicString[73] = 0xff;
+    descriptorStruct.oemSection[73] = 0xff;
 
-    descriptorStruct.oemSection.magicString[74] = 0xff;
+    descriptorStruct.oemSection[74] = 0xff;
 
-    descriptorStruct.oemSection.magicString[75] = 0xff;
+    descriptorStruct.oemSection[75] = 0xff;
 
-    descriptorStruct.oemSection.magicString[76] = 0xff;
+    descriptorStruct.oemSection[76] = 0xff;
 
-    descriptorStruct.oemSection.magicString[77] = 0xff;
+    descriptorStruct.oemSection[77] = 0xff;
 
-    descriptorStruct.oemSection.magicString[78] = 0xff;
+    descriptorStruct.oemSection[78] = 0xff;
 
-    descriptorStruct.oemSection.magicString[79] = 0xff;
+    descriptorStruct.oemSection[79] = 0xff;
 
-    descriptorStruct.oemSection.magicString[80] = 0xff;
+    descriptorStruct.oemSection[80] = 0xff;
 
-    descriptorStruct.oemSection.magicString[81] = 0xff;
+    descriptorStruct.oemSection[81] = 0xff;
 
-    descriptorStruct.oemSection.magicString[82] = 0xff;
+    descriptorStruct.oemSection[82] = 0xff;
 
-    descriptorStruct.oemSection.magicString[83] = 0xff;
+    descriptorStruct.oemSection[83] = 0xff;
 
-    descriptorStruct.oemSection.magicString[84] = 0xff;
+    descriptorStruct.oemSection[84] = 0xff;
 
-    descriptorStruct.oemSection.magicString[85] = 0xff;
+    descriptorStruct.oemSection[85] = 0xff;
 
-    descriptorStruct.oemSection.magicString[86] = 0xff;
+    descriptorStruct.oemSection[86] = 0xff;
 
-    descriptorStruct.oemSection.magicString[87] = 0xff;
+    descriptorStruct.oemSection[87] = 0xff;
 
-    descriptorStruct.oemSection.magicString[88] = 0xff;
+    descriptorStruct.oemSection[88] = 0xff;
 
-    descriptorStruct.oemSection.magicString[89] = 0xff;
+    descriptorStruct.oemSection[89] = 0xff;
 
-    descriptorStruct.oemSection.magicString[90] = 0xff;
+    descriptorStruct.oemSection[90] = 0xff;
 
-    descriptorStruct.oemSection.magicString[91] = 0xff;
+    descriptorStruct.oemSection[91] = 0xff;
 
-    descriptorStruct.oemSection.magicString[92] = 0xff;
+    descriptorStruct.oemSection[92] = 0xff;
 
-    descriptorStruct.oemSection.magicString[93] = 0xff;
+    descriptorStruct.oemSection[93] = 0xff;
 
-    descriptorStruct.oemSection.magicString[94] = 0xff;
+    descriptorStruct.oemSection[94] = 0xff;
 
-    descriptorStruct.oemSection.magicString[95] = 0xff;
+    descriptorStruct.oemSection[95] = 0xff;
 
-    descriptorStruct.oemSection.magicString[96] = 0xff;
+    descriptorStruct.oemSection[96] = 0xff;
 
-    descriptorStruct.oemSection.magicString[97] = 0xff;
+    descriptorStruct.oemSection[97] = 0xff;
 
-    descriptorStruct.oemSection.magicString[98] = 0xff;
+    descriptorStruct.oemSection[98] = 0xff;
 
-    descriptorStruct.oemSection.magicString[99] = 0xff;
+    descriptorStruct.oemSection[99] = 0xff;
 
-    descriptorStruct.oemSection.magicString[100] = 0xff;
+    descriptorStruct.oemSection[100] = 0xff;
 
-    descriptorStruct.oemSection.magicString[101] = 0xff;
+    descriptorStruct.oemSection[101] = 0xff;
 
-    descriptorStruct.oemSection.magicString[102] = 0xff;
+    descriptorStruct.oemSection[102] = 0xff;
 
-    descriptorStruct.oemSection.magicString[103] = 0xff;
+    descriptorStruct.oemSection[103] = 0xff;
 
-    descriptorStruct.oemSection.magicString[104] = 0xff;
+    descriptorStruct.oemSection[104] = 0xff;
 
-    descriptorStruct.oemSection.magicString[105] = 0xff;
+    descriptorStruct.oemSection[105] = 0xff;
 
-    descriptorStruct.oemSection.magicString[106] = 0xff;
+    descriptorStruct.oemSection[106] = 0xff;
 
-    descriptorStruct.oemSection.magicString[107] = 0xff;
+    descriptorStruct.oemSection[107] = 0xff;
 
-    descriptorStruct.oemSection.magicString[108] = 0xff;
+    descriptorStruct.oemSection[108] = 0xff;
 
-    descriptorStruct.oemSection.magicString[109] = 0xff;
+    descriptorStruct.oemSection[109] = 0xff;
 
-    descriptorStruct.oemSection.magicString[110] = 0xff;
+    descriptorStruct.oemSection[110] = 0xff;
 
-    descriptorStruct.oemSection.magicString[111] = 0xff;
+    descriptorStruct.oemSection[111] = 0xff;
 
-    descriptorStruct.oemSection.magicString[112] = 0xff;
+    descriptorStruct.oemSection[112] = 0xff;
 
-    descriptorStruct.oemSection.magicString[113] = 0xff;
+    descriptorStruct.oemSection[113] = 0xff;
 
-    descriptorStruct.oemSection.magicString[114] = 0xff;
+    descriptorStruct.oemSection[114] = 0xff;
 
-    descriptorStruct.oemSection.magicString[115] = 0xff;
+    descriptorStruct.oemSection[115] = 0xff;
 
-    descriptorStruct.oemSection.magicString[116] = 0xff;
+    descriptorStruct.oemSection[116] = 0xff;
 
-    descriptorStruct.oemSection.magicString[117] = 0xff;
+    descriptorStruct.oemSection[117] = 0xff;
 
-    descriptorStruct.oemSection.magicString[118] = 0xff;
+    descriptorStruct.oemSection[118] = 0xff;
 
-    descriptorStruct.oemSection.magicString[119] = 0xff;
+    descriptorStruct.oemSection[119] = 0xff;
 
-    descriptorStruct.oemSection.magicString[120] = 0xff;
+    descriptorStruct.oemSection[120] = 0xff;
 
-    descriptorStruct.oemSection.magicString[121] = 0xff;
+    descriptorStruct.oemSection[121] = 0xff;
 
-    descriptorStruct.oemSection.magicString[122] = 0xff;
+    descriptorStruct.oemSection[122] = 0xff;
 
-    descriptorStruct.oemSection.magicString[123] = 0xff;
+    descriptorStruct.oemSection[123] = 0xff;
 
-    descriptorStruct.oemSection.magicString[124] = 0xff;
+    descriptorStruct.oemSection[124] = 0xff;
 
-    descriptorStruct.oemSection.magicString[125] = 0xff;
+    descriptorStruct.oemSection[125] = 0xff;
 
-    descriptorStruct.oemSection.magicString[126] = 0xff;
+    descriptorStruct.oemSection[126] = 0xff;
 
-    descriptorStruct.oemSection.magicString[127] = 0xff;
+    descriptorStruct.oemSection[127] = 0xff;
 
-    descriptorStruct.oemSection.magicString[128] = 0xff;
+    descriptorStruct.oemSection[128] = 0xff;
 
-    descriptorStruct.oemSection.magicString[129] = 0xff;
+    descriptorStruct.oemSection[129] = 0xff;
 
-    descriptorStruct.oemSection.magicString[130] = 0xff;
+    descriptorStruct.oemSection[130] = 0xff;
 
-    descriptorStruct.oemSection.magicString[131] = 0xff;
+    descriptorStruct.oemSection[131] = 0xff;
 
-    descriptorStruct.oemSection.magicString[132] = 0xff;
+    descriptorStruct.oemSection[132] = 0xff;
 
-    descriptorStruct.oemSection.magicString[133] = 0xff;
+    descriptorStruct.oemSection[133] = 0xff;
 
-    descriptorStruct.oemSection.magicString[134] = 0xff;
+    descriptorStruct.oemSection[134] = 0xff;
 
-    descriptorStruct.oemSection.magicString[135] = 0xff;
+    descriptorStruct.oemSection[135] = 0xff;
 
-    descriptorStruct.oemSection.magicString[136] = 0xff;
+    descriptorStruct.oemSection[136] = 0xff;
 
-    descriptorStruct.oemSection.magicString[137] = 0xff;
+    descriptorStruct.oemSection[137] = 0xff;
 
-    descriptorStruct.oemSection.magicString[138] = 0xff;
+    descriptorStruct.oemSection[138] = 0xff;
 
-    descriptorStruct.oemSection.magicString[139] = 0xff;
+    descriptorStruct.oemSection[139] = 0xff;
 
-    descriptorStruct.oemSection.magicString[140] = 0xff;
+    descriptorStruct.oemSection[140] = 0xff;
 
-    descriptorStruct.oemSection.magicString[141] = 0xff;
+    descriptorStruct.oemSection[141] = 0xff;
 
-    descriptorStruct.oemSection.magicString[142] = 0xff;
+    descriptorStruct.oemSection[142] = 0xff;
 
-    descriptorStruct.oemSection.magicString[143] = 0xff;
+    descriptorStruct.oemSection[143] = 0xff;
 
-    descriptorStruct.oemSection.magicString[144] = 0xff;
+    descriptorStruct.oemSection[144] = 0xff;
 
-    descriptorStruct.oemSection.magicString[145] = 0xff;
+    descriptorStruct.oemSection[145] = 0xff;
 
-    descriptorStruct.oemSection.magicString[146] = 0xff;
+    descriptorStruct.oemSection[146] = 0xff;
 
-    descriptorStruct.oemSection.magicString[147] = 0xff;
+    descriptorStruct.oemSection[147] = 0xff;
 
-    descriptorStruct.oemSection.magicString[148] = 0xff;
+    descriptorStruct.oemSection[148] = 0xff;
 
-    descriptorStruct.oemSection.magicString[149] = 0xff;
+    descriptorStruct.oemSection[149] = 0xff;
 
-    descriptorStruct.oemSection.magicString[150] = 0xff;
+    descriptorStruct.oemSection[150] = 0xff;
 
-    descriptorStruct.oemSection.magicString[151] = 0xff;
+    descriptorStruct.oemSection[151] = 0xff;
 
-    descriptorStruct.oemSection.magicString[152] = 0xff;
+    descriptorStruct.oemSection[152] = 0xff;
 
-    descriptorStruct.oemSection.magicString[153] = 0xff;
+    descriptorStruct.oemSection[153] = 0xff;
 
-    descriptorStruct.oemSection.magicString[154] = 0xff;
+    descriptorStruct.oemSection[154] = 0xff;
 
-    descriptorStruct.oemSection.magicString[155] = 0xff;
+    descriptorStruct.oemSection[155] = 0xff;
 
-    descriptorStruct.oemSection.magicString[156] = 0xff;
+    descriptorStruct.oemSection[156] = 0xff;
 
-    descriptorStruct.oemSection.magicString[157] = 0xff;
+    descriptorStruct.oemSection[157] = 0xff;
 
-    descriptorStruct.oemSection.magicString[158] = 0xff;
+    descriptorStruct.oemSection[158] = 0xff;
 
-    descriptorStruct.oemSection.magicString[159] = 0xff;
+    descriptorStruct.oemSection[159] = 0xff;
 
-    descriptorStruct.oemSection.magicString[160] = 0xff;
+    descriptorStruct.oemSection[160] = 0xff;
 
-    descriptorStruct.oemSection.magicString[161] = 0xff;
+    descriptorStruct.oemSection[161] = 0xff;
 
-    descriptorStruct.oemSection.magicString[162] = 0xff;
+    descriptorStruct.oemSection[162] = 0xff;
 
-    descriptorStruct.oemSection.magicString[163] = 0xff;
+    descriptorStruct.oemSection[163] = 0xff;
 
-    descriptorStruct.oemSection.magicString[164] = 0xff;
+    descriptorStruct.oemSection[164] = 0xff;
 
-    descriptorStruct.oemSection.magicString[165] = 0xff;
+    descriptorStruct.oemSection[165] = 0xff;
 
-    descriptorStruct.oemSection.magicString[166] = 0xff;
+    descriptorStruct.oemSection[166] = 0xff;
 
-    descriptorStruct.oemSection.magicString[167] = 0xff;
+    descriptorStruct.oemSection[167] = 0xff;
 
-    descriptorStruct.oemSection.magicString[168] = 0xff;
+    descriptorStruct.oemSection[168] = 0xff;
 
-    descriptorStruct.oemSection.magicString[169] = 0xff;
+    descriptorStruct.oemSection[169] = 0xff;
 
-    descriptorStruct.oemSection.magicString[170] = 0xff;
+    descriptorStruct.oemSection[170] = 0xff;
 
-    descriptorStruct.oemSection.magicString[171] = 0xff;
+    descriptorStruct.oemSection[171] = 0xff;
 
-    descriptorStruct.oemSection.magicString[172] = 0xff;
+    descriptorStruct.oemSection[172] = 0xff;
 
-    descriptorStruct.oemSection.magicString[173] = 0xff;
+    descriptorStruct.oemSection[173] = 0xff;
 
-    descriptorStruct.oemSection.magicString[174] = 0xff;
+    descriptorStruct.oemSection[174] = 0xff;
 
-    descriptorStruct.oemSection.magicString[175] = 0xff;
+    descriptorStruct.oemSection[175] = 0xff;
 
-    descriptorStruct.oemSection.magicString[176] = 0xff;
+    descriptorStruct.oemSection[176] = 0xff;
 
-    descriptorStruct.oemSection.magicString[177] = 0xff;
+    descriptorStruct.oemSection[177] = 0xff;
 
-    descriptorStruct.oemSection.magicString[178] = 0xff;
+    descriptorStruct.oemSection[178] = 0xff;
 
-    descriptorStruct.oemSection.magicString[179] = 0xff;
+    descriptorStruct.oemSection[179] = 0xff;
 
-    descriptorStruct.oemSection.magicString[180] = 0xff;
+    descriptorStruct.oemSection[180] = 0xff;
 
-    descriptorStruct.oemSection.magicString[181] = 0xff;
+    descriptorStruct.oemSection[181] = 0xff;
 
-    descriptorStruct.oemSection.magicString[182] = 0xff;
+    descriptorStruct.oemSection[182] = 0xff;
 
-    descriptorStruct.oemSection.magicString[183] = 0xff;
+    descriptorStruct.oemSection[183] = 0xff;
 
-    descriptorStruct.oemSection.magicString[184] = 0xff;
+    descriptorStruct.oemSection[184] = 0xff;
 
-    descriptorStruct.oemSection.magicString[185] = 0xff;
+    descriptorStruct.oemSection[185] = 0xff;
 
-    descriptorStruct.oemSection.magicString[186] = 0xff;
+    descriptorStruct.oemSection[186] = 0xff;
 
-    descriptorStruct.oemSection.magicString[187] = 0xff;
+    descriptorStruct.oemSection[187] = 0xff;
 
-    descriptorStruct.oemSection.magicString[188] = 0xff;
+    descriptorStruct.oemSection[188] = 0xff;
 
-    descriptorStruct.oemSection.magicString[189] = 0xff;
+    descriptorStruct.oemSection[189] = 0xff;
 
-    descriptorStruct.oemSection.magicString[190] = 0xff;
+    descriptorStruct.oemSection[190] = 0xff;
 
-    descriptorStruct.oemSection.magicString[191] = 0xff;
+    descriptorStruct.oemSection[191] = 0xff;
 
-    descriptorStruct.oemSection.magicString[192] = 0xff;
+    descriptorStruct.oemSection[192] = 0xff;
 
-    descriptorStruct.oemSection.magicString[193] = 0xff;
+    descriptorStruct.oemSection[193] = 0xff;
 
-    descriptorStruct.oemSection.magicString[194] = 0xff;
+    descriptorStruct.oemSection[194] = 0xff;
 
-    descriptorStruct.oemSection.magicString[195] = 0xff;
+    descriptorStruct.oemSection[195] = 0xff;
 
-    descriptorStruct.oemSection.magicString[196] = 0xff;
+    descriptorStruct.oemSection[196] = 0xff;
 
-    descriptorStruct.oemSection.magicString[197] = 0xff;
+    descriptorStruct.oemSection[197] = 0xff;
 
-    descriptorStruct.oemSection.magicString[198] = 0xff;
+    descriptorStruct.oemSection[198] = 0xff;
 
-    descriptorStruct.oemSection.magicString[199] = 0xff;
+    descriptorStruct.oemSection[199] = 0xff;
 
-    descriptorStruct.oemSection.magicString[200] = 0xff;
+    descriptorStruct.oemSection[200] = 0xff;
 
-    descriptorStruct.oemSection.magicString[201] = 0xff;
+    descriptorStruct.oemSection[201] = 0xff;
 
-    descriptorStruct.oemSection.magicString[202] = 0xff;
+    descriptorStruct.oemSection[202] = 0xff;
 
-    descriptorStruct.oemSection.magicString[203] = 0xff;
+    descriptorStruct.oemSection[203] = 0xff;
 
-    descriptorStruct.oemSection.magicString[204] = 0xff;
+    descriptorStruct.oemSection[204] = 0xff;
 
-    descriptorStruct.oemSection.magicString[205] = 0xff;
+    descriptorStruct.oemSection[205] = 0xff;
 
-    descriptorStruct.oemSection.magicString[206] = 0xff;
+    descriptorStruct.oemSection[206] = 0xff;
 
-    descriptorStruct.oemSection.magicString[207] = 0xff;
+    descriptorStruct.oemSection[207] = 0xff;
 
-    descriptorStruct.oemSection.magicString[208] = 0xff;
+    descriptorStruct.oemSection[208] = 0xff;
 
-    descriptorStruct.oemSection.magicString[209] = 0xff;
+    descriptorStruct.oemSection[209] = 0xff;
 
-    descriptorStruct.oemSection.magicString[210] = 0xff;
+    descriptorStruct.oemSection[210] = 0xff;
 
-    descriptorStruct.oemSection.magicString[211] = 0xff;
+    descriptorStruct.oemSection[211] = 0xff;
 
-    descriptorStruct.oemSection.magicString[212] = 0xff;
+    descriptorStruct.oemSection[212] = 0xff;
 
-    descriptorStruct.oemSection.magicString[213] = 0xff;
+    descriptorStruct.oemSection[213] = 0xff;
 
-    descriptorStruct.oemSection.magicString[214] = 0xff;
+    descriptorStruct.oemSection[214] = 0xff;
 
-    descriptorStruct.oemSection.magicString[215] = 0xff;
+    descriptorStruct.oemSection[215] = 0xff;
 
-    descriptorStruct.oemSection.magicString[216] = 0xff;
+    descriptorStruct.oemSection[216] = 0xff;
 
-    descriptorStruct.oemSection.magicString[217] = 0xff;
+    descriptorStruct.oemSection[217] = 0xff;
 
-    descriptorStruct.oemSection.magicString[218] = 0xff;
+    descriptorStruct.oemSection[218] = 0xff;
 
-    descriptorStruct.oemSection.magicString[219] = 0xff;
+    descriptorStruct.oemSection[219] = 0xff;
 
-    descriptorStruct.oemSection.magicString[220] = 0xff;
+    descriptorStruct.oemSection[220] = 0xff;
 
-    descriptorStruct.oemSection.magicString[221] = 0xff;
+    descriptorStruct.oemSection[221] = 0xff;
 
-    descriptorStruct.oemSection.magicString[222] = 0xff;
+    descriptorStruct.oemSection[222] = 0xff;
 
-    descriptorStruct.oemSection.magicString[223] = 0xff;
+    descriptorStruct.oemSection[223] = 0xff;
 
-    descriptorStruct.oemSection.magicString[224] = 0xff;
+    descriptorStruct.oemSection[224] = 0xff;
 
-    descriptorStruct.oemSection.magicString[225] = 0xff;
+    descriptorStruct.oemSection[225] = 0xff;
 
-    descriptorStruct.oemSection.magicString[226] = 0xff;
+    descriptorStruct.oemSection[226] = 0xff;
 
-    descriptorStruct.oemSection.magicString[227] = 0xff;
+    descriptorStruct.oemSection[227] = 0xff;
 
-    descriptorStruct.oemSection.magicString[228] = 0xff;
+    descriptorStruct.oemSection[228] = 0xff;
 
-    descriptorStruct.oemSection.magicString[229] = 0xff;
+    descriptorStruct.oemSection[229] = 0xff;
 
-    descriptorStruct.oemSection.magicString[230] = 0xff;
+    descriptorStruct.oemSection[230] = 0xff;
 
-    descriptorStruct.oemSection.magicString[231] = 0xff;
+    descriptorStruct.oemSection[231] = 0xff;
 
-    descriptorStruct.oemSection.magicString[232] = 0xff;
+    descriptorStruct.oemSection[232] = 0xff;
 
-    descriptorStruct.oemSection.magicString[233] = 0xff;
+    descriptorStruct.oemSection[233] = 0xff;
 
-    descriptorStruct.oemSection.magicString[234] = 0xff;
+    descriptorStruct.oemSection[234] = 0xff;
 
-    descriptorStruct.oemSection.magicString[235] = 0xff;
+    descriptorStruct.oemSection[235] = 0xff;
 
-    descriptorStruct.oemSection.magicString[236] = 0xff;
+    descriptorStruct.oemSection[236] = 0xff;
 
-    descriptorStruct.oemSection.magicString[237] = 0xff;
+    descriptorStruct.oemSection[237] = 0xff;
 
-    descriptorStruct.oemSection.magicString[238] = 0xff;
+    descriptorStruct.oemSection[238] = 0xff;
 
-    descriptorStruct.oemSection.magicString[239] = 0xff;
+    descriptorStruct.oemSection[239] = 0xff;
 
-    descriptorStruct.oemSection.magicString[240] = 0xff;
+    descriptorStruct.oemSection[240] = 0xff;
 
-    descriptorStruct.oemSection.magicString[241] = 0xff;
+    descriptorStruct.oemSection[241] = 0xff;
 
-    descriptorStruct.oemSection.magicString[242] = 0xff;
+    descriptorStruct.oemSection[242] = 0xff;
 
-    descriptorStruct.oemSection.magicString[243] = 0xff;
+    descriptorStruct.oemSection[243] = 0xff;
 
-    descriptorStruct.oemSection.magicString[244] = 0xff;
+    descriptorStruct.oemSection[244] = 0xff;
 
-    descriptorStruct.oemSection.magicString[245] = 0xff;
+    descriptorStruct.oemSection[245] = 0xff;
 
-    descriptorStruct.oemSection.magicString[246] = 0xff;
+    descriptorStruct.oemSection[246] = 0xff;
 
-    descriptorStruct.oemSection.magicString[247] = 0xff;
+    descriptorStruct.oemSection[247] = 0xff;
 
-    descriptorStruct.oemSection.magicString[248] = 0xff;
+    descriptorStruct.oemSection[248] = 0xff;
 
-    descriptorStruct.oemSection.magicString[249] = 0xff;
+    descriptorStruct.oemSection[249] = 0xff;
 
-    descriptorStruct.oemSection.magicString[250] = 0xff;
+    descriptorStruct.oemSection[250] = 0xff;
 
-    descriptorStruct.oemSection.magicString[251] = 0xff;
+    descriptorStruct.oemSection[251] = 0xff;
 
-    descriptorStruct.oemSection.magicString[252] = 0xff;
+    descriptorStruct.oemSection[252] = 0xff;
 
-    descriptorStruct.oemSection.magicString[253] = 0xff;
+    descriptorStruct.oemSection[253] = 0xff;
 
-    descriptorStruct.oemSection.magicString[254] = 0xff;
+    descriptorStruct.oemSection[254] = 0xff;
 
-    descriptorStruct.oemSection.magicString[255] = 0xff;
+    descriptorStruct.oemSection[255] = 0xff;
 
 
 
