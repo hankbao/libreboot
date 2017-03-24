@@ -5,7 +5,7 @@
  * Purpose: disable and remove the ME from intel6m/sandybridge systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *  Copyright (C) 2014,2015 Leah Rowe <info@minifree.org>
+ *  Copyright (C) 2014,2015,2017 Leah Rowe <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -117,13 +117,6 @@ int main()
 
 	/* Delete the ME/Platform regions, place Gbe after the descriptor, resize BIOS region to fill the gap */
 	descriptorStruct = librebootDescriptorStructFromFactory(descriptorStruct);
-
-	/* The ME is disallowed read-write access to all regions
-	 * (this is probably redundant, since the ME firmware is already removed from libreboot) */
-	descriptorStruct = descriptorMeRegionsForbidden(descriptorStruct);
-	/* Host/CPU is allowed to read/write all regions.
-	 * This makes flashrom -p internal work */
-	descriptorStruct = descriptorHostRegionsUnlocked(descriptorStruct);
 
 	gbeStruct8k = deblobbedGbeStructFromFactory(gbeStruct8k);
 

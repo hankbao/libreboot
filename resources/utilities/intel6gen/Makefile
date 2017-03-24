@@ -22,7 +22,7 @@ FORCEC99=-std=c99
 CFLAGS=-I. -Wall -Wextra -g $(FORCEC99)
 NOLINKER=-c
 
-all: intel6deblob intel6gen demefactory
+all: intel6deblob intel6gen
 
 intel6deblob: obj/intel6deblob.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
@@ -39,19 +39,6 @@ intel6gen: obj/intel6gen.o obj/intel6gen/mkdescriptor.o obj/intel6gen/mkgbe.o \
 	 obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
 		 -o intel6gen
-
-demefactory: obj/demefactory.o obj/common/descriptor_gbe.o \
-		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
-		
-	$(CC) $(CFLAGS) obj/demefactory.o obj/common/descriptor_gbe.o \
-		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
-		 -o demefactory
-
-# for demefactory
-# ----------------------------------------------------------------------
-
-obj/demefactory.o:
-	$(CC) $(CFLAGS) $(NOLINKER) src/demefactory.c -o obj/demefactory.o
 
 # for intel6deblob
 # ----------------------------------------------------------------------
@@ -71,7 +58,7 @@ obj/intel6gen/mkdescriptor.o:
 obj/intel6gen/mkgbe.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/intel6gen/mkgbe.c -o obj/intel6gen/mkgbe.o
 
-# for demefactory, intel6deblob and intel6gen:
+# for intel6deblob and intel6gen:
 # ----------------------------------------------------------------------
 
 obj/common/descriptor_gbe.o:
@@ -89,4 +76,4 @@ obj/gbe/gbe.o:
 # make clean
 # ----------------------------------------------------------------------
 clean:
-	rm -Rf intel6deblob intel6gen demefactory obj/*.o obj/*/*.o
+	rm -Rf intel6deblob intel6gen obj/*.o obj/*/*.o

@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
 	int i, j;
 	
 	struct GBEREGIONRECORD_8K gbeStruct8k = generatedGbeStruct8k();
-	struct DESCRIPTORREGIONRECORD descriptorStruct8M = generatedDescriptorStruct(ROMSIZE_8MB, WITHGBE);
+	struct DESCRIPTORREGIONRECORD descriptorStruct8M = generatedDescriptorStruct(ROMSIZE_8MB);
 	
 	/* Only for the compatibility checks */
 	struct DESCRIPTORREGIONRECORD dummyDescriptorStruct;
