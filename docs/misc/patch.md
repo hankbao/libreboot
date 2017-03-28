@@ -1,6 +1,4 @@
-
-Diff and patch 
-==============
+% Diff and patch 
 
 This is just a quick guide for reference, use 'man' to know more.
 

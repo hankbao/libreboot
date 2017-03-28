@@ -1,6 +1,4 @@
-
-List of recommended GNU+Linux distributions for libreboot 
-=========================================================
+% List of recommended GNU+Linux distributions for libreboot 
 
 Any distribution should work, so long as it uses kernel mode setting for
 graphics. We recommend using distributions that are entirely free

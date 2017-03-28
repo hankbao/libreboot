@@ -1,6 +1,4 @@
-
-Development notes (old/obsolete notes) 
-======================================
+% Development notes (old/obsolete notes) 
 
 For current notes, see [](./).
 

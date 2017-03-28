@@ -1,6 +1,4 @@
-
-ThinkPad T60: Recovery guide
-============================
+% ThinkPad T60: Recovery guide
 
 This section documents how to recover from a bad flash that prevents
 your ThinkPad T60 from booting.

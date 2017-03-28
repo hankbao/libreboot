@@ -1,6 +1,4 @@
-
-Libreboot documentation 
-=======================
+% Libreboot documentation 
 
 Information about this release can be found at
 [release.html](release.html). Always check

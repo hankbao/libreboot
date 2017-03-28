@@ -1,6 +1,4 @@
-
-ASUS KGPE-D16 server/workstation board 
-======================================
+% ASUS KGPE-D16 server/workstation board 
 
 This is a server board using AMD hardware (Fam10h **and Fam15h** CPUs
 available). It can also be used for building a high-powered workstation.

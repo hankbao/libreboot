@@ -1,6 +1,4 @@
-
-Thinkpad X60/X60s/X60t: Change keyboard
-=======================================
+% Thinkpad X60/X60s/X60t: Change keyboard
 
 Use this guide to replace the keyboard on your ThinkPad X60. Also works
 for X60s and X60 Tablet.

@@ -1,6 +1,4 @@
-
-GRUB hardening
-==============
+% GRUB hardening
 
 This guide deals with various ways in which you can harden your GRUB
 configuration, for security purposes. These steps are optional, but

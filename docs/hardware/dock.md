@@ -1,6 +1,4 @@
-
-Notes about DMA and the docking station (X60/T60)
-=================================================
+% Notes about DMA and the docking station (X60/T60)
 
 
 

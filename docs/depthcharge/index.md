@@ -1,6 +1,4 @@
-
-Depthcharge payload 
-===================
+% Depthcharge payload 
 
 This section relates to the depthcharge payload used in libreboot.
 

@@ -1,6 +1,4 @@
-
-Development notes 
-=================
+% Development notes 
 
 These are development notes, for future use. For old (obselete) notes,
 see [old.html](old.html).

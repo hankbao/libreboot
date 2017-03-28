@@ -1,6 +1,4 @@
-
-Security on the ThinkPad X60
-============================
+% Security on the ThinkPad X60
 
 Hardware modifications to enhance security on the ThinkPad X60. This
 tutorial is **incomplete** at the time of writing.

@@ -1,6 +1,4 @@
-
-GRUB payload 
-============
+% GRUB payload 
 
 This section relates to the GRUB payload used in libreboot.
 

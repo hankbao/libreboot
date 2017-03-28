@@ -1,6 +1,4 @@
-
-Changing the LCD panel on X60
-=============================
+% Changing the LCD panel on X60
 
 This tutorial is incomplete, and only pictures for now.
 

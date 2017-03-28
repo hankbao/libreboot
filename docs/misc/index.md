@@ -1,6 +1,4 @@
-
-Miscellaneous 
-=============
+% Miscellaneous 
 
 
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or

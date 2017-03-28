@@ -1,6 +1,4 @@
-
-Changing the fan/heatsink on the ThinkPad X60
-=============================================
+% Changing the fan/heatsink on the ThinkPad X60
 
 This guide will teach you how to replace the fan and heatsink on your
 ThinkPad X60.

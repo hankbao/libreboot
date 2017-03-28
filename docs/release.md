@@ -1,6 +1,4 @@
-
-Libreboot release information 
-=============================
+% Libreboot release information 
 
 Updated versions of libreboot can be found at
 [libreboot.org](http://libreboot.org/).

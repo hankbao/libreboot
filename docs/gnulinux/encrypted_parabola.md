@@ -1,6 +1,4 @@
-
-Installing Parabola or Arch GNU+Linux with full disk encryption (including /boot)
-=================================================================================
+% Installing Parabola or Arch GNU+Linux with full disk encryption (including /boot)
 
 Libreboot on x86 uses the GRUB
 [payload](http://www.coreboot.org/Payloads#GRUB_2) by default, which
