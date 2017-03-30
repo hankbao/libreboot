@@ -10,6 +10,8 @@ entry)
 Leah Rowe
 ---------
 
+Founder of the Libreboot project, and lead developer managing the project.
+
 Leah is also responsible for [vimuser.org](https://vimuser.org/)
 (personal website) and [transit.org.uk](https://transit.org.uk/)
 (support group for transgender people).
