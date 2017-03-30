@@ -280,7 +280,7 @@ Lessons Learned
 
 ### You lose control over your project
 
-Libreboot [witnessed this](gnu-insult.md) when it left GNU. The GNU
+Libreboot witnessed this only when it left GNU. The GNU
 project resisted it. Had libreboot stayed and integrated with GNU even
 more, then it would have been very difficult to leave. Thankfully, the
 GNU project did not yet have much influence over libreboot, and most of
