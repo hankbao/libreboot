@@ -15,7 +15,7 @@ logo](logo/logo.svg "Canteloupe, the libreboot mascot"){#logo}](logo-info.md)
 [Installation Guide](docs/install/)     --
 [Mirror](rsync.md)
 
-Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) BIOS or UEFI
+Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open Source BIOS or UEFI
 replacement; libre *boot firmware* that initializes the hardware and starts a
 bootloader for your operating system. [Watch our FOSDEM 2017 presentation about Libreboot (speaker is Leah Rowe,
 libreboot's founder)](https://video.fosdem.org/2017/K.1.105/libreboot.mp4)
