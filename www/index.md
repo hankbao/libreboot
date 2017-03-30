@@ -23,8 +23,7 @@ libreboot's founder)](https://video.fosdem.org/2017/K.1.105/libreboot.mp4)
 Libreboot is a long-time member of the [Peers
 Community](https://peers.community/) project, an organisation that supports
 Free Software and provides infrastructure, e.g. [Git
-hosting](https://notabug.org/). **[Libreboot exited from GNU on 2016-09-15, in protest of transgender discrimination at the FSF](gnu.md)**
-
+hosting](https://notabug.org/).
 **[We call on AMD to release source code and specs for the new AMD Ryzen
 platforms!](amd-libre.md)**
 
