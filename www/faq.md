@@ -686,13 +686,6 @@ SOIC-16 SPI flash chip:
 
 ![SOIT-8 SPI flash chip](images/soic16.jpg)
 
-Is this a GNU project anymore?
------------------------------------
-
-No. We left GNU on 2016-09-15, in protest of transphobia at the FSF. 
-
-See [here](gnu.md) for details.
-
 Freedom questions
 =================
 

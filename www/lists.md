@@ -2,10 +2,6 @@
 title: Archives of the old Libreboot mailing lists
 ...
 
-[Libreboot left the GNU project on 15 September 2016, in protest of
-discriminatory firing of a transgender person at the Free Software
-Foundation.](gnu.md)
-
 As part of this, we decided that it would be in the best interest of the
 libreboot project to no longer rely on any GNU infrastructure. We were
 initially contemplating hosting our own mailing lists, but then we
