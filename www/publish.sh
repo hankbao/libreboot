@@ -15,9 +15,13 @@ fi
 tail -n +5 $FILE.md >> temp.md
 
 # add license notice where applicable
-if [[ ${FILE} != "docs*" ]] ; then
-    cat license.md >> temp.md
-fi
+# TODO: make this less intrusive
+#if [[ ${FILE} != "docs*" ]] ; then
+#    cat license.md >> temp.md
+#fi
+
+# add unity text in
+sed temp.md -i -e "/%%UNITYLETTER%%/r unity.md" -e "s/%%UNITYLETTER%%//"
 
 # change out .md -> .html
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
