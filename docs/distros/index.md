@@ -5,14 +5,6 @@ graphics. We recommend using distributions that are entirely free
 software; most distros out there have proprietary software in them, but
 the ones that we recommend do not have proprietary software by default.
 
-Note: we are not the Free Software Foundation. The recommendations here
-consist of both FSF-endorsed and non-FSF-endorsed distros. Some of these
-distributions wrongly call the whole system *Linux*. Despite
-libreboot's [stance against the GNU project](../../gnu/), we still
-agree with the free software philosophy and we still want you to call
-the whole system *GNU+Linux*, since this is the technically correct name
-for the system.
-
 [How to install GNU+Linux on a libreboot
 system](../gnulinux/grub_boot_installer.html)
 
