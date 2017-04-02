@@ -8,7 +8,7 @@ initially contemplating hosting our own mailing lists, but then we
 realized that we could simply use the bug tracker on the
 [NotABug](https://notabug.org/vimuser/) page for the libreboot project.
 This uses NotABug's modified version of Gogs, which is a free
-[GitHub](github.md) replacement, and it also has pull requests. Bug
+GitHub replacement, and it also has pull requests. Bug
 reports and development discussions plus accepting patches is what we
 were using the old mailing lists for, but NotABug's bug tracker and
 pull request feature is far more efficient for this purpose.

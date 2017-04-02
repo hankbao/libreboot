@@ -150,5 +150,3 @@ We generally recommend self-hosting (first option in the list above).
 Git is a *decentralized* (distributed) version control system. However,
 not everyone can afford to do this, so using one of the other providers
 on the list above is also acceptable.
-
-We do not endorse [GitHub](github.md) or [GitLab](gitlab.md).
