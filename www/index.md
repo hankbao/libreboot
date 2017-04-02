@@ -9,7 +9,6 @@ logo](logo/logo.svg "Canteloupe, the libreboot mascot"){#logo}](logo-info.md)
 [Documentation](docs/)                                                      --
 [FAQ](faq.md)                                                               --
 [Donate](donate.md)                                                         --
-[Buy libreboot machines](suppliers.md)                                      --
 [Contributors](contrib.md)                                                  --
 [Report a bug](tasks.md)                                                    --
 [Submit a patch](git.md)                                                    --
