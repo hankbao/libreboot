@@ -189,24 +189,32 @@ The following parameters can be configured:
     -   Enabled with:
 
         \# **crossystem dev\_boot\_signed\_only=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_signed\_only=0**
 -   External media boot:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_usb=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_usb=0**
 -   Legacy payload boot:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_legacy=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_legacy=0**
 -   Default boot medium:
-    -   Internal storage:\
+    -   Internal storage:
+
         \# **crossystem dev\_default\_boot=disk**
-    -   External media:\
+    -   External media:
+
         \# **crossystem dev\_default\_boot=usb**
-    -   Legacy payload:\
+    -   Legacy payload:
+
         \# **crossystem dev\_default\_boot=legacy**
 
 

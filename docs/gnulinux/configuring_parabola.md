@@ -133,7 +133,8 @@ updating, resync with the latest package names/versions:
 (according to the wiki, -Syy is better than Sy because it refreshes the
 package list even if it appears to be up to date, which can be useful
 when switching to another mirror).\
-Then, update the system:\
+Then, update the system:
+
     # pacman -Syu
 
 **Before installing packages with 'pacman -S', always update first,
@@ -198,7 +199,8 @@ once in a while, to prevent it from growing too big (it's a cache of
 old package information, updated automatically when you do anything in
 pacman).**
 
-To clean out all old packages that are cached:\
+To clean out all old packages that are cached:
+
     # pacman -Sc
 
 The wiki cautions that this should be used with care. For example, since
@@ -207,7 +209,8 @@ want to revert back to an older package then it's useful to have the
 caches available. Only do this if you are sure that you won't need it.
 
 The wiki also mentions this method for removing everything from the
-cache, including currently installed packages that are cached:\
+cache, including currently installed packages that are cached:
+
     # pacman -Scc
 This is inadvisable, since it means re-downloading the package again if
 you wanted to quickly re-install it. This should only be used when disk
@@ -253,9 +256,11 @@ access to the entire operating system.
 
 Read the entire document linked to above, and then continue.
 
-Add your user:\
+Add your user:
+
     # useradd -m -G wheel -s /bin/bash *yourusername*
-Set a password:\
+Set a password:
+
     # passwd *yourusername*
 
 Use of the *diceware method* is recommended, for generating secure
@@ -282,7 +287,8 @@ sshd (openssh), dhcp, etc. There are countless others.
 the background behind the decision by Arch (Parabola's upstream
 supplier) to use systemd.
 
-The manpage should also help:\
+The manpage should also help:
+
     # man systemd
 The section on 'unit types' is especially useful.
 
@@ -302,7 +308,8 @@ The wiki also recommended a method for forwarding journal output to TTY
 12 (accessible by pressing ctrl+alt+f12, and you use ctrl+alt+\[F1-F12\]
 to switch between terminals). I decided not to enable it.
 
-Restart journald:\
+Restart journald:
+
     # systemctl restart systemd-journald
 
 The wiki recommends that if the journal gets too large, you can also
@@ -313,9 +320,11 @@ delete older records when the journal size reaches it's limit
 (according to systemd developers).
 
 Finally, the wiki mentions 'temporary' files and the utility for
-managing them.\
+managing them.
+
     # man systemd-tmpfiles
-The command for 'clean' is:\
+The command for 'clean' is:
+
     # systemd-tmpfiles --clean
 According to the manpage, this *"cleans all files and directories with
 an age parameter"*. According to the Arch wiki, this reads information
@@ -325,7 +334,8 @@ locations to get a better understanding.
 
 I looked in /etc/tmpfiles.d/ and found that it was empty on my system.
 However, /usr/lib/tmpfiles.d/ contained some files. The first one was
-etc.conf, containing information and a reference to this manpage:\
+etc.conf, containing information and a reference to this manpage:
+
     # man tmpfiles.d
 Read that manpage, and then continue studying all the files.
 
@@ -350,10 +360,12 @@ and below the 'extra' section add:\
 *\[kernels\]\
 Include = /etc/pacman.d/mirrorlist*
 
-Now sync with the repository:\
+Now sync with the repository:
+
     # pacman -Syy
 
-List all available packages in this repository:\
+List all available packages in this repository:
+
     # pacman -Sl kernels
 
 In the end, I decided not to install anything from it but I kept the
@@ -374,10 +386,12 @@ Read <https://wiki.archlinux.org/index.php/Configuring_Network>.
 
 This should be the same as the hostname that you set in /etc/hostname
 when installing Parabola. You can also do it with systemd (do so now, if
-you like):\
+you like):
+
     # hostnamectl set-hostname *yourhostname*
 This writes the specified hostname to /etc/hostname. More information
-can be found in these manpages:\
+can be found in these manpages:
+
     # man hostname
     # info hostname
     # man hostnamectl
@@ -401,7 +415,8 @@ According to the Arch wiki,
 [udev](https://wiki.archlinux.org/index.php/Udev) should already detect
 the ethernet chipset and load the driver for it automatically at boot
 time. You can check this in the *"Ethernet controller"* section when
-running this command:\
+running this command:
+
     # lspci -v
 
 Look at the remaining sections *'Kernel driver in use'* and *'Kernel
@@ -410,7 +425,8 @@ modules'*. In my case it was as follows:\
 Kernel modules: e1000e*
 
 Check that the driver was loaded by issuing *dmesg | grep module\_name*.
-In my case, I did:\
+In my case, I did:
+
     # dmesg | grep e1000e
 
 ### Network device names {#network_devicenames}
@@ -432,7 +448,8 @@ instructions in [grub\_cbfs.html](grub_cbfs.html)).
 For background information, read [Predictable Network Interface
 Names](http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/)
 
-Show device names:\
+Show device names:
+
     # ls /sys/class/net
 
 Changing the device names is possible (I chose not to do it):\
@@ -464,7 +481,8 @@ is important, so make sure to read them!**
 
 Install smartmontools (it can be used to check smart data. HDDs use
 non-free firmware inside, but it's transparent to you but the smart
-data comes from it. Therefore, don't rely on it too much):\
+data comes from it. Therefore, don't rely on it too much):
+
     # pacman -S smartmontools
 Read <https://wiki.archlinux.org/index.php/S.M.A.R.T.> to learn how to
 use it.
@@ -489,27 +507,33 @@ provide LXDE by default.
 
 Based on <https://wiki.archlinux.org/index.php/Xorg>.
 
-Firstly, install it!\
+Firstly, install it!
+
     # pacman -S xorg-server
 I also recommend installing this (contains lots of useful tools,
-including *xrandr*):\
+including *xrandr*):
+
     # pacman -S xorg-server-utils
 
 Install the driver. For me this was *xf86-video-intel* on the ThinkPad
-X60. T60 and macbook11/21 should be the same.\
+X60. T60 and macbook11/21 should be the same.
+
     # pacman -S xf86-video-intel
-For other systems you can try:\
+For other systems you can try:
+
     # pacman -Ss xf86-video- | less
 Combined with looking at your *lspci* output, you can determine which
 driver is needed. By default, Xorg will revert to xf86-video-vesa which
 is a generic driver and doesn't provide true hardware acceleration.
 
 Other drivers (not just video) can be found by looking at the
-*xorg-drivers* group:\
+*xorg-drivers* group:
+
     # pacman -Sg xorg-drivers
 
 Mostly you will rely on a display manager, but in case you ever want to
-start X without one:\
+start X without one:
+
     # pacman -S xorg-xinit
 
 <optional>\
@@ -537,7 +561,8 @@ will notice that the layout you set in /etc/vconsole.conf earlier might
 not actually be the same in X.
 
 To see what layout you currently use, try this on a terminal emulator in
-X:\
+X:
+
     # setxkbmap -print -verbose 10
 
 In my case, I wanted to use the Dvorak (UK) keyboard which is quite
@@ -584,27 +609,34 @@ would like to try something different, refer to
 
 Refer to <https://wiki.archlinux.org/index.php/LXDE>.
 
-Install it, choosing 'all' when asked for the default package list:\
+Install it, choosing 'all' when asked for the default package list:
+
     # pacman -S lxde obconf
 
-I didn't want the following, so I removed them:\
+I didn't want the following, so I removed them:
+
     # pacman -R lxmusic lxtask
 
-I also lazily installed all fonts:\
+I also lazily installed all fonts:
+
     # pacman -S \$(pacman -Ssq ttf-)
 
-And a mail client:\
+And a mail client:
+
     # pacman -S icedove
 
 In IceCat, go to *Preferences :: Advanced* and disable *GNU IceCat
 Health Report*.
 
-I also like to install these:\
+I also like to install these:
+
     # pacman -S xsensors stress htop
 
-Enable LXDM (the default display manager, providing a graphical login):\
+Enable LXDM (the default display manager, providing a graphical login):
+
     # systemctl enable lxdm.service
-It will start when you boot up the system. To start it now, do:\
+It will start when you boot up the system. To start it now, do:
+
     # systemctl start lxdm.service
 
 Log in with your standard (non-root) user that you created earlier. It
@@ -649,7 +681,8 @@ NOTE TO SELF: come back to this later.
 
 ### LXDE - screenlock {#lxde_screenlock}
 
-Arch wiki recommends to use *xscreensaver*:\
+Arch wiki recommends to use *xscreensaver*:
+
     # pacman -S xscreensaver
 
 Under *Preferences :: Screensaver* in the LXDE menu, I chose *Mode:
@@ -700,30 +733,37 @@ cursor over it, it'll show information about the battery.
 Refer to <https://wiki.archlinux.org/index.php/LXDE#Network_Management>.
 Then I read: <https://wiki.archlinux.org/index.php/NetworkManager>.
 
-Install Network Manager:\
+Install Network Manager:
+
     # pacman -S networkmanager
 
-You will also want the graphical applet:\
+You will also want the graphical applet:
+
     # pacman -S network-manager-applet
 Arch wiki says that an autostart rule will be written at
 */etc/xdg/autostart/nm-applet.desktop*
 
 I want to be able to use a VPN at some point, so the wiki tells me to
-do:\
+do:
+
     # pacman -S networkmanager-openvpn
 
 LXDE uses openbox, so I refer to:\
 <https://wiki.archlinux.org/index.php/NetworkManager#Openbox>.
 
-It tells me for the applet I need:\
+It tells me for the applet I need:
+
     # pacman -S xfce4-notifyd gnome-icon-theme
-Also, for storing authentication details (wifi) I need:\
+Also, for storing authentication details (wifi) I need:
+
     # pacman -S gnome-keyring
 
-I wanted to quickly enable networkmanager:\
+I wanted to quickly enable networkmanager:
+
     # systemctl stop dhcpcd
     # systemctl start NetworkManager
-Enable NetworkManager at boot time:\
+Enable NetworkManager at boot time:
+
     # systemctl enable NetworkManager
 
 Restart LXDE (log out, and then log back in).

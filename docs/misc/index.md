@@ -62,7 +62,8 @@ Be root
 
     $ su -
 
-Installed powertop:\
+Installed powertop:
+
     # pacman -S powertop
 
 and added the following to /etc/systemd/system/powertop.service :
@@ -80,7 +81,8 @@ and added the following to /etc/systemd/system/powertop.service :
     [Install]
     WantedBy=multi-user.target
 
-Finally, as root do that:\
+Finally, as root do that:
+
     # systemctl enable powertop
     # systemctl start powertop
 
@@ -109,7 +111,8 @@ included inside the ROM. Connect your null modem cable to the serial
 port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
-On the 2nd system, you can try this (using GNU Screen):\
+On the 2nd system, you can try this (using GNU Screen):
+
     $ sudo screen /dev/ttyUSB0 115200
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
@@ -234,7 +237,8 @@ Disable or enable beeps when removing/adding the charger:
     $ sudo ./nvramtool -w power\_management\_beeps=Disable
 
 Disable or enable beeps when battery is low:
-    $ sudo ./nvramtool -w low\_battery\_beep=Enable\
+    $ sudo ./nvramtool -w low\_battery\_beep=Enable
+
     $ sudo ./nvramtool -w low\_battery\_beep=Disable
 
 A reboot is required, for these changes to take effect.
@@ -248,10 +252,12 @@ Get the panel name with **sudo get-edid | strings**\
 Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
-package i2c-tools.\
+package i2c-tools.
+
     $ sudo modprobe i2c-dev
     $ sudo i2cdump -y 5 0x50 (you might have to change the value for
--y)\
+-y)
+
     $ sudo rmmod i2c-dev
 You'll see the panel name in the output (from the EDID dump).
 

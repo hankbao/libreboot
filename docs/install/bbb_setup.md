@@ -216,7 +216,8 @@ Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
-Then:\
+Then:
+
     # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots
     # cat /sys/devices/bone\_capemgr.\*/slots
 Output:
@@ -229,7 +230,8 @@ Output:
      5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
-Verify that the spidev device now exists:\
+Verify that the spidev device now exists:
+
     # ls -al /dev/spid\*
 Output:
 
@@ -252,7 +254,8 @@ libreboot\_src, and put the ARM binary for it on your BBB.
 Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
-Now test flashrom:\
+Now test flashrom:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 Output:
 

@@ -165,7 +165,8 @@ regions for your libreboot ROM image.
 If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
-from the main directory (./), otherwise you can build it like so:\
+from the main directory (./), otherwise you can build it like so:
+
     $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
@@ -177,7 +178,8 @@ GNU+Linux) under ./ich9deblob/.
 Place the factory.rom from your system (can be obtained using the
 external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
-ich9deblob executable, then run the tool:\
+ich9deblob executable, then run the tool:
+
     $ ./ich9deblob
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
@@ -233,7 +235,8 @@ The ME interferes with flash read/write in flashrom, and the default
 descriptor locks some regions. The idea is that doing this will remove
 all of those restrictions.
 
-Simply run (with factory.rom in the same directory):\
+Simply run (with factory.rom in the same directory):
+
     $ ./demefactory
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
@@ -305,7 +308,8 @@ Flash chips {#flashchips}
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006075.pdf>
     **~~- Page 20 and page 9 refer to SDA\_HDO or SDA\_HDOUT~~** only on
     series 6 or higher chipsets. ICH9-M (X200) does it with a strap
-    connected to GPIO33 pin (see IRC notes below)\
+    connected to GPIO33 pin (see IRC notes below)
+
     - According to page 29, the X200 can have any of the following flash
     chips:
     -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip

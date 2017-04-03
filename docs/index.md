@@ -104,19 +104,24 @@ The libreboot project has three main goals:
     and support. Most people will simply give up before attempting to
     install coreboot.
 
-    \
+    
+
     Libreboot attempts to bridge this divide, making sure that
     everything from building to installing coreboot is automated, as
     much as is feasibly possible. Secondly, the project produces
     documentation aimed at non-technical users. Thirdly, the project
     attempts to provide excellent user support via mailing lists and
-    IRC.\
-    \
+    IRC.
+
+    
+
     Libreboot already comes with a payload (GRUB), flashrom and other
     needed parts. Everything is fully integrated, in a way where most of
     the complicated steps that are otherwise required, are instead done
-    for the user in advance.\
-    \
+    for the user in advance.
+
+    
+
     You can download ROM images for your libreboot system and install
     them, without having to build anything from source. The build system
     is also fully automated, so building from source is easy if you

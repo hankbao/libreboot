@@ -627,7 +627,8 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
 -   Added gcry\_serpent and gcry\_whirlpool to the GRUB module list in
     the 'build' script (for luks users)
 -   **Libreboot is now based on a new coreboot version from August 23rd,
-    2014:\
+    2014:
+
     Merged commits (relates to boards that were already supported in
     libreboot):**
     -   <http://review.coreboot.org/#/c/6697/>
@@ -748,10 +749,13 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
         ohci, uhci, usb, usbserial\_pl2303, usbserial\_ftdi,
         usbserial\_usbdebug
     -   set prefix=(memdisk)/boot/grub
-    -   For native graphics (recommended by coreboot wiki):\
-        gfxpayload=keep\
+    -   For native graphics (recommended by coreboot wiki):
+
+        gfxpayload=keep
+
         terminal\_output --append gfxterm
-    -   Play a beep on startup:\
+    -   Play a beep on startup:
+
         play 480 440 1
 -   Documentation: updated gnulinux/grub\_cbfs.html to make it safer
     (and easier) to follow.

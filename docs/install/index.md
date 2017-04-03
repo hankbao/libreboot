@@ -320,7 +320,8 @@ the flashing script. do this: *rm -f patch && wget -O flash
 https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
 && chmod +x flash***
 
-The first half of the procedure is as follows:\
+The first half of the procedure is as follows:
+
     $ sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).
 
 
@@ -344,7 +345,8 @@ and then boot; libreboot is running, but there is a 2nd procedure
 
 
 
-When you have booted up again, you must also do this:\
+When you have booted up again, you must also do this:
+
     $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
 
 If flashing fails at this stage, try the following:\
@@ -393,7 +395,8 @@ Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
 
 
-Use this flashing script, to install libreboot:\
+Use this flashing script, to install libreboot:
+
     $ sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)
 
 

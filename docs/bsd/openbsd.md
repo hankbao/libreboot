@@ -41,15 +41,18 @@ Connect the USB drive. Check dmesg:
 
     $ dmesg | tail
 
-Check to confirm which drive it is, for example, if you think its sd3:\
+Check to confirm which drive it is, for example, if you think its sd3:
+
     $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:\
+OpenBSD installer to it with dd. For example:
+
     $ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
@@ -80,18 +83,22 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg
-Check lsblk to confirm which drive it is:\
+Check lsblk to confirm which drive it is:
+
     $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
+example:
+
     $ sudo umount /dev/sdX\*
     # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
+distro ISO to it with dd. For example:
+
     $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
     # dd if=install60.fs of=/dev/sdX bs=8M; sync
 
