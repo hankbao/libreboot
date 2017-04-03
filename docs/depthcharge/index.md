@@ -10,6 +10,7 @@ This section relates to the depthcharge payload used in libreboot.
     -   Booting from different mediums
     -   Showing device information
     -   Warnings
+
 -   [Recovery mode screen](#recovery_mode_screen)
     -   [Recovering from a bad state](#recovering_bad_state)
     -   [Enabling developer mode](#enabling_developer_mode)
@@ -185,7 +186,8 @@ security of the device.
 The following parameters can be configured:
 
 -   Kernels signature verification:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_signed\_only=1**
     -   Disabled with:\
         \# **crossystem dev\_boot\_signed\_only=0**

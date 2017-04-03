@@ -68,6 +68,7 @@ Flash chip size {#flashchips}
 Use this to find out:
     # flashrom -p internal -V
 
+
 [Back to top of page.](#pagetop)
 
 
@@ -263,7 +264,8 @@ factory2.rom**\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
-Now compare the 3 images:\
+Now compare the 3 images:
+
     # sha512sum factory\*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This

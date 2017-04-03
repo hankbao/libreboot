@@ -30,6 +30,7 @@ Setting up programmers, for external flashing via hardware method
 
 -   [How to program an SPI flash chip with the BeagleBone
     Black](bbb_setup.html)
+
 -   [How to program an SPI flash chip with the Raspberry
     Pi](rpi_setup.html)
 
@@ -278,7 +279,8 @@ How to update the flash chip contents:
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
-correct ROM image, then run this alternative command:\
+correct ROM image, then run this alternative command:
+
     $ sudo ./flash forceupdate [yourrom.rom](#rom)
 
 

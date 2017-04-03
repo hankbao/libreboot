@@ -40,6 +40,7 @@ ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
 source with:
     $ ./oldbuild module ich9deblob
+
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:
@@ -68,7 +69,8 @@ the little sticker on the bottom/base of the laptop.
 On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
-the Gbe checksum updated to match). Run:\
+the Gbe checksum updated to match). Run:
+
     $ ./ich9gen --macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)

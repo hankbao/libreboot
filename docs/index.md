@@ -32,6 +32,7 @@ Installing operating systems
 
 -   [List of recommended GNU+Linux distributions for
     libreboot](distros/)
+
 -   [How to install GNU+Linux on a libreboot system](gnulinux/)
 -   [How to install BSD on a libreboot system](bsd/)
 
@@ -101,7 +102,8 @@ The libreboot project has three main goals:
 -   ***Make coreboot easy to use***. Coreboot is notoriously difficult
     to install, due to an overall lack of user-focussed documentation
     and support. Most people will simply give up before attempting to
-    install coreboot.\
+    install coreboot.
+
     \
     Libreboot attempts to bridge this divide, making sure that
     everything from building to installing coreboot is automated, as

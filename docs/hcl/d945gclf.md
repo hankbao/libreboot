@@ -33,6 +33,7 @@ Remarks about vendor bios:
     vendor bios is very bad. It cannot boot from any HDD wether it is
     connected to the SATA port or USB. With libreboot it works just
     fine.
+
 -   The vendor bios write protects the flash so it requires external
     flashing to install libreboot on this device. Once libreboot is
     flashed there is no problem to update the firmware internally

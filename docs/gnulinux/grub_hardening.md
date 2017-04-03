@@ -31,6 +31,7 @@ image:
     cbfstool my.rom extract -n grubtest.cfg -f my.grubtest.cfg
     cbfstool my.rom remove -n grubtest.cfg
 
+
 Helpful links:
 
 -   [GRUB manual

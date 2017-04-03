@@ -16,6 +16,7 @@ Releases
 -   [r20150518 (18th May 2015)](#release20150518)
 -   [r20150124 (24th January 2015), r20150126 (26th January 2015),
     r20150208 (8th February 2015)](#release20150124)
+
 -   [r20141015 (15th October 2014)](#release20141015)
 -   [r20140911 (6th release)](#release20140911) (11th September 2014
     **pre-release, 7th beta**)
@@ -422,7 +423,8 @@ Changes for this release (latest changes first, earliest changes last)
 -   build: Only generate the GRUB configurations once (re-use on all
     images)
 -   Only build 2 GRUB payload executables, re-use on all boards.
--   resources/utilities/grub-assemble/gen.txtmode.sh: Use GNU BASH\
+-   resources/utilities/grub-assemble/gen.txtmode.sh: Use GNU BASH
+
     resources/utilities/grub-assemble/gen.vesafb.sh: Use GNU BASH
 -   scripts (error handling): Replace exit with exit 1 (make debugging
     easier)

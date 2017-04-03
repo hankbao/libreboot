@@ -231,6 +231,7 @@ Not covered yet:
 -   Disable flashing the ethernet firmware
 -   Disable SPI flash writes (can be re-enabled by unsoldering two
     parts)
+
 -   Disable use of xrandr/edid on external monitor (cut 2 pins on VGA)
 -   Disable docking station (might be possible to do it in software, in
     coreboot upstream as a Kconfig option)
@@ -248,7 +249,8 @@ half of the video to see how to do the above.
 Also not covered yet:
 ---------------------
 
--   Intrusion detection: randomized seal on screws\
+-   Intrusion detection: randomized seal on screws
+
     Just put nail polish with lot of glider on the important screws,
     take some good pictures. Keep the pictueres and make sure of their
     integrity. Compare the nail polish with the pictures before powering

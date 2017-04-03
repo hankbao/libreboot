@@ -10,6 +10,7 @@ instructions have yet to be written.**
 
 -   [How to install GNU+Linux on a libreboot
     system](grub_boot_installer.html)
+
 -   [How to replace the default GRUB configuration file on a libreboot
     system](grub_cbfs.html)
 -   [Installing Parabola or Arch GNU+Linux-libre with full disk

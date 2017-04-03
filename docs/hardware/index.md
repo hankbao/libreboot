@@ -6,6 +6,7 @@ This section relates to hardware maintenance on supported targets.
 
 -   [ThinkPad X60/X60s/X60T: Change keyboard](x60_keyboard.html) (the
     procedure on X200/X200S/X200T is almost identical)
+
 -   [ThinkPad X60/X60S: change the fan/heatsink](x60_heatsink.html)
 -   [ThinkPad X60/X60s: How to change the LCD
     panel](x60_lcd_change.html) (incomplete. pics only for now)

@@ -77,6 +77,7 @@ Choose 'Manual' partitioning:
     -   Encryption key: passphrase
     -   erase data: Yes (only choose 'No' if it's a new drive that
         doesn't contain your private data)
+
 -   Select 'configure encrypted volumes'
     -   Create encrypted volumes
     -   Select your partition

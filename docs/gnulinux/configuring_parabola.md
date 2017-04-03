@@ -19,6 +19,7 @@ Table of Contents
         -   [Pacman command equivalents (compared to other package
             managers)](#pacman_commandequiv)
     -   [your-freedom](#yourfreedom)
+
 -   [Add a user account](#useradd)
 -   [System D](#systemd)
 -   [Interesting repositories](#interesting_repos)
@@ -126,7 +127,8 @@ Updating Parabola {#pacman_update}
 -----------------
 
 In the end, I didn't change my configuration for pacman. When you are
-updating, resync with the latest package names/versions:\
+updating, resync with the latest package names/versions:
+
     # pacman -Syy
 (according to the wiki, -Syy is better than Sy because it refreshes the
 package list even if it appears to be up to date, which can be useful

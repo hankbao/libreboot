@@ -28,8 +28,10 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on an existing GNU+Linux system, here is how
 to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg
+
 Check lsblk to confirm which drive it is:\
     $ lsblk
 

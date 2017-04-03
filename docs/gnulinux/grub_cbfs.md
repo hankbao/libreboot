@@ -45,6 +45,7 @@ Table of Contents
 
 
 
+
 Introduction
 ------------
 
@@ -142,7 +143,8 @@ your current firmware, using flashrom:
     $ sudo flashrom -p internal -r libreboot.rom
     # flashrom -p internal -r libreboot.rom
 If you are told to specify the chip, add the option **-c {your chip}**
-to the command, for example:\
+to the command, for example:
+
     # flashrom -c MX25L6405 -p internal -r libreboot.rom
 
 [Back to top of page.](#pagetop)

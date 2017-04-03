@@ -9,6 +9,7 @@ EHCI debugging
 
 1.  [Find USB port on the target that supports EHCI
     debug](#FindUSBportonthetargetthatsupportsEHCIdebug)
+
 2.  [Initial setup of BBB to act as EHCI debug
     dongle](#InitialsetupofBBBtoactasEHCIdebugdongle)
 3.  [Patch BBB's `g_dbgp` module (optional, but highly

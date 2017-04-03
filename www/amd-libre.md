@@ -13,6 +13,7 @@ tell them that you demand libre hardware:
 -   <https://community.amd.com/places?filterID=all%7Eobjecttype%7Espace>
 -   <https://www.amd.com/en-us/who-we-are/contact> (has contact links
     for multiple countries)
+
 -   **AMD's CEO, Lisa Su, can be contacted directly via email. Tell her
     that you demand libre hardware: <lisa.su@amd.com>**
 

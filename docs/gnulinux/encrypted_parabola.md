@@ -70,6 +70,7 @@ whole article and keep all points in mind, adapting them for this guide.
 
 Securely wipe the drive:
     # dd if=/dev/urandom of=/dev/sda; sync
+
 NOTE: If you have an SSD, only do this the first time. If it was already
 LUKS-encrypted before, use the info below to wipe the LUKS header. Also,
 check online for your SSD what the recommended erase block size is. For
@@ -82,7 +83,8 @@ header.
 <https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/>
 showed me how to do this. It recommends doing the first 3MiB. Now, that
 guide is recommending putting zero there. I'm going to use urandom. Do
-this:\
+this:
+
     # head -c 3145728 /dev/urandom > /dev/sda; sync
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It's 'secure', but 'potentially' a risk).

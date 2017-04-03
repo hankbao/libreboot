@@ -7,6 +7,7 @@ This sections relates to known hardware compatibility in libreboot.
     -   [Servers/workstations](#supported_workstations_x86amd)
     -   [Laptops (ARM)](#supported_laptops_arm)
     -   [Laptops (Intel, x86)](#supported_laptops_x86intel)
+
 -   NOTES:
     -   [Updating the EC firmware on i945 and GM45
         (recommended)](#ecupdate)
@@ -436,7 +437,8 @@ Referenced below are copies (up to date at the time of writing,
 the macbook2,1. They are included here in case the main site goes down
 for whatever reason, since they include a lot of useful information.
 
-Backups created using wget:\
+Backups created using wget:
+
     $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
 **\$ wget -m -p -E -k -K -np
 http://macbook.donderklumpen.de/coreboot/**\

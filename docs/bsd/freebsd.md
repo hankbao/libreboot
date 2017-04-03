@@ -59,8 +59,10 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg | tail
+
 Check to confirm which drive it is, for example, if you think its sd3:\
     $ disklabel sd3
 

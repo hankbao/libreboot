@@ -16,6 +16,7 @@ the git repository.
 -   [Get the full source code from metadata (git clone)](#build_meta)
 -   [How to build "bucts" (for LenovoBIOS
     X60/X60S/X60T/T60)](#build_bucts)
+
 -   [How to build "flashrom"](#build_flashrom)
 -   [How to build the ROM images](#build)
 
@@ -63,7 +64,8 @@ First, [install the build dependencies](#build_dependencies).
 
 Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
-requirement is:\
+requirement is:
+
     $ git config --global user.name "Your Name"
     $ git config --global user.email your@emailaddress.com
 This is what will also appear in git logs if you ever commit your own

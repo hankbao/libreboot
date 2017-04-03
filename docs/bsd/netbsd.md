@@ -55,8 +55,10 @@ Prepare the USB drive (in LibertyBSD or NetBSD)
 If you downloaded your ISO on a LibertyBSD or NetBSD system, here is how
 to create the bootable NetBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
+Connect the USB drive. Check dmesg:
+
     $ dmesg | tail
+
 Check to confirm which drive it is, for example, if you think its sd3:\
     $ disklabel sd3
 

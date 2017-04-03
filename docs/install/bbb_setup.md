@@ -46,6 +46,7 @@ Shopping list (pictures of this hardware is shown later):
     'Purchase'). We recommend this product because we know that it
     works well for our purposes and doesn't require any non-free
     software.
+
 -   Electrical/insulative tape: cover the entire bottom surface of the
     BBB (the part that rests on a surface). This is important, when
     placing the BBB on top of a board so that nothing shorts. Most
@@ -208,7 +209,8 @@ contents of this file with:
 
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
-Check that the firmware exists:\
+Check that the firmware exists:
+
     # ls /lib/firmware/BB-SPI0-01-00A0.\*
 Output:
 

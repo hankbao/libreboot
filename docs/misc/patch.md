@@ -9,8 +9,10 @@ This is just a quick guide for reference, use 'man' to know more.
 Apply a patch
 =============
 
-To apply a patch to a single file, do that in it's directory:\
+To apply a patch to a single file, do that in it's directory:
+
     $ patch < foo.patch
+
 
 Assuming that the patch is distributed in unified format identifying the
 file the patch should be applied to, the above will work. Otherwise:\

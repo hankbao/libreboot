@@ -11,6 +11,7 @@ This section relates to the GRUB payload used in libreboot.
 
 
 
+
 Changing the background image in GRUB {#grub_background}
 =====================================
 
@@ -47,7 +48,8 @@ like Debian, Devuan or Parabola.
 
     $ cd libreboot\_src/grub
 compile grub (the build scripts info on how to do this)\
-come back out into libreboot\_src/resources/grub:\
+come back out into libreboot\_src/resources/grub:
+
     $ cd ../libreboot\_src/resources/grub/font
 
 I took Dejavu Sans Mono from dejavu (included in this version of

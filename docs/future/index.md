@@ -15,6 +15,7 @@ Table of contents
 -   [i945 VRAM size](#i945_vram_size)
 -   [LCD panels on i945 - fix incompatible
     panels](#lcd_i945_incompatibility)
+
 -   [i945 X60/T60 VBT implementation (experimental: testing)](#i945_vbt)
 -   [IntelVbtTool results](#intelvbttool_results)
 -   [Fallback patches for i945](#fallback_patches)
@@ -162,7 +163,8 @@ How to dump EDID:
     # modprobe i2c-dev
 Find out the correct ID to use:
     # i2cdetect -l\
-Example:\
+Example:
+
     # i2cdump -y 2 0x50
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:

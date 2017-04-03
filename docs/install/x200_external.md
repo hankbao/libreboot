@@ -36,6 +36,7 @@ Flash chip size {#flashchips}
 Use this to find out:
     # flashrom -p internal -V
 
+
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
 the motherboard (this requires removal of the motherboard). **Not all
 X200S/X200T are supported; see
@@ -192,7 +193,8 @@ factory2.rom**\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
-Now compare the 3 images:\
+Now compare the 3 images:
+
     # sha512sum factory\*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This

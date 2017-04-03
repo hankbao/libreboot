@@ -3,6 +3,7 @@
 
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or
     Devuan)](#debian_powertop)
+
 -   [High Pitched Whining Noise on Idle (how to remove in
     Parabola)](#high_pitch_parabola)
 -   [X60/T60: Serial port - how to use (for dock owners)](#serial)
@@ -57,7 +58,8 @@ On the X60 with coreboot or libreboot, there is a high pitched sound
 when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
-Be root\
+Be root
+
     $ su -
 
 Installed powertop:\
