@@ -314,7 +314,7 @@ Finally, the wiki mentions 'temporary' files and the utility for
 managing them.\
 \# **man systemd-tmpfiles**\
 The command for 'clean' is:\
-\# **systemd-tmpfiles \--clean**\
+\# **systemd-tmpfiles --clean**\
 According to the manpage, this *"cleans all files and directories with
 an age parameter"*. According to the Arch wiki, this reads information
 in /etc/tmpfiles.d/ and /usr/lib/tmpfiles.d/ to know what actions to

@@ -4,7 +4,7 @@ NOTE: This guide was written for OpenBSD by the person who contributed
 it, but the libreboot project recommends LibertyBSD. LibertyBSD is a
 version of OpenBSD without proprietary software in the repositories
 (OpenBSD distributes firmware blobs for devices inside its kernel). Go
-to the [LibertyBSD website](http://libertybsd.net/) \-- TODO: test on
+to the [LibertyBSD website](http://libertybsd.net/) -- TODO: test on
 LibertyBSD and prioritise that in this guide.
 
 This section relates to preparing, booting and installing OpenBSD on

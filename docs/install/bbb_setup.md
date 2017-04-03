@@ -77,7 +77,7 @@ Shopping list (pictures of this hardware is shown later):
     powering with the USB cable, or if you want to use [EHCI
     debug](../misc/bbb_ehci.html)**.
 -   **Pin header / jumper cables** (2.54mm / 0.1" headers): you should
-    get male\--male, male\--female and female\--female cables in 10cm
+    get male--male, male--female and female--female cables in 10cm
     size. Just get a load of them. Other possible names for these
     cables/wires/leads are as follows:
     -   flying leads
@@ -97,7 +97,7 @@ Shopping list (pictures of this hardware is shown later):
 -   **FTDI TTL cable or debug board**: used for accessing the serial
     console on the BBB. [This
     page](http://elinux.org/Beagleboard:BeagleBone_Black_Serial)
-    contains a list. **OPTIONAL\-\--only needed for serial console on
+    contains a list. **OPTIONAL\---only needed for serial console on
     the BBB, if not using SSH via ethernet cable.**
 
 [Back to top of page.](#pagetop)

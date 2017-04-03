@@ -25,12 +25,12 @@ Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
 
 Included with libreboot is a script called 'powertop.debian'. Run this
-as root and it will setup powertop to run with \--auto-tune at boot
+as root and it will setup powertop to run with --auto-tune at boot
 time. Load the file in your text editor to see how it does that.
 
 \$ **sudo ./resources/scripts/misc/powertop.debian**
 
-Might want to run with \--calibrate first
+Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
@@ -50,7 +50,7 @@ most people can't hear or doesn't bother most people).
 
 This is not perfect! The full solution is still not discovered but this
 is a step towards that. Also, in some instances you will need to run
-'sudo powertop \--auto-tune' again. This needs to be implemented
+'sudo powertop --auto-tune' again. This needs to be implemented
 properly in coreboot itself!
 
 On the X60 with coreboot or libreboot, there is a high pitched sound
@@ -84,7 +84,7 @@ Finally, as root do that:\
 
 The next time you boot the system, the buzz will be gone.
 
-Might want to run with \--calibrate first
+Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,

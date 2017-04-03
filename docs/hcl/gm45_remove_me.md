@@ -69,7 +69,7 @@ On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:\
-\$ **./ich9gen \--macaddress XX:XX:XX:XX:XX:XX**\
+\$ **./ich9gen --macaddress XX:XX:XX:XX:XX:XX**\
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 

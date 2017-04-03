@@ -64,18 +64,18 @@ First, [install the build dependencies](#build_dependencies).
 Since libreboot makes extensive use of git, you need to configure git
 properly. If you have not yet configured git, then the minimum
 requirement is:\
-\$ **git config \--global user.name "Your Name"**\
-\$ **git config \--global user.email your@emailaddress.com**\
+\$ **git config --global user.name "Your Name"**\
+\$ **git config --global user.email your@emailaddress.com**\
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
 <http://git-scm.com/doc>.
 
 Another nice config for you (optional, but recommended):\
-\$ **git config \--global core.editor nano**\
-\$ **git config \--global color.status auto**\
-\$ **git config \--global color.branch auto**\
-\$ **git config \--global color.interactive auto**\
-\$ **git config \--global color.diff auto**
+\$ **git config --global core.editor nano**\
+\$ **git config --global color.status auto**\
+\$ **git config --global color.branch auto**\
+\$ **git config --global color.interactive auto**\
+\$ **git config --global color.diff auto**
 
 After that, run the script:\
 \$ **./download all**
@@ -257,7 +257,7 @@ that.
 Tag the current commit, and that version will appear in both the
 \${version} string on the directory under *release/oldbuildsystem/*, and
 in the file names of the archives. Otherwise, whatever git uses for *git
-describe \--tags HEAD* will be used.
+describe --tags HEAD* will be used.
 
 Utilities (static executables):\
 \$ **./oldbuild release util**

@@ -167,8 +167,8 @@ Reading through, it seems like Serpent (encryption) and Whirlpool (hash)
 is the best option.
 
 I am initializing LUKS with the following:\
-\# **cryptsetup -v \--cipher serpent-xts-plain64 \--key-size 512 \--hash
-whirlpool \--iter-time 500 \--use-random \--verify-passphrase luksFormat
+\# **cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
+whirlpool --iter-time 500 --use-random --verify-passphrase luksFormat
 /dev/sda1** Choose a **secure** passphrase here. Ideally lots of
 lowercase/uppercase numbers, letters, symbols etc all in a random
 pattern. The password length should be as long as you are able to handle
@@ -273,8 +273,8 @@ signing and verifying packages:\
    \# **pacman -Sy parabola-keyring**\
    It says that if you get GPG errors, then it's probably an expired
 key and, therefore, you should do:\
-   \# **pacman-key \--populate parabola**\
-   \# **pacman-key \--refresh-keys**\
+   \# **pacman-key --populate parabola**\
+   \# **pacman-key --refresh-keys**\
    \# **pacman -Sy parabola-keyring**\
    To be honest, you should do the above anyway. Parabola has a lot of
 maintainers, and a lot of keys. Really!\
@@ -286,7 +286,7 @@ manually set the correct time\
    \# **date MMDDhhmm\[\[CC\]YY\]\[.ss\]**\
    I also had to install:\
    \# **pacman -S archlinux-keyring**\
-   \# **pacman-key \--populate archlinux**\
+   \# **pacman-key --populate archlinux**\
    In my case I saw some conflicting files reported in pacman, stopping
 me from using it.\
    I deleted the files that it mentioned and then it worked.
@@ -355,7 +355,7 @@ Time zone:\
 (Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
 
 Hardware clock:\
-\# **hwclock \--systohc \--utc**
+\# **hwclock --systohc --utc**
 
 Hostname: Write your hostname to /etc/hostname. For example, if your
 hostname is parabola:\
@@ -436,7 +436,7 @@ Or just delete it. Above it, put:\
 file=/var/log/faillog*\
 To unlock a user manually (if a password attempt is failed 3 times),
 do:\
-\# **pam\_tally \--user *theusername* \--reset** What the above
+\# **pam\_tally --user *theusername* --reset** What the above
 configuration does is lock the user out for 10 minutes, if they make 3
 failed login attempts.
 

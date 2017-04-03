@@ -236,7 +236,7 @@ Then:\
 
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
-Also Debugging \-\--> Output verbose XYZ ) (**FIXME** somebody verify
+Also Debugging \---> Output verbose XYZ ) (**FIXME** somebody verify
 these):
 
     CONFIG_DEBUG_CBFS=y (Output verbose CBFS debug messages )

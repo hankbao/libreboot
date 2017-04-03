@@ -88,7 +88,7 @@ it really is.
 
 Now to apply that patch in the future, just git clone it again and do
 with the git revision you found from above:\
-**\$ git reset \--hard REVISIONNUMBER**
+**\$ git reset --hard REVISIONNUMBER**
 
 Now put patch.git in the git clone directory and do:\
 **\$ git apply patch.git**
