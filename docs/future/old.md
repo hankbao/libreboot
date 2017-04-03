@@ -12,6 +12,7 @@ Table of contents
 
 -   [X60 native graphics initialization (backlight
     controls)](#x60_native_notes)
+
 -   [T60 native graphics initialization (backlight
     controls)](#t60_native_notes)
 -   [i945: 3D fix (based on 5927) for kernel 3.12+ on
@@ -43,8 +44,9 @@ That's all! **This has also been backported into libreboot 5th release
 (line 1233 in src/mainboard/lenovo/x60/i915io.c)**. GNUtoo (Denis
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
-running the VBIOS:\
-**\# devmem2 0xe4361254 w**
+running the VBIOS:
+
+    # devmem2 0xe4361254 w
 
 The change is also included in libreboot 6.
 

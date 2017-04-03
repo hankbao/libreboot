@@ -70,8 +70,9 @@ See [\#paste](#paste).
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
-\# **flashrom -p internal -V**\
+Use this to find out:
+    # flashrom -p internal -V
+
 
 [Back to top of page.](#pagetop)
 
@@ -228,8 +229,8 @@ source code which can be built.
 Log in as root on your BBB, using the instructions in
 [bbb\_setup.html\#bbb\_access](bbb_setup.html#bbb_access).
 
-Test that flashrom works:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512**\
+Test that flashrom works:
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512\
 In this case, the output was:
 
     flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -252,8 +253,9 @@ factory2.rom**\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
-Now compare the 3 images:\
-\# **sha512sum factory\*.rom**\
+Now compare the 3 images:
+
+    # sha512sum factory\*.rom
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable

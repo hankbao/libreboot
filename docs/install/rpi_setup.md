@@ -43,6 +43,7 @@ Guide](http://libreboot.org/docs/install/t60_unbrick.html).
 
 -   On the X60, the BIOS chip is on the bottom of the motherboard, under
     a layer of protective black tape.
+
 -   On the T60, the BIOS chip is just under the palmrest, but blocked by
     a magnesium frame (which you will have to remove).
 

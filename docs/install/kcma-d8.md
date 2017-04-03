@@ -17,6 +17,7 @@ TODO: show photos here, and other info.
 
 -   [kcma-d8 boards (and full systems) with libreboot
     preinstalled](#preinstall)
+
 -   [External programmer](#programmer)
 
 

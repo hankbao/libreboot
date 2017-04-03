@@ -59,18 +59,23 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg | tail**\
-Check to confirm which drive it is, for example, if you think its sd3:\
-**\$ disklabel sd3**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg | tail
+
+Check to confirm which drive it is, for example, if you think its sd3:
+
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ doas umount /dev/sd3i**\
+example:
+
+    $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-FreeBSD installer to it with dd. For example:\
-**\$ doas dd if=freebsd.img of=/dev/rsdXc bs=1M; sync**\
+FreeBSD installer to it with dd. For example:
+
+    $ doas dd if=freebsd.img of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -83,20 +88,24 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable FreeBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg**\
-Check lsblk to confirm which drive it is:\
-**\$ lsblk**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg
+Check lsblk to confirm which drive it is:
+
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ sudo umount /dev/sdX\***\
-**\# umount /dev/sdX\***
+example:
+
+    $ sudo umount /dev/sdX\*
+    # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
-**\$ sudo dd if=freebsd.img of=/dev/sdX bs=8M; sync**\
-**\# dd if=freebsd.img of=/dev/sdX bs=8M; sync**
+distro ISO to it with dd. For example:
+
+    $ sudo dd if=freebsd.img of=/dev/sdX bs=8M; sync
+    # dd if=freebsd.img of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -110,9 +119,9 @@ Installing FreeBSD without full disk encryption
 
 Press C in GRUB to access the command line:
 
-grub> **kfreebsd (usb0,gpt3)/boot/kernel/kernel**\
-grub> **set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3**\
-grub> **boot**
+    grub> kfreebsd (usb0,gpt3)/boot/kernel/kernel
+    grub> set FreeBSD.vfs.mountfrom=ufs:/dev/da1p3\
+    grub> boot
 
 It will start booting into the FreeBSD installer. Follow the normal
 process for installing FreeBSD.

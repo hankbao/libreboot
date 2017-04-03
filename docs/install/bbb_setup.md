@@ -46,6 +46,7 @@ Shopping list (pictures of this hardware is shown later):
     'Purchase'). We recommend this product because we know that it
     works well for our purposes and doesn't require any non-free
     software.
+
 -   Electrical/insulative tape: cover the entire bottom surface of the
     BBB (the part that rests on a surface). This is important, when
     placing the BBB on top of a board so that nothing shorts. Most
@@ -77,7 +78,7 @@ Shopping list (pictures of this hardware is shown later):
     powering with the USB cable, or if you want to use [EHCI
     debug](../misc/bbb_ehci.html)**.
 -   **Pin header / jumper cables** (2.54mm / 0.1" headers): you should
-    get male\--male, male\--female and female\--female cables in 10cm
+    get male--male, male--female and female--female cables in 10cm
     size. Just get a load of them. Other possible names for these
     cables/wires/leads are as follows:
     -   flying leads
@@ -97,7 +98,7 @@ Shopping list (pictures of this hardware is shown later):
 -   **FTDI TTL cable or debug board**: used for accessing the serial
     console on the BBB. [This
     page](http://elinux.org/Beagleboard:BeagleBone_Black_Serial)
-    contains a list. **OPTIONAL\-\--only needed for serial console on
+    contains a list. **OPTIONAL\---only needed for serial console on
     the BBB, if not using SSH via ethernet cable.**
 
 [Back to top of page.](#pagetop)
@@ -155,15 +156,15 @@ Alternatives to SSH (in case SSH fails)
 ---------------------------------------
 
 You can also use a serial FTDI debug board with GNU Screen, to access
-the serial console.\
-\# **screen /dev/ttyUSB0 115200**\
+the serial console.
+    # screen /dev/ttyUSB0 115200
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
-directly accessible from SSH, or screen:\
-\# **screen /dev/ttyACM0 115200**
+directly accessible from SSH, or screen:
+    # screen /dev/ttyACM0 115200
 
 You can also access the uboot console, using the serial method instead
 of SSH.
@@ -208,15 +209,17 @@ contents of this file with:
 
 Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
 before continuing.
-Check that the firmware exists:\
-\# **ls /lib/firmware/BB-SPI0-01-00A0.\***\
+Check that the firmware exists:
+
+    # ls /lib/firmware/BB-SPI0-01-00A0.\*
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
-Then:\
-\# **echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots**\
-\# **cat /sys/devices/bone\_capemgr.\*/slots**\
+Then:
+
+    # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots
+    # cat /sys/devices/bone\_capemgr.\*/slots
 Output:
 
      0: 54:PF--- 
@@ -227,8 +230,9 @@ Output:
      5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
      7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
 
-Verify that the spidev device now exists:\
-\# **ls -al /dev/spid\***\
+Verify that the spidev device now exists:
+
+    # ls -al /dev/spid\*
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
@@ -250,8 +254,9 @@ libreboot\_src, and put the ARM binary for it on your BBB.
 Finally, get the ROM image that you would like to flash and put that on
 your BBB.
 
-Now test flashrom:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512**\
+Now test flashrom:
+
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 Output:
 
     Calibrating delay loop... OK.

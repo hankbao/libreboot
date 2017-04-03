@@ -91,6 +91,7 @@ Current issues {#issues}
     can put a kernel in CBFS or on SATA and use that to boot GNU, which
     can be on a SAS drive. The linux kernel can use those SAS drives
     (via PIKE module) without an option ROM).
+
 -   IPMI iKVM module (optional add-on card) uses proprietary firmware.
     Since it's for remote out-of-band management, it's theoretically a
     backdoor similar to the Intel Management Engine. Fortunately, unlike

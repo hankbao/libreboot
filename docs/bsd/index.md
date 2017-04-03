@@ -11,6 +11,7 @@ instructions have yet to be written.**
 -   [How to install NetBSD on a libreboot system](netbsd.html)
 -   [How to install LibertyBSD or OpenBSD on a libreboot
     system](openbsd.html)
+
 -   [How to install FreeBSD on a libreboot system](freebsd.html)
 
 

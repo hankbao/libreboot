@@ -23,6 +23,7 @@ Backup of old Libreboot mailing lists
 
 -   [User mailing list
     (HTML)](old/libreboot/html/lists.gnu.org/archive/html/libreboot)
+
 -   [User mailing list (mbox
     format)](old/libreboot/mbox/lists.gnu.org/libreboot/)
 -   [Developer mailing list

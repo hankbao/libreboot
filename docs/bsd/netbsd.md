@@ -55,18 +55,23 @@ Prepare the USB drive (in LibertyBSD or NetBSD)
 If you downloaded your ISO on a LibertyBSD or NetBSD system, here is how
 to create the bootable NetBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg | tail**\
-Check to confirm which drive it is, for example, if you think its sd3:\
-**\$ disklabel sd3**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg | tail
+
+Check to confirm which drive it is, for example, if you think its sd3:
+
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ doas umount /dev/sd3i**\
+example:
+
+    $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-NetBSD installer to it with dd. For example:\
-**\$ doas netbsd.iso of=/dev/rsdXc bs=1M; sync**\
+NetBSD installer to it with dd. For example:
+
+    $ doas netbsd.iso of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -79,20 +84,24 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable NetBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg**\
-Check lsblk to confirm which drive it is:\
-**\$ lsblk**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg
+Check lsblk to confirm which drive it is:
+
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ sudo umount /dev/sdX\***\
-**\# umount /dev/sdX\***
+example:
+
+    $ sudo umount /dev/sdX\*
+    # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
-**\$ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync**\
-**\# dd if=netbsd.iso of=/dev/sdX bs=8M; sync**
+distro ISO to it with dd. For example:
+
+    $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
+    # dd if=netbsd.iso of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -107,8 +116,8 @@ Installing NetBSD without full disk encryption
 You might have to use an external USB keyboard during the installation.
 Press C to access the GRUB terminal.
 
-grub> **knetbsd -r sd0a (usb0,netbsd1)/netbsd**\
-grub> **boot**
+    grub> knetbsd -r sd0a (usb0,netbsd1)/netbsd
+    grub> boot
 
 It will start booting into the NetBSD installer. Follow the normal
 process for installing NetBSD.
@@ -131,8 +140,8 @@ Booting
 
 Press C in GRUB to access the command line:
 
-grub> **knetbsd -r wd0a (ahci0,netbsd1)/netbsd**\
-grub> **boot**
+    grub> knetbsd -r wd0a (ahci0,netbsd1)/netbsd
+    grub> boot
 
 NetBSD will start booting. Yay!
 

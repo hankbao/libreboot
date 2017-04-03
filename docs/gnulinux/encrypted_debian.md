@@ -77,6 +77,7 @@ Choose 'Manual' partitioning:
     -   Encryption key: passphrase
     -   erase data: Yes (only choose 'No' if it's a new drive that
         doesn't contain your private data)
+
 -   Select 'configure encrypted volumes'
     -   Create encrypted volumes
     -   Select your partition
@@ -185,12 +186,12 @@ At this point, you will have finished the installation. At your GRUB
 payload, press C to get to the command line.
 
 Do that:\
-grub> **cryptomount -a**\
-grub> **set root='lvm/matrix-rootvol'**\
+    grub> cryptomount -a
+    grub> set root='lvm/matrix-rootvol'\
 grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
-grub> **initrd /initrd.img**\
-grub> **boot**
+    grub> initrd /initrd.img
+    grub> boot
 
 
 
@@ -200,8 +201,8 @@ ecryptfs
 If you didn't encrypt your home directory, then you can safely ignore
 this section.
 
-Immediately after logging in, do that:\
-\$ **sudo ecryptfs-unwrap-passphrase**
+Immediately after logging in, do that:
+    $ sudo ecryptfs-unwrap-passphrase
 
 This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note

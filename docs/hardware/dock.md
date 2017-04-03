@@ -8,6 +8,7 @@
     Usually when people do full disk encryption, it's not really full disk,
     instead they still have a /boot in clear.
 
+
     So an evil maid attack can still be done, in two passes:
     1) Clone the hdd, Infect the initramfs or the kernel.
     2) Wait for the user to enter its password, recover the password,

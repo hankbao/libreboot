@@ -38,12 +38,13 @@ factory.bin dump.
 
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
-source with:\
-\$ **./oldbuild module ich9deblob**\
+source with:
+    $ ./oldbuild module ich9deblob
+
 The executable will appear under resources/utilities/ich9deblob/
 
-Run:\
-\$ **./ich9gen**
+Run:
+    $ ./ich9gen
 
 Running ich9gen this way (without any arguments) generates a default
 descriptor+gbe image with a generic MAC address. You probably don't
@@ -68,8 +69,9 @@ the little sticker on the bottom/base of the laptop.
 On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
-the Gbe checksum updated to match). Run:\
-\$ **./ich9gen \--macaddress XX:XX:XX:XX:XX:XX**\
+the Gbe checksum updated to match). Run:
+
+    $ ./ich9gen --macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -163,8 +165,9 @@ regions for your libreboot ROM image.
 If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
-from the main directory (./), otherwise you can build it like so:\
-\$ **./oldbuild module ich9deblob**\
+from the main directory (./), otherwise you can build it like so:
+
+    $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -175,8 +178,9 @@ GNU+Linux) under ./ich9deblob/.
 Place the factory.rom from your system (can be obtained using the
 external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
-ich9deblob executable, then run the tool:\
-\$ **./ich9deblob**
+ich9deblob executable, then run the tool:
+
+    $ ./ich9deblob
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
 this and the factory.rom stored in a safe location!** The first 4KiB
@@ -231,8 +235,9 @@ The ME interferes with flash read/write in flashrom, and the default
 descriptor locks some regions. The idea is that doing this will remove
 all of those restrictions.
 
-Simply run (with factory.rom in the same directory):\
-\$ **./demefactory**
+Simply run (with factory.rom in the same directory):
+
+    $ ./demefactory
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.
@@ -303,7 +308,8 @@ Flash chips {#flashchips}
     <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006075.pdf>
     **~~- Page 20 and page 9 refer to SDA\_HDO or SDA\_HDOUT~~** only on
     series 6 or higher chipsets. ICH9-M (X200) does it with a strap
-    connected to GPIO33 pin (see IRC notes below)\
+    connected to GPIO33 pin (see IRC notes below)
+
     - According to page 29, the X200 can have any of the following flash
     chips:
     -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip

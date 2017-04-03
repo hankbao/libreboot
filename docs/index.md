@@ -32,6 +32,7 @@ Installing operating systems
 
 -   [List of recommended GNU+Linux distributions for
     libreboot](distros/)
+
 -   [How to install GNU+Linux on a libreboot system](gnulinux/)
 -   [How to install BSD on a libreboot system](bsd/)
 
@@ -101,20 +102,26 @@ The libreboot project has three main goals:
 -   ***Make coreboot easy to use***. Coreboot is notoriously difficult
     to install, due to an overall lack of user-focussed documentation
     and support. Most people will simply give up before attempting to
-    install coreboot.\
-    \
+    install coreboot.
+
+    
+
     Libreboot attempts to bridge this divide, making sure that
     everything from building to installing coreboot is automated, as
     much as is feasibly possible. Secondly, the project produces
     documentation aimed at non-technical users. Thirdly, the project
     attempts to provide excellent user support via mailing lists and
-    IRC.\
-    \
+    IRC.
+
+    
+
     Libreboot already comes with a payload (GRUB), flashrom and other
     needed parts. Everything is fully integrated, in a way where most of
     the complicated steps that are otherwise required, are instead done
-    for the user in advance.\
-    \
+    for the user in advance.
+
+    
+
     You can download ROM images for your libreboot system and install
     them, without having to build anything from source. The build system
     is also fully automated, so building from source is easy if you
@@ -167,15 +174,15 @@ press C at the GRUB console, and use this command to find out what
 version of libreboot you have:\
 **cat (cbfsdisk)/lbversion**\
 This will also work on non-release images (the version string is
-automatically generated, using *git describe \--tags HEAD*), built from
+automatically generated, using *git describe --tags HEAD*), built from
 the git repository. A file named *version* will also be included in the
 archives that you downloaded (if you are using release archives).
 
 If it exists, you can also extract this *lbversion* file by using the
 *cbfstool* utility which libreboot includes, from a ROM image that you
 either dumped or haven't flashed yet. In your distribution, run
-cbfstool on your ROM image (*libreboot.rom*, in this example):\
-\$ **./cbfstool libreboot.rom extract -n lbversion -f lbversion**\
+cbfstool on your ROM image (*libreboot.rom*, in this example):
+    $ ./cbfstool libreboot.rom extract -n lbversion -f lbversion
 You will now have a file, named *lbversion*, which you can read in
 whatever program it is that you use for reading/writing text files.
 

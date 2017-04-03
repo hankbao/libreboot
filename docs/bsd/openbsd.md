@@ -4,7 +4,7 @@ NOTE: This guide was written for OpenBSD by the person who contributed
 it, but the libreboot project recommends LibertyBSD. LibertyBSD is a
 version of OpenBSD without proprietary software in the repositories
 (OpenBSD distributes firmware blobs for devices inside its kernel). Go
-to the [LibertyBSD website](http://libertybsd.net/) \-- TODO: test on
+to the [LibertyBSD website](http://libertybsd.net/) -- TODO: test on
 LibertyBSD and prioritise that in this guide.
 
 This section relates to preparing, booting and installing OpenBSD on
@@ -37,18 +37,23 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable LibertyBSD/OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg | tail**\
-Check to confirm which drive it is, for example, if you think its sd3:\
-**\$ disklabel sd3**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg | tail
+
+Check to confirm which drive it is, for example, if you think its sd3:
+
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ doas umount /dev/sd3i**\
+example:
+
+    $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:\
-**\$ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync**\
+OpenBSD installer to it with dd. For example:
+
+    $ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -78,20 +83,24 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on a GNU+Linux system, here is how to create
 the bootable OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg**\
-Check lsblk to confirm which drive it is:\
-**\$ lsblk**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg
+Check lsblk to confirm which drive it is:
+
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ sudo umount /dev/sdX\***\
-**\# umount /dev/sdX\***
+example:
+
+    $ sudo umount /dev/sdX\*
+    # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
-**\$ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync**\
-**\# dd if=install60.fs of=/dev/sdX bs=8M; sync**
+distro ISO to it with dd. For example:
+
+    $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
+    # dd if=install60.fs of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -105,8 +114,8 @@ Installing OpenBSD without full disk encryption
 
 Press C in GRUB to access the command line:
 
-grub> **kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd**\
-grub> **boot**
+    grub> kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd
+    grub> boot
 
 It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
@@ -152,8 +161,8 @@ Booting
 
 Press C in GRUB to access the command line:
 
-grub> **kopenbsd -r sd0a (ahci0,openbsd1)/bsd**\
-grub> **boot**
+    grub> kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+    grub> boot
 
 OpenBSD will start booting. Yay!
 

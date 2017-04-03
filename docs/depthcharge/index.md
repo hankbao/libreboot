@@ -10,6 +10,7 @@ This section relates to the depthcharge payload used in libreboot.
     -   Booting from different mediums
     -   Showing device information
     -   Warnings
+
 -   [Recovery mode screen](#recovery_mode_screen)
     -   [Recovering from a bad state](#recovering_bad_state)
     -   [Enabling developer mode](#enabling_developer_mode)
@@ -185,26 +186,35 @@ security of the device.
 The following parameters can be configured:
 
 -   Kernels signature verification:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_signed\_only=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_signed\_only=0**
 -   External media boot:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_usb=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_usb=0**
 -   Legacy payload boot:
-    -   Enabled with:\
+    -   Enabled with:
+
         \# **crossystem dev\_boot\_legacy=1**
-    -   Disabled with:\
+    -   Disabled with:
+
         \# **crossystem dev\_boot\_legacy=0**
 -   Default boot medium:
-    -   Internal storage:\
+    -   Internal storage:
+
         \# **crossystem dev\_default\_boot=disk**
-    -   External media:\
+    -   External media:
+
         \# **crossystem dev\_default\_boot=usb**
-    -   Legacy payload:\
+    -   Legacy payload:
+
         \# **crossystem dev\_default\_boot=legacy**
 
 

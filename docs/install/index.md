@@ -30,6 +30,7 @@ Setting up programmers, for external flashing via hardware method
 
 -   [How to program an SPI flash chip with the BeagleBone
     Black](bbb_setup.html)
+
 -   [How to program an SPI flash chip with the Raspberry
     Pi](rpi_setup.html)
 
@@ -251,8 +252,8 @@ ROM image, and it should work.**
 Flash chip size
 ---------------
 
-Use this to find out:\
-\# **flashrom -p internal -V**
+Use this to find out:
+    # flashrom -p internal -V
 
 All good?
 ---------
@@ -271,15 +272,16 @@ appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
 
-How to update the flash chip contents:\
-\$ **sudo ./flash update [yourrom.rom](#rom)**
+How to update the flash chip contents:
+    $ sudo ./flash update [yourrom.rom](#rom)
 
 
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
-correct ROM image, then run this alternative command:\
-\$ **sudo ./flash forceupdate [yourrom.rom](#rom)**
+correct ROM image, then run this alternative command:
+
+    $ sudo ./flash forceupdate [yourrom.rom](#rom)
 
 
 
@@ -318,8 +320,9 @@ the flashing script. do this: *rm -f patch && wget -O flash
 https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
 && chmod +x flash***
 
-The first half of the procedure is as follows:\
-\$ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
+The first half of the procedure is as follows:
+
+    $ sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).
 
 
 
@@ -342,8 +345,9 @@ and then boot; libreboot is running, but there is a 2nd procedure
 
 
 
-When you have booted up again, you must also do this:\
-\$ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
+When you have booted up again, you must also do this:
+
+    $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
 
 If flashing fails at this stage, try the following:\
 \$ **sudo ./flashrom/i686/flashrom -p
@@ -391,8 +395,9 @@ Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
 
 
-Use this flashing script, to install libreboot:\
-\$ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
+Use this flashing script, to install libreboot:
+
+    $ sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)
 
 
 

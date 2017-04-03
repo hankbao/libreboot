@@ -15,6 +15,7 @@ Table of contents
 -   [i945 VRAM size](#i945_vram_size)
 -   [LCD panels on i945 - fix incompatible
     panels](#lcd_i945_incompatibility)
+
 -   [i945 X60/T60 VBT implementation (experimental: testing)](#i945_vbt)
 -   [IntelVbtTool results](#intelvbttool_results)
 -   [Fallback patches for i945](#fallback_patches)
@@ -158,12 +159,13 @@ working and nonworking panels.
 
 How to dump EDID:
 
-\# **apt-get install i2c-tools**\
-\# **modprobe i2c-dev**\
-Find out the correct ID to use:\
-\# **i2cdetect -l**\
-Example:\
-\# **i2cdump -y 2 0x50**
+    # apt-get install i2c-tools
+    # modprobe i2c-dev
+Find out the correct ID to use:
+    # i2cdetect -l\
+Example:
+
+    # i2cdump -y 2 0x50
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:
 
@@ -324,8 +326,9 @@ Get intelvbttool here: <http://review.coreboot.org/#/c/5842>
 
 Now dump a copy of the running VGA BIOS: **\$ sudo dd if=/dev/mem bs=64k
 of=runningvga.bin skip=12 count=1**\
-Then do (and record the output):\
-**\$ ./intelvbttool runningvga.bin > intelvbttool\_out**
+Then do (and record the output):
+
+    $ ./intelvbttool runningvga.bin > intelvbttool\_out
 
 Backup both files (runningvga.bin and intelvbttool\_out), renaming them
 to match the system and LCD panel used.

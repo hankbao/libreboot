@@ -28,20 +28,25 @@ Prepare the USB drive (in GNU+Linux)
 If you downloaded your ISO on an existing GNU+Linux system, here is how
 to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg**\
-Check lsblk to confirm which drive it is:\
-**\$ lsblk**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg
+
+Check lsblk to confirm which drive it is:
+
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ sudo umount /dev/sdX\***\
-**\# umount /dev/sdX\***
+example:
+
+    $ sudo umount /dev/sdX\*
+    # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
-distro ISO to it with dd. For example:\
-**\$ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**\
-**\# dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**
+distro ISO to it with dd. For example:
+
+    $ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
+    # dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -71,18 +76,22 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable GNU+Linux USB drive:
 
-Connect the USB drive. Check dmesg:\
-**\$ dmesg | tail**\
-Check to confirm which drive it is, for example, if you think its sd3:\
-**\$ disklabel sd3**
+Connect the USB drive. Check dmesg:
+
+    $ dmesg | tail
+Check to confirm which drive it is, for example, if you think its sd3:
+
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
-example:\
-**\$ doas umount /dev/sd3i**\
+example:
+
+    $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:\
-**\$ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync**\
+OpenBSD installer to it with dd. For example:
+
+    $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -146,13 +155,13 @@ distribution it is that you are trying to install.*
 
 If the ISOLINUX parser or *Search for GRUB configuration* options won't
 work, then press C in GRUB to access the command line.\
-grub> **ls**\
+    grub> ls
 Get the device from above output, eg (usb0). Example:\
-grub> **cat (usb0)/isolinux/isolinux.cfg**\
+    grub> cat (usb0)/isolinux/isolinux.cfg\
 Either this will show the ISOLINUX menuentries for that ISO, or link to
 other .cfg files, for example /isolinux/foo.cfg.\
 If it did that, then you do:\
-grub> **cat (usb0)/isolinux/foo.cfg**\
+    grub> cat (usb0)/isolinux/foo.cfg
 And so on, until you find the correct menuentries for ISOLINUX. **The
 file */isolinux/foo.cfg* is a fictional example. Do not actually use
 this example, unless you actually have that file, if it is
@@ -173,10 +182,10 @@ Now look at the ISOLINUX menuentry. It'll look like:\
 append PARAMETERS initrd=/path/to/initrd MAYBE\_MORE\_PARAMETERS\
 ** GRUB works the same way, but in it's own way. Example GRUB
 commands:\
-grub> **set root='usb0'**\
-grub> **linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS**\
-grub> **initrd /path/to/initrd**\
-grub> **boot**\
+    grub> set root='usb0'\
+    grub> linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS
+    grub> initrd /path/to/initrd
+    grub> boot
 Note: *usb0* may be incorrect. Check the output of the *ls* command in
 GRUB, to see a list of USB devices/partitions. Of course this will vary
 from distro to distro. If you did all of that correctly, then it should

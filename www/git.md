@@ -34,6 +34,7 @@ Not a developer? You can still help!
 -   Work towards convincing hardware manufacturers and designers to
     start caring about free software. Perhaps even build your own
     hardware.
+
 -   Spread the word about libreboot! Tell your friends about it, and
     talk about it on public internet-based discussion networks (e.g.
     *social networks*).

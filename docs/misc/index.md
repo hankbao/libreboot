@@ -3,6 +3,7 @@
 
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or
     Devuan)](#debian_powertop)
+
 -   [High Pitched Whining Noise on Idle (how to remove in
     Parabola)](#high_pitch_parabola)
 -   [X60/T60: Serial port - how to use (for dock owners)](#serial)
@@ -25,12 +26,12 @@ Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
 
 Included with libreboot is a script called 'powertop.debian'. Run this
-as root and it will setup powertop to run with \--auto-tune at boot
+as root and it will setup powertop to run with --auto-tune at boot
 time. Load the file in your text editor to see how it does that.
 
-\$ **sudo ./resources/scripts/misc/powertop.debian**
+    $ sudo ./resources/scripts/misc/powertop.debian
 
-Might want to run with \--calibrate first
+Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
@@ -50,18 +51,20 @@ most people can't hear or doesn't bother most people).
 
 This is not perfect! The full solution is still not discovered but this
 is a step towards that. Also, in some instances you will need to run
-'sudo powertop \--auto-tune' again. This needs to be implemented
+'sudo powertop --auto-tune' again. This needs to be implemented
 properly in coreboot itself!
 
 On the X60 with coreboot or libreboot, there is a high pitched sound
 when idle. So far we have use processor.max\_cstate=2 or idle=halt in
 GRUB. These consume power. Stop using them!
 
-Be root\
-**\$ su -**
+Be root
 
-Installed powertop:\
-**\# pacman -S powertop**
+    $ su -
+
+Installed powertop:
+
+    # pacman -S powertop
 
 and added the following to /etc/systemd/system/powertop.service :
 
@@ -78,13 +81,14 @@ and added the following to /etc/systemd/system/powertop.service :
     [Install]
     WantedBy=multi-user.target
 
-Finally, as root do that:\
-**\# systemctl enable powertop**\
-**\# systemctl start powertop**
+Finally, as root do that:
+
+    # systemctl enable powertop
+    # systemctl start powertop
 
 The next time you boot the system, the buzz will be gone.
 
-Might want to run with \--calibrate first
+Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
@@ -107,8 +111,9 @@ included inside the ROM. Connect your null modem cable to the serial
 port on the dock and connect the other end to a 2nd system using your
 USB Serial adapter.
 
-On the 2nd system, you can try this (using GNU Screen):\
-**\$ sudo screen /dev/ttyUSB0 115200**
+On the 2nd system, you can try this (using GNU Screen):
+
+    $ sudo screen /dev/ttyUSB0 115200
 
 How to quit GNU Screen: Ctrl+A then release and press K, and then press
 Y.
@@ -227,13 +232,14 @@ battery goes to a critically low charge level, a beep occurs. Nvramtool
 is included in libreboot, and can be used to enable or disable this
 behaviour.
 
-Disable or enable beeps when removing/adding the charger:\
-\$ **sudo ./nvramtool -w power\_management\_beeps=Enable**\
-\$ **sudo ./nvramtool -w power\_management\_beeps=Disable**
+Disable or enable beeps when removing/adding the charger:
+    $ sudo ./nvramtool -w power\_management\_beeps=Enable
+    $ sudo ./nvramtool -w power\_management\_beeps=Disable
 
-Disable or enable beeps when battery is low:\
-\$ **sudo ./nvramtool -w low\_battery\_beep=Enable**\
-\$ **sudo ./nvramtool -w low\_battery\_beep=Disable**
+Disable or enable beeps when battery is low:
+    $ sudo ./nvramtool -w low\_battery\_beep=Enable
+
+    $ sudo ./nvramtool -w low\_battery\_beep=Disable
 
 A reboot is required, for these changes to take effect.
 
@@ -246,11 +252,13 @@ Get the panel name with **sudo get-edid | strings**\
 Or look in **/sys/class/drm/card0-LVDS-1/edid**
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
-package i2c-tools.\
-\$ **sudo modprobe i2c-dev**\
-\$ **sudo i2cdump -y 5 0x50** (you might have to change the value for
--y)\
-\$ **sudo rmmod i2c-dev**\
+package i2c-tools.
+
+    $ sudo modprobe i2c-dev
+    $ sudo i2cdump -y 5 0x50 (you might have to change the value for
+-y)
+
+    $ sudo rmmod i2c-dev
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically

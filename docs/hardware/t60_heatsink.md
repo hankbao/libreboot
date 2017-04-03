@@ -11,6 +11,7 @@ Hardware requirements {#hardware_requirements}
 
 -   rubbing alcohol or isopropyl alcohol, and thermal compound for
     changing CPU heatsink (procedure involves removing heatsink)
+
 -   thermal compound/paste (Arctic MX-4 is good. Others are also good.)
 
 

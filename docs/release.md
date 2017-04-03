@@ -30,6 +30,7 @@ Other bugfixes:
 -   re-added "unset superusers" to the grub.cfg, which was needed for
     some users depending on the distros that they used
 
+
 Libreboot 20160902 {#release20160922}
 ==================
 

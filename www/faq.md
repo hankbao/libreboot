@@ -40,6 +40,7 @@ service when you connect the ethernet cable:
 
     sudo service network-manager restart
     
+
 On Parabola, you can try:
 
     sudo systemctl restart network-manager

@@ -22,6 +22,7 @@ Hardware requirements {#hardware_requirements}
 -   your new fan and/or heatsink
 -   CPU thermal compound (some say Arctic MX-4 is good, others are also
     'ok')
+
 -   Something to spread the paste with
 
 

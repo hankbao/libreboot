@@ -31,6 +31,7 @@ image:
     cbfstool my.rom extract -n grubtest.cfg -f my.grubtest.cfg
     cbfstool my.rom remove -n grubtest.cfg
 
+
 Helpful links:
 
 -   [GRUB manual
@@ -77,7 +78,7 @@ remember and easier to crack. Diceware passphrases are harder to crack
 because of far higher entropy (there are many words available to use,
 but only about 50 commonly used symbols in pass*words*).
 
-\-->
+-->
 The GRUB password can be entered in two ways:
 
 -   plaintext
@@ -105,7 +106,7 @@ As enabling password protection as above means that you have to input it
 on every single boot, we will make one menu entry work without it.
 Remember that we will have GPG signing active, thus a potential attacker
 will not be able to boot an arbitrary operating system. We do this by
-adding option **\--unrestricted** to a menuentry definition:
+adding option **--unrestricted** to a menuentry definition:
 
     menuentry 'Load Operating System (incl. fully encrypted disks)  [o]' --hotkey='o' --unrestricted {
     ...

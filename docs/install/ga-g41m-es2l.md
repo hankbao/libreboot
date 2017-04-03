@@ -9,8 +9,9 @@ motherboard while they still have the original BIOS present.
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
-\# **flashrom -p internal -V**
+Use this to find out:
+    # flashrom -p internal -V
+
 
 [Back to top of page.](#pagetop)
 
