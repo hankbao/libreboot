@@ -187,11 +187,11 @@ payload, press C to get to the command line.
 
 Do that:\
     grub> cryptomount -a
-grub> **set root='lvm/matrix-rootvol'**\
+    grub> set root='lvm/matrix-rootvol'\
 grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\
-grub> **initrd /initrd.img**\
-grub> **boot**
+    grub> initrd /initrd.img
+    grub> boot
 
 
 

@@ -117,7 +117,7 @@ You might have to use an external USB keyboard during the installation.
 Press C to access the GRUB terminal.
 
     grub> knetbsd -r sd0a (usb0,netbsd1)/netbsd
-grub> **boot**
+    grub> boot
 
 It will start booting into the NetBSD installer. Follow the normal
 process for installing NetBSD.
@@ -140,8 +140,8 @@ Booting
 
 Press C in GRUB to access the command line:
 
-grub> **knetbsd -r wd0a (ahci0,netbsd1)/netbsd**\
-grub> **boot**
+    grub> knetbsd -r wd0a (ahci0,netbsd1)/netbsd
+    grub> boot
 
 NetBSD will start booting. Yay!
 

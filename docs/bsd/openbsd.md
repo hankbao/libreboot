@@ -115,7 +115,7 @@ Installing OpenBSD without full disk encryption
 Press C in GRUB to access the command line:
 
     grub> kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd
-grub> **boot**
+    grub> boot
 
 It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
@@ -161,8 +161,8 @@ Booting
 
 Press C in GRUB to access the command line:
 
-grub> **kopenbsd -r sd0a (ahci0,openbsd1)/bsd**\
-grub> **boot**
+    grub> kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+    grub> boot
 
 OpenBSD will start booting. Yay!
 

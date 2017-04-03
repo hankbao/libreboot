@@ -523,11 +523,11 @@ command line. The underlined parts are optional (using those 2
 underlines will boot lts kernel instead of normal).
 
     grub> cryptomount -a
-grub> **set root='lvm/matrix-root'**\
+    grub> set root='lvm/matrix-root'\
 grub> **linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root
 cryptdevice=/dev/sda1:root**\
-grub> **initrd /boot/initramfs-linux-libre-lts.img**\
-grub> **boot**\
+    grub> initrd /boot/initramfs-linux-libre-lts.img
+    grub> boot\
 
 You could also make it load /boot/vmlinuz-linux-libre-grsec and
 /boot/initramfs-linux-libre-grsec.img
