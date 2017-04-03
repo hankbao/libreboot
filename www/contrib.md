@@ -15,6 +15,14 @@ Leah is also responsible for [vimuser.org](https://vimuser.org/)
 (personal website) and [transit.org.uk](https://transit.org.uk/)
 (support group for transgender people).
 
+Alyssa Rosenzweig
+-----------------
+
+Switched the website to use markdown in lieu of handwritten HTML and custom
+PHP. Additionally assisted with [booting
+Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.md) on the Raspberry
+Pi without blobs. Current sysadmin and assists with project management.
+
 Timothy Pearson
 ---------------
 
@@ -82,14 +90,6 @@ working and video generally to become unstable. Paul worked with Leah on
 this, sending her patches to test periodically until the bug was fixed
 in coreboot, and then helped her integrate the fix in libreboot. Contact
 **PaulePanter** in the \#libreboot IRC channel.
-
-Alyssa Rosenzweig
------------------
-
-Switched the website to use markdown in lieu of handwritten HTML and custom
-PHP. Additionally assisted with [booting
-Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.md) on the Raspberry
-Pi without blobs.
 
 Jeroen Quint
 ------------
