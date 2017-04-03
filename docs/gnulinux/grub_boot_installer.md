@@ -29,19 +29,19 @@ If you downloaded your ISO on an existing GNU+Linux system, here is how
 to create the bootable GNU+Linux USB drive:
 
 Connect the USB drive. Check dmesg:\
-**\$ dmesg**\
+    $ dmesg
 Check lsblk to confirm which drive it is:\
-**\$ lsblk**
+    $ lsblk
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
-**\$ sudo umount /dev/sdX\***\
-**\# umount /dev/sdX\***
+    $ sudo umount /dev/sdX\*
+    # umount /dev/sdX\*
 
 dmesg told you what device it is. Overwrite the drive, writing your
 distro ISO to it with dd. For example:\
-**\$ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**\
-**\# dd if=gnulinux.iso of=/dev/sdX bs=8M; sync**
+    $ sudo dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
+    # dd if=gnulinux.iso of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -72,17 +72,17 @@ If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable GNU+Linux USB drive:
 
 Connect the USB drive. Check dmesg:\
-**\$ dmesg | tail**\
+    $ dmesg | tail
 Check to confirm which drive it is, for example, if you think its sd3:\
-**\$ disklabel sd3**
+    $ disklabel sd3
 
 Check that it wasn't automatically mounted. If it was, unmount it. For
 example:\
-**\$ doas umount /dev/sd3i**\
+    $ doas umount /dev/sd3i
 
 dmesg told you what device it is. Overwrite the drive, writing the
 OpenBSD installer to it with dd. For example:\
-**\$ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync**\
+    $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.

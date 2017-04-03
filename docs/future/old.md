@@ -44,7 +44,7 @@ That's all! **This has also been backported into libreboot 5th release
 Carikli) told me about the register **BLC\_PWM\_CTL** and that you could
 set it to control backlight. I read that address using devmem2 while
 running the VBIOS:\
-**\# devmem2 0xe4361254 w**
+    # devmem2 0xe4361254 w
 
 The change is also included in libreboot 6.
 
