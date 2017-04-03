@@ -838,7 +838,6 @@ many HDDs (a few high-end ones can use more bandwidth than USB 2.0 is
 capable of), but for SSDs it might be problematic (unless you're using
 USB 3.0, which is not yet usable in freedom. See
 
-
 Use of USB is also not an absolute guarantee of safety, so do beware.
 The attack surface becomes much smaller, but a malicious drive could
 still attempt a "fuzzing" attack (e.g. sending malformed USB

@@ -6,8 +6,6 @@ highly recommended by the Libreboot project.
 
 [Back to previous index](./)
 
-
-
 GRUB secure boot with GPG
 =========================
 
@@ -31,7 +29,6 @@ image:
     cbfstool my.rom extract -n grubtest.cfg -f my.grubtest.cfg
     cbfstool my.rom remove -n grubtest.cfg
 
-
 Helpful links:
 
 -   [GRUB manual
@@ -42,8 +39,6 @@ Helpful links:
     otherwise.](https://libreboot.org/faq/#firmware-hddssd)
 -   [Coreboot GRUB security
     howto](https://www.coreboot.org/GRUB2#Security)
-
-
 
 GRUB Password
 =============
@@ -136,8 +131,6 @@ an attacker wants is then just a few GRUB commands away.
 As far as basic password setup is concerned we are done and we can now
 move on to signing.
 
-
-
 GPG keys
 ========
 
@@ -184,8 +177,6 @@ What remains now is to include the modifications into the image (rom):
     cbfstool my.rom add -n grubtest.cfg.sig -f my.grubtest.cfg.sig -t raw
 
 \... and flashing it.
-
-
 
 Copyright © 2017 Fedja Beader <fedja@protonmail.ch>\
 Permission is granted to copy, distribute and/or modify this document

@@ -31,4 +31,3 @@ Backup of old Libreboot mailing lists
 -   [Developer mailing list (mbox
     format)](old/libreboot-dev/mbox/lists.gnu.org/libreboot-dev/)
 
-

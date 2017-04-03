@@ -1,6 +1,5 @@
 % Miscellaneous 
 
-
 -   [High Pitched Whining Noise on Idle (how to remove in Debian or
     Devuan)](#debian_powertop)
 
@@ -16,11 +15,8 @@
     Black](bbb_ehci.html)
 -   [e1000e driver trouble shooting (Intel NICs)](#e1000-hang)
 
-
-
 High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_powertop}
 ======================================================================
-
 
 Start powertop automatically at boot time {#debian_powertop_autostart}
 -----------------------------------------
@@ -37,10 +33,7 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-
 [Back to top of page](#pagetop)
-
-
 
 High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_parabola}
 ==============================================================
@@ -96,8 +89,6 @@ using [this guide](../gnulinux/grub_cbfs.html).
 
 [Back to top of page](#pagetop)
 
-
-
 X60/T60: Serial port - how to use (for dock owners) {#serial}
 ===================================================
 
@@ -137,8 +128,6 @@ change the **linux** line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
 
 [Back to top of page](#pagetop)
-
-
 
 Finetune backlight control on intel gpu's
 =========================================
@@ -222,8 +211,6 @@ is BLC\_PWM\_CTL described in
 on page 94. More research needs to be done on this target so proceed
 with care.
 
-
-
 Power Management Beeps on Thinkpads
 ===================================
 
@@ -242,8 +229,6 @@ Disable or enable beeps when battery is low:
     $ sudo ./nvramtool -w low\_battery\_beep=Disable
 
 A reboot is required, for these changes to take effect.
-
-
 
 Get EDID: Find out the name (model) of your LCD panel {#get_edid_panelname}
 =====================================================
@@ -264,10 +249,6 @@ You'll see the panel name in the output (from the EDID dump).
 If neither of these options work (or they are unavailable), physically
 removing the LCD panel is an option. Usually, there will be information
 printed on the back.
-
-[Back to top of page.](#pagetop)
-
-
 
 e1000e driver trouble shooting (Intel NICs) {#e1000-hang}
 ===========================================
@@ -294,16 +275,12 @@ across subnets on the same interface (NIC).
 More information, including logs, can be found on [this
 page](https://notabug.org/vimuser/libreboot/issues/23).
 
-
-
 USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
 ===================================
 
 Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
 
 Put this script in /etc/init.d/ on debian-based systems.
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

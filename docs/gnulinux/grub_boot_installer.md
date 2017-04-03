@@ -14,13 +14,9 @@ flash drive (and *dd*).
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -98,8 +94,6 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-
-
 Installing GNU+Linux with full disk encryption
 ----------------------------------------------
 
@@ -109,8 +103,6 @@ Installing GNU+Linux with full disk encryption
     /boot)](encrypted_parabola.html)
 
 [Back to top of page](#pagetop).
-
-
 
 Debian or Devuan net install?
 -----------------------------
@@ -132,8 +124,6 @@ We recommend using the *MATE* desktop.
 
 [Back to top of page](#pagetop).
 
-
-
 Booting ISOLINUX images (automatic method)
 ------------------------------------------
 
@@ -143,8 +133,6 @@ this is a GRUB menu, converted from the usual ISOLINUX menu provided by
 that distro.
 
 [Back to top of page](#pagetop).
-
-
 
 Booting ISOLINUX images (manual method)
 ---------------------------------------
@@ -193,8 +181,6 @@ now be booting your USB drive in the way that you specified.
 
 [Back to top of page](#pagetop).
 
-
-
 Troubleshooting
 ===============
 
@@ -236,8 +222,6 @@ also work for Debian, Devuan and any other apt-get distro that provides
 debian-installer (text mode) net install method.
 
 [Back to top of page](#pagetop).
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2016 Scott Bonds <scott@ggr.com>\

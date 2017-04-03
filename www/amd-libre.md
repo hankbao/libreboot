@@ -128,4 +128,3 @@ companies that care about software freedom.
 We in the Libreboot project are available to contact, using the details
 on the homepage. We look forward to working with AMD :)
 
-

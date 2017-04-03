@@ -2,15 +2,11 @@
 
 This section relates to the GRUB payload used in libreboot.
 
-
 -   [Changing the background image in GRUB](#grub_background)
 -   [Setting font in GRUB](#grub_font)
 -   [GRUB keyboard layouts](#grub_keyboard)
     -   [Custom keyboard layout in GRUB](#grub_custom_keyboard)
     -   [UK Dvorak keyboard layout in GRUB](#grub_ukdvorak_keyboard)
-
-
-
 
 Changing the background image in GRUB {#grub_background}
 =====================================
@@ -23,8 +19,6 @@ libreboot\_src/coreboot/util/cbfstool/ if you want to build from source.
 
 When you've done this, re-flash your ROM and you should have a new
 background at boot time.
-
-
 
 Setting font in GRUB (for reference) {#grub_font}
 ====================================
@@ -66,11 +60,8 @@ font):\
 
 [Back to top of page](#pagetop)
 
-
-
 GRUB keyboard layouts (for reference) {#grub_keyboard}
 =====================================
-
 
 Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
 ----------------------------------------------
@@ -98,8 +89,6 @@ under bin. Example: **libreboot\_frazerty.rom**.
 
 [Back to top of page](#pagetop)
 
-
-
 UK Dvorak keyboard layout in GRUB (for reference) {#grub_ukdvorak_keyboard}
 -------------------------------------------------
 
@@ -110,9 +99,6 @@ file was created
     $ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb
 
 [Back to top of page](#pagetop)
-
-
-
 
 Copyright © 2014 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

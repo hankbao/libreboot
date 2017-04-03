@@ -26,13 +26,9 @@ with libreboot.
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 freebsd.img is the installation image for FreeBSD. Adapt the filename
 accordingly, for whatever FreeBSD version you use.
@@ -112,8 +108,6 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-
-
 Installing FreeBSD without full disk encryption
 -----------------------------------------------
 
@@ -128,16 +122,12 @@ process for installing FreeBSD.
 
 [Back to top of page](#pagetop).
 
-
-
 Installing FreeBSD with full disk encryption
 --------------------------------------------
 
 TODO
 
 [Back to top of page](#pagetop).
-
-
 
 Booting
 -------
@@ -146,16 +136,12 @@ TODO
 
 [Back to top of page](#pagetop).
 
-
-
 Configuring Grub
 ----------------
 
 TODO
 
 [Back to top of page](#pagetop).
-
-
 
 Troubleshooting
 ===============
@@ -176,8 +162,6 @@ Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
 
 [Back to top of page](#pagetop).
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2016 Scott Bonds <scott@ggr.com>\

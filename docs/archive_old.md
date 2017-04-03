@@ -4,11 +4,7 @@ Information for this release can be found at
 [release.html](release.html). Updated versions of libreboot can be found
 at [libreboot.org](http://libreboot.org/).
 
-
 **This page is \*obsolete\*, provided for historical purposes.**
-
-
-
 
 Releases
 --------
@@ -26,8 +22,6 @@ Releases
 -   [r20131214 (3rd release)](#release20131214) (14th December 2013)
 -   [r20131213 (2nd release)](#release20131213) (13th December 2013)
 -   [r20131212 (1st release)](#release20131212) (12th December 2013)
-
-
 
 Release 20150518 {#release20150518}
 ================
@@ -254,8 +248,6 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   **New board:** ThinkPad R400 support added to libreboot.
 -   bbb\_setup.html: tell user to use libreboot's own flashrom
 
-
-
 Release 20150124, 20150126 and 20150208 {#release20150124}
 =======================================
 
@@ -468,8 +460,6 @@ Changes for this release (latest changes first, earliest changes last)
     html errors
 -   Documentation (macbook21 related): clean up
 
-
-
 Release 20141015 {#release20141015}
 ================
 
@@ -537,10 +527,6 @@ Changes for this release (latest changes first, earliest changes last)
 -   Documentation: encrypted\_parabola.html: add tutorial for encrypted
     Parabola GNU+Linux installation.
 -   Documentation: added more info about wifi chipsets
-
-[Back to top of page.](#pagetop)
-
-
 
 6th release (pre-release, 7th beta) {#release20140911}
 ===================================
@@ -1119,10 +1105,6 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     and advanced mini dock) to relevant sections.
     -   Added to docs/\#serial
 
-[Back to top of page.](#pagetop)
-
-
-
 Release 20140622 (5th release) {#release20140622}
 ==============================
 
@@ -1239,10 +1221,6 @@ Development notes
 -   (in Console-> in coreboot "make menuconfig")
 -   (and build with grub\_serial.cfg and grub\_memdisk\_serial.cfg)
 
-[Back to top of page.](#pagetop)
-
-
-
 Release 20140221 (4th release) {#release20140221}
 ==============================
 
@@ -1275,10 +1253,6 @@ The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB, and
 automatically converts it to a grub config and switches to the boot menu
 of that distro. This makes booting ISOs \*much\* easier than before.
 
-[Back to top of page.](#pagetop)
-
-
-
 r20131214 (3rd release) {#release20131214}
 =======================
 
@@ -1295,10 +1269,6 @@ Development notes
 
 -   Added SeaBIOS payload to GRUB2 (for booting USB drives)
 -   new grub.cfg
-
-[Back to top of page.](#pagetop)
-
-
 
 r20131213 (2nd release) {#release20131213}
 =======================
@@ -1319,10 +1289,6 @@ Development notes
 -   improvements to the documentation
 -   new grub.cfg
 
-[Back to top of page.](#pagetop)
-
-
-
 r20131212 (1st release) {#release20131212}
 =======================
 
@@ -1339,10 +1305,6 @@ Development notes
 
 -   initial release
 -   source code deblobbed
-
-[Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

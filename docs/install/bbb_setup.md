@@ -30,8 +30,6 @@ Onto the Beaglebone black\...
 
 [Back to previous index](./)
 
-
-
 Hardware requirements
 =====================
 
@@ -101,10 +99,6 @@ Shopping list (pictures of this hardware is shown later):
     contains a list. **OPTIONAL\---only needed for serial console on
     the BBB, if not using SSH via ethernet cable.**
 
-[Back to top of page.](#pagetop)
-
-
-
 Setting up the 3.3V DC PSU
 ==========================
 
@@ -139,8 +133,6 @@ connector, instead of going through the centre.
 Here is an example set up:\
 ![](images/x200/psu33.jpg "Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net> see license notice at the end of this document")
 
-
-
 Accessing the operating system on the BBB
 =========================================
 
@@ -168,8 +160,6 @@ directly accessible from SSH, or screen:
 
 You can also access the uboot console, using the serial method instead
 of SSH.
-
-
 
 Setting up spidev on the BBB
 ============================
@@ -266,8 +256,6 @@ Output:
 This means that it's working (the clip isn't connected to any flash
 chip, so the error is fine).
 
-
-
 Connecting the Pomona 5250/5252
 ===============================
 
@@ -339,10 +327,6 @@ leads, **but** keep all other leads short (10cm or less)
 You should now have something that looks like this:\
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)
 
-[Back to top of page.](#pagetop)
-
-
-
 Notes about stability {#stability}
 =====================
 
@@ -360,8 +344,6 @@ following configuration:
 -   Twisted pair used as core (in case more capacitors are needed)
 -   See this image: <http://i.imgur.com/qHGxKpj.jpg>
 -   He was able to flash at 50MHz (lower speeds are also fine).
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\

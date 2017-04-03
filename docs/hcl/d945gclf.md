@@ -45,8 +45,6 @@ Here is an image of the D945GCLF2 board:\
 And SPI SOIC8 flash chip\
 ![](../images/d945gclf/20160923_141550.jpg){width="50%" height="50%"}
 
-
-
 How to replace thermal paste and fan
 ------------------------------------
 
@@ -74,8 +72,6 @@ After that, assemble your new fan into CPU cooler\
 ![](../images/d945gclf/20160923_141635.jpg){width="50%" height="50%"}\
 Finally assemle both coolers on both chips, do not forget put in the CPU
 fan connector back, and you are done.
-
-
 
 Copyright © 2016 Arthur Heymans <arthur@aheymans.xyz>\
 Copyright © 2016 Vitaly Castaño Solana <vita\_cell@hotmail.com>\

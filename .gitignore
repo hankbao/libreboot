@@ -40,4 +40,5 @@ push
 /gm45macaddress
 tocheck*
 *.html
+!www/template.html
 /www/temp.md

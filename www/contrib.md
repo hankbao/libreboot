@@ -2,7 +2,6 @@
 title: Contributors
 ...
 
-
 If we forgot to mention you here, let us know and we'll add you. (or if
 you don't want to be mentioned, let us know and we'll remove your
 entry)

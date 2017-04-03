@@ -4,10 +4,8 @@ title: GPG
 
     $ gpg --recv-keys
 
-
 The GPG key can also be downloaded with this exported dump of the
 pubkey: [lbkey.asc](lbkey.asc).
-
 
     $ sha512sum -c sha512sum.txt
     $ gpg --verify sha512sum.txt.sig

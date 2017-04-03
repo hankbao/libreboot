@@ -3,15 +3,11 @@
 Updated versions of libreboot can be found at
 [libreboot.org](http://libreboot.org/).
 
-
-
 Old releases
 ------------
 
 See [archive\_old.html](archive_old.html) for information about older
 libreboot releases.
-
-
 
 Libreboot 20160907 {#release20160907}
 ==================
@@ -29,7 +25,6 @@ Other bugfixes:
 -   Various improvements to the documentation
 -   re-added "unset superusers" to the grub.cfg, which was needed for
     some users depending on the distros that they used
-
 
 Libreboot 20160902 {#release20160922}
 ==================
@@ -206,8 +201,6 @@ Kocialkowski)
 
 Various fixes to the ich9gen utility (e.g. flash component density is
 now set correctly in the descriptor, gbe-less descriptors now supported)
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

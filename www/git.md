@@ -125,7 +125,6 @@ information on which commits in what branch contain your changes.
 **Check [\#githosting](#githosting), for a list of Git hosting providers
 that we recommend.**
 
-
 List of recommended Git hosting providers 
 -----------------------------------------
 
