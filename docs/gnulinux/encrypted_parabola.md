@@ -73,8 +73,8 @@ Securely wipe the drive:
 NOTE: If you have an SSD, only do this the first time. If it was already
 LUKS-encrypted before, use the info below to wipe the LUKS header. Also,
 check online for your SSD what the recommended erase block size is. For
-example if it was 2MiB:\
-\# **dd if=/dev/urandom of=/dev/sda bs=2M; sync**
+example if it was 2MiB:
+    # dd if=/dev/urandom of=/dev/sda bs=2M; sync
 
 If your drive was already LUKS encrypted (maybe you are re-installing
 your distro) then it is already 'wiped'. You should just wipe the LUKS
@@ -525,8 +525,8 @@ option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
 would be really nice):
     $ ./cbfstool libreboot.rom print
-Extract grubtest.cfg:\
-\$ **./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**\
+Extract grubtest.cfg:
+    $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg\
 And modify:\
 \$ **vi grubtest.cfg**
 

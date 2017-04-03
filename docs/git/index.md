@@ -36,10 +36,10 @@ following command:
     $ sudo ./oldbuild dependencies debian
 (this will also work in Devuan)
 
-For Parabola, you can run the following command:\
-\$ **sudo ./oldbuild dependencies parabola**\
-or:\
-\# **./oldbuild dependencies parabola**
+For Parabola, you can run the following command:
+    $ sudo ./oldbuild dependencies parabola\
+or:
+    # ./oldbuild dependencies parabola
 
 
 For other GNU+Linux distributions, you can adapt the existing scripts.

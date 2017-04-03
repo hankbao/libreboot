@@ -42,8 +42,8 @@ source with:
     $ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
-Run:\
-\$ **./ich9gen**
+Run:
+    $ ./ich9gen
 
 Running ich9gen this way (without any arguments) generates a default
 descriptor+gbe image with a generic MAC address. You probably don't

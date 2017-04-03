@@ -122,8 +122,8 @@ Acquire the necessary utilities {#tools}
 Use ***cbfstool*** and ***flashrom***. There are available in the
 *libreboot\_util* release archive, or they can be compiled (see
 [../git/\#build\_flashrom](../git/#build_flashrom)). Flashrom is also
-available from the repositories:\
-\# **pacman -S flashrom**
+available from the repositories:
+    # pacman -S flashrom
 
 [Back to top of page.](#pagetop)
 
@@ -190,8 +190,8 @@ Testing
 
 **Now you have a modified ROM. Refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
-flash it.\
-\$ **cd /libreboot\_util** \# **./flash update libreboot.rom**\
+flash it.
+    $ cd /libreboot\_util** \# **./flash update libreboot.rom\
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:

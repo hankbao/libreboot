@@ -251,8 +251,8 @@ ROM image, and it should work.**
 Flash chip size
 ---------------
 
-Use this to find out:\
-\# **flashrom -p internal -V**
+Use this to find out:
+    # flashrom -p internal -V
 
 All good?
 ---------
@@ -271,8 +271,8 @@ appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
 
-How to update the flash chip contents:\
-\$ **sudo ./flash update [yourrom.rom](#rom)**
+How to update the flash chip contents:
+    $ sudo ./flash update [yourrom.rom](#rom)
 
 
 

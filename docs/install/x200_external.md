@@ -33,8 +33,8 @@ Check the [suppliers](../../suppliers) page for more information.
 Flash chip size {#flashchips}
 ===============
 
-Use this to find out:\
-\# **flashrom -p internal -V**
+Use this to find out:
+    # flashrom -p internal -V
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
 the motherboard (this requires removal of the motherboard). **Not all
