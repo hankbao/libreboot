@@ -8,6 +8,10 @@ the Git repositories where development is done. Development discussion
 is done on IRC and on the libreboot
 [subreddit](https://www.reddit.com/r/libreboot/)
 
+Download Libreboot from the Git repository here:
+
+**git clone https://notabug.org/libreboot/libreboot**.
+
 How can I help the libreboot project? 
 --------------------------------------
 
@@ -89,7 +93,9 @@ Libreboot development is facilitated by *[git](https://git-scm.com/)*, a
 *distributed* version control system. You will need to install git (most
 distributions package it in their repositories).
 
-Use this command, to download the repository: **git clone https://notabug.org/libreboot/libreboot**.
+Use this command, to download the repository: 
+
+**git clone https://notabug.org/libreboot/libreboot**.
 
 A new directory named ***libreboot*** will have been created, containing
 libreboot.
