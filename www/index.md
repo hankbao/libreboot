@@ -22,8 +22,8 @@ Source BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. We are a member of the [Peers Community](https://peers.community/)
 project, an organisation that supports Free Software.
 
-Open Letter to the Free Software Community
----------------------------------------------
+Open Letter to the Free Software Community (2 Apr 2017)
+-------------------------------------------------------
 
 To the free software community:
 
