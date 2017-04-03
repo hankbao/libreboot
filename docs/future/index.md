@@ -158,12 +158,12 @@ working and nonworking panels.
 
 How to dump EDID:
 
-\# **apt-get install i2c-tools**
+    # apt-get install i2c-tools
     # modprobe i2c-dev
 Find out the correct ID to use:
     # i2cdetect -l\
 Example:\
-\# **i2cdump -y 2 0x50**
+    # i2cdump -y 2 0x50
 
 Working panel: EDID dump from LG-Philips LP150E05-A2K1:
 

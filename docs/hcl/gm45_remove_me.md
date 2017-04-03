@@ -69,7 +69,7 @@ On GM45 laptops that use flash descriptors, the MAC address or the
 onboard ethernet chipset is flashed (inside the ROM image). You should
 generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:\
-\$ **./ich9gen --macaddress XX:XX:XX:XX:XX:XX**\
+    $ ./ich9gen --macaddress XX:XX:XX:XX:XX:XX
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -164,7 +164,7 @@ If you are working with libreboot\_src (or git), you can find the source
 under resources/utilities/ich9deblob/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:\
-\$ **./oldbuild module ich9deblob**\
+    $ ./oldbuild module ich9deblob
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -176,7 +176,7 @@ Place the factory.rom from your system (can be obtained using the
 external flashing guides for GM45 targets linked
 [../install/](../install/)) in the directory where you have your
 ich9deblob executable, then run the tool:\
-\$ **./ich9deblob**
+    $ ./ich9deblob
 
 A 12kiB file named **deblobbed\_descriptor.bin** will now appear. **Keep
 this and the factory.rom stored in a safe location!** The first 4KiB
@@ -232,7 +232,7 @@ descriptor locks some regions. The idea is that doing this will remove
 all of those restrictions.
 
 Simply run (with factory.rom in the same directory):\
-\$ **./demefactory**
+    $ ./demefactory
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.

@@ -279,7 +279,7 @@ How to update the flash chip contents:
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:\
-\$ **sudo ./flash forceupdate [yourrom.rom](#rom)**
+    $ sudo ./flash forceupdate [yourrom.rom](#rom)
 
 
 
@@ -319,7 +319,7 @@ https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23
 && chmod +x flash***
 
 The first half of the procedure is as follows:\
-\$ **sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).**
+    $ sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).
 
 
 
@@ -343,7 +343,7 @@ and then boot; libreboot is running, but there is a 2nd procedure
 
 
 When you have booted up again, you must also do this:\
-\$ **sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)**
+    $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
 
 If flashing fails at this stage, try the following:\
 \$ **sudo ./flashrom/i686/flashrom -p
@@ -392,7 +392,7 @@ with your device.
 
 
 Use this flashing script, to install libreboot:\
-\$ **sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)**
+    $ sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)
 
 
 
