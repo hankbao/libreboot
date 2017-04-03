@@ -96,11 +96,11 @@ firmware, and can provide many advanced feature, like encrypted
 /boot/, GPG signature checking before booting your kernel, ability to
 load an OS *from the flash chip*, and more.
 
-Libreboot's main upstream provider is coreboot,
-[coreboot](https://www.coreboot.org/), which we deblob. We upstream our custom
-patches to projects like coreboot, depthcharge, GRUB, and flashrom where
-possible. Together, we provide an automated build and installation system with
-nontechnical documentation, allowing Libreboot to be widely used. 
+Libreboot's main upstream provider is [coreboot](https://www.coreboot.org/),
+which we deblob. We upstream our custom patches to projects like coreboot,
+depthcharge, GRUB, and flashrom where possible. Together, we provide an
+automated build and installation system with nontechnical documentation,
+allowing Libreboot to be widely used. 
 
 [Watch our FOSDEM 2017 presentation about Libreboot (speaker is Leah
 Rowe)](https://video.fosdem.org/2017/K.1.105/libreboot.mp4)
