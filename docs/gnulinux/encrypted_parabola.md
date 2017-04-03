@@ -522,7 +522,7 @@ Initially you will have to boot manually. Press C to get to the GRUB
 command line. The underlined parts are optional (using those 2
 underlines will boot lts kernel instead of normal).
 
-grub> **cryptomount -a**\
+    grub> cryptomount -a
 grub> **set root='lvm/matrix-root'**\
 grub> **linux /boot/vmlinuz-linux-libre-lts root=/dev/matrix/root
 cryptdevice=/dev/sda1:root**\

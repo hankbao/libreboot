@@ -186,7 +186,7 @@ At this point, you will have finished the installation. At your GRUB
 payload, press C to get to the command line.
 
 Do that:\
-grub> **cryptomount -a**\
+    grub> cryptomount -a
 grub> **set root='lvm/matrix-rootvol'**\
 grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
 cryptdevice=/dev/mapper/matrix-rootvol:root**\

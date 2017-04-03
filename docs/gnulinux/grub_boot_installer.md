@@ -155,7 +155,7 @@ distribution it is that you are trying to install.*
 
 If the ISOLINUX parser or *Search for GRUB configuration* options won't
 work, then press C in GRUB to access the command line.\
-grub> **ls**\
+    grub> ls
 Get the device from above output, eg (usb0). Example:\
 grub> **cat (usb0)/isolinux/isolinux.cfg**\
 Either this will show the ISOLINUX menuentries for that ISO, or link to

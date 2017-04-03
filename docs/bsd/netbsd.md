@@ -116,7 +116,7 @@ Installing NetBSD without full disk encryption
 You might have to use an external USB keyboard during the installation.
 Press C to access the GRUB terminal.
 
-grub> **knetbsd -r sd0a (usb0,netbsd1)/netbsd**\
+    grub> knetbsd -r sd0a (usb0,netbsd1)/netbsd
 grub> **boot**
 
 It will start booting into the NetBSD installer. Follow the normal
