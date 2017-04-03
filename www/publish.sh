@@ -5,7 +5,7 @@ FILE=${1%.md}
 
 # if not homepage, add a link back to the homepage
 if [ "${FILE}" != "./index" ]; then
-        RETURN="<p><a href='/index.md'>Go back to homepage</a></p>"
+        RETURN="<p><a href='/index.html'>Go back to homepage</a></p>"
 fi
 
 cat $1 > temp.md
