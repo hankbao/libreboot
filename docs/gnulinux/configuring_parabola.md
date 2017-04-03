@@ -94,8 +94,8 @@ careful about this when reading anything on the Arch wiki.
 
 
 Some of these steps require internet access. I'll go into networking
-later but for now, I just connected my system to a switch and did:\
-\# **systemctl start dhcpcd.service**\
+later but for now, I just connected my system to a switch and did:
+    # systemctl start dhcpcd.service
 You can stop it later by running:\
 \# **systemctl stop dhcpcd.service**\
 For most people this should be enough, but if you don't have DHCP on
@@ -610,8 +610,8 @@ is advisable to also create an xinitrc rule in case you ever want to
 start lxde without lxdm. Read
 <https://wiki.archlinux.org/index.php/Xinitrc>.
 
-Open LXterminal:\
-\$ **cp /etc/skel/.xinitrc \~**\
+Open LXterminal:
+    $ cp /etc/skel/.xinitrc \~
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.\
 *\# Probably not needed. The same locale info that we set before\

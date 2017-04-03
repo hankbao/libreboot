@@ -73,8 +73,8 @@ Just make whatever changes you want to a git clone and then:\
 Note the git revision that you did this with:\
 **\$ git log**
 
-Alternatively (better yet), commit your changes and then use:\
-\$ **git format-patch -N**\
+Alternatively (better yet), commit your changes and then use:
+    $ git format-patch -N
 Replace N with the number of commits that you want to show.
 
 [Back to top of page.](#pagetop)

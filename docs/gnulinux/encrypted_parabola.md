@@ -68,8 +68,8 @@ article](https://wiki.archlinux.org/index.php/Solid_State_Drives). Edit
 /etc/fstab later on when chrooted into your install. Also, read the
 whole article and keep all points in mind, adapting them for this guide.
 
-Securely wipe the drive:\
-\# **dd if=/dev/urandom of=/dev/sda; sync**\
+Securely wipe the drive:
+    # dd if=/dev/urandom of=/dev/sda; sync
 NOTE: If you have an SSD, only do this the first time. If it was already
 LUKS-encrypted before, use the info below to wipe the LUKS header. Also,
 check online for your SSD what the recommended erase block size is. For
@@ -523,8 +523,8 @@ adapt:\
 If flashrom complains about multiple flash chips detected, add a *-c*
 option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
-would be really nice):\
-\$ **./cbfstool libreboot.rom print**\
+would be really nice):
+    $ ./cbfstool libreboot.rom print
 Extract grubtest.cfg:\
 \$ **./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg**\
 And modify:\

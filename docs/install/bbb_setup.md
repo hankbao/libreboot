@@ -155,8 +155,8 @@ Alternatives to SSH (in case SSH fails)
 ---------------------------------------
 
 You can also use a serial FTDI debug board with GNU Screen, to access
-the serial console.\
-\# **screen /dev/ttyUSB0 115200**\
+the serial console.
+    # screen /dev/ttyUSB0 115200
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 

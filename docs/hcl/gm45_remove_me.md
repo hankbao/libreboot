@@ -38,8 +38,8 @@ factory.bin dump.
 
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
-source with:\
-\$ **./oldbuild module ich9deblob**\
+source with:
+    $ ./oldbuild module ich9deblob
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:\

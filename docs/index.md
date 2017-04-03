@@ -174,8 +174,8 @@ archives that you downloaded (if you are using release archives).
 If it exists, you can also extract this *lbversion* file by using the
 *cbfstool* utility which libreboot includes, from a ROM image that you
 either dumped or haven't flashed yet. In your distribution, run
-cbfstool on your ROM image (*libreboot.rom*, in this example):\
-\$ **./cbfstool libreboot.rom extract -n lbversion -f lbversion**\
+cbfstool on your ROM image (*libreboot.rom*, in this example):
+    $ ./cbfstool libreboot.rom extract -n lbversion -f lbversion
 You will now have a file, named *lbversion*, which you can read in
 whatever program it is that you use for reading/writing text files.
 
