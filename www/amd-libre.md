@@ -54,10 +54,9 @@ ownership of users.
 
 This has several benefits for AMD. There is currently a huge demand in
 the market for libre hardware. At present, the only companies providing
-it are ones like [Ministry of Freedom](https://minifree.org) where
-systems are sold with entirely free software, including the boot
-firmware and operating system, without any signed firmware for which no
-keys are available to the public.
+it are ones like libreboot suppliers where systems are sold with entirely free
+software, including the boot firmware and operating system, without any signed
+firmware for which no keys are available to the public.
 
 The problem? These companies are selling much older systems that are
 made libre mostly through reverse engineering. At present, the systems
