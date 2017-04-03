@@ -8,7 +8,7 @@ head -n 4 $FILE.md > temp.md
 
 # if not homepage, add a link back to the homepage
 if [ "${FILE}" != "./index" ]; then
-	printf "[Go back to homepage](/index.md)\n\n" >> temp.md
+        RETURN="<p><a href='/index.md'>Go back to homepage</a></p>"
 fi
 
 # read rest of file
@@ -30,4 +30,4 @@ TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc")
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart")
 
 # chuck through pandoc
-pandoc $SMART temp.md -s --css /global.css --section-divs -T Libreboot $TOC > $FILE.html
+pandoc $SMART temp.md -s --css /global.css --section-divs -T Libreboot $TOC --template=template.html --metadata "return=$RETURN" > $FILE.html
