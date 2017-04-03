@@ -10,7 +10,7 @@ is done on IRC and on the libreboot
 
 Download Libreboot from the Git repository here:
 
-**git clone https://notabug.org/libreboot/libreboot**.
+**git clone https://notabug.org/libreboot/libreboot.git**
 
 How can I help the libreboot project? 
 --------------------------------------
@@ -95,7 +95,7 @@ distributions package it in their repositories).
 
 Use this command, to download the repository: 
 
-**git clone https://notabug.org/libreboot/libreboot**.
+**git clone https://notabug.org/libreboot/libreboot.git**.
 
 A new directory named ***libreboot*** will have been created, containing
 libreboot.
