@@ -9,7 +9,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Documentation](docs/)                                                      --
 [FAQ](faq.md)                                                               --
 [Contributors](contrib.md)                                                  --
-[Report a bug](https://notabug.org/vimuser/libreboot/issues/new)            --
+[Report a bug](https://notabug.org/libreboot/libreboot/issues/new)            --
 [Submit a patch](git.md)                                                    --
 [Hardware Compatibility](docs/hcl/)                                         --
 [Install](docs/install/)                                                    --

@@ -89,7 +89,7 @@ Libreboot development is facilitated by *[git](https://git-scm.com/)*, a
 *distributed* version control system. You will need to install git (most
 distributions package it in their repositories).
 
-Use this command, to download the repository: **git clone https://notabug.org/vimuser/libreboot**.
+Use this command, to download the repository: **git clone https://notabug.org/libreboot/libreboot**.
 
 A new directory named ***libreboot*** will have been created, containing
 libreboot.
@@ -100,14 +100,14 @@ How to submit your patches
 ### Method 0: Use NotABug pull requests
 
 NotABug, libreboot's main git hosting provider, now provides a *pull requests*
-feature. <https://notabug.org/vimuser/> has the libreboot repository. Create an
+feature. <https://notabug.org/libreboot/> has the libreboot repository. Create an
 account on the website, then view the libreboot repo and click "fork" and clone
 your fork. Then commit your patch on top, and push into your repository (we
 recommend into a non-master branch). NotABug guides you through the process of
 pushing patches to it.
 
 Once you have pushed your patches, go to the relevant repository on
-<https://notabug.org/vimuser/> and click "Pull Requests". Then click
+<https://notabug.org/libreboot/> and click "Pull Requests". Then click
 "New Pull Request". Select the relevant branches that you want to
 submit a pull request for, between the two repositories, and then click
 "Submit".

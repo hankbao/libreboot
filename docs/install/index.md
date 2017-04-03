@@ -296,7 +296,7 @@ and will not work on any other. For that, please refer to
 
 **If you're using libreboot 20150518, note that there is a mistake in
 the flashing script. do this: *rm -f patch && wget -O flash
-https://notabug.org/vimuser/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
+https://notabug.org/libreboot/libreboot/raw/9d850543ad90b72e0e333c98075530b31e5d23f1/flash
 && chmod +x flash***
 
 The first half of the procedure is as follows:

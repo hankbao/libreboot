@@ -273,7 +273,7 @@ You can reproduce this issue more easily by sending lots of traffic
 across subnets on the same interface (NIC).
 
 More information, including logs, can be found on [this
-page](https://notabug.org/vimuser/libreboot/issues/23).
+page](https://notabug.org/libreboot/libreboot/issues/23).
 
 USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
 ===================================
