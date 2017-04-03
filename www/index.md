@@ -2,18 +2,17 @@
 title: Libreboot
 ...
 
-[![Libreboot
-logo](logo/logo.svg "Canteloupe, the libreboot mascot"){#logo}](logo-info.md)
+[![Libreboot logo](logo/logo.svg "Canteloupe, the libreboot
+mascot"){#logo}](faq.md#who-did-the-logo)
 
 [Downloads](download.md)                                                    --
 [Documentation](docs/)                                                      --
 [FAQ](faq.md)                                                               --
-[Donate](donate.md)                                                         --
 [Contributors](contrib.md)                                                  --
-[Report a bug](tasks.md)                                                    --
+[Report a bug](https://notabug.org/vimuser/libreboot/issues/new)            --
 [Submit a patch](git.md)                                                    --
 [Hardware Compatibility](docs/hcl/)                                         --
-[Installation Guide](docs/install/)                                         --
+[Install](docs/install/)                                                    --
 [Mirror](rsync.md)                                                          --
 [IRC](https://webchat.freenode.net/?channels=libreboot)
 

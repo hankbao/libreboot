@@ -687,6 +687,34 @@ SOIC-16 SPI flash chip:
 
 ![SOIT-8 SPI flash chip](images/soic16.jpg)
 
+Is there a backup of the old mailing list?
+--------------------------------------------------------------
+
+Yes. We no longer use a mailing list, but archives can be found here:
+
+-   [User mailing list
+    (HTML)](old/libreboot/html/lists.gnu.org/archive/html/libreboot)
+-   [User mailing list (mbox
+    format)](old/libreboot/mbox/lists.gnu.org/libreboot/)
+-   [Developer mailing list
+    (HTML)](old/libreboot-dev/html/lists.gnu.org/archive/html/libreboot-dev/)
+-   [Developer mailing list (mbox
+    format)](old/libreboot-dev/mbox/lists.gnu.org/libreboot-dev/)
+
+Who did the logo?
+----------------------------------------------------------------
+
+See the [license information](logo/license.md).
+
+The Libreboot logo is available as a [bitmap](logo/logo.png), a
+[vector](logo/logo.svg), or a [greyscale vector](logo/logo_grey.svg).
+
+Libreboot Inside stickers are available as a
+[PDF](logo/stickers/libreboot-inside-simple-bold-1.60cmx2.00cm-diecut-3.pdf) or
+a
+[vector](logo/stickers/libreboot-inside-simple-bold-1.60cmx2.00cm-diecut-3.svg)
+
+
 Freedom questions
 =================
 
