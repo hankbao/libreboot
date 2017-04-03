@@ -32,8 +32,6 @@ drive.
 
 [Back to previous index](./)
 
-
-
 Boot Parabola's install environment. [How to boot a GNU+Linux
 installer](grub_boot_installer.html).
 
@@ -48,8 +46,6 @@ the same. If you spot mistakes, please say so! This guide will be ported
 to the Parabola wiki at a later date. For up to date Parabola install
 guide, go to the Parabola wiki. This guide essentially cherry picks the
 useful information (valid at the time of writing: 2015-08-25).
-
-
 
 This section deals with wiping the storage device on which you plan to
 install Parabola GNU+Linux. Follow these steps, but if you use an SSD,
@@ -89,8 +85,6 @@ this:
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It's 'secure', but 'potentially' a risk).
 
-
-
 Change keyboard layout
 ----------------------
 
@@ -101,8 +95,6 @@ list the available keymaps and use yours:
     # loadkeys LAYOUT
 For me, LAYOUT would have been dvorak-uk.
 
-
-
 Establish an internet connection
 --------------------------------
 
@@ -110,16 +102,12 @@ Refer to [this
 guide](https://wiki.parabola.nu/Beginners%27_guide#Establish_an_internet_connection).
 Wired is recommended, but wireless is also explained there.
 
-
-
 Getting started
 ---------------
 
 The beginning is based on
 <https://wiki.parabolagnulinux.org/Installation_Guide>. Then I referred
 to <https://wiki.archlinux.org/index.php/Partitioning> at first.
-
-
 
 dm-mod
 ------
@@ -185,8 +173,6 @@ without writing it down or storing it anywhere.
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
-
-
 Create LVM
 ----------
 
@@ -235,8 +221,6 @@ command:
 
     # lvdisplay
 
-
-
 Create / and swap partitions, and mount
 ---------------------------------------
 
@@ -254,8 +238,6 @@ For the root LV I use:
 Mount the root (/) partition:
 
     # mount /dev/matrix/root /mnt
-
-
 
 Continue with Parabola installation
 -----------------------------------
@@ -324,8 +306,6 @@ and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
 the install:\
 \# **pacstrap /mnt base base-devel wpa\_supplicant dialog iw
 wpa\_actiond**
-
-
 
 Configure the system
 --------------------
@@ -459,8 +439,6 @@ your LUKS password.
 Use of the *diceware method* is recommended, for generating secure
 passphrases (instead of passwords).
 
-
-
 Extra security tweaks
 ---------------------
 
@@ -487,8 +465,6 @@ Configure sudo - not covered here. Will be covered post-installation in
 another tutorial, at a later date. If this is a single-user system, you
 don't really need sudo.
 
-
-
 Unmount, reboot!
 ----------------
 
@@ -513,8 +489,6 @@ Lock the encrypted partition (close it):
     # shutdown -h now
 Remove the installation media, then boot up again.
 
-
-
 Booting from GRUB
 -----------------
 
@@ -532,8 +506,6 @@ cryptdevice=/dev/sda1:root**\
 You could also make it load /boot/vmlinuz-linux-libre-grsec and
 /boot/initramfs-linux-libre-grsec.img
 
-
-
 Follow-up tutorial: configuring Parabola
 ----------------------------------------
 
@@ -548,8 +520,6 @@ notes and come up with your own system. Parabola is user-centric, which
 means that you are in control. For more information, read [The Arch
 Way](https://wiki.archlinux.org/index.php/The_Arch_Way) (Parabola also
 follows it).
-
-
 
 Modify grub.cfg inside the ROM
 ------------------------------
@@ -671,13 +641,9 @@ flashed alongside it as a *payload*):
 
     # pacman -R grub
 
-
-
 If you followed all that correctly, you should now have a fully
 encrypted Parabola installation. Refer to the wiki for how to do the
 rest.
-
-
 
 Bonus: Using a key file to unlock /boot/
 ----------------------------------------
@@ -713,15 +679,11 @@ above! -, or add it in the kernel command line for GRUB:
 You can also place this inside the grub.cfg that exists in CBFS:
 [grub\_cbfs.html](grub_cbfs.html).
 
-
-
 Further security tips
 ---------------------
 
 <https://wiki.archlinux.org/index.php/Security>.\
 <https://wiki.parabolagnulinux.org/User:GNUtoo/laptop>
-
-
 
 Troubleshooting
 ===============
@@ -733,7 +695,6 @@ station.
 
 Further investigation revealed that it was the DVD drive causing
 problems. Removing that worked around the issue.
-
 
     "sudo wodim -prcap" shows information about the drive:
     Device was not specified. Trying to find an appropriate drive...
@@ -810,8 +771,6 @@ problems. Removing that worked around the issue.
       Does write high  speed       CD-RW media
       Does write ultra high speed  CD-RW media
       Does not write ultra high speed+ CD-RW media
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\

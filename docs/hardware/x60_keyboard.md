@@ -9,8 +9,6 @@ same place, and it's the same procedure.
 
 [Back to previous index](./)
 
-
-
 Just follow these steps, and then reverse {#recovery}
 =========================================
 
@@ -19,8 +17,6 @@ Just follow these steps, and then reverse {#recovery}
 ![](../images/x60_keyboard/3.JPG)\
 ![](../images/x60_keyboard/4.JPG)\
 ![](../images/x60_keyboard/5.JPG)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

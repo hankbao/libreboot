@@ -14,8 +14,6 @@ instructions have yet to be written.**
 
 -   [How to install FreeBSD on a libreboot system](freebsd.html)
 
-
-
 Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0

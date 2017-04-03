@@ -5,8 +5,6 @@ your ThinkPad X60 Tablet from booting.
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 -----------------
 
@@ -14,9 +12,6 @@ Table of Contents
     -   [Brick type 1: bucts not reset](#bucts_brick)
     -   [Brick type 2: bad rom (or user error), system won't
         boot](#recovery)
-
-
-
 
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
@@ -42,8 +37,6 @@ coreboot.rom) - 0x20000\] count=64k conv=notrunc\
 (doing this makes the ROM suitable for use when flashing a system that
 still has Lenovo BIOS running, using those instructions:
 <http://www.coreboot.org/Board:lenovo/x60/Installation>.
-
-
 
 bad rom (or user error), system won't boot {#recovery}
 ===========================================
@@ -128,8 +121,6 @@ complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
 
 Reverse the steps to re-assemble your system.
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

@@ -9,8 +9,6 @@ Information about this release can be found at
 [Answers to frequently asked questions about
 Libreboot](https://libreboot.org/faq/)
 
-
-
 Libreboot is compatible with GNU+Linux and several BSD systems.
 
 For GNU+Linux, have a look at our [list of GNU+Linux distributions that
@@ -48,8 +46,6 @@ Other information
 
 -   [Hardware modifications](hardware/)
 -   [Miscellaneous](misc/)
-
-
 
 About the libreboot project
 ===========================
@@ -160,10 +156,6 @@ Libreboot is a 'stable' version of coreboot
     coreboot. By doing this, it provides a stronger guarantee to the
     user that the firmware will be reliable, and not break their system.
 
-[Back to top of page.](#pagetop)
-
-
-
 How do I know what version I'm running?
 ========================================
 
@@ -216,8 +208,6 @@ libreboot that you are using.
 
 Generally speaking, it is advisable to use the latest version of
 libreboot.
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

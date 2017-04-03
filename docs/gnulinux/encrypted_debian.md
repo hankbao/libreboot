@@ -43,8 +43,6 @@ drive.
 
 [Back to previous index](./)
 
-
-
 Set a strong user password (lots of lowercase/uppercase, numbers and
 symbols).
 
@@ -60,8 +58,6 @@ therefore optional, and not recommended. Choose 'no'.**
 **Your user password should be different from the LUKS password which
 you will set later on. Your LUKS password should, like the user
 password, be secure.**
-
-
 
 Partitioning
 ============
@@ -103,8 +99,6 @@ Choose 'Manual' partitioning:
     -   name: **swap** (user this exact name)
     -   size: press enter
 
-
-
 Further partitioning
 ====================
 
@@ -120,15 +114,11 @@ mountpoints and filesystems to use.
     -   done setting up partition
 -   Now you select 'Finished partitioning and write changes to disk'.
 
-
-
 Kernel
 ======
 
 Installation will ask what kernel you want to use. linux-generic is
 fine.
-
-
 
 Tasksel
 =======
@@ -150,15 +140,11 @@ instead, which contains the most up to date versions of the Linux
 kernel. These kernels are also deblobbed, like Debian's kernels, so you
 can be sure that no binary blobs are present.
 
-
-
 Postfix configuration
 =====================
 
 If asked, choose *"No Configuration"* here (or maybe you want to
 select something else. It's up to you.)
-
-
 
 Install the GRUB boot loader to the master boot record
 ======================================================
@@ -170,14 +156,10 @@ Choice is irrelevant here.
 *You do not need to install GRUB at all, since in libreboot you are
 using the GRUB payload (for libreboot) to boot your system directly.*
 
-
-
 Clock UTC
 =========
 
 Just say 'Yes'.
-
-
 
 Booting your system
 ===================
@@ -193,8 +175,6 @@ cryptdevice=/dev/mapper/matrix-rootvol:root**\
     grub> initrd /initrd.img
     grub> boot
 
-
-
 ecryptfs
 ========
 
@@ -208,8 +188,6 @@ This will be needed in the future if you ever need to recover your home
 directory from another system, so write it down and keep the note
 somewhere secret. Ideally, you should memorize it and then burn the note
 (or not even write it down, and memorize it still)>
-
-
 
 Modify grub.cfg (CBFS)
 ======================
@@ -235,8 +213,6 @@ hardening your GRUB configuration, for security purposes.
 
 Flash the modified ROM using [this tutorial](../install/#flashrom).
 
-
-
 Troubleshooting
 ===============
 
@@ -247,7 +223,6 @@ station.
 
 Further investigation revealed that it was the DVD drive causing
 problems. Removing that worked around the issue.
-
 
     "sudo wodim -prcap" shows information about the drive:
     Device was not specified. Trying to find an appropriate drive...
@@ -324,8 +299,6 @@ problems. Removing that worked around the issue.
       Does write high  speed       CD-RW media
       Does write ultra high speed  CD-RW media
       Does not write ultra high speed+ CD-RW media
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

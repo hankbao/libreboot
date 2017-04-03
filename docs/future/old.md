@@ -5,8 +5,6 @@ For current notes, see [](./).
 These are old (obsolete) notes that mare kept because they might become
 useful again in the future.
 
-
-
 Table of contents
 =================
 
@@ -19,8 +17,6 @@ Table of contents
     5320](#5320_kernel312fix)
 -   [i945/x60: coreboot 5927 testing (3D fix for kernel 3.12+ on replay
     code)](#x60_cb5927_testing)
-
-
 
 X60 native graphics initialization (with backlight controls) {#x60_native_notes}
 ============================================================
@@ -99,8 +95,6 @@ frequency'.
 
 [Back to top of page](#pagetop)
 
-
-
 T60 native graphics initialization (with backlight controls) {#t60_native_notes}
 ============================================================
 
@@ -129,8 +123,6 @@ Supported panels
 See [\#lcd\_i945\_incompatibility](./#lcd_i945_incompatibility).
 
 [Back to top of page](#pagetop)
-
-
 
 i945: 3D fix (based on 5927) for kernel 3.12+ on 5320 {#5320_kernel312fix}
 =====================================================
@@ -174,8 +166,6 @@ apt-get repositories) using tool "intel\_gtt":
         <http://paste.debian.net/104341>
 
 [Back to top of page](#pagetop)
-
-
 
 i945/X60: Coreboot 5927 testing (3D fix for kernel 3.12+ on replay code) {#x60_cb5927_testing}
 ========================================================================
@@ -226,8 +216,6 @@ GTT (graphics translation table) size is PGETBL\_save, max 256 KiB. BSM
     -   [.config](dumps/5927_config)
 
 [Back to top of page](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

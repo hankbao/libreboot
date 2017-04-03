@@ -3,14 +3,11 @@ Depthcharge is currently not documented, since it is in the new build
 system. Instructions for how to build boards that have depthcharge are
 included in the BUILD\_HOWTO file in libreboot.git or \_src.
 
-
-
 Building libreboot from source 
 ==============================
 
 This section relates to building libreboot from source, and working with
 the git repository.
-
 
 -   [Install build dependencies](#build_dependencies)
 -   [Get the full source code from metadata (git clone)](#build_meta)
@@ -20,8 +17,6 @@ the git repository.
 -   [How to build "flashrom"](#build_flashrom)
 -   [How to build the ROM images](#build)
 
-
-
 Install build dependencies {#build_dependencies}
 ==========================
 
@@ -30,7 +25,6 @@ you want to build libreboot from source, with either
 libreboot\_src.tar.xz or git. **If you are using libreboot\_util.tar.xz
 (binary archive) then you can ignore this, because ROM images and
 statically compiled executables for the utilities are included.**
-
 
 For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:
@@ -42,12 +36,9 @@ For Parabola, you can run the following command:
 or:
     # ./oldbuild dependencies parabola
 
-
 For other GNU+Linux distributions, you can adapt the existing scripts.
 
 [Back to top of page](#pagetop)
-
-
 
 Get the full source code from metadata (git clone) {#build_meta}
 ==================================================
@@ -89,10 +80,6 @@ bucts, flashrom) at the versions last tested for this release, and patch
 them. Read the script in a text editor to learn more.
 
 To build the ROM images, see [\#build](#build).
-
-[Back to top of page.](#pagetop)
-
-
 
 How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60) {#build_bucts}
 =========================================================
@@ -151,10 +138,6 @@ To statically compile it, do this:
 The "builddeps" script in libreboot\_src also makes use of
 builddeps-bucts.
 
-[Back to top of page.](#pagetop)
-
-
-
 How to build "flashrom" {#build_flashrom}
 =========================
 
@@ -195,10 +178,6 @@ executables:
 
 The "builddeps" script in libreboot\_src also makes use of
 builddeps-flashrom.
-
-[Back to top of page.](#pagetop)
-
-
 
 How to build the ROM images {#build}
 ===========================
@@ -250,7 +229,6 @@ To clean (reverse) everything, do the following:
 The ROM images will be stored under **bin/*payload*/**, where *payload*
 could be *grub*, *seabios*, or whatever other payload those images were
 built for.
-
 
 Preparing release archives (optional)
 -------------------------------------
@@ -349,10 +327,7 @@ libreboot\_src.tar.xz have been created, under
 The ROM images will be stored in separate archives for each system,
 under **release/oldbuildsystem/rom/**.
 
-
 [Back to top of page](#pagetop)
-
-
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

@@ -4,15 +4,12 @@ This is just a quick guide for reference, use 'man' to know more.
 
 [Back to index](./)
 
-
-
 Apply a patch
 =============
 
 To apply a patch to a single file, do that in it's directory:
 
     $ patch < foo.patch
-
 
 Assuming that the patch is distributed in unified format identifying the
 file the patch should be applied to, the above will work. Otherwise:
@@ -46,10 +43,6 @@ Removing a patch using the -R flag
 
     $ patch -p5 -R < baz.patch
 
-[Back to top of page.](#pagetop)
-
-
-
 Create a patch with diff
 ========================
 
@@ -64,10 +57,6 @@ For diff'ing a source tree:
 Do whatever you want in new/ and then diff it:
 
     $ diff -rupN original/ new/ > original.patch
-
-[Back to top of page.](#pagetop)
-
-
 
 git diff
 ========
@@ -88,10 +77,6 @@ Alternatively (better yet), commit your changes and then use:
     $ git format-patch -N
 Replace N with the number of commits that you want to show.
 
-[Back to top of page.](#pagetop)
-
-
-
 git apply
 =========
 
@@ -109,10 +94,6 @@ Now put patch.git in the git clone directory and do:
 If you use a patch from git format-patch, then use **git am patch.git**
 instead of **git apply patch.git**. git-am will re-create the commits
 aswell, instead of just applying the patch.
-
-[Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

@@ -2,7 +2,6 @@
 title: Logo Info
 ...
 
-
 ![Standard Logo](logo/logo.png) The Libreboot logo is available as a
 [bitmap](logo/logo.png), a [vector](logo/logo.svg), or a [greyscale
 vector](logo/logo_grey.svg).

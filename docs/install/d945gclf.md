@@ -6,9 +6,6 @@ motherboard while they still have the original BIOS present.
 For information about this board, go to
 [../hcl/d945gclf.html](../hcl/d945gclf.html)
 
-
-
-
 Flashing instructions {#clip}
 =====================
 
@@ -17,8 +14,6 @@ external flashing.
 
 Here is an image of the flash chip:\
 ![](../images/d945gclf/d945gclf_spi.jpg)
-
-
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

@@ -16,9 +16,6 @@ followed (adapted) if you brick your X200, to know how to recover.
 -   [Memory](#memory)
 -   [X200S and X200 Tablet users: GPIO33 trick will not work.](#gpio33)
 
-
-
-
 X200 laptops with libreboot pre-installed {#preinstall}
 =========================================
 
@@ -28,23 +25,16 @@ GNU+Linux distribution.
 
 Check the [suppliers](../../suppliers) page for more information.
 
-
-
 Flash chip size {#flashchips}
 ===============
 
 Use this to find out:
     # flashrom -p internal -V
 
-
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
 the motherboard (this requires removal of the motherboard). **Not all
 X200S/X200T are supported; see
 [../hcl/x200.html\#x200s](../hcl/x200.html#x200s).**
-
-[Back to top of page.](#pagetop)
-
-
 
 MAC address {#macaddress}
 ===========
@@ -59,8 +49,6 @@ image before flashing it. It will be written in one of these locations:
 
 ![](images/x200/disassembly/0002.jpg)
 ![](images/x200/disassembly/0001.jpg)
-
-
 
 Initial BBB configuration {#clip}
 =========================
@@ -99,8 +87,6 @@ header), for SOIC-8 (clip: Pomona 5250):
     ===  right side of the X200 (where the audio jacks are) ===
     This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.
     Here is a photo of the SOIC-8 flash chip. The pins are labelled:
-
-
 
     Look at the pads in that photo, on the left and right. Those are for SOIC-16. Would it be possible to remove the SOIC-8 and solder a SOIC-16
     chip on those pins?
@@ -234,10 +220,6 @@ Example output from running the command (see above):
     Erase/write done.
     Verifying flash... VERIFIED.
 
-[Back to top of page.](#pagetop)
-
-
-
 Wifi
 ====
 
@@ -259,8 +241,6 @@ the Intel chip that this X200 came with:\
 ![](images/x200/disassembly/0016.jpg)
 ![](images/x200/disassembly/0017.jpg)
 
-
-
 WWAN
 ====
 
@@ -270,8 +250,6 @@ technology is identical to what is used in mobile phones, so it can also
 track your movements.
 
 Not to be confused with wifi (wifi is fine).
-
-
 
 Memory
 ======
@@ -288,8 +266,6 @@ Make sure that the RAM you buy is the 2Rx8 density.
 In this photo, 8GiB of RAM (2x4GiB) is installed:\
 ![](images/x200/disassembly/0018.jpg)
 
-
-
 Boot it! {#boot}
 --------
 
@@ -298,8 +274,6 @@ You should see something like this:
 ![](images/x200/disassembly/0019.jpg)
 
 Now [install GNU+Linux](../gnulinux/).
-
-
 
 X200S and X200 Tablet users: GPIO33 trick will not work. {#gpio33}
 --------------------------------------------------------
@@ -341,8 +315,6 @@ here:
 On a related note, libreboot has a utility that could help with
 investigating this:
 [../hcl/gm45\_remove\_me.html\#demefactory](../hcl/gm45_remove_me.html#demefactory)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

@@ -5,8 +5,6 @@ your ThinkPad T60 from booting.
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 -----------------
 
@@ -14,9 +12,6 @@ Table of Contents
     -   [Brick type 1: bucts not reset](#bucts_brick)
     -   [Brick type 2: bad rom (or user error), system won't
         boot](#recovery)
-
-
-
 
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================
@@ -43,8 +38,6 @@ coreboot.rom) - 0x20000\] count=64k conv=notrunc\
 still has Lenovo BIOS running, using those instructions:
 <http://www.coreboot.org/Board:lenovo/x60/Installation>. (it says x60,
 but instructions for t60 are identical)
-
-
 
 bad rom (or user error), system won't boot {#recovery}
 ===========================================
@@ -209,8 +202,6 @@ It lives!\
 Always stress test ('stress -c 2' and xsensors. below 90C is ok) when
 replacing cpu paste/heatsink:\
 ![](../images/t60_dev/0074.JPG)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Permission is granted to copy, distribute and/or modify this document

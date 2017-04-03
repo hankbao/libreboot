@@ -27,8 +27,6 @@ depthcharge payload, ignore this section entirely.**
 
 [Back to previous index](./)
 
-
-
 Table of Contents
 =================
 
@@ -43,17 +41,12 @@ Table of Contents
     -   [Testing](#testing)
     -   [Final steps](#final_steps)
 
-
-
-
 Introduction
 ------------
 
 Download the latest release from <http://libreboot.org/>\
 **If you downloaded from git, refer to
 [../git/\#build\_meta](../git/#build_meta) before continuing.**
-
-[Back to top of page.](#pagetop)
 
 There are several advantages to modifying the GRUB configuration stored
 in CBFS, but this also means that you have to flash a new libreboot ROM
@@ -64,8 +57,6 @@ result in a bricked system (recovery is easy if you have the
 If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
-
-
 
 1st option: don't re-flash {#option1_dont_reflash}
 ---------------------------
@@ -103,19 +94,11 @@ of this page is irrelevant to you); **in libreboot\_grub.cfg on disk, if
 you are adapting it based on grub.cfg from CBFS then remove the check
 for libreboot\_grub.cfg otherwise it will loop.**.
 
-[Back to top of page.](#pagetop)
-
-
-
 2nd option: re-flash {#option2_reflash}
 --------------------
 
 You can modify what is stored inside the flash chip quite easily. Read
 on to find out how.
-
-[Back to top of page.](#pagetop)
-
-
 
 Acquire the necessary utilities {#tools}
 -------------------------------
@@ -125,10 +108,6 @@ Use ***cbfstool*** and ***flashrom***. There are available in the
 [../git/\#build\_flashrom](../git/#build_flashrom)). Flashrom is also
 available from the repositories:
     # pacman -S flashrom
-
-[Back to top of page.](#pagetop)
-
-
 
 Acquiring the correct ROM image {#rom}
 -------------------------------
@@ -146,10 +125,6 @@ If you are told to specify the chip, add the option **-c {your chip}**
 to the command, for example:
 
     # flashrom -c MX25L6405 -p internal -r libreboot.rom
-
-[Back to top of page.](#pagetop)
-
-
 
 Extract grubtest.cfg from the ROM image {#extract_testconfig}
 ---------------------------------------
@@ -170,10 +145,6 @@ Extract grubtest.cfg from the ROM image:
 
 Modify the grubtest.cfg accordingly.
 
-[Back to top of page.](#pagetop)
-
-
-
 Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testconfig}
 ------------------------------------------------------
 
@@ -185,10 +156,6 @@ config from the ROM image:
 Next, insert the modified version:\
 **\$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**
-
-[Back to top of page.](#pagetop)
-
-
 
 Testing
 -------
@@ -212,10 +179,6 @@ works, then your config is safe and you can continue below.
 sceptical in any way, then re-do the steps above until you get it right!
 Do \*not\* proceed past this point unless you are 100% sure that your
 new configuration is safe (or desirable) to use.**
-
-[Back to top of page.](#pagetop)
-
-
 
 Final steps {#final_steps}
 -----------
@@ -244,10 +207,6 @@ Add the modified version that you just made:
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it. It's the same method as you used before. Shut down and then
 boot up with your new configuration.**
-
-[Back to top of page.](#pagetop)
-
-
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\

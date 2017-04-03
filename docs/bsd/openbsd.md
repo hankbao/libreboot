@@ -20,13 +20,9 @@ your libreboot system, using nothing more than a USB flash drive (and
 
 [Back to previous index](./)
 
-
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**
-
-
 
 install60.fs is the installation image for OpenBSD 6.0. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
@@ -107,8 +103,6 @@ Continue reading, for information about how to do that.
 
 [Back to top of page](#pagetop).
 
-
-
 Installing OpenBSD without full disk encryption
 -----------------------------------------------
 
@@ -121,8 +115,6 @@ It will start booting into the OpenBSD installer. Follow the normal
 process for installing OpenBSD.
 
 [Back to top of page](#pagetop).
-
-
 
 Installing OpenBSD with full disk encryption
 --------------------------------------------
@@ -154,8 +146,6 @@ OpenBSD bootloader already works.
 
 [Back to top of page](#pagetop).
 
-
-
 Booting
 -------
 
@@ -167,8 +157,6 @@ Press C in GRUB to access the command line:
 OpenBSD will start booting. Yay!
 
 [Back to top of page](#pagetop).
-
-
 
 Configuring Grub
 ----------------
@@ -193,8 +181,6 @@ seconds OpenBSD will boot, or you can hit enter to boot.
 
 [Back to top of page](#pagetop).
 
-
-
 Troubleshooting
 ===============
 
@@ -214,8 +200,6 @@ Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
 
 [Back to top of page](#pagetop).
-
-
 
 Copyright © 2016 Scott Bonds <scott@ggr.com>\
 Copyright © 2016 Leah Rowe <info@minifree.org>\
