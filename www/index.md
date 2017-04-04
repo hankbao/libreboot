@@ -80,6 +80,40 @@ Transparency and collaboration are the way forward.
 
 ~Alyssa Rosenzweig
 
+A message from Leah, to further compliment Alyssa's submission:
+
+I acknowledge that what I did was wrong. Although I felt justified at the time,
+I ended up hurting a lot of people, most of whom were uninvolved with any of
+the relevant events. At the time of taking Libreboot out of GNU, I was going
+through intense personal difficulty in my life, and I was highly unstable.
+Presented with a similiar situation, I likely won't respond the way I did
+before. I've changed a lot, and I promise this type of thing won't happen
+again.
+
+What I'd like the most, is to simply focus on Libreboot as I've always done,
+and to forget about what happened in the past and move on.
+
+I sincerely hope that the FSF, GNU project and others who I have hurt, can do
+the same. My only goal at present is to continue improving Libreboot, and to do
+everything in my power to make libre hardware a reality for everyone, as is the
+goal of the Libreboot project.
+
+I will remain in my place as a developer in this project, but everything that I
+do from now on will be the result of open collaboration with others in the
+project. I very nearly single handedly destroyed this project, and caused a lot
+of damage to the entire community, damage which I now wish to repair. I love
+Libreboot, Free Software and the community, and my only wish is to see it
+thrive.
+
+I wish well any and all outreach organisations that do work with the FSF; e.g.
+Outreachy, who are working to do what they can to improve conditions for women,
+LGBT people and other minorities in the sphere of computing and engineering
+fields, related to Free Software.
+
+I hope that any damage I caused to the community is not permanent.
+
+~Leah Rowe
+
 Why use libreboot?
 ------------------
 
