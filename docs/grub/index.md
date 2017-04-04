@@ -58,8 +58,6 @@ I then added that instructions to the grub.cfg files (to load the
 font):\
 **loadfont (memdisk)/dejavusansmono.pf2**
 
-[Back to top of page](#pagetop)
-
 GRUB keyboard layouts (for reference) {#grub_keyboard}
 =====================================
 
@@ -87,8 +85,6 @@ The build scripts will automatically see this, and automatically build
 ROM images with your custom layout (given the name) and include them
 under bin. Example: **libreboot\_frazerty.rom**.
 
-[Back to top of page](#pagetop)
-
 UK Dvorak keyboard layout in GRUB (for reference) {#grub_ukdvorak_keyboard}
 -------------------------------------------------
 
@@ -97,8 +93,6 @@ resources/utilities/grub-assemble/keymap/original) to see how ukdvorak
 file was created
 
     $ cat ukdvorak | ./grub/grub-mklayout -o ukdvorak.gkb
-
-[Back to top of page](#pagetop)
 
 Copyright © 2014 Leah Rowe <info@minifree.org>\
 This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)

@@ -154,4 +154,3 @@ A user submitted a utility to enable 3-finger tap on this laptop. It's
 available at *resources/utilities/macbook21-three-finger-tap* in the
 libreboot git repository.
 
-

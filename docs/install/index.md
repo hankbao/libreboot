@@ -252,8 +252,6 @@ You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
 
-[Back to top of page](#pagetop)
-
 ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware) {#flashrom_lenovobios}
 ==================================================================================
 

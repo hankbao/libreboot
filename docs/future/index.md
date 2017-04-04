@@ -277,8 +277,6 @@ Results (\# means untested):
     -   IDtech IAQX10N: \#
     -   IDtech IAQX10S: \#
 
-[Back to top of page](#pagetop)
-
 intelvbttool test results (VGA ROM dumps) {#intelvbttool_results}
 =========================================
 
