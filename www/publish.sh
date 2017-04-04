@@ -19,7 +19,7 @@ echo "[License](license.md)" >> temp.md
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
 
 # work around issue #2872
-TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc")
+TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2")
 
 # work around heterogenous pandoc versions
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart")
