@@ -112,6 +112,39 @@ fields, related to Free Software.
 
 I hope that any damage I caused to the community is not permanent.
 
+I'm deeply sorry for the damage and upset that I caused. I will not repeat the
+same mistakes twice. To a very specific person, who cannot be named in the
+interest of their privacy, but for whom context will allow that person
+to know this is for them: I'm especially sorry for the damage that I did to
+you during those months, and I sincerely hope that you get what you are
+currently seeking. I fully support you in your endeavour, and if I could help
+you, I would. You still mean a great deal to me.
+
+I'm especially sorry to John Sullivan and Ruben Rodriguez of the FSF, both of
+whom I publicly slandered on the Libreboot website. They did not deserve any of
+that. I was being highly abusive towards you both.
+
+I would also like to express my sincerest apology to those GNU maintainers
+whose emails I published on the Libreboot website, when all of that chaos was
+underway.
+
+I'm sorry to all the other Libreboot maintainers at the time, some of whom felt
+like they had no choice but to quit the project because of my actions. Doubly
+so for Damien Zammit and Timothy Pearson, both of whom I let down in various
+ways afterwards aswell.
+
+I would like to sincerely apologize to Timothy Pearson of Raptor Engineering
+in particular, for the damage that I caused with Libreboot's exit from GNU,
+while you were running your TALOS workstation campaign. Although I do not know
+whether the campaign would have succeeded without all that chaos, my own
+actions certainly did not help.
+
+Finally, I would like to once again apologize to the community as a whole, for
+the damage that I caused. I hope that I can prove to you all that I do wish to
+make amends for the damage, and to improve, and to re-build bridges with the
+community, and to once again work with the community in bringing Libreboot and
+Free Software forward, into the future.
+
 ~Leah Rowe
 
 Why use libreboot?
