@@ -80,7 +80,7 @@ Transparency and collaboration are the way forward.
 
 ~Alyssa Rosenzweig
 
-A message from Leah, to further compliment Alyssa's submission:
+### A message from Leah, to further compliment Alyssa's submission:
 
 I acknowledge that what I did was wrong. Although I felt justified at the time,
 I ended up hurting a lot of people, most of whom were uninvolved with any of
