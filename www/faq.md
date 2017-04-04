@@ -714,7 +714,6 @@ Libreboot Inside stickers are available as a
 a
 [vector](logo/stickers/libreboot-inside-simple-bold-1.60cmx2.00cm-diecut-3.svg)
 
-
 Freedom questions
 =================
 
