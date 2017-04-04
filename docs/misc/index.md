@@ -1,25 +1,12 @@
-% Miscellaneous 
+---
+title: Miscellaneous 
+x-toc-enable: true
+...
 
--   [High Pitched Whining Noise on Idle (how to remove in Debian or
-    Devuan)](#debian_powertop)
-
--   [High Pitched Whining Noise on Idle (how to remove in
-    Parabola)](#high_pitch_parabola)
--   [X60/T60: Serial port - how to use (for dock owners)](#serial)
--   [Power Management Beeps on Thinkpads](#powerbeeps)
--   [Using diff and patch](patch.html)
--   [Finetune backlight control on intel gpu's](#backlight%20control)
--   [Get EDID: Find out the name (model) of your LCD
-    panel](#get_edid_panelname)
--   [How to enable EHCI debugging on the BeagleBone
-    Black](bbb_ehci.html)
--   [e1000e driver trouble shooting (Intel NICs)](#e1000-hang)
-
-High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_powertop}
+High Pitched Whining Noise on Idle in Debian or Devuan
 ======================================================================
 
-Start powertop automatically at boot time {#debian_powertop_autostart}
------------------------------------------
+Start powertop automatically at boot time.
 
 Included with libreboot is a script called 'powertop.debian'. Run this
 as root and it will setup powertop to run with --auto-tune at boot
@@ -33,9 +20,7 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-[Back to top of page](#pagetop)
-
-High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_parabola}
+High Pitched Whining Noise on Idle in Parabola
 ==============================================================
 
 The following removes most of the noise. It reduces what is a high
@@ -87,9 +72,7 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-[Back to top of page](#pagetop)
-
-X60/T60: Serial port - how to use (for dock owners) {#serial}
+X60/T60: Serial port - how to use (for dock owners)
 ===================================================
 
 For the Thinkpad X60 you can use the **"UltraBase X6"** dock (for the
@@ -126,8 +109,6 @@ repos. Use Debian or Devuan)
 Note: part of the tutorial above requires changing your grub.cfg. Just
 change the **linux** line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
-
-[Back to top of page](#pagetop)
 
 Finetune backlight control on intel gpu's
 =========================================
@@ -230,7 +211,7 @@ Disable or enable beeps when battery is low:
 
 A reboot is required, for these changes to take effect.
 
-Get EDID: Find out the name (model) of your LCD panel {#get_edid_panelname}
+Get EDID: Find out the name (model) of your LCD panel
 =====================================================
 
 Get the panel name with **sudo get-edid | strings**\
@@ -250,7 +231,7 @@ If neither of these options work (or they are unavailable), physically
 removing the LCD panel is an option. Usually, there will be information
 printed on the back.
 
-e1000e driver trouble shooting (Intel NICs) {#e1000-hang}
+e1000e driver trouble shooting (Intel NICs)
 ===========================================
 
 Example error, ¿may happen on weird and complex routing schemes(citation
@@ -275,7 +256,7 @@ across subnets on the same interface (NIC).
 More information, including logs, can be found on [this
 page](https://notabug.org/libreboot/libreboot/issues/23).
 
-USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
+USB keyboard wakeup on GM45 laptops
 ===================================
 
 Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
@@ -283,36 +264,4 @@ Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
 Put this script in /etc/init.d/ on debian-based systems.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-Permission is granted to copy, distribute and/or modify this document
-under the terms of the Creative Commons Attribution-ShareAlike 4.0
-International license or any later version published by Creative
-Commons; A copy of the license can be found at
-[../cc-by-sa-4.0.txt](../cc-by-sa-4.0.txt)
-
-Updated versions of the license (when available) can be found at
-<https://creativecommons.org/licenses/by-sa/4.0/legalcode>
-
-UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE EXTENT
-POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS AND
-AS-AVAILABLE, AND MAKES NO REPRESENTATIONS OR WARRANTIES OF ANY KIND
-CONCERNING THE LICENSED MATERIAL, WHETHER EXPRESS, IMPLIED, STATUTORY,
-OR OTHER. THIS INCLUDES, WITHOUT LIMITATION, WARRANTIES OF TITLE,
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT,
-ABSENCE OF LATENT OR OTHER DEFECTS, ACCURACY, OR THE PRESENCE OR ABSENCE
-OF ERRORS, WHETHER OR NOT KNOWN OR DISCOVERABLE. WHERE DISCLAIMERS OF
-WARRANTIES ARE NOT ALLOWED IN FULL OR IN PART, THIS DISCLAIMER MAY NOT
-APPLY TO YOU.
-
-TO THE EXTENT POSSIBLE, IN NO EVENT WILL THE LICENSOR BE LIABLE TO YOU
-ON ANY LEGAL THEORY (INCLUDING, WITHOUT LIMITATION, NEGLIGENCE) OR
-OTHERWISE FOR ANY DIRECT, SPECIAL, INDIRECT, INCIDENTAL, CONSEQUENTIAL,
-PUNITIVE, EXEMPLARY, OR OTHER LOSSES, COSTS, EXPENSES, OR DAMAGES
-ARISING OUT OF THIS PUBLIC LICENSE OR USE OF THE LICENSED MATERIAL, EVEN
-IF THE LICENSOR HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH LOSSES,
-COSTS, EXPENSES, OR DAMAGES. WHERE A LIMITATION OF LIABILITY IS NOT
-ALLOWED IN FULL OR IN PART, THIS LIMITATION MAY NOT APPLY TO YOU.
-
-The disclaimer of warranties and limitation of liability provided above
-shall be interpreted in a manner that, to the extent possible, most
-closely approximates an absolute disclaimer and waiver of all liability.
-
+This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)
