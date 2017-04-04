@@ -47,8 +47,6 @@ distro ISO to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
-
 Prepare the USB drive (in NetBSD)
 ---------------------------------
 
@@ -92,8 +90,6 @@ OpenBSD installer to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
-
 Installing GNU+Linux with full disk encryption
 ----------------------------------------------
 
@@ -101,8 +97,6 @@ Installing GNU+Linux with full disk encryption
     (including /boot)](encrypted_debian.html)
 -   [Installing Parabola GNU+Linux with full disk encryption (including
     /boot)](encrypted_parabola.html)
-
-[Back to top of page](#pagetop).
 
 Debian or Devuan net install?
 -----------------------------
@@ -122,8 +116,6 @@ initrd /install.386/initrd.gz\
 boot**\
 We recommend using the *MATE* desktop.
 
-[Back to top of page](#pagetop).
-
 Booting ISOLINUX images (automatic method)
 ------------------------------------------
 
@@ -131,8 +123,6 @@ Boot it in GRUB using the *Parse ISOLINUX config (USB)* option. A new
 menu should appear in GRUB, showing the boot options for that distro;
 this is a GRUB menu, converted from the usual ISOLINUX menu provided by
 that distro.
-
-[Back to top of page](#pagetop).
 
 Booting ISOLINUX images (manual method)
 ---------------------------------------
@@ -179,8 +169,6 @@ GRUB, to see a list of USB devices/partitions. Of course this will vary
 from distro to distro. If you did all of that correctly, then it should
 now be booting your USB drive in the way that you specified.
 
-[Back to top of page](#pagetop).
-
 Troubleshooting
 ===============
 
@@ -220,8 +208,6 @@ This workaround was found on the page:
 <https://www.debian.org/releases/stable/i386/ch05s04.html>. It should
 also work for Debian, Devuan and any other apt-get distro that provides
 debian-installer (text mode) net install method.
-
-[Back to top of page](#pagetop).
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2016 Scott Bonds <scott@ggr.com>\

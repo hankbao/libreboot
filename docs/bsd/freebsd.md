@@ -76,8 +76,6 @@ FreeBSD installer to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
-
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
 
@@ -106,8 +104,6 @@ distro ISO to it with dd. For example:
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
 
-[Back to top of page](#pagetop).
-
 Installing FreeBSD without full disk encryption
 -----------------------------------------------
 
@@ -120,28 +116,20 @@ Press C in GRUB to access the command line:
 It will start booting into the FreeBSD installer. Follow the normal
 process for installing FreeBSD.
 
-[Back to top of page](#pagetop).
-
 Installing FreeBSD with full disk encryption
 --------------------------------------------
 
 TODO
-
-[Back to top of page](#pagetop).
 
 Booting
 -------
 
 TODO
 
-[Back to top of page](#pagetop).
-
 Configuring Grub
 ----------------
 
 TODO
-
-[Back to top of page](#pagetop).
 
 Troubleshooting
 ===============
@@ -160,8 +148,6 @@ won't boot\...something about file not found
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
 numbers may differ. Use TAB completion.
-
-[Back to top of page](#pagetop).
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2016 Scott Bonds <scott@ggr.com>\
