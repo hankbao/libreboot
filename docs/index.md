@@ -21,8 +21,6 @@ Installing libreboot
 Installing operating systems
 ============================
 
--   [List of recommended GNU+Linux distributions for
-    libreboot](distros/)
 -   [How to install GNU+Linux on a libreboot system](gnulinux/)
 -   [How to install BSD on a libreboot system](bsd/)
 
