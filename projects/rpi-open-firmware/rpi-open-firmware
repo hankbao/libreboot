@@ -64,10 +64,10 @@ build() {
 	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
 	local build_path=$( project_build_path "$project" "$@" )
 
-        mkdir -p $build_path
+        mkdir -p ""$build_path"
 
-        (cd $sources_path && exec ./buildall.sh)
-        mv $sources_path/build/bootcode.bin $build_path
+        (cd "$sources_path" && exec ./buildall.sh)
+        mv "$sources_path/build/bootcode.bin" "$build_path"
 }
 
 build_check() {
