@@ -1,7 +1,5 @@
 % Intel D945GCLF desktop board 
 
-[Back to previous index](https://libreboot.org/docs/hcl/)
-
 If you just want flashing instructions, go to
 [../install/d945gclf.html](https://libreboot.org/docs/install/d945gclf.html)
 

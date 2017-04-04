@@ -38,8 +38,6 @@ or:
 
 For other GNU+Linux distributions, you can adapt the existing scripts.
 
-[Back to top of page](#pagetop)
-
 Get the full source code from metadata (git clone) {#build_meta}
 ==================================================
 
@@ -326,8 +324,6 @@ libreboot\_src.tar.xz have been created, under
 
 The ROM images will be stored in separate archives for each system,
 under **release/oldbuildsystem/rom/**.
-
-[Back to top of page](#pagetop)
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)

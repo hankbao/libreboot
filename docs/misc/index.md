@@ -110,8 +110,6 @@ Note: part of the tutorial above requires changing your grub.cfg. Just
 change the **linux** line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
 
-[Back to top of page](#pagetop)
-
 Finetune backlight control on intel gpu's
 =========================================
 

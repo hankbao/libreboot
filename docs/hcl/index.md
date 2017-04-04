@@ -57,8 +57,6 @@ working). There may be exceptions; in other words, this is a list of
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
 
-[Back to top of page](#pagetop)
-
 EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400) {#ecupdate}
 ==============================================================
 
@@ -78,8 +76,6 @@ only replaces the BIOS firmware, not EC.
 Updated EC firmware has several advantages e.g. bettery battery
 handling.
 
-[Back to top of page](#pagetop)
-
 How to find what EC version you have (i945/GM45) {#ecversion}
 ================================================
 
@@ -91,8 +87,6 @@ Sample output:\
 
 7WHT19WW is the version in different notation, use search engine to find
 out regular version - in this case it's a 1.06 for x200 tablet
-
-[Back to top of page](#pagetop)
 
 Recommended wifi chipsets {#recommended_wifi}
 -------------------------
@@ -111,8 +105,6 @@ project if these work with linux-libre kernel (TODO: test):
 -   ar5bhb116 ar9382 ABGN
 -   \[0200\]: Qualcomm Atheros AR242x / AR542x Wireless Network Adapter
     (PCI-Express) \[168c:001c\]
-
-[Back to top of page](#pagetop)
 
 List of supported ThinkPad X60s {#supported_x60_list}
 -------------------------------

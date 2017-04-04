@@ -7,8 +7,6 @@ you get an error related to /dev/mem access, you should reboot with
 iomem=relaxed kernel parameter before running flashrom, or use a kernel
 that has CONFIG\_STRICT\_DEVMEM not enabled.
 
-[Back to previous index](../)
-
 General information
 -------------------
 
@@ -273,8 +271,6 @@ correct ROM image, then run this alternative command:
 You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
-
-[Back to top of page](#pagetop)
 
 ThinkPad X60/T60: Initial installation guide (if running the proprietary firmware) {#flashrom_lenovobios}
 ==================================================================================

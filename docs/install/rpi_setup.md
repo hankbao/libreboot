@@ -17,8 +17,6 @@ This only covers SOIC-8 flash chips, for now. SOIC-16 guide coming later
 (for now, it should be easy enough for you to figure this out for
 SOIC-16).
 
-[Back to previous index](../)
-
 [](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
