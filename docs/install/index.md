@@ -18,36 +18,14 @@ Flashing via software methods, on system:
 -----------------------------------------
 
 -   [How to update or install libreboot on all systems](#flashrom)
--   [ASUS KFSN4-DRE](#flashrom)
--   [ThinkPad X60/T60 (if running Lenovo BIOS)](#flashrom_lenovobios)
--   [Apple MacBook2,1](#flashrom_macbook21)
--   [ASUS Chromebook C201](c201.html)
 
 Setting up programmers, for external flashing via hardware method
 -----------------------------------------------------------------
 
 -   [How to program an SPI flash chip with the BeagleBone
     Black](bbb_setup.html)
-
 -   [How to program an SPI flash chip with the Raspberry
     Pi](rpi_setup.html)
-
-Flashing via hardware methods, on system:
------------------------------------------
-
--   [Gigabyte GA-G41-ES2L](ga-g41m-es2l.html)
--   [Intel D510MO](d510mo.html)
--   [Intel D945GCLF](d945gclf.html)
--   [ASUS KGPE-D16](kgpe-d16.html)
--   [ASUS KCMA-D8](kcma-d8.html)
--   [ASUS Chromebook C201](c201.html)
--   [ThinkPad X60](x60_unbrick.html)
--   [ThinkPad X60 Tablet](x60tablet_unbrick.html)
--   [ThinkPad T60](t60_unbrick.html)
--   [ThinkPad X200/X200S/X200T](x200_external.html)
--   [ThinkPad R400](r400_external.html)
--   [ThinkPad T400](t400_external.html)
--   [ThinkPad T500](t500_external.html)
 
 Information about libreboot ROM images {#rom}
 ======================================

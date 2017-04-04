@@ -16,7 +16,6 @@ Installing libreboot
 ====================
 
 -   [What systems can I use libreboot on?](hcl/)
--   [How to install libreboot](install/)
 
 Installing operating systems
 ============================
