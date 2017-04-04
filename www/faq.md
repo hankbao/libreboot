@@ -21,15 +21,6 @@ this issue on some CCFL panels, but not LED panels.
 You can work around this in your distribution, by following the notes at
 [../docs/misc/\#backlight%20control](../docs/misc/#backlight%20control).
 
-My computer thinks it's 1970-01-01 (GM45 laptops) 
---------------------------------------------------
-
-Use Libreboot 20160818 or higher. This was a bug in coreboot, fixed
-upstream and merged in Libreboot 20160818.
-
-Alternatively, you can use kernel version 4.2 or older, if you wish to
-use libreboot 20150518 or earlier.
-
 The ethernet doesn't work on my X200/T400/X60/T60 when I plug in it 
 -------------------------------------------------------------------
 
@@ -39,7 +30,6 @@ hardware. On debian systems, a workaround is to restart the networking
 service when you connect the ethernet cable:
 
     sudo service network-manager restart
-    
 
 On Parabola, you can try:
 
@@ -80,51 +70,14 @@ What systems are compatible with libreboot?
 
 See [../docs/hcl/](docs/hcl/).
 
-Several supported systems are also available with libreboot
-preinstalled. Check the [suppliers](suppliers.md) page for more
-information.
-
-Will the Purism Librem laptops be supported?
-----------------------------------------------------------------------
-
-Probably not. There are several privacy, security and freedom issues
-with these laptops, due to the Intel chipsets that they use. See
-
-replaced (e.g. [Intel Management Engine](#intelme) and [CPU microcode
-updates](#microcode)). It uses the proprietary [Intel FSP](#fsp) blob
-for the entire hardware initialization, which Intel [won't
-provide](#intel-is-uncooperative) the source code for. The Video BIOS
-(initialization firmware for the graphics hardware) is also proprietary.
-The libreboot project recommends avoiding this hardware entirely.
-
-It will likely take many years to replace even one of these blobs, let
-alone all of them. Some of them (ME firmware and microcode) can't even
-be replaced, which immediately disqualifies these laptops from being
-added to libreboot. Google engineers have tried for many years to get
-source code from Intel, and to reverse engineer the blobs that Intel
-provides. So far, they have been unsuccessful. Google is also one of the
-companies that funds the coreboot project, and they hire a lot of the
-core developers, so it's not like they don't have vast resources at
-their disposal. Smaller companies have no chance.
-
-The librem does have coreboot support, but it's pretty meaningless
-(it's shimboot, which means that coreboot is just incorporating blobs.
-It's not real coreboot support, but rather, what is shamelessly passed
-off as coreboot support these days, where binary blobs for **the
-entire** hardware initialization is considered acceptable in the
-coreboot project). It should be noted, that the coreboot port for librem
-was done by a lone Google software developer (Duncan Laurie), not
-Purism, working independently. Purism had nothing to do with the port.
-
 Why is the latest Intel hardware unsupported in libreboot? {#intel}
 -----------------------------------------------------------
 
-It is extremely unlikely that any post-2008 Intel hardware will ever be
-supported in libreboot, due to severe security and freedom issues; so
-severe, that *the libreboot project recommends avoiding all modern Intel
-hardware. If you have an Intel based system affected by the problems
-described below, then you should get rid of it as soon as possible*. The
-main issues are as follows:
+It is unlikely that any post-2008 Intel hardware will ever be supported in
+libreboot, due to severe security and freedom issues; so severe, that *the
+libreboot project recommends avoiding all modern Intel hardware. If you have an
+Intel based system affected by the problems described below, then you should
+get rid of it as soon as possible*. The main issues are as follows:
 
 ### Intel Management Engine (ME) {#intelme}
 
@@ -506,21 +459,6 @@ GPU. Therefore, the ATI GPU is completely disabled on these laptops.
 Intel is used instead, with the free native graphics initialization
 (VBIOS replacement) that exists in coreboot.
 
-Will the latest ThinkPad models be supported?
------------------------------------------------------------------------------
-
-The latest ThinkPad generation supported in libreboot are the ones using the
-GM45 (ICH9) chipsets, such as the ThinkPad X200 or T400. ThinkPads newer than
-this generation will probably never be supported in libreboot, due to the fact
-that there are signed blobs that cannot be removed or replaced (e.g. Intel
-Management Engine]. Newer laptops are starting to
-[use](https://www.phoronix.com/scan.php?page=news_item&px=Intel-Boot-Guard-Kills-Coreboot)
-the [Intel Boot Guard](https://mjg59.dreamwidth.org/33981.html), which
-specifically blocks the use of firmware that has not been signed by the OEM.
-
-Coreboot does have support for some more recent Lenovo laptops, but libreboot
-cannot support most of these.
-
 Will desktop/server hardware be supported?
 ------------------------------------------------------------------------
 
@@ -575,15 +513,12 @@ How do I install libreboot?
 
 See [../docs/install/](docs/install/)
 
-How do I program an SPI flash chip with the BeagleBone Black?
+How do I program an SPI flash chip?
 ---------------------------------------------------------------------------------
 
-See [../docs/install/bbb\_setup.html](../docs/install/bbb_setup.html).
-
-How do I program an SPI flash chip with the Raspberry Pi?
------------------------------------------------------------------------------
-
-See [../docs/install/rpi\_setup.html](../docs/install/rpi_setup.html).
+SPI flash chips can be programmed with the [BeagleBone
+Black](../docs/install/bbb_setup.html) or the [Raspberry
+Pi](../docs/install/rpi_setup.html).
 
 How do I set a boot password?
 -------------------------------------------------------------------
@@ -609,17 +544,10 @@ it is rendered read-only at the OS level (external flashing is still
 possible, using dedicated hardware). For example, on current GM45
 laptops (e.g. ThinkPad X200, T400), you can write-protect (see
 [../docs/hcl/gm45\_remove\_me.html\#ich9gen](../docs/hcl/gm45_remove_me.html#ich9gen)).
-Depending on your flash chip, you can also write-protect the i945
-laptops, such as the ThinkPad X60 or T60 (see
-[../docs/hardware/x60\_security.html](../docs/hardware/x60_security.html))
-and
-[../docs/hardware/t60\_security.html](../docs/hardware/t60_security.html)
-for links to a video explaining it).
 
-It's possible to write-protect on all libreboot systems, but the
-instructions need to be written. The documentation is in the main git
-repository, so you are welcome to submit patches adding these
-instructions.
+It's possible to write-protect on all libreboot systems, but the instructions
+need to be written. The documentation is in the main git repository, so you are
+welcome to submit patches adding these instructions.
 
 How do I change the BIOS settings?
 ------------------------------------------------------------------------
@@ -687,20 +615,6 @@ SOIC-16 SPI flash chip:
 
 ![SOIT-8 SPI flash chip](images/soic16.jpg)
 
-Is there a backup of the old mailing list?
---------------------------------------------------------------
-
-Yes. We no longer use a mailing list, but archives can be found here:
-
--   [User mailing list
-    (HTML)](old/libreboot/html/lists.gnu.org/archive/html/libreboot)
--   [User mailing list (mbox
-    format)](old/libreboot/mbox/lists.gnu.org/libreboot/)
--   [Developer mailing list
-    (HTML)](old/libreboot-dev/html/lists.gnu.org/archive/html/libreboot-dev/)
--   [Developer mailing list (mbox
-    format)](old/libreboot-dev/mbox/lists.gnu.org/libreboot-dev/)
-
 Who did the logo?
 ----------------------------------------------------------------
 
@@ -714,11 +628,26 @@ Libreboot Inside stickers are available as a
 a
 [vector](logo/stickers/libreboot-inside-simple-bold-1.60cmx2.00cm-diecut-3.svg)
 
-Freedom questions
-=================
+What other firmware exists outside of libreboot?
+==================================================
 
-Are external GPUs (e.g. PCI-E) OK?
-------------------------------------------------------------------------
+The main freedom issue on any system, is the boot firmware (usually
+referred to as a BIOS or UEFI). Libreboot replaces the boot firmware
+with fully free code, but even with libreboot, there may still be other
+hardware components in the system (e.g. laptop) that run their own
+dedicated firmware, sometimes proprietary. These are on secondary
+processors, where the firmware is usually read-only, written for very
+specific tasks. While these are unrelated to libreboot, technically
+speaking, it makes sense to document some of the issues here.
+
+Note that these issues are not unique to libreboot systems. They apply
+universally, to most systems. The issues described below are the most
+common (or otherwise critical).
+
+Dealing with these problems will most likely be handled by a separate
+project.
+
+### External GPUs
 
 The Video BIOS is present on most video hardware. On all current
 libreboot systems, this is implemented using free software. The Video
@@ -737,25 +666,6 @@ actively working to replace the VBIOS, or find out how to get a visual
 display without it (possible in some cases, if the kernel driver can be
 modified to work without it, possibly only needing certain
 non-executable data).
-
-What other firmware exists outside of libreboot?
-----------------------------------------------------------------------------------------
-
-The main freedom issue on any system, is the boot firmware (usually
-referred to as a BIOS or UEFI). Libreboot replaces the boot firmware
-with fully free code, but even with libreboot, there may still be other
-hardware components in the system (e.g. laptop) that run their own
-dedicated firmware, sometimes proprietary. These are on secondary
-processors, where the firmware is usually read-only, written for very
-specific tasks. While these are unrelated to libreboot, technically
-speaking, it makes sense to document some of the issues here.
-
-Note that these issues are not unique to libreboot systems. They apply
-universally, to most systems. The issues described below are the most
-common (or otherwise critical).
-
-Dealing with these problems will most likely be handled by a separate
-project.
 
 ### EC (embedded controller) firmware 
 
@@ -1036,23 +946,6 @@ out of the box.
 
 We would like to merge instructions for installing and booting BSD on
 libreboot systems. [Patches are welcome!](https://libreboot.org/git/)
-
-Can I use Windows?
-----------------------------------------------
-
-Windows is incompatible with libreboot, and will probably remain so. You
-should not use Windows, because it is non-free and therefore bad for
-freedom. It is also known to have several severe security and privacy
-issues, both intentional and unintentional. It is known to contact
-backdoors, in addition to other nasty anti-features like DRM.
-
-Windows incompatibility is a feature, not a bug.
-
-Incompatible Time Sharing System?
------------------------------------------------------
-
-jxself asked this in the IRC channel. As far as we know, this won't
-work in libreboot systems, or indeed any modern system.
 
 Are other operating systems compatible?
 -------------------------------------------------------------------
