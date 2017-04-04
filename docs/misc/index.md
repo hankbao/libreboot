@@ -1,25 +1,12 @@
-% Miscellaneous 
+---
+title: Miscellaneous 
+x-toc-enable: true
+...
 
--   [High Pitched Whining Noise on Idle (how to remove in Debian or
-    Devuan)](#debian_powertop)
-
--   [High Pitched Whining Noise on Idle (how to remove in
-    Parabola)](#high_pitch_parabola)
--   [X60/T60: Serial port - how to use (for dock owners)](#serial)
--   [Power Management Beeps on Thinkpads](#powerbeeps)
--   [Using diff and patch](patch.html)
--   [Finetune backlight control on intel gpu's](#backlight%20control)
--   [Get EDID: Find out the name (model) of your LCD
-    panel](#get_edid_panelname)
--   [How to enable EHCI debugging on the BeagleBone
-    Black](bbb_ehci.html)
--   [e1000e driver trouble shooting (Intel NICs)](#e1000-hang)
-
-High Pitched Whining Noise on Idle (how to remove in Debian or Devuan) {#debian_powertop}
+High Pitched Whining Noise on Idle in Debian or Devuan
 ======================================================================
 
-Start powertop automatically at boot time {#debian_powertop_autostart}
------------------------------------------
+Start powertop automatically at boot time.
 
 Included with libreboot is a script called 'powertop.debian'. Run this
 as root and it will setup powertop to run with --auto-tune at boot
@@ -33,7 +20,7 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-High Pitched Whining Noise on Idle (how to remove in Parabola) {#high_pitch_parabola}
+High Pitched Whining Noise on Idle in Parabola
 ==============================================================
 
 The following removes most of the noise. It reduces what is a high
@@ -85,7 +72,7 @@ If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.html).
 
-X60/T60: Serial port - how to use (for dock owners) {#serial}
+X60/T60: Serial port - how to use (for dock owners)
 ===================================================
 
 For the Thinkpad X60 you can use the **"UltraBase X6"** dock (for the
@@ -224,7 +211,7 @@ Disable or enable beeps when battery is low:
 
 A reboot is required, for these changes to take effect.
 
-Get EDID: Find out the name (model) of your LCD panel {#get_edid_panelname}
+Get EDID: Find out the name (model) of your LCD panel
 =====================================================
 
 Get the panel name with **sudo get-edid | strings**\
@@ -244,7 +231,7 @@ If neither of these options work (or they are unavailable), physically
 removing the LCD panel is an option. Usually, there will be information
 printed on the back.
 
-e1000e driver trouble shooting (Intel NICs) {#e1000-hang}
+e1000e driver trouble shooting (Intel NICs)
 ===========================================
 
 Example error, ¿may happen on weird and complex routing schemes(citation
@@ -269,7 +256,7 @@ across subnets on the same interface (NIC).
 More information, including logs, can be found on [this
 page](https://notabug.org/libreboot/libreboot/issues/23).
 
-USB keyboard wakeup on GM45 laptops {#usb_keyboard_gm45}
+USB keyboard wakeup on GM45 laptops
 ===================================
 
 Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
