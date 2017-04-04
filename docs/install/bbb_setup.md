@@ -28,8 +28,6 @@ here is a photo of the setup for the teensy:
 
 Onto the Beaglebone black\...
 
-[Back to previous index](./)
-
 Hardware requirements
 =====================
 

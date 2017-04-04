@@ -41,8 +41,6 @@ Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a
 step during boot to fail. If this happens to you, try removing the
 drive.
 
-[Back to previous index](./)
-
 Set a strong user password (lots of lowercase/uppercase, numbers and
 symbols).
 

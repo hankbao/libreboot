@@ -18,8 +18,6 @@ your libreboot system, using nothing more than a USB flash drive (and
 -   [Configuring Grub](#configuring_grub)
 -   [Troubleshooting](#troubleshooting)
 
-[Back to previous index](./)
-
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.**

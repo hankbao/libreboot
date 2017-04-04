@@ -4,15 +4,12 @@ This section relates to preparing, booting and installing a GNU+Linux
 distribution on your libreboot system, using nothing more than a USB
 flash drive (and *dd*).
 
--   [List of recommended GNU+Linux distributions](../distros)
 -   [Prepare the USB drive (in GNU+Linux)](#prepare)
 -   [Installing GNU+Linux with full disk encryption](#encryption)
 -   [Debian or Devuan net install?](#debian_netinstall)
 -   [Booting ISOLINUX images (automatic method)](#parse_isolinux)
 -   [Booting ISOLINUX images (manual method)](#manual_isolinux)
 -   [Troubleshooting](#troubleshooting)
-
-[Back to previous index](./)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the

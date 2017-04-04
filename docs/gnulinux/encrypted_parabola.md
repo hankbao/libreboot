@@ -30,8 +30,6 @@ Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a
 step during boot to fail. If this happens to you, try removing the
 drive.
 
-[Back to previous index](./)
-
 Boot Parabola's install environment. [How to boot a GNU+Linux
 installer](grub_boot_installer.html).
 

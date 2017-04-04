@@ -3,8 +3,6 @@
 This section documents how to recover from a bad flash that prevents
 your ThinkPad T60 from booting.
 
-[Back to previous index](./)
-
 Table of Contents
 -----------------
 

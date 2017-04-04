@@ -5,8 +5,6 @@ Parabola is extremely flexible; this is just an example. This example
 uses LXDE because it's lightweight, but we recommend the *MATE* desktop
 (which is actually about as lightweight as LXDE).
 
-[Back to previous index](./)
-
 Table of Contents
 =================
 

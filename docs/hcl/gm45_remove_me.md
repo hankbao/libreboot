@@ -24,8 +24,6 @@ More information about the ME can be found at
 
 Another project recently found: <http://io.smashthestack.org/me/>
 
-[Back to previous index](./).
-
 ICH9 gen utility {#ich9gen}
 ================
 

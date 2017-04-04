@@ -25,8 +25,6 @@ Here is an excellent writeup about CBFS (coreboot filesystem):
 **This guide is \*only\* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
 
-[Back to previous index](./)
-
 Table of Contents
 =================
 

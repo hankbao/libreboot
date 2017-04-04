@@ -4,8 +4,6 @@ This guide deals with various ways in which you can harden your GRUB
 configuration, for security purposes. These steps are optional, but
 highly recommended by the Libreboot project.
 
-[Back to previous index](./)
-
 GRUB secure boot with GPG
 =========================
 

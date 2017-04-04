@@ -6,8 +6,6 @@ for building a high-powered workstation. Powered by libreboot.
 Flashing instructions can be found at
 [../install/\#flashrom](../install/#flashrom)
 
-[Back to previous index](./).
-
 Form factor {#formfactor}
 ===========
 
