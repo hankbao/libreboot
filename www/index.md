@@ -5,16 +5,16 @@ title: Libreboot
 [![Libreboot logo](logo/logo.svg "Canteloupe, the libreboot
 mascot"){#logo}](faq.md#who-did-the-logo)
 
-[Downloads](download.md)                                                    --
-[Documentation](docs/)                                                      --
-[FAQ](faq.md)                                                               --
-[Contributors](contrib.md)                                                  --
-[Report a bug](https://notabug.org/libreboot/libreboot/issues/new)            --
-[Submit a patch](git.md)                                                    --
-[Hardware Compatibility](docs/hcl/)                                         --
+[Download](download.md)                                                     --
 [Install](docs/install/)                                                    --
+[Contribute](git.md)                                                        --
 [Mirror](rsync.md)                                                          --
-[IRC](https://webchat.freenode.net/?channels=libreboot)
+[FAQ](faq.md)                                                               --
+[Docs](docs/)                                                               --
+[Authors](contrib.md)                                                       --
+[Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
+[Compatibility](docs/hcl/)                                                  --
+[Support](https://webchat.freenode.net/?channels=libreboot)
 
 Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
