@@ -1,23 +1,20 @@
 % Libreboot documentation 
 
-Information about this release can be found at
-[release.html](release.html). Always check
-[libreboot.org](http://libreboot.org) for updates.
+Information about this release can be found at [release.html](release.html).
+Always check [libreboot.org](/) for updates.
 
-[What is libreboot?](#why)
-
-[Answers to frequently asked questions about
-Libreboot](https://libreboot.org/faq/)
+Answers to [frequently asked questions about
+Libreboot](https://libreboot.org/faq/).
 
 Libreboot is compatible with GNU+Linux and several BSD systems.
 
-For GNU+Linux, have a look at our [list of GNU+Linux distributions that
-we recommend](distros/).
+For GNU+Linux, have a look at our [list of GNU+Linux distributions that we
+recommend](distros/).
 
-For BSD, refer to [the libreboot FAQ](https://libreboot.org/faq/#bsd).
-We wish to merge instructions into the official libreboot documentation,
-if someone will provide it. We do have some instructions now for NetBSD,
-FreeBSD and OpenBSD, but they are still incomplete. See [bsd/](bsd/).
+For BSD, refer to [the libreboot FAQ](https://libreboot.org/faq/#bsd).  We wish
+to merge instructions into the official libreboot documentation, if someone
+will provide it. We do have some instructions now for NetBSD, FreeBSD and
+OpenBSD, but they are still incomplete. See [bsd/](bsd/).
 
 Installing libreboot
 ====================
@@ -44,28 +41,15 @@ Information for developers
 Other information
 =================
 
--   [Hardware modifications](hardware/)
 -   [Miscellaneous](misc/)
 
 About the libreboot project
 ===========================
 
-Libreboot is a free BIOS or UEFI replacement ([free as in
-freedom](https://en.wikipedia.org/wiki/Free_software)); libre *boot
-firmware* that initializes the hardware and starts a bootloader for your
-operating system. It's also an open source BIOS, but open source fails
-to promote freedom; *please call libreboot **[free
-software](https://en.wikipedia.org/wiki/Free_software)***.
-
-Libreboot originally began during December 2013, as a commercial effort
-by the [Ministry of Freedom](https://minifree.org) to achieve RYF
-endorsement for a modified ThinkPad X60 (the first system to ever be
-added to libreboot), which it did then achieve.
-
-Back then, the name *libreboot* didn't exist; the project was nameless,
-referring to itself as a *deblobbed version of coreboot*. The project
-named itself libreboot at some point during early 2014, and has since
-rapidly expanded to support more hardware and become more user-friendly.
+Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
+Source BIOS or UEFI replacement, initialising the hardware and booting your
+operating system. We are a member of the [Peers Community](https://peers.community/)
+project, an organisation that supports Free Software.
 
 Libreboot is a [coreboot](http://coreboot.org/) distribution (distro)
 with proprietary software removed, intended to be a
@@ -100,28 +84,21 @@ The libreboot project has three main goals:
     and support. Most people will simply give up before attempting to
     install coreboot.
 
-    
+Libreboot attempts to bridge this divide, making sure that everything from
+building to installing coreboot is automated, as much as is feasibly possible.
+Secondly, the project produces documentation aimed at non-technical users.
+Thirdly, the project attempts to provide excellent user support via mailing
+lists and IRC.
 
-    Libreboot attempts to bridge this divide, making sure that
-    everything from building to installing coreboot is automated, as
-    much as is feasibly possible. Secondly, the project produces
-    documentation aimed at non-technical users. Thirdly, the project
-    attempts to provide excellent user support via mailing lists and
-    IRC.
+Libreboot already comes with a payload (GRUB), flashrom and other
+needed parts. Everything is fully integrated, in a way where most of
+the complicated steps that are otherwise required, are instead done
+for the user in advance.
 
-    
-
-    Libreboot already comes with a payload (GRUB), flashrom and other
-    needed parts. Everything is fully integrated, in a way where most of
-    the complicated steps that are otherwise required, are instead done
-    for the user in advance.
-
-    
-
-    You can download ROM images for your libreboot system and install
-    them, without having to build anything from source. The build system
-    is also fully automated, so building from source is easy if you
-    wanted to do that (for whatever reason).
+You can download ROM images for your libreboot system and install
+them, without having to build anything from source. The build system
+is also fully automated, so building from source is easy if you
+wanted to do that (for whatever reason).
 
 Libreboot is a coreboot distribution, not a coreboot fork
 ---------------------------------------------------------
@@ -145,16 +122,16 @@ Libreboot is a 'stable' version of coreboot
 ---------------------------------------------
 
 -   Coreboot uses the [rolling
-    release](https://en.wikipedia.org/wiki/Rolling_release) model, which
-    means that it is not guaranteed to be stable, or to even work at all
-    on a given day. Coreboot does have a strict code review process, but
-    being such a large project with so many contributors, regressions
-    are always possible.
+release](https://en.wikipedia.org/wiki/Rolling_release) model, which
+means that it is not guaranteed to be stable, or to even work at all
+on a given day. Coreboot does have a strict code review process, but
+being such a large project with so many contributors, regressions
+are always possible.
 -   Libreboot freezes on a particular revision of coreboot, making sure
-    that everything works properly, making fixes on top of that and
-    repeating this during each subsequent update to a later version of
-    coreboot. By doing this, it provides a stronger guarantee to the
-    user that the firmware will be reliable, and not break their system.
+that everything works properly, making fixes on top of that and
+repeating this during each subsequent update to a later version of
+coreboot. By doing this, it provides a stronger guarantee to the
+user that the firmware will be reliable, and not break their system.
 
 How do I know what version I'm running?
 ========================================
@@ -174,7 +151,9 @@ If it exists, you can also extract this *lbversion* file by using the
 *cbfstool* utility which libreboot includes, from a ROM image that you
 either dumped or haven't flashed yet. In your distribution, run
 cbfstool on your ROM image (*libreboot.rom*, in this example):
+
     $ ./cbfstool libreboot.rom extract -n lbversion -f lbversion
+
 You will now have a file, named *lbversion*, which you can read in
 whatever program it is that you use for reading/writing text files.
 
