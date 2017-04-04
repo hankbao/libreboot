@@ -26,6 +26,9 @@ flashing on the ThinkPad X200, but it should work for other targets.
 here is a photo of the setup for the teensy:
 <http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg>
 
+You may consider using [BBB
+ScrewDriver](https://www.coreboot.org/BeagleBone_Black_-_screwdriver).
+
 Onto the Beaglebone black\...
 
 Hardware requirements
