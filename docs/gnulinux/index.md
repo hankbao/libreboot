@@ -6,8 +6,6 @@ bootable USB drives, changing the default GRUB menu and so on.
 **This section is only for the \*GRUB\* payload. For depthcharge,
 instructions have yet to be written.**
 
-[Back to previous index](../).
-
 -   [How to install GNU+Linux on a libreboot
     system](grub_boot_installer.html)
 

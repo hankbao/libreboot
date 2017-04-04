@@ -2,8 +2,6 @@
 
 This section relates to hardware maintenance on supported targets.
 
-[Back to previous index](../).
-
 -   [ThinkPad X60/X60s/X60T: Change keyboard](x60_keyboard.html) (the
     procedure on X200/X200S/X200T is almost identical)
 
