@@ -27,9 +27,9 @@ Timothy Pearson
 ---------------
 
 Ported the ASUS KGPE-D16 board to coreboot for the company Raptor
-Engineering of which Timothy is the CEO, and collaborated with Leah on
-merging it in libreboot. Timothy maintains this code in coreboot,
-helping Leah with the libreboot integration for it. This person's
+Engineering of which Timothy is the CEO.
+Timothy maintains this code in coreboot,
+helping the project with the libreboot integration for it. This person's
 contact details are on the raptor site, or you can ping **tpearson** on
 the freenode IRC network.
 
@@ -69,8 +69,8 @@ Denis Carikli
 
 Based on the work done by Peter Stuge, Vladimir Serbineko and others in
 the coreboot project, got native graphics initialization to work on the
-ThinkPad X60, allowing it to be supported in libreboot. Denis gave Leah
-a lot of advice and helped her to found the libreboot project. Contact
+ThinkPad X60, allowing it to be supported in libreboot. Denis gave
+a lot of advice and helped found the libreboot project. Contact
 **GNUtoo-irssi** in the \#libreboot IRC channel. Denis is also one of
 the founders of the [Replicant](http://replicant.us/) project.
 
@@ -86,8 +86,8 @@ Paul Menzel
 
 Investigated and fixed a bug in coreboot on the ThinkPad X60/T60 exposed
 by Linux kernel 3.12 and up, which caused 3D acceleration to stop
-working and video generally to become unstable. Paul worked with Leah on
-this, sending her patches to test periodically until the bug was fixed
+working and video generally to become unstable. Paul worked with Libreboot on
+this, sending patches to test periodically until the bug was fixed
 in coreboot, and then helped her integrate the fix in libreboot. Contact
 **PaulePanter** in the \#libreboot IRC channel.
 
@@ -111,7 +111,7 @@ in the \#libreboot IRC channel.
 Peter Stuge
 -----------
 
-Helped Leah write the section about DMA on
+Helped write the section about DMA on
 [../faq/\#firmware-hddssd](../faq/#firmware-hddssd), and provided
 general advice in early days of the project. Contact **CareBear\\** in
 the \#coreboot IRC channel on freenode.

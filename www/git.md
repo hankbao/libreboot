@@ -118,15 +118,12 @@ Once you have pushed your patches, go to the relevant repository on
 submit a pull request for, between the two repositories, and then click
 "Submit".
 
-When this is done, Leah Rowe (maintainer of the main repository) or
-someone else (with push access) will review your patch, and decide
-whether to merge it. Relevant links to bug trackers for discussing
+Once you have issued a Pull Request, the Libreboot maintainers will be notified
+via email. If you do not receive a fast enough response from the project, then
+you could also notify the project via the #libreboot channel on FreeNode.
+
+Relevant links to bug trackers for discussing
 development (especially patch review) are on [../tasks/](tasks.md)
-
-###  Method 1: Host a fork
-
-Give the checkout details to [Leah Rowe](contrib.md), along with
-information on which commits in what branch contain your changes.
 
 **Check [\#githosting](#githosting), for a list of Git hosting providers
 that we recommend.**

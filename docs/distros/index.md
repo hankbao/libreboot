@@ -11,10 +11,9 @@ system](../gnulinux/grub_boot_installer.html)
 Debian
 ------
 
-Most of the developers use it (Leah Rowe always uses testing releases of
-Debian). We recommend Debian stable releases for most users. If you want
-to do development, e.g. libreboot development, then you should use the
-testing release of Debian.
+Most of the developers use it. We recommend Debian stable releases for most
+users. If you want to do development, e.g. libreboot development, then you
+should use the testing release of Debian.
 
 Debian by default comes without non-free software in the default
 installation or repos. There is a non-free repo that's not added by
