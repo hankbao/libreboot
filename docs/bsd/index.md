@@ -6,8 +6,6 @@ USB drives, changing the default GRUB menu and so on.
 **This section is only for the \*GRUB\* payload. For depthcharge,
 instructions have yet to be written.**
 
-[Back to previous index](../).
-
 -   [How to install NetBSD on a libreboot system](netbsd.html)
 -   [How to install LibertyBSD or OpenBSD on a libreboot
     system](openbsd.html)

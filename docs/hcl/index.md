@@ -14,8 +14,6 @@ This sections relates to known hardware compatibility in libreboot.
     -   [How to find what EC version you have (i945/GM45)](#ecversion)
 -   [Recommended wifi chipsets](#recommended_wifi)
 
-[Back to previous index](../).
-
 List of supported hardware {#supported_list}
 --------------------------
 
