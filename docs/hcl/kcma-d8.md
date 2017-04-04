@@ -15,8 +15,6 @@ currently installed. If you already have libreboot, by default it is
 possible to re-flash using software running in GNU+Linux on the kcma-d8,
 without using external hardware.
 
-[Back to previous index](./).
-
 CPU compatibility
 =================
 

@@ -1,7 +1,5 @@
 % EHCI debugging on the BeagleBone Black 
 
-[Back to previous index](./)
-
 EHCI debugging
 ==============
 

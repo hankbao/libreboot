@@ -6,15 +6,11 @@ Always check [libreboot.org](/) for updates.
 Answers to [frequently asked questions about
 Libreboot](https://libreboot.org/faq/).
 
-Libreboot is compatible with GNU+Linux and several BSD systems.
-
-For GNU+Linux, have a look at our [list of GNU+Linux distributions that we
-recommend](distros/).
-
-For BSD, refer to [the libreboot FAQ](https://libreboot.org/faq/#bsd).  We wish
-to merge instructions into the official libreboot documentation, if someone
-will provide it. We do have some instructions now for NetBSD, FreeBSD and
-OpenBSD, but they are still incomplete. See [bsd/](bsd/).
+Libreboot is compatible with GNU+Linux and several BSD systems. For BSD, refer
+to [the libreboot FAQ](https://libreboot.org/faq/#bsd).  We wish to merge
+instructions into the official libreboot documentation, if someone will provide
+it. We do have some instructions now for NetBSD, FreeBSD and OpenBSD, but they
+are still incomplete. See [bsd/](bsd/).
 
 Installing libreboot
 ====================
@@ -27,7 +23,6 @@ Installing operating systems
 
 -   [List of recommended GNU+Linux distributions for
     libreboot](distros/)
-
 -   [How to install GNU+Linux on a libreboot system](gnulinux/)
 -   [How to install BSD on a libreboot system](bsd/)
 
