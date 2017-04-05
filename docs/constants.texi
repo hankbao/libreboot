@@ -1,2 +1,0 @@
-@set docsdir ../resources/
-@set useinstall 
