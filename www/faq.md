@@ -906,9 +906,6 @@ Absolutely! It is well-tested in libreboot, and highly recommended. See
 Any recent distribution should work, as long as it uses KMS (kernel mode
 setting) for the graphics.
 
-We maintain a [list of distributions that we recommend to the
-public](docs/distros/).
-
 Can I use BSD?
 ----------------------------------
 
