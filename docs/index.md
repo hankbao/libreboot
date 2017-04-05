@@ -122,7 +122,7 @@ repeating this during each subsequent update to a later version of
 coreboot. By doing this, it provides a stronger guarantee to the
 user that the firmware will be reliable, and not break their system.
 
-How do I know what version I'm running?
+How do I know what version I'm running? {#version}
 ========================================
 
 If you are at least 127 commits after release 20150518 (commit message
