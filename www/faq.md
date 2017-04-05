@@ -909,40 +909,11 @@ setting) for the graphics.
 Can I use BSD?
 ----------------------------------
 
-For the most part, BSD systems remain untested in libreboot. BSD systems
-contain binary blobs (non-free firmware and applications), so do beware.
-**We need proper documentation for BSD in libreboot. Documentation is in
-the git repository. [This page](git.md) shows how to send patches to
-the libreboot project.**
+Absolutely! Libreboot has native support for NetBSD, OpenBSD and LibertyBSD.
+Other distros are untested.
 
-[This reddit
-post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
-has some basic information.
-
-<https://libreboot.org/lists/old/libreboot/html/lists.gnu.org/archive/html/libreboot/2016-09/msg00010.html>
-
-OpenBSD 5.9 or higher is believed to be compatible with video in X11
-(libertyBSD 5.9 or higher is also compatible). See
-<https://libreboot.org/lists/old/libreboot/html/lists.gnu.org/archive/html/libreboot/2016-04/msg00010.html>.
-Another user also reported success with OpenBSD:
-<http://marc.info/?l=openbsd-misc&m=147492752806764&w=2>. **NOTE:
-[Libreboot has openbsd instructions now!](../docs/bsd/openbsd.html).
-Thanks go to Scott Bonds who submitted the initial documentation for it.
-TODO: Test LibertyBSD (deblobbed OpenBSD version) and make that the main
-recommended version of OpenBSD in the guide.**
-
-FreeBSD is believed to be compatible (text mode). We don't know if it
-can work with a framebuffer, although at least one user did report that
-FreeBSD supports kernel mode setting, so it might be possible. This
-individual was able to boot FreeBSD in text mode, using libreboot
-20160818: see
-<https://libreboot.org/lists/old/libreboot/html/lists.gnu.org/archive/html/libreboot/2016-08/msg00052.html>.
-
-At least one user reported to us that NetBSD should work in libreboot
-out of the box.
-
-We would like to merge instructions for installing and booting BSD on
-libreboot systems. [Patches are welcome!](https://libreboot.org/git/)
+See:
+[docs/bsd/](docs/bsd/)
 
 Are other operating systems compatible?
 -------------------------------------------------------------------
