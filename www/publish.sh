@@ -5,14 +5,18 @@ FILE=${1%.md}
 
 cat $1 > temp.md
 
-# add footer
-
-echo '' >> temp.md
-
 if [ "${FILE}" != "./index" ]; then
-        echo -ne '[Back to home](/index.html) -- ' >> temp.md
+        if [[ $FILE == *index ]]
+        then
+            DEST=".."
+        else
+            DEST="index.html"
+        fi
+
+        RETURN="<a href='$DEST'>Back to previous index</a>"
 fi
 
+echo "" >> temp.md
 echo "[License](license.md)" >> temp.md
 
 # change out .md -> .html
@@ -25,4 +29,4 @@ TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2")
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart")
 
 # chuck through pandoc
-pandoc $TOC $SMART temp.md -s --css /global.css -T Libreboot > $FILE.html
+pandoc $TOC $SMART temp.md -s --css /global.css -T Libreboot --template template.html --metadata return="$RETURN"> $FILE.html
