@@ -1,4 +1,6 @@
-% Mirroring libreboot
+---
+title: Mirroring libreboot
+...
 
 Create a directory in your web directory (e.g. libreboot/) and put one
 of these in your crontab:

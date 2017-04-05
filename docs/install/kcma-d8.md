@@ -1,4 +1,6 @@
-% KCMA-D8 external flashing instructions 
+---
+title: KCMA-D8 external flashing instructions 
+...
 
 Initial flashing instructions for kcma-d8.
 

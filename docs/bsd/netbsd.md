@@ -1,4 +1,6 @@
-% How to install NetBSD on a libreboot system
+---
+title: How to install NetBSD on a libreboot system
+...
 
 This section relates to preparing, booting and installing NetBSD on your
 libreboot system, using nothing more than a USB flash drive (and *dd*).

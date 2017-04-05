@@ -1,4 +1,6 @@
-% How to replace the default GRUB configuration file on a libreboot system 
+---
+title: How to replace the default GRUB configuration file on a libreboot system 
+...
 
 Libreboot on x86 uses the GRUB
 [payload](http://www.coreboot.org/Payloads#GRUB_2) by default, which

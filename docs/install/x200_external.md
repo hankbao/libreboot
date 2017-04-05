@@ -1,4 +1,6 @@
-% Flashing the X200 with a BeagleBone Black 
+---
+title: Flashing the X200 with a BeagleBone Black 
+...
 
 Initial flashing instructions for X200.
 

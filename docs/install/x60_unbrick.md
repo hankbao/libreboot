@@ -1,4 +1,6 @@
-% ThinkPad X60: Recovery guide
+---
+title: ThinkPad X60: Recovery guide
+...
 
 This section documents how to recover from a bad flash that prevents
 your ThinkPad X60 from booting.

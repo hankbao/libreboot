@@ -1,4 +1,6 @@
-% KGPE-D16 external flashing instructions 
+---
+title: KGPE-D16 external flashing instructions 
+...
 
 Initial flashing instructions for KGPE-D16.
 

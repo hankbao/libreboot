@@ -1,4 +1,6 @@
-% Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)
+---
+title: Installing Debian or Devuan GNU+Linux with full disk encryption (including /boot)
+...
 
 This guide is written for the Debian distribution, but it should also
 work for Devuan with the net installer.
