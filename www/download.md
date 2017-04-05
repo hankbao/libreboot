@@ -2,8 +2,8 @@
 title: Downloads
 ...
 
-*The latest stable release is 20160907, released on 2016-09-07 and can
-be found at [\#https](#https).*
+**The latest stable release is 20160907, released on 2016-09-07 and can
+be found at [\#https](#https).**
 
 Information about specific changes in each Libreboot release, can be found
 at [docs/release.md](docs/release.md)
