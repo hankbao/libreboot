@@ -1,5 +1,5 @@
 ---
-Instructions for compiling from the source code
+title: Instructions for compiling from the source code
 ...
 
 Depthcharge is currently not documented, since it is in the new build
