@@ -5,8 +5,7 @@ title: Documentation
 Information about Libreboot releases can be found at
 [release.md](release.md). Always check [libreboot.org](/) for updates.
 
-Answers to [frequently asked questions about
-Libreboot](../faq/).
+[Answers to Frequently Asked Questions about Libreboot](../faq.md).
 
 Installing libreboot
 ====================
