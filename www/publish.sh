@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io
+# Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io>
+# Copyright (C) 2017 Leah Rowe <info@minifree.org>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -14,6 +15,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+[ "x${DEBUG+set}" = 'xset' ] && set -v
+set -e
 
 echo $1
 FILE=${1%.md}
@@ -38,10 +42,10 @@ echo "[License](/license.md)" >> temp.md
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
 
 # work around issue #2872
-TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2")
+TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || TOC=""
 
 # work around heterogenous pandoc versions
-SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart")
+SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || SMART=""
 
 # chuck through pandoc
 pandoc $TOC $SMART temp.md -s --css /global.css -T Libreboot \
