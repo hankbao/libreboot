@@ -99,7 +99,7 @@ Peter Stuge
 -----------
 
 Helped write the section about DMA on
-[../faq/\#firmware-hddssd](../faq/#firmware-hddssd), and provided
+[../faq.md\#firmware-hddssd](../faq.md#firmware-hddssd), and provided
 general advice in early days of the project. Contact **CareBear\\** in
 the \#coreboot IRC channel on freenode.
 

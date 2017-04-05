@@ -9,7 +9,7 @@ Information about specific changes in each Libreboot release, can be found
 at [docs/release.md](docs/release.md)
 
 If you're more interested in libreboot development, go to the
-[libreboot development page](../git/), which also includes links to the
+[libreboot development page](../git.md), which also includes links to the
 Git repositories.
 
 GPG signing key

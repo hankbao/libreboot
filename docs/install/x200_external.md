@@ -25,8 +25,6 @@ If you don't want to install libreboot yourself, companies exist that
 sell these laptops with libreboot pre-installed, along with a free
 GNU+Linux distribution.
 
-Check the [suppliers](../../suppliers) page for more information.
-
 Flash chip size {#flashchips}
 ===============
 

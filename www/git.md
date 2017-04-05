@@ -81,9 +81,7 @@ their, they, them, those people, that person, and so on.** [You are making a
 huge
 difference](https://gist.github.com/0xabad1dea/8870b192fd1758743f66#file-singularthey-md)
 
-<https://www.gnu.org/licenses/license-list.html> (we will reject any
-documentation released under the GNU Free Documentation License, for
-reasons mentioned in [../why-not-gnu/](why-not-gnu.md)). NOTE: not
+<https://www.gnu.org/licenses/license-list.html>. NOTE: not
 putting a copyright notice on a work does not mean it lacks copyright.
 Copyright is *automatic* in most countries. Not putting a license on a
 work also does not make that work *free*; you have to declare a free
