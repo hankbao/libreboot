@@ -16,11 +16,13 @@ How can I help the libreboot project?
 --------------------------------------
 
 **At any given time, here is a list of tasks if there are any, for the
-next stable release of libreboot: [click here](tasks.md)** - this is
+next stable release of libreboot:
+[click here](https://notabug.org/libreboot/libreboot/issues)** - this is
 also where to send bug reports.
 
 There are many ways that you can assist the libreboot project. We have a
-[list of tasks that need to be completed](tasks.md), which you can work
+[task list on the bug tracker](https://notabug.org/libreboot/libreboot/issues),
+which you can work
 on (you can also add to that list). Generally speaking, adding support
 for more hardware is a priority for the libreboot project. Information
 about building libreboot can be found at [here](docs/git/).
@@ -123,7 +125,8 @@ via email. If you do not receive a fast enough response from the project, then
 you could also notify the project via the #libreboot channel on FreeNode.
 
 Relevant links to bug trackers for discussing
-development (especially patch review) are on [../tasks/](tasks.md)
+development (especially patch review) are on
+[NotABug](https://notabug.org/libreboot/libreboot/issues)
 
 **Check [\#githosting](#githosting), for a list of Git hosting providers
 that we recommend.**

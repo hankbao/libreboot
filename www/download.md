@@ -10,8 +10,7 @@ at [docs/release.md](docs/release.md)
 
 If you're more interested in libreboot development, go to the
 [libreboot development page](../git/), which also includes links to the
-Git repositories. Visit [../tasks/](../tasks/) for tasks currently on
-the TODO list.
+Git repositories.
 
 GPG signing key
 ---------------
