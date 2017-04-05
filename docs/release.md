@@ -707,10 +707,6 @@ Changes for this release (latest changes first, earliest changes last)
     Parabola GNU+Linux installation.
 -   Documentation: added more info about wifi chipsets
 
-[Back to top of page.](#pagetop)
-
-
-
 6th release (pre-release, 7th beta) {#release20140911}
 ===================================
 
@@ -1284,10 +1280,6 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     and advanced mini dock) to relevant sections.
     -   Added to docs/\#serial
 
-[Back to top of page.](#pagetop)
-
-
-
 Release 20140622 (5th release) {#release20140622}
 ==============================
 
@@ -1404,10 +1396,6 @@ Development notes
 -   (in Console-> in coreboot "make menuconfig")
 -   (and build with grub\_serial.cfg and grub\_memdisk\_serial.cfg)
 
-[Back to top of page.](#pagetop)
-
-
-
 Release 20140221 (4th release) {#release20140221}
 ==============================
 
@@ -1440,10 +1428,6 @@ The "Parse" options read ./isolinux/isolinux.cfg on a CD or USB, and
 automatically converts it to a grub config and switches to the boot menu
 of that distro. This makes booting ISOs \*much\* easier than before.
 
-[Back to top of page.](#pagetop)
-
-
-
 r20131214 (3rd release) {#release20131214}
 =======================
 
@@ -1460,10 +1444,6 @@ Development notes
 
 -   Added SeaBIOS payload to GRUB2 (for booting USB drives)
 -   new grub.cfg
-
-[Back to top of page.](#pagetop)
-
-
 
 r20131213 (2nd release) {#release20131213}
 =======================
@@ -1483,10 +1463,6 @@ Development notes
 -   added memtest86+ payload to grub2
 -   improvements to the documentation
 -   new grub.cfg
-
-[Back to top of page.](#pagetop)
-
-
 
 r20131212 (1st release) {#release20131212}
 =======================
