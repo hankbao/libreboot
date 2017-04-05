@@ -17,7 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
 echo $1
 FILE=${1%.md}
