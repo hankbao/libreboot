@@ -9,7 +9,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Download](download.md)                                                     --
 [Install](docs/install/)                                                    --
 [Documentation](docs/)                                                      --
-[Support](https://webchat.freenode.net/?channels=libreboot)                 --
+[Support (IRC)](https://webchat.freenode.net/?channels=libreboot)           --
 [File bug report](https://notabug.org/libreboot/libreboot/issues)           --
 [Send patches](git.md)                                                      --
 [Authors](contrib.md)
