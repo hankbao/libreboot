@@ -95,4 +95,4 @@ Libreboot includes statically linked executables. If you need the
 sources for those statically linked dependencies inside the executables,
 then you can contact the libreboot project using the details on the home
 page; source code will be provided. You can download this source code
-from [here](https://libreboot.org/ccsource/).
+from [here](ccsource/).
