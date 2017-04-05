@@ -4,6 +4,8 @@ title: Hardware compatibility list
 
 This sections relates to known hardware compatibility in libreboot.
 
+For installatation instructions, refer to [../install/](../install/).
+
 -   [List of supported hardware](#supported_list)
     -   [Desktops (x86, AMD and Intel)](#supported_desktops_x86amdintel)
     -   [Servers/workstations](#supported_workstations_x86amd)
