@@ -74,7 +74,7 @@ Shopping list (pictures of this hardware is shown later):
     power supply is recommended. These should be easy to find in most
     places that sell electronics. **OPTIONAL. Only needed if not
     powering with the USB cable, or if you want to use [EHCI
-    debug](../misc/bbb_ehci.html)**.
+    debug](../misc/bbb_ehci.md)**.
 -   **Pin header / jumper cables** (2.54mm / 0.1" headers): you should
     get male--male, male--female and female--female cables in 10cm
     size. Just get a load of them. Other possible names for these
@@ -91,7 +91,7 @@ Shopping list (pictures of this hardware is shown later):
     that if needed.
 -   **Mini USB A-B cable** (the BeagleBone probably already comes with
     one.) - **OPTIONAL - only needed for [EHCI
-    debug](../misc/bbb_ehci.html) or for serial/ssh access without
+    debug](../misc/bbb_ehci.md) or for serial/ssh access without
     ethernet cable (g\_multi kernel module)**
 -   **FTDI TTL cable or debug board**: used for accessing the serial
     console on the BBB. [This

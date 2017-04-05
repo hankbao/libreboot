@@ -25,20 +25,20 @@ Libreboot supports the following systems in this release:
 
 ### Desktops (AMD, Intel, x86) {#supported_desktops_x86amdintel}
 
--   [Gigabyte GA-G41M-ES2L motherboard](ga-g41m-es2l.html)
--   [Intel D510MO motherboard](d510mo.html)
--   [ASUS KCMA-D8 motherboard](kcma-d8.html)
--   [Intel D945GCLF](d945gclf.html)
--   [Apple iMac 5,2](imac52.html)
+-   [Gigabyte GA-G41M-ES2L motherboard](ga-g41m-es2l.md)
+-   [Intel D510MO motherboard](d510mo.md)
+-   [ASUS KCMA-D8 motherboard](kcma-d8.md)
+-   [Intel D945GCLF](d945gclf.md)
+-   [Apple iMac 5,2](imac52.md)
 
 ### Servers/workstations (AMD, x86) {#supported_workstations_x86amd}
 
--   [ASUS KFSN4-DRE motherboard](kfsn4-dre.html)
--   [ASUS KGPE-D16 motherboard](kgpe-d16.html)
+-   [ASUS KFSN4-DRE motherboard](kfsn4-dre.md)
+-   [ASUS KGPE-D16 motherboard](kgpe-d16.md)
 
 ### Laptops (ARM) {#supported_laptops_arm}
 
--   [ASUS Chromebook C201](c201.html)
+-   [ASUS Chromebook C201](c201.md)
 
 ### Laptops (Intel, x86) {#supported_laptops_x86intel}
 
@@ -46,10 +46,10 @@ Libreboot supports the following systems in this release:
 -   [Lenovo ThinkPad X60 Tablet](#supported_x60t_list)
 -   [Lenovo ThinkPad T60](#supported_t60_list) (there are exceptions.
     see link)
--   [Lenovo ThinkPad X200](x200.html)
--   [Lenovo ThinkPad R400](r400.html)
--   [Lenovo ThinkPad T400](t400.html)
--   [Lenovo ThinkPad T500](t500.html)
+-   [Lenovo ThinkPad X200](x200.md)
+-   [Lenovo ThinkPad R400](r400.md)
+-   [Lenovo ThinkPad T400](t400.md)
+-   [Lenovo ThinkPad T500](t500.md)
 -   [Apple MacBook1,1](#macbook11)
 -   [Apple MacBook2,1](#macbook21)
 
@@ -70,7 +70,7 @@ libreboot, so we don't actually provide that, but if you still have
 Lenovo BIOS then you can just run the Lenovo BIOS update utility, which
 will update both the BIOS and EC version. See:
 
--   [../install/index.html#flashrom](../install/index.html#flashrom)
+-   [../install/index.md#flashrom](../install/index.md#flashrom)
 -   <http://www.thinkwiki.org/wiki/BIOS_update_without_optical_disk>
 
 NOTE: this can only be done when you are using Lenovo BIOS. How to
@@ -379,7 +379,7 @@ motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replac
 No method is yet known for flashing in GNU+Linux while the Apple
 firmware is running. You will need to disassemble the system and flash
 externally. Reading from flash seems to work. For external flashing,
-refer to [../install/bbb\_setup.html](../install/bbb_setup.html).
+refer to [../install/bbb\_setup.md](../install/bbb_setup.md).
 
 Information about the macbook2,1 {#macbook21}
 --------------------------------
@@ -462,7 +462,7 @@ motherboard. [How to remove the
 motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
 
 For external flashing, refer to
-[../install/bbb\_setup.html](../install/bbb_setup.html).
+[../install/bbb\_setup.md](../install/bbb_setup.md).
 
 You need to replace OS X with GNU+Linux before flashing libreboot. (OSX
 won't run at all in libreboot).

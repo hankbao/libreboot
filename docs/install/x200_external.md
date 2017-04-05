@@ -55,7 +55,7 @@ image before flashing it. It will be written in one of these locations:
 Initial BBB configuration {#clip}
 =========================
 
-Refer to [bbb\_setup.html](bbb_setup.html) for how to set up the BBB for
+Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
 flashing.
 
 The following shows how to connect the clip to the BBB (on the P9
@@ -101,7 +101,7 @@ The following image shows how this is done:**\
 In this image, a pin header was soldered onto the WSON. Another solution
 might be to de-solder the WSON-8 chip and put a SOIC-8 there instead.
 Check the list of SOIC-8 flash chips at
-[../hardware/gm45\_remove\_me.html\#flashchips](../hardware/gm45_remove_me.html#flashchips)
+[../hardware/gm45\_remove\_me.html\#flashchips](../hardware/gm45_remove_me.md#flashchips)
 but do note that these are only 4MiB (32Mb) chips. The only X200 SPI
 chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
 the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
@@ -316,7 +316,7 @@ here:
 
 On a related note, libreboot has a utility that could help with
 investigating this:
-[../hardware/gm45\_remove\_me.html\#demefactory](../hardware/gm45_remove_me.html#demefactory)
+[../hardware/gm45\_remove\_me.html\#demefactory](../hardware/gm45_remove_me.md#demefactory)
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)

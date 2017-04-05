@@ -13,7 +13,7 @@ know how to recover.
 recommend avoiding Kingston modules.**
 
 For more general information about this board, refer to
-[../hardware/kcma-d8.html](../hardware/kcma-d8.html).
+[../hardware/kcma-d8.md](../hardware/kcma-d8.md).
 
 TODO: show photos here, and other info.
 
@@ -25,7 +25,7 @@ TODO: show photos here, and other info.
 External programmer {#programmer}
 ===================
 
-Refer to [bbb\_setup.html](bbb_setup.html) for a guide on how to set up
+Refer to [bbb\_setup.md](bbb_setup.md) for a guide on how to set up
 an external SPI programmer.
 
 The flash chip is in a PDIP 8 socket (SPI flash chip) on the

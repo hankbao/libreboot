@@ -122,7 +122,7 @@ system:\
 ![](../images/t60_dev/0032.JPG) ![](../images/t60_dev/0033.JPG)
 
 Now wire up the BBB and the Pomona with your PSU.\
-Refer to [bbb\_setup.html](bbb_setup.html) for how to setup the BBB for
+Refer to [bbb\_setup.md](bbb_setup.md) for how to setup the BBB for
 flashing.\
 **Note, the guide mentions a 3.3v DC PSU but you don't need this on the
 T60: if you don't have or don't want to use an external PSU, then make

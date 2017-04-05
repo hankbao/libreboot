@@ -18,7 +18,7 @@ Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
-using [this guide](../gnulinux/grub_cbfs.html).
+using [this guide](../gnulinux/grub_cbfs.md).
 
 High Pitched Whining Noise on Idle in Parabola
 ==============================================================
@@ -70,7 +70,7 @@ Might want to run with --calibrate first
 
 If powertop doesn't work, another way (reduces battery life slightly)
 is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
-using [this guide](../gnulinux/grub_cbfs.html).
+using [this guide](../gnulinux/grub_cbfs.md).
 
 X60/T60: Serial port - how to use (for dock owners)
 ===================================================
@@ -108,7 +108,7 @@ repos. Use Debian or Devuan)
 
 Note: part of the tutorial above requires changing your grub.cfg. Just
 change the **linux** line to add instructions for enabling getty. See
-[../gnulinux/grub\_cbfs.html](../gnulinux/grub_cbfs.html).
+[../gnulinux/grub\_cbfs.md](../gnulinux/grub_cbfs.md).
 
 Finetune backlight control on intel gpu's
 =========================================

@@ -17,7 +17,7 @@ Libreboot T400 {#t400}
 ==============
 
 You may also be interested in the smaller, more portable [Libreboot
-T400](t400_external.html).
+T400](t400_external.md).
 
 Serial port {#serial_port}
 -----------
@@ -80,7 +80,7 @@ image before flashing it. It will be written in one of these locations:
 Initial BBB configuration
 =========================
 
-Refer to [bbb\_setup.html](bbb_setup.html) for how to setup the BBB for
+Refer to [bbb\_setup.md](bbb_setup.md) for how to setup the BBB for
 flashing.
 
 The following shows how to connect clip to the BBB (on the P9 header),

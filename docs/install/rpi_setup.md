@@ -37,7 +37,7 @@ Manual](http://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/42t7844_04.pd
 to disassemble the laptop, until you can access the BIOS chip.
 
 For photos, follow the [Libreboot T60 Recovery
-Guide](t60_unbrick.html).
+Guide](t60_unbrick.md).
 
 -   On the X60, the BIOS chip is on the bottom of the motherboard, under
     a layer of protective black tape.
@@ -71,7 +71,7 @@ B+ with 40 pins, start counting from the right and leave 14 pins):
   5        MOSI           Gray         Orange        Pin 18                                                                19
   6        CLK            Purple       Yellow        Pin 22                                                                23
   7        *not used*     *not used*   *not used*    *not used*                                                            *not used*
-  8        3.3V           *red*        White         [3.3V PSU RED](bbb_setup.html)      17
+  8        3.3V           *red*        White         [3.3V PSU RED](bbb_setup.md)      17
 
 Make sure the pinouts are correct; otherwise, Flashrom will fail to
 detect a chip, or it will "detect" a `0x0` chip. Finally, make sure
@@ -193,7 +193,7 @@ successfully. If not, just flash again.
 -   Screw drivers
 
 Follow the [ThinkPad X200: Initial installation
-guide](x200_external.html) to
+guide](x200_external.md) to
 disassemble the laptop, and access the BIOS rom chip.
 
 > **Note:** `x86#` refers to commands to be run on the x86 computer, and
@@ -373,7 +373,7 @@ GPIO Pinouts:
 ![](images/rpi/0009.png) ![](images/rpi/0010.png)
 
 > \*Diagram made by ["Pacman" from Win-Raid
-> Forums\*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
+> Forums\*](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.md)
 
 SOIC Pinouts:
 
@@ -423,12 +423,12 @@ box.](http://www.flashrom.org/RaspberryPi)
     -   [rPI with Flashrom and SOIC Clip
         Powerpoint](http://satxhackers.org/wp/hack-content/uploads/2013/04/rPI_flashrom.pdf)
     -   [Tnhh - Unbricking Chromebook with
-        Beaglebone](http://www.tnhh.net/2014/08/25/unbricking-chromebook-with-beaglebone.html)
+        Beaglebone](http://www.tnhh.net/2014/08/25/unbricking-chromebook-with-beaglebone.md)
 -   **Use a DIY DIP System to flash an desoldered BIOS chip**
     -   [Viktak - How to recover laptop after failed BIOS
-        flash](http://diy.viktak.com/2014/07/how-to-recover-laptop-after-failed-bios.html)
+        flash](http://diy.viktak.com/2014/07/how-to-recover-laptop-after-failed-bios.md)
     -   [Win-Raid - Recover from Failed BIOS Flashing using Raspberry
-        Pi](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.html)
+        Pi](http://www.win-raid.com/t58f16-Guide-Recover-from-failed-BIOS-flash-using-Raspberry-PI.md)
 
 Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>\
 Copyright © 2015 snuffeluffegus <>\

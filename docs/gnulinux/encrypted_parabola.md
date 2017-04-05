@@ -33,7 +33,7 @@ step during boot to fail. If this happens to you, try removing the
 drive.
 
 Boot Parabola's install environment. [How to boot a GNU+Linux
-installer](grub_boot_installer.html).
+installer](grub_boot_installer.md).
 
 For this guide I used the 2015 08 01 image to boot the live installer
 and install the system. This is available at [this
@@ -513,7 +513,7 @@ We will modify grub.config inside the ROM and do all kinds of fun stuff,
 but I recommend that you first transform the current bare-bones Parabola
 install into a more useable system. Doing so will make the upcoming ROM
 modifications MUCH easier to perform and less risky!
-[configuring\_parabola.html](configuring_parabola.html) shows my own
+[configuring\_parabola.md](configuring_parabola.md) shows my own
 notes post-installation. Using these, you can get a basic system similar
 to the one that I chose for myself. You can also cherry pick useful
 notes and come up with your own system. Parabola is user-centric, which
@@ -526,7 +526,7 @@ Modify grub.cfg inside the ROM
 
 (Re-)log in to your system, pressing C, so booting manually from GRUB
 (see above). You need to modify the ROM, so that Parabola can boot
-automatically with this configuration. [grub\_cbfs.html](grub_cbfs.html)
+automatically with this configuration. [grub\_cbfs.md](grub_cbfs.md)
 shows you how. Follow that guide, using the configuration details below.
 If you go for option 2 (re-flash), promise to do this on grubtest.cfg
 first! We can't emphasise this enough. This is to reduce the
@@ -571,7 +571,7 @@ default.
 Without specifying a device, the *-a* parameter tries to unlock all
 detected LUKS volumes. You can also specify -u UUID or -a (device).
 
-[Refer to this guide](grub_hardening.html) for further guidance on
+[Refer to this guide](grub_hardening.md) for further guidance on
 hardening your GRUB configuration, for security purposes.
 
 Save your changes in grubtest.cfg, then delete the unmodified config
@@ -677,7 +677,7 @@ above! -, or add it in the kernel command line for GRUB:
     # cryptkey=rootfs:/etc/mykeyfile
 \
 You can also place this inside the grub.cfg that exists in CBFS:
-[grub\_cbfs.html](grub_cbfs.html).
+[grub\_cbfs.md](grub_cbfs.md).
 
 Further security tips
 ---------------------

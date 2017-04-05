@@ -102,7 +102,7 @@ manufacturer that cares for our freedoms to use our computers without
 proprietary software.
 
 Even low-end hardware like the BeagleBone or Raspberry Pi ([which can be
-liberated](https://blog.rosenzweig.io/blobless-linux-on-the-pi.html))
+liberated](https://blog.rosenzweig.io/blobless-linux-on-the-pi.md))
 shows that libre technology is profitable, and desired by the community.
 
 Then look at the Google Chromebooks. These devices come with coreboot

@@ -3,7 +3,7 @@ title: Documentation
 ...
 
 Information about Libreboot releases can be found at
-[release.html](release.html). Always check [libreboot.org](/) for updates.
+[release.md](release.md). Always check [libreboot.org](/) for updates.
 
 Answers to [frequently asked questions about
 Libreboot](../faq/).
@@ -159,7 +159,7 @@ For pre-built images distributed by the libreboot project, this is a
 rough approximation of what version you have, because the version
 numbers are dated, and the release archives are typically built on the
 same day as the release; you can correlate that with the release
-information in [release.html](release.html).
+information in [release.md](release.md).
 
 For 20160818, note that the lbversion file was missing from CBFS on GRUB
 images. You can still find out what libreboot version you have by

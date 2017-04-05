@@ -510,12 +510,12 @@ changes:
 -   grub.cfg: hardcode the list of partitions to search (speeds up
     booting considerably. GRUB regexp isn't very well optimized)
 -   Docs (x200.html hcl): Remove incorrect information
--   Documentation (bbb\_setup.html): Fix typos
+-   Documentation (bbb\_setup.md): Fix typos
 -   build-release: delete ich9fdgbe\_{4m,8m}.bin files from ich9gen
     -   These were accidentically included in the r20150124 release.
         They are generated from ich9gen so it's ok, but they don't
         need to be in the archive.
--   Documentation (grub\_cbfs.html): Looping in libreboot\_grub.cfg (Add
+-   Documentation (grub\_cbfs.md): Looping in libreboot\_grub.cfg (Add
     notes about it if the user copied from grub.cfg in CBFS.)
 
 Changes for this release (latest changes first, earliest changes last)
@@ -1097,7 +1097,7 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     (there is no dock or serial port available for macbook21)
 -   Added patches for backlight controls on X60 and T60 with help from
     Denis Carikli (see ./resources/libreboot/patch/gitdiff and ./getcb
-    and docs/i945\_backlight.html)
+    and docs/i945\_backlight.md)
     -   Documentation: added docs/i945\_backlight.html showing how
         backlight controls were made to work on X60/T60
 -   Documentation: Added info about getting LCD panel name based on EDID

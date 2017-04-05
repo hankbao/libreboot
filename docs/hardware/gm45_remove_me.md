@@ -126,7 +126,7 @@ disassembling the laptop. The same equipment can also be used to remove
 the write-protection later on, if you choose to do so. \*Only\*
 write-protect the chip if you have the right equipment for external
 flashing later on; for example, see
-[../install/bbb\_setup.html](../install/bbb_setup.html).
+[../install/bbb\_setup.md](../install/bbb_setup.md).
 
 Change them all to 0x0, then re-compile ich9gen. After you have done
 that, follow the notes in [\#ich9gen](#ich9gen) to generate a new

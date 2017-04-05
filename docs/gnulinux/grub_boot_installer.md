@@ -93,9 +93,9 @@ Installing GNU+Linux with full disk encryption
 ----------------------------------------------
 
 -   [Installing Debian or Devuan GNU+Linux with full disk encryption
-    (including /boot)](encrypted_debian.html)
+    (including /boot)](encrypted_debian.md)
 -   [Installing Parabola GNU+Linux with full disk encryption (including
-    /boot)](encrypted_parabola.html)
+    /boot)](encrypted_parabola.md)
 
 Debian or Devuan net install?
 -----------------------------

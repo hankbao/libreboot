@@ -45,7 +45,7 @@ mirror.si, Slovenia (backup mirror)
 /path/to/docroot/libreboot/**
 
 Are you running a mirror? Contact the libreboot project, and the link will be
-added to the [download](download.html) page.
+added to the [download](download.md) page.
 
 Libreboot includes statically linked executables. If you need the
 sources for those statically linked dependencies inside the executables,

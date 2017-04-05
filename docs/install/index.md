@@ -26,33 +26,33 @@ Flashing via software methods, on system:
 -   [ASUS KFSN4-DRE](#flashrom)
 -   [ThinkPad X60/T60 (if running Lenovo BIOS)](#flashrom_lenovobios)
 -   [Apple MacBook2,1](#flashrom_macbook21)
--   [ASUS Chromebook C201](c201.html)
+-   [ASUS Chromebook C201](c201.md)
 
 Setting up programmers, for external flashing via hardware method
 -----------------------------------------------------------------
 
 -   [How to program an SPI flash chip with the BeagleBone
-    Black](bbb_setup.html)
+    Black](bbb_setup.md)
 
 -   [How to program an SPI flash chip with the Raspberry
-    Pi](rpi_setup.html)
+    Pi](rpi_setup.md)
 
 Flashing via hardware methods, on system:
 -----------------------------------------
 
--   [Gigabyte GA-G41-ES2L](ga-g41m-es2l.html)
--   [Intel D510MO](d510mo.html)
--   [Intel D945GCLF](d945gclf.html)
--   [ASUS KGPE-D16](kgpe-d16.html)
--   [ASUS KCMA-D8](kcma-d8.html)
--   [ASUS Chromebook C201](c201.html)
--   [ThinkPad X60](x60_unbrick.html)
--   [ThinkPad X60 Tablet](x60tablet_unbrick.html)
--   [ThinkPad T60](t60_unbrick.html)
--   [ThinkPad X200/X200S/X200T](x200_external.html)
--   [ThinkPad R400](r400_external.html)
--   [ThinkPad T400](t400_external.html)
--   [ThinkPad T500](t500_external.html)
+-   [Gigabyte GA-G41-ES2L](ga-g41m-es2l.md)
+-   [Intel D510MO](d510mo.md)
+-   [Intel D945GCLF](d945gclf.md)
+-   [ASUS KGPE-D16](kgpe-d16.md)
+-   [ASUS KCMA-D8](kcma-d8.md)
+-   [ASUS Chromebook C201](c201.md)
+-   [ThinkPad X60](x60_unbrick.md)
+-   [ThinkPad X60 Tablet](x60tablet_unbrick.md)
+-   [ThinkPad T60](t60_unbrick.md)
+-   [ThinkPad X200/X200S/X200T](x200_external.md)
+-   [ThinkPad R400](r400_external.md)
+-   [ThinkPad T400](t400_external.md)
+-   [ThinkPad T500](t500_external.md)
 
 Information about libreboot ROM images {#rom}
 ======================================
@@ -124,10 +124,10 @@ X60/T60 users running the proprietary firmware should refer to
 [\#flashrom\_lenovobios](#flashrom_lenovobios). MacBook2,1 users running
 Apple EFI should refer to [\#flashrom\_macbook21](#flashrom_macbook21)
 
-X200 users, refer to [x200\_external.html](x200_external.html), R400
-users refer to [r400\_external.html](r400_external.html), T400 users
-refer to [t400\_external.html](t400_external.html), T500 users refer to
-[t500\_external.html](t500_external.html)
+X200 users, refer to [x200\_external.md](x200_external.md), R400
+users refer to [r400\_external.md](r400_external.md), T400 users
+refer to [t400\_external.md](t400_external.md), T500 users refer to
+[t500\_external.md](t500_external.md)
 
 ASUS KFSN4-DRE?
 ---------------
@@ -152,13 +152,13 @@ highly recommended, in case of bricks.
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hardware/kfsn4-dre.html](../hardware/kfsn4-dre.html)
+Do check the HCL entry: [../hardware/kfsn4-dre.md](../hardware/kfsn4-dre.md)
 
 ASUS KGPE-D16?
 --------------
 
 If you have the proprietary BIOS, you need to flash libreboot
-externally. See [kgpe-d16.html](kgpe-d16.html).
+externally. See [kgpe-d16.md](kgpe-d16.md).
 
 If you already have coreboot or libreboot installed, without write
 protection on the flash chip, then you can do it in software (otherwise,
@@ -168,13 +168,13 @@ see link above).
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hardware/kgpe-d16.html](../hardware/kgpe-d16.html)
+Do check the HCL entry: [../hardware/kgpe-d16.md](../hardware/kgpe-d16.md)
 
 ASUS KCMA-D8?
 -------------
 
 If you have the proprietary BIOS, you need to flash libreboot
-externally. See [kcma-d8.html](kgpe-d8.html).
+externally. See [kcma-d8.md](kgpe-d8.md).
 
 If you already have coreboot or libreboot installed, without write
 protection on the flash chip, then you can do it in software (otherwise,
@@ -184,14 +184,14 @@ see link above).
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hardware/kcma-d8.html](../hardware/kcma-d8.html)
+Do check the HCL entry: [../hardware/kcma-d8.md](../hardware/kcma-d8.md)
 
 Intel D945GCLF?
 ---------------
 
 If you're running the original Intel factory BIOS, then you will need
 to flash externally. For instructions on how to do that, refer to
-[d945gclf.html](d945gclf.html).
+[d945gclf.md](d945gclf.md).
 
 Otherwise, read the generic instructions below for using the *flash*
 script.
@@ -200,9 +200,9 @@ Are you currently running libreboot (or coreboot)?
 --------------------------------------------------
 
 X60/T60 users should be fine with this guide. If you write-protected the
-flash chip, please refer to [x60\_unbrick.html](x60_unbrick.html),
-[x60tablet\_unbrick.html](x60tablet_unbrick.html) or
-[t60\_unbrick.html](t60_unbrick.html). *This probably does not apply to
+flash chip, please refer to [x60\_unbrick.md](x60_unbrick.md),
+[x60tablet\_unbrick.md](x60tablet_unbrick.md) or
+[t60\_unbrick.md](t60_unbrick.md). *This probably does not apply to
 you. Most people do not write-protect the flash chip, so you probably
 didn't either.*
 

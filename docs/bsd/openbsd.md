@@ -66,7 +66,7 @@ there. This will also work with the OpenBSD image.
 Prepare the USB drive (in FreeBSD)
 ----------------------------------
 
-[This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.html) on
+[This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.md) on
 the FreeBSD website shows how to create a bootable USB drive for
 installing FreeBSD. Use the *dd* on that page. You can also use the same
 instructions with a OpenBSD ISO image.

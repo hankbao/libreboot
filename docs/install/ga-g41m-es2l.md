@@ -14,7 +14,7 @@ Use this to find out:
 Flashing instructions {#clip}
 =====================
 
-Refer to [bbb\_setup.html](bbb_setup.html) for how to set up the BBB for
+Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
 external flashing. **You can only externally reprogram one of the chips
 at a time, and you need to disable the chip that you're not flashing,
 by connecting 3v3 to /CS of that chip, so you will actually need 2 test

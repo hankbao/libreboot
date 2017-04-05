@@ -45,7 +45,7 @@ their libreboot system.
 
 It details configuration steps that I took after installing the base
 system, as a follow up to
-[encrypted\_parabola.html](encrypted_parabola.html). This guide is
+[encrypted\_parabola.md](encrypted_parabola.md). This guide is
 likely to become obsolete at a later date (due to the volatile
 'rolling-release' model that Arch/Parabola both use), but attempts
 will be made to maintain it.
@@ -68,7 +68,7 @@ that other distributions tend to *get in your way*.
 
 **This guide assumes that you already have Parabola installed. If you
 have not yet installed Parabola, then [this
-guide](encrypted_parabola.html) is highly recommended!**
+guide](encrypted_parabola.md) is highly recommended!**
 
 A lot of the steps in this guide will refer to the Arch wiki. Arch is
 the upstream distribution that Parabola uses. Most of this guide will
@@ -395,7 +395,7 @@ supposed to change.
 If you want to enable the old names (eth0, wlan0, wwan0, etc), the Arch
 wiki recommends adding *net.ifnames=0* to your kernel parameters (in
 libreboot context, this would be accomplished by following the
-instructions in [grub\_cbfs.html](grub_cbfs.html)).
+instructions in [grub\_cbfs.md](grub_cbfs.md)).
 
 For background information, read [Predictable Network Interface
 Names](http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/)

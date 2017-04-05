@@ -40,6 +40,7 @@ echo "[License](/license.md)" >> temp.md
 
 # change out .md -> .html
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
+sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g'
 
 # work around issue #2872
 TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || TOC=""

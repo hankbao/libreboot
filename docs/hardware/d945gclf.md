@@ -3,7 +3,7 @@ title: Intel D945GCLF desktop board
 ...
 
 If you just want flashing instructions, go to
-[../install/d945gclf.html](../install/d945gclf.html)
+[../install/d945gclf.md](../install/d945gclf.md)
 
 This board is a mini-itx desktop board for 2008. It uses an atom 230,
 which is a singe core CPU but it is hyperthreaded so it appears to have

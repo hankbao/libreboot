@@ -137,7 +137,7 @@ an attacker exploiting any of these vulnerabilities may gain access to
 everything on the PC as it runs: all open files, all running
 applications, all keys pressed, and more.
 
-[Intel Boot Guard](https://mjg59.dreamwidth.org/33981.html) is an ME
+[Intel Boot Guard](https://mjg59.dreamwidth.org/33981.md) is an ME
 application introduced in Q2 2013 with ME firmware version 9.0 on 4th
 Generation Intel Core i3/i5/i7 (Haswell) CPUs. It allows a PC OEM to
 generate an asymmetric cryptographic keypair, install the public key in
@@ -180,10 +180,10 @@ privacy that can't be ignored.
 Before version 6.0 (that is, on systems from 2008/2009 and earlier), the
 ME can be disabled by setting a couple of values in the SPI flash
 memory. The ME firmware can then be removed entirely from the flash
-memory space. libreboot [does this](../docs/hardware/gm45_remove_me.html) on
+memory space. libreboot [does this](../docs/hardware/gm45_remove_me.md) on
 the Intel 4 Series systems that it supports, such as the [Libreboot
-X200](../docs/install/x200_external.html) and [Libreboot
-T400](../docs/install/t400_external.html). ME firmware versions 6.0 and
+X200](../docs/install/x200_external.md) and [Libreboot
+T400](../docs/install/t400_external.md). ME firmware versions 6.0 and
 later, which are found on all systems with an Intel Core i3/i5/i7 CPU
 and a PCH, include "ME Ignition" firmware that performs some hardware
 initialization and power management. If the ME's boot ROM does not find
@@ -517,8 +517,8 @@ How do I program an SPI flash chip?
 ---------------------------------------------------------------------------------
 
 SPI flash chips can be programmed with the [BeagleBone
-Black](../docs/install/bbb_setup.html) or the [Raspberry
-Pi](../docs/install/rpi_setup.html).
+Black](../docs/install/bbb_setup.md) or the [Raspberry
+Pi](../docs/install/rpi_setup.md).
 
 How do I set a boot password?
 -------------------------------------------------------------------
@@ -527,9 +527,9 @@ If you are using the GRUB payload, you can add a username and password
 (salted, hashed) to your GRUB configuration that resides inside the
 flash chip. The following guides (which also cover full disk encryption,
 including the /boot/ directory) show how to set a boot password in GRUB:
-[../docs/gnulinux/encrypted\_debian.html](../docs/gnulinux/encrypted_debian.html)
+[../docs/gnulinux/encrypted\_debian.md](../docs/gnulinux/encrypted_debian.md)
 and
-[../docs/gnulinux/encrypted\_parabola.html](../docs/gnulinux/encrypted_parabola.html)
+[../docs/gnulinux/encrypted\_parabola.md](../docs/gnulinux/encrypted_parabola.md)
 
 How do I write-protect the flash chip?
 ----------------------------------------------------------------------------
@@ -592,7 +592,7 @@ boot just fine, using the bootloader (GRUB) that is in the flash chip.
 This also means that even if you remove the HDD or SSD, you'll still
 have a functioning bootloader installed which could be used to boot a
 live distribution installer from a USB flash drive. See
-[\.../docs/gnulinux/grub\_boot\_installer.html](../docs/gnulinux/grub_boot_installer.html)
+[\.../docs/gnulinux/grub\_boot\_installer.md](../docs/gnulinux/grub_boot_installer.md)
 
 Do I need to re-flash when I re-install a distribution?
 -------------------------------------------------------------------------------------------
@@ -602,7 +602,7 @@ automatically switch to a GRUB configuration on the HDD or SSD, if it
 exists. You can also load a different GRUB configuration, from any kind
 of device that is supported in GRUB (such as a USB flash drive). For
 more information, see
-[../docs/gnulinux/grub\_cbfs.html](../docs/gnulinux/grub_cbfs.html)
+[../docs/gnulinux/grub\_cbfs.md](../docs/gnulinux/grub_cbfs.md)
 
 What does a flash chip look like?
 -----------------------------------------------------------------
@@ -795,9 +795,9 @@ distributions with full disk encryption. You can adapt these for use
 with USB drives:
 
 -   [Full disk encryption with
-    Debian](../docs/gnulinux/encrypted_debian.html)
+    Debian](../docs/gnulinux/encrypted_debian.md)
 -   [Full disk encryption with
-    Parabola](../docs/gnulinux/encrypted_parabola.html)
+    Parabola](../docs/gnulinux/encrypted_parabola.md)
 
 The current theory (unproven) is that this will at least prevent
 malicious drives from wrongly manipulating data being read from or
@@ -900,8 +900,8 @@ Can I use GNU+Linux?
 --------------------------------------------------
 
 Absolutely! It is well-tested in libreboot, and highly recommended. See
-[installing GNU+Linux](../docs/gnulinux/grub_boot_installer.html) and
-[booting GNU+Linux](../docs/gnulinux/grub_cbfs.html).
+[installing GNU+Linux](../docs/gnulinux/grub_boot_installer.md) and
+[booting GNU+Linux](../docs/gnulinux/grub_cbfs.md).
 
 Any recent distribution should work, as long as it uses KMS (kernel mode
 setting) for the graphics.

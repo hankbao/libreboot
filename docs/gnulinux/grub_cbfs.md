@@ -53,7 +53,7 @@ in CBFS, but this also means that you have to flash a new libreboot ROM
 image on your system (some users feel intimidated by this, to say the
 least). Doing so can be risky if not handled correctly, because it can
 result in a bricked system (recovery is easy if you have the
-[equipment](../install/bbb_setup.html) for it, but most people don't).
+[equipment](../install/bbb_setup.md) for it, but most people don't).
 If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.

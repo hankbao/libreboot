@@ -33,7 +33,7 @@ linux /install.386/vmlinuz\
 initrd /install.386/initrd.gz\
 boot**
 
-[This guide](grub_boot_installer.html) shows how to create a boot USB
+[This guide](grub_boot_installer.md) shows how to create a boot USB
 drive with the Debian ISO image.
 
 **This guide is \*only\* for the GRUB payload. If you use the
@@ -196,7 +196,7 @@ Now you need to set it up so that the system will automatically boot,
 without having to type a bunch of commands.
 
 Modify your grub.cfg (in the firmware) [using this
-tutorial](grub_cbfs.html); just change the default menu entry 'Load
+tutorial](grub_cbfs.md); just change the default menu entry 'Load
 Operating System' to say this inside:
 
 **cryptomount -a**\
@@ -208,7 +208,7 @@ cryptdevice=/dev/mapper/matrix-rootvol:root**\
 Without specifying a device, the *-a* parameter tries to unlock all
 detected LUKS volumes. You can also specify -u UUID or -a (device).
 
-[Refer to this guide](grub_hardening.html) for further guidance on
+[Refer to this guide](grub_hardening.md) for further guidance on
 hardening your GRUB configuration, for security purposes.
 
 Flash the modified ROM using [this tutorial](../install/#flashrom).
