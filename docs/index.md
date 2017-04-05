@@ -6,7 +6,7 @@ Information about this release can be found at [release.html](release.html).
 Always check [libreboot.org](/) for updates.
 
 Answers to [frequently asked questions about
-Libreboot](../faq/).
+Libreboot](https://libreboot.org/faq/).
 
 Installing libreboot
 ====================

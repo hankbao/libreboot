@@ -42,7 +42,7 @@ IPMI iKVM module add-on {#ipmi}
 
 Don't use it. It uses proprietary firmware and adds a backdoor (remote
 out-of-band management chip, similar to the [Intel Management
-Engine](../../faq/#intelme). Fortunately, the firmware is
+Engine](http://libreboot.org/faq/#intelme). Fortunately, the firmware is
 unsigned (possibly to replace) and physically separate from the
 mainboard since it's on the add-on module, which you don't have to
 install.

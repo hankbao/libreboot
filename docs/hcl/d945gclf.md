@@ -3,7 +3,7 @@ title: Intel D945GCLF desktop board
 ...
 
 If you just want flashing instructions, go to
-[../install/d945gclf.html](../install/d945gclf.html)
+[../install/d945gclf.html](https://libreboot.org/docs/install/d945gclf.html)
 
 This board is a mini-itx desktop board for 2008. It uses an atom 230,
 which is a singe core CPU but it is hyperthreaded so it appears to have
@@ -79,7 +79,7 @@ Permission is granted to copy, distribute and/or modify this document
 under the terms of the Creative Commons Attribution-ShareAlike 4.0
 International license or any later version published by Creative
 Commons; A copy of the license can be found at
-[../cc-by-sa-4.0.txt](../cc-by-sa-4.0.txt)
+[../cc-by-sa-4.0.txt](https://libreboot.org/docs/cc-by-sa-4.0.txt)
 
 Updated versions of the license (when available) can be found at
 <https://creativecommons.org/licenses/by-sa/4.0/legalcode>

@@ -36,7 +36,7 @@ Helpful links:
 -   [GRUB info
     pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
 -   [SATA connected storage considered dangerous until proven
-    otherwise.](../../faq/#firmware-hddssd)
+    otherwise.](https://libreboot.org/faq/#firmware-hddssd)
 -   [Coreboot GRUB security
     howto](https://www.coreboot.org/GRUB2#Security)
 

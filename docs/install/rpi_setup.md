@@ -37,7 +37,7 @@ Manual](http://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/42t7844_04.pd
 to disassemble the laptop, until you can access the BIOS chip.
 
 For photos, follow the [Libreboot T60 Recovery
-Guide](t60_unbrick.html).
+Guide](http://libreboot.org/docs/install/t60_unbrick.html).
 
 -   On the X60, the BIOS chip is on the bottom of the motherboard, under
     a layer of protective black tape.
@@ -71,7 +71,7 @@ B+ with 40 pins, start counting from the right and leave 14 pins):
   5        MOSI           Gray         Orange        Pin 18                                                                19
   6        CLK            Purple       Yellow        Pin 22                                                                23
   7        *not used*     *not used*   *not used*    *not used*                                                            *not used*
-  8        3.3V           *red*        White         [3.3V PSU RED](bbb_setup.html)      17
+  8        3.3V           *red*        White         [3.3V PSU RED](http://libreboot.org/docs/install/bbb_setup.html)      17
 
 Make sure the pinouts are correct; otherwise, Flashrom will fail to
 detect a chip, or it will "detect" a `0x0` chip. Finally, make sure
@@ -193,7 +193,7 @@ successfully. If not, just flash again.
 -   Screw drivers
 
 Follow the [ThinkPad X200: Initial installation
-guide](x200_external.html) to
+guide](http://libreboot.org/docs/install/x200_external.html) to
 disassemble the laptop, and access the BIOS rom chip.
 
 > **Note:** `x86#` refers to commands to be run on the x86 computer, and
