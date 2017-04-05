@@ -68,7 +68,7 @@ Hardware compatibility
 What systems are compatible with libreboot?
 -----------------------------------------------------------------------------------
 
-See [../docs/hcl/](docs/hcl/).
+See [../docs/hardware/](docs/hardware/).
 
 Why is the latest Intel hardware unsupported in libreboot? {#intel}
 -----------------------------------------------------------
@@ -180,7 +180,7 @@ privacy that can't be ignored.
 Before version 6.0 (that is, on systems from 2008/2009 and earlier), the
 ME can be disabled by setting a couple of values in the SPI flash
 memory. The ME firmware can then be removed entirely from the flash
-memory space. libreboot [does this](../docs/hcl/gm45_remove_me.html) on
+memory space. libreboot [does this](../docs/hardware/gm45_remove_me.html) on
 the Intel 4 Series systems that it supports, such as the [Libreboot
 X200](../docs/install/x200_external.html) and [Libreboot
 T400](../docs/install/t400_external.html). ME firmware versions 6.0 and
@@ -463,7 +463,7 @@ Will desktop/server hardware be supported?
 ------------------------------------------------------------------------
 
 Libreboot now supports desktop hardware:
-[../docs/hcl/\#supported\_desktops\_x86amdintel](../docs/hcl/#supported_desktops_x86/intel)
+[../docs/hardware/\#supported\_desktops\_x86amdintel](../docs/hardware/#supported_desktops_x86/intel)
 (with full native video initialization).
 
 A common issue with desktop hardware is the Video BIOS, when no onboard
@@ -503,7 +503,7 @@ What about ARM?
 
 Libreboot has support for some ARM based laptops, using the *Rockchip
 RK3288* SoC. Check the libreboot [hardware compatibility
-list](../docs/hcl/#supported_list), for more information.
+list](../docs/hardware/#supported_list), for more information.
 
 General questions
 =================
@@ -543,7 +543,7 @@ On some systems, it is possible to write-protect the firmware, such that
 it is rendered read-only at the OS level (external flashing is still
 possible, using dedicated hardware). For example, on current GM45
 laptops (e.g. ThinkPad X200, T400), you can write-protect (see
-[../docs/hcl/gm45\_remove\_me.html\#ich9gen](../docs/hcl/gm45_remove_me.html#ich9gen)).
+[../docs/hardware/gm45\_remove\_me.html\#ich9gen](../docs/hardware/gm45_remove_me.html#ich9gen)).
 
 It's possible to write-protect on all libreboot systems, but the instructions
 need to be written. The documentation is in the main git repository, so you are

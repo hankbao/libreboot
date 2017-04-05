@@ -11,7 +11,7 @@ Libreboot](../faq/).
 Installing libreboot
 ====================
 
--   [What systems can I use libreboot on?](hcl/)
+-   [What systems can I use libreboot on?](hardware/)
 -   [How to install libreboot](install/)
 
 Installing operating systems

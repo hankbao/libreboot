@@ -29,7 +29,7 @@
  */
  
 /*
- * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
+ * See docs/hardware/x200_remove_me.html for info plus links to datasheet (also linked below)
  * 
  * Info about flash descriptor (read page 845 onwards):
  * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf

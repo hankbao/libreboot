@@ -247,7 +247,7 @@ behaviour in the original firmware that could be replicated in coreboot
 and libreboot.
 
 Follow the instructions at
-[../hcl/gm45\_remove\_me.html\#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
+[../hardware/gm45\_remove\_me.html\#ich9gen](../hardware/gm45_remove_me.html#ich9gen)
 to change the MAC address inside the libreboot ROM image, before
 flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
@@ -301,7 +301,7 @@ Wifi
 The R400 typically comes with an Intel wifi chipset, which does not work
 without proprietary software. For a list of wifi chipsets that work
 without proprietary software, see
-[../hcl/\#recommended\_wifi](../hcl/#recommended_wifi).
+[../hardware/\#recommended\_wifi](../hardware/#recommended_wifi).
 
 Some R400 laptops might come with an Atheros chipset, but this is
 802.11g only.

@@ -6,7 +6,7 @@ This guide is for those who want libreboot on their Intel D945GCLF
 motherboard while they still have the original BIOS present.
 
 For information about this board, go to
-[../hcl/d945gclf.html](../hcl/d945gclf.html)
+[../hardware/d945gclf.html](../hardware/d945gclf.html)
 
 Flashing instructions {#clip}
 =====================

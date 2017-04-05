@@ -13,7 +13,7 @@ know how to recover.
 recommend avoiding Kingston modules.**
 
 For more general information about this board, refer to
-[../hcl/kcma-d8.html](../hcl/kcma-d8.html).
+[../hardware/kcma-d8.html](../hardware/kcma-d8.html).
 
 TODO: show photos here, and other info.
 

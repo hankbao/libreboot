@@ -31,7 +31,7 @@
  */
  
  /*
- * See docs/hcl/x200_remove_me.html for info plus links to datasheet (also linked below)
+ * See docs/hardware/x200_remove_me.html for info plus links to datasheet (also linked below)
  * 
  * Info about Gbe region (read whole datasheet):
  * http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf

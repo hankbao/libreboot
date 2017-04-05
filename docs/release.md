@@ -43,63 +43,63 @@ Machines supported in this release:
 -----------------------------------
 
 -   **ASUS Chromebook C201**
-    -   Check notes in ***docs/hcl/c201.html***
+    -   Check notes in ***docs/hardware/c201.html***
 -   **Gigabyte GA-G41M-ES2L desktop motherboard**
-    -   Check notes in ***docs/hcl/ga-g41m-es2l.html***
+    -   Check notes in ***docs/hardware/ga-g41m-es2l.html***
 -   **Intel D510MO desktop motherboard**
-    -   Check notes in ***docs/hcl/d510mo.html***
+    -   Check notes in ***docs/hardware/d510mo.html***
 -   **Intel D945GCLF desktop motherboard**
-    -   Check notes in ***docs/hcl/d945gclf.html***
+    -   Check notes in ***docs/hardware/d945gclf.html***
 -   **Apple iMac 5,2**
-    -   Check notes in ***docs/hcl/imac52.html***
+    -   Check notes in ***docs/hardware/imac52.html***
 -   **ASUS KFSN4-DRE server board**
     -   PCB revision 1.05G is the best version (can use 6-core CPUs)
-    -   Check notes in ***docs/hcl/kfsn4-dre.html***
+    -   Check notes in ***docs/hardware/kfsn4-dre.html***
 -   **ASUS KGPE-D16 server board**
-    -   Check notes in ***docs/hcl/kgpe-d16.html***
+    -   Check notes in ***docs/hardware/kgpe-d16.html***
 -   **ASUS KCMA-D8 desktop/workstation board**
-    -   Check notes in ***docs/hcl/kcma-d8.html***
+    -   Check notes in ***docs/hardware/kcma-d8.html***
 -   **ThinkPad X60/X60s**
     -   You can also remove the motherboard from an X61/X61s and replace
         it with an X60/X60s motherboard. An X60 Tablet motherboard will
         also fit inside an X60/X60s.
 -   **ThinkPad X60 Tablet** (1024x768 and 1400x1050) with digitizer
     support
-    -   See ***docs/hcl/\#supported\_x60t\_list*** for list of supported
+    -   See ***docs/hardware/\#supported\_x60t\_list*** for list of supported
         LCD panels
     -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
-        ***docs/hcl/\#supported\_t60\_list*** for known working LCD
+        ***docs/hardware/\#supported\_t60\_list*** for known working LCD
         panels.
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
-        supported: ***docs/hcl/\#t60\_ati\_intel***
+        supported: ***docs/hardware/\#t60\_ati\_intel***
 -   **ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
-        ***docs/hcl/x200.html\#x200s***
+        ***docs/hardware/x200.html\#x200s***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad R400**
-    -   See ***docs/hcl/r400.html***
+    -   See ***docs/hardware/r400.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad T400**
-    -   See ***docs/hcl/t400.html***
+    -   See ***docs/hardware/t400.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad T500**
-    -   See ***docs/hcl/t500.html***
+    -   See ***docs/hardware/t500.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See ***docs/hcl/\#macbook11***.
+    -   See ***docs/hardware/\#macbook11***.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See ***docs/hcl/\#macbook21***.
+    -   See ***docs/hardware/\#macbook21***.
 
 Changes for this release, relative to r20150518 (earliest changes last, recent changes first)
 ---------------------------------------------------------------------------------------------
@@ -216,41 +216,41 @@ Machines supported in this release:
         also fit inside an X60/X60s.
 -   **ThinkPad X60 Tablet** (1024x768 and 1400x1050) with digitizer
     support
-    -   See ***docs/hcl/\#supported\_x60t\_list*** for list of supported
+    -   See ***docs/hardware/\#supported\_x60t\_list*** for list of supported
         LCD panels
     -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
-        ***docs/hcl/\#supported\_t60\_list*** for known working LCD
+        ***docs/hardware/\#supported\_t60\_list*** for known working LCD
         panels.
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
-        supported: ***docs/hcl/\#t60\_ati\_intel***
+        supported: ***docs/hardware/\#t60\_ati\_intel***
 -   **ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
-        ***docs/hcl/x200.html\#x200s***
+        ***docs/hardware/x200.html\#x200s***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad R400**
-    -   See ***docs/hcl/r400.html***
+    -   See ***docs/hardware/r400.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad T400**
-    -   See ***docs/hcl/t400.html***
+    -   See ***docs/hardware/t400.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **ThinkPad T500**
-    -   See ***docs/hcl/t500.html***
+    -   See ***docs/hardware/t500.html***
     -   **ME/AMT**: libreboot removes this, permanently.
-        ***docs/hcl/gm45\_remove\_me.html***
+        ***docs/hardware/gm45\_remove\_me.html***
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See ***docs/hcl/\#macbook11***.
+    -   See ***docs/hardware/\#macbook11***.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See ***docs/hcl/\#macbook21***.
+    -   See ***docs/hardware/\#macbook21***.
 
 Changes for this release, relative to r20150208 (earliest changes last, recent changes first)
 ---------------------------------------------------------------------------------------------
@@ -280,10 +280,10 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     repository exist)
 -   docs/install/bbb\_setup.html: Add info about wp/hold and pinouts
 -   docs/: improve the description of libreboot
--   docs/hcl/gm45\_remove\_me.html: notes about the demefactory utility
+-   docs/hardware/gm45\_remove\_me.html: notes about the demefactory utility
 -   docs/install/bbb\_setup.html: EHCI debug: recommend linux-libre
 -   docs/install/bbb\_setup.html: EHCI Debug logging setup guide
--   docs/hcl/t500.html: Add screen compatibility report (TODO: fix
+-   docs/hardware/t500.html: Add screen compatibility report (TODO: fix
     incompatible screens)
 -   Update coreboot(again) + merge GM45 hybrid GPU patches - means that
     T400/T500 with the ATI+Intel hybrid GPU setup will work (ATI
@@ -293,7 +293,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
     now the default debug dongle on all boards (compatible with BBB).
 -   demefactory (new utility): create GM45 factory.rom without the ME
 -   ich9deblob: re-factor descriptor.c functions
--   docs/hcl/t500.html: add hardware logs
+-   docs/hardware/t500.html: add hardware logs
 -   docs/gnulinux/encrypted\_\*.html: No password for default entry
 -   docs/git/: Add more details about BUC.TS
 -   grub.cfg: Also scan for grub2/grub.cfg, not just grub/grub.cfg
@@ -305,21 +305,21 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   docs/install/\*\_external.html: add disclaimer about thermal paste
 -   docs/install/bbb\_setup.html: Fix broken links
 -   docs/install/bbb\_setup.html: preliminary notes about EHCI debug
--   docs/hcl/gm45\_remove\_me.html: Link to websites talking about the
+-   docs/hardware/gm45\_remove\_me.html: Link to websites talking about the
     ME
 -   docs/install/{t400,t500,r400}\_external.html: Notes about CPU
     compatibility
 -   Delete the ich9macchange script. It's useless, and confuses people
--   docs/hcl/gm45\_remove\_me.html: prioritize ich9gen executable path
--   docs/hcl/gm45\_remove\_me.html: prioritize changing mac address
--   docs/hcl/gm45\_remove\_me.html: less confusing notes about ich9gen
+-   docs/hardware/gm45\_remove\_me.html: prioritize ich9gen executable path
+-   docs/hardware/gm45\_remove\_me.html: prioritize changing mac address
+-   docs/hardware/gm45\_remove\_me.html: less confusing notes about ich9gen
 -   build/dependencies/parabola: Add dependencies for x86\_64
 -   scripts/dependencies/paraboladependencies: build dependencies
     (32-bit Parabola)
 -   **New board**: ThinkPad T500
 -   Add diffs for descriptor/gbe differences between T500 and X200
 -   coreboot-libre: provide better blob categorization
--   docs/hcl/gm45\_remove\_me.html: add notes about flash write protect
+-   docs/hardware/gm45\_remove\_me.html: add notes about flash write protect
 -   **New board**: ThinkPad T400
 -   GRUB: add partial vesamenu.c32 support (fixes tails ISOLINUX menu)
 -   Update GRUB (to revision fa07d919d1ff868b18d8a42276d094b63a58e299)
@@ -359,8 +359,8 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   docs/gnulinux/grub\_cbfs.html: Remove redundant instructions
 -   docs/install/x200\_external.html: Mark pins in the images
 -   docs/install/bbb\_setup.html: Replace 3.3V PSU photo with ATX PSU
--   docs/hcl/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.22
--   docs/hcl/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.18
+-   docs/hardware/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.22
+-   docs/hardware/x200.html: Add dumps from 4-MiB X200 with Lenovo BIOS 3.18
 -   grub.cfg: add syslinux\_configfile menuentry for ahci0
 -   grub.cfg: Add more paths for syslinux\_configfile
 -   docs/future.html: T60: Add EDID dump from LG-Philips LP150E05-A2K1
@@ -417,7 +417,7 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   i945-pwm: add clean command to Makefile
 -   i945-pwm: add -lz to Makefile
 -   docs/install/x200\_external: Mention GPIO33 non-descriptor mode
--   docs/hcl/: Remove redundant links
+-   docs/hardware/: Remove redundant links
 -   ich9macchange: Add R400
 -   build-release: Separate ROM images into individual archives
 -   build-release: rename libreboot\_bin to libreboot\_util
@@ -440,32 +440,32 @@ Machines supported in this release:
         also fit inside an X60/X60s.
 -   **Lenovo ThinkPad X60 Tablet** (1024x768 and 1400x1050) with
     digitizer support
-    -   See **hcl/\#supported\_x60t\_list** for list of supported LCD
+    -   See **hardware/\#supported\_x60t\_list** for list of supported LCD
         panels
     -   It is unknown whether an X61 Tablet can have it's mainboard
         replaced with an X60 Tablet motherboard.
 -   **Lenovo ThinkPad T60** (Intel GPU) (there are
     issuesinstall/x200\_external.html; see below):
     -   See notes below for exceptions, and
-        **hcl/\#supported\_t60\_list** for known working LCD panels.
+        **hardware/\#supported\_t60\_list** for known working LCD panels.
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See **future/\#t60\_cpu\_microcode**.
     -   T60P (and T60 laptops with ATI GPU) will likely never be
-        supported: **hcl/\#t60\_ati\_intel**
+        supported: **hardware/\#t60\_ati\_intel**
 -   **Lenovo ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
-        **hcl/x200.html\#x200s**
+        **hardware/x200.html\#x200s**
     -   **ME/AMT**: libreboot removes this, permanently.
-        **hcl/gm45\_remove\_me.html**
+        **hardware/gm45\_remove\_me.html**
 -   **Lenovo ThinkPad R400** (r20150208 and later, only)
     -   **ME/AMT**: libreboot removes this, permanently.
-        **hcl/gm45\_remove\_me.html**
+        **hardware/gm45\_remove\_me.html**
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See **hcl/\#macbook11**.
+    -   See **hardware/\#macbook11**.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See **hcl/\#macbook21**.
+    -   See **hardware/\#macbook21**.
 
 Revisions for r20150208 (relative to r20150126)
 -----------------------------------------------
@@ -481,7 +481,7 @@ installed r20150126 don't really need to update to this release.
 -   buildrom-withgrub: Put background.jpg in CBFS, not GRUB memdisk
 -   grub-assemble: merge scripts into a single script gen.sh
 -   Documentation: implement theme, drastically improve readability
--   docs/hcl/: update list of compatible T60 LCD panels
+-   docs/hardware/: update list of compatible T60 LCD panels
 -   docs/: more clarification of libreboot's stated purpose.
 -   build-release: include the commitid file in the release archives
 -   docs/: Further emphasize the GNU+Linux requirement.
@@ -651,23 +651,23 @@ Machines supported in this release:
         also fit inside an X60/X60s.
 -   **Lenovo ThinkPad X60 Tablet** (1024x768 and 1400x1050) with
     digitizer support
-    -   See **hcl/\#supported\_x60t\_list** for list of supported LCD
+    -   See **hardware/\#supported\_x60t\_list** for list of supported LCD
         panels
     -   It is unknown whether an X61 Tablet can have its mainboard
         replaced with an X60 Tablet motherboard.
 -   **Lenovo ThinkPad T60** (Intel GPU) (there are issues; see below):
     -   See notes below for exceptions, and
-        **hcl/\#supported\_t60\_list** for known working LCD panels.
+        **hardware/\#supported\_t60\_list** for known working LCD panels.
     -   It is unknown whether a T61 can have its mainboard replaced with
         a T60 motherboard.
     -   See **future/\#t60\_cpu\_microcode**.
     -   T60P (and T60s with ATI GPU) will likely never be supported:
-        **hcl/\#t60\_ati\_intel**
+        **hardware/\#t60\_ati\_intel**
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See **hcl/\#macbook11**.
+    -   See **hardware/\#macbook11**.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See **hcl/\#macbook21**.
+    -   See **hardware/\#macbook21**.
 
 Changes for this release (latest changes first, earliest changes last)
 ----------------------------------------------------------------------
@@ -731,22 +731,22 @@ New systems supported in this release:
 
 -   **Lenovo ThinkPad X60 Tablet** (1024x768 and 1400x1050) with
     digitizer support
-    -   See **hcl/\#supported\_x60t\_list** for list of supported LCD
+    -   See **hardware/\#supported\_x60t\_list** for list of supported LCD
         panels
     -   It is unknown whether an X61 Tablet can have its mainboard
         replaced with an X60 Tablet motherboard.
 -   **Lenovo ThinkPad T60** (Intel GPU) (there are issues; see below)
     -   See notes below for exceptions, and
-        **hcl/\#supported\_t60\_list** for known working LCD panels.
+        **hardware/\#supported\_t60\_list** for known working LCD panels.
     -   It is unknown whether a T61 can have its mainboard replaced with
         a T60 motherboard.
     -   T60P (and T60s with ATI GPU) will likely never be supported:
-        **hcl/\#t60\_ati\_intel**
+        **hardware/\#t60\_ati\_intel**
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
-    -   See **hcl/\#macbook11**.
+    -   See **hardware/\#macbook11**.
 -   **Apple MacBook2,1** (MA699LL/A, MA701LL/A, MB061LL/A, MA700LL/A,
     MB063LL/A, MB062LL/A)
-    -   See **hcl/\#macbook21**.
+    -   See **hardware/\#macbook21**.
 
 Machines no longer supported (compared to previous release):
 ------------------------------------------------------------
@@ -785,7 +785,7 @@ Revisions for r20140903 (6th beta) (3rd September 2014)
     buildpac\* scripts for Parabola users.
 -   Documentation: added information showing how to enable or disable
     bluetooth on the X60
--   MacBook1,1 tested! See **hcl/\#macbook11**
+-   MacBook1,1 tested! See **hardware/\#macbook11**
 -   Documentation: fixed typo in \#get\_edid\_panelname (get-edit
     changed to get-edid)
 -   Documentation: added images/x60\_lcd\_change/ (pics only for now)

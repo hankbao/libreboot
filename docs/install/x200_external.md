@@ -36,7 +36,7 @@ Use this to find out:
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
 the motherboard (this requires removal of the motherboard). **Not all
 X200S/X200T are supported; see
-[../hcl/x200.html\#x200s](../hcl/x200.html#x200s).**
+[../hardware/x200.html\#x200s](../hardware/x200.html#x200s).**
 
 MAC address {#macaddress}
 ===========
@@ -101,7 +101,7 @@ The following image shows how this is done:**\
 In this image, a pin header was soldered onto the WSON. Another solution
 might be to de-solder the WSON-8 chip and put a SOIC-8 there instead.
 Check the list of SOIC-8 flash chips at
-[../hcl/gm45\_remove\_me.html\#flashchips](../hcl/gm45_remove_me.html#flashchips)
+[../hardware/gm45\_remove\_me.html\#flashchips](../hardware/gm45_remove_me.html#flashchips)
 but do note that these are only 4MiB (32Mb) chips. The only X200 SPI
 chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
 the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
@@ -191,7 +191,7 @@ behaviour in the original firmware that could be replicated in coreboot
 and libreboot.
 
 Follow the instructions at
-[../hcl/gm45\_remove\_me.html\#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
+[../hardware/gm45\_remove\_me.html\#ich9gen](../hardware/gm45_remove_me.html#ich9gen)
 to change the MAC address inside the libreboot ROM image, before
 flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
@@ -228,7 +228,7 @@ Wifi
 The X200 typically comes with an Intel wifi chipset, which does not work
 without proprietary software. For a list of wifi chipsets that work
 without proprietary software, see
-[../hcl/\#recommended\_wifi](../hcl/#recommended_wifi).
+[../hardware/\#recommended\_wifi](../hardware/#recommended_wifi).
 
 Some X200 laptops come with an Atheros chipset, but this is 802.11g
 only.
@@ -286,7 +286,7 @@ starting (which itself interferes with flashing attempts). The theory
 was proven correct; however, it is still useless in practise.
 
 Look just above the 7 in TP37 (that's GPIO33):\
-![](../hcl/images/x200/gpio33_location.jpg)
+![](../hardware/images/x200/gpio33_location.jpg)
 
 By default we would see this in lenovobios, when trying flashrom -p
 internal -w rom.rom:
@@ -316,7 +316,7 @@ here:
 
 On a related note, libreboot has a utility that could help with
 investigating this:
-[../hcl/gm45\_remove\_me.html\#demefactory](../hcl/gm45_remove_me.html#demefactory)
+[../hardware/gm45\_remove\_me.html\#demefactory](../hardware/gm45_remove_me.html#demefactory)
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)

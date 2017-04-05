@@ -12,7 +12,7 @@ that has CONFIG\_STRICT\_DEVMEM not enabled.
 Which systems are Libreboot compatible with?
 --------------------------------------------
 
--   [Information about Libreboot hardware compatibility](../hcl/)
+-   [Information about Libreboot hardware compatibility](../hardware/)
 
 General information
 -------------------
@@ -152,7 +152,7 @@ highly recommended, in case of bricks.
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hcl/kfsn4-dre.html](../hcl/kfsn4-dre.html)
+Do check the HCL entry: [../hardware/kfsn4-dre.html](../hardware/kfsn4-dre.html)
 
 ASUS KGPE-D16?
 --------------
@@ -168,7 +168,7 @@ see link above).
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hcl/kgpe-d16.html](../hcl/kgpe-d16.html)
+Do check the HCL entry: [../hardware/kgpe-d16.html](../hardware/kgpe-d16.html)
 
 ASUS KCMA-D8?
 -------------
@@ -184,7 +184,7 @@ see link above).
 extractor. These can be found online. See
 <http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
 
-Do check the HCL entry: [../hcl/kcma-d8.html](../hcl/kcma-d8.html)
+Do check the HCL entry: [../hardware/kcma-d8.html](../hardware/kcma-d8.html)
 
 Intel D945GCLF?
 ---------------
@@ -225,7 +225,7 @@ onboard ethernet chipset is located inside the flash chip. Libreboot ROM
 images for these laptops contain a generic MAC address by default, but
 this is not what you want. *Make sure to change the MAC address inside
 the ROM image, before flashing it. The instructions on
-[../hcl/gm45\_remove\_me.html\#ich9gen](../hcl/gm45_remove_me.html#ich9gen)
+[../hardware/gm45\_remove\_me.html\#ich9gen](../hardware/gm45_remove_me.html#ich9gen)
 show how to do this.*
 
 It is important that you change the default MAC address, before
@@ -287,7 +287,7 @@ already have coreboot or libreboot running, then go to
 [\#flashrom](#flashrom) instead!**
 
 **If you are flashing a Lenovo ThinkPad T60, be sure to read
-[../hcl/\#supported\_t60\_list](../hcl/#supported_t60_list)**
+[../hardware/\#supported\_t60\_list](../hardware/#supported_t60_list)**
 
 **If you are using libreboot\_src or git, then make sure that you built
 the sources first (see [../git/\#build](../git/#build)).**
@@ -342,14 +342,14 @@ MacBook2,1: Initial installation guide (if running the proprietary firmware) {#f
 ============================================================================
 
 **If you have a MacBook1,1, refer to
-[../hcl/\#macbook11](../hcl/#macbook11) for flashing instructions.**
+[../hardware/\#macbook11](../hardware/#macbook11) for flashing instructions.**
 
 **This is for the MacBook2,1 while running Apple EFI firmware. If you
 already have coreboot or libreboot running, then go to
 [\#flashrom](#flashrom) instead!**
 
 Be sure to read the information in
-[../hcl/\#macbook21](../hcl/#macbook21).
+[../hardware/\#macbook21](../hardware/#macbook21).
 
 **Warning: this guide will not instruct the user how to backup the
 original Apple EFI firmware. For that, please refer to
