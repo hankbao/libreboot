@@ -1,4 +1,6 @@
-% GNU+Linux distributions 
+---
+title: GNU+Linux distributions 
+...
 
 This section relates to dealing with GNU+Linux distributions: preparing
 bootable USB drives, changing the default GRUB menu and so on.

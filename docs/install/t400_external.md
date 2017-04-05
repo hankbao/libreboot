@@ -1,4 +1,6 @@
-% Flashing the T400 with a BeagleBone Black 
+---
+title: Flashing the T400 with a BeagleBone Black 
+...
 
 Initial flashing instructions for T400.
 

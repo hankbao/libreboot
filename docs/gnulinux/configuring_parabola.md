@@ -1,4 +1,6 @@
-% Configuring Parabola (post-install) 
+---
+title: Configuring Parabola (post-install) 
+...
 
 Post-installation configuration steps for Parabola GNU+Linux-libre.
 Parabola is extremely flexible; this is just an example. This example

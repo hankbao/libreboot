@@ -1,4 +1,6 @@
-% BSD projects 
+---
+title: BSD projects 
+...
 
 This section relates to dealing with BSD projects: preparing bootable
 USB drives, changing the default GRUB menu and so on.

@@ -1,4 +1,6 @@
-% Intel D945GCLF desktop board 
+---
+title: Intel D945GCLF desktop board 
+...
 
 If you just want flashing instructions, go to
 [../install/d945gclf.html](https://libreboot.org/docs/install/d945gclf.html)

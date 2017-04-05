@@ -1,4 +1,6 @@
-% ASUS KCMA-D8 desktop/workstation board 
+---
+title: ASUS KCMA-D8 desktop/workstation board 
+...
 
 This is a desktop board using AMD hardware (Fam10h **and Fam15h** CPUs
 available). It can also be used for building a high-powered workstation.

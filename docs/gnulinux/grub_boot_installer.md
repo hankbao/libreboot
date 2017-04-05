@@ -1,4 +1,6 @@
-% How to install GNU+Linux on a libreboot system
+---
+title: How to install GNU+Linux on a libreboot system
+...
 
 This section relates to preparing, booting and installing a GNU+Linux
 distribution on your libreboot system, using nothing more than a USB

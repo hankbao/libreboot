@@ -1,4 +1,6 @@
-% EHCI debugging on the BeagleBone Black 
+---
+title: EHCI debugging on the BeagleBone Black 
+...
 
 EHCI debugging
 ==============
