@@ -1,5 +1,5 @@
 ---
-title: Libreboot documentation 
+title: Documentation 
 ...
 
 Information about this release can be found at [release.html](release.html).

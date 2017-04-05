@@ -47,6 +47,13 @@ TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || T
 # work around heterogenous pandoc versions
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || SMART=""
 
-# chuck through pandoc
-pandoc $TOC $SMART temp.md -s --css /global.css -T Libreboot \
-    --template template.html --metadata return="$RETURN"> $FILE.html
+
+
+if [ "${FILE}" != "./index" ]; then
+    # chuck through pandoc
+    pandoc $TOC $SMART temp.md -s --css /global.css --css /headerleft.css -T Libreboot \
+        --template template.html --metadata return="$RETURN"> $FILE.html
+else
+    pandoc $TOC $SMART temp.md -s --css /global.css \
+        --template template.html --metadata return="$RETURN"> $FILE.html
+fi
