@@ -44,7 +44,7 @@ Table of Contents
 Introduction
 ------------
 
-Download the latest release from <http://libreboot.org/>\
+Download the latest release from [libreboot.org](/)\
 **If you downloaded from git, refer to
 [../git/\#build\_meta](../git/#build_meta) before continuing.**
 

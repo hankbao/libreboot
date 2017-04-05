@@ -582,7 +582,7 @@ and insert the modified grubtest.cfg:\
 \$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**\
 
-Now refer to <http://libreboot.org/docs/install/#flashrom>. Cd (up) to
+Now refer to [../install/#flashrom](../install/#flashrom). Cd (up) to
 the libreboot\_util directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
@@ -628,7 +628,7 @@ Add the modified version that you just made:
     $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw
 
 Now you have a modified ROM. Once more, refer to
-<http://libreboot.org/docs/install/#flashrom>. Cd to the libreboot\_util
+[../install/#flashrom](../install/#flashrom). Cd to the libreboot\_util
 directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
