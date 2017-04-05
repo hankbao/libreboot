@@ -5,12 +5,6 @@ title: Libreboot release information
 Updated versions of libreboot can be found at
 [libreboot.org](http://libreboot.org/).
 
-Old releases
-------------
-
-See [archive\_old.html](archive_old.html) for information about older
-libreboot releases.
-
 Libreboot 20160907 {#release20160907}
 ==================
 
