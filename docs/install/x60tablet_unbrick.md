@@ -1,5 +1,5 @@
 ---
-title: ThinkPad X60 Tablet: Recovery guide
+title: "ThinkPad X60 Tablet: Recovery guide"
 ...
 
 This section documents how to recover from a bad flash that prevents

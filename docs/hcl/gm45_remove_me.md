@@ -1,5 +1,5 @@
 ---
-title: GM45 chipsets: remove the ME (manageability engine) 
+title: "GM45 chipsets: remove the ME (manageability engine)"
 ...
 
 This sections relates to disabling and removing the ME (Intel
