@@ -41,10 +41,12 @@ echo "[License](/license.md)" >> temp.md
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
 
 # work around issue #2872
-TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || echo "foo"
+TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || TOC=""
+echo $TOC
 
 # work around heterogenous pandoc versions
-SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || echo "foo"
+SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || SMART=""
+echo $SMART
 
 # chuck through pandoc
 pandoc $TOC $SMART temp.md -s --css /global.css -T Libreboot \
