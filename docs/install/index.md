@@ -4,10 +4,10 @@ title: Installing libreboot
 
 This section relates to installing libreboot on supported targets.
 
-NOTE: if running flashrom -p internal for software based flashing, and
+**NOTE: if running flashrom -p internal for software based flashing, and
 you get an error related to /dev/mem access, you should reboot with
 iomem=relaxed kernel parameter before running flashrom, or use a kernel
-that has CONFIG\_STRICT\_DEVMEM not enabled.
+that has CONFIG\_STRICT\_DEVMEM not enabled.**
 
 Which systems are Libreboot compatible with?
 --------------------------------------------
