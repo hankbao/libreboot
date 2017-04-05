@@ -9,9 +9,9 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Download](download.md)                                                     --
 [Install](docs/install/)                                                    --
 [Documentation](docs/)                                                      --
-[IRC](https://webchat.freenode.net/?channels=libreboot)                     --
+[Support](https://webchat.freenode.net/?channels=libreboot)                 --
 [File bug report](https://notabug.org/libreboot/libreboot/issues)           --
-[Submit patches](git.md)                                                    --
+[Send patches](git.md)                                                      --
 [Authors](contrib.md)
 
 Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
