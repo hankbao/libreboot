@@ -1,5 +1,6 @@
 ---
-title: Libreboot release information 
+title: Libreboot release information
+x-toc-enable: true
 ...
 
 Updated versions of libreboot can be found at
