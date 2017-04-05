@@ -1,9 +1,9 @@
 ---
-title: Documentation 
+title: Documentation
 ...
 
-Information about this release can be found at [release.html](release.html).
-Always check [libreboot.org](/) for updates.
+Information about Libreboot releases can be found at
+[release.html](release.html). Always check [libreboot.org](/) for updates.
 
 Answers to [frequently asked questions about
 Libreboot](../faq/).
