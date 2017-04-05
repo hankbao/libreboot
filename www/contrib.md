@@ -1,5 +1,5 @@
 ---
-title: Contributors
+title: Project contributors
 ...
 
 If we forgot to mention you here, let us know and we'll add you. (or if

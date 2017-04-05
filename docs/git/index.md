@@ -1,10 +1,10 @@
+---
+Instructions for compiling from the source code
+...
 
 Depthcharge is currently not documented, since it is in the new build
 system. Instructions for how to build boards that have depthcharge are
 included in the BUILD\_HOWTO file in libreboot.git or \_src.
-
-Building libreboot from source 
-==============================
 
 This section relates to building libreboot from source, and working with
 the git repository.

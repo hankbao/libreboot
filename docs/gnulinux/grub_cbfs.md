@@ -1,5 +1,5 @@
 ---
-title: How to replace the default GRUB configuration file on a libreboot system 
+title: How to replace the default GRUB configuration file 
 ...
 
 Libreboot on x86 uses the GRUB

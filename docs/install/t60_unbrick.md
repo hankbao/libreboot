@@ -1,5 +1,5 @@
 ---
-title: "ThinkPad T60: Recovery guide"
+title: ThinkPad T60: Recovery guide
 ...
 
 This section documents how to recover from a bad flash that prevents

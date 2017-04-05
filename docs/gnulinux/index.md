@@ -1,5 +1,5 @@
 ---
-title: GNU+Linux distributions 
+title: GNU+Linux installation instructions
 ...
 
 This section relates to dealing with GNU+Linux distributions: preparing

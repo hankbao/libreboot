@@ -1,5 +1,5 @@
 ---
-title: Download
+title: Downloads
 ...
 
 *The latest stable release is 20160907, released on 2016-09-07 and can

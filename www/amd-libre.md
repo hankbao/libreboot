@@ -1,5 +1,5 @@
 ---
-title: Libreboot calls on AMD to release source code and specs for Ryzen platform
+title: We call on AMD to release source code and specs for Ryzen platform
 ...
 
 Recently in the Libreboot project, we've been informed about the new

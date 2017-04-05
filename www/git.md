@@ -1,9 +1,9 @@
 ---
-title: Contributing
+title: Information about sending patches for review
 x-toc-enable: true
 ...
 
-Useful information, related to libreboot development, including links to
+Useful information, related to Libreboot development, including links to
 the Git repositories where development is done. Development discussion
 is done on IRC and on the libreboot
 [subreddit](https://www.reddit.com/r/libreboot/)

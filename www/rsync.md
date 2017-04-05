@@ -1,5 +1,5 @@
 ---
-title: Mirroring libreboot
+title: Rsync repositories for the release archives
 ...
 
 Create a directory in your web directory (e.g. libreboot/) and put one

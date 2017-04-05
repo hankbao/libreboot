@@ -1,5 +1,5 @@
 ---
-title: Libreboot release information
+title: Lists of changes per stable release
 x-toc-enable: true
 ...
 
