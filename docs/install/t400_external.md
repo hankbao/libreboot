@@ -16,15 +16,6 @@ the screws on page 144 (with title "1130 Keyboard bezel") are swapped
 and if you follow the HMM you will punch a hole through the bezel in the
 upper right corner.
 
-T400 laptops with libreboot pre-installed {#preinstall}
-=========================================
-
-If you don't want to install libreboot yourself, companies exist that
-sell these laptops with libreboot pre-installed, along with a free
-GNU+Linux distribution.
-
-Check the [suppliers](../../suppliers) page for more information.
-
 Serial port {#serial_port}
 -----------
 
