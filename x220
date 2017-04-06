@@ -1,0 +1,98 @@
+swiftgeek said that GbE needs to be removed and disabled while ME is running
+08:06:49     @swiftgeek | PHY_PCIE_EN=0b000 PHY_PCIEPORTSEL=0b000 
+
+https://puri.sm/posts/neutralizing-intel-management-engine-on-librem-laptops/
+yeah, they're slimebags, but this is actually a pretty good article
+
+./blobtool -d ifd-x200.spec your-real-sandy-descriptor.bin out.set
+that will decompile your sandy IFD assuming it has same layout as a X200
+
+some x220 have wson according to swiftfeek
+M25PX64 this flash chip
+system rescue cd
+or linux mint usb
+get your supplier to run flashrom -p internal on one of those
+or alpine linux live
+
+17:54:00          felix_ | leah: the usb3 chip used in the i7 variant of the x220 is a uPD720200 or a uPD720200A and both
+have updateable firmware; i wrote some still buggy and currently unpublished firmware updater for
+it
+
+
+this is for X201 descriptor (page 800)
+http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-10-family-datasheet.pdf
+TODO: get NVM datasheet for NIC
+
+is x201 5 series or 6 series?
+if 6 series, see datasheet for 6 series in lbdev
+if 5 series, see datasheet linked above (pretty sure 5 series uses ich10)
+
+leah | 7 series datasheet is correct for ivybridge (thinkpad x230 then)
+6 series is for sandybridge (thinkpad x220)
+
+__________
+
+ME region:
+http://www.slideshare.net/codeblue_jp/igor-skochinsky-enpub
+
+descriptor:
+check "spi programming guide" in lbdev directory, for intel 6 series
+17:21:43           felix_ | leah: x220 is 6 series (qm67) with me7, x230 7 series (qm77) with me8
+
+04:44:21             _x00 | $ lspci | nc termbin.com 9999                                                                    │ cantstanya
+04:44:21             _x00 | http://termbin.com/os8g 
+00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+00:02.0 VGA compatible controller: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics Controller (rev 09)
+00:04.0 Signal processing controller: Intel Corporation Device 0103 (rev 09)
+00:19.0 Ethernet controller: Intel Corporation 82579LM Gigabit Network Connection (rev 05)
+00:1a.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #2 (rev 05)
+00:1b.0 Audio device: Intel Corporation 6 Series/C200 Series Chipset Family High Definition Audio Controller (rev 05)
+00:1c.0 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 1 (rev b5)
+00:1c.1 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 2 (rev b5)
+00:1c.3 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 4 (rev b5)
+00:1c.4 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 5 (rev b5)
+00:1c.5 PCI bridge: Intel Corporation 6 Series/C200 Series Chipset Family PCI Express Root Port 7 (rev b5)
+00:1d.0 USB controller: Intel Corporation 6 Series/C200 Series Chipset Family USB Enhanced Host Controller #1 (rev 05)
+00:1f.0 ISA bridge: Intel Corporation QM67 Express Chipset Family LPC Controller (rev 05)
+00:1f.2 SATA controller: Intel Corporation 6 Series/C200 Series Chipset Family 6 port SATA AHCI Controller (rev 05)
+00:1f.3 SMBus: Intel Corporation 6 Series/C200 Series Chipset Family SMBus Controller (rev 05)
+02:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 [Taylor Peak] (rev 34)
+04:00.0 SD Host controller: Ricoh Co Ltd PCIe SDXC/MMC Host Controller (rev 07)
+
+https://gist.github.com/sixtyfive/1071556
+[muaddib@rih ~]$ sudo lspci 
+00:00.0 Host bridge: Intel Corporation 2nd Generation Core Processor Family DRAM Controller (rev 09)
+00:02.0 VGA compatible controller: Intel Corporation 2nd Generation Core Processor Family Integrated Graphics Controller (rev 09)
+00:16.0 Communication controller: Intel Corporation 6 Series Chipset Family MEI Controller #1 (rev 04)
+00:19.0 Ethernet controller: Intel Corporation 82579LM Gigabit Network Connection (rev 04)
+00:1a.0 USB Controller: Intel Corporation 6 Series Chipset Family USB Enhanced Host Controller #2 (rev 04)
+00:1b.0 Audio device: Intel Corporation 6 Series Chipset Family High Definition Audio Controller (rev 04)
+00:1c.0 PCI bridge: Intel Corporation 6 Series Chipset Family PCI Express Root Port 1 (rev b4)
+00:1c.1 PCI bridge: Intel Corporation 6 Series Chipset Family PCI Express Root Port 2 (rev b4)
+00:1c.4 PCI bridge: Intel Corporation 6 Series Chipset Family PCI Express Root Port 5 (rev b4)
+00:1d.0 USB Controller: Intel Corporation 6 Series Chipset Family USB Enhanced Host Controller #1 (rev 04)
+00:1f.0 ISA bridge: Intel Corporation 6 Series Chipset Family LPC Controller (rev 04)
+00:1f.2 SATA controller: Intel Corporation 6 Series Chipset Family 6 port SATA AHCI Controller (rev 04)
+00:1f.3 SMBus: Intel Corporation 6 Series Chipset Family SMBus Controller (rev 04)
+03:00.0 Network controller: Intel Corporation Centrino Advanced-N 6205 (rev 34)
+0d:00.0 System peripheral: Ricoh Co Ltd Device e823 (rev 04)
+
+coreboot d09dc6b442415d3dd0753483e4d4d72ce26ce56e
+this is a good known revision according to board status, for X220
+
+gbe:
+
+datasheet for nvm on nic for x220:
+http://www.intel.com/content/dam/doc/datasheet/82579-gbe-phy-datasheet-vol-2-1.pdf
+(I think. must check. this is based on lspci output from x220)
+
+it documents some of the gbe region in there. you can verify that it's accurate when you get a gbe dump from an x220 factory image
+
+flashrom has a tool called intel_descriptor_tool or flash_descriptor_tool or somoething like that
+which I'm told also had code for the descriptor. it, and ifdtool, might be worth looking into at least.
+___________
+
+x200:
+https://www.coreboot.org/pipermail/coreboot/2017-February/083202.html
+and other boards
+cmos.layout changed
