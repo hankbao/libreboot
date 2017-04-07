@@ -95,6 +95,9 @@ distributions package it in their repositories).
 
 Use this command, to download the repository: 
 
+How to download Libreboot from the Git repository:
+--------------------------------------------------
+
 **git clone https://notabug.org/libreboot/libreboot.git**
 
 A new directory named ***libreboot*** will have been created, containing
