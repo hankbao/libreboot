@@ -53,7 +53,7 @@ Not a developer? You can still help!
 -   Assist with improving the libreboot documentation, so that others
     may find it easier to use.
 
-General guidelines for submitting patches 
+General guidelines for submitting patches
 -----------------------------------------
 
 Some people put their name on their work, for recognition, and it's OK
@@ -93,10 +93,8 @@ Libreboot development is facilitated by *[git](https://git-scm.com/)*, a
 *distributed* version control system. You will need to install git (most
 distributions package it in their repositories).
 
-Use this command, to download the repository: 
-
-How to download Libreboot from the Git repository:
---------------------------------------------------
+How to download Libreboot from the Git repository
+-------------------------------------------------
 
 **git clone https://notabug.org/libreboot/libreboot.git**
 
