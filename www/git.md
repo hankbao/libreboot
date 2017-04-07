@@ -3,16 +3,16 @@ title: Information about sending patches for review
 x-toc-enable: true
 ...
 
-Useful information, related to Libreboot development, including links to
-the Git repositories where development is done. Development discussion
-is done on IRC and on the libreboot
-[subreddit](https://www.reddit.com/r/libreboot/)
+Useful information, related to Libreboot development, including links to the
+Git repositories where development is done. Developments within Libreboot are
+discussed on the
+[IRC channel](https://webchat.freenode.net/?channels=libreboot).
 
 Download Libreboot from the Git repository here:
 
 **git clone https://notabug.org/libreboot/libreboot.git**
 
-How can I help the libreboot project? 
+How can I help the libreboot project?
 --------------------------------------
 
 **At any given time, here is a list of tasks if there are any, for the
