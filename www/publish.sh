@@ -27,9 +27,9 @@ cat $1 > temp.md
 if [ "${FILE}" != "./index" ]; then
         if [[ $FILE == *index ]]
         then
-            DEST=".."
+            DEST="../"
         else
-            DEST="index.html"
+            DEST="./"
         fi
 
         RETURN="<a href='$DEST'>Back to previous index</a>"
