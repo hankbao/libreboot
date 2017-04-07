@@ -125,32 +125,3 @@ you could also notify the project via the #libreboot channel on FreeNode.
 Relevant links to bug trackers for discussing
 development (especially patch review) are on
 [NotABug](https://notabug.org/libreboot/libreboot/issues)
-
-**Check [\#githosting](#githosting), for a list of Git hosting providers
-that we recommend.**
-
-List of recommended Git hosting providers 
------------------------------------------
-
-There are several that we could recommend:
-
--   [You!](https://git-scm.com/book/en/v2/Git-on-the-Server-The-Protocols)
-    (host your own Git repository, on your own server, on your own
-    internet connection, in your own physical space)
--   [NotABug.org](https://notabug.org/) - the
-    [source](https://notabug.org/hp/gogs/) is also available if you want to run
-    it on your own server.
-
-The libreboot project itself uses all of the above options.
-
-Most Git hosting providers distribute non-free JavaScript on their
-website, but as far as we are aware all of these providers are
-freedom-friendly and reliable to use (and their JavaScript is free).
-This list will be expanded upon at a later date. The hosting providers
-above are all powered by Free Software, which means that you can also
-host your own version of the software that they use on their website.
-
-We generally recommend self-hosting (first option in the list above).
-Git is a *decentralized* (distributed) version control system. However,
-not everyone can afford to do this, so using one of the other providers
-on the list above is also acceptable.
