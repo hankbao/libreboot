@@ -15,10 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-meta() {
-    URL=$(echo ${f%.md}.html | sed -e s-news/--)
+BLOGTITLE="Libreboot News"
+BLOGBASE="https://libreboot.org/news/"
+BLOGDESCRIPTION="News on Libreboot development"
 
-    echo "[$(sed -n 1p $f | sed -e s-^..--)]($URL){.title}"
+title() {
+    sed -n 1p $f | sed -e s-^..--
+}
+
+meta() {
+    URL=$(echo ${f%.md}.html | sed -e s-blog/--)
+
+    echo "[$(title)]($URL){.title}"
     echo "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
     echo ""
     tail -n +5 $f | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
@@ -27,10 +35,44 @@ meta() {
     echo ""
 }
 
-cat news-list.md > news/index.md
+# generate the index file
 
-for f in $(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+FILES=$(ls -1 -t blog/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+
+cat blog-list.md > blog/index.md
+
+for f in $FILES
 do
     touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
-    meta >> news/index.md
+    meta >> blog/index.md
 done
+
+# generate an RSS index
+
+rss() {
+    echo '<rss version="2.0">'
+    echo '<channel>'
+
+    echo "<title>$BLOGTITLE</title>"
+    echo "<link>"$BLOGBASE"blog/</link>"
+    echo "<description>$BLOGDESCRIPTION</description>"
+
+    for f in $FILES
+    do
+        # render content and escape
+        desc=$(sed ${f%.md}.bare.html -e 's/</\&lt;/g' | sed -e 's/>/\&gt;/g')
+        url="${f%.md}.html"
+
+        echo '<item>'
+        echo "<title>$(title)</title>"
+        echo "<link>$BLOGBASE$url</link>"
+        echo "<description>$desc</description>"
+        echo '</item>'
+    done
+
+    echo '</channel>'
+    echo '</rss>'
+}
+
+rss > blog/feed.xml
+cp blog/feed.xml feed.xml
