@@ -61,4 +61,4 @@ have your own Git repository with the patches.
 
 Once you have issued a Pull Request, the Libreboot maintainers will be notified
 via email. If you do not receive a fast enough response from the project, then
-you could also notify the project via the #libreboot channel on FreeNode.
+you could also notify the project via the #libreboot channel on Freenode.
