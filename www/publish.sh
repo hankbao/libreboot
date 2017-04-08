@@ -24,6 +24,8 @@ FILE=${1%.md}
 
 cat $1 > temp.md
 
+OPTS=
+
 if [ "${FILE}" != "./index" ]; then
         if [[ $FILE == *index ]]
         then
@@ -33,6 +35,7 @@ if [ "${FILE}" != "./index" ]; then
         fi
 
         RETURN="<a href='$DEST'>Back to previous index</a>"
+        OPTS="--css /headerleft.css -T Libreboot"
 fi
 
 echo "" >> temp.md
@@ -48,13 +51,9 @@ TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || T
 # work around heterogenous pandoc versions
 SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || SMART=""
 
-
-
-if [ "${FILE}" != "./index" ]; then
-    # chuck through pandoc
-    pandoc $TOC $SMART temp.md -s --css /global.css --css /headerleft.css -T Libreboot \
+# chuck through pandoc
+pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
         --template template.html --metadata return="$RETURN"> $FILE.html
-else
-    pandoc $TOC $SMART temp.md -s --css /global.css \
-        --template template.html --metadata return="$RETURN"> $FILE.html
-fi
+
+# additionally, produce bare file for RSS
+pandoc $1 > $FILE.bare.html
