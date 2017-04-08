@@ -19,8 +19,8 @@ Source BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. We are a member of the [Peers Community](https://peers.community/)
 project, an organisation that supports Free Software.
 
-Please read our open letter of [unity](blog/unity.md) if you have not done so
-already.
+[Please read our open letter of unity](blog/unity.md). The Libreboot project
+no longer opposes FSF or GNU, and would like to resume cooperation.
 
 Why use libreboot?
 ------------------
