@@ -20,7 +20,7 @@ operating system. We are a member of the
 [Peers Community](https://peers.community/) project, an organisation that
 supports Free Software.
 
-**[Libreboot no longer opposes FSF/GNU. Read our open letter to the community.](news/unity.md)**
+**[Libreboot no longer opposes FSF/GNU. Read our open peace letter to the community.](news/unity.md)**
 
 Why use Libreboot?
 ------------------
