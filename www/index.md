@@ -10,18 +10,18 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Install](docs/install/)                                                    --
 [Documentation](docs/)                                                      --
 [Blog](blog/)                                                               --
-[Contact (IRC)](https://webchat.freenode.net/?channels=libreboot)           --
-[Report a bug](https://notabug.org/libreboot/libreboot/issues)              --
-[Send patches](git.md)                                                      --
-[Authors](contrib.md)
+[Contact/IRC](https://webchat.freenode.net/?channels=libreboot)             --
+[Report bugs](https://notabug.org/libreboot/libreboot/issues)               --
+[Send patch](git.md)
 
 Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
-operating system. We are a member of the [Peers Community](https://peers.community/)
-project, an organisation that supports Free Software.
+operating system. We are a member of the
+[Peers Community](https://peers.community/) project, an organisation that
+supports Free Software.
 
-[Please read our open letter of unity](blog/unity.md). The Libreboot project
-no longer opposes FSF or GNU, and would like to resume cooperation.
+[Please read our open letter of unity](blog/unity.md). The Libreboot project no
+longer opposes FSF or GNU.
 
 Why use libreboot?
 ------------------
