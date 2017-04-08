@@ -22,7 +22,7 @@ supports Free Software.
 
 **[Libreboot no longer opposes FSF/GNU. Read our open letter to the community.](news/unity.md)**
 
-Why use libreboot?
+Why use Libreboot?
 ------------------
 
 Many people use non-free proprietary boot firmware, even if they use GNU+Linux.
