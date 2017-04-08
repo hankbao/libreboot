@@ -28,7 +28,7 @@ Why use libreboot?
 Many people use non-free proprietary boot firmware, even if they use GNU+Linux.
 Non-free BIOS/UEFI firmware often
 [contains](faq.md#intel) [backdoors](faq.md#amd), can be slow and have severe
-bugs, and you are left helpless at the mercy of the developers.. By contrast,
+bugs, and you are left helpless at the mercy of the developers. By contrast,
 libreboot is fully free software, where anyone can contribute or inspect its
 code.
 
