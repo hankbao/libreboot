@@ -270,7 +270,7 @@ by the operating system kernel, but on all recent systems it is the boot
 firmware that must perform this task. Coreboot does distribute microcode
 updates for Intel and AMD CPUs, but libreboot cannot, because the whole
 point of libreboot is to be 100% [free
-software](https://en.wikipedia.org/wiki/Free_software).
+software](https://www.gnu.org/philosophy/free-sw.html).
 
 On some older Intel CPUs, it is possible to exclude the microcode
 updates and not have any reliability issues in practise. All current
@@ -314,7 +314,7 @@ when it comes to user freedom. Libreboot has no support recent Intel
 platforms, precisely because of the problems described above. The only
 way to solve this is to get Intel to change their policies and to be
 more friendly to the [free
-software](https://en.wikipedia.org/wiki/Free_software) community.
+software](https://www.gnu.org/philosophy/free-sw.html) community.
 Reverse engineering won't solve anything long-term, unfortunately, but
 we need to keep doing it anyway. Moving forward, Intel hardware is a
 non-option unless a radical change happens within Intel.

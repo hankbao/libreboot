@@ -34,14 +34,14 @@ Other information
 About the libreboot project
 ===========================
 
-Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
+Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. We are a member of the [Peers Community](https://peers.community/)
 project, an organisation that supports Free Software.
 
 Libreboot is a [coreboot](http://coreboot.org/) distribution (distro)
 with proprietary software removed, intended to be a
-[free](https://en.wikipedia.org/wiki/Free_software) (libre) 'BIOS'
+[free](https://www.gnu.org/philosophy/free-sw.html) (libre) 'BIOS'
 replacement for your computer. The project is aimed at users, attempting
 to make coreboot as easy to use as possible.
 

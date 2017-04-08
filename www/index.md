@@ -14,7 +14,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Report bugs](https://notabug.org/libreboot/libreboot/issues)               --
 [Send patches](git.md)
 
-Libreboot is a [free](https://en.wikipedia.org/wiki/Free_software) and Open
+Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. We are a member of the
 [Peers Community](https://peers.community/) project, an organisation that
