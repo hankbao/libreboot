@@ -24,7 +24,7 @@ title() {
 }
 
 meta() {
-    URL=$(echo ${f%.md}.html | sed -e s-blog/--)
+    URL=$(echo ${f%.md}.html | sed -e s-news/--)
 
     echo "[$(title)]($URL){.title}"
     echo "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
@@ -37,14 +37,14 @@ meta() {
 
 # generate the index file
 
-FILES=$(ls -1 -t blog/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+FILES=$(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
 
-cat blog-list.md > blog/index.md
+cat news-list.md > news/index.md
 
 for f in $FILES
 do
     touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
-    meta >> blog/index.md
+    meta >> news/index.md
 done
 
 # generate an RSS index
@@ -54,7 +54,7 @@ rss() {
     echo '<channel>'
 
     echo "<title>$BLOGTITLE</title>"
-    echo "<link>"$BLOGBASE"blog/</link>"
+    echo "<link>"$BLOGBASE"news/</link>"
     echo "<description>$BLOGDESCRIPTION</description>"
 
     for f in $FILES
@@ -74,5 +74,5 @@ rss() {
     echo '</rss>'
 }
 
-rss > blog/feed.xml
-cp blog/feed.xml feed.xml
+rss > news/feed.xml
+cp news/feed.xml feed.xml
