@@ -15,10 +15,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+BLOGTITLE="Libreboot News"
+BLOGBASE="https://libreboot.org/news/"
+BLOGDESCRIPTION="News on Libreboot development"
+
+title() {
+    sed -n 1p $f | sed -e s-^..--
+}
+
 meta() {
     URL=$(echo ${f%.md}.html | sed -e s-news/--)
 
-    echo "[$(sed -n 1p $f | sed -e s-^..--)]($URL){.title}"
+    echo "[$(title)]($URL){.title}"
     echo "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
     echo ""
     tail -n +5 $f | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
@@ -27,10 +35,44 @@ meta() {
     echo ""
 }
 
+# generate the index file
+
+FILES=$(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+
 cat news-list.md > news/index.md
 
-for f in $(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+for f in $FILES
 do
     touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
     meta >> news/index.md
 done
+
+# generate an RSS index
+
+rss() {
+    echo '<rss version="2.0">'
+    echo '<channel>'
+
+    echo "<title>$BLOGTITLE</title>"
+    echo "<link>"$BLOGBASE"news/</link>"
+    echo "<description>$BLOGDESCRIPTION</description>"
+
+    for f in $FILES
+    do
+        # render content and escape
+        desc=$(sed ${f%.md}.bare.html -e 's/</\&lt;/g' | sed -e 's/>/\&gt;/g')
+        url="${f%.md}.html"
+
+        echo '<item>'
+        echo "<title>$(title)</title>"
+        echo "<link>$BLOGBASE$url</link>"
+        echo "<description>$desc</description>"
+        echo '</item>'
+    done
+
+    echo '</channel>'
+    echo '</rss>'
+}
+
+rss > news/feed.xml
+cp news/feed.xml feed.xml

@@ -42,3 +42,4 @@ tocheck*
 *.html
 !www/template.html
 /www/temp.md
+/www/news/index.md
