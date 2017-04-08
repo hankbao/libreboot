@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 BLOGTITLE="Libreboot News"
-BLOGBASE="https://libreboot.org/news/"
+BLOGBASE="https://libreboot.org/"
 BLOGDESCRIPTION="News on Libreboot development"
 
 title() {
