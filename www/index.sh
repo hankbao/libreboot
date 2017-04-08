@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 meta() {
-    URL=$(echo ${f%.md}.html | sed -e s-blog/--)
+    URL=$(echo ${f%.md}.html | sed -e s-news/--)
 
     echo "[$(sed -n 1p $f | sed -e s-^..--)]($URL){.title}"
     echo "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
@@ -27,10 +27,10 @@ meta() {
     echo ""
 }
 
-cat blog-list.md > blog/index.md
+cat news-list.md > news/index.md
 
-for f in $(ls -1 -t blog/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+for f in $(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
 do
     touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
-    meta >> blog/index.md
+    meta >> news/index.md
 done

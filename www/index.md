@@ -9,7 +9,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Download](download.md)                                                     --
 [Install](docs/install/)                                                    --
 [Documentation](docs/)                                                      --
-[Blog](blog/)                                                               --
+[News](news/)                                                               --
 [Contact/IRC](https://webchat.freenode.net/?channels=libreboot)             --
 [Report bugs](https://notabug.org/libreboot/libreboot/issues)               --
 [Send patch](git.md)
@@ -20,7 +20,7 @@ operating system. We are a member of the
 [Peers Community](https://peers.community/) project, an organisation that
 supports Free Software.
 
-**[Libreboot no longer opposes FSF/GNU. Read our open letter to the community.](blog/unity.md)**
+**[Libreboot no longer opposes FSF/GNU. Read our open letter to the community.](news/unity.md)**
 
 Why use libreboot?
 ------------------
