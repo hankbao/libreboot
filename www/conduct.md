@@ -1,14 +1,14 @@
-% Contributor Covenant Code of Conduct
+% Guidelines of Good Conduct in the Libreboot community
 
 Our Pledge
 ----------
 
 In the interest of fostering an open and welcoming environment, we as
-contributors and maintainers pledge to making participation in our project and
-our community a harassment-free experience for everyone, regardless of age, body
-size, disability, ethnicity, gender identity and expression, level of experience,
-nationality, personal appearance, race, religion, or sexual identity and
-orientation.
+contributors and maintainers wish that participation in our project and our
+community will be a harassment-free experience for everyone, regardless of age,
+body size, disability, ethnicity, gender identity and expression, level of
+experience, nationality, personal appearance, race, religion, or sexual identity
+and orientation.
 
 Our Standards
 -------------
@@ -69,8 +69,8 @@ directly to:
 Other communications channels are unofficial, and not part of the Libreboot
 project.
 
-Enforcement
------------
+Complaints
+----------
 
 All complaints will be reviewed and investigated and will result in a response
 that is deemed necessary and appropriate to the circumstances. The project team
@@ -99,11 +99,13 @@ website:
 * pizzaiolo\_
 * libreleah
 
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
-
+If you deviate from these guidelines, make sure that it is with good reason.
 Treatment of each case will be handled pragmatically, on a case-by-case basis.
+
+These are guidelines, and are not set in stone. We, as moderators, may choose
+to enforce or not enforce these guidelines, in whole or in part, at our own
+discretion. We are, afterall, only human ourselves and we sometimes make
+mistakes.
 
 Attribution
 -----------
