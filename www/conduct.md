@@ -1,4 +1,4 @@
-% Guidelines of Good Conduct in the Libreboot community
+% Guidelines for Good Conduct in the Libreboot community
 
 Our Pledge
 ----------
@@ -104,7 +104,7 @@ Treatment of each case will be handled pragmatically, on a case-by-case basis.
 
 These are guidelines, and are not set in stone. We, as moderators, may choose
 to enforce or not enforce these guidelines, in whole or in part, at our own
-discretion. We are, afterall, only human ourselves and we sometimes make
+discretion. We are, after all, only human ourselves and we sometimes make
 mistakes.
 
 Attribution
