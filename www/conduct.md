@@ -16,13 +16,7 @@ Our Standards
 Examples of behavior that contributes to creating a positive environment
 include:
 
-* Using welcoming and inclusive language (e.g. use of gender-neutral [Singular
-  They pronouns
-](https://gist.github.com/0xabad1dea/8870b192fd1758743f66#file-singularthey-md)
-  when referring to people, treating women and non-binary people equally to men,
-  and generally being as polite as possible to people that you talk to,
-  regardless of how different they may be to you. Treat everyone decently, more
-  or less)
+* Using welcoming and inclusive language
 * Being respectful of differing viewpoints and experiences
 * Gracefully accepting constructive criticism
 * Focusing on what is best for the community
