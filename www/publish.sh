@@ -39,7 +39,9 @@ if [ "${FILE}" != "./index" ]; then
 fi
 
 echo "" >> temp.md
-echo "[License](/license.md) -- [Information about the Libreboot authors](/contrib.md)" >> temp.md
+printf "[License](/license.md) --\n" >> temp.md
+printf "[Information about the Libreboot authors](/contrib.md) --\n" >> temp.md
+printf "[Code of conduct](/conduct.md)\n" >> temp.md
 
 # change out .md -> .html
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'

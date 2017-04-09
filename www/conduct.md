@@ -1,0 +1,130 @@
+% Contributor Covenant Code of Conduct
+
+Our Pledge
+----------
+
+In the interest of fostering an open and welcoming environment, we as
+contributors and maintainers pledge to making participation in our project and
+our community a harassment-free experience for everyone, regardless of age, body
+size, disability, ethnicity, gender identity and expression, level of experience,
+nationality, personal appearance, race, religion, or sexual identity and
+orientation.
+
+Our Standards
+-------------
+
+Examples of behavior that contributes to creating a positive environment
+include:
+
+* Using welcoming and inclusive language (e.g. use of gender-neutral [Singular
+  They pronouns
+](https://gist.github.com/0xabad1dea/8870b192fd1758743f66#file-singularthey-md)
+  when referring to people, treating women and non-binary people equally to men,
+  and generally being as polite as possible to people that you talk to,
+  regardless of how different they may be to you. Treat everyone decently, more
+  or less)
+* Being respectful of differing viewpoints and experiences
+* Gracefully accepting constructive criticism
+* Focusing on what is best for the community
+* Showing empathy towards other community members
+
+Examples of unacceptable behavior by participants include:
+
+* The use of sexualized language or imagery and unwelcome sexual attention or
+advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others' private information, such as a physical or electronic
+  address, without explicit permission
+* Other conduct which could reasonably be considered inappropriate in a
+  professional setting
+
+Our Responsibilities
+--------------------
+
+Project maintainers are responsible for clarifying the standards of acceptable
+behavior and are expected to take appropriate and fair corrective action in
+response to any instances of unacceptable behavior.
+
+Project maintainers have the right and responsibility to remove, edit, or
+reject comments, commits, code, wiki edits, issues, and other contributions
+that are not aligned to this Code of Conduct, or to ban temporarily or
+permanently any contributor for other behaviors that they deem inappropriate,
+threatening, offensive, or harmful.
+
+Scope
+-----
+
+This Code of Conduct applies both within project spaces and in public spaces
+when an individual is representing the project or its community. Examples of
+representing a project or community include using an official project e-mail
+address, posting via an official social media account, or acting as an appointed
+representative at an online or offline event. Representation of a project may be
+further defined and clarified by project maintainers.
+
+Specifically, in normal circumstances, the scope of this Code of Conduct applies
+directly to:
+
+* The IRC channel (#libreboot on Freenode)
+* The subreddit (r/libreboot on reddit.com)
+* The notabug instance (at <https://notabug.org/libreboot>), which also
+  includes bug reports and code review
+* The contents of any contributions to Libreboot, including commits to the Git
+  repository
+
+Other communications channels are unofficial, and not part of the Libreboot
+project.
+
+Enforcement
+-----------
+
+Instances of abusive, harassing, or otherwise unacceptable behavior may be
+reported by contacting the Libreboot project at at the
+[#libreboot IRC channel on
+Freenode](https://webchat.freenode.net/?channels=libreboot). All complaints
+will be reviewed and investigated and will result in a response that is deemed
+necessary and appropriate to the circumstances. The project team is obligated
+to maintain confidentiality with regard to the reporter of an incident. Further
+details of specific enforcement policies may be posted separately.
+
+Alternatively, where complaints need to be filed privately, the complaint can
+be reported to any of these people via IRC private
+message (this list is in alphabetical order):
+
+* Alyssa Rosenzweig: **alyssa** on Freenode
+* Jason Self: **jxself** on Freenode
+* Leah Rowe: **\_4of7** on Freenode
+* Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this person.
+  check in the channel)
+* Swift Geek: **swiftgeek** on Freenode
+
+If the complaint is for abuses on the Libreboot subreddit at
+[r/libreboot](https://www.reddit.com/r/libreboot/) then there are a separate
+group of moderators whom you can contact, via private message on the Reddit
+website:
+
+* hexacat
+* pizzaiolo\_
+* libreleah
+
+Project maintainers who do not follow or enforce the Code of Conduct in good
+faith may face temporary or permanent repercussions as determined by other
+members of the project's leadership.
+
+Treatment of each case will be handled pragmatically, on a case-by-case basis.
+
+Attribution
+-----------
+
+This Code of Conduct is adapted from the
+[Contributor Covenant homepage](http://contributor-covenant.org/), version 1.4,
+available at <http://contributor-covenant.org/version/1/4>
+
+The contributor covenant is made available under [Creative Commons Attribution
+4.0 International Public License](https://creativecommons.org/licenses/by/4.0/)
+
+External links
+--------------
+
+[Contributor Covenant homepage](http://contributor-covenant.org)             --
+[version that this is based on](http://contributor-covenant.org/version/1/4/)
