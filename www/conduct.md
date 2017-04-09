@@ -72,23 +72,21 @@ project.
 Enforcement
 -----------
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the Libreboot project at at the
-[#libreboot IRC channel on
-Freenode](https://webchat.freenode.net/?channels=libreboot). All complaints
-will be reviewed and investigated and will result in a response that is deemed
-necessary and appropriate to the circumstances. The project team is obligated
-to maintain confidentiality with regard to the reporter of an incident. Further
-details of specific enforcement policies may be posted separately.
+All complaints will be reviewed and investigated and will result in a response
+that is deemed necessary and appropriate to the circumstances. The project team
+is obligated to maintain confidentiality with regard to the reporter of an
+incident. Further details of specific enforcement policies may be posted
+separately.
 
-Alternatively, where complaints need to be filed privately, the complaint can
-be reported to any of these people via IRC private
-message (this list is in alphabetical order):
+Instances of abusive, harassing, or otherwise unacceptable behavior may be
+reported by contacting one of the moderators privately via IRC private message
+(see list below):
 
 * Alyssa Rosenzweig: **alyssa** on Freenode
 * Jason Self: **jxself** on Freenode
 * Leah Rowe: **\_4of7** on Freenode
-* Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this person.
+* Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this
+  person.
   check in the channel)
 * Swift Geek: **swiftgeek** on Freenode
 
