@@ -3,7 +3,9 @@ title: Documentation
 ...
 
 Information about Libreboot releases can be found at
-[release.md](release.md). Always check [libreboot.org](/) for updates.
+[release.md](release.md). Always check [libreboot.org](/) for updates. New
+releases of Libreboot are announced in the [news section](../news/) of the
+website.
 
 [Answers to Frequently Asked Questions about Libreboot](../faq.md).
 

@@ -4,7 +4,8 @@ x-toc-enable: true
 ...
 
 Updated versions of libreboot can be found at
-[libreboot.org](/).
+[libreboot.org](/). Announcements of new Libreboot releases can be found in
+the [news section](../news/) on the website.
 
 Libreboot 20160907 {#release20160907}
 ==================
