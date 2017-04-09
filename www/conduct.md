@@ -114,7 +114,7 @@ These guidelines are adapted from the
 [Contributor Covenant](http://contributor-covenant.org/), version 1.4,
 available at <http://contributor-covenant.org/version/1/4>
 
-The contributor covenant is made available under [Creative Commons Attribution
+The Contributor Covenant is made available under [Creative Commons Attribution
 4.0 International Public License](https://creativecommons.org/licenses/by/4.0/)
 
 External links
