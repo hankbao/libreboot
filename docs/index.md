@@ -48,7 +48,7 @@ to make coreboot as easy to use as possible.
 Libreboot has many practical advantages over proprietary boot firmware,
 such as faster boot speeds and better security. You can [install
 GNU+Linux with encrypted /boot/](gnulinux/), [verify GPG signatures on
-your kernel](http://www.coreboot.org/GRUB2#signed_kernels), put a kernel
+your kernel](gnulinux/grub_hardening.md), put a kernel
 in the flash chip and more.
 
 The libreboot project has three main goals:
