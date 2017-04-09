@@ -110,8 +110,8 @@ mistakes.
 Attribution
 -----------
 
-This Code of Conduct is adapted from the
-[Contributor Covenant homepage](http://contributor-covenant.org/), version 1.4,
+These guidelines are adapted from the
+[Contributor Covenant](http://contributor-covenant.org/), version 1.4,
 available at <http://contributor-covenant.org/version/1/4>
 
 The contributor covenant is made available under [Creative Commons Attribution
