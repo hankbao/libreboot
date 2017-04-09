@@ -41,7 +41,7 @@ fi
 echo "" >> temp.md
 printf "[License](/license.md) --\n" >> temp.md
 printf "[Information about the Libreboot authors](/contrib.md) --\n" >> temp.md
-printf "[Code of conduct](/conduct.md)\n" >> temp.md
+printf "[Please read our guidelines for good conduct](/conduct.md)\n" >> temp.md
 
 # change out .md -> .html
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'

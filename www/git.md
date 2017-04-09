@@ -33,9 +33,6 @@ GNU+Linux distributions package it in their repositories).
 GNU+Linux is generally recommended as the OS of choice, for Libreboot
 development.
 
-Development discussion, including code review, falls under the Libreboot
-project's official [Code of Conduct](conduct.md).
-
 How to download Libreboot from the Git repository
 -------------------------------------------------
 
