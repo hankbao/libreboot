@@ -232,6 +232,9 @@ cp "flash" "${distdir}/"
 # powertop script
 cp "resources/scripts/misc/powertop.trisquel7" "${distdir}/"
 
+# grubeditor.sh script
+cp "resources/scripts/misc/grubeditor.sh" "${distdir}/"
+  
 printf "\n\n"
 
 # ### Create the release tarballs
