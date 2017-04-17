@@ -124,7 +124,7 @@ on intel gpu's is included in intel-gpu-tools. Install intel-gpu-tools:
 **sudo apt-get install intel-gpu-tools**
 
 You can set values: **sudo intel\_reg write 0x00061254
-&ltyour\_value>**
+your_value_in_C_hex_format**
 
 The value set has the following structure: bits \[31:16\] is PWM
 divider. PWM / PWM\_divider = frequency bits \[15:0\] is the duty cycle
