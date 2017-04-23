@@ -12,7 +12,8 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [News](news/)                                                               --
 [Contact/IRC](https://webchat.freenode.net/?channels=libreboot)             --
 [Report bugs](https://notabug.org/libreboot/libreboot/issues)               --
-[Send patches](git.md)
+[Send patches](git.md)                                                      --
+[TODO](tasks.md)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
