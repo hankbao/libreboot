@@ -36,14 +36,14 @@ HTTPS mirrors {#https}
 
 These mirrors are recommended, since they use TLS (https://) encryption.
 
-<https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
-Project, USA)
-
 <https://www.mirrorservice.org/sites/libreboot.org/release/> (University
 of Kent, UK)
 
 <https://mirror.math.princeton.edu/pub/libreboot/> (Princeton
 university, USA)
+
+<https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
+Project, USA)
 
 <https://mirrors.cicku.me/libreboot/> (CICKU FOSS Mirror Service,
 Germany)
