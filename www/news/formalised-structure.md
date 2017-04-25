@@ -15,7 +15,7 @@ There was an underlying tension in the letter: should Libreboot rejoin GNU? On
 purely political and technical levels, the answer is a resounding "yes". We
 share the mission of spreading free software. Our communities overlap. Most of
 the Libreboot community uses GNU software, and much of GNU uses libreboot.
-Technically, the tighter itnegration is useful. Politically, closer ties will
+Technically, the tighter integration is useful. Politically, closer ties will
 strengthen both of our projects. But this is neither completely a political or
 technical question -- it is a human one.
 

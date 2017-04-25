@@ -21,7 +21,7 @@ operating system. We are a member of the
 [Peers Community](https://peers.community/) project, an organisation that
 supports Free Software.
 
-**[Community feedback is needed on whether Libreboot should re-join the GNU project.](news/proposal-rejoin-gnu.md)**
+Latest news update: [Formalising Democracy](news/formalised-structure.md)
 
 Why use Libreboot?
 ------------------
