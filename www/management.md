@@ -59,6 +59,10 @@ popular public demand. Exact infrastructure for how to cast such votes and
 make such appointments will be decided at that time, when it becomes necessary
 for the Libreboot project.
 
+Information about Libreboot's code review and code management guidelines
+can be found
+[on the Git section of the website](git.md#general-code-review-guidelines).
+
 Information about core team members, responsible for the Libreboot project
 --------------------------------------------------------------------------
 

@@ -33,6 +33,31 @@ GNU+Linux distributions package it in their repositories).
 GNU+Linux is generally recommended as the OS of choice, for Libreboot
 development.
 
+General code review guidelines
+------------------------------
+
+Non-core members will push to their own repository, and issue a Pull Request.
+Core maintainers of Libreboot can push to the repository, but not to the master
+branch; they must push it to a non-master branch, and again issue a Pull
+Request.
+
+An individual or group of people will then review the patch sent by the
+contributor. With approval from a core maintainer, or otherwise someone with
+merge rights on the repository, the patch will be merged into the official
+*master* branch.
+
+Those with push/merge access on the official Libreboot repository must never
+directly push their own patches to the master branch, and they must never
+merge their own Pull Request. Regardless of the individual's standing and
+frequency of contributions within the project, those who decide whether to
+merge a patch will *always* differ from the original contributor.
+
+These guidelines are *enforced*, to avoid the appearance of a BDFL (Benevolent
+Dictator for Life) in the Libreboot project, as one previously existed in the
+project. Libreboot is a collectively and democratically governed project.
+Maintainers who violate these guidelines may, at the discretion of other
+maintainers, have their push/merge rights revoked.
+
 How to download Libreboot from the Git repository
 -------------------------------------------------
 
