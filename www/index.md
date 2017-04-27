@@ -24,7 +24,7 @@ supports Free Software.
 
 **[Community feedback is needed on whether libreboot.org domain name
 ownership should be transferred to the
-Free Software Foundation](news/fsf-domain-offer.md)**
+Software Freedom Conservancy](news/sfc-domain-offer.md)**
 
 **[Libreboot has applied to re-join the GNU project,
 under new democratic leadership](news/formalised-structure.md)**
