@@ -49,5 +49,3 @@ which we deblob. We upstream our custom patches to projects like coreboot,
 depthcharge, GRUB, and flashrom where possible. Together, we provide an
 automated build and installation system with nontechnical documentation,
 allowing Libreboot to be widely used. 
-
-Watch our [FOSDEM 2017 presentation](https://video.fosdem.org/2017/K.1.105/libreboot.mp4) to learn more.
