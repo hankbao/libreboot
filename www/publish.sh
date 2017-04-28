@@ -42,7 +42,7 @@ echo "" >> temp.md
 printf "[License](/license.md) --\n" >> temp.md
 printf "[Authors](/contrib.md) --\n" >> temp.md
 printf "[Conduct Guidelines](/conduct.md) --\n" >> temp.md
-printf "[Management Guidelines](/management.md) \n" >> temp.md
+printf "[Management Guidelines](/management.md) --\n" >> temp.md
 printf "[Peers Community](https://peers.community/) \n" >> temp.md
 
 # change out .md -> .html
