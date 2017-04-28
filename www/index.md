@@ -18,9 +18,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
-operating system. We are a member of the
-[Peers Community](https://peers.community/) project, an organisation that
-supports Free Software.
+operating system.
 
 **[Community feedback is needed on whether libreboot.org domain name
 ownership should be transferred to the
