@@ -92,17 +92,11 @@ header), for SOIC-8 (clip: Pomona 5250):
     chip on those pins?
 
 **On the X200S and X200 Tablet the flash chip is underneath the board,
-in a WSON package. The pinout is very much the same as a SOIC-8, except
-you need to solder (there are no clips available).\
-The following image shows how this is done:**\
-![](images/x200/wson_soldered.jpg "Copyright 2014 Steve Shenton <sgsit@libreboot.org> see license notice at the end of this document")\
-In this image, a pin header was soldered onto the WSON. Another solution
-might be to de-solder the WSON-8 chip and put a SOIC-8 there instead.
+in a WSON package. The pinout is very much the same as a SOIC-8, but such package makes it impossible to use testclip.
+In order to enable external flashing of device, chip has to be changed to SOIC-8 one. Such procedure requires hot air station and soldering station (with "knife" K-Tip to easily solder SOIC-8).\
 Check the list of SOIC-8 flash chips at
-[../hardware/gm45\_remove\_me.html\#flashchips](../hardware/gm45_remove_me.md#flashchips)
-but do note that these are only 4MiB (32Mb) chips. The only X200 SPI
-chips with 8MiB capacity are SOIC-16. For 8MiB capacity in this case,
-the X201 SOIC-8 flash chip (Macronix 25L6445E) might work.
+[List of supported flash chips](https://www.flashrom.org/Supported_hardware#Supported_flash_chips)\
+25XX series SPI NOR Flash in 8/16MiB sizes will work fine with libreboot.
 
 The procedure
 -------------
