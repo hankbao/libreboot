@@ -16,8 +16,8 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Management](management.md)                                                 --
 [Tasks](https://notabug.org/libreboot/libreboot/milestones)
 
-Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
-Source BIOS or UEFI replacement, initialising the hardware and booting your
+Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) (as in
+freedom) BIOS or UEFI replacement, initialising the hardware and booting your
 operating system.
 
 **[Community feedback is needed on whether libreboot.org domain name
