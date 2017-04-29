@@ -13,8 +13,8 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Discuss](https://webchat.freenode.net/?channels=libreboot)                 --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
 [Contribute](git.md)                                                        --
-[Tasks](tasks.md)                                                           --
-[Management](management.md)
+[Management](management.md)                                                 --
+[Tasks](https://notabug.org/libreboot/libreboot/milestones)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) and Open
 Source BIOS or UEFI replacement, initialising the hardware and booting your
