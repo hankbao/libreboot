@@ -50,6 +50,7 @@ Libreboot supports the following systems in this release:
 -   [Lenovo ThinkPad R400](r400.md)
 -   [Lenovo ThinkPad T400](t400.md)
 -   [Lenovo ThinkPad T500](t500.md)
+-   [Lenovo ThinkPad W500](t500.md)
 -   [Apple MacBook1,1](#macbook11)
 -   [Apple MacBook2,1](#macbook21)
 
@@ -61,7 +62,7 @@ working). There may be exceptions; in other words, this is a list of
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
 
-EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400) {#ecupdate}
+EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400, W500) {#ecupdate}
 ==============================================================
 
 It is recommended that you update to the latest EC firmware version. The
