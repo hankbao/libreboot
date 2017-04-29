@@ -95,7 +95,7 @@ done
 # Then put them in the ROM images.
 if [ -d "bin/grub/" ]; then
 	cd "bin/grub/"
-	for board in "x200" "r400" "t400" "t500"
+	for board in "x200" "r400" "t400" "t500" "w500"
 	do
 		for romsize in "4m" "8m" "16m"
 		do	
