@@ -26,10 +26,10 @@ use that instead.
 A note about CPUs
 =================
 
-[ThinkWiki](http://www.thinkwiki.org/wiki/Category:T400) has a list of
-CPUs for this system. The Core 2 Duo P8400, P8600 and P8700 are believed
-to work in libreboot. The T9600 was confirmed to work, so the
-T9500/T9550 probably also work.
+[ThinkWiki](http://www.thinkwiki.org/wiki/Category:T400) has a list of CPUs for
+this system. The Core 2 Duo P8400, P8600 and P8700 are believed to work in
+libreboot. The T9550 and T9600 are reported working. The T9500 should work as
+well.
 
 Quad-core CPUs
 --------------
