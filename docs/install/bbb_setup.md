@@ -327,24 +327,6 @@ leads, **but** keep all other leads short (10cm or less)
 You should now have something that looks like this:\
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)
 
-Notes about stability {#stability}
-=====================
-
-<http://flashrom.org/ISP> is what we typically do in libreboot, though
-not always. That page has some notes about using resistors to affect
-stability. Currently, we use spispeed=512 (512kHz) but it is possible to
-use higher speeds while maintaining stability.
-
-tty0\_ in \#libreboot was able to get better flashing speeds with the
-following configuration:
-
--   "coax" with 0.1 mm core and aluminum foley (from my kitchen), add
-    100 Ohm resistors (serial)
--   put heatshrink above the foley, for: CS, CLK, D0, D1
--   Twisted pair used as core (in case more capacitors are needed)
--   See this image: <http://i.imgur.com/qHGxKpj.jpg>
--   He was able to flash at 50MHz (lower speeds are also fine).
-
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
 Copyright © 2015 Albin Söderqvist\
