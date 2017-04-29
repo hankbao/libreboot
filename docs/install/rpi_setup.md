@@ -8,7 +8,7 @@ flash chip with the Raspberry Pi, using the
 RPi should work.
 
 The Libreboot project recommends using
-[blobless GNU/Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.html)
+[blobless GNU+Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.html)
 on the Raspberry Pi, to avoid having to run non-free software. This
 only became possible in February 2017 and the instructions below are
 not yet updated with the necessary steps, so please do not follow the
