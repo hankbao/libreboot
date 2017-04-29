@@ -53,6 +53,7 @@ Flashing via hardware methods, on system:
 -   [ThinkPad R400](r400_external.md)
 -   [ThinkPad T400](t400_external.md)
 -   [ThinkPad T500](t500_external.md)
+-   [ThinkPad W500](t500_external.md)
 
 Information about libreboot ROM images {#rom}
 ======================================
@@ -126,7 +127,7 @@ Apple EFI should refer to [\#flashrom\_macbook21](#flashrom_macbook21)
 
 X200 users, refer to [x200\_external.md](x200_external.md), R400
 users refer to [r400\_external.md](r400_external.md), T400 users
-refer to [t400\_external.md](t400_external.md), T500 users refer to
+refer to [t400\_external.md](t400_external.md), T500 and W500 users refer to
 [t500\_external.md](t500_external.md)
 
 ASUS KFSN4-DRE?
@@ -207,7 +208,7 @@ you. Most people do not write-protect the flash chip, so you probably
 didn't either.*
 
 Similarly, it is possible to write-protect the flash chip in coreboot or
-libreboot on GM45 laptops (X200/R400/T400/T500). If you did this, then
+libreboot on GM45 laptops (X200/R400/T400/T500/W500). If you did this, then
 you will need to use the links above for flashing, treating your laptop
 as though it currently has the proprietary firmware (because
 write-protected SPI flash requires external re-flashing, as is also the
@@ -217,10 +218,10 @@ If you did not write-protect the flash chip, or it came to you without
 any write-protection (***libreboot does not write-protect the flash chip
 by default, so this probably applies to you***), read on!
 
-MAC address on GM45 (X200/R400/T400/T500)
+MAC address on GM45 (X200/R400/T400/T500/W500)
 -----------------------------------------
 
-**Users of the X200/R400/T400/T500 take note:** The MAC address for the
+**Users of the X200/R400/T400/T500/W500 take note:** The MAC address for the
 onboard ethernet chipset is located inside the flash chip. Libreboot ROM
 images for these laptops contain a generic MAC address by default, but
 this is not what you want. *Make sure to change the MAC address inside
