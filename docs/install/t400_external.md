@@ -28,8 +28,9 @@ A note about CPUs
 
 [ThinkWiki](http://www.thinkwiki.org/wiki/Category:T400) has a list of
 CPUs for this system. The Core 2 Duo P8400, P8600 and P8700 are believed
-to work in libreboot. The T9600 was confirmed to work, so the
-T9500/T9550 probably also work.
+to work in libreboot.
+
+T9600, T9500 and T9550 are all compatible, as reported by users.
 
 Quad-core CPUs
 --------------
