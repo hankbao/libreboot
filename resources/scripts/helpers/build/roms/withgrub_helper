@@ -147,18 +147,6 @@ do
 	# .config no longer needed
 	rm -f ".config"
 
-	# Add the background image
-	if [ "$romtype" = "vesafb" ]
-	then
-		if [ "$1" = "macbook21" ] || [ "$1" = "x200_4mb" ] || [ "$1" = "x200_8mb" ] || [ "$1" = "x200_16mb" ] || [ "$1" = "r400_4mb" ] || [ "$1" = "r400_8mb" ] || [ "$1" = "r400_16mb" ] || [ "$1" = "t400_4mb" ] || [ "$1" = "t400_8mb" ] || [ "$1" = "t400_16mb" ] || [ "$1" = "t500_4mb" ] || [ "$1" = "t500_8mb" ] || [ "$1" = "t500_16mb" ] || [ "$1" = "w500_4mb" ] || [ "$1" = "w500_8mb" ]  || [ "$1" = "w500_16mb" ] || [ "$1" = "x220" ]
-
-		then
-			./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../resources/grub/background/background1280x800.png -n background.png -t raw
-		else
-			./util/cbfstool/cbfstool "${boardtarget}_${romtype}.rom" add -f ../../../resources/grub/background/background1024x768.png -n background.png -t raw
-		fi
-	fi
-
 	# Add the correct GRUB configuration file for this image.
 	for keylayout in ../../../resources/utilities/grub-assemble/keymap/original/*
 	do
