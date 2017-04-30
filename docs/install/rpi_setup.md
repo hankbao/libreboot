@@ -434,4 +434,5 @@ Copyright © 2014, 2015 Lawrence Wu <sagnessagiel@gmail.com>\
 Copyright © 2015 snuffeluffegus <>\
 Copyright © 2015 Kevin Keijzer <>\
 Copyright © 2016 Leah Rowe <info@minifree.org>\
+
 This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)

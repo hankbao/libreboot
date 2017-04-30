@@ -517,4 +517,11 @@ This is a 32K region from the factory image. It could be data
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-This page is available under the [CC BY SA 4.0](../cc-by-sa-4.0.txt)
+
+
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License Version 1.3 or any later
+version published by the Free Software Foundation
+with no Invariant Sections, no Front Cover Texts, and no Back Cover Texts.
+A copy of this license is found in [../fdl-1.3.md](../fdl-1.3.md)
