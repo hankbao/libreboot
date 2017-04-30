@@ -118,6 +118,12 @@ rm -f "${distdir}/mk"*.[ch]
 rm -f "${distdir}/"*.bin
 rm -f "${distdir}/"*.rom
 
+# intel6gen: There are certain files in there that the user most likely does
+# not want to share.
+rm -f "${distdir}/resources/utilities/intel6gen/"*.bin
+rm -f "${distdir}/resources/utilities/intel6gen/"*.rom
+rm -f "${distdir}/resources/utilities/intel6gen/mk"*.[ch]
+
 # Remove any GRUB payload ELF executables that may exist
 rm -f "${distdir}/resources/utilities/grub-assemble/grub_txtmode.elf"
 rm -f "${distdir}/resources/utilities/grub-assemble/grub_vesafb.elf"

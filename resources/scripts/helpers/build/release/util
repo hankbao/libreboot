@@ -3,7 +3,7 @@
 #
 #  helper script: generate the release archives
 #
-#	Copyright (C) 2014, 2015, 2016 Leah Rowe <info@minifree.org>
+#	Copyright (C) 2014, 2015, 2016, 2017 Leah Rowe <info@minifree.org>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU General Public License as published by
@@ -192,6 +192,44 @@ mv "demefactory" "../../../${distdir}/ich9deblob/armv7l/"
 cd "../"
 rm -Rf "ich9deblob/"
 mv "ich9deblob_/" "ich9deblob/"
+cd "../../"
+
+# ----------------
+# intel6gen related
+# ----------------
+# build intel6gen, compiled (statically linked) and include the binary
+
+mkdir -p "${distdir}/intel6gen/${arch}"
+
+cd "resources/utilities/"
+cp -R "intel6gen" "intel6gen_/"
+cd "intel6gen/"
+make clean
+make SHARED=0 CC='gcc -static'
+
+mv "intel6gen" "../../../${distdir}/intel6gen/${arch}/"
+mv "intel6deblob" "../../../${distdir}/intel6gen/${arch}/"
+
+if [ "${arch}" = "x86_64" ]
+	then
+		# Now build 32-bit binaries
+		make clean
+		make SHARED=0 CC='gcc -static -m32'
+		mkdir "../../../${distdir}/intel6gen/i686/"
+		mv "intel6deblob" "../../../${distdir}/intel6gen/i686/"
+		mv "intel6gen" "../../../${distdir}/intel6gen/i686/"
+fi
+
+# cross-compile for ARM
+make clean
+make SHARED=0 CC='arm-linux-gnueabi-gcc -static'
+mkdir "../../../${distdir}/intel6gen/armv7l"
+mv "intel6deblob" "../../../${distdir}/intel6gen/armv7l/"
+mv "intel6gen" "../../../${distdir}/intel6gen/armv7l/"
+
+cd "../"
+rm -Rf "intel6gen/"
+mv "intel6gen_/" "intel6gen/"
 cd "../../"
 
 # -----------------

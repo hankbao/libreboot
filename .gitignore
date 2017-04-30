@@ -28,6 +28,14 @@ push
 /resources/utilities/ich9deblob/obj/*/*.o
 /resources/utilities/ich9deblob/mkdescriptor*.[ch]
 /resources/utilities/ich9deblob/mkgbe*.[ch]
+/resources/utilities/intel6gen/*.rom
+/resources/utilities/intel6gen/*.bin
+/resources/utilities/intel6gen/intel6deblob
+/resources/utilities/intel6gen/intel6gen
+/resources/utilities/intel6gen/obj/*.o
+/resources/utilities/intel6gen/obj/*/*.o
+/resources/utilities/intel6gen/mkdescriptor*.[ch]
+/resources/utilities/intel6gen/mkgbe*.[ch]
 /resources/utilities/grub-assemble/grub_*.elf
 /mkgbe.[ch]
 /*.bin
@@ -37,7 +45,7 @@ push
 /NEWS
 /version
 /versiondate
-/gm45macaddress
+/macaddress
 tocheck*
 *.html
 !www/template.html

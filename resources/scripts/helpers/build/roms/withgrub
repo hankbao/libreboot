@@ -101,8 +101,8 @@ if [ -d "bin/grub/" ]; then
 		do	
 			if [ -d "${board}_${romsize}b/" ]; then
 				cd "${board}_${romsize}b/"
-				if [ -f "../../../gm45macaddress" ]; then
-					../../../resources/utilities/ich9deblob/ich9gen --macaddress $(cat ../../../gm45macaddress)
+				if [ -f "../../../macaddress" ]; then
+					../../../resources/utilities/ich9deblob/ich9gen --macaddress $(cat ../../../macaddress)
 				else
 					../../../resources/utilities/ich9deblob/ich9gen
 				fi
@@ -111,6 +111,33 @@ if [ -d "bin/grub/" ]; then
 					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
 				done
 				rm -f "ich9fd"*.bin "mk"*.[ch]
+				cd "../"
+			fi
+		done
+	done
+	cd ../../
+fi
+
+# Build the deblobbed descriptor+gbe regions for sandybridge/intel6 targets.
+# Then put them in the ROM images.
+if [ -d "bin/grub/" ]; then
+	cd "bin/grub/"
+	for board in "x220"
+	do
+		for romsize in "8m"
+		do	
+			if [ -d "${board}_${romsize}b/" ]; then
+				cd "${board}_${romsize}b/"
+				if [ -f "../../../macaddress" ]; then
+					../../../resources/utilities/intel6gen/intel6gen --macaddress $(cat ../../../macaddress)
+				else
+					../../../resources/utilities/intel6gen/intel6gen
+				fi
+				for rom in *.rom
+				do
+					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
+				done
+				rm -f "intel6fd"*.bin "mk"*.[ch]
 				cd "../"
 			fi
 		done
