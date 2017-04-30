@@ -59,7 +59,6 @@ if [ "${1}" = "vesafb" ]; then
 	  -o "grub_vesafb.elf" \
 	  -d "${grubdir}/grub-core/" \
 	  --fonts= --themes= --locales=  \
-	  --fixed-time ${versiondate} \
 	  --modules="${grub_modules}" \
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
@@ -74,7 +73,6 @@ then
 	  -o "grub_txtmode.elf" \
 	  -d "${grubdir}/grub-core/" \
 	  --fonts= --themes= --locales=  \
-	  --fixed-time ${versiondate} \
 	  --modules="${grub_modules}" \
 	  --install-modules="${grub_install_modules}" \
 	  /boot/grub/grub.cfg="../../../resources/grub/config/grub_memdisk.cfg" \
