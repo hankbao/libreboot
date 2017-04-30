@@ -44,7 +44,7 @@ cd "seabios/"
 # Reset to the last commit that was tested (we use stable releases for seabios)
 # ------------------------------------------------------------------------------
 
-git reset --hard rel-1.9.1
+git reset --hard 19fdcca467ad3436d68ef88899b4dcd78154a9c6
 )
 
 
