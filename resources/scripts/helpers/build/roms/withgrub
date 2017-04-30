@@ -135,7 +135,7 @@ if [ -d "bin/grub/" ]; then
 				fi
 				for rom in *.rom
 				do
-					dd if="ich9fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
+					dd if="intel6fdgbe_${romsize}.bin" of="${rom}" bs=1 count=12k conv=notrunc
 				done
 				rm -f "intel6fd"*.bin "mk"*.[ch]
 				cd "../"
