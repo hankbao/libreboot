@@ -15,6 +15,7 @@ followed (adapted) if you brick your X200, to know how to recover.
 -   [Boot it!](#boot)
 -   [Wifi](#wifi)
 -   [wwan](#wwan)
+-   [Intel Turbo Memory](#turbomem)
 -   [Memory](#memory)
 -   [X200S and X200 Tablet users: GPIO33 trick will not work.](#gpio33)
 
@@ -73,7 +74,6 @@ header), for SOIC-16 (clip: Pomona 5252):
     This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.
     Here is a photo of the SOIC-16 flash chip. Pins are labelled:
 
-                
 
 The following shows how to connect the clip to the BBB (on the P9
 header), for SOIC-8 (clip: Pomona 5250):
@@ -244,6 +244,11 @@ technology is identical to what is used in mobile phones, so it can also
 track your movements.
 
 Not to be confused with wifi (wifi is fine).
+
+Intel Turbo Memory {#turbomem}
+==================
+
+Some X200 devices were sold with Intel Turbo Memory installed in the top-most mini PCI-e slot. This has been [shown to be ineffective](http://www.anandtech.com/show/2252) at disk caching or battery saving in most use cases. While there are [Linux drivers](https://github.com/yarrick/turbomem) available, it is blacklisted in at least GNU+Trisquel, and possibly other free operating systems. It should probably be removed.
 
 Memory
 ======
