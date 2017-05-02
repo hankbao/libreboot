@@ -99,7 +99,7 @@ on the motherboard.
 Next, download and compile the latest Flashrom source code on the
 Raspberry Pi.
 
-    sudo apt-get install build-essential pciutils usbutils libpci-dev libusb-dev libftdi1 libftdi-dev zlib1g-dev subversion
+    sudo apt-get install build-essential pciutils usbutils libpci-dev libusb-dev libftdi1 libftdi-dev zlib1g-dev subversion libusb-1.0-0-dev
     svn co svn://flashrom.org/flashrom/trunk flashrom
     cd flashrom
     make
@@ -246,7 +246,7 @@ On first boot
 
 On second boot
 
-    pi# sudo apt-get update && sudo apt-get install libftdi1 libftdi-dev libusb-dev libpci-dev subversion
+    pi# sudo apt-get update && sudo apt-get install libftdi1 libftdi-dev libusb-dev libpci-dev subversion libusb-1.0-0-dev
 
 Other dependencies that should already be installed with the noobs base
 install include:
