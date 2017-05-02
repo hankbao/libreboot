@@ -235,7 +235,8 @@ whitelist of approved chips, and it will refuse to boot if you use an
 'unauthorized' wifi card.
 
 The following photos show an Atheros AR5B95 being installed, to replace
-the Intel chip that this X200 came with:\
+the Intel chip that this X200 came with:
+
 ![](images/x200/disassembly/0016.jpg)
 ![](images/x200/disassembly/0017.jpg)
 
@@ -272,7 +273,8 @@ work in some cases.
 
 Make sure that the RAM you buy is the 2Rx8 density.
 
-In this photo, 8GiB of RAM (2x4GiB) is installed:\
+In this photo, 8GiB of RAM (2x4GiB) is installed:
+
 ![](images/x200/disassembly/0018.jpg)
 
 Boot it! {#boot}
@@ -342,7 +344,8 @@ disable the flashing protections by the descriptor and stop the ME from
 starting (which itself interferes with flashing attempts). The theory
 was proven correct; however, it is still useless in practise.
 
-Look just above the 7 in TP37 (that's GPIO33):\
+Look just above the 7 in TP37 (that's GPIO33):
+
 ![](../hardware/images/x200/gpio33_location.jpg)
 
 By default we would see this in lenovobios, when trying flashrom -p
@@ -375,7 +378,7 @@ On a related note, libreboot has a utility that could help with
 investigating this:
 [../hardware/gm45\_remove\_me.html\#demefactory](../hardware/gm45_remove_me.md#demefactory)
 
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
 
 
