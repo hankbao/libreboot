@@ -1,11 +1,8 @@
-
 ---
-title: Flashing the X200 with a BeagleBone Black
+title: Flashing the X200 with a BeagleBone Black 
 ...
 
 Initial flashing instructions for X200.
-
-**Note:** If you are flashing an X200t, [see these alternate instructions](../hardware/x200t_external.html).
 
 This guide is for those who want libreboot on their ThinkPad X200 while
 they still have the original Lenovo BIOS present. This guide can also be
@@ -20,7 +17,7 @@ followed (adapted) if you brick your X200, to know how to recover.
 -   [wwan](#wwan)
 -   [Intel Turbo Memory](#turbomem)
 -   [Memory](#memory)
--   [X200s and X200t Specific Notes](#x200st)
+-   [X200S and X200 Tablet users: GPIO33 trick will not work.](#gpio33)
 
 X200 laptops with libreboot pre-installed {#preinstall}
 =========================================
@@ -36,11 +33,9 @@ Use this to find out:
     # flashrom -p internal -V
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
-the motherboard (this requires removal of the motherboard).
-
-**Not all X200S/X200T are supported; see
-[../hardware/x200.html\#x200s](../hardware/x200.html#x200s) or the additional
-detail at the bottom of this page.**
+the motherboard (this requires removal of the motherboard). **Not all
+X200S/X200T are supported; see
+[../hardware/x200.html\#x200s](../hardware/x200.html#x200s).**
 
 MAC address {#macaddress}
 ===========
@@ -62,10 +57,6 @@ Initial BBB configuration {#clip}
 Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
 flashing.
 
-**Note:** If you don't have a BeagleBone Black, there are instructions for
-[using a Raspberry Pi](./rpi_setup.html) (you may need to adjust them slightly
-for your particular hardware).
-
 The following shows how to connect the clip to the BBB (on the P9
 header), for SOIC-16 (clip: Pomona 5252):
 
@@ -84,7 +75,6 @@ header), for SOIC-16 (clip: Pomona 5252):
     Here is a photo of the SOIC-16 flash chip. Pins are labelled:
 
 
-
 The following shows how to connect the clip to the BBB (on the P9
 header), for SOIC-8 (clip: Pomona 5250):
 
@@ -101,13 +91,19 @@ header), for SOIC-8 (clip: Pomona 5250):
     Look at the pads in that photo, on the left and right. Those are for SOIC-16. Would it be possible to remove the SOIC-8 and solder a SOIC-16
     chip on those pins?
 
+**On the X200S and X200 Tablet the flash chip is underneath the board,
+in a WSON package. The pinout is very much the same as a SOIC-8, but such package makes it impossible to use testclip.
+In order to enable external flashing of device, chip has to be changed to SOIC-8 one. Such procedure requires hot air station and soldering station (with "knife" K-Tip to easily solder SOIC-8).\
+Check the list of SOIC-8 flash chips at
+[List of supported flash chips](https://www.flashrom.org/Supported_hardware#Supported_flash_chips)\
+25XX series SPI NOR Flash in 8/16MiB sizes will work fine with libreboot.
 
 The procedure
 -------------
 
-This section is for the X200. This does not apply to the X200S or X200 Tablet
-(for those systems, you have to remove the motherboard completely, since the
-flash chip is on the other side of the board. See below for more information).
+This section is for the X200. This does not apply to the X200S or X200
+Tablet (for those systems, you have to remove the motherboard
+completely, since the flash chip is on the other side of the board).
 
 Remove these screws:\
 ![](images/x200/disassembly/0003.jpg)
@@ -253,13 +249,7 @@ Not to be confused with wifi (wifi is fine).
 Intel Turbo Memory {#turbomem}
 ==================
 
-Some X200 devices were sold with Intel Turbo Memory installed in the top-most
-mini PCI-e slot. This has been [shown to be
-ineffective](http://www.anandtech.com/show/2252) at disk caching or battery
-saving in most use cases. While there are [Linux
-drivers](https://github.com/yarrick/turbomem) available, it is blacklisted in at
-least GNU+Trisquel, and possibly other free operating systems. It should
-probably be removed.
+Some X200 devices were sold with Intel Turbo Memory installed in the top-most mini PCI-e slot. This has been [shown to be ineffective](http://www.anandtech.com/show/2252) at disk caching or battery saving in most use cases. While there are [Linux drivers](https://github.com/yarrick/turbomem) available, it is blacklisted in at least GNU+Trisquel, and possibly other free operating systems. It should probably be removed.
 
 Memory
 ======
@@ -286,58 +276,8 @@ You should see something like this:
 
 Now [install GNU+Linux](../gnulinux/).
 
-
-X200s and X200t Specific Notes {#x200st}
-==============================
-
-Chip Differences
-----------------
-Most notably, the BIOS chip is on the other side of the motherboard when
-compared to the X200. It is also a slightly different form factor (WSON-8)
-compared to the X200 (SOIC-8). The implication of this is that there is no clip
-that can touch the tiny pins on the outside, so you'll either need to solder
-wires to the chip (very difficult, but not impossible) or remove the chip
-entirely. Note that there is a large thermal pad under the WSON-8 chip, which
-makes it quite difficult to remove as it removes the heat you are applying.
-Using a hot air gun, set the temperature to around 400 degrees Celcius and
-gently heat the part evenly (it will not budge no matter how patient and careful
-you are at a normally advisable 300-350C). Applying some Chip Quik (or similar)
-will make removal easier. On the X200t especially, be careful of R647 in
-immediate proximity to the flash chip.
-
-Once the chip has been removed from the motherboard, it can be replaced with a
-suitable SOIC-8 that supports a clip.
-
-See the following images for reference:
-
-![](../../docs/images/x200t_flash/X200T-flashchip-location.jpg)
-![](../../docs/images/x200t_flash/X200T-flashchip-underside.jpg)
-
-If you choose to solder directly to the chip, you will probably have more
-success using Kynar wire-wrapping wire (or similar). Secure the flyleads with
-hot glue to prevent them from pulling off.
-
-![](../../docs/images/x200t_flash/X200T-reflashing-onboard.jpg)
-
-If you intend on flashing the chip (either the WSON-8 or the SOIC-8) off the
-motherboard, you need to pull the HOLD pin to +3.3V. Leaving it floating will
-result in inconsistent writes as it bounces around. The motherboard does this by
-default. Some chips you will also need to pull the WP pin to +3.3V, but on
-others it is not necessary (check the datasheet for your specific chip,
-depending if they default to LOW or HIGH).
-
-![](../../docs/images/x200t_flash/X200T-reflashing-offboard.jpg)
-
-
-Suitable WSON-8 Replacements
-----------------------------
-Check the list of SOIC-8 flash chips at [List of supported flash
-chips](https://www.flashrom.org/Supported_hardware#Supported_flash_chips)\ 25XX
-series SPI NOR Flash in 8/16MiB sizes will work fine with libreboot.
-
-
-GPIO33 trick will not work. {#gpio33}
----------------------------
+X200S and X200 Tablet users: GPIO33 trick will not work. {#gpio33}
+--------------------------------------------------------
 
 sgsit found out about a pin called GPIO33, which can be grounded to
 disable the flashing protections by the descriptor and stop the ME from
