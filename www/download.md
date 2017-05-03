@@ -45,18 +45,11 @@ university, USA)
 <https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
 Project, USA)
 
-<https://mirrors.cicku.me/libreboot/> (CICKU FOSS Mirror Service,
-Germany)
-
 <https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
-
-<https://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
 <https://mirror.se.partyvan.eu/pub/libreboot/> (partyvan.eu, Sweden)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
-
-<https://nedson.net/libreboot> (nedson.net, USA)
 
 HTTP mirrors {#http}
 ------------
@@ -77,6 +70,8 @@ Undisclosed location)
 <http://mirror.helium.in-berlin.de/libreboot/> (in-berlin.de, Germany)
 
 <http://libreboot.mirror.si/> (mirror.si, Slovenia)
+
+<http://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
 FTP mirrors {#ftp}
 -----------
