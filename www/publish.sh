@@ -65,3 +65,6 @@ pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
 
 # additionally, produce bare file for RSS
 pandoc $1 > $FILE.bare.html
+
+# generate section title anchors as [link]
+sed $FILE.html -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<h\1 style="display: inline;" id="\2">\3</h\1> [<a style="display: inline;" href="#\2">link</a>]_'
