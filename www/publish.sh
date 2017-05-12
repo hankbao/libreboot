@@ -65,3 +65,6 @@ pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
 
 # additionally, produce bare file for RSS
 pandoc $1 > $FILE.bare.html
+
+# generate section id links
+sed $FILE.html -i -e 's:^<h2 id="\(.*\)">\(.*\)</h2>:<a href="#\1"><h2 id="\1">\2</h2></a>:g'
