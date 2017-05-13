@@ -1,28 +1,23 @@
 ---
 title: GRUB payload 
+x-toc-enable: true
 ...
 
 This section relates to the GRUB payload used in libreboot.
 
--   [Changing the background image in GRUB](#grub_background)
--   [Setting font in GRUB](#grub_font)
--   [GRUB keyboard layouts](#grub_keyboard)
-    -   [Custom keyboard layout in GRUB](#grub_custom_keyboard)
-    -   [UK Dvorak keyboard layout in GRUB](#grub_ukdvorak_keyboard)
-
-Changing the background image in GRUB {#grub_background}
+Changing the background image in GRUB
 =====================================
 
 Use cbfstool from libreboot\_util, or
 libreboot\_src/coreboot/util/cbfstool/ if you want to build from source.
 
-./cbfstool yourrom.rom remove background.png -n background.png\
-./cbfstool yourrom.rom add -f background.png -n background.png -t raw
+    $ ./cbfstool yourrom.rom remove background.png -n background.png
+    $ ./cbfstool yourrom.rom add -f background.png -n background.png -t raw
 
 When you've done this, re-flash your ROM and you should have a new
 background at boot time.
 
-Setting font in GRUB (for reference) {#grub_font}
+Setting font in GRUB (for reference)
 ====================================
 
 You don't need to do this unless you would like to change the default
@@ -50,21 +45,22 @@ come back out into libreboot\_src/resources/grub:
     $ cd ../libreboot\_src/resources/grub/font
 
 I took Dejavu Sans Mono from dejavu (included in this version of
-libreboot) and did:\
-**\$ ../../../grub/grub-mkfont -o dejavusansmono.pf2
-dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf**
+libreboot) and did:
+
+    $ ../../../grub/grub-mkfont -o dejavusansmono.pf2 dejavu-fonts-ttf-2.34/ttf/DejaVuSansMono.ttf
 
 I then added the instructions to 'gen.sh' script in grub-assemble to
 include resources/grub/dejavusansmono.pf2 in all of the ROM images, at
 the root of the GRUB memdisk.\
 I then added that instructions to the grub.cfg files (to load the
-font):\
-**loadfont (memdisk)/dejavusansmono.pf2**
+font):
 
-GRUB keyboard layouts (for reference) {#grub_keyboard}
+    loadfont (memdisk)/dejavusansmono.pf2
+
+GRUB keyboard layouts (for reference)
 =====================================
 
-Custom keyboard layout in GRUB (for reference) {#grub_custom_keyboard}
+Custom keyboard layout in GRUB (for reference)
 ----------------------------------------------
 
 Keymaps are stored in resources/utilities/grub-assemble/keymap/.
@@ -73,8 +69,9 @@ Example (French Azerty):
 
     $ ckbcomp fr > frazerty
 
-Go in grub directory:\
-**cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
+Go in grub directory:
+
+    $ cat frazerty | ./grub/grub-mklayout -o frazerty.gkb
 
 You must make sure that the files are named keymap and keymap.gkb (where
 'keymap' can be whatever you want).
@@ -88,7 +85,7 @@ The build scripts will automatically see this, and automatically build
 ROM images with your custom layout (given the name) and include them
 under bin. Example: **libreboot\_frazerty.rom**.
 
-UK Dvorak keyboard layout in GRUB (for reference) {#grub_ukdvorak_keyboard}
+UK Dvorak keyboard layout in GRUB (for reference)
 -------------------------------------------------
 
 ukdvorak had to be created manually, based on usdvorak. diff them (under

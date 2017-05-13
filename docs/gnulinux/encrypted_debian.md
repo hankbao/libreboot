@@ -22,17 +22,20 @@ tampering by someone with physical access to the system.
 
 This guide is written for Debian net installer. You can download the ISO
 from the homepage on [debian.org](https://www.debian.org/). Use this on
-the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):\
-**set root='usb0'\
-linux /install.amd/vmlinuz\
-initrd /install.amd/initrd.gz\
-boot\
-** If you are on a 32-bit system (e.g. X60):\
-**set root='usb0'\
-linux /install.386/vmlinuz\
-initrd /install.386/initrd.gz\
-boot**
+the GRUB terminal to boot it from USB (for 64-bit Intel or AMD):
 
+    set root='usb0'
+    linux /install.amd/vmlinuz
+    initrd /install.amd/initrd.gz
+    boot
+    
+If you are on a 32-bit system (e.g. X60):
+
+    set root='usb0'
+    linux /install.386/vmlinuz
+    initrd /install.386/initrd.gz
+    boot
+    
 [This guide](grub_boot_installer.md) shows how to create a boot USB
 drive with the Debian ISO image.
 
@@ -165,13 +168,11 @@ Booting your system
 ===================
 
 At this point, you will have finished the installation. At your GRUB
-payload, press C to get to the command line.
+payload, press C to get to the command line, and enter:
 
-Do that:\
     grub> cryptomount -a
-    grub> set root='lvm/matrix-rootvol'\
-grub> **linux /vmlinuz root=/dev/mapper/matrix-rootvol
-cryptdevice=/dev/mapper/matrix-rootvol:root**\
+    grub> set root='lvm/matrix-rootvol'
+    grub> linux /vmlinuz root=/dev/mapper/matrix-rootvolcryptdevice=/dev/mapper/matrix-rootvol:root
     grub> initrd /initrd.img
     grub> boot
 
@@ -200,12 +201,11 @@ Modify your grub.cfg (in the firmware) [using this
 tutorial](grub_cbfs.md); just change the default menu entry 'Load
 Operating System' to say this inside:
 
-**cryptomount -a**\
-**set root='lvm/matrix-rootvol'**\
-**linux /vmlinuz root=/dev/mapper/matrix-rootvol
-cryptdevice=/dev/mapper/matrix-rootvol:root**\
-**initrd /initrd.img**
-
+    cryptomount -a
+    set root='lvm/matrix-rootvol'
+    linux /vmlinuz root=/dev/mapper/matrix-rootvolcryptdevice=/dev/mapper/matrix-rootvol:root
+    initrd /initrd.img
+    
 Without specifying a device, the *-a* parameter tries to unlock all
 detected LUKS volumes. You can also specify -u UUID or -a (device).
 

@@ -31,15 +31,10 @@ image:
 
 Helpful links:
 
--   [GRUB manual
-    \#security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
-
--   [GRUB info
-    pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
--   [SATA connected storage considered dangerous until proven
-    otherwise.](../../faq.md#firmware-hddssd)
--   [Coreboot GRUB security
-    howto](https://www.coreboot.org/GRUB2#Security)
+-   [GRUB manual](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
+-   [GRUB info pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
+-   [SATA connected storage considered dangerous.](../../faq.md#firmware-hddssd)
+-   [Coreboot GRUB security howto](https://www.coreboot.org/GRUB2#Security)
 
 GRUB Password
 =============
@@ -159,6 +154,7 @@ Now that we have a key, we can sign some files with it. We have to sign:
 Suppose that we have a pair of **my.kernel** and **my.initramfs** and an
 on-disk **libreboot\_grub.cfg**. We sign them by issuing the following
 commands:
+
     gpg --homedir keys --detach-sign my.initramfs
     gpg --homedir keys --detach-sign my.kernel
     gpg --homedir keys --detach-sign libreboot_grub.cfg

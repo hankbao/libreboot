@@ -45,7 +45,7 @@ If you aren't up to that then don't worry; it is possible to use a
 custom GRUB menu without flashing a new image, by loading a GRUB
 configuration from a partition on the main storage instead.
 
-1st option: don't re-flash {#option1_dont_reflash}
+1st option: don't re-flash
 ---------------------------
 
 By default, GRUB in libreboot is configured to scan all partitions on
@@ -81,13 +81,13 @@ of this page is irrelevant to you); **in libreboot\_grub.cfg on disk, if
 you are adapting it based on grub.cfg from CBFS then remove the check
 for libreboot\_grub.cfg otherwise it will loop.**.
 
-2nd option: re-flash {#option2_reflash}
+2nd option: re-flash
 --------------------
 
 You can modify what is stored inside the flash chip quite easily. Read
 on to find out how.
 
-Acquire the necessary utilities {#tools}
+Acquire the necessary utilities
 -------------------------------
 
 Use ***cbfstool*** and ***flashrom***. There are available in the
@@ -97,7 +97,7 @@ available from the repositories:
 
     # pacman -S flashrom
 
-Acquiring the correct ROM image {#rom}
+Acquiring the correct ROM image
 -------------------------------
 
 You can either work directly with one of the ROM images already included
@@ -116,7 +116,7 @@ to the command, for example:
 
     # flashrom -c MX25L6405 -p internal -r libreboot.rom
 
-Extract grubtest.cfg from the ROM image {#extract_testconfig}
+Extract grubtest.cfg from the ROM image
 ---------------------------------------
 
 You can check the contents of the ROM image, inside CBFS:
@@ -136,7 +136,7 @@ Extract grubtest.cfg from the ROM image:
 
 Modify the grubtest.cfg accordingly.
 
-Re-insert the modified grubtest.cfg into the ROM image {#reinsert_modified_testconfig}
+Re-insert the modified grubtest.cfg into the ROM image
 ------------------------------------------------------
 
 Once your grubtest.cfg is modified and saved, delete the unmodified
@@ -174,7 +174,7 @@ sceptical in any way, then re-do the steps above until you get it right!
 Do \*not\* proceed past this point unless you are 100% sure that your
 new configuration is safe (or desirable) to use.**
 
-Final steps {#final_steps}
+Final steps
 -----------
 
 When you are satisfied booting from grubtest.cfg, you can create a copy
