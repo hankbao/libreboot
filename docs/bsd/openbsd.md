@@ -151,14 +151,12 @@ command to boot OpenBSD every time, you can create a GRUB configuration
 that's aware of your OpenBSD installation and that will automatically
 be used by libreboot.
 
-On your OpenBSD root partition, create the **/grub** directory and add
-the file **libreboot\_grub.cfg** to it. Inside the
-**libreboot\_grub.cfg** add these lines:
+On your OpenBSD root partition, create the `/grub` directory and add the file
+`libreboot_grub.cfg` to it. Inside the `libreboot_grub.cfg` add these lines:
 
-**default=0 timeout=3 menuentry "OpenBSD" {\
-    kopenbsd -r sd0a (ahci0,openbsd1)/bsd\
-}\
-**
+    default=0 timeout=3 menuentry "OpenBSD" {
+        kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+    }
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
@@ -176,7 +174,7 @@ because it doesn't exist.
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won't boot\...something about file not found
+Won't boot\...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
