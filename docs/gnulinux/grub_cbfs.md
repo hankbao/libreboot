@@ -120,7 +120,7 @@ Extract grubtest.cfg from the ROM image {#extract_testconfig}
 
 You can check the contents of the ROM image, inside CBFS:
 
-    $ cd \.../libreboot\_util/cbfstool** $ ./cbfstool libreboot.rom
+    $ cd .../libreboot\_util/cbfstool** $ ./cbfstool libreboot.rom
 
 print**
 
@@ -160,7 +160,7 @@ complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
     # ./flash forceupdate libreboot.rom
 
-You should see **"Verifying flash\... VERIFIED."** written at the end
+You should see **"Verifying flash... VERIFIED."** written at the end
 of the flashrom output. Once you have done that, shut down and then boot
 up with your new test configuration.**
 

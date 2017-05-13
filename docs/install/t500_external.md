@@ -285,7 +285,7 @@ path/to/libreboot/rom/image.rom -V
 
 ![](images/x200/disassembly/0015.jpg)
 
-You might see errors, but if it says **Verifying flash\... VERIFIED** at
+You might see errors, but if it says **Verifying flash... VERIFIED** at
 the end, then it's flashed and should boot. If you see errors, try
 again (and again, and again); the message **Chip content is identical to
 the requested image** is also an indication of a successful
