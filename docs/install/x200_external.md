@@ -20,6 +20,7 @@ Flash chip size {#flashchips}
 ===============
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
@@ -139,6 +140,7 @@ Log in as root on your BBB, using the instructions in
 [bbb\_setup.html\#bbb\_access](bbb_setup.html#bbb_access).
 
 Test that flashrom works:
+
     # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512
 
 In this case, the output was:
@@ -180,6 +182,7 @@ image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
 Now flash it:
+
     # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V
 
 ![](images/x200/disassembly/0015.jpg)

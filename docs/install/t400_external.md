@@ -59,6 +59,7 @@ Flash chip size {#flashchips}
 ===============
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 MAC address {#macaddress}
@@ -212,6 +213,7 @@ Log in as root on your BBB, using the instructions in
 [bbb\_setup.html\#bbb\_access](bbb_setup.html#bbb_access).
 
 Test that flashrom works:
+
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
 
 In this case, the output was:

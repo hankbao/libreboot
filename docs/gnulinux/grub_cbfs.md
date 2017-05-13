@@ -94,6 +94,7 @@ Use ***cbfstool*** and ***flashrom***. There are available in the
 *libreboot\_util* release archive, or they can be compiled (see
 [../git/\#build\_flashrom](../git/#build_flashrom)). Flashrom is also
 available from the repositories:
+
     # pacman -S flashrom
 
 Acquiring the correct ROM image {#rom}
@@ -158,6 +159,7 @@ flash it.
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
+
     # ./flash forceupdate libreboot.rom
 
 You should see **"Verifying flash... VERIFIED."** written at the end

@@ -55,9 +55,11 @@ careful about this when reading anything on the Arch wiki.
 
 Some of these steps require internet access. I'll go into networking
 later but for now, I just connected my system to a switch and did:
+
     # systemctl start dhcpcd.service
 
 You can stop it later by running:
+
     # systemctl stop dhcpcd.service\
 
 For most people this should be enough, but if you don't have DHCP on

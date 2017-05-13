@@ -157,6 +157,7 @@ Here are some example photos:\
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
 directly accessible from SSH, or screen:
+
     # screen /dev/ttyACM0 115200
 
 You can also access the uboot console, using the serial method instead

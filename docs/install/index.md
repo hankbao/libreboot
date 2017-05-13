@@ -249,6 +249,7 @@ Flash chip size
 ---------------
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 All good?
