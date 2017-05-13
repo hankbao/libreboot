@@ -278,38 +278,57 @@ server)) and then did:
 In my case I did the steps in the next paragraph, and followed the steps
 in this paragraph again.
 
-<troubleshooting>\
-   The following is based on 'Verification of package signatures' in
-the Parabola install guide.\
-   Check there first to see if steps differ by now.\
-   Now you have to update the default Parabola keyring. This is used for
-signing and verifying packages:\
-   \# **pacman -Sy parabola-keyring**\
-   It says that if you get GPG errors, then it's probably an expired
-key and, therefore, you should do:\
-   \# **pacman-key --populate parabola**\
-   \# **pacman-key --refresh-keys**\
-   \# **pacman -Sy parabola-keyring**\
-   To be honest, you should do the above anyway. Parabola has a lot of
-maintainers, and a lot of keys. Really!\
-   If you get an error mentioning dirmngr, do:\
-   \# **dirmngr </dev/null**\
-   Also, it says that if the clock is set incorrectly then you have to
-manually set the correct time\
-   (if keys are listed as expired because of it):\
-   \# **date MMDDhhmm\[\[CC\]YY\]\[.ss\]**\
-   I also had to install:\
-   \# **pacman -S archlinux-keyring**\
-   \# **pacman-key --populate archlinux**\
-   In my case I saw some conflicting files reported in pacman, stopping
-me from using it.\
-   I deleted the files that it mentioned and then it worked.
-Specifically, I had this error:\
-   *licenses: /usr/share/licenses/common/MPS exists in filesystem*\
-   I rm -Rf'd the file and then pacman worked. I'm told that the
-following would have also made it work:\
-   \# **pacman -Sf licenses**\
-</troubleshooting>\
+Troubleshooting
+---------------
+
+The following is based on 'Verification of package signatures' in
+the Parabola install guide.
+
+Check there first to see if steps differ by now.
+
+Now you have to update the default Parabola keyring. This is used for
+signing and verifying packages:
+
+   # pacman -Sy parabola-keyring
+
+It says that if you get GPG errors, then it's probably an expired
+key and, therefore, you should do:
+
+   # pacman-key --populate parabola
+   # pacman-key --refresh-keys
+   # pacman -Sy parabola-keyring
+
+To be honest, you should do the above anyway. Parabola has a lot of
+maintainers, and a lot of keys. Really!
+
+If you get an error mentioning dirmngr, do:
+
+   # dirmngr < /dev/null
+
+Also, it says that if the clock is set incorrectly then you have to manually
+set the correct time
+
+   # date MMDDhhmm\[\[CC\]YY\]\[.ss\]
+
+I also had to install:
+
+   # pacman -S archlinux-keyring
+   # pacman-key --populate archlinux
+
+In my case I saw some conflicting files reported in pacman, stopping
+me from using it.
+I deleted the files that it mentioned and then it worked.
+Specifically, I had this error:
+
+   licenses: /usr/share/licenses/common/MPS exists in filesystem
+
+I rm -Rf'd the file and then pacman worked. I'm told that the
+following would have also made it work:
+
+    # pacman -Sf licenses
+
+More packages
+--------------
 
 I also like to install other packages (base-devel, compilers and so on)
 and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
