@@ -13,7 +13,8 @@ body {
 body {
     line-height: 1.6;
     font-family: Cantarell, sans-serif;
-    font-size: 1.1em; color: #222;
+    font-size: 1.1em;
+    color: #222;
 }
 
 #logo {
@@ -34,14 +35,10 @@ a:hover {
     display: block;
 }
 
-h1, h2, h3 {
+h1, h2, h3, .h:hover {
     display: inline;
 }
 
 .h a {
     display: none;
-}
-
-.h:hover a {
-    display: inline;
 }
