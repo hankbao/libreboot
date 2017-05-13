@@ -1,5 +1,6 @@
 ---
 title: KGPE-D16 external flashing instructions 
+x-toc-enable: true
 ...
 
 Initial flashing instructions for KGPE-D16.
@@ -17,12 +18,7 @@ For more general information about this board, refer to
 
 TODO: show photos here, and other info.
 
--   [KGPE-D16 boards (and full systems) with libreboot
-    preinstalled](#preinstall)
-
--   [External programmer](#programmer)
-
-External programmer {#programmer}
+External programmer 
 ===================
 
 Refer to [bbb\_setup.md](bbb_setup.md) for a guide on how to set up

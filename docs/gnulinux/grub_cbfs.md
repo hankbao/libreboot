@@ -1,5 +1,6 @@
 ---
 title: How to replace the default GRUB configuration file 
+x-toc-enable: true
 ...
 
 Libreboot on x86 uses the GRUB
@@ -26,20 +27,6 @@ Here is an excellent writeup about CBFS (coreboot filesystem):
 
 **This guide is \*only\* for the GRUB payload. If you use the
 depthcharge payload, ignore this section entirely.**
-
-Table of Contents
-=================
-
--   [Introduction](#introduction)
--   [1st option: don't re-flash](#option1_dont_reflash)
--   [2nd option: re-flash](#option2_reflash)
-    -   [Acquire the necessary utilities](#tools)
-    -   [Acquiring the correct ROM image](#rom)
-    -   [Extract grubtest from the ROM image](#extract_testconfig)
-    -   [Re-insert the modified grubtest.cfg into the ROM
-        image](#reinsert_modified_testconfig)
-    -   [Testing](#testing)
-    -   [Final steps](#final_steps)
 
 Introduction
 ------------

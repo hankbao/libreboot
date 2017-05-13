@@ -1,43 +1,12 @@
 ---
 title: Configuring Parabola (post-install) 
+x-toc-enable: true
 ...
 
 Post-installation configuration steps for Parabola GNU+Linux-libre.
 Parabola is extremely flexible; this is just an example. This example
 uses LXDE because it's lightweight, but we recommend the *MATE* desktop
 (which is actually about as lightweight as LXDE).
-
-Table of Contents
-=================
-
--   [Configuring pacman](#pacman_configure)
-    -   [Updating Parabola](#pacman_update)
-    -   [Maintaining Parabola during system updates](#pacman_maintain)
-        -   [Clearing package cache after updating](#pacman_cacheclean)
-        -   [Pacman command equivalents (compared to other package
-            managers)](#pacman_commandequiv)
-    -   [your-freedom](#yourfreedom)
-
--   [Add a user account](#useradd)
--   [System D](#systemd)
--   [Interesting repositories](#interesting_repos)
--   [Setup a network connection in Parabola](#network)
-    -   [Setting hostname](#network_hostname)
-    -   [Network status](#network_status)
-    -   [Network interface names](#network_devicenames)
-    -   [Network setup](#network_setup)
--   [System maintenance](#system_maintain) - important!
--   [Configuring the desktop](#desktop)
-    -   [Install Xorg](#desktop_xorg)
-    -   [Xorg keyboard layout](#desktop_kblayout)
-    -   [Install LXDE](#desktop_lxde)
-    -   [LXDE - clock](#lxde_clock)
-    -   [LXDE - font](#lxde_font)
-    -   [LXDE - screenlock](#lxde_screenlock)
-    -   [LXDE - automounting](#lxde_automount)
-    -   [LXDE - disable suspend](#lxde_suspend)
-    -   [LXDE - battery monitor](#lxde_battery)
-    -   [LXDE - network manager](#lxde_network)
 
 While not strictly related to the libreboot project, this guide is
 intended to be useful for those interested in installing Parabola on

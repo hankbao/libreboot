@@ -1,5 +1,6 @@
 ---
 title: Instructions for compiling from the source code
+x-toc-enable: true
 ...
 
 Depthcharge is currently not documented, since it is in the new build
@@ -9,15 +10,7 @@ included in the BUILD\_HOWTO file in libreboot.git or \_src.
 This section relates to building libreboot from source, and working with
 the git repository.
 
--   [Install build dependencies](#build_dependencies)
--   [Get the full source code from metadata (git clone)](#build_meta)
--   [How to build "bucts" (for LenovoBIOS
-    X60/X60S/X60T/T60)](#build_bucts)
-
--   [How to build "flashrom"](#build_flashrom)
--   [How to build the ROM images](#build)
-
-Install build dependencies {#build_dependencies}
+Install build dependencies 
 ==========================
 
 Before doing anything, you need the dependencies first. This is true if
@@ -38,7 +31,7 @@ or:
 
 For other GNU+Linux distributions, you can adapt the existing scripts.
 
-Get the full source code from metadata (git clone) {#build_meta}
+Get the full source code from metadata (git clone) 
 ==================================================
 
 If you downloaded libreboot from git, then there are some steps to
@@ -79,7 +72,7 @@ them. Read the script in a text editor to learn more.
 
 To build the ROM images, see [\#build](#build).
 
-How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60) {#build_bucts}
+How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60) 
 =========================================================
 
 **This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and
@@ -136,7 +129,7 @@ To statically compile it, do this:
 The "builddeps" script in libreboot\_src also makes use of
 builddeps-bucts.
 
-How to build "flashrom" {#build_flashrom}
+How to build "flashrom" 
 =========================
 
 Flashrom is the utility for flashing/dumping ROM images. This is what
@@ -177,7 +170,7 @@ executables:
 The "builddeps" script in libreboot\_src also makes use of
 builddeps-flashrom.
 
-How to build the ROM images {#build}
+How to build the ROM images 
 ===========================
 
 You don't need to do much, as there are scripts already written for you

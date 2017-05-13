@@ -1,5 +1,6 @@
 ---
 title: KCMA-D8 external flashing instructions 
+x-toc-enable: true
 ...
 
 Initial flashing instructions for kcma-d8.
@@ -16,11 +17,6 @@ For more general information about this board, refer to
 [../hardware/kcma-d8.md](../hardware/kcma-d8.md).
 
 TODO: show photos here, and other info.
-
--   [kcma-d8 boards (and full systems) with libreboot
-    preinstalled](#preinstall)
-
--   [External programmer](#programmer)
 
 External programmer {#programmer}
 ===================

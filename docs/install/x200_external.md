@@ -1,5 +1,6 @@
 ---
 title: Flashing the X200 with a BeagleBone Black 
+x-toc-enable: true
 ...
 
 Initial flashing instructions for X200.
@@ -7,17 +8,6 @@ Initial flashing instructions for X200.
 This guide is for those who want libreboot on their ThinkPad X200 while
 they still have the original Lenovo BIOS present. This guide can also be
 followed (adapted) if you brick your X200, to know how to recover.
-
--   [X200 laptops with libreboot pre-installed](#preinstall)
--   [Flash chips](#flashchips)
--   [MAC address](#macaddress)
--   [Initial BBB configuration and installation procedure](#clip)
--   [Boot it!](#boot)
--   [Wifi](#wifi)
--   [wwan](#wwan)
--   [Intel Turbo Memory](#turbomem)
--   [Memory](#memory)
--   [X200S and X200 Tablet users: GPIO33 trick will not work.](#gpio33)
 
 X200 laptops with libreboot pre-installed {#preinstall}
 =========================================

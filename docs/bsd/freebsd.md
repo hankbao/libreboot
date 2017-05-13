@@ -1,5 +1,6 @@
 ---
 title: How to install FreeBSD on a libreboot system
+x-toc-enable: true
 ...
 
 This section relates to preparing, booting and installing FreeBSD on
@@ -18,13 +19,6 @@ TODO: test FreeBSD more extensively, and make sure it works (and fix it
 if it does not). Instructions are provided here, to boot and install
 FreeBSD but we're not sure whether it is currently fully compatible
 with libreboot.
-
--   [Prepare the USB drive (in FreeBSD)](#prepare)
--   [Installing FreeBSD without full disk encryption](#noencryption)
--   [Installing FreeBSD with full disk encryption](#encryption)
--   [Booting](#booting)
--   [Configuring Grub](#configuring_grub)
--   [Troubleshooting](#troubleshooting)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the

@@ -1,17 +1,11 @@
 ---
 title: How to install GNU+Linux on a libreboot system
+x-toc-enable: true
 ...
 
 This section relates to preparing, booting and installing a GNU+Linux
 distribution on your libreboot system, using nothing more than a USB
 flash drive (and *dd*).
-
--   [Prepare the USB drive (in GNU+Linux)](#prepare)
--   [Installing GNU+Linux with full disk encryption](#encryption)
--   [Debian or Devuan net install?](#debian_netinstall)
--   [Booting ISOLINUX images (automatic method)](#parse_isolinux)
--   [Booting ISOLINUX images (manual method)](#manual_isolinux)
--   [Troubleshooting](#troubleshooting)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the

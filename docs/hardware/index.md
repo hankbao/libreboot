@@ -1,22 +1,11 @@
 ---
 title: Hardware compatibility list 
+x-toc-enable: true
 ...
 
 This sections relates to known hardware compatibility in libreboot.
 
 For installatation instructions, refer to [../install/](../install/).
-
--   [List of supported hardware](#supported_list)
-    -   [Desktops (x86, AMD and Intel)](#supported_desktops_x86amdintel)
-    -   [Servers/workstations](#supported_workstations_x86amd)
-    -   [Laptops (ARM)](#supported_laptops_arm)
-    -   [Laptops (Intel, x86)](#supported_laptops_x86intel)
-
--   NOTES:
-    -   [Updating the EC firmware on i945 and GM45
-        (recommended)](#ecupdate)
-    -   [How to find what EC version you have (i945/GM45)](#ecversion)
--   [Recommended wifi chipsets](#recommended_wifi)
 
 List of supported hardware {#supported_list}
 --------------------------

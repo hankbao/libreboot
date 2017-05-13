@@ -1,5 +1,6 @@
 ---
 title: How to install NetBSD on a libreboot system
+x-toc-enable: true
 ...
 
 This section relates to preparing, booting and installing NetBSD on your
@@ -13,13 +14,6 @@ according to at least 1 user.**
 Thanks go to ioxcide in [this Reddit
 post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
 for the initial instructions.
-
--   [Prepare the USB drive (in NetBSD)](#prepare)
--   [Installing NetBSD without full disk encryption](#noencryption)
--   [Installing NetBSD with full disk encryption](#encryption)
--   [Booting](#booting)
--   [Configuring Grub](#configuring_grub)
--   [Troubleshooting](#troubleshooting)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the

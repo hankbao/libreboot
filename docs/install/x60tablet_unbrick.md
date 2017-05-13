@@ -1,17 +1,10 @@
 ---
 title: ThinkPad X60 Tablet Recovery guide
+x-toc-enable: true
 ...
 
 This section documents how to recover from a bad flash that prevents
 your ThinkPad X60 Tablet from booting.
-
-Table of Contents
------------------
-
--   Types of brick:
-    -   [Brick type 1: bucts not reset](#bucts_brick)
-    -   [Brick type 2: bad rom (or user error), system won't
-        boot](#recovery)
 
 Brick type 1: bucts not reset. {#bucts_brick}
 ==============================

@@ -1,5 +1,6 @@
 ---
 title: How to install LibertyBSD or OpenBSD on a libreboot system
+x-toc-enable: true
 ...
 
 NOTE: This guide was written for OpenBSD by the person who contributed
@@ -12,13 +13,6 @@ LibertyBSD and prioritise that in this guide.
 This section relates to preparing, booting and installing OpenBSD on
 your libreboot system, using nothing more than a USB flash drive (and
 *dd*). They've only been tested on a Lenovo ThinkPad x200.
-
--   [Prepare the USB drive (in OpenBSD)](#prepare)
--   [Installing OpenBSD without full disk encryption](#noencryption)
--   [Installing OpenBSD with full disk encryption](#encryption)
--   [Booting](#booting)
--   [Configuring Grub](#configuring_grub)
--   [Troubleshooting](#troubleshooting)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
