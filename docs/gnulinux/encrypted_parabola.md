@@ -544,9 +544,11 @@ You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
 would be really nice):
 
     $ ./cbfstool libreboot.rom print
+
 Extract grubtest.cfg:
 
     $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg\
+
 And modify:
 
     $ vi grubtest.cfg
@@ -580,6 +582,7 @@ Save your changes in grubtest.cfg, then delete the unmodified config
 from the ROM image:
 
     $ ./cbfstool libreboot.rom remove -n grubtest.cfg
+
 and insert the modified grubtest.cfg:\
 \$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw**\
@@ -625,6 +628,7 @@ grub.cfg**\
 Delete the grub.cfg that remained inside the ROM:
 
     $ ./cbfstool libreboot.rom remove -n grub.cfg
+
 Add the modified version that you just made:
 
     $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw

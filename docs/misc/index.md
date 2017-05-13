@@ -224,9 +224,11 @@ package i2c-tools.
 
     $ sudo modprobe i2c-dev
     $ sudo i2cdump -y 5 0x50 (you might have to change the value for
+
 -y)
 
     $ sudo rmmod i2c-dev
+
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically

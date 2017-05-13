@@ -72,6 +72,7 @@ generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:
 
     $ ./ich9gen --macaddress XX:XX:XX:XX:XX:XX
+
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -166,6 +167,7 @@ you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:
 
     $ ./oldbuild module ich9deblob
+
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 

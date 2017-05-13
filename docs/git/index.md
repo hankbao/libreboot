@@ -23,11 +23,13 @@ For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:
 
     $ sudo ./oldbuild dependencies debian
+
 (this will also work in Devuan)
 
 For Parabola, you can run the following command:
 
     $ sudo ./oldbuild dependencies parabola\
+
 or:
     # ./oldbuild dependencies parabola
 
@@ -52,6 +54,7 @@ requirement is:
 
     $ git config --global user.name "Your Name"
     $ git config --global user.email your@emailaddress.com
+
 This is what will also appear in git logs if you ever commit your own
 changes to a given repository. For more information, see
 <http://git-scm.com/doc>.
@@ -206,12 +209,14 @@ modulename*. To see the possible values for *modulename*, use:
 After that, build the ROM images (for all boards):
 
     $ ./oldbuild roms withgrub
+
 Alternatively, you can build for a specific board or set of boards. For
 example:
 
     $ ./oldbuild roms withgrub x60
     $ ./oldbuild roms withgrub x200\_8mb
     $ ./oldbuild roms withgrub x60 x200\_8mb
+
 The list of board options can be found by looking at the directory names
 in **resources/libreboot/config/grub/**.
 
@@ -309,6 +314,7 @@ The command that you used for generating the release archives will also
 run the following command:
 
     $ ./oldbuild release tobuild
+
 The archive **tobuild.tar.xz** will have been created under
 **release/oldbuildsystem/**, containing bucts, flashrom and all other
 required resources for building them.

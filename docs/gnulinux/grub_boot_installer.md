@@ -66,6 +66,7 @@ how to create the bootable GNU+Linux USB drive:
 Connect the USB drive. Check dmesg:
 
     $ dmesg | tail
+
 Check to confirm which drive it is, for example, if you think its sd3:
 
     $ disklabel sd3

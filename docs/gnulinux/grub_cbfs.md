@@ -120,6 +120,7 @@ Extract grubtest.cfg from the ROM image {#extract_testconfig}
 You can check the contents of the ROM image, inside CBFS:
 
     $ cd \.../libreboot\_util/cbfstool** $ ./cbfstool libreboot.rom
+
 print**
 
 The files *grub.cfg* and *grubtest.cfg* should be present. grub.cfg is
@@ -152,6 +153,7 @@ Testing
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it.
     $ cd /libreboot\_util** \# **./flash update libreboot.rom\
+
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:

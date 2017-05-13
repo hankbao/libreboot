@@ -74,6 +74,7 @@ the bootable OpenBSD USB drive:
 Connect the USB drive. Check dmesg:
 
     $ dmesg
+
 Check lsblk to confirm which drive it is:
 
     $ lsblk

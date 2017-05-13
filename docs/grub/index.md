@@ -43,6 +43,7 @@ This is a free font that is also contained in GNU+Linux distributions
 like Debian, Devuan or Parabola.
 
     $ cd libreboot\_src/grub
+
 compile grub (the build scripts info on how to do this)\
 come back out into libreboot\_src/resources/grub:
 
@@ -71,6 +72,7 @@ Keymaps are stored in resources/utilities/grub-assemble/keymap/.
 Example (French Azerty):
 
     $ ckbcomp fr > frazerty
+
 \
 Go in grub directory:\
 **cat frazerty | ./grub/grub-mklayout -o frazerty.gkb**
