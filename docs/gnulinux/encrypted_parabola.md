@@ -336,7 +336,7 @@ I also like to install other packages (base-devel, compilers and so on)
 and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
 the install:
 
-    # pacstrap /mnt base base-devel wpa\_supplicant dialog iw
+    # pacstrap /mnt base base-devel wpa_supplicant dialog iw
 
 wpa\_actiond
 
@@ -386,8 +386,8 @@ Uncomment your needed localisations. For example en\_GB.UTF-8 (UTF-8 is
 highly recommended over other options).
 
     # locale-gen
-    # echo LANG=en\_GB.UTF-8 > /etc/locale.conf
-    # export LANG=en\_GB.UTF-8
+    # echo LANG=en_GB.UTF-8 > /etc/locale.conf
+    # export LANG=en_GB.UTF-8
 
 Console font and keymap:
 
@@ -501,7 +501,7 @@ file=/var/log/faillog*\
 To unlock a user manually (if a password attempt is failed 3 times),
 do:
 
-    # pam\_tally --user *theusername* --reset What the above
+    # pam_tally --user *theusername* --reset What the above
 
 configuration does is lock the user out for 10 minutes, if they make 3
 failed login attempts.

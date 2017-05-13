@@ -211,8 +211,8 @@ Output:
 
 Then:
 
-    # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots
-    # cat /sys/devices/bone\_capemgr.\*/slots
+    # echo BB-SPI0-01 > /sys/devices/bone_capemgr.\*/slots
+    # cat /sys/devices/bone_capemgr.\*/slots
 
 Output:
 
@@ -251,7 +251,7 @@ your BBB.
 
 Now test flashrom:
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512
 
 Output:
 

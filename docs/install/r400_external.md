@@ -216,7 +216,7 @@ Log in as root on your BBB, using the instructions in
 
 Test that flashrom works:
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512\
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512\
 
 In this case, the output was:
 
@@ -232,15 +232,15 @@ In this case, the output was:
 How to backup factory.rom (change the -c option as neeed, for your flash
 chip):
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
 
 factory.rom
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
 
 factory1.rom
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
 
 factory2.rom
 
@@ -266,7 +266,7 @@ address to one that is correct for your system.**
 
 Now flash it:
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w
 
 path/to/libreboot/rom/image.rom -V
 
