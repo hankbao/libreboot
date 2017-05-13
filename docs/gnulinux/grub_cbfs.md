@@ -106,6 +106,7 @@ image file is named *libreboot.rom*, so please make sure to adapt.
 
 ROM images are included pre-compiled in libreboot. You can also dump
 your current firmware, using flashrom:
+
     $ sudo flashrom -p internal -r libreboot.rom
     # flashrom -p internal -r libreboot.rom
 If you are told to specify the chip, add the option **-c {your chip}**

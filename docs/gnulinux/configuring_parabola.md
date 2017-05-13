@@ -545,6 +545,7 @@ start lxde without lxdm. Read
 <https://wiki.archlinux.org/index.php/Xinitrc>.
 
 Open LXterminal:
+
     $ cp /etc/skel/.xinitrc \~
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.\
@@ -556,6 +557,7 @@ export LANG=en\_GB.UTF-8\
 \# Start lxde desktop\
 exec startlxde\
 * Now make sure that it is executable:
+
     $ chmod +x .xinitrc
 
 ### LXDE - clock {#lxde_clock}

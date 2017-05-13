@@ -268,6 +268,7 @@ appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
 How to update the flash chip contents:
+
     $ sudo ./flash update [yourrom.rom](#rom)
 
 Ocassionally, coreboot changes the name of a given board. If flashrom

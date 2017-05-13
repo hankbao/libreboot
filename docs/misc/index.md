@@ -201,10 +201,12 @@ is included in libreboot, and can be used to enable or disable this
 behaviour.
 
 Disable or enable beeps when removing/adding the charger:
+
     $ sudo ./nvramtool -w power\_management\_beeps=Enable
     $ sudo ./nvramtool -w power\_management\_beeps=Disable
 
 Disable or enable beeps when battery is low:
+
     $ sudo ./nvramtool -w low\_battery\_beep=Enable
 
     $ sudo ./nvramtool -w low\_battery\_beep=Disable

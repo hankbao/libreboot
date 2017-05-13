@@ -182,6 +182,7 @@ If you didn't encrypt your home directory, then you can safely ignore
 this section.
 
 Immediately after logging in, do that:
+
     $ sudo ecryptfs-unwrap-passphrase
 
 This will be needed in the future if you ever need to recover your home

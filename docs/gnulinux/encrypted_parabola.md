@@ -542,8 +542,10 @@ If flashrom complains about multiple flash chips detected, add a *-c*
 option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
 would be really nice):
+
     $ ./cbfstool libreboot.rom print
 Extract grubtest.cfg:
+
     $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg\
 And modify:
 
