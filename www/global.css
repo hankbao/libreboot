@@ -37,3 +37,15 @@ a:hover {
 .date {
     display: block;
 }
+
+h1, h2, h3 {
+    display: inline;
+}
+
+.h a {
+    display: none;
+}
+
+.h:hover a {
+    display: inline;
+}
