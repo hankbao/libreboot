@@ -1,34 +1,31 @@
 ---
-title: Flashing the X200 with a BeagleBone Black 
+title: Flashing the X200 with a BeagleBone Black
 x-toc-enable: true
 ...
-
-Initial flashing instructions for X200.
 
 This guide is for those who want libreboot on their ThinkPad X200 while
 they still have the original Lenovo BIOS present. This guide can also be
 followed (adapted) if you brick your X200, to know how to recover.
 
-X200 laptops with libreboot pre-installed {#preinstall}
+X200 laptops with libreboot pre-installed
 =========================================
 
 If you don't want to install libreboot yourself, companies exist that
 sell these laptops with libreboot pre-installed, along with a free
 GNU+Linux distribution.
 
-Flash chip size {#flashchips}
+Flash chip size
 ===============
 
 Use this to find out:
 
     # flashrom -p internal -V
 
-The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of
-the motherboard (this requires removal of the motherboard). **Not all
-X200S/X200T are supported; see
-[../hardware/x200.html\#x200s](../hardware/x200.html#x200s).**
+The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of the
+motherboard (this requires removal of the motherboard). Not all X200S/X200T are
+supported; see [here](../hardware/x200.html#x200s).
 
-MAC address {#macaddress}
+MAC address
 ===========
 
 On the X200/X200S/X200T, the MAC address for the onboard gigabit
@@ -42,7 +39,7 @@ image before flashing it. It will be written in one of these locations:
 ![](images/x200/disassembly/0002.jpg)
 ![](images/x200/disassembly/0001.jpg)
 
-Initial BBB configuration {#clip}
+Initial BBB configuration
 =========================
 
 Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
@@ -81,12 +78,15 @@ header), for SOIC-8 (clip: Pomona 5250):
     Look at the pads in that photo, on the left and right. Those are for SOIC-16. Would it be possible to remove the SOIC-8 and solder a SOIC-16
     chip on those pins?
 
-**On the X200S and X200 Tablet the flash chip is underneath the board,
-in a WSON package. The pinout is very much the same as a SOIC-8, but such package makes it impossible to use testclip.
-In order to enable external flashing of device, chip has to be changed to SOIC-8 one. Such procedure requires hot air station and soldering station (with "knife" K-Tip to easily solder SOIC-8).\
-Check the list of SOIC-8 flash chips at
-[List of supported flash chips](https://www.flashrom.org/Supported_hardware#Supported_flash_chips)\
-25XX series SPI NOR Flash in 8/16MiB sizes will work fine with libreboot.
+On the X200S and X200 Tablet the flash chip is underneath the board, in a WSON
+package. The pinout is very much the same as a SOIC-8, but such package makes
+it impossible to use testclip.  In order to enable external flashing of device,
+chip has to be changed to SOIC-8 one. Such procedure requires hot air station
+and soldering station (with "knife" K-Tip to easily solder SOIC-8).
+
+Check the list of SOIC-8 flash chips at [List of supported flash
+chips](https://www.flashrom.org/Supported_hardware#Supported_flash_chips)\ 25XX
+series SPI NOR Flash in 8/16MiB sizes will work fine with libreboot.
 
 The procedure
 -------------
@@ -160,13 +160,13 @@ Here is how to backup factory.rom:
     # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory1.rom
     # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r factory2.rom
 
-**Note:** the **-c** option is not required in libreboot's patched
+Note: the `-c` option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.
 
 Now compare the 3 images:
 
-    # sha512sum factory\*.rom
+    # sha512sum factory*.rom
 
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
@@ -178,8 +178,8 @@ Follow the instructions at
 [../hardware/gm45\_remove\_me.html\#ich9gen](../hardware/gm45_remove_me.html#ich9gen)
 to change the MAC address inside the libreboot ROM image, before
 flashing it. Although there is a default MAC address inside the ROM
-image, this is not what you want. **Make sure to always change the MAC
-address to one that is correct for your system.**
+image, this is not what you want. Make sure to always change the MAC
+address to one that is correct for your system.
 
 Now flash it:
 
@@ -187,10 +187,10 @@ Now flash it:
 
 ![](images/x200/disassembly/0015.jpg)
 
-You might see errors, but if it says **Verifying flash... VERIFIED** at
+You might see errors, but if it says `Verifying flash... VERIFIED` at
 the end, then it's flashed and should boot. If you see errors, try
-again (and again, and again); the message **Chip content is identical to
-the requested image** is also an indication of a successful
+again (and again, and again); the message `Chip content is identical to
+the requested image` is also an indication of a successful
 installation.
 
 Example output from running the command (see above):
@@ -238,10 +238,16 @@ track your movements.
 
 Not to be confused with wifi (wifi is fine).
 
-Intel Turbo Memory {#turbomem}
+Intel Turbo Memory
 ==================
 
-Some X200 devices were sold with Intel Turbo Memory installed in the top-most mini PCI-e slot. This has been [shown to be ineffective](http://www.anandtech.com/show/2252) at disk caching or battery saving in most use cases. While there are [Linux drivers](https://github.com/yarrick/turbomem) available, it is blacklisted in at least GNU+Trisquel, and possibly other free operating systems. It should probably be removed.
+Some X200 devices were sold with Intel Turbo Memory installed in the top-most
+mini PCI-e slot. This has been [shown to be
+ineffective](http://www.anandtech.com/show/2252) at disk caching or battery
+saving in most use cases. While there are [Linux
+drivers](https://github.com/yarrick/turbomem) available, it is blacklisted in
+at least GNU+Trisquel, and possibly other free operating systems. It should
+probably be removed.
 
 Memory
 ======
@@ -259,7 +265,7 @@ In this photo, 8GiB of RAM (2x4GiB) is installed:
 
 ![](images/x200/disassembly/0018.jpg)
 
-Boot it! {#boot}
+Boot it!
 --------
 
 You should see something like this:
@@ -268,7 +274,7 @@ You should see something like this:
 
 Now [install GNU+Linux](../gnulinux/).
 
-X200S and X200 Tablet users: GPIO33 trick will not work. {#gpio33}
+X200S and X200 Tablet users: GPIO33 trick will not work.
 --------------------------------------------------------
 
 sgsit found out about a pin called GPIO33, which can be grounded to
