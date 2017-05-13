@@ -554,7 +554,7 @@ the file.\
 \# Based on advice from the LXDE wiki export LC\_ALL=en\_GB.UTF-8\
 export LANGUAGE=en\_GB.UTF-8\
 export LANG=en\_GB.UTF-8\
-\
+
 \# Start lxde desktop\
 exec startlxde\
 * Now make sure that it is executable:
@@ -648,8 +648,6 @@ add a new applet). I also later changed the icons to use the gnome icon
 theme, in *lxappearance*.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

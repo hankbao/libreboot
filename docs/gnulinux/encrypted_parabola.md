@@ -315,8 +315,6 @@ the install:
     # pacstrap /mnt base base-devel wpa\_supplicant dialog iw
 wpa\_actiond
 
-
-
 Configure the system
 --------------------
 
@@ -598,8 +596,6 @@ and insert the modified grubtest.cfg:
     # ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
 raw
 
-\
-
 Now refer to [../install/#flashrom](../install/#flashrom). Cd (up) to
 the libreboot\_util directory and update the flash chip contents:
 
@@ -640,7 +636,6 @@ with the following command:
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg
 
-\
 Delete the grub.cfg that remained inside the ROM:
 
     $ ./cbfstool libreboot.rom remove -n grub.cfg
@@ -683,7 +678,6 @@ Boot up and login as root or your user. Then generate the key file:
     # dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
 iflag=fullblock
 
-\
 Insert it into the luks volume:
 
     # cryptsetup luksAddKey /dev/sdX /etc/mykeyfile
@@ -700,7 +694,7 @@ Add the following to your grub.cfg - you are now able to do that, see
 above! -, or add it in the kernel command line for GRUB:
 
     # cryptkey=rootfs:/etc/mykeyfile
-\
+
 You can also place this inside the grub.cfg that exists in CBFS:
 [grub\_cbfs.md](grub_cbfs.md).
 
@@ -799,8 +793,6 @@ problems. Removing that worked around the issue.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

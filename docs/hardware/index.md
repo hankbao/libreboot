@@ -310,7 +310,7 @@ cannot be used with libreboot under any circumstances.
 The following T60 motherboard (see area highlighted in white) shows an
 empty space where the ATI GPU would be (this particular motherboard has
 an Intel GPU):\
-\
+
 ![](../images/t60_dev/t60_unbrick.jpg)
 
 The reason that the ATI GPU on T60 is unsupported is due to the VBIOS
@@ -530,8 +530,6 @@ available at *resources/utilities/macbook21-three-finger-tap* in the
 libreboot git repository.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

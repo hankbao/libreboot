@@ -195,8 +195,6 @@ The following parameters can be configured:
 
 Copyright © 2015 Paul Kocialkowski <contact@paulk.fr>\
 
-
-
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
 version published by the Free Software Foundation

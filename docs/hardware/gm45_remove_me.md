@@ -93,19 +93,15 @@ For 16MiB flash chips:
     # dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc
 
-\
 For 8MiB flash chips:
 
     # dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc
 
-\
 For 4MiB flash chips:
 
     # dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc
-
-\
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
 back to [../install/\#flashrom](../install/#flashrom) for how to flash
@@ -210,8 +206,6 @@ and then run:
     # dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
 conv=notrunc
 
-
-
 Alternatively, if you got a the **deblobbed\_4kdescriptor.bin** file (no
 GbE defined), do this: \$ **dd if=deblobbed\_4kdescriptor.bin
 of=libreboot.rom bs=1 count=4k conv=notrunc**
@@ -255,8 +249,6 @@ Keep the original factory.rom stored safely somewhere):
 
     # dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
 count=4k conv=notrunc
-
-
 
 TODO: test this.\
 TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
@@ -536,8 +528,6 @@ This is a 32K region from the factory image. It could be data
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

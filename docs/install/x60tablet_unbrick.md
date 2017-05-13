@@ -12,12 +12,12 @@ Brick type 1: bucts not reset. {#bucts_brick}
 You still have Lenovo BIOS, or you had libreboot running and you flashed
 another ROM; and you had bucts 1 set and the ROM wasn't dd'd.\* or if
 Lenovo BIOS was present and libreboot wasn't flashed.\
-\
+
 In this case, unbricking is easy: reset BUC.TS to 0 by removing that
 yellow cmos coin (it's a battery) and putting it back after a minute or
 two:\
 ![](../images/x60t_unbrick/0008.JPG)\
-\
+
 \*Those dd commands should be applied to all newly compiled X60 ROM
 images (the ROM images in libreboot binary archives already have this
 applied!):\
@@ -110,8 +110,6 @@ SSH'd into the BBB:
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 yourrom.rom
 
-
-
 It should be **Verifying flash\... VERIFIED** at the end. If flashrom
 complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
@@ -119,8 +117,6 @@ one of them following the instructions in the output.
 Reverse the steps to re-assemble your system.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

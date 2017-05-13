@@ -334,8 +334,6 @@ If flashing fails at this stage, try the following:
     # sudo ./flashrom/i686/flashrom -p
 internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)
 
-
-
 You should see within the output the following:\
 **"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
 untranslated"**
@@ -376,8 +374,6 @@ You should also see within the output the following:\
 Shut down.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

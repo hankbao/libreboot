@@ -331,8 +331,6 @@ Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
 Copyright © 2015 Albin Söderqvist\
 
-
-
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
 version published by the Free Software Foundation

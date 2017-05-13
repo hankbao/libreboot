@@ -303,8 +303,6 @@ problems. Removing that worked around the issue.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 
-
-
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
 version published by the Free Software Foundation

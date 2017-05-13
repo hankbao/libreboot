@@ -230,17 +230,12 @@ chip):
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory.rom
 
-
-
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory1.rom
-
-
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
 factory2.rom
 
-\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
@@ -264,8 +259,6 @@ Now flash it:
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
 path/to/libreboot/rom/image.rom -V
-
-
 
 ![](images/x200/disassembly/0015.jpg)
 
@@ -361,8 +354,6 @@ You should see something like this:
 Now [install GNU+Linux](../gnulinux/).
 
 Copyright © 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

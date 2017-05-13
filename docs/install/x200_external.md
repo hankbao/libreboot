@@ -64,7 +64,6 @@ header), for SOIC-16 (clip: Pomona 5252):
     This is how you will connect. Numbers refer to pin numbers on the BBB, on the plugs near the DC jack.
     Here is a photo of the SOIC-16 flash chip. Pins are labelled:
 
-
 The following shows how to connect the clip to the BBB (on the P9
 header), for SOIC-8 (clip: Pomona 5250):
 
@@ -309,8 +308,6 @@ investigating this:
 [../hardware/gm45\_remove\_me.html\#demefactory](../hardware/gm45_remove_me.md#demefactory)
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
