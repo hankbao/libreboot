@@ -108,13 +108,14 @@ completely, since the flash chip is on the other side of the board).
 Remove these screws:\
 ![](images/x200/disassembly/0003.jpg)
 
-Push the keyboard forward, gently, then lift it off and disconnect it
-from the board:\
+Gently push the keyboard towards the screen, then lift it off, and optionally
+disconnect it from the board:\
 ![](images/x200/disassembly/0004.jpg)
 ![](images/x200/disassembly/0005.jpg)
 
-Pull the palm rest off, lifting from the left and right side at the back
-of the palm rest:\
+Disconnect the cable of the fingerpring reader, and then pull up the palm rest,
+lifting up the left and right side of it:\
+![](images/x200/disassembly/0006.1.jpg)
 ![](images/x200/disassembly/0006.jpg)
 
 Lift back the tape that covers a part of the flash chip, and then
@@ -131,7 +132,7 @@ Connect the 3.3V supply from your PSU to the flash chip (via the clip):\
 ![](images/x200/disassembly/0011.jpg)
 ![](images/x200/disassembly/0012.jpg)
 
-Of course, make sure that your PSU is also plugged in and turn on:\
+Of course, make sure that your PSU is also plugged in and turned on:\
 ![](images/x200/disassembly/0013.jpg)
 
 This tutorial tells you to use an ATX PSU, for the 3.3V DC supply. The
