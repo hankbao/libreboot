@@ -16,10 +16,6 @@ body {
     font-size: 1.1em; color: #222;
 }
 
-header {
-    text-align: center;
-}
-
 #logo {
     width: 20%;
     float: right;

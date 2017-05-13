@@ -35,7 +35,9 @@ if [ "${FILE}" != "./index" ]; then
         fi
 
         RETURN="<a href='$DEST'>Back to previous index</a>"
-        OPTS="--css /headerleft.css -T Libreboot"
+        OPTS="-T Libreboot"
+else
+        OPTS="--css /headercenter.css"
 fi
 
 
