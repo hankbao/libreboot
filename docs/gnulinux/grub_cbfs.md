@@ -109,6 +109,7 @@ your current firmware, using flashrom:
 
     $ sudo flashrom -p internal -r libreboot.rom
     # flashrom -p internal -r libreboot.rom
+
 If you are told to specify the chip, add the option **-c {your chip}**
 to the command, for example:
 
@@ -158,6 +159,7 @@ Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
     # ./flash forceupdate libreboot.rom
+
 You should see **"Verifying flash\... VERIFIED."** written at the end
 of the flashrom output. Once you have done that, shut down and then boot
 up with your new test configuration.**
@@ -183,6 +185,7 @@ case you ever want to follow this guide again in the future (modifying
 the already modified config). From /libreboot\_util/cbfstool, do:
 
     # sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg
 

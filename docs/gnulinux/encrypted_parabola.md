@@ -82,6 +82,7 @@ guide is recommending putting zero there. I'm going to use urandom. Do
 this:
 
     # head -c 3145728 /dev/urandom > /dev/sda; sync
+
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It's 'secure', but 'potentially' a risk).
 
@@ -93,6 +94,7 @@ list the available keymaps and use yours:
 
     # localectl list-keymaps
     # loadkeys LAYOUT
+
 For me, LAYOUT would have been dvorak-uk.
 
 Establish an internet connection
@@ -166,6 +168,7 @@ is the best option.
 I am initializing LUKS with the following:
 
     # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
+
 whirlpool --iter-time 500 --use-random --verify-passphrase luksFormat
 /dev/sda1
 
@@ -313,6 +316,7 @@ and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
 the install:
 
     # pacstrap /mnt base base-devel wpa\_supplicant dialog iw
+
 wpa\_actiond
 
 Configure the system
@@ -323,9 +327,11 @@ Generate an fstab - UUIDs are used because they have certain advantages
 prefer labels instead, replace the -U option with -L):
 
     # genfstab -U -p /mnt >> /mnt/etc/fstab
+
 Check the created file:
 
     # cat /mnt/etc/fstab
+
 (If there are any errors, edit the file. Do **NOT** run the genfstab
 command again!)
 
@@ -354,6 +360,7 @@ Parabola does not have wget. This is sinister. Install it:
 Locale:
 
     # vi /etc/locale.gen
+
 Uncomment your needed localisations. For example en\_GB.UTF-8 (UTF-8 is
 highly recommended over other options).
 
@@ -364,6 +371,7 @@ highly recommended over other options).
 Console font and keymap:
 
     # vi /etc/vconsole.conf
+
 In my case:
 
     KEYMAP=dvorak-uk
@@ -372,6 +380,7 @@ In my case:
 Time zone:
 
     # ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+
 (Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
 
 Hardware clock:
@@ -382,6 +391,7 @@ Hostname: Write your hostname to /etc/hostname. For example, if your
 hostname is parabola:
 
     # echo parabola > /etc/hostname
+
 Add the same hostname to /etc/hosts:
 
     # vi /etc/hosts
@@ -400,6 +410,7 @@ Mkinitcpio: Configure /etc/mkinitcpio.conf as needed (see
 information about each hook.) Specifically, for this use case:
 
     # vi /etc/mkinitcpio.conf
+
 Then modify the file like so:
 
 -   MODULES="i915"
@@ -426,9 +437,11 @@ with (this is different from Arch, specifying linux-libre instead of
 linux):
 
     # mkinitcpio -p linux-libre
+
 Also do it for linux-libre-lts:
 
     # mkinitcpio -p linux-libre-lts
+
 Also do it for linux-libre-grsec:
 
     # mkinitcpio -p linux-libre-grsec
@@ -438,9 +451,11 @@ default for its password hashing. I referred to
 <https://wiki.archlinux.org/index.php/SHA_password_hashes>.
 
     # vi /etc/pam.d/passwd
+
 Add rounds=65536 at the end of the uncommented 'password' line.
 
     # passwd root
+
 Make sure to set a secure password! Also, it must never be the same as
 your LUKS password.
 
@@ -466,6 +481,7 @@ To unlock a user manually (if a password attempt is failed 3 times),
 do:
 
     # pam\_tally --user *theusername* --reset What the above
+
 configuration does is lock the user out for 10 minutes, if they make 3
 failed login attempts.
 
@@ -495,6 +511,7 @@ Lock the encrypted partition (close it):
     # cryptsetup luksClose lvm
 
     # shutdown -h now
+
 Remove the installation media, then boot up again.
 
 Booting from GRUB
@@ -546,6 +563,7 @@ current firmware - where *libreboot.rom* is an example: make sure to
 adapt:
 
     # flashrom -p internal -r libreboot.rom
+
 If flashrom complains about multiple flash chips detected, add a *-c*
 option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
@@ -594,17 +612,20 @@ from the ROM image:
 and insert the modified grubtest.cfg:
 
     # ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
+
 raw
 
 Now refer to [../install/#flashrom](../install/#flashrom). Cd (up) to
 the libreboot\_util directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
+
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
     # ./flash forceupdate libreboot.rom
+
 You should see "Verifying flash\... VERIFIED." written at the end of
 the flashrom output.
 
@@ -633,6 +654,7 @@ Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
 with the following command:
 
     # sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
 grub.cfg
 
@@ -649,6 +671,7 @@ Now you have a modified ROM. Once more, refer to
 directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
+
 And wait for the "Verifying flash\... VERIFIED." Once you have done
 that, shut down and then boot up with your new configuration.
 
@@ -676,20 +699,24 @@ putting a keyfile inside initramfs would be a bad idea).\
 Boot up and login as root or your user. Then generate the key file:
 
     # dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
+
 iflag=fullblock
 
 Insert it into the luks volume:
 
     # cryptsetup luksAddKey /dev/sdX /etc/mykeyfile
+
 and enter your LUKS passphrase when prompted. Add the keyfile to the
 initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:
 
     # FILES="/etc/mykeyfile"
+
 Create the initramfs image from scratch:
 
     # mkinitcpio -p linux-libre
     # mkinitcpio -p linux-libre-lts
     # mkinitcpio -p linux-libre-grsec
+
 Add the following to your grub.cfg - you are now able to do that, see
 above! -, or add it in the kernel command line for GRUB:
 

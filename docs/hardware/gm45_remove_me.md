@@ -91,16 +91,19 @@ descriptor+gbe file into the ROM image.\
 For 16MiB flash chips:
 
     # dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
+
 conv=notrunc
 
 For 8MiB flash chips:
 
     # dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
+
 conv=notrunc
 
 For 4MiB flash chips:
 
     # dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
+
 conv=notrunc
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
@@ -204,6 +207,7 @@ Assuming that your libreboot image is named **libreboot.rom**, copy the
 and then run:
 
     # dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
+
 conv=notrunc
 
 Alternatively, if you got a the **deblobbed\_4kdescriptor.bin** file (no
@@ -248,6 +252,7 @@ Insert that into a factory.rom image (NOTE: do this on a copy of it.
 Keep the original factory.rom stored safely somewhere):
 
     # dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
+
 count=4k conv=notrunc
 
 TODO: test this.\

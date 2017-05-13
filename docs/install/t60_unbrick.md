@@ -144,6 +144,7 @@ source code which can be built.
 SSH'd into the BBB:
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
+
 yourrom.rom
 
 It should be **Verifying flash\... VERIFIED** at the end. If flashrom

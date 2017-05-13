@@ -230,6 +230,7 @@ Log in as root on your BBB, using the instructions in
 
 Test that flashrom works:
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+
 In this case, the output was:
 
     flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -245,12 +246,15 @@ How to backup factory.rom (change the -c option as neeed, for your flash
 chip):
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
 factory.rom
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
 factory1.rom
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
 factory2.rom
 
 Note: the **-c** option is not required in libreboot's patched
@@ -259,6 +263,7 @@ have been removed.\
 Now compare the 3 images:
 
     # sha512sum factory\*.rom
+
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable
@@ -275,6 +280,7 @@ address to one that is correct for your system.**
 Now flash it:
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
+
 path/to/libreboot/rom/image.rom -V
 
 ![](images/x200/disassembly/0015.jpg)

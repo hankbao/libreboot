@@ -150,6 +150,7 @@ Alternatives to SSH (in case SSH fails)
 You can also use a serial FTDI debug board with GNU Screen, to access
 the serial console.
     # screen /dev/ttyUSB0 115200
+
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
@@ -202,6 +203,7 @@ before continuing.
 Check that the firmware exists:
 
     # ls /lib/firmware/BB-SPI0-01-00A0.\*
+
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
@@ -210,6 +212,7 @@ Then:
 
     # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots
     # cat /sys/devices/bone\_capemgr.\*/slots
+
 Output:
 
      0: 54:PF--- 
@@ -223,6 +226,7 @@ Output:
 Verify that the spidev device now exists:
 
     # ls -al /dev/spid\*
+
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
@@ -247,6 +251,7 @@ your BBB.
 Now test flashrom:
 
     # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+
 Output:
 
     Calibrating delay loop... OK.

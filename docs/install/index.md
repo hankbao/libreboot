@@ -332,6 +332,7 @@ When you have booted up again, you must also do this:
 If flashing fails at this stage, try the following:
 
     # sudo ./flashrom/i686/flashrom -p
+
 internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)
 
 You should see within the output the following:\
