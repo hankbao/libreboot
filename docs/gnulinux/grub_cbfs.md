@@ -180,10 +180,13 @@ difference: the menuentry 'Switch to grub.cfg' will be changed to
 grubtest.cfg. This is so that the main config still links (in the menu)
 to grubtest.cfg, so that you don't have to manually switch to it, in
 case you ever want to follow this guide again in the future (modifying
-the already modified config). From /libreboot\_util/cbfstool, do:\
-\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+the already modified config). From /libreboot\_util/cbfstool, do:
+
+    # sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
-grub.cfg**\
+grub.cfg
+
+\
 
 Delete the grub.cfg that remained inside the ROM:
 

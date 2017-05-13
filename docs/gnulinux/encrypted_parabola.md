@@ -163,10 +163,13 @@ on
 Reading through, it seems like Serpent (encryption) and Whirlpool (hash)
 is the best option.
 
-I am initializing LUKS with the following:\
-\# **cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
+I am initializing LUKS with the following:
+
+    # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
 whirlpool --iter-time 500 --use-random --verify-passphrase luksFormat
-/dev/sda1** Choose a **secure** passphrase here. Ideally lots of
+/dev/sda1
+
+ Choose a **secure** passphrase here. Ideally lots of
 lowercase/uppercase numbers, letters, symbols etc all in a random
 pattern. The password length should be as long as you are able to handle
 without writing it down or storing it anywhere.
@@ -307,9 +310,12 @@ following would have also made it work:\
 
 I also like to install other packages (base-devel, compilers and so on)
 and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
-the install:\
-\# **pacstrap /mnt base base-devel wpa\_supplicant dialog iw
-wpa\_actiond**
+the install:
+
+    # pacstrap /mnt base base-devel wpa\_supplicant dialog iw
+wpa\_actiond
+
+
 
 Configure the system
 --------------------
@@ -587,9 +593,12 @@ from the ROM image:
 
     $ ./cbfstool libreboot.rom remove -n grubtest.cfg
 
-and insert the modified grubtest.cfg:\
-\$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
-raw**\
+and insert the modified grubtest.cfg:
+
+    # ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
+raw
+
+\
 
 Now refer to [../install/#flashrom](../install/#flashrom). Cd (up) to
 the libreboot\_util directory and update the flash chip contents:
@@ -625,10 +634,13 @@ the main config still links (in the menu) to grubtest.cfg, so that you
 don't have to manually switch to it, in case you ever want to follow
 this guide again in the future (modifying the already modified config).
 Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
-with the following command:\
-\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+with the following command:
+
+    # sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
-grub.cfg**\
+grub.cfg
+
+\
 Delete the grub.cfg that remained inside the ROM:
 
     $ ./cbfstool libreboot.rom remove -n grub.cfg
@@ -666,9 +678,12 @@ will be asked to enter your passphrase a second time. A workaround is to
 put a keyfile inside initramfs, with instructions for the kernel to use
 it when booting. This is safe, because /boot/ is encrypted (otherwise,
 putting a keyfile inside initramfs would be a bad idea).\
-Boot up and login as root or your user. Then generate the key file:\
-\# **dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
-iflag=fullblock**\
+Boot up and login as root or your user. Then generate the key file:
+
+    # dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
+iflag=fullblock
+
+\
 Insert it into the luks volume:
 
     # cryptsetup luksAddKey /dev/sdX /etc/mykeyfile

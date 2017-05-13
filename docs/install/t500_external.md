@@ -242,13 +242,22 @@ In this case, the output was:
     Please specify which chip definition to use with the -c <chipname> option.
 
 How to backup factory.rom (change the -c option as neeed, for your flash
-chip):\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory1.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory2.rom**\
+chip):
+
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+factory.rom
+
+
+
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+factory1.rom
+
+
+
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
+factory2.rom
+
+\
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
@@ -268,9 +277,12 @@ flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
-Now flash it:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
-path/to/libreboot/rom/image.rom -V**
+Now flash it:
+
+    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
+path/to/libreboot/rom/image.rom -V
+
+
 
 ![](images/x200/disassembly/0015.jpg)
 

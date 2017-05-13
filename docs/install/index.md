@@ -329,9 +329,12 @@ When you have booted up again, you must also do this:
 
     $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
 
-If flashing fails at this stage, try the following:\
-\$ **sudo ./flashrom/i686/flashrom -p
-internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
+If flashing fails at this stage, try the following:
+
+    # sudo ./flashrom/i686/flashrom -p
+internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)
+
+
 
 You should see within the output the following:\
 **"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
