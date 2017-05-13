@@ -142,13 +142,14 @@ I am then directed to
 
 Parabola forces you to RTFM. Do that.
 
-It tells me to run:
+To populate the list below, it tells me to run:
 
-    # cryptsetup benchmark (for making sure the list below is
-populated)\
+    # cryptsetup benchmark
+
 Then:
 
     # cat /proc/crypto
+
 This gives me crypto options that I can use. It also provides a
 representation of the best way to set up LUKS (in this case, security is
 a priority; speed, a distant second). To gain a better understanding, I
@@ -178,14 +179,14 @@ Create LVM
 
 Now I refer to <https://wiki.archlinux.org/index.php/LVM>.
 
-Open the LUKS partition:
+Open the LUKS partition at /dev/mapper/lvm:
 
     # cryptsetup luksOpen /dev/sda1 lvm
-(it will be available at /dev/mapper/lvm)
 
 Create LVM partition:
 
     # pvcreate /dev/mapper/lvm
+
 Show that you just created it:
 
     # pvdisplay
@@ -194,22 +195,24 @@ Now I create the volume group, inside of which the logical volumes will
 be created:
 
     # vgcreate matrix /dev/mapper/lvm
+
 (volume group name is 'matrix' - choose your own name, if you like)
 Show that you created it:
 
     # vgdisplay
 
-Now create the logical volumes:
+Now create the logical volumes (2G swap parittion named swapvol):
 
-    # lvcreate -L 2G matrix -n swapvol (2G swap partition, named
-swapvol)\
-Again, choose your own name if you like. Also, make sure to choose a
-swap size of your own needs. It basically depends on how much RAM you
-have installed. I refer to
+    # lvcreate -L 2G matrix -n swapvol
+
+Again, choose your own name if you like. Also, make sure to choose a swap size
+of your own needs. It basically depends on how much RAM you have installed. I
+refer to
 <http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space>.
+This creates a single large partition in the rest of the space, named root:
 
-    # lvcreate -l +100%FREE matrix -n root (single large partition in
-the rest of the space, named root)\
+    # lvcreate -l +100%FREE matrix -n root
+
 You can also be flexible here, for example you can specify a /boot, a /,
 a /home, a /var, a /usr, etc. For example, if you will be running a
 web/mail server then you want /var in its own partition (so that if it
@@ -227,6 +230,7 @@ Create / and swap partitions, and mount
 For the swapvol LV I use:
 
     # mkswap /dev/mapper/matrix-swapvol
+
 Activate swap:
 
     # swapon /dev/matrix/swapvol
@@ -263,8 +267,8 @@ server)) and then did:
 
     # pacman -Syy
     # pacman -Syu
-    # pacman -Sy pacman (and then I did the other 2 steps above,
-again)\
+    # pacman -Sy pacman
+
 In my case I did the steps in the next paragraph, and followed the steps
 in this paragraph again.
 
