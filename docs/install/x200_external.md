@@ -128,18 +128,9 @@ to your PSU:\
 ![](images/x200/disassembly/0009.jpg)
 ![](images/x200/disassembly/0010.jpg)
 
-Connect the 3.3V supply from your PSU to the flash chip (via the clip):\
+Connect the 3.3V DC supply from your PSU to the flash chip (via the clip):\
 ![](images/x200/disassembly/0011.jpg)
 ![](images/x200/disassembly/0012.jpg)
-
-Of course, make sure that your PSU is also plugged in and turned on:\
-![](images/x200/disassembly/0013.jpg)
-
-This tutorial tells you to use an ATX PSU, for the 3.3V DC supply. The
-PSU used when taking these photos is actually not an ATX PSU, but a PSU
-that is designed specifically for providing 3.3V DC (an ATX PSU will
-also work):\
-![](images/x200/disassembly/0014.jpg)
 
 Now, you should be ready to install libreboot.
 
