@@ -2,25 +2,22 @@
 title: How to program an SPI flash chip with the Raspberry Pi 
 ...
 
-This document exists as a guide for reading from or writing to an SPI
-flash chip with the Raspberry Pi, using the
-[flashrom](http://flashrom.org/Flashrom) software. Most revisions of the
-RPi should work.
+This document exists as a guide for reading from or writing to an SPI flash
+chip with the Raspberry Pi, using the [flashrom](http://flashrom.org/Flashrom)
+software. Most revisions of the RPi should work.
 
 The Libreboot project recommends using
 [blobless GNU+Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.html)
-on the Raspberry Pi, to avoid having to run non-free software. This
-only became possible in February 2017 and the instructions below are
-not yet updated with the necessary steps, so please do not follow the
-steps below unless you are willing to run non-free software on your
-Raspberry Pi.
+on the Raspberry Pi, to avoid having to run non-free software. This only became
+possible in February 2017 and the instructions below are not yet updated with
+the necessary steps, so please do not follow the steps below unless you are
+willing to run non-free software on your Raspberry Pi.
 
-This only covers SOIC-8 flash chips, for now. SOIC-16 guide coming later
-(for now, it should be easy enough for you to figure this out for
-SOIC-16).
+This only covers SOIC-8 flash chips, for now. SOIC-16 guide coming later (for
+now, it should be easy enough for you to figure this out for SOIC-16).
 
-[](#raspberry-pi-thinkpad-x60t60-and-macbook-21){#user-content-raspberry-pi-thinkpad-x60t60-and-macbook-21 .anchor}Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
-------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
+------------------------------------------------
 
 The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
@@ -28,7 +25,7 @@ a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 > **Note:** The Raspberry Pi Model A is not supported, since it has no
 > GPIO pins.
 
-### [](#disassembling-the-thinkpad){#user-content-disassembling-the-thinkpad .anchor}Disassembling the ThinkPad
+### Disassembling the ThinkPad
 
 Follow the [X60 Hardware Maintenance
 Manual](http://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/42x3550_04.pdf)
@@ -45,7 +42,7 @@ Guide](t60_unbrick.md).
 -   On the T60, the BIOS chip is just under the palmrest, but blocked by
     a magnesium frame (which you will have to remove).
 
-### [](#pomona-clip-pinout){#user-content-pomona-clip-pinout .anchor}Pomona Clip Pinout
+### Pomona Clip Pinout
 
 Diagram of the 26 GPIO Pins of the Raspberry Pi Model B (for the Model
 B+ with 40 pins, start counting from the right and leave 14 pins):
@@ -78,7 +75,7 @@ detect a chip, or it will "detect" a `0x0` chip. Finally, make sure
 that the Pomona clip makes contact with the metal wires of the chip. It
 can be a challenge, but keep trying.
 
-### [](#how-to-supply-power-to-the-flashchip){#user-content-how-to-supply-power-to-the-flashchip .anchor}How to supply power to the flashchip
+### How to supply power to the flashchip
 
 There are two ways to supply power to the chip: plugging in an AC
 adapter (without turning the laptop on), and using the 8th 3.3v pin.
@@ -90,8 +87,8 @@ Macronix chips require an AC Adapter to power up.
 
 Your results may vary.
 
-[](#reading-the-flashchip){#user-content-reading-the-flashchip .anchor}Reading the Flashchip
---------------------------------------------------------------------------------------------
+Reading the Flashchip
+----------------------
 
 First, visually inspect (with a magnifying glass) the type of flashchip
 on the motherboard.
@@ -127,8 +124,8 @@ If the md5sums match after three tries, `flashrom` has managed to read
 the flashchip precisely (but not always accurately). You may try and
 flash Libreboot now.
 
-[](#flashing-libreboot){#user-content-flashing-libreboot .anchor}Flashing Libreboot
------------------------------------------------------------------------------------
+Flashing Libreboot
+-------------------
 
 > **Note:** replace `/path/to/libreboot.rom` with the location of your
 > chosen ROM, such as `../bin/x60/libreboot_usqwerty.rom`):
@@ -148,7 +145,7 @@ successfully. If not, just flash again.
     Erasing and writing flash chip... Erase/write done.
     Verifying flash... VERIFIED.
 
-### [](#sources){#user-content-sources .anchor}Sources
+### Sources
 
 -   [Scruss - Simple ADC with the Raspberry
     Pi](http://scruss.com/blog/2013/02/02/simple-adc-with-the-raspberry-pi/)
@@ -163,7 +160,7 @@ successfully. If not, just flash again.
     -   [rPI with Flashrom and SOIC Clip
         Powerpoint](http://satxhackers.org/wp/hack-content/uploads/2013/04/rPI_flashrom.pdf)
 
-### [](#raspberry-pi-pinout-diagrams){#user-content-raspberry-pi-pinout-diagrams .anchor}Raspberry Pi Pinout Diagrams
+### Raspberry Pi Pinout Diagrams
 
   MCP   3008 Pin   Pi GPIO Pin \#   Pi Pin Name
   ----- ---------- ---------------- --------------------
@@ -179,10 +176,10 @@ successfully. If not, just flash again.
 -   Source: [Perl & Raspberry Pi - Raspberry Pi GPIO
     Pinout](http://raspberrypi.znix.com/hipidocs/topic_gpiopins.htm)
 
-[](#raspberry-pi-thinkpad-x200){#user-content-raspberry-pi-thinkpad-x200 .anchor}Raspberry Pi (ThinkPad X200)
--------------------------------------------------------------------------------------------------------------
+Raspberry Pi (ThinkPad X200)
+-----------------------------
 
-### [](#requirements){#user-content-requirements .anchor}Requirements:
+### Requirements:
 
 -   An x86, x86\_64, or arm7l (for changing the libreboot.rom image mac
     address)
@@ -229,7 +226,7 @@ Install Noobs to your fat32 formatted SD card
 
     x86# cp -R ~/work/noobs/* /path/to/mounted/SDcard/
 
-### [](#set-up-noobs-on-raspberry-pi){#user-content-set-up-noobs-on-raspberry-pi .anchor}Set up NOOBS on Raspberry Pi
+### Set up NOOBS on Raspberry Pi
 
 Plug in the NOOBs SDCard to your Raspberry Pi, and enable the following
 under 'Advanced Options':
@@ -353,8 +350,8 @@ done.
 Shut down your pi, put your box back together, and install a libre OS
 for great good!
 
-[](#raspberry-pi-c720-chromebook){#user-content-raspberry-pi-c720-chromebook .anchor}Raspberry Pi (C720 Chromebook)
--------------------------------------------------------------------------------------------------------------------
+Raspberry Pi (C720 Chromebook)
+-------------------------------
 
 The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
@@ -408,12 +405,12 @@ Finally, put the Pomona SOIC clip on the chip:
 
 ![Pomona Clip Connected](images/rpi/0008.jpg)
 
-### [](#flashrom){#user-content-flashrom .anchor}Flashrom
+### Flashrom
 
 [Once it's all set up, flashrom works out of the
 box.](http://www.flashrom.org/RaspberryPi)
 
-### [](#sources-1){#user-content-sources-1 .anchor}Sources
+### Sources
 
 -   **Pomona SOIC Clip flashing**
     -   [Arch Linux Wiki - Installing Arch Linux on
