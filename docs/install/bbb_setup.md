@@ -28,7 +28,7 @@ flashing on the ThinkPad X200, but it should work for other targets.
 here is a photo of the setup for the teensy:
 <http://h5ai.swiftgeek.net/IMG_20160601_120855.jpg>
 
-Onto the Beaglebone black\...
+Onto the Beaglebone black...
 
 Hardware requirements
 =====================
@@ -150,12 +150,14 @@ Alternatives to SSH (in case SSH fails)
 You can also use a serial FTDI debug board with GNU Screen, to access
 the serial console.
     # screen /dev/ttyUSB0 115200
+
 Here are some example photos:\
 ![](images/x200/ftdi.jpg) ![](images/x200/ftdi_port.jpg)\
 
 You can also connect the USB cable from the BBB to another computer and
 a new network interface will appear, with its own IP address. This is
 directly accessible from SSH, or screen:
+
     # screen /dev/ttyACM0 115200
 
 You can also access the uboot console, using the serial method instead
@@ -202,14 +204,16 @@ before continuing.
 Check that the firmware exists:
 
     # ls /lib/firmware/BB-SPI0-01-00A0.\*
+
 Output:
 
     /lib/firmware/BB-SPI0-01-00A0.dtbo
 
 Then:
 
-    # echo BB-SPI0-01 > /sys/devices/bone\_capemgr.\*/slots
-    # cat /sys/devices/bone\_capemgr.\*/slots
+    # echo BB-SPI0-01 > /sys/devices/bone_capemgr.\*/slots
+    # cat /sys/devices/bone_capemgr.\*/slots
+
 Output:
 
      0: 54:PF--- 
@@ -223,6 +227,7 @@ Output:
 Verify that the spidev device now exists:
 
     # ls -al /dev/spid\*
+
 Output:
 
     crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
@@ -246,7 +251,8 @@ your BBB.
 
 Now test flashrom:
 
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512
+
 Output:
 
     Calibrating delay loop... OK.
@@ -330,8 +336,6 @@ You should now have something that looks like this:\
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Patrick "P. J." McDermott <pj@pehjota.net>\
 Copyright © 2015 Albin Söderqvist\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

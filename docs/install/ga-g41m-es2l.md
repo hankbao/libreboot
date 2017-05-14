@@ -9,6 +9,7 @@ Flash chip size {#flashchips}
 ===============
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 Flashing instructions {#clip}
@@ -45,8 +46,6 @@ coreboot-libre. Therefore, you must set your own MAC address in your
 operating system.
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

@@ -201,10 +201,12 @@ is included in libreboot, and can be used to enable or disable this
 behaviour.
 
 Disable or enable beeps when removing/adding the charger:
+
     $ sudo ./nvramtool -w power\_management\_beeps=Enable
     $ sudo ./nvramtool -w power\_management\_beeps=Disable
 
 Disable or enable beeps when battery is low:
+
     $ sudo ./nvramtool -w low\_battery\_beep=Enable
 
     $ sudo ./nvramtool -w low\_battery\_beep=Disable
@@ -222,9 +224,11 @@ package i2c-tools.
 
     $ sudo modprobe i2c-dev
     $ sudo i2cdump -y 5 0x50 (you might have to change the value for
+
 -y)
 
     $ sudo rmmod i2c-dev
+
 You'll see the panel name in the output (from the EDID dump).
 
 If neither of these options work (or they are unavailable), physically
@@ -264,8 +268,6 @@ Look at resources/scripts/helpers/misc/libreboot\_usb\_bugfix
 Put this script in /etc/init.d/ on debian-based systems.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

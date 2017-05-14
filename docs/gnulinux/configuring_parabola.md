@@ -1,43 +1,12 @@
 ---
 title: Configuring Parabola (post-install) 
+x-toc-enable: true
 ...
 
 Post-installation configuration steps for Parabola GNU+Linux-libre.
 Parabola is extremely flexible; this is just an example. This example
 uses LXDE because it's lightweight, but we recommend the *MATE* desktop
 (which is actually about as lightweight as LXDE).
-
-Table of Contents
-=================
-
--   [Configuring pacman](#pacman_configure)
-    -   [Updating Parabola](#pacman_update)
-    -   [Maintaining Parabola during system updates](#pacman_maintain)
-        -   [Clearing package cache after updating](#pacman_cacheclean)
-        -   [Pacman command equivalents (compared to other package
-            managers)](#pacman_commandequiv)
-    -   [your-freedom](#yourfreedom)
-
--   [Add a user account](#useradd)
--   [System D](#systemd)
--   [Interesting repositories](#interesting_repos)
--   [Setup a network connection in Parabola](#network)
-    -   [Setting hostname](#network_hostname)
-    -   [Network status](#network_status)
-    -   [Network interface names](#network_devicenames)
-    -   [Network setup](#network_setup)
--   [System maintenance](#system_maintain) - important!
--   [Configuring the desktop](#desktop)
-    -   [Install Xorg](#desktop_xorg)
-    -   [Xorg keyboard layout](#desktop_kblayout)
-    -   [Install LXDE](#desktop_lxde)
-    -   [LXDE - clock](#lxde_clock)
-    -   [LXDE - font](#lxde_font)
-    -   [LXDE - screenlock](#lxde_screenlock)
-    -   [LXDE - automounting](#lxde_automount)
-    -   [LXDE - disable suspend](#lxde_suspend)
-    -   [LXDE - battery monitor](#lxde_battery)
-    -   [LXDE - network manager](#lxde_network)
 
 While not strictly related to the libreboot project, this guide is
 intended to be useful for those interested in installing Parabola on
@@ -86,9 +55,13 @@ careful about this when reading anything on the Arch wiki.
 
 Some of these steps require internet access. I'll go into networking
 later but for now, I just connected my system to a switch and did:
+
     # systemctl start dhcpcd.service
+
 You can stop it later by running:
+
     # systemctl stop dhcpcd.service\
+
 For most people this should be enough, but if you don't have DHCP on
 your network then you should setup your network connection first:\
 [Setup network connection in Parabola](#network)
@@ -114,6 +87,7 @@ In the end, I didn't change my configuration for pacman. When you are
 updating, resync with the latest package names/versions:
 
     # pacman -Syy
+
 (according to the wiki, -Syy is better than Sy because it refreshes the
 package list even if it appears to be up to date, which can be useful
 when switching to another mirror).\
@@ -190,6 +164,7 @@ The wiki also mentions this method for removing everything from the
 cache, including currently installed packages that are cached:
 
     # pacman -Scc
+
 This is inadvisable, since it means re-downloading the package again if
 you wanted to quickly re-install it. This should only be used when disk
 space is at a premium.
@@ -227,6 +202,7 @@ Read the entire document linked to above, and then continue.
 Add your user:
 
     # useradd -m -G wheel -s /bin/bash *yourusername*
+
 Set a password:
 
     # passwd *yourusername*
@@ -254,6 +230,7 @@ supplier) to use systemd.
 The manpage should also help:
 
     # man systemd
+
 The section on 'unit types' is especially useful.
 
 According to the wiki, systemd 'journal' keeps logs of a size up to
@@ -287,9 +264,11 @@ Finally, the wiki mentions 'temporary' files and the utility for
 managing them.
 
     # man systemd-tmpfiles
+
 The command for 'clean' is:
 
     # systemd-tmpfiles --clean
+
 According to the manpage, this *"cleans all files and directories with
 an age parameter"*. According to the Arch wiki, this reads information
 in /etc/tmpfiles.d/ and /usr/lib/tmpfiles.d/ to know what actions to
@@ -301,6 +280,7 @@ However, /usr/lib/tmpfiles.d/ contained some files. The first one was
 etc.conf, containing information and a reference to this manpage:
 
     # man tmpfiles.d
+
 Read that manpage, and then continue studying all the files.
 
 The systemd developers tell me that it isn't usually necessary to touch
@@ -343,6 +323,7 @@ when installing Parabola. You can also do it with systemd (do so now, if
 you like):
 
     # hostnamectl set-hostname *yourhostname*
+
 This writes the specified hostname to /etc/hostname. More information
 can be found in these manpages:
 
@@ -430,6 +411,7 @@ non-free firmware inside, but it's transparent to you but the smart
 data comes from it. Therefore, don't rely on it too much):
 
     # pacman -S smartmontools
+
 Read <https://wiki.archlinux.org/index.php/S.M.A.R.T.> to learn how to
 use it.
 
@@ -449,6 +431,7 @@ Based on <https://wiki.archlinux.org/index.php/Xorg>.
 Firstly, install it!
 
     # pacman -S xorg-server
+
 I also recommend installing this (contains lots of useful tools,
 including *xrandr*):
 
@@ -458,9 +441,11 @@ Install the driver. For me this was *xf86-video-intel* on the ThinkPad
 X60. T60 and macbook11/21 should be the same.
 
     # pacman -S xf86-video-intel
+
 For other systems you can try:
 
     # pacman -Ss xf86-video- | less
+
 Combined with looking at your *lspci* output, you can determine which
 driver is needed. By default, Xorg will revert to xf86-video-vesa which
 is a generic driver and doesn't provide true hardware acceleration.
@@ -566,6 +551,7 @@ I also like to install these:
 Enable LXDM (the default display manager, providing a graphical login):
 
     # systemctl enable lxdm.service
+
 It will start when you boot up the system. To start it now, do:
 
     # systemctl start lxdm.service
@@ -576,17 +562,20 @@ start lxde without lxdm. Read
 <https://wiki.archlinux.org/index.php/Xinitrc>.
 
 Open LXterminal:
+
     $ cp /etc/skel/.xinitrc \~
+
 Open .xinitrc and add the following plus a line break at the bottom of
 the file.\
 *\# Probably not needed. The same locale info that we set before\
 \# Based on advice from the LXDE wiki export LC\_ALL=en\_GB.UTF-8\
 export LANGUAGE=en\_GB.UTF-8\
 export LANG=en\_GB.UTF-8\
-\
+
 \# Start lxde desktop\
 exec startlxde\
 * Now make sure that it is executable:
+
     $ chmod +x .xinitrc
 
 ### LXDE - clock {#lxde_clock}
@@ -643,6 +632,7 @@ Install Network Manager:
 You will also want the graphical applet:
 
     # pacman -S network-manager-applet
+
 Arch wiki says that an autostart rule will be written at
 */etc/xdg/autostart/nm-applet.desktop*
 
@@ -657,6 +647,7 @@ LXDE uses openbox, so I refer to:\
 It tells me for the applet I need:
 
     # pacman -S xfce4-notifyd gnome-icon-theme
+
 Also, for storing authentication details (wifi) I need:
 
     # pacman -S gnome-keyring
@@ -665,6 +656,7 @@ I wanted to quickly enable networkmanager:
 
     # systemctl stop dhcpcd
     # systemctl start NetworkManager
+
 Enable NetworkManager at boot time:
 
     # systemctl enable NetworkManager
@@ -676,8 +668,6 @@ add a new applet). I also later changed the icons to use the gnome icon
 theme, in *lxappearance*.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

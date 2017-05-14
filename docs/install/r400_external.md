@@ -62,6 +62,7 @@ Flash chip size {#flashchips}
 ===============
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 MAC address {#macaddress}
@@ -214,7 +215,9 @@ Log in as root on your BBB, using the instructions in
 [bbb\_setup.html\#bbb\_access](bbb_setup.html#bbb_access).
 
 Test that flashrom works:
-    # ./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512\
+
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512\
+
 In this case, the output was:
 
     flashrom v0.9.7-r1854 on Linux 3.8.13-bone47 (armv7l)
@@ -227,19 +230,27 @@ In this case, the output was:
     Please specify which chip definition to use with the -c <chipname> option.
 
 How to backup factory.rom (change the -c option as neeed, for your flash
-chip):\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory1.rom**\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -r
-factory2.rom**\
+chip):
+
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
+factory.rom
+
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
+factory1.rom
+
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -r
+
+factory2.rom
+
 Note: the **-c** option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
 have been removed.\
 Now compare the 3 images:
 
     # sha512sum factory\*.rom
+
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable
@@ -253,13 +264,15 @@ flashing it. Although there is a default MAC address inside the ROM
 image, this is not what you want. **Make sure to always change the MAC
 address to one that is correct for your system.**
 
-Now flash it:\
-\# **./flashrom -p linux\_spi:dev=/dev/spidev1.0,spispeed=512 -w
-path/to/libreboot/rom/image.rom -V**
+Now flash it:
+
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w
+
+path/to/libreboot/rom/image.rom -V
 
 ![](images/x200/disassembly/0015.jpg)
 
-You might see errors, but if it says **Verifying flash\... VERIFIED** at
+You might see errors, but if it says **Verifying flash... VERIFIED** at
 the end, then it's flashed and should boot. If you see errors, try
 again (and again, and again); the message **Chip content is identical to
 the requested image** is also an indication of a successful
@@ -351,8 +364,6 @@ You should see something like this:
 Now [install GNU+Linux](../gnulinux/).
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

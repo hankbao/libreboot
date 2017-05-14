@@ -1,29 +1,18 @@
 ---
 title: Hardware compatibility list 
+x-toc-enable: true
 ...
 
 This sections relates to known hardware compatibility in libreboot.
 
 For installatation instructions, refer to [../install/](../install/).
 
--   [List of supported hardware](#supported_list)
-    -   [Desktops (x86, AMD and Intel)](#supported_desktops_x86amdintel)
-    -   [Servers/workstations](#supported_workstations_x86amd)
-    -   [Laptops (ARM)](#supported_laptops_arm)
-    -   [Laptops (Intel, x86)](#supported_laptops_x86intel)
-
--   NOTES:
-    -   [Updating the EC firmware on i945 and GM45
-        (recommended)](#ecupdate)
-    -   [How to find what EC version you have (i945/GM45)](#ecversion)
--   [Recommended wifi chipsets](#recommended_wifi)
-
-List of supported hardware {#supported_list}
+List of supported hardware
 --------------------------
 
 Libreboot supports the following systems in this release:
 
-### Desktops (AMD, Intel, x86) {#supported_desktops_x86amdintel}
+### Desktops (AMD, Intel, x86)
 
 -   [Gigabyte GA-G41M-ES2L motherboard](ga-g41m-es2l.md)
 -   [Intel D510MO motherboard](d510mo.md)
@@ -31,28 +20,27 @@ Libreboot supports the following systems in this release:
 -   [Intel D945GCLF](d945gclf.md)
 -   [Apple iMac 5,2](imac52.md)
 
-### Servers/workstations (AMD, x86) {#supported_workstations_x86amd}
+### Servers/workstations (AMD, x86)
 
 -   [ASUS KFSN4-DRE motherboard](kfsn4-dre.md)
 -   [ASUS KGPE-D16 motherboard](kgpe-d16.md)
 
-### Laptops (ARM) {#supported_laptops_arm}
+### Laptops (ARM)
 
 -   [ASUS Chromebook C201](c201.md)
 
-### Laptops (Intel, x86) {#supported_laptops_x86intel}
+### Laptops (Intel, x86)
 
--   [Lenovo ThinkPad X60/X60s](#supported_x60_list)
--   [Lenovo ThinkPad X60 Tablet](#supported_x60t_list)
--   [Lenovo ThinkPad T60](#supported_t60_list) (there are exceptions.
-    see link)
+-   [Lenovo ThinkPad X60/X60s](#list-of-supported-x60s)
+-   [Lenovo ThinkPad X60 Tablet](#list-of-supported-x60-tablets)
+-   [Lenovo ThinkPad T60](#supported-t60-list) (some exceptions)
 -   [Lenovo ThinkPad X200](x200.md)
 -   [Lenovo ThinkPad R400](r400.md)
 -   [Lenovo ThinkPad T400](t400.md)
 -   [Lenovo ThinkPad T500](t500.md)
 -   [Lenovo ThinkPad W500](t500.md)
--   [Apple MacBook1,1](#macbook11)
--   [Apple MacBook2,1](#macbook21)
+-   [Apple MacBook1,1](#information-about-the-macbook11)
+-   [Apple MacBook2,1](#information-about-the-macbook21)
 
 'Supported' means that the build scripts know how to build ROM images
 for these systems, and that the systems have been tested (confirmed
@@ -62,7 +50,7 @@ working). There may be exceptions; in other words, this is a list of
 It is also possible to build ROM images (from source) for other systems
 (and virtual systems, e.g. QEMU).
 
-EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400, W500) {#ecupdate}
+EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400, W500)
 ==============================================================
 
 It is recommended that you update to the latest EC firmware version. The
@@ -81,19 +69,21 @@ only replaces the BIOS firmware, not EC.
 Updated EC firmware has several advantages e.g. bettery battery
 handling.
 
-How to find what EC version you have (i945/GM45) {#ecversion}
+How to find what EC version you have (i945/GM45)
 ================================================
 
-In GNU+Linux, you can try this:\
-**grep 'at EC' /proc/asound/cards**
+In GNU+Linux, you can try this:
 
-Sample output:\
-**ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6**
+    $ grep 'at EC' /proc/asound/cards
+
+Sample output:
+
+    ThinkPad Console Audio Control at EC reg 0x30, fw 7WHT19WW-3.6
 
 7WHT19WW is the version in different notation, use search engine to find
 out regular version - in this case it's a 1.06 for x200 tablet
 
-Recommended wifi chipsets {#recommended_wifi}
+Recommended wifi chipsets
 -------------------------
 
 The following are known to work well:
@@ -111,7 +101,7 @@ project if these work with linux-libre kernel (TODO: test):
 -   \[0200\]: Qualcomm Atheros AR242x / AR542x Wireless Network Adapter
     (PCI-Express) \[168c:001c\]
 
-List of supported ThinkPad X60s {#supported_x60_list}
+List of supported ThinkPad X60s
 -------------------------------
 
 Native gpu initialization ('native graphics') which replaces the
@@ -139,7 +129,7 @@ is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
-List of supported ThinkPad X60 Tablets {#supported_x60t_list}
+List of supported ThinkPad X60 Tablets
 --------------------------------------
 
 Native gpu initialization ('native graphics') which replaces the
@@ -223,7 +213,7 @@ could get finger input working. They used linuxwacom at git tag
       InputDevice   "WTouch" "SendCoreEvents"
     EndSection
 
-Supported T60 list {#supported_t60_list}
+Supported T60 list
 ------------------
 
 Native gpu initialization ('native graphics') which replaces the
@@ -300,7 +290,7 @@ is very easily replaced; just remove the card and install another one
 **after** libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
-ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences. {#t60_ati_intel}
+ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.
 ----------------------------------------------------------------
 
 If your T60 is a 14.1" or 15.1" model with an ATI GPU, it won't work
@@ -321,7 +311,7 @@ cannot be used with libreboot under any circumstances.
 The following T60 motherboard (see area highlighted in white) shows an
 empty space where the ATI GPU would be (this particular motherboard has
 an Intel GPU):\
-\
+
 ![](../images/t60_dev/t60_unbrick.jpg)
 
 The reason that the ATI GPU on T60 is unsupported is due to the VBIOS
@@ -342,7 +332,7 @@ usable as a laptop because there would be no visual display at all. That
 being said, such a configuration is acceptable for use in a 'headless'
 server setup (with serial and/or ssh console as the display).
 
-Information about the macbook1,1 {#macbook11}
+Information about the macbook1,1
 --------------------------------
 
 There is an Apple laptop called the macbook1,1 from 2006 which uses the
@@ -382,7 +372,7 @@ firmware is running. You will need to disassemble the system and flash
 externally. Reading from flash seems to work. For external flashing,
 refer to [../install/bbb\_setup.md](../install/bbb_setup.md).
 
-Information about the macbook2,1 {#macbook21}
+Information about the macbook2,1
 --------------------------------
 
 There is an Apple laptop called the macbook2,1 from late 2006 or early
@@ -399,21 +389,12 @@ for whatever reason, since they include a lot of useful information.
 Backups created using wget:
 
     $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/
-**\$ wget -m -p -E -k -K -np
-http://macbook.donderklumpen.de/coreboot/**\
-Use **-e robots=off** if using this trick for other sites and the site
-restricts using robots.txt
+    $ wget -m -p -E -k -K -np http://macbook.donderklumpen.de/coreboot/
 
-**Links to wget backups (and the backups themselves) of Mono's pages
-(see above) removed temporarily. Mono has given me permission to
-distribute them, but I need to ask this person to tell me what license
-these works fall under first. Otherwise, the above URLs should be fine.
-NOTE TO SELF: REMOVE THIS WHEN DONE**
+Use `-e robots=off` if using this trick for other sites and the site restricts
+using robots.txt
 
 ### Installing GNU+Linux distributions (on Apple EFI firmware)
-
--   [Parabola GNU+Linux installation on a macbook2,1 with Apple EFI
-    firmware](#) (this is a copy of Mono's page, see above)
 
 How to boot an ISO: burn it to a CD (like you would normally) and hold
 down the Alt/Control key while booting. The bootloader will detect the
@@ -424,11 +405,6 @@ again be seen as 'Windows'. (it's not actually Windows, but Apple
 likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
 [../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
-
-### Information about coreboot
-
--   [Coreboot on the macbook2,1](#) (this is a copy of Mono's page, see
-    above)
 
 ### coreboot wiki page
 
@@ -540,8 +516,6 @@ available at *resources/utilities/macbook21-three-finger-tap* in the
 libreboot git repository.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

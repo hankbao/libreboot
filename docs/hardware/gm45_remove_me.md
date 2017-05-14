@@ -37,11 +37,13 @@ factory.bin dump.
 ich9gen executables can be found under ./ich9deblob/ statically compiled
 in libreboot\_util. If you are using src or git, build ich9gen from
 source with:
+
     $ ./oldbuild module ich9deblob
 
 The executable will appear under resources/utilities/ich9deblob/
 
 Run:
+
     $ ./ich9gen
 
 Running ich9gen this way (without any arguments) generates a default
@@ -70,6 +72,7 @@ generate a descriptor+gbe image with your own MAC address inside (with
 the Gbe checksum updated to match). Run:
 
     $ ./ich9gen --macaddress XX:XX:XX:XX:XX:XX
+
 (replace the XX chars with the hexadecimal chars in the MAC address that
 you want)
 
@@ -85,15 +88,23 @@ Two new files will be created:
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 file to where **libreboot.rom** is located and then insert the
 descriptor+gbe file into the ROM image.\
-For 16MiB flash chips:\
-\$ **dd if=ich9fdgbe\_16m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
-For 8MiB flash chips:\
-\$ **dd if=ich9fdgbe\_8m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
-For 4MiB flash chips:\
-\$ **dd if=ich9fdgbe\_4m.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**\
+For 16MiB flash chips:
+
+    # dd if=ich9fdgbe_16m.bin of=libreboot.rom bs=1 count=12k
+
+conv=notrunc
+
+For 8MiB flash chips:
+
+    # dd if=ich9fdgbe_8m.bin of=libreboot.rom bs=1 count=12k
+
+conv=notrunc
+
+For 4MiB flash chips:
+
+    # dd if=ich9fdgbe_4m.bin of=libreboot.rom bs=1 count=12k
+
+conv=notrunc
 
 Your libreboot.rom image is now ready to be flashed on the system. Refer
 back to [../install/\#flashrom](../install/#flashrom) for how to flash
@@ -164,6 +175,7 @@ you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:
 
     $ ./oldbuild module ich9deblob
+
 An executable file named **ich9deblob** will now appear under
 resources/utilities/ich9deblob/
 
@@ -192,9 +204,11 @@ Intel. Only the Intel NICs need a GbE region in the flash chip.
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the
 **deblobbed\_descriptor.bin** file to where **libreboot.rom** is located
-and then run:\
-\$ **dd if=deblobbed\_descriptor.bin of=libreboot.rom bs=1 count=12k
-conv=notrunc**
+and then run:
+
+    # dd if=deblobbed_descriptor.bin of=libreboot.rom bs=1 count=12k
+
+conv=notrunc
 
 Alternatively, if you got a the **deblobbed\_4kdescriptor.bin** file (no
 GbE defined), do this: \$ **dd if=deblobbed\_4kdescriptor.bin
@@ -235,9 +249,11 @@ Simply run (with factory.rom in the same directory):
 
 It will generate a 4KiB descriptor file (only the descriptor, no GbE).
 Insert that into a factory.rom image (NOTE: do this on a copy of it.
-Keep the original factory.rom stored safely somewhere):\
-\$ **dd if=demefactory\_4kdescriptor.bin of=factory\_nome.rom bs=1
-count=4k conv=notrunc**
+Keep the original factory.rom stored safely somewhere):
+
+    # dd if=demefactory_4kdescriptor.bin of=factory_nome.rom bs=1
+
+count=4k conv=notrunc
 
 TODO: test this.\
 TODO: lenovobios (GM45 thinkpads) still write-protects parts of the
@@ -423,7 +439,7 @@ actually be others on the X200.
 0xBABA"*
 
 In honour of the song *Baba O'Reilly* by *The Who* apparently. We're
-not making this stuff up\...
+not making this stuff up...
 
 0x3ABA, 0x34BA, 0x40BA and more have been observed in the main Gbe
 regions on the X200 factory.rom dumps. The checksums of the backup
@@ -517,8 +533,6 @@ This is a 32K region from the factory image. It could be data
 It has only a 448 byte fragment different from 0x00 or 0xFF.
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

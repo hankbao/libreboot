@@ -4,10 +4,10 @@ title: Installation instructions
 
 This section relates to installing Libreboot on supported targets.
 
-**NOTE: if running flashrom -p internal for software based flashing, and
-you get an error related to /dev/mem access, you should reboot with
-iomem=relaxed kernel parameter before running flashrom, or use a kernel
-that has CONFIG\_STRICT\_DEVMEM not enabled.**
+**NOTE: if running flashrom -p internal for software based flashing, and you
+get an error related to `/dev/mem` access, you should reboot with
+`iomem=relaxed` kernel parameter before running flashrom, or use a kernel that
+has `CONFIG_STRICT_DEVMEM` not enabled.**
 
 Which systems are Libreboot compatible with?
 --------------------------------------------
@@ -28,14 +28,11 @@ Flashing via software methods, on system:
 -   [Apple MacBook2,1](#flashrom_macbook21)
 -   [ASUS Chromebook C201](c201.md)
 
-Setting up programmers, for external flashing via hardware method
+Setting up programmers, for external SPI flashing 
 -----------------------------------------------------------------
 
--   [How to program an SPI flash chip with the BeagleBone
-    Black](bbb_setup.md)
-
--   [How to program an SPI flash chip with the Raspberry
-    Pi](rpi_setup.md)
+-   [BeagleBone Black Setup](bbb_setup.md)
+-   [Raspberry Pi Setup](rpi_setup.md)
 
 Flashing via hardware methods, on system:
 -----------------------------------------
@@ -63,15 +60,14 @@ source code. These images are provided for user convenience, so that
 they don't have to build anything from source on their own.
 
 The ROM images in each archive use the following at the end of the file
-name, if they are built with the GRUB payload:
-**\_*keymap*\_*mode*.rom**
+name, if they are built with the GRUB payload: `*_*keymap*_*mode*.rom`
 
-Available *modes*: **vesafb** or **txtmode**. The *vesafb* ROM images
-are recommended, in most cases; *txtmode* ROM images come with
+Available `modes`: `vesafb` or `txtmode`. The `vesafb` ROM images
+are recommended, in most cases; `txtmode` ROM images come with
 MemTest86+, which requires text-mode instead of the usual framebuffer
 used by coreboot native graphics initialization.
 
-*keymap* can be one of several keymaps that keyboard supports (there are
+`keymap` can be one of several keymaps that keyboard supports (there are
 quite a few), which affects the keyboard layout configuration that is
 used in GRUB. It doesn't matter which ROM image you choose here, as far
 as the keymap in GNU+Linux is concerned.
@@ -87,12 +83,10 @@ Libreboot comes with ROM images built for QEMU, by default:
 
 Examples of how to use libreboot ROM images in QEMU:
 
--   \$ **qemu-system-i386 -M q35 -m 512 -bios
-    qemu\_q35\_ich9\_keymap\_mode.rom**
--   \$ **qemu-system-i386 -M pc -m 512 -bios
-    qemu\_i440fx\_piix4\_keymap\_mode.rom**
+    $ qemu-system-i386 -M q35 -m 512 -bios qemu_q35_ich9_keymap_mode.rom
+    $ qemu-system-i386 -M pc -m 512 -bios qemu_i440fx_piix4_keymap_mode.rom
 
-You can optionally specify the **-serial stdio** argument, so that QEMU
+You can optionally specify the `-serial stdio` argument, so that QEMU
 will emulate a serial terminal on the standard input/output (most likely
 your terminal emulator or TTY).
 
@@ -108,8 +102,8 @@ any dedicated hardware. In other words, you can do everything entirely
 in software, directly from the OS that is running on your libreboot
 system.
 
-**If you are using libreboot\_src or git, then make sure that you built
-the sources first (see [../git/\#build](../git/#build)).**
+**If you are using `libreboot_src` or git, then make sure that you built the
+sources first (see [../git/\#build](../git/#build)).**
 
 Look at the [list of ROM images](#rom) to see which image is compatible
 with your device.
@@ -249,12 +243,13 @@ Flash chip size
 ---------------
 
 Use this to find out:
+
     # flashrom -p internal -V
 
 All good?
 ---------
 
-Excellent! Moving on\...
+Excellent! Moving on...
 
 Download the *libreboot\_util.tar.xz* archive, and extract it. Inside,
 you will find a directory called *flashrom*. This contains statically
@@ -268,6 +263,7 @@ appropriate executable. It is also possible for you to build these
 executables from the libreboot source code archives.
 
 How to update the flash chip contents:
+
     $ sudo ./flash update [yourrom.rom](#rom)
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
@@ -276,7 +272,7 @@ correct ROM image, then run this alternative command:
 
     $ sudo ./flash forceupdate [yourrom.rom](#rom)
 
-You should see **"Verifying flash\... VERIFIED."** written at the end
+You should see **"Verifying flash... VERIFIED."** written at the end
 of the flashrom output. **Shut down** after you see this, and then boot
 up again after a few seconds.
 
@@ -328,16 +324,18 @@ When you have booted up again, you must also do this:
 
     $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
 
-If flashing fails at this stage, try the following:\
-\$ **sudo ./flashrom/i686/flashrom -p
-internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)**
+If flashing fails at this stage, try the following:
+
+    # sudo ./flashrom/i686/flashrom -p
+
+internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)
 
 You should see within the output the following:\
 **"Updated BUC.TS=0 - 128kb address range 0xFFFE0000-0xFFFFFFFF is
 untranslated"**
 
 You should also see within the output the following:\
-**"Verifying flash\... VERIFIED."**
+**"Verifying flash... VERIFIED."**
 
 MacBook2,1: Initial installation guide (if running the proprietary firmware) {#flashrom_macbook21}
 ============================================================================
@@ -367,13 +365,11 @@ Use this flashing script, to install libreboot:
     $ sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)
 
 You should also see within the output the following:\
-**"Verifying flash\... VERIFIED."**
+**"Verifying flash... VERIFIED."**
 
 Shut down.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

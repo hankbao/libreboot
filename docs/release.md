@@ -425,8 +425,6 @@ Changes for this release, relative to r20150208 (earliest changes last, recent c
 -   **New board:** ThinkPad R400 support added to libreboot.
 -   bbb\_setup.html: tell user to use libreboot's own flashrom
 
-
-
 Release 20150124, 20150126 and 20150208 {#release20150124}
 =======================================
 
@@ -637,8 +635,6 @@ Changes for this release (latest changes first, earliest changes last)
 -   docs/howtos/grub\_boot\_installer.html: improved readability, fixed
     html errors
 -   Documentation (macbook21 related): clean up
-
-
 
 Release 20141015 {#release20141015}
 ================
@@ -1482,10 +1478,7 @@ Development notes
 -   initial release
 -   source code deblobbed
 
-
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

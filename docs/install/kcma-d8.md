@@ -1,5 +1,6 @@
 ---
 title: KCMA-D8 external flashing instructions 
+x-toc-enable: true
 ...
 
 Initial flashing instructions for kcma-d8.
@@ -17,11 +18,6 @@ For more general information about this board, refer to
 
 TODO: show photos here, and other info.
 
--   [kcma-d8 boards (and full systems) with libreboot
-    preinstalled](#preinstall)
-
--   [External programmer](#programmer)
-
 External programmer {#programmer}
 ===================
 
@@ -34,8 +30,6 @@ the programmer. **DO NOT** remove the chip with your hands. Use a chip
 extractor tool.
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

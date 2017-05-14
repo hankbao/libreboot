@@ -65,12 +65,14 @@ article](https://wiki.archlinux.org/index.php/Solid_State_Drives). Edit
 whole article and keep all points in mind, adapting them for this guide.
 
 Securely wipe the drive:
+
     # dd if=/dev/urandom of=/dev/sda; sync
 
 NOTE: If you have an SSD, only do this the first time. If it was already
 LUKS-encrypted before, use the info below to wipe the LUKS header. Also,
 check online for your SSD what the recommended erase block size is. For
 example if it was 2MiB:
+
     # dd if=/dev/urandom of=/dev/sda bs=2M; sync
 
 If your drive was already LUKS encrypted (maybe you are re-installing
@@ -82,6 +84,7 @@ guide is recommending putting zero there. I'm going to use urandom. Do
 this:
 
     # head -c 3145728 /dev/urandom > /dev/sda; sync
+
 (Wiping the LUKS header is important, since it has hashed passphrases
 and so on. It's 'secure', but 'potentially' a risk).
 
@@ -93,6 +96,7 @@ list the available keymaps and use yours:
 
     # localectl list-keymaps
     # loadkeys LAYOUT
+
 For me, LAYOUT would have been dvorak-uk.
 
 Establish an internet connection
@@ -142,13 +146,14 @@ I am then directed to
 
 Parabola forces you to RTFM. Do that.
 
-It tells me to run:
+To populate the list below, it tells me to run:
 
-    # cryptsetup benchmark (for making sure the list below is
-populated)\
+    # cryptsetup benchmark
+
 Then:
 
     # cat /proc/crypto
+
 This gives me crypto options that I can use. It also provides a
 representation of the best way to set up LUKS (in this case, security is
 a priority; speed, a distant second). To gain a better understanding, I
@@ -162,10 +167,14 @@ on
 Reading through, it seems like Serpent (encryption) and Whirlpool (hash)
 is the best option.
 
-I am initializing LUKS with the following:\
-\# **cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
+I am initializing LUKS with the following:
+
+    # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash
+
 whirlpool --iter-time 500 --use-random --verify-passphrase luksFormat
-/dev/sda1** Choose a **secure** passphrase here. Ideally lots of
+/dev/sda1
+
+ Choose a **secure** passphrase here. Ideally lots of
 lowercase/uppercase numbers, letters, symbols etc all in a random
 pattern. The password length should be as long as you are able to handle
 without writing it down or storing it anywhere.
@@ -178,14 +187,14 @@ Create LVM
 
 Now I refer to <https://wiki.archlinux.org/index.php/LVM>.
 
-Open the LUKS partition:
+Open the LUKS partition at /dev/mapper/lvm:
 
     # cryptsetup luksOpen /dev/sda1 lvm
-(it will be available at /dev/mapper/lvm)
 
 Create LVM partition:
 
     # pvcreate /dev/mapper/lvm
+
 Show that you just created it:
 
     # pvdisplay
@@ -194,22 +203,24 @@ Now I create the volume group, inside of which the logical volumes will
 be created:
 
     # vgcreate matrix /dev/mapper/lvm
+
 (volume group name is 'matrix' - choose your own name, if you like)
 Show that you created it:
 
     # vgdisplay
 
-Now create the logical volumes:
+Now create the logical volumes (2G swap parittion named swapvol):
 
-    # lvcreate -L 2G matrix -n swapvol (2G swap partition, named
-swapvol)\
-Again, choose your own name if you like. Also, make sure to choose a
-swap size of your own needs. It basically depends on how much RAM you
-have installed. I refer to
+    # lvcreate -L 2G matrix -n swapvol
+
+Again, choose your own name if you like. Also, make sure to choose a swap size
+of your own needs. It basically depends on how much RAM you have installed. I
+refer to
 <http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space>.
+This creates a single large partition in the rest of the space, named root:
 
-    # lvcreate -l +100%FREE matrix -n root (single large partition in
-the rest of the space, named root)\
+    # lvcreate -l +100%FREE matrix -n root
+
 You can also be flexible here, for example you can specify a /boot, a /,
 a /home, a /var, a /usr, etc. For example, if you will be running a
 web/mail server then you want /var in its own partition (so that if it
@@ -227,6 +238,7 @@ Create / and swap partitions, and mount
 For the swapvol LV I use:
 
     # mkswap /dev/mapper/matrix-swapvol
+
 Activate swap:
 
     # swapon /dev/matrix/swapvol
@@ -263,49 +275,70 @@ server)) and then did:
 
     # pacman -Syy
     # pacman -Syu
-    # pacman -Sy pacman (and then I did the other 2 steps above,
-again)\
+    # pacman -Sy pacman
+
 In my case I did the steps in the next paragraph, and followed the steps
 in this paragraph again.
 
-<troubleshooting>\
-   The following is based on 'Verification of package signatures' in
-the Parabola install guide.\
-   Check there first to see if steps differ by now.\
-   Now you have to update the default Parabola keyring. This is used for
-signing and verifying packages:\
-   \# **pacman -Sy parabola-keyring**\
-   It says that if you get GPG errors, then it's probably an expired
-key and, therefore, you should do:\
-   \# **pacman-key --populate parabola**\
-   \# **pacman-key --refresh-keys**\
-   \# **pacman -Sy parabola-keyring**\
-   To be honest, you should do the above anyway. Parabola has a lot of
-maintainers, and a lot of keys. Really!\
-   If you get an error mentioning dirmngr, do:\
-   \# **dirmngr </dev/null**\
-   Also, it says that if the clock is set incorrectly then you have to
-manually set the correct time\
-   (if keys are listed as expired because of it):\
-   \# **date MMDDhhmm\[\[CC\]YY\]\[.ss\]**\
-   I also had to install:\
-   \# **pacman -S archlinux-keyring**\
-   \# **pacman-key --populate archlinux**\
-   In my case I saw some conflicting files reported in pacman, stopping
-me from using it.\
-   I deleted the files that it mentioned and then it worked.
-Specifically, I had this error:\
-   *licenses: /usr/share/licenses/common/MPS exists in filesystem*\
-   I rm -Rf'd the file and then pacman worked. I'm told that the
-following would have also made it work:\
-   \# **pacman -Sf licenses**\
-</troubleshooting>\
+Troubleshooting
+---------------
+
+The following is based on 'Verification of package signatures' in
+the Parabola install guide.
+
+Check there first to see if steps differ by now.
+
+Now you have to update the default Parabola keyring. This is used for
+signing and verifying packages:
+
+   # pacman -Sy parabola-keyring
+
+It says that if you get GPG errors, then it's probably an expired
+key and, therefore, you should do:
+
+   # pacman-key --populate parabola
+   # pacman-key --refresh-keys
+   # pacman -Sy parabola-keyring
+
+To be honest, you should do the above anyway. Parabola has a lot of
+maintainers, and a lot of keys. Really!
+
+If you get an error mentioning dirmngr, do:
+
+   # dirmngr < /dev/null
+
+Also, it says that if the clock is set incorrectly then you have to manually
+set the correct time
+
+   # date MMDDhhmm\[\[CC\]YY\]\[.ss\]
+
+I also had to install:
+
+   # pacman -S archlinux-keyring
+   # pacman-key --populate archlinux
+
+In my case I saw some conflicting files reported in pacman, stopping
+me from using it.
+I deleted the files that it mentioned and then it worked.
+Specifically, I had this error:
+
+   licenses: /usr/share/licenses/common/MPS exists in filesystem
+
+I rm -Rf'd the file and then pacman worked. I'm told that the
+following would have also made it work:
+
+    # pacman -Sf licenses
+
+More packages
+--------------
 
 I also like to install other packages (base-devel, compilers and so on)
 and wpa\_supplicant/dialog/iw/wpa\_actiond are needed for wireless after
-the install:\
-\# **pacstrap /mnt base base-devel wpa\_supplicant dialog iw
-wpa\_actiond**
+the install:
+
+    # pacstrap /mnt base base-devel wpa_supplicant dialog iw
+
+wpa\_actiond
 
 Configure the system
 --------------------
@@ -315,9 +348,11 @@ Generate an fstab - UUIDs are used because they have certain advantages
 prefer labels instead, replace the -U option with -L):
 
     # genfstab -U -p /mnt >> /mnt/etc/fstab
+
 Check the created file:
 
     # cat /mnt/etc/fstab
+
 (If there are any errors, edit the file. Do **NOT** run the genfstab
 command again!)
 
@@ -346,16 +381,18 @@ Parabola does not have wget. This is sinister. Install it:
 Locale:
 
     # vi /etc/locale.gen
+
 Uncomment your needed localisations. For example en\_GB.UTF-8 (UTF-8 is
 highly recommended over other options).
 
     # locale-gen
-    # echo LANG=en\_GB.UTF-8 > /etc/locale.conf
-    # export LANG=en\_GB.UTF-8
+    # echo LANG=en_GB.UTF-8 > /etc/locale.conf
+    # export LANG=en_GB.UTF-8
 
 Console font and keymap:
 
     # vi /etc/vconsole.conf
+
 In my case:
 
     KEYMAP=dvorak-uk
@@ -364,6 +401,7 @@ In my case:
 Time zone:
 
     # ln -s /usr/share/zoneinfo/Europe/London /etc/localtime
+
 (Replace Zone and Subzone to your liking. See /usr/share/zoneinfo)
 
 Hardware clock:
@@ -374,6 +412,7 @@ Hostname: Write your hostname to /etc/hostname. For example, if your
 hostname is parabola:
 
     # echo parabola > /etc/hostname
+
 Add the same hostname to /etc/hosts:
 
     # vi /etc/hosts
@@ -392,6 +431,7 @@ Mkinitcpio: Configure /etc/mkinitcpio.conf as needed (see
 information about each hook.) Specifically, for this use case:
 
     # vi /etc/mkinitcpio.conf
+
 Then modify the file like so:
 
 -   MODULES="i915"
@@ -418,9 +458,11 @@ with (this is different from Arch, specifying linux-libre instead of
 linux):
 
     # mkinitcpio -p linux-libre
+
 Also do it for linux-libre-lts:
 
     # mkinitcpio -p linux-libre-lts
+
 Also do it for linux-libre-grsec:
 
     # mkinitcpio -p linux-libre-grsec
@@ -430,9 +472,11 @@ default for its password hashing. I referred to
 <https://wiki.archlinux.org/index.php/SHA_password_hashes>.
 
     # vi /etc/pam.d/passwd
+
 Add rounds=65536 at the end of the uncommented 'password' line.
 
     # passwd root
+
 Make sure to set a secure password! Also, it must never be the same as
 your LUKS password.
 
@@ -457,7 +501,8 @@ file=/var/log/faillog*\
 To unlock a user manually (if a password attempt is failed 3 times),
 do:
 
-    # pam\_tally --user *theusername* --reset What the above
+    # pam_tally --user *theusername* --reset What the above
+
 configuration does is lock the user out for 10 minutes, if they make 3
 failed login attempts.
 
@@ -487,6 +532,7 @@ Lock the encrypted partition (close it):
     # cryptsetup luksClose lvm
 
     # shutdown -h now
+
 Remove the installation media, then boot up again.
 
 Booting from GRUB
@@ -538,13 +584,18 @@ current firmware - where *libreboot.rom* is an example: make sure to
 adapt:
 
     # flashrom -p internal -r libreboot.rom
+
 If flashrom complains about multiple flash chips detected, add a *-c*
 option at the end, with the name of your chosen chip is quotes.\
 You can check if everything is in there (*grub.cfg* and *grubtest.cfg*
 would be really nice):
+
     $ ./cbfstool libreboot.rom print
+
 Extract grubtest.cfg:
+
     $ ./cbfstool libreboot.rom extract -n grubtest.cfg -f grubtest.cfg\
+
 And modify:
 
     $ vi grubtest.cfg
@@ -578,20 +629,25 @@ Save your changes in grubtest.cfg, then delete the unmodified config
 from the ROM image:
 
     $ ./cbfstool libreboot.rom remove -n grubtest.cfg
-and insert the modified grubtest.cfg:\
-\$ **./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
-raw**\
+
+and insert the modified grubtest.cfg:
+
+    # ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
+
+raw
 
 Now refer to [../install/#flashrom](../install/#flashrom). Cd (up) to
 the libreboot\_util directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
+
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
     # ./flash forceupdate libreboot.rom
-You should see "Verifying flash\... VERIFIED." written at the end of
+
+You should see "Verifying flash... VERIFIED." written at the end of
 the flashrom output.
 
 With this new configuration, Parabola can boot automatically and you
@@ -616,13 +672,17 @@ the main config still links (in the menu) to grubtest.cfg, so that you
 don't have to manually switch to it, in case you ever want to follow
 this guide again in the future (modifying the already modified config).
 Inside libreboot\_util/cbfstool/{armv7l i686 x86\_64}, we can do this
-with the following command:\
-\$ **sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+with the following command:
+
+    # sed -e 's:(cbfsdisk)/grub.cfg:(cbfsdisk)/grubtest.cfg:g' -e
+
 's:Switch to grub.cfg:Switch to grubtest.cfg:g' < grubtest.cfg >
-grub.cfg**\
+grub.cfg
+
 Delete the grub.cfg that remained inside the ROM:
 
     $ ./cbfstool libreboot.rom remove -n grub.cfg
+
 Add the modified version that you just made:
 
     $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw
@@ -632,7 +692,8 @@ Now you have a modified ROM. Once more, refer to
 directory and update the flash chip contents:
 
     # ./flash update libreboot.rom
-And wait for the "Verifying flash\... VERIFIED." Once you have done
+
+And wait for the "Verifying flash... VERIFIED." Once you have done
 that, shut down and then boot up with your new configuration.
 
 When done, delete GRUB (remember, we only needed it for the
@@ -656,26 +717,32 @@ will be asked to enter your passphrase a second time. A workaround is to
 put a keyfile inside initramfs, with instructions for the kernel to use
 it when booting. This is safe, because /boot/ is encrypted (otherwise,
 putting a keyfile inside initramfs would be a bad idea).\
-Boot up and login as root or your user. Then generate the key file:\
-\# **dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
-iflag=fullblock**\
+Boot up and login as root or your user. Then generate the key file:
+
+    # dd bs=512 count=4 if=/dev/urandom of=/etc/mykeyfile
+
+iflag=fullblock
+
 Insert it into the luks volume:
 
     # cryptsetup luksAddKey /dev/sdX /etc/mykeyfile
+
 and enter your LUKS passphrase when prompted. Add the keyfile to the
 initramfs by adding it to FILES in /etc/mkinitcpio.conf. For example:
 
     # FILES="/etc/mykeyfile"
+
 Create the initramfs image from scratch:
 
     # mkinitcpio -p linux-libre
     # mkinitcpio -p linux-libre-lts
     # mkinitcpio -p linux-libre-grsec
+
 Add the following to your grub.cfg - you are now able to do that, see
 above! -, or add it in the kernel command line for GRUB:
 
     # cryptkey=rootfs:/etc/mykeyfile
-\
+
 You can also place this inside the grub.cfg that exists in CBFS:
 [grub\_cbfs.md](grub_cbfs.md).
 
@@ -774,8 +841,6 @@ problems. Removing that worked around the issue.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

@@ -31,14 +31,10 @@ image:
 
 Helpful links:
 
--   [GRUB manual
-    \#security](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
--   [GRUB info
-    pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
--   [SATA connected storage considered dangerous until proven
-    otherwise.](../../faq.md#firmware-hddssd)
--   [Coreboot GRUB security
-    howto](https://www.coreboot.org/GRUB2#Security)
+-   [GRUB manual](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
+-   [GRUB info pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
+-   [SATA connected storage considered dangerous.](../../faq.md#firmware-hddssd)
+-   [Coreboot GRUB security howto](https://www.coreboot.org/GRUB2#Security)
 
 GRUB Password
 =============
@@ -138,7 +134,7 @@ First generate a GPG keypair to use for signing. Option RSA (sign only)
 is ok.
 
 **Warning:** GRUB does not read ASCII armored keys. When attempting to
-trust \... a key filename it will print error: bad signature
+trust ... a key filename it will print error: bad signature
 
     mkdir --mode 0700 keys
     gpg --homedir keys --gen-key
@@ -158,6 +154,7 @@ Now that we have a key, we can sign some files with it. We have to sign:
 Suppose that we have a pair of **my.kernel** and **my.initramfs** and an
 on-disk **libreboot\_grub.cfg**. We sign them by issuing the following
 commands:
+
     gpg --homedir keys --detach-sign my.initramfs
     gpg --homedir keys --detach-sign my.kernel
     gpg --homedir keys --detach-sign libreboot_grub.cfg
@@ -176,11 +173,9 @@ What remains now is to include the modifications into the image (rom):
     cbfstool my.rom add -n grubtest.cfg -f my.grubtest.cfg -t raw
     cbfstool my.rom add -n grubtest.cfg.sig -f my.grubtest.cfg.sig -t raw
 
-\... and flashing it.
+... and flashing it.
 
 Copyright © 2017 Fedja Beader <fedja@protonmail.ch>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

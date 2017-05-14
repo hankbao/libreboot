@@ -1,5 +1,6 @@
 ---
 title: How to install NetBSD on a libreboot system
+x-toc-enable: true
 ...
 
 This section relates to preparing, booting and installing NetBSD on your
@@ -13,13 +14,6 @@ according to at least 1 user.**
 Thanks go to ioxcide in [this Reddit
 post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
 for the initial instructions.
-
--   [Prepare the USB drive (in NetBSD)](#prepare)
--   [Installing NetBSD without full disk encryption](#noencryption)
--   [Installing NetBSD with full disk encryption](#encryption)
--   [Booting](#booting)
--   [Configuring Grub](#configuring_grub)
--   [Troubleshooting](#troubleshooting)
 
 **This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
@@ -81,6 +75,7 @@ the bootable NetBSD USB drive:
 Connect the USB drive. Check dmesg:
 
     $ dmesg
+
 Check lsblk to confirm which drive it is:
 
     $ lsblk
@@ -135,14 +130,13 @@ command to boot NetBSD every time, you can create a GRUB configuration
 that's aware of your NetBSD installation and that will automatically be
 used by libreboot.
 
-On your NetBSD root partition, create the **/grub** directory and add
-the file **libreboot\_grub.cfg** to it. Inside the
-**libreboot\_grub.cfg** add these lines:
+On your NetBSD root partition, create the `/grub` directory and add
+the file `libreboot_grub.cfg` to it. Inside the
+`libreboot_grub.cfg` add these lines:
 
-**default=0 timeout=3 menuentry "NetBSD" {\
-    knetbsd -r wd0a (ahci0,netbsd1)/netbsd\
-}\
-**
+    default=0 timeout=3 menuentry "NetBSD" {
+        knetbsd -r wd0a (ahci0,netbsd1)/netbsd
+    }
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only NetBSD on the list. After 3
@@ -160,7 +154,7 @@ because it doesn't exist.
 In most cases, you should use the vesafb ROM images. Example filename:
 libreboot\_ukdvorak\_vesafb.rom.
 
-won't boot\...something about file not found
+won't boot...something about file not found
 ---------------------------------------------
 
 Your device names (i.e. usb0, usb1, sd0, sd1, wd0, ahci0, hd0, etc) and
@@ -168,8 +162,6 @@ numbers may differ. Use TAB completion.
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\
 Copyright © 2016 Scott Bonds <scott@ggr.com>\
-
-
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
