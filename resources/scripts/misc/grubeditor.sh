@@ -55,7 +55,7 @@
 #set -u
 
 # Version number of script
-geversion="0.1"
+geversion="0.1.1"
 
 # Define the list of available option in both short and long form.
 shortopts="hrie:sdD:"
