@@ -46,6 +46,13 @@
 # -D | --differ [/path/to/]differ: use /path/to/differ instead of "diff", can
 # be an interactive program like vimdiff
 
+# THIS BLOCK IS EXPERIMENTAL
+# Allow debugging by running DEBUG= ${0}.
+[[ "x${DEBUG+set}" = 'xset' ]] && set -v
+# -u kills the script if any variables are unassigned
+# -e kills the script if any function returns not-zero
+#set -u
+
 # Define the list of available option in both short and long form.
 shortopts="hrie:sdD:"
 longopts="help,realcfg,inplace,editor:,swapcfgs,diffcfgs,differ:"
@@ -154,7 +161,7 @@ determine_architecture() {
     case "${arch}" in
         armv7l|i686|x86_64)
             echo "Supported architecture \"${arch}\" detected. You may proceed."
-            cbfstool="./cbfstool/${arch}/cbfstool"
+            cbfstool="${0%/*}/cbfstool/${arch}/cbfstool"
             ;;
         *) 
             echo "Unsupported architecture \"${arch}\" detected! You may not proceed."
@@ -180,155 +187,7 @@ determine_operation() {
 # referenced within them either directly or indirectly from other helper
 # functions depending on the operations requested by the user.
 
-show_help() {
-    cat << HELPSCREEN
-${0} -- conveniently edit grub{test}.cfg files in Libreboot ROM image files by
-automating their extraction with cbfstool and the user's editor of choice.
-
--h | --help: show usage help
-
--r | --realcfg: generate grub.cfg instead of grubtest.cfg
-
--i | --inplace: do not create a .modified romfile, instead modify the
-existing file
-
--e | --editor [/path/to/]editor: open the cfg file with /path/to/editor instead
-of the value of \$EDITOR
-
--s | --swapcfg: swap grub.cfg and grubtest.cfg
-
--d | --diffcfg: diff grub.cfg and grubtest.cfg
-
--D | --differ [/path/to/]differ: use /path/to/differ instead of "diff", can be
-an interactive program like vimdiff
-HELPSCREEN
-}
-
-swap_configs() {
-    # Procedure:
-    # 1. Call cbfstool twice, once each to extract grub.cfg and grubtest.cfg.
-    # 2. If --inplace not specified, copy ${romfile} to ${romfile}.modified and
-    # implement remaining steps on this copy. Otherwise, implement remaining
-    # steps on ${romfile}.
-    # 3. Call cbfstool twice, once each to delete grub.cfg and grubtest.cfg
-    # from romfile.
-    # 4. Call cbfstool twice, once to embed grubtest.cfg as grub.cfg into
-    # romfile and again to embed grub.cfg as grubtest.cfg into romfile.
-    # 5. Delete the extracted grub.cfg and grubtest.cfg files.
-    # 6. You're done!
-
-    # Extract config files from provided romfile.
-    ${cbfstool} ${romfile} extract -n grub.cfg -f /tmp/real2test.cfg
-    ${cbfstool} ${romfile} extract -n grubtest.cfg -f /tmp/test2real.cfg
-
-    # Determine whether to edit inplace or make a copy.
-    if [[ $edit_inplace -eq 1 ]]; then
-        outfile="${romfile}"
-    else
-        cp "${romfile}" "${romfile}.modified"
-        outfile="${romfile}.modified"
-    fi
-
-    # Remove config files from the output file.
-    ${cbfstool} ${outfile} remove -n grub.cfg
-    ${cbfstool} ${outfile} remove -n grubtest.cfg
-
-    # Embed new configs into the output file.
-    ${cbfstool} ${outfile} add -t raw -n grub.cfg -f /tmp/test2real.cfg
-    ${cbfstool} ${outfile} add -t raw -n grubtest.cfg -f /tmp/real2test.cfg
-    
-    # Delete the tempfiles.
-    rm /tmp/test2real.cfg /tmp/real2test.cfg
-}
-
-diff_configs() {
-    # Procedure:
-    # 1. Call cbfstool twice, once to extract grub.cfg and grubtest.cfg.
-    # 2. Execute ${use_differ} grub.cfg grubtest.cfg #.
-    # 3. Delete the extracted grub.cfg and grubtest.cfg files.
-    # 4. You're done!
-
-    # Determine the differ command to use.
-    find_differ
-
-    # Extract config files from provided romfile.
-    ${cbfstool} ${romfile} extract -n grub.cfg -f /tmp/grub_tmpdiff.cfg
-    ${cbfstool} ${romfile} extract -n grubtest.cfg -f /tmp/grubtest_tmpdiff.cfg
-
-    # Run the differ command with real as first option, test as second option.
-    ${use_differ} /tmp/grub_tmpdiff.cfg /tmp/grubtest_tmpdiff.cfg
-}
-
-edit_config() {
-    # Procedure:
-    # 1. If --realcfg specified, set ${thisconfig} to "grub.cfg". Otherwise,
-    # set ${thisconfig} to "grubtest.cfg".
-    # 2. Call cbfstool once to extract ${thisconfig} from ${romfile}.
-    # 3. Run ${use_editor} ${thisconfig}.
-    # 4. If ${use_editor} returns zero, proceed with update procedure:
-    # 5. Call cbfstool once to extract ${thisconfig} from ${romfile}.
-    # 6. Quietly diff the extracted file with the edited file. If diff returns
-    # zero, take no action: warn the user that the files were the same, delete
-    # both files, then skip the remaining steps (you're done)! Otherwise, the
-    # files are different and you must continue with the update procedure.
-    # 7. If --inplace not specified, copy ${romfile} to ${romfile}.modified and
-    # implement remaining steps on this copy. Otherwise, implement remaining
-    # steps on ${romfile}.
-    # 8. Call cbfstool once to delete internal pre-update ${thisconfig} from
-    # the rom file.
-    # 9. Call cbfstool once to embed the updated ${thisconfig} that was just
-    # edited into the rom file.
-    # 10. Alert the user of success (either explicitly or by not saying
-    # anything, either way return zero).
-    # 11. You're done!
-
-    # Determine the editor command to use.
-    find_editor
-
-    # Determine whether we are editing the real config or the test config.
-    if [[ $edit_realcfg -eq 1 ]]; then
-        thisconfig="grub.cfg"
-    else
-        thisconfig="grubtest.cfg"
-    fi
-
-    # Extract the desired configuration file from the romfile.
-    tmp_editme="/tmp/${thisconfig%.cfg}_editme.cfg"
-    ${cbfstool} ${romfile} extract -n ${thisconfig} -f ${tmp_editme}
-
-    # Launch the editor!
-    ${use_editor} ${tmp_editme}
-
-    # Did the user commit the edit?
-    if [[ $? -eq 0 ]]; then
-        # See if it actually changed from what exists in the cbfs.
-        tmp_refcfg="/tmp/${thisconfig%.cfg}_ref.cfg"
-        ${cbfstool} ${romfile} extract -n ${thisconfig} -f ${tmp_refcfg}
-        # Diff the files as quietly as possible.
-        diff -q ${tmp_editme} ${tmp_refcfg} &> /dev/null
-        if [[ $? -ne 0 ]]; then
-            # The files differ, so it won't be frivolous to update the config.
-            # See if the user wants to edit the file in place.
-            # (This code should really be genericized and placed in a function
-            # to avoid repetition.)
-            if [[ $edit_inplace -eq 1 ]]; then
-                outfile="${romfile}"
-            else
-                cp "${romfile}" "${romfile}.modified"
-                outfile="${romfile}.modified"
-            fi
-            # Remove the old config, add in the new one.
-            ${cbfstool} ${outfile} remove -n ${thisconfig}
-            ${cbfstool} ${outfile} add -t raw -n ${thisconfig} -f ${tmp_editme}
-        else
-            echo "No changes to config file. Not updating the ROM image."
-        fi
-        # We are done with the config files. Delete them.
-        rm ${tmp_editme}
-        rm ${tmp_refcfg}
-    fi
-}
-
+# External command finders.
 find_differ() {
     found_differ=0
 
@@ -387,6 +246,191 @@ find_editor() {
             echo "\$EDITOR blank, defaulting to ${default_editor}..."
             use_editor="${default_editor}"
         fi
+    fi
+}
+
+# Filename randomizer.
+random_filer() {
+    # Inputs:
+    # $1 is a descriptive label for the file
+    # $2 is directory (becomes /tmp if not set)
+    [[ -n "${1}" ]] && label="${1}" || label="tempfile"
+    [[ -n "${2}" ]] && savedir="${2%/}" || savedir="/tmp"
+
+    # Hardcoded string size for multiple good reasons (no processing weird
+    # input, prevent malicious overflows, etc.)
+    size=5
+
+    # Loop forever until a free filename is found.
+    while [[ 1 ]]; do
+
+        # Read data from /dev/urandom and convert into random ASCII strings.
+        rand=$(cat /dev/urandom | tr -dc 'a-zA-Z' | fold -w $size | head -n 1)
+
+        # Build a complete filename with a hardcoded extension.
+        possible="${savedir}/${label}_${rand}.tmp.cfg"
+
+        # See if file doesn't exist and return it as string or keep going.
+        if [[ ! -f "${possible}" ]]; then
+            echo "${possible}" 
+            break
+        fi
+
+    done
+}
+
+# Primary command functions.
+show_help() {
+    cat << HELPSCREEN
+"${0}" -- conveniently edit grub{test}.cfg files in Libreboot ROM image files by automating their extraction with cbfstool and the user's editor of choice.
+
+Usage:
+
+"${0}" [OPTIONS] [ROMFILE]
+
+Options:
+
+-h | --help: show usage help
+
+-r | --realcfg: generate grub.cfg instead of grubtest.cfg
+
+-i | --inplace: do not create a .modified romfile, instead modify the
+existing file
+
+-e | --editor [/path/to/]editor: open the cfg file with /path/to/editor instead of the value of \$EDITOR
+
+-s | --swapcfg: swap grub.cfg and grubtest.cfg
+
+-d | --diffcfg: diff grub.cfg and grubtest.cfg
+
+-D | --differ [/path/to/]differ: use /path/to/differ instead of "diff", can be an interactive program like vimdiff
+HELPSCREEN
+}
+
+swap_configs() {
+    # Procedure:
+    # 1. Call cbfstool twice, once each to extract grub.cfg and grubtest.cfg.
+    # 2. If --inplace not specified, copy ${romfile} to ${romfile}.modified and
+    # implement remaining steps on this copy. Otherwise, implement remaining
+    # steps on ${romfile}.
+    # 3. Call cbfstool twice, once each to delete grub.cfg and grubtest.cfg
+    # from romfile.
+    # 4. Call cbfstool twice, once to embed grubtest.cfg as grub.cfg into
+    # romfile and again to embed grub.cfg as grubtest.cfg into romfile.
+    # 5. Delete the extracted grub.cfg and grubtest.cfg files.
+    # 6. You're done!
+
+    # Extract config files from provided romfile.
+    real2test="$(random_filer "real2test")"
+    test2real="$(random_filer "test2real")"
+    "${cbfstool}" "${romfile}" extract -n grub.cfg -f "${real2test}"
+    "${cbfstool}" "${romfile}" extract -n grubtest.cfg -f "${test2real}"
+
+    # Determine whether to edit inplace or make a copy.
+    if [[ $edit_inplace -eq 1 ]]; then
+        outfile="${romfile}"
+    else
+        cp "${romfile}" "${romfile}.modified"
+        outfile="${romfile}.modified"
+    fi
+
+    # Remove config files from the output file.
+    "${cbfstool}" "${outfile}" remove -n grub.cfg
+    "${cbfstool}" "${outfile}" remove -n grubtest.cfg
+
+    # Embed new configs into the output file.
+    "${cbfstool}" ${outfile} add -t raw -n grub.cfg -f "${test2real}"
+    "${cbfstool}" ${outfile} add -t raw -n grubtest.cfg -f "${real2test}"
+    
+    # Delete the tempfiles.
+    rm "${test2real}" "${real2test}"
+}
+
+diff_configs() {
+    # Procedure:
+    # 1. Call cbfstool twice, once to extract grub.cfg and grubtest.cfg.
+    # 2. Execute ${use_differ} grub.cfg grubtest.cfg #.
+    # 3. Delete the extracted grub.cfg and grubtest.cfg files.
+    # 4. You're done!
+
+    # Determine the differ command to use.
+    find_differ
+
+    # Extract config files from provided romfile.
+    "${cbfstool}" "${romfile}" extract -n grub.cfg -f /tmp/grub_tmpdiff.cfg
+    "${cbfstool}" "${romfile}" extract -n grubtest.cfg -f /tmp/grubtest_tmpdiff.cfg
+
+    # Run the differ command with real as first option, test as second option.
+    "${use_differ}" /tmp/grub_tmpdiff.cfg /tmp/grubtest_tmpdiff.cfg
+}
+
+edit_config() {
+    # Procedure:
+    # 1. If --realcfg specified, set ${thisconfig} to "grub.cfg". Otherwise,
+    # set ${thisconfig} to "grubtest.cfg".
+    # 2. Call cbfstool once to extract ${thisconfig} from ${romfile}.
+    # 3. Run ${use_editor} ${thisconfig}.
+    # 4. If ${use_editor} returns zero, proceed with update procedure:
+    # 5. Call cbfstool once to extract ${thisconfig} from ${romfile}.
+    # 6. Quietly diff the extracted file with the edited file. If diff returns
+    # zero, take no action: warn the user that the files were the same, delete
+    # both files, then skip the remaining steps (you're done)! Otherwise, the
+    # files are different and you must continue with the update procedure.
+    # 7. If --inplace not specified, copy ${romfile} to ${romfile}.modified and
+    # implement remaining steps on this copy. Otherwise, implement remaining
+    # steps on ${romfile}.
+    # 8. Call cbfstool once to delete internal pre-update ${thisconfig} from
+    # the rom file.
+    # 9. Call cbfstool once to embed the updated ${thisconfig} that was just
+    # edited into the rom file.
+    # 10. Alert the user of success (either explicitly or by not saying
+    # anything, either way return zero).
+    # 11. You're done!
+
+    # Determine the editor command to use.
+    find_editor
+
+    # Determine whether we are editing the real config or the test config.
+    if [[ $edit_realcfg -eq 1 ]]; then
+        thisconfig="grub.cfg"
+    else
+        thisconfig="grubtest.cfg"
+    fi
+
+    # Extract the desired configuration file from the romfile.
+    tmp_editme="$(random_filer "${thisconfig%.cfg}")"
+    "${cbfstool}" "${romfile}" extract -n "${thisconfig}" -f "${tmp_editme}"
+
+    # Launch the editor!
+    "${use_editor}" "${tmp_editme}"
+
+    # Did the user commit the edit?
+    if [[ $? -eq 0 ]]; then
+        # See if it actually changed from what exists in the cbfs.
+        tmp_refcfg="/tmp/${thisconfig%.cfg}_ref.cfg"
+        "${cbfstool}" "${romfile}" extract -n "${thisconfig}" -f "${tmp_refcfg}"
+        # Diff the files as quietly as possible.
+        diff -q "${tmp_editme}" "${tmp_refcfg}" &> /dev/null
+        if [[ $? -ne 0 ]]; then
+            # The files differ, so it won't be frivolous to update the config.
+            # See if the user wants to edit the file in place.
+            # (This code should really be genericized and placed in a function
+            # to avoid repetition.)
+            if [[ $edit_inplace -eq 1 ]]; then
+                outfile="${romfile}"
+            else
+                cp "${romfile}" "${romfile}.modified"
+                outfile="${romfile}.modified"
+            fi
+            # Remove the old config, add in the new one.
+            "${cbfstool}" "${outfile}" remove -n "${thisconfig}"
+            "${cbfstool}" "${outfile}" add -t raw -n "${thisconfig}" -f "${tmp_editme}"
+        else
+            echo "No changes to config file. Not updating the ROM image."
+        fi
+        # We are done with the config files. Delete them.
+        rm "${tmp_editme}"
+        rm "${tmp_refcfg}"
     fi
 }
 
