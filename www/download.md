@@ -17,7 +17,7 @@ GPG signing key
 
 Releases are signed with GPG.
 
-    $ gpg --recv-keys
+    $ gpg --recv-keys 0x05E8C5B2
 
 The GPG key can also be downloaded with this exported dump of the
 pubkey: [lbkey.asc](lbkey.asc).
