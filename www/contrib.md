@@ -30,7 +30,7 @@ Damien Zammit
 Maintains the Gigabyte GA-G41M-ES2L coreboot port, which is integrated
 in libreboot. Also works on other hardware for the benefit of the
 libreboot project. Contact **damo22** on the freenode IRC network. This
-persons website is [zammit.org](http://www.zammit.org/).
+person's website is [zammit.org](http://www.zammit.org/).
 
 Denis Carikli
 -------------
