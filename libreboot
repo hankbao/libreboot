@@ -15,17 +15,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+GLOBIGNORE=".:.." # This enables the shell option 'dotglob' as well.
+shopt -s nullglob
+
 libreboot_usage() {
 	local action
 	local target
 
-	printf "$executable [action] [target] [arguments]\n" >&2
+	printf "${executable} [action] [target] [arguments]\n" >&2
 
 	printf "\nGeneric project actions:\n" >&2
 
-	for action in $PROJECT_ACTIONS_GENERIC
-	do
-		printf "  $action\n" >&2
+	for action in ${PROJECT_ACTIONS_GENERIC}; do
+		printf "  ${action}\n" >&2
 	done
 
 	printf "\nVirtual project actions:\n" >&2
@@ -36,28 +38,23 @@ libreboot_usage() {
 
 	printf "\nProject targets:\n" >&2
 
-	ls -A "$root/$PROJECTS/" | while read target
-	do
-		if project_check "$target"
-		then
-			printf "  $target\n" >&2
+	for target in "${root}/${PROJECTS}"/*; do
+		if project_check "${target}"; then
+			printf "  ${target}\n" >&2
 		fi
 	done
 
 	printf "\nGeneric tool actions:\n" >&2
 
-	for action in $TOOL_ACTIONS_GENERIC
-	do
-		printf "  $action\n" >&2
+	for action in ${TOOL_ACTIONS_GENERIC}; do
+		printf "  ${action}\n" >&2
 	done
 
 	printf "\nTool targets:\n" >&2
 
-	ls -A "$root/$TOOLS/" | while read target
-	do
-		if tool_check "$target"
-		then
-			printf "  $target\n" >&2
+	for target in "${root}/${TOOLS}"/*; do
+		if tool_check "${target}"; then
+			printf "  ${target}\n" >&2
 		fi
 	done
 
@@ -70,89 +67,74 @@ libreboot_usage() {
 	printf "  VERSION - Version string to use\n" >&2
 
 	printf "\nConfiguration files:\n" >&2
-	printf "  $BUILD_SYSTEM.conf - Environment variables configuration\n" >&2
+	printf "  ${BUILD_SYSTEM}.conf - Environment variables configuration\n" >&2
 }
 
 libreboot_project() {
-	action=$1
+	action="$1"
 	shift
-	project=$1
+	project="$1"
 	shift
 
-	case $action in
+	case ${action} in
 		"sources")
 			(
 				set +e
 
-				project_action_arguments "extract" "$project" "$@"
-				if [ $? -eq 0 ]
-				then
-					return 0
-				fi
-
-				project_action_arguments "download" "$project" "$@"
-				if [ $? -eq 0 ]
-				then
-					return 0
-				fi
+				project_action_arguments "extract" "${project}" "$@" && return 0
+				project_action_arguments "download" "${project}" "$@" && return 0
 			)
 			;;
 		"produce")
-			for action in "build" "install" "release"
-			do
-				project_action_arguments "$action" "$project" "$@"
+			for action in "build" "install" "release"; do
+				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
 		"test")
-			for action in $PROJECT_ACTIONS
-			do
-				project_action_arguments "$action" "$project" "$@"
+			for action in ${PROJECT_ACTIONS}; do
+				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
 		*)
-			if ! project_function_check "$project" "$action"
-			then
+			if ! project_function_check "${project}" "${action}"; then
 				libreboot_usage
 				exit 1
 			fi
 
-			if [ "$action" = "usage" ]
-			then
-				project_action "$action" "$project" "$@"
+			if [[ "${action}" == "usage" ]]; then
+				project_action "${action}" "${project}" "$@"
 			else
-				project_action_arguments "$action" "$project" "$@"
+				project_action_arguments "${action}" "${project}" "$@"
 			fi
 			;;
 	esac
 }
 
 libreboot_tool() {
-	action=$1
+	action="$1"
 	shift
-	tool=$1
+	tool="$1"
 	shift
 
-	case $action in
+	case ${action} in
 		*)
-			if ! tool_function_check "$tool" "$action"
-			then
+			if ! tool_function_check "${tool}" "${action}"; then
 				libreboot_usage
 				exit 1
 			fi
 
-			if [ "$action" = "usage" ]
-			then
-				tool_action "$action" "$tool" "$@"
+			if [[ "${action}" == "usage" ]]; then
+				tool_action "${action}" "${tool}" "$@"
 			else
-				tool_action_arguments_recursive "$action" "$tool" "$@"
+				tool_action_arguments_recursive "${action}" "${tool}" "$@"
 			fi
 			;;
 	esac
 }
 
 libreboot_setup() {
-	root=$( realpath "$( dirname "$0" )" )
-	executable=$( basename "$0" )
+	root="$(realpath "$(dirname "$0")")"
+	executable="$(basename "$0")"
 
 	local requirements="git"
 	local requirement_path
@@ -160,106 +142,91 @@ libreboot_setup() {
 	libreboot_setup_include
 	libreboot_setup_variables
 
-	for requirement in $requirements
-	do
-		requirement_path=$( which "$requirement" || true )
+	for requirement in ${requirements}; do
+		requirement_path="$(which "${requirement}" || true)"
 
-		if [ -z "$requirement_path" ]
-		then
-			printf "Missing requirement: $requirement\n" >&2
+		if [[ -z "${requirement_path}" ]]; then
+			printf "Missing requirement: ${requirement}\n" >&2
 			exit 1
 		fi
 	done
 }
 
 libreboot_setup_include() {
-	local libs_path="$root/libs"
+	local libs_path="${root}/libs"
 	local conf_path
 
-	. "$libs_path/project"
-	. "$libs_path/tool"
-	. "$libs_path/common"
-	. "$libs_path/git"
+	source "${libs_path}/project"
+	source "${libs_path}/tool"
+	source "${libs_path}/common"
+	source "${libs_path}/git"
 
-	conf_path="$root/$BUILD_SYSTEM.conf"
+	conf_path="${root}/${BUILD_SYSTEM}.conf"
 
-	if [ -f "$conf_path" ]
-	then
-		. "$conf_path"
+	if [[ -f "${conf_path}" ]]; then
+		source "${conf_path}"
 	fi
 }
 
 libreboot_setup_variables() {
-	local vboot_tools_path=$( project_install_path "vboot" "tools" )
-	local version_path="$root/$DOTVERSION"
-	local epoch_path="$root/$DOTEPOCH"
+	local vboot_tools_path="$(project_install_path 'vboot' 'tools')"
+	local version_path="${root}/${DOTVERSION}"
+	local epoch_path="${root}/${DOTEPOCH}"
 
-	if [ -z "$TASKS" ]
-	then
+	if [[ -z "${TASKS}" ]]; then
 		TASKS=1
 	fi
 
-	if [ -z "$VERSION" ]
-	then
-		if git_check "$root"
-		then
-			VERSION="$BUILD_SYSTEM-"$( git_describe "$root" 2> /dev/null || echo "git" )
-		elif [ -f "$version_path" ]
-		then
-			VERSION=$( cat "$version_path" )
+	if [[ -z "${VERSION}" ]]; then
+		if git_check "${root}"; then
+			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
+		elif [[ -f "${version_path}" ]]; then
+			VERSION="$(cat "${version_path}")"
 		else
-			VERSION=$BUILD_SYSTEM
+			VERSION="${BUILD_SYSTEM}"
 		fi
 	fi
 
-	if [ -z "$SOURCE_DATE_EPOCH" ]
-	then
-		if git_check "$root"
-		then
-			SOURCE_DATE_EPOCH=$( git log -1 --format=%ct )
-		elif [ -f "$epoch_path" ]
-		then
-			SOURCE_DATE_EPOCH=$( cat "$epoch_path" )
+	if [[ -z "${SOURCE_DATE_EPOCH}" ]]; then
+		if git_check "${root}"; then
+			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+		elif [[ -f "${epoch_path}" ]]; then
+			SOURCE_DATE_EPOCH="$(cat "${epoch_path}")"
 		else
-			SOURCE_DATE_EPOCH=$( date +%s )
+			SOURCE_DATE_EPOCH="$(date +%s)"
 		fi
 	fi
 
-	if [ -z "$VBOOT_KEYS_PATH" ] && [ -d "$vboot_tools_path/devkeys/" ]
-	then
-		VBOOT_KEYS_PATH="$vboot_tools_path/devkeys/"
+	if [[ -z "${VBOOT_KEYS_PATH}" ]] && [[ -d "${vboot_tools_path}/devkeys/" ]]; then
+		VBOOT_KEYS_PATH="${vboot_tools_path}/devkeys/"
 	fi
 
-	if [ -z "$EDITOR" ]
-	then
+	if [[ -z "${EDITOR}" ]]; then
 		EDITOR="vi"
 	fi
 }
 
 libreboot() {
-	action=$1
+	action="$1"
 	shift
-	target=$1
+	target="$1"
 	shift
 
 	set -e
 
 	libreboot_setup "$@"
 
-	if [ -z "$action" ] || [ -z "$target" ]
-	then
+	if [[ -z "${action}" ]] || [[ -z "${target}" ]]; then
 		libreboot_usage
 		exit 1
 	fi
 
 	requirements "tar" "sed" "gpg" "sha256sum"
 
-	if project_check "$target"
-	then
-		libreboot_project "$action" "$target" "$@"
-	elif tool_check "$target"
-	then
-		libreboot_tool "$action" "$target" "$@"
+	if project_check "${target}"; then
+		libreboot_project "${action}" "${target}" "$@"
+	elif tool_check "${target}"; then
+		libreboot_tool "${action}" "${target}" "$@"
 	else
 		libreboot_usage
 		exit 1
