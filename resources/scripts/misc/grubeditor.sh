@@ -45,6 +45,7 @@
 #
 # -D | --differ [/path/to/]differ: use /path/to/differ instead of "diff", can
 # be an interactive program like vimdiff
+#
 
 # THIS BLOCK IS EXPERIMENTAL
 # Allow debugging by running DEBUG= ${0}.
@@ -52,6 +53,9 @@
 # -u kills the script if any variables are unassigned
 # -e kills the script if any function returns not-zero
 #set -u
+
+# Version number of script
+geversion="0.1.1"
 
 # Define the list of available option in both short and long form.
 shortopts="hrie:sdD:"
@@ -101,8 +105,13 @@ get_options() {
         case "$1" in
             -h|--help)
                 show_help
-                # I return non-zero here just so nobody thinks we successfully edited grub.cfg
+                # I return non-zero here just so nobody thinks we successfully edited grub{,test}.cfg
                 exit 200
+                ;;
+            -v|--version)
+                show_version
+                # I return non-zero here just so nobody thinks we successfully edited grub{,test}.cfg
+                exit 201
                 ;;
             -r|--realcfg)
                 edit_realcfg=1
@@ -307,6 +316,10 @@ existing file
 HELPSCREEN
 }
 
+show_version() {
+    echo "${geversion}"
+}
+
 swap_configs() {
     # Procedure:
     # 1. Call cbfstool twice, once each to extract grub.cfg and grubtest.cfg.
@@ -356,12 +369,19 @@ diff_configs() {
     # Determine the differ command to use.
     find_differ
 
+    grubcfg="$(random_filer "grubcfg")"
+    testcfg="$(random_filer "testcfg")"
+
     # Extract config files from provided romfile.
-    "${cbfstool}" "${romfile}" extract -n grub.cfg -f /tmp/grub_tmpdiff.cfg
-    "${cbfstool}" "${romfile}" extract -n grubtest.cfg -f /tmp/grubtest_tmpdiff.cfg
+    "${cbfstool}" "${romfile}" extract -n grub.cfg -f "${grubcfg}"
+    "${cbfstool}" "${romfile}" extract -n grubtest.cfg -f "${testcfg}"
 
     # Run the differ command with real as first option, test as second option.
-    "${use_differ}" /tmp/grub_tmpdiff.cfg /tmp/grubtest_tmpdiff.cfg
+    "${use_differ}" "${grubcfg}" "${testcfg}"
+
+    # Delete the temporary copies of the configuration files.
+    rm "${grubcfg}"
+    rm "${testcfg}"
 }
 
 edit_config() {

@@ -133,3 +133,9 @@ Vladimir Serbinenko
 Ported many of the thinkpads supported in libreboot, to coreboot, and
 made many fixes in coreboot which benefited the libreboot project.
 Contact **phcoder** in the \#coreboot IRC channel on freenode.
+
+Zyliwax
+-------------------
+
+Wrote the grubeditor.sh script and associated documentation. Contact
+**zyliwax** in the \#libreboot channel.
