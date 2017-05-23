@@ -19,7 +19,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) (as in
 freedom) BIOS or UEFI replacement, initialising the hardware and booting your
-operating system. It also also available preinstalled from
+operating system. It is also available preinstalled from
 [these suppliers](suppliers.md).
 
 **[Community feedback is needed on whether libreboot.org domain name
