@@ -250,7 +250,7 @@ requirements() {
 }
 
 setup() {
-	root=$( realpath "$( dirname "$0" )" )
+	root=$(readlink -f "$( dirname "$0" )" )
 	executable=$( basename "$0" )
 
 	if [ -z "$KERNEL_PATH" ]
