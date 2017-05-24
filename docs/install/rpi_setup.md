@@ -199,10 +199,6 @@ disassemble the laptop, and access the BIOS rom chip.
 
     x86# mkdir ~/work
 
-Download NOOBS from [The Raspberry Pi
-Foundation.](https://www.raspberrypi.org/downloads/) Torrent download
-recommended, and remember to seed. :)
-
 If you're running Raspian, you can do **sudo raspi-config**, enable SPI
 under Advanced and then spidev will be enabled. Simple, eh?
 
@@ -214,43 +210,9 @@ GPG signature as well.
 
     x86# for signature in $(ls *.sig); do gpg --verify $signature; done
 
-Extract NOOBS and libreboot.
+Install dependencies:
 
-    x86# mkdir ~/work/noobs
-
-    x86# unzip ~/Downloads/NOOBS_v1_4_1.zip -d ~/work/noobs/
-
-    x86# cd ~/work && tar -xvJf ~/Downloads/libreboot_bin.tar.xz
-
-Install Noobs to your fat32 formatted SD card
-
-    x86# cp -R ~/work/noobs/* /path/to/mounted/SDcard/
-
-### Set up NOOBS on Raspberry Pi
-
-Plug in the NOOBs SDCard to your Raspberry Pi, and enable the following
-under 'Advanced Options':
-
-SSH server
-
-SPI
-
-I2C
-
-On first boot
-
-    pi# sudo apt-get update && sudo apt-get dist-upgrade && reboot
-
-On second boot
-
-    pi# sudo apt-get update && sudo apt-get install libftdi1 libftdi-dev libusb-dev libpci-dev subversion libusb-1.0-0-dev
-
-Other dependencies that should already be installed with the noobs base
-install include:
-
-pciutils, zlib, libusb, build-essential
-
-If they are missing then install them.
+    pi# sudo apt-get update && sudo apt-get install libftdi1 libftdi-dev libusb-dev libpci-dev subversion libusb-1.0-0-dev pciutils, zlib, libusb, build-essential
 
 Download and build flashrom.
 
