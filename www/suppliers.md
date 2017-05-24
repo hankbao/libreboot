@@ -40,7 +40,6 @@ Profits from Minifree sales are invested directly into Libreboot development.
 List of what they sell:
 -----------------------
 
--   [Libreboot X220 laptop](https://minifree.org/product/libreboot-x220/)
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
 -   [Libreboot D16 desktop/workstation](https://minifree.org/product/libreboot-d16/)
 -   [Libreboot D16 server](https://minifree.org/product/libreboot-d16-server/)
