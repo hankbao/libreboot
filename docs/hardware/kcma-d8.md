@@ -2,13 +2,13 @@
 title: ASUS KCMA-D8 desktop/workstation board 
 ...
 
-This is a desktop board using AMD hardware (Fam10h **and Fam15h** CPUs
+This is a desktop board using AMD hardware (Fam10h *and Fam15h* CPUs
 available). It can also be used for building a high-powered workstation.
 Powered by libreboot. The coreboot port was done by Timothy Pearson of
 Raptor Engineering Inc. and, working with them, merged into libreboot.
 
-**Memory initialization is still problematic, for some modules. We
-recommend avoiding Kingston modules.**
+*Memory initialization is still problematic, for some modules. We
+recommend avoiding Kingston modules.*
 
 Flashing instructions can be found at
 [../install/\#flashrom](../install/#flashrom) - note that external
@@ -20,8 +20,8 @@ without using external hardware.
 CPU compatibility
 =================
 
-**Use Opteron 4200 series (works without microcode updates, including hw
-virt).** 4300 series needs microcode updates, so avoid those CPUs. 4100
+*Use Opteron 4200 series (works without microcode updates, including hw
+virt).* 4300 series needs microcode updates, so avoid those CPUs. 4100
 series is too old, and mostly untested.
 
 Board status (compatibility) {#boardstatus}
@@ -58,9 +58,9 @@ boot that, loading it into memory.
 Libreboot has configs for 2, 4, 8 and 16 MiB flash chip sizes (default
 flash chip is 2MiB).
 
-**DO NOT hot-swap the chip with your bare hands. Use a P-DIP 8 chip
+*DO NOT hot-swap the chip with your bare hands. Use a P-DIP 8 chip
 extractor. These can be found online. See
-<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
+<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>*
 
 Native graphics initialization {#graphics}
 ==============================

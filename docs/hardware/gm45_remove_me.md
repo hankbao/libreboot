@@ -3,7 +3,7 @@ title: "GM45 chipsets: remove the ME (manageability engine)"
 ...
 
 This sections relates to disabling and removing the ME (Intel
-**M**anagement **E**ngine) on GM45. This was originally done on the
+*M*anagement *E*ngine) on GM45. This was originally done on the
 ThinkPad X200, and later adapted for the ThinkPad R400/T400/T500. It can
 in principle be done on any GM45 or GS45 system.
 
@@ -54,7 +54,7 @@ mitigate the risk of bricking your laptop, but with the generic MAC
 address (the libreboot project does not know what your real MAC address
 is).
 
-You can find out your MAC address from **ip addr** or **ifconfig** in
+You can find out your MAC address from `ip addr` or `ifconfig` in
 GNU+Linux. Alternatively, if you are running libreboot already (with the
 correct MAC address in your ROM), dump it (flashrom -r) and read the
 first 6 bytes from position 0x1000 (or 0x2000) in a hex editor (or,
@@ -78,11 +78,11 @@ you want)
 
 Two new files will be created:
 
--   **ich9fdgbe\_4m.bin**: this is for GM45 laptops with the 4MB flash
+-   `ich9fdgbe_4m.bin`: this is for GM45 laptops with the 4MB flash
     chip.
--   **ich9fdgbe\_8m.bin**: this is for GM45 laptops with the 8MB flash
+-   `ich9fdgbe_8m.bin`: this is for GM45 laptops with the 8MB flash
     chip.
--   **ich9fdgbe\_16m.bin**: this is for GM45 laptops with the 16MB flash
+-   `ich9fdgbe_16m.bin`: this is for GM45 laptops with the 16MB flash
     chip.
 
 Assuming that your libreboot image is named **libreboot.rom**, copy the

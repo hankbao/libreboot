@@ -5,8 +5,8 @@ title: BSD projects
 This section relates to dealing with BSD projects: preparing bootable
 USB drives, changing the default GRUB menu and so on.
 
-**This section is only for the \*GRUB\* payload. For depthcharge,
-instructions have yet to be written.**
+*This section is only for the GRUB payload. For depthcharge,
+instructions have yet to be written.*
 
 -   [How to install NetBSD on a libreboot system](netbsd.md)
 -   [How to install LibertyBSD or OpenBSD on a libreboot

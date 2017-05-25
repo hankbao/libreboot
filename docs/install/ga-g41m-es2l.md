@@ -16,11 +16,11 @@ Flashing instructions {#clip}
 =====================
 
 Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
-external flashing. **You can only externally reprogram one of the chips
+external flashing. *You can only externally reprogram one of the chips
 at a time, and you need to disable the chip that you're not flashing,
 by connecting 3v3 to /CS of that chip, so you will actually need 2 test
 clips (you also need to connect GND on the chip that you're
-disabling).**
+disabling).*
 
 Here is an image of the flash chip:\
 ![](../images/ga-g41m-es2l/ga-g41m-es2l.jpg)
@@ -28,11 +28,13 @@ Here is an image of the flash chip:\
 Internal flashing is possible. Boot with the proprietary BIOS and
 GNU+Linux. There are 2 flash chips (one is backup).
 
-Flash the first chip:\
-**./flashrom -p internal:dualbiosindex=0 -w libreboot.rom**
+Flash the first chip:
 
-Flash the second chip:\
-**./flashrom -p internal:dualbiosindex=1 -w libreboot.rom**
+    ./flashrom -p internal:dualbiosindex=0 -w libreboot.rom
+
+Flash the second chip:
+
+    ./flashrom -p internal:dualbiosindex=1 -w libreboot.rom
 
 NOTE: you can still boot the system with just the main flash chip
 connected, after desoldering the backup chip. This has been tested while

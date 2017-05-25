@@ -17,8 +17,8 @@ volume. Not so with libreboot! Since GRUB is already included directly
 as a payload, even /boot can be encrypted. This protects /boot from
 tampering by someone with physical access to the system.
 
-**This guide is \*only\* for the GRUB payload. If you use the
-depthcharge payload, ignore this section entirely.**
+*This guide is \*only\* for the GRUB payload. If you use the
+depthcharge payload, ignore this section entirely.*
 
 This guide is intended for the Parabola distribution, but it should also
 work (with some adaptation) for *Arch*. We recomend using Parabola,
@@ -174,7 +174,7 @@ I am initializing LUKS with the following:
 whirlpool --iter-time 500 --use-random --verify-passphrase luksFormat
 /dev/sda1
 
- Choose a **secure** passphrase here. Ideally lots of
+ Choose a *secure* passphrase here. Ideally lots of
 lowercase/uppercase numbers, letters, symbols etc all in a random
 pattern. The password length should be as long as you are able to handle
 without writing it down or storing it anywhere.
@@ -269,7 +269,7 @@ Create /home and /boot on root mountpoint:
 Once all the remaining partitions, if any, have been mounted, the
 devices are ready to install Parabola.
 
-In **/etc/pacman.d/mirrorlist**, comment out all lines except the Server
+In `/etc/pacman.d/mirrorlist`, comment out all lines except the Server
 line closest to where you are (I chose the UK Parabola server (main
 server)) and then did:
 
@@ -353,7 +353,7 @@ Check the created file:
 
     # cat /mnt/etc/fstab
 
-(If there are any errors, edit the file. Do **NOT** run the genfstab
+(If there are any errors, edit the file. Do *NOT* run the genfstab
 command again!)
 
 Chroot into new system:

@@ -24,9 +24,9 @@ SST49LF080A is the default that the board uses. SST49LF016C is an
 example of a 2MiB (16Mbits) chip, which might work. It is believed that
 2MiB (16Mbits) is the maximum size available for the flash chip.
 
-**DO NOT hot-swap the chip with your bare hands. Use a PLCC chip
+*DO NOT hot-swap the chip with your bare hands. Use a PLCC chip
 extractor. These can be found online. See
-<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
+<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>*
 
 Native graphics initialization {#graphics}
 ==============================

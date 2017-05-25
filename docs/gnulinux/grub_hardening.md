@@ -54,8 +54,8 @@ location.
 Note that this is not your LUKS password, but it's a password that you
 have to enter in order to use "restricted" functionality (such as
 console). This protects your system from an attacker simply booting a
-live USB and re-flashing your firmware. **This should be different than
-your LUKS passphrase and user password.**
+live USB and re-flashing your firmware. *This should be different than
+your LUKS passphrase and user password.*
 
 Use of the *diceware method* is recommended, for generating secure
 passphrases (as opposed to passwords). Diceware method involves using
@@ -76,7 +76,7 @@ The GRUB password can be entered in two ways:
 -   protected with [PBKDF2](https://en.wikipedia.org/wiki/Pbkdf2)
 
 We will (obviously) use the later. Generating the PBKDF2 derived key is
-done using the **grub-mkpasswd-pbkdf2** utility. You can get it by
+done using the `grub-mkpasswd-pbkdf2` utility. You can get it by
 installing GRUB version 2. Generate a key by giving it a password:
     grub-mkpasswd-pbkdf2
 
@@ -97,13 +97,13 @@ As enabling password protection as above means that you have to input it
 on every single boot, we will make one menu entry work without it.
 Remember that we will have GPG signing active, thus a potential attacker
 will not be able to boot an arbitrary operating system. We do this by
-adding option **--unrestricted** to a menuentry definition:
+adding option `--unrestricted` to a menuentry definition:
 
     menuentry 'Load Operating System (incl. fully encrypted disks)  [o]' --hotkey='o' --unrestricted {
     ...
 
 Another good thing to do, if we chose to load signed on-disk GRUB
-configurations, is to remove (or comment out) **unset superusers** in
+configurations, is to remove (or comment out) `unset superusers` in
 function try\_user\_config:
 
     function try_user_config {
@@ -133,7 +133,7 @@ GPG keys
 First generate a GPG keypair to use for signing. Option RSA (sign only)
 is ok.
 
-**Warning:** GRUB does not read ASCII armored keys. When attempting to
+Warning: GRUB does not read ASCII armored keys. When attempting to
 trust ... a key filename it will print error: bad signature
 
     mkdir --mode 0700 keys
@@ -151,8 +151,8 @@ Now that we have a key, we can sign some files with it. We have to sign:
     by pressing ESC, but afterwards grubtest.cfg is not signed and it
     will not load.
 
-Suppose that we have a pair of **my.kernel** and **my.initramfs** and an
-on-disk **libreboot\_grub.cfg**. We sign them by issuing the following
+Suppose that we have a pair of `my.kernel` and `my.initramfs` and an
+on-disk `libreboot_grub.cfg`. We sign them by issuing the following
 commands:
 
     gpg --homedir keys --detach-sign my.initramfs

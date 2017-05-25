@@ -109,20 +109,24 @@ Remove these screws, placing them on a steady surface in the same layout
 as they were in before you removed them. Also, you should mark each
 screw hole after removing the screw (a permanent marker pen will do),
 this is so that you have a point of reference when re-assembling the
-system:\
+system:
+
 ![](../images/t60_dev/0027.JPG) ![](../images/t60_dev/0028.JPG)
 ![](../images/t60_dev/0029.JPG) ![](../images/t60_dev/0031.JPG)
 ![](../images/t60_dev/0032.JPG) ![](../images/t60_dev/0033.JPG)
 
 Now wire up the BBB and the Pomona with your PSU.\
 Refer to [bbb\_setup.md](bbb_setup.md) for how to setup the BBB for
-flashing.\
-**Note, the guide mentions a 3.3v DC PSU but you don't need this on the
+flashing.
+
+*Note, the guide mentions a 3.3v DC PSU but you don't need this on the
 T60: if you don't have or don't want to use an external PSU, then make
 sure not to connect the 3.3v leads mentioned in the guide; instead,
 connect the AC adapter (the one that normally charges your battery) so
-that the board has power (but don't boot it up)**\
-![](../images/t60_dev/0030.JPG)\
+that the board has power (but don't boot it up)*
+
+![](../images/t60_dev/0030.JPG)
+
 Correlate the following with the BBB guide linked above:
 
     POMONA 5250:
@@ -147,7 +151,7 @@ SSH'd into the BBB:
 
 yourrom.rom
 
-It should be **Verifying flash... VERIFIED** at the end. If flashrom
+It should be `Verifying flash... VERIFIED` at the end. If flashrom
 complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
 

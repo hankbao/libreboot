@@ -8,16 +8,16 @@ libreboot system, using nothing more than a USB flash drive (and *dd*).
 They've only been tested on a librebooted ThinkPad X60.
 
 It is expected that you use text mode in libreboot (txtmode images), for
-the early boot process in NetBSD. **Suspend/hibernate is broken,
-according to at least 1 user.**
+the early boot process in NetBSD. *Suspend/hibernate is broken,
+according to at least 1 user.*
 
 Thanks go to ioxcide in [this Reddit
 post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
 for the initial instructions.
 
-**This section is only for the GRUB payload. For depthcharge (used on
+*This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
-libreboot documentation.**
+libreboot documentation.*
 
 netbsd.iso is the installation image for NetBSD. Adapt the filename
 accordingly, for your version of NetBSD.

@@ -19,9 +19,9 @@ likely to become obsolete at a later date (due to the volatile
 'rolling-release' model that Arch/Parabola both use), but attempts
 will be made to maintain it.
 
-**This guide was valid on 2014-09-21. If you see any changes that should
+*This guide was valid on 2014-09-21. If you see any changes that should
 to be made at the present date, please get in touch with the libreboot
-project!**
+project!*
 
 You do not necessarily have to follow this guide word-for-word;
 *parabola* is extremely flexible. The aim here is to provide a common
@@ -35,18 +35,18 @@ Paradoxically, as you get more advanced Parabola can actually become
 compared to what most distributions provide. You will find over time
 that other distributions tend to *get in your way*.
 
-**This guide assumes that you already have Parabola installed. If you
+*This guide assumes that you already have Parabola installed. If you
 have not yet installed Parabola, then [this
-guide](encrypted_parabola.md) is highly recommended!**
+guide](encrypted_parabola.md) is highly recommended!*
 
 A lot of the steps in this guide will refer to the Arch wiki. Arch is
 the upstream distribution that Parabola uses. Most of this guide will
 also tell you to read wiki articles, other pages, manuals, and so on. In
 general it tries to cherry pick the most useful information but
-nonetheless you are encouraged to learn as much as possible. **It might
+nonetheless you are encouraged to learn as much as possible. *It might
 take you a few days to fully install your system how you like, depending
 on how much you need to read. Patience is key, especially for new
-users**.
+users*.
 
 The Arch wiki will sometimes use bad language, such as calling the whole
 system Linux, using the term open-source (or closed-source), and it will
@@ -69,7 +69,7 @@ your network then you should setup your network connection first:\
 Configure pacman {#pacman_configure}
 ----------------
 
-pacman (**pac**kage **man**ager) is the name of the package management
+pacman (*pac*kage *man*ager) is the name of the package management
 system in Arch, which Parabola (as a deblobbed parallel effort) also
 uses. Like with 'apt-get' on Debian or Devuan, this can be used to
 add/remove and update the software on your computer.
@@ -95,8 +95,8 @@ Then, update the system:
 
     # pacman -Syu
 
-**Before installing packages with 'pacman -S', always update first,
-using the notes above.**
+*Before installing packages with 'pacman -S', always update first,
+using the notes above.*
 
 Keep an eye out on the output, or read it in /var/log/pacman.log.
 Sometimes, pacman will show messages about maintenance steps that you
@@ -143,13 +143,13 @@ re-install it or install the distro on another computer, for example).
 
 ### Cleaning the package cache {#pacman_cacheclean}
 
-**The following is very important as you continue to use, update and
+*The following is very important as you continue to use, update and
 maintain your Parabola system:\
 <https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache>.
 Essentially, this guide talks about a directory that has to be cleaned
 once in a while, to prevent it from growing too big (it's a cache of
 old package information, updated automatically when you do anything in
-pacman).**
+pacman).*
 
 To clean out all old packages that are cached:
 
@@ -217,8 +217,8 @@ This is the name of the system used for managing services in Parabola.
 It is a good idea to become familiar with it. Read
 <https://wiki.archlinux.org/index.php/systemd> and
 <https://wiki.archlinux.org/index.php/systemd#Basic_systemctl_usage> to
-gain a full understanding. **This is very important! Make sure to read
-them.**
+gain a full understanding. *This is very important! Make sure to read
+them.*
 
 An example of a 'service' could be a webserver (such as lighttpd), or
 sshd (openssh), dhcp, etc. There are countless others.
@@ -403,8 +403,8 @@ System Maintenance {#system_maintain}
 
 Read <https://wiki.archlinux.org/index.php/System_maintenance> before
 continuing. Also read
-<https://wiki.archlinux.org/index.php/Enhance_system_stability>. **This
-is important, so make sure to read them!**
+<https://wiki.archlinux.org/index.php/Enhance_system_stability>. *This
+is important, so make sure to read them!*
 
 Install smartmontools (it can be used to check smart data. HDDs use
 non-free firmware inside, but it's transparent to you but the smart
@@ -451,25 +451,28 @@ driver is needed. By default, Xorg will revert to xf86-video-vesa which
 is a generic driver and doesn't provide true hardware acceleration.
 
 Other drivers (not just video) can be found by looking at the
-*xorg-drivers* group:
+`xorg-drivers` group:
 
     # pacman -Sg xorg-drivers
 
-Mostly you will rely on a display manager, but in case you ever want to
-start X without one:
+Mostly you will rely on a display manager, but in case you ever want to start X
+without one:
 
     # pacman -S xorg-xinit
 
-<optional>\
-   Arch wiki recommends installing these, for testing that X works:\
-   \# **pacman -S xorg-twm xorg-xclock xterm**\
-   Refer to <https://wiki.archlinux.org/index.php/Xinitrc>. and test X:\
-   \# **startx**\
-   When you are satisfied, type ***exit*** in xterm, inside the X
-session.\
-   Uninstall them (clutter. eww): \# **pacman -S xorg-xinit xorg-twm
-xorg-xclock xterm**\
-</optional>
+Optionally, to test X, install these: 
+
+   # pacman -S xorg-twm xorg-xclock xterm
+
+Refer to <https://wiki.archlinux.org/index.php/Xinitrc>. and test X:
+
+   # startx
+
+When you are satisfied, type `exit` in xterm, inside the X session.
+
+Uninstall them (clutter. eww):
+
+    # pacman -S xorg-xinit xorg-twm xorg-xclock xterm
 
 ### Xorg keyboard layout {#desktop_kblayout}
 
@@ -566,22 +569,22 @@ Open LXterminal:
     $ cp /etc/skel/.xinitrc \~
 
 Open .xinitrc and add the following plus a line break at the bottom of
-the file.\
-*\# Probably not needed. The same locale info that we set before\
-\# Based on advice from the LXDE wiki export LC\_ALL=en\_GB.UTF-8\
-export LANGUAGE=en\_GB.UTF-8\
-export LANG=en\_GB.UTF-8\
+the file.
 
-\# Start lxde desktop\
-exec startlxde\
+    export LC_ALL=en_GB.UTF-8
+    export LANGUAGE=en_GB.UTF-8
+    export LANG=en_GB.UTF-8
+
+    exec startlxde
+
 * Now make sure that it is executable:
 
     $ chmod +x .xinitrc
 
 ### LXDE - clock {#lxde_clock}
 
-In **Digital Clock Settings** (right click the clock) I set the Clock
-Format to *%Y/%m/%d %H:%M:%S*
+In *Digital Clock Settings* (right click the clock) I set the Clock
+Format to `%Y/%m/%d %H:%M:%S`
 
 ### LXDE - font {#lxde_font}
 
