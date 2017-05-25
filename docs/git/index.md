@@ -15,9 +15,9 @@ Install build dependencies
 
 Before doing anything, you need the dependencies first. This is true if
 you want to build libreboot from source, with either
-libreboot\_src.tar.xz or git. **If you are using libreboot\_util.tar.xz
+libreboot\_src.tar.xz or git. *If you are using libreboot\_util.tar.xz
 (binary archive) then you can ignore this, because ROM images and
-statically compiled executables for the utilities are included.**
+statically compiled executables for the utilities are included.*
 
 For Debian Stretch (may also work on Debian Jessie), you can run the
 following command:
@@ -81,8 +81,8 @@ To build the ROM images, see [\#build](#build).
 How to build "bucts" (for LenovoBIOS X60/X60S/X60T/T60) 
 =========================================================
 
-**This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and
-T60. If you have coreboot or libreboot running already, ignore this.**
+*This is for Lenovo BIOS users on the ThinkPad X60/X60S, X60 Tablet and
+T60. If you have coreboot or libreboot running already, ignore this.*
 
 BUC.TS isn't really specific to these laptops, but is a bit inside the
 a register in the chipset on some Intel systems.
@@ -92,12 +92,12 @@ while Lenovo BIOS is running; external flashing will be safe regardless.
 Each ROM contains identical data inside the two final 64K region in the
 file\*. This corresponds to the final two 64K regions in the flash chip.
 Lenovo BIOS will prevent you from writing the final one, so running
-"**bucts 1**" will set the system to boot from the other block instead
+`bucts 1` will set the system to boot from the other block instead
 (which is writeable along with everything beneath it when using a
 patched flashrom. see [\#build\_flashrom](#build_flashrom)). After
 shutting down and booting up after the first flash of libreboot, the
 final 64K block is writeable so you flash the ROM again with an
-unpatched flashrom and run "**bucts 0**" to make the system boot from
+unpatched flashrom and run `bucts 0` to make the system boot from
 the normal (highest) block again.
 
 \*Libreboot ROM images have identical data in those two 64KiB regions
@@ -111,12 +111,13 @@ the mainboard. Removing that battery removes power to BUC.TS, resetting
 the bit back to 0 (if you previously set it to 1).
 
 BUC.TS utility is included in libreboot\_src.tar.xz and
-libreboot\_util.tar.xz.\
-**If you downloaded from git, follow [\#build\_meta](#build_meta) before
-you proceed.**
+libreboot\_util.tar.xz.
 
-"BUC" means "**B**ack**u**p **C**ontrol" (it's a register) and
-"TS" means "**T**op **S**wap" (it's a status bit). Hence "bucts"
+If you downloaded from git, follow [\#build\_meta](#build_meta) before
+you proceed.
+
+"BUC" means "*B*ack*u*p *C*ontrol" (it's a register) and
+"TS" means "*T*op *S*wap" (it's a status bit). Hence "bucts"
 (BUC.TS). TS 1 and TS 0 corresponds to bucts 1 and bucts 0.
 
 If you have the binary release archive, you'll find executables under
@@ -142,9 +143,10 @@ Flashrom is the utility for flashing/dumping ROM images. This is what
 you will use to install libreboot.
 
 Flashrom source code is included in libreboot\_src.tar.xz and
-libreboot\_util.tar.xz.\
-**If you downloaded from git, follow [\#build\_meta](#build_meta) before
-you proceed.**
+libreboot\_util.tar.xz.
+
+*If you downloaded from git, follow [\#build\_meta](#build_meta) before
+you proceed.*
 
 If you are using the binary release archive, then there are already
 binaries included under ./flashrom/. The flashing scripts will try to
@@ -164,12 +166,12 @@ To statically compile it, do the following in the main directory:
 After you've done that, under ./flashrom/ you will find the following
 executables:
 
--   **flashrom**
+-   `flashrom`
     -   For flashing while coreboot or libreboot is running.
--   **flashrom\_lenovobios\_sst**
+-   `flashrom_lenovobios_sst`
     -   This is patched for flashing while Lenovo BIOS is running on an
         X60 or T60 with the SST25VF016B (SST) flash chip.
--   **flashrom\_lenovobios\_macronix**
+-   `flashrom_lenovobios_macronix`
     -   This is patched for flashing while Lenovo BIOS is running on an
         X60 or T60 with the MX25L1605D (Macronix) flash chip.
 
@@ -215,26 +217,26 @@ Alternatively, you can build for a specific board or set of boards. For
 example:
 
     $ ./oldbuild roms withgrub x60
-    $ ./oldbuild roms withgrub x200\_8mb
-    $ ./oldbuild roms withgrub x60 x200\_8mb
+    $ ./oldbuild roms withgrub x200_8mb
+    $ ./oldbuild roms withgrub x60 x200_8mb
 
 The list of board options can be found by looking at the directory names
-in **resources/libreboot/config/grub/**.
+in `resources/libreboot/config/grub/`.
 
 To clean (reverse) everything, do the following:
 
     $ ./oldbuild clean all
 
-The ROM images will be stored under **bin/*payload*/**, where *payload*
-could be *grub*, *seabios*, or whatever other payload those images were
+The ROM images will be stored under `bin/payload/`, where `payload`
+could be `grub`, `seabios`, or whatever other payload those images were
 built for.
 
 Preparing release archives (optional)
 -------------------------------------
 
-**This is only confirmed to work (tested) in Debian Stretch. Parabola
-\*fails\* at this stage (for now). For all other distros, YMMV. This
-will also work in Devuan.**
+*This is only confirmed to work (tested) in Debian Stretch. Parabola fails at
+this stage (for now). For all other distros, YMMV. This will also work in
+Devuan.*
 
 This is mainly intended for use with the git repository. These commands
 will work in the release archive (\_src), unless otherwise noted below.
@@ -257,8 +259,8 @@ Archive containing flashrom and bucts source code:
 
     $ ./oldbuild release tobuild
 
-Documentation archive (**does not work on \_src release archive, only
-git**):
+Documentation archive (*does not work on \_src release archive, only
+git*):
 
     $ ./oldbuild release docs
 
@@ -276,17 +278,18 @@ SHA512 sums of all other release archives that have been generated:
 
 If you are building on an i686 host, this will build statically linked
 32-bit binaries in the binary release archive that you created, for:
-**nvramtool, cbfstool, ich9deblob, cbmem**.
+
+    nvramtool, cbfstool, ich9deblob, cbmem
 
 If you are building on an x86\_64 host, this will build statically
-linked 32- \*and\* 64-bit binaries for **cbmem**, **ich9deblob**,
-**cbfstool** and **nvramtool**.
+linked 32- \*and\* 64-bit binaries for `cbmem`, `ich9deblob`,
+`cbfstool` and `nvramtool`.
 
-**To include statically linked i686 and x86\_64 binaries for bucts and
+*To include statically linked i686 and x86\_64 binaries for bucts and
 flashrom, you will need to build them on a chroot, a virtual system or a
 real system where the host uses each given architecture. These packages
 are difficult to cross-compile, and the libreboot project is still
-figuring out how to deal with them.**
+figuring out how to deal with them.*
 
 The same applies if you want to include statically linked flashrom
 binaries for ARM.
@@ -316,16 +319,16 @@ run the following command:
 
     $ ./oldbuild release tobuild
 
-The archive **tobuild.tar.xz** will have been created under
-**release/oldbuildsystem/**, containing bucts, flashrom and all other
+The archive `tobuild.tar.xz` will have been created under
+`release/oldbuildsystem/`, containing bucts, flashrom and all other
 required resources for building them.
 
 You'll find that the files libreboot\_util.tar.xz and
 libreboot\_src.tar.xz have been created, under
-**release/oldbuildsystem/**.
+`release/oldbuildsystem/`.
 
 The ROM images will be stored in separate archives for each system,
-under **release/oldbuildsystem/rom/**.
+under `release/oldbuildsystem/rom/`.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 

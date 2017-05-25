@@ -39,28 +39,26 @@ If you are on a 32-bit system (e.g. X60):
 [This guide](grub_boot_installer.md) shows how to create a boot USB
 drive with the Debian ISO image.
 
-**This guide is \*only\* for the GRUB payload. If you use the
-depthcharge payload, ignore this section entirely.**
+*This guide is only for the GRUB payload. If you use the depthcharge payload,
+ignore this section entirely.*
 
-Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a
-step during boot to fail. If this happens to you, try removing the
-drive.
+Note: on some thinkpads, a faulty DVD drive can cause the cryptomount -a step
+during boot to fail. If this happens to you, try removing the drive.
 
-Set a strong user password (lots of lowercase/uppercase, numbers and
-symbols).
+Set a strong user password (lots of lowercase/uppercase, numbers and symbols).
 
-Use of the *diceware method* is recommended, for generating secure
-passphrases (instead of passwords).
+Use of the *diceware method* is recommended, for generating secure passphrases
+(instead of passwords).
 
-when the installer asks you to set up encryption (ecryptfs) for your
-home directory, select 'Yes' if you want to: **LUKS is already secure
-and performs well. Having ecryptfs on top of it will add noticeable
-performance penalty, for little security gain in most use cases. This is
-therefore optional, and not recommended. Choose 'no'.**
+When the installer asks you to set up encryption (ecryptfs) for your home
+directory, select 'Yes' if you want to: *LUKS is already secure and performs
+well. Having ecryptfs on top of it will add noticeable performance penalty, for
+little security gain in most use cases. This is therefore optional, and not
+recommended. Choose 'no'.*
 
-**Your user password should be different from the LUKS password which
+*Your user password should be different from the LUKS password which
 you will set later on. Your LUKS password should, like the user
-password, be secure.**
+password, be secure.*
 
 Partitioning
 ============
@@ -91,15 +89,15 @@ Choose 'Manual' partitioning:
 -   Configure the logical volume manager:
     -   Keep settings: Yes
 -   Create volume group:
-    -   Name: **matrix** (use this exact name)
+    -   Name: `matrix` (use this exact name)
     -   Select crypto partition
 -   Create logical volume
-    -   select **matrix** (use this exact name)
-    -   name: **rootvol** (use this exact name)
+    -   select `matrix` (use this exact name)
+    -   name: `rootvol` (use this exact name)
     -   size: default, minus 2048 MB
 -   Create logical volume
-    -   select **matrix** (use this exact name)
-    -   name: **swap** (user this exact name)
+    -   select `matrix` (use this exact name)
+    -   name: `swap` (user this exact name)
     -   size: press enter
 
 Further partitioning
@@ -132,8 +130,8 @@ something else.
 
 If you want debian-testing, then you should only select barebones
 options here and change the entries in /etc/apt/sources.list after
-install to point to the new distro, and then run **apt-get update** and
-**apt-get dist-upgrade** as root, then reboot and run **tasksel** as
+install to point to the new distro, and then run `apt-get update` and
+`apt-get dist-upgrade` as root, then reboot and run `tasksel` as
 root. This is to avoid downloading large packages twice.
 
 NOTE: If you want the latest up to date version of the Linux kernel,

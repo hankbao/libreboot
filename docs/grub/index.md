@@ -76,14 +76,14 @@ Go in grub directory:
 You must make sure that the files are named keymap and keymap.gkb (where
 'keymap' can be whatever you want).
 
-Then from the above example, you would put **frazerty** in
-**resources/utilities/grub-assemble/keymap/original/** and the
-**frazerty.gkb** file goes under
-**resources/utilities/grub-assemble/keymap/**
+Then from the above example, you would put `frazerty` in
+`resources/utilities/grub-assemble/keymap/original/` and the
+`frazerty.gkb` file goes under
+`resources/utilities/grub-assemble/keymap/`
 
 The build scripts will automatically see this, and automatically build
 ROM images with your custom layout (given the name) and include them
-under bin. Example: **libreboot\_frazerty.rom**.
+under bin. Example: `libreboot_frazerty.rom`.
 
 UK Dvorak keyboard layout in GRUB (for reference)
 -------------------------------------------------

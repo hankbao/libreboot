@@ -8,8 +8,8 @@ your libreboot system, using nothing more than a USB flash drive (and
 *dd*). They've only been tested on a Lenovo ThinkPad x200.
 
 It is expected that you use text mode in libreboot (txtmode images), for
-the early boot process in FreeBSD. **Booting the installer results in a
-red flickering text display, and doesn't boot.**
+the early boot process in FreeBSD. *Booting the installer results in a
+red flickering text display, and doesn't boot.*
 
 Thanks go to ioxcide in [this Reddit
 post](https://www.reddit.com/r/BSD/comments/53jt70/libreboot_and_bsds/)
@@ -20,9 +20,9 @@ if it does not). Instructions are provided here, to boot and install
 FreeBSD but we're not sure whether it is currently fully compatible
 with libreboot.
 
-**This section is only for the GRUB payload. For depthcharge (used on
+*This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
-libreboot documentation.**
+libreboot documentation.*
 
 freebsd.img is the installation image for FreeBSD. Adapt the filename
 accordingly, for whatever FreeBSD version you use.

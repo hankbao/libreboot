@@ -126,7 +126,7 @@ The X60 typically comes with an Intel wifi chipset which does not work
 at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
-**after** libreboot is installed. See
+*after* libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
 List of supported ThinkPad X60 Tablets
@@ -141,11 +141,11 @@ To find what LCD panel you have, see:
 
 There are 5 known LCD panels for the X60 Tablet:
 
--   **X60T XGA (1024x768):**
+-   *X60T XGA (1024x768):*
     -   BOE-Hydis HV121X03-100 (works)
     -   Samsung LTN121XP01 (does not work. blank screen)
     -   BOE-Hydis HT12X21-351 (does not work. blank screen)
--   **X60T SXGA+ (1400x1050):**
+-   *X60T SXGA+ (1400x1050):*
     -   BOE-Hydis HV121P01-100 (works)
     -   BOE-Hydis HV121P01-101 (works)
 
@@ -155,15 +155,15 @@ does.
 
 You can remove an X61/X61s motherboard from the chassis and install an
 X60/X60s motherboard in its place (for flashing libreboot). The chassis
-is mostly identical and the motherboards are the same shape/size. **It
+is mostly identical and the motherboards are the same shape/size. *It
 is unknown if the same applies between the X60 Tablet and the X61
-Tablet**.
+Tablet*.
 
 The X60 Tablet typically comes with an Intel wifi chipset which does not
 work at all without proprietary firmware, and while Lenovo BIOS is
 running the system will refuse to boot if you replace the card.
 Fortunately it is very easily replaced; just remove the card and install
-another one **after** libreboot is installed. See
+another one *after* libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
 A user with a X60T that has digitizer+finger support, reported that they
@@ -223,26 +223,26 @@ BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
-**Some T60s have ATI GPUs, and all T60P laptops have ATI GPUs These are
+*Some T60s have ATI GPUs, and all T60P laptops have ATI GPUs These are
 incompatible! See [\#t60\_ati\_intel](#t60_ati_intel) for how to remedy
-this.**
+this.*
 
-Tested LCD panels: **working(compatible)**
+Tested LCD panels: (working)
 
--   TMD-Toshiba LTD141EN9B (14.1" 1400x1050) (FRU P/N 41W1478
-    recommended for the inverter board)
--   Samsung LTN141P4-L02 (14.1" 1400x1050) (FRU P/N 41W1478 recommended
-    for the inverter board)
--   LG-Philips LP150E05-A2K1 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079
-    or P/N 41W1338 recommended for the inverter board)
--   Samsung LTN150P4-L01 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079 or
-    P/N 41W1338 recommended for the inverter board) (not a T60 screen
-    afaik, but it works)
--   BOE-Hydis HV150UX1-100 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079
-    or P/N 41W1338 recommended for the inverter board)
+-   TMD-Toshiba LTD141EN9B (14.1" 1400x1050) (FRU P/N 41W1478 recommended for
+    the inverter board)
+-   Samsung LTN141P4-L02 (14.1" 1400x1050) (FRU P/N 41W1478 recommended for the
+    inverter board)
+-   LG-Philips LP150E05-A2K1 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079 or P/N
+    41W1338 recommended for the inverter board)
+-   Samsung LTN150P4-L01 (15.1" 1400x1050) (P/N 42T0078 FRU 42T0079 or P/N
+    41W1338 recommended for the inverter board) (not a T60 screen afaik, but it
+    works)
+-   BOE-Hydis HV150UX1-100 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079 or P/N
+    41W1338 recommended for the inverter board)
 
-Tested LCD panels: **not working yet (incompatible; see
-[../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))**
+Tested LCD panels: *not working yet (incompatible; see
+[../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))*
 
 -   Samsung LTN141XA-L01 (14.1" 1024x768)
 -   LG-Philips LP150X09 (15.1" 1024x768)
@@ -257,8 +257,8 @@ Tested LCD panels: **not working yet (incompatible; see
     GNU+Linux works) (P/N 42T0078 FRU 42T0079 or P/N 41W1338 recommended
     for the inverter board)
 
-*The following LCD panels are **UNTESTED**. If you have one of these
-panels then please submit a report!*:
+*The following LCD panels are untested. If you have one of these panels then
+please submit a report!*:
 
 -   CMO(IDtech?) N141XC (14.1" 1024x768)
 -   BOE-Hydis HT14X14 (14.1" 1024x768)
@@ -275,10 +275,10 @@ panels then please submit a report!*:
     41W1338 recommended for the inverter board)
 -   Samsung LTN154P2-L05 (42X4641 42T0329) (15.4" 1680x1050)
 -   LG-Philips LP154W02-TL10 (13N7020 42T0423) (15.4" 1680x1050)
--   LG-Philips LP154WU1-TLB1 (42T0361) (15.4" 1920x1200) **(for T61p
-    but it might work in T60. Unknown!)**
--   Samsung LTN154U2-L05 (42T0408 42T0574) (15.4" 1920x1200) **(for
-    T61p but it might work in T60. Unknown!)**
+-   LG-Philips LP154WU1-TLB1 (42T0361) (15.4" 1920x1200) *(for T61p
+    but it might work in T60. Unknown!)*
+-   Samsung LTN154U2-L05 (42T0408 42T0574) (15.4" 1920x1200) *(for
+    T61p but it might work in T60. Unknown!)*
 
 It is unknown whether the 1680x1050 (15.4") and 1920x1200 (15.4")
 panels use a different inverter board than the 1280x800 panels.
@@ -287,7 +287,7 @@ The T60 typically comes with an Intel wifi chipset which does not work
 at all without proprietary firmware, and while Lenovo BIOS is running
 the system will refuse to boot if you replace the card. Fortunately it
 is very easily replaced; just remove the card and install another one
-**after** libreboot is installed. See
+*after* libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
 ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.
@@ -305,7 +305,7 @@ your chassis.
 
 There is also a 15.4" T60 with Intel GPU.
 
-Note: the T60**p** laptops all have ATI graphics. The T60p laptops
+Note: the T60*p* laptops all have ATI graphics. The T60p laptops
 cannot be used with libreboot under any circumstances.
 
 The following T60 motherboard (see area highlighted in white) shows an
@@ -354,8 +354,8 @@ It is believed that all models are compatible, listed here:
 
 Specifically (Order No. / Model No. / CPU):
 
--   MA255LL/A / A1181 (EMC 2092) / Core Duo T2500 **(tested - working)**
--   MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 **(tested - working)**
+-   MA255LL/A / A1181 (EMC 2092) / Core Duo T2500 *(tested - working)*
+-   MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 *(tested - working)*
 -   MA472LL/A / A1181 (EMC 2092) / Core Duo T2500 (untested)
 
 Also of interest:
@@ -418,16 +418,16 @@ It is believed that all models are compatible, listed here:
 
 Specifically (Order No. / Model No. / CPU):
 
--   MA699LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T5600 **(tested -
-    working)**
--   MA701LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 **(tested -
-    working)**
+-   MA699LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T5600 *(tested -
+    working)*
+-   MA701LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 *(tested -
+    working)*
 -   MB061LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7200 (untested)
--   MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 **(tested -
-    working)**
+-   MA700LL/A / A1181 (EMC 2121) / Intel Core 2 Duo T7200 *(tested -
+    working)*
 -   MB063LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 (works)
--   MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 **(tested -
-    working)**
+-   MB062LL/A / A1181 (EMC 2139) / Intel Core 2 Duo T7400 *(tested -
+    working)*
 
 Also of interest:
 [../git/\#config\_macbook21](../git/#config_macbook21).
@@ -459,9 +459,9 @@ firmware. It is certainly hotter than an X60/T60. The heat issues have
 been partially fixed by the following patch (now merged in libreboot):
 <https://review.coreboot.org/#/c/7923/>.
 
-**The MacBook2,1 comes with a webcam, which does not work without
+*The MacBook2,1 comes with a webcam, which does not work without
 proprietary software. Also, webcams are a security risk; cover it up! Or
-remove it.**
+remove it.*
 
 A user reported that they could get better response from the touchpad
 with the following in their xorg.conf:

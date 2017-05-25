@@ -5,8 +5,8 @@ title: GNU+Linux installation instructions
 This section relates to dealing with GNU+Linux distributions: preparing
 bootable USB drives, changing the default GRUB menu and so on.
 
-**This section is only for the \*GRUB\* payload. For depthcharge,
-instructions have yet to be written.**
+*This section is only for the GRUB payload. For depthcharge,
+instructions have yet to be written.*
 
 -   [How to install GNU+Linux on a libreboot
     system](grub_boot_installer.md)

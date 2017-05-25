@@ -22,8 +22,7 @@ Raspberry Pi (ThinkPad X60/T60 and Macbook 2,1)
 The Raspberry Pi (a multipurpose \$25 GNU+Linux computer) can be used as
 a BIOS flashing tool, thanks to its GPIO pins and SPI support.
 
-> **Note:** The Raspberry Pi Model A is not supported, since it has no
-> GPIO pins.
+Note: The Raspberry Pi Model A is not supported, since it has no GPIO pins.
 
 ### Disassembling the ThinkPad
 
@@ -83,7 +82,7 @@ adapter (without turning the laptop on), and using the 8th 3.3v pin.
 I have found that the SST chips work best with the 8th pin, while the
 Macronix chips require an AC Adapter to power up.
 
-**Never connect both the 8th pin and the AC adapter at the same time.**
+*Never connect both the 8th pin and the AC adapter at the same time.*
 
 Your results may vary.
 
@@ -127,8 +126,8 @@ flash Libreboot now.
 Flashing Libreboot
 -------------------
 
-> **Note:** replace `/path/to/libreboot.rom` with the location of your
-> chosen ROM, such as `../bin/x60/libreboot_usqwerty.rom`):
+Note: replace `/path/to/libreboot.rom` with the location of your chosen ROM,
+such as `../bin/x60/libreboot_usqwerty.rom`):
 
 If your chip is an SST, run this command:
 
@@ -152,7 +151,7 @@ successfully. If not, just flash again.
 -   [Flashing coreboot on a T60 with a Raspberry Pi -
     the\_unconventional's
     blog](https://blogs.fsfe.org/the_unconventional/2015/05/08/flashing-coreboot-on-a-t60-with-a-raspberry-pi/)
--   **Pomona SOIC Clip flashing**
+-   *Pomona SOIC Clip flashing*
     -   [Arch Linux Wiki - Installing Arch Linux on
         Chromebook](https://wiki.archlinux.org/index.php/Chromebook)
     -   [Google Drive - Raspberry Pi SOIC Clip
@@ -193,9 +192,9 @@ Follow the [ThinkPad X200: Initial installation
 guide](x200_external.md) to
 disassemble the laptop, and access the BIOS rom chip.
 
-> **Note:** `x86#` refers to commands to be run on the x86 computer, and
-> `pi#` refers to commands to be run on the pi. A good practice is to
-> make a work directory to keep your libreboot stuff inside.
+Note: `x86#` refers to commands to be run on the x86 computer, and `pi#` refers
+to commands to be run on the pi. A good practice is to make a work directory to
+keep your libreboot stuff inside.
 
     x86# mkdir ~/work
 
@@ -203,7 +202,7 @@ Download NOOBS from [The Raspberry Pi
 Foundation.](https://www.raspberrypi.org/downloads/) Torrent download
 recommended, and remember to seed. :)
 
-If you're running Raspian, you can do **sudo raspi-config**, enable SPI
+If you're running Raspian, you can do `sudo raspi-config`, enable SPI
 under Advanced and then spidev will be enabled. Simple, eh?
 
 [Download Libreboot from their releases
@@ -306,10 +305,10 @@ text.
   15       S1/SIO0        19
   16       SCLK           23
 
-> **Note:** The raspberry pi 3.3V rail should be sufficient to power the
-> chip during flashing, so no external power supply should be required;
-> however, at the time of writing that has only been tested and
-> confirmed for one chip, the MX25L6405D.
+Note: The raspberry pi 3.3V rail should be sufficient to power the chip during
+flashing, so no external power supply should be required; however, at the time
+of writing that has only been tested and confirmed for one chip, the
+MX25L6405D.
 
 Macronix Spec sheet so you can adjust your pinout for 8 pin 4Mb chips as
 necessary
@@ -412,7 +411,7 @@ box.](http://www.flashrom.org/RaspberryPi)
 
 ### Sources
 
--   **Pomona SOIC Clip flashing**
+-   *Pomona SOIC Clip flashing*
     -   [Arch Linux Wiki - Installing Arch Linux on
         Chromebook](https://wiki.archlinux.org/index.php/Chromebook)
     -   [Google Drive - Raspberry Pi SOIC Clip
@@ -421,7 +420,7 @@ box.](http://www.flashrom.org/RaspberryPi)
         Powerpoint](http://satxhackers.org/wp/hack-content/uploads/2013/04/rPI_flashrom.pdf)
     -   [Tnhh - Unbricking Chromebook with
         Beaglebone](http://www.tnhh.net/2014/08/25/unbricking-chromebook-with-beaglebone.md)
--   **Use a DIY DIP System to flash an desoldered BIOS chip**
+-   *Use a DIY DIP System to flash an desoldered BIOS chip*
     -   [Viktak - How to recover laptop after failed BIOS
         flash](http://diy.viktak.com/2014/07/how-to-recover-laptop-after-failed-bios.md)
     -   [Win-Raid - Recover from Failed BIOS Flashing using Raspberry

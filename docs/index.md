@@ -56,7 +56,7 @@ in the flash chip and more.
 The libreboot project has three main goals:
 -------------------------------------------
 
--   ***Recommend and distribute only free software***. Coreboot
+-   *Recommend and distribute only free software*. Coreboot
     distributes certain pieces of proprietary software which is needed
     on some systems. Examples can include things like CPU microcode
     updates, memory initialization blobs and so on. The coreboot project
@@ -64,12 +64,12 @@ The libreboot project has three main goals:
     such as the Video BIOS or Intel's *Management Engine*. However, a
     lot of dedicated and talented individuals in coreboot work hard to
     replace these blobs whenever possible.
--   ***Support as much hardware as possible!*** Libreboot supports less
+-   *Support as much hardware as possible!* Libreboot supports less
     hardware than coreboot, because most systems from coreboot still
     require certain proprietary software to work properly. Libreboot is
     an attempt to support as much hardware as possible, without any
     proprietary software.
--   ***Make coreboot easy to use***. Coreboot is notoriously difficult
+-   *Make coreboot easy to use*. Coreboot is notoriously difficult
     to install, due to an overall lack of user-focussed documentation
     and support. Most people will simply give up before attempting to
     install coreboot.
@@ -128,23 +128,25 @@ How do I know what version I'm running? {#version}
 
 If you are at least 127 commits after release 20150518 (commit message
 *build/roms/helper: add version information to CBFS*) (or you have any
-**upstream** stable release of libreboot after 20150518), then you can
+*upstream* stable release of libreboot after 20150518), then you can
 press C at the GRUB console, and use this command to find out what
-version of libreboot you have:\
-**cat (cbfsdisk)/lbversion**\
+version of libreboot you have:
+
+    cat (cbfsdisk)/lbversion
+
 This will also work on non-release images (the version string is
-automatically generated, using *git describe --tags HEAD*), built from
-the git repository. A file named *version* will also be included in the
+automatically generated, using `git describe --tags HEAD`), built from
+the git repository. A file named `version` will also be included in the
 archives that you downloaded (if you are using release archives).
 
-If it exists, you can also extract this *lbversion* file by using the
-*cbfstool* utility which libreboot includes, from a ROM image that you
+If it exists, you can also extract this `lbversion` file by using the
+`cbfstool` utility which libreboot includes, from a ROM image that you
 either dumped or haven't flashed yet. In your distribution, run
-cbfstool on your ROM image (*libreboot.rom*, in this example):
+cbfstool on your ROM image (`libreboot.rom`, in this example):
 
     $ ./cbfstool libreboot.rom extract -n lbversion -f lbversion
 
-You will now have a file, named *lbversion*, which you can read in
+You will now have a file, named `lbversion`, which you can read in
 whatever program it is that you use for reading/writing text files.
 
 For git, it's easy. Just check the git log.
@@ -153,8 +155,10 @@ For releases on or below 20150518, or snapshots generated from the git
 repository below 127 commits after 20150518, you can find a file named
 *commitid* inside the archives. If you are using pre-built ROM images
 from the libreboot project, you can press C in GRUB for access to the
-terminal, and then run this command:\
-**lscoreboot**\
+terminal, and then run this command:
+
+    lscoreboot
+
 You may find a date in here, detailing when that ROM image was built.
 For pre-built images distributed by the libreboot project, this is a
 rough approximation of what version you have, because the version

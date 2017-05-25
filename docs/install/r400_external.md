@@ -32,8 +32,8 @@ A note about CPUs
 [ThinkWiki](http://www.thinkwiki.org/wiki/Category:R400) has a list of
 CPUs for this system. The Core 2 Duo P8400 and P8600 are believed to
 work in libreboot. The Core 2 Duo T9600 was confirmed to work, so the
-T9400 probably also works. **The Core 2 Duo T5870/5670 and Celeron M
-575/585 are untested!**
+T9400 probably also works. *The Core 2 Duo T5870/5670 and Celeron M
+575/585 are untested!*
 
 Quad-core CPUs
 --------------
@@ -244,12 +244,13 @@ factory1.rom
 
 factory2.rom
 
-Note: the **-c** option is not required in libreboot's patched
+Note: the `-c` option is not required in libreboot's patched
 flashrom, because the redundant flash chip definitions in *flashchips.c*
-have been removed.\
+have been removed.
+
 Now compare the 3 images:
 
-    # sha512sum factory\*.rom
+    # sha512sum factory*.rom
 
 If the hashes match, then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
@@ -261,8 +262,8 @@ Follow the instructions at
 [../hardware/gm45\_remove\_me.html\#ich9gen](../hardware/gm45_remove_me.html#ich9gen)
 to change the MAC address inside the libreboot ROM image, before
 flashing it. Although there is a default MAC address inside the ROM
-image, this is not what you want. **Make sure to always change the MAC
-address to one that is correct for your system.**
+image, this is not what you want. *Make sure to always change the MAC
+address to one that is correct for your system.*
 
 Now flash it:
 
@@ -272,10 +273,10 @@ path/to/libreboot/rom/image.rom -V
 
 ![](images/x200/disassembly/0015.jpg)
 
-You might see errors, but if it says **Verifying flash... VERIFIED** at
+You might see errors, but if it says `Verifying flash... VERIFIED` at
 the end, then it's flashed and should boot. If you see errors, try
-again (and again, and again); the message **Chip content is identical to
-the requested image** is also an indication of a successful
+again (and again, and again); the message `Chip content is identical to
+the requested image` is also an indication of a successful
 installation.
 
 Example output from running the command (see above):

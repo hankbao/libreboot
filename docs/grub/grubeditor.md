@@ -24,18 +24,19 @@ valid Libreboot ROM image that uses the GRUB2 payload and contains both
 _grub.cfg_ and _grubtest.cfg_ files. Additional options should come _before_ the
 ROM image file on the command line.
 
-You can call the script the **-h** or **--help** option to view a brief summary
+`
+You can call the script the `-h` or `--help` option to view a brief summary
 of the options available. Consider this guide a more extensive version of this
 screen.
 
 grubeditor.sh supports extended getopt, which means that all options have both a
 short and a long form which respectively begin with a single hyphen and a double
 hyphen. You can group together several short options with a single hyphen like
-**-ris** (or not, like **-r -i -s**). Long options should be written as
+`-ris` (or not, like `-r -i -s`). Long options should be written as
 standalone arguments.
  
 Lastly, you can check which version of grubeditor.sh you are using with the
-**-v** or **--version** option.
+`-v` or `--version` option.
 
 Requirements
 ============
@@ -43,7 +44,7 @@ Requirements
 grubeditor.sh requires an x86, x86_64, or armv7l environment, since these are
 the environments for which cbfstools binaries are provided. Additionally,
 grubeditor.sh needs a Bash environment with extended getopt functionality that
-can run the **diff** command and write to /tmp. Lastly, the script expects to
+can run the `diff` command and write to /tmp. Lastly, the script expects to
 live in the top directory of the Libreboot utilities package so it can properly
 call cbfstool.
 
@@ -55,7 +56,7 @@ Linux LiveCD of your choice which provides these essentials.
 Optionally, you should make sure your EDITOR variable is set. Otherwise,
 grubeditor.sh will default to using vi, which may not exist on your system. You
 can override this default or the contents of your EDITOR variable using the
-**-e** or **--editor** command.
+`-e` or `--editor` command.
 
 Editing configuration files
 ===========================
@@ -68,27 +69,27 @@ name in the same directory, except that the new ROM file will end with
 ".modified". You can then flash this ROM image to your platform's BIOS chip.
 
 If you would prefer to edit the actual _grub.cfg_ configuration file, use the
-**-r** or the **--realcfg** option. Everything else will work the same except
+`-r` or the `--realcfg` option. Everything else will work the same except
 that your editor will open the _grub.cfg_ instead.
 
 If you would prefer to overwrite your existing ROM image instead of creating a
-new one ending in ".modified" use the **-i** or **--inplace** option.
-Naturally, you can combine this option with the **-r/--realcfg** option
+new one ending in ".modified" use the `-i` or `--inplace` option.
+Naturally, you can combine this option with the `-r/--realcfg` option
 described above.
 
 Swapping and diffing grub.cfg and grubtest.cfg
 ==============================================
 
 grubeditor.sh supports swapping the _grub.cfg_ and _grubtest.cfg_ configuration
-files with the **-s** or **--swap** options. This will create a new ROM image
+files with the `-s` or `--swap` options. This will create a new ROM image
 alongside the existing ROM image ending with ".modified" which has these files
 swapped. Naturally, you can request this operation overwrite the existing file
-instead using the **-i/--inplace** option.
+instead using the `-i/--inplace` option.
 
 Lastly, grubeditor.sh supports comparing _grub.cfg_ and _grubtest.cfg_ files for
-differences with the **-d** or **--diffcfg** option. This uses the diff command
+differences with the `-d` or `--diffcfg` option. This uses the diff command
 by default, but if you want to use another program (e.g. vimdiff), you can
-specify it with the **-D** or **--differ** option. Note that this mode is only
+specify it with the `-D` or `--differ` option. Note that this mode is only
 intended to show differences in the files and does not support updating the
 configs themselves, so any changes you make in an interactive differ will be
 ignored.

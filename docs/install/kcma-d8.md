@@ -10,8 +10,8 @@ motherboard, while they still have the proprietary ASUS BIOS present.
 This guide can also be followed (adapted) if you brick you board, to
 know how to recover.
 
-**Memory initialization is still problematic, for some modules. We
-recommend avoiding Kingston modules.**
+*Memory initialization is still problematic, for some modules. We
+recommend avoiding Kingston modules.*
 
 For more general information about this board, refer to
 [../hardware/kcma-d8.md](../hardware/kcma-d8.md).
@@ -26,7 +26,7 @@ an external SPI programmer.
 
 The flash chip is in a PDIP 8 socket (SPI flash chip) on the
 motherboard, which you take out and then re-flash with libreboot, using
-the programmer. **DO NOT** remove the chip with your hands. Use a chip
+the programmer. *DO NOT* remove the chip with your hands. Use a chip
 extractor tool.
 
 Copyright © 2016 Leah Rowe <info@minifree.org>\

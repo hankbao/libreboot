@@ -37,8 +37,8 @@ Libreboot 20160818 {#release20160818}
 
 Release date: 18th August 2016.
 
-Installation instructions can be found at ***docs/install/***. Building
-instructions (for source code) can be found at ***docs/git/\#build***.
+Installation instructions can be found at `docs/install/`. Building
+instructions (for source code) can be found at `docs/git/\#build`.
 
 Machines supported in this release:
 -----------------------------------
