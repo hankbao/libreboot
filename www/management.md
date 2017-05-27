@@ -1,5 +1,5 @@
 ---
-title: General management guidelines and leadership information
+title: General management guidelines
 x-toc-enable: true
 ...
 
