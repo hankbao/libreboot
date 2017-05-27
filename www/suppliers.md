@@ -5,8 +5,8 @@ title: Suppliers selling or providing Libreboot pre-installed
 Libiquity
 =========
 
-Patrick McDermott, the founder of Libiquity, is also a former Libreboot
-contributor, having contributed several useful patches to the project.
+Patrick McDermott, Libiquity's founder, is a former Libreboot
+developer.
 
 -   [Taurinus X200 laptop](https://shop.libiquity.com/product/taurinus-x200) (FSF RYF certified)
 -   [Libreboot laptop palmrest stickers](https://shop.libiquity.com/product/libreboot-inside-case-badges-3-pack)
@@ -19,11 +19,32 @@ Leah Rowe, Minifree's founder, is also Libreboot's founder and is an active
 Libreboot developer. Minifree is the first company to achieve FSF RYF
 endorsement on a computer system, and invests money directly into Libreboot.
 
+Laptops
+-------
+
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
+
+Desktops
+--------
+
 -   [Libreboot D16 desktop/workstation](https://minifree.org/product/libreboot-d16/)
+
+Servers
+-------
+
 -   [Libreboot D16 server](https://minifree.org/product/libreboot-d16-server/)
+
+Services
+--------
+
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
--   [Libreboot X200/X220 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
+
+Merchendise
+-----------
+
+-   [Libreboot T400 battery](https://minifree.org/product/libreboot-t400-battery/)
+-   [Libreboot X200 battery](https://minifree.org/product/libreboot-x200-battery/)
+-   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
 Technoethical
@@ -33,7 +54,14 @@ Technoethical (formerly Tehnoetic) is a team of free software activists and
 developers that are selling hardware pre-installed with libreboot as a way to
 fund the activity within their nonprofit foundation.
 
+Services
+--------
+
 -   [Libreboot installation service](https://tehnoetic.com/tet-lis)
+
+Laptops
+-------
+
 -   [Technoethical T500 laptop](https://tehnoetic.com/tet-t500)
 -   [Technoethical T400 laptop](https://tehnoetic.com/tet-t400)
 -   [Technoethical X200 Tablet laptop](https://tehnoetic.com/tet-x200t)
@@ -46,9 +74,24 @@ Vikings is the first company to offer hosting on hardware pre-installed with
 libreboot and they are also selling the hardware itself to fund the building
 of their libreboot-powered datacenter.
 
+Servers
+-------
+
 -   [Vikings D16 1U server](https://store.vikings.net/libre-friendly-hardware/the-server-1u)
+
+Mainboards
+----------
+
 -   [Vikings D16 mainboard](https://store.vikings.net/libre-friendly-hardware/d16-ryf-certfied) (FSF RYF certified)
+
+Desktops
+--------
+
 -   [Vikings D16 workstation](https://store.vikings.net/libre-friendly-hardware/vikings-d16-workstation)
+
+Laptops
+-------
+
 -   [Vikings X200 laptop](https://store.vikings.net/libre-friendly-hardware/x200-ryf-certfied) (FSF RYF certified)
 
 Other suppliers
