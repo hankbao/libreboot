@@ -47,8 +47,6 @@ Project, USA)
 
 <https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
 
-<https://mirror.se.partyvan.eu/pub/libreboot/> (partyvan.eu, Sweden)
-
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
 
 HTTP mirrors {#http}
@@ -61,9 +59,6 @@ that you have the right key. Of course, you should do this anyway, even
 if using HTTPS.
 
 <http://mirrors.mit.edu/libreboot/> (MIT university, USA)
-
-<http://tpvj6abq225m5pcf.onion/pub/libreboot/> (Tor hidden server,
-Undisclosed location)
 
 <http://mirror.linux.ro/libreboot/> (linux.ro, Romania)
 
