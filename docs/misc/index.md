@@ -75,9 +75,9 @@ using [this guide](../gnulinux/grub_cbfs.md).
 X60/T60: Serial port - how to use (for dock owners)
 ===================================================
 
-For the Thinkpad X60 you can use the **"UltraBase X6"** dock (for the
+For the Thinkpad X60 you can use the "UltraBase X6" dock (for the
 X60 Tablet it is called X6 Tablet UltraBase). For the ThinkPad T60, you
-can use the **"Advanced Mini Dock"**.
+can use the "Advanced Mini Dock".
 
 If you are using one of the ROM images with 'serial' in the name, then
 you have serial port enabled in libreboot and you have memtest86+
@@ -107,7 +107,7 @@ recommend Ubuntu, because it contains non-free software in the default
 repos. Use Debian or Devuan)
 
 Note: part of the tutorial above requires changing your grub.cfg. Just
-change the **linux** line to add instructions for enabling getty. See
+change the `linux` line to add instructions for enabling getty. See
 [../gnulinux/grub\_cbfs.md](../gnulinux/grub_cbfs.md).
 
 Finetune backlight control on intel gpu's
@@ -121,10 +121,12 @@ needs to be set. See p94 of
 <https://01.org/sites/default/files/documentation/g45_vol_3_register_0_0.pdf>
 for more information on this reg. The tool for setting registry values
 on intel gpu's is included in intel-gpu-tools. Install intel-gpu-tools:
-**sudo apt-get install intel-gpu-tools**
 
-You can set values: **sudo intel\_reg write 0x00061254
-your_value_in_C_hex_format**
+    sudo apt-get install intel-gpu-tools
+
+You can set values:
+
+    sudo intel_reg write 0x00061254 your_value_in_C_hex_format
 
 The value set has the following structure: bits \[31:16\] is PWM
 divider. PWM / PWM\_divider = frequency bits \[15:0\] is the duty cycle
@@ -134,7 +136,7 @@ backlight modulation frequency means full on. The value should not be
 larger than the backlight modulation frequency.
 
 On displays with a CCFL backlight start from: 0x60016001 To verify if
-all modes work as desired use: **xbacklight -set 10** and gradually
+all modes work as desired use: `xbacklight -set 10` and gradually
 increase until 100. Displays with an LED backlight need a lower
 backlight modulation. Do the same thing but start from 0x01290129 . Try
 setting different values until you have found a value which presents no
@@ -172,8 +174,10 @@ before exit 0 in /etc/rc.local or create a systemd service file
     WantedBy=multi-user.target
             
 
-Now start and enable it: **sudo systemctl start backlight && sudo
-systemctl enable backlight**
+Now start and enable it:
+
+    sudo systemctl start backlight && sudo systemctl enable backlight
+
 Special note on i945:
 
 i945 behaves differently. Bit 16 needs to be 1 and the duty cycle is not
@@ -216,8 +220,11 @@ A reboot is required, for these changes to take effect.
 Get EDID: Find out the name (model) of your LCD panel
 =====================================================
 
-Get the panel name with **sudo get-edid | strings**\
-Or look in **/sys/class/drm/card0-LVDS-1/edid**
+Get the panel name:
+
+    sudo get-edid | strings
+
+Or look in `/sys/class/drm/card0-LVDS-1/edid`
 
 Alternatively you can use i2cdump. In Debian and Devuan, this is in the
 package i2c-tools.
@@ -243,16 +250,20 @@ needed for cause):
 
     e1000e 0000:00:19.0 enp0s25: Detected Hardware Unit Hang
 
-Possible workaround, tested by Nazara: Disable C-STATES.\
-**NOTE: this also disables power management, because disabling C-States
+Possible workaround, tested by Nazara: Disable C-STATES.
+
+*NOTE: this also disables power management, because disabling C-States
 means that your CPU will now be running at full capacity (and therefore
 using more power) non-stop, which will drain battery life if this is a
 laptop. If power usage is a concern, then you should not use this.
-(we're also not sure whether this workaround is appropriate)**
+(we're also not sure whether this workaround is appropriate)*
 
-To disable c-states, do this in GNU+Linux:\
-**for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable; do echo 1
-> \$i; done**
+To disable c-states, do this in GNU+Linux:
+
+    for i in /sys/devices/system/cpu/cpu/cpuidle/state/disable;
+    do
+        echo 1 > $i;
+    done
 
 You can reproduce this issue more easily by sending lots of traffic
 across subnets on the same interface (NIC).

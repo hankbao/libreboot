@@ -2,14 +2,14 @@
 title: ASUS KGPE-D16 server/workstation board 
 ...
 
-This is a server board using AMD hardware (Fam10h **and Fam15h** CPUs
+This is a server board using AMD hardware (Fam10h *and Fam15h* CPUs
 available). It can also be used for building a high-powered workstation.
 Powered by libreboot. The coreboot port was done by Timothy Pearson of
 Raptor Engineering Inc. and, working with them (and sponsoring the
 work), merged into libreboot.
 
-**Memory initialization is still problematic, for some modules. We
-recommend avoiding Kingston modules.**
+*Memory initialization is still problematic, for some modules. We
+recommend avoiding Kingston modules.*
 
 Flashing instructions can be found at
 [../install/\#flashrom](../install/#flashrom) - note that external
@@ -21,8 +21,8 @@ KGPE-D16, without using external hardware.
 CPU compatibility
 =================
 
-**Use Opteron 6200 series (works without microcode updates, including hw
-virt).** 6300 series needs microcode updates, so avoid those CPUs. 6100
+*Use Opteron 6200 series (works without microcode updates, including hw
+virt).* 6300 series needs microcode updates, so avoid those CPUs. 6100
 series is too old, and mostly untested.
 
 Board status (compatibility) {#boardstatus}
@@ -59,9 +59,9 @@ boot that, loading it into memory.
 Libreboot has configs for 2, 4, 8 and 16 MiB flash chip sizes (default
 flash chip is 2MiB).
 
-**DO NOT hot-swap the chip with your bare hands. Use a P-DIP 8 chip
+*DO NOT hot-swap the chip with your bare hands. Use a P-DIP 8 chip
 extractor. These can be found online. See
-<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>**
+<http://www.coreboot.org/Developer_Manual/Tools#Chip_removal_tools>*
 
 Native graphics initialization {#graphics}
 ==============================
@@ -101,15 +101,15 @@ The information here is adapted, from the ASUS website.
 -   2 CPU sockets (G34 compatible)
 -   HyperTransport™ Technology 3.0
 -   CPUs supported:
-    -   AMD Opteron 6100 series (Fam10h. No IOMMU support. **Not**
+    -   AMD Opteron 6100 series (Fam10h. No IOMMU support. *Not*
         recommended - old. View errata datasheet here:
         <http://support.amd.com/TechDocs/41322_10h_Rev_Gd.pdf>)
     -   AMD Opteron 6200 series (Fam15h, with full IOMMU support in
-        libreboot - **highly recommended - fast, and works well without
-        microcode updates, including virtualization**)
+        libreboot - *highly recommended - fast, and works well without
+        microcode updates, including virtualization*)
     -   AMD Opteron 6300 series (Fam15h, with full IOMMU support in
-        libreboot. **AVOID LIKE THE PLAGUE - virtualization is broken
-        without microcode updates.**
+        libreboot. *AVOID LIKE THE PLAGUE - virtualization is broken
+        without microcode updates.*
     -   NOTE: 6300 series CPUs have buggy microcode built-in, and
         libreboot recommends avoiding the updates. The 6200 series CPUs
         have more reliable microcode. Look at this errata datasheet:
@@ -124,27 +124,27 @@ The information here is adapted, from the ASUS website.
 
 ### Memory compatibility (with libreboot)
 
--   **Total Slots:** 16 (4-channel per CPU, 8 DIMM per CPU), ECC
--   **Capacity:** Maximum up to 256GB RDIMM
--   **Memory Type that is compatible:**
+-   *Total Slots:* 16 (4-channel per CPU, 8 DIMM per CPU), ECC
+-   *Capacity:* Maximum up to 256GB RDIMM
+-   *Memory Type that is compatible:*
     -   DDR3 1600/1333/1066/800 UDIMM\*
     -   DDR3 1600/1333/1066/800 RDIMM\*
--   **Compatible sizes per memory module:**
+-   *Compatible sizes per memory module:*
     -   16GB, 8GB, 4GB, 3GB, 2GB, 1GB RDIMM
     -   8GB, 4GB, 2GB, 1GB UDIMM
 
 ### Expansion slots
 
--   **Total slot:** 6
--   **Slot Location 1:** PCI 32bit/33MHz
--   **Slot Location 2:** PCI-E x16 (Gen2 X8 Link)
--   **Slot Location 3:** PCI-E x16 (Gen2 X16 Link), Auto switch to x8
+-   *Total slot:* 6
+-   *Slot Location 1:* PCI 32bit/33MHz
+-   *Slot Location 2:* PCI-E x16 (Gen2 X8 Link)
+-   *Slot Location 3:* PCI-E x16 (Gen2 X16 Link), Auto switch to x8
     link if slot 2 is occupied
--   **Slot Location 4:** PCI-E x8 (Gen2 X4 Link)
--   **Slot Location 5:** PCI-E x16 (Gen2 X16 Link)
--   **Slot Location 6:** PCI-E x16 (Gen2 X16 Link), Auto turn off if
+-   *Slot Location 4:* PCI-E x8 (Gen2 X4 Link)
+-   *Slot Location 5:* PCI-E x16 (Gen2 X16 Link)
+-   *Slot Location 6:* PCI-E x16 (Gen2 X16 Link), Auto turn off if
     slot 5 is occupied, For 1U FH/FL Card, MIO supported
--   **Additional Slot 1:** PIKE slot (for SAS drives. See notes above)
+-   *Additional Slot 1:* PIKE slot (for SAS drives. See notes above)
 -   Follow SSI Location\#
 
 ### Form factor {#form-factor}
@@ -158,10 +158,10 @@ The information here is adapted, from the ASUS website.
 
 ### Storage
 
--   **SATA controller:**
+-   *SATA controller:*
     -   AMD SP5100
     -   6 x SATA2 300MB/s
--   **SAS/SATA Controller:**
+-   *SAS/SATA Controller:*
     -   ASUS PIKE2008 3Gbps 8-port SAS card included
 
 ### Networking
@@ -195,9 +195,9 @@ The information here is adapted, from the ASUS website.
 
 ### Environment
 
--   **Operation temperature:** 10C \~ 35C
--   **Non operation temperature:** -40C \~ 70C
--   **Non operation humidity:** 20% \~ 90% ( Non condensing)
+-   *Operation temperature:* 10C \~ 35C
+-   *Non operation temperature:* -40C \~ 70C
+-   *Non operation humidity:* 20% \~ 90% ( Non condensing)
 
 ### Monitoring
 

@@ -21,11 +21,11 @@ EHCI debugging
     recommended)](#EnebleEHCIDebugonthetargetskerneloptionalrecommended)
 7.  [References](#References)
 
-**NOTE: this documentation may be outdated, and discusses configuring
+*NOTE: this documentation may be outdated, and discusses configuring
 EHCI debug on the default Debian system that the BBB sometimes comes
 with. If you want an easier time, just use [BBB
 ScrewDriver](https://www.coreboot.org/BBB_screwdriver) which comes
-pre-configured.**
+pre-configured.*
 
 If your computer does not boot after installing libreboot, it is very
 useful to get debug logs from it, from the payload (grub) and/or the
@@ -40,17 +40,17 @@ it (TODO: grub).
 
 I will refer to three computers:
 
--   **host** - this is the computer you use, have tools, compiler,
+-   *host* - this is the computer you use, have tools, compiler,
     Internet, etc
--   **BBB** - Beaglebone Black (rev. B or higher, i use rev. C)
--   **target** - the computer you are trying to install liberboot
+-   *BBB* - Beaglebone Black (rev. B or higher, i use rev. C)
+-   *target* - the computer you are trying to install liberboot
 
 ### Find USB port on the target that supports EHCI debug {#FindUSBportonthetargetthatsupportsEHCIdebug}
 
 Not all USB controllers support EHCI debug (see: [EHCI Debug
 Port](http://www.coreboot.org/EHCI_Debug_Port#Hardware_capability) ).
 Even more, if a USB controller supports EHCI debug, it is available only
-**on a single port** that might or might not be exposed externally.
+*on a single port* that might or might not be exposed externally.
 
 -   You need running OS (GNU+Linux) on your target for this step (If
     you've flashed libreboot and it does not boot, you have to flush
@@ -76,8 +76,8 @@ Even more, if a USB controller supports EHCI debug, it is available only
     support debug (bold).
 
 Remember (write down) for each port (external plug) you found that
-supports debug: **PCI device id, the bus id, the port number, and the
-physical location of the usb plug.**
+supports debug: *PCI device id, the bus id, the port number, and the
+physical location of the usb plug.*
 
 If you do not find a match, you can not get debug over EHCI. Sorry.
 
@@ -235,7 +235,7 @@ Then:\
 
     CONFIG_CONSOLE_USB=y (Console -> USB dongle console output)
 
-Also Debugging \---> Output verbose XYZ ) (**FIXME** somebody verify
+Also Debugging \---> Output verbose XYZ ) (*FIXME* somebody verify
 these):
 
     CONFIG_DEBUG_CBFS=y (Output verbose CBFS debug messages )
@@ -247,7 +247,7 @@ these):
 
 If some of the above mentioned configuration options are not as
 specified, you have to configure and compile libreboot yourself. Please
-refer to the doc(**FIXME: link** about compiling libreboot.
+refer to the doc(*FIXME: link* about compiling libreboot.
 
 #### Selecting HCD Index and USB Debug port {#SelectingHCDIndexandUSBDebugport}
 
@@ -342,7 +342,7 @@ Interface](http://cs.usfca.edu/~cruse/cs698s10/)
 
 ^21^ https://wiki.ubuntu.com/Kernel/Debugging/USBearlyprintk
 
-**TODO**:
+*TODO*:
 
 1.  grub does not send messages to EHCI debug. Investigate.
 2.  The section “Configure libreboot with EHCI debug” can be

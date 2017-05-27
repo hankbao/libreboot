@@ -8,15 +8,15 @@ flash chip with the BeagleBone Black, using the
 rev. C was used when creating this guide, but earlier revisions may also
 work.
 
-**NOTE: this documentation may be outdated, and discusses configuring
+*NOTE: this documentation may be outdated, and discusses configuring
 SPI flashing on the default Debian system that the BBB sometimes comes
 with. If you want an easier time, just use [BBB
 ScrewDriver](https://www.coreboot.org/BBB_screwdriver) which comes
-pre-configured.**
+pre-configured.*
 
-**This guide is written for Debian Wheezy 7.5, which is what came on the
+*This guide is written for Debian Wheezy 7.5, which is what came on the
 BBB at the time this guide was written. This one:
-<https://debian.beagleboard.org/images/bone-debian-7.8-lxde-4gb-armhf-2015-03-01-4gb.img.xz>**
+<https://debian.beagleboard.org/images/bone-debian-7.8-lxde-4gb-armhf-2015-03-01-4gb.img.xz>*
 
 There was no justification for a further section for the Teensy. Simply
 refer to [this page on
@@ -36,7 +36,7 @@ Hardware requirements
 Shopping list (pictures of this hardware is shown later):
 
 -   A [Flashrom](http://flashrom.org)-compatible external SPI
-    programmer: **BeagleBone Black**, sometimes referred to as 'BBB',
+    programmer: *BeagleBone Black*, sometimes referred to as 'BBB',
     (rev. C) is highly recommended. You can buy one from
     [Adafruit](https://www.adafruit.com) (USA),
     [ElectroKit](http://electrokit.com) (Sweden) or any of the
@@ -52,30 +52,30 @@ Shopping list (pictures of this hardware is shown later):
     bottom half of a [hammond plastic
     enclosure](http://www.hammondmfg.com/1593HAM.htm#BeagleBoneBlack).
 -   Clip for connecting to the flash chip: if you have a SOIC-16 flash
-    chip (16 pins), you will need the **Pomona 5252** or equivalent. For
-    SOIC-8 flash chips (8 pins), you will need the **Pomona 5250** or
+    chip (16 pins), you will need the *Pomona 5252* or equivalent. For
+    SOIC-8 flash chips (8 pins), you will need the *Pomona 5250* or
     equivalent. Do check which chip you have, before ordering a clip.
     Also, you might as well buy two clips or more since they break
     easily. [Farnell element 14](http://farnell.com/) sells these and
     ships to many countries. Some people find these clips difficult to
     get hold of, especially in South America. If you know of any good
     suppliers, please contact the libreboot project with the relevant
-    information. **If you can't get hold of a pomona clip, some other
+    information. *If you can't get hold of a pomona clip, some other
     clips might work, e.g. 3M, but they are not always reliable. You can
     also directly solder the wires to the chip, if that suits you; the
-    clip is just for convenience, really.**
--   **External 3.3V DC power supply**, for powering the flash chip: an
+    clip is just for convenience, really.*
+-   *External 3.3V DC power supply*, for powering the flash chip: an
     ATX power supply / PSU (common on Intel/AMD desktop computers) will
     work for this. A lab PSU (DC) will also work (adjusted to 3.3V).
     -   Getting a multimeter might be worthwhile, to verify that it's
         supplying 3.3V.
--   **External 5V DC power supply** (barrel connector), for powering the
+-   *External 5V DC power supply* (barrel connector), for powering the
     BBB: the latter can have power supplied via USB, but a dedicated
     power supply is recommended. These should be easy to find in most
-    places that sell electronics. **OPTIONAL. Only needed if not
+    places that sell electronics. OPTIONAL. Only needed if not
     powering with the USB cable, or if you want to use [EHCI
-    debug](../misc/bbb_ehci.md)**.
--   **Pin header / jumper cables** (2.54mm / 0.1" headers): you should
+    debug](../misc/bbb_ehci.md).
+-   *Pin header / jumper cables* (2.54mm / 0.1" headers): you should
     get male--male, male--female and female--female cables in 10cm
     size. Just get a load of them. Other possible names for these
     cables/wires/leads are as follows:
@@ -84,20 +84,20 @@ Shopping list (pictures of this hardware is shown later):
     -   You might also be able to make these cables yourself.
 
     [Adafruit](https://www.adafruit.com) sell them, as do many others.
-    **Some people find them difficult to buy. Please contact the
-    libreboot project if you know of any good sellers.** You might also
+    *Some people find them difficult to buy. Please contact the
+    libreboot project if you know of any good sellers.* You might also
     be able to make these cables yourself. For PSU connections, using
     long cables, e.g. 20cm, is fine, and you can extend them longer than
     that if needed.
--   **Mini USB A-B cable** (the BeagleBone probably already comes with
-    one.) - **OPTIONAL - only needed for [EHCI
+-   *Mini USB A-B cable* (the BeagleBone probably already comes with
+    one.) - *OPTIONAL - only needed for [EHCI
     debug](../misc/bbb_ehci.md) or for serial/ssh access without
-    ethernet cable (g\_multi kernel module)**
--   **FTDI TTL cable or debug board**: used for accessing the serial
+    ethernet cable (g\_multi kernel module)*
+-   *FTDI TTL cable or debug board*: used for accessing the serial
     console on the BBB. [This
     page](http://elinux.org/Beagleboard:BeagleBone_Black_Serial)
-    contains a list. **OPTIONAL\---only needed for serial console on
-    the BBB, if not using SSH via ethernet cable.**
+    contains a list. *OPTIONAL\---only needed for serial console on
+    the BBB, if not using SSH via ethernet cable.*
 
 Setting up the 3.3V DC PSU
 ==========================
@@ -112,13 +112,13 @@ Short PS\_ON\# / Power on (green wire; pin 16 on 24-pin ATX PSU, or pin
 it) using a wire/paperclip/jumper, then power on the PSU by grounding
 PS\_ON\# (this is also how an ATX motherboard turns on a PSU).
 
-**DO \*\*NOT\*\* use pin 4, 6, do \*\*NOT\*\* use pin 19 or 20 (on a
-20-pin ATX PSU), and DO \*\*NOT\*\* use pin 21, 22 or 23 (on a 24-pin
-ATX PSU). Those wires (the red ones) are 5V, and they \*\*WILL\*\* kill
-your flash chip. \*\*\*NEVER\*\*\* supply more than 3.3V to your flash
+*DO NOT use pin 4, 6, do NOT use pin 19 or 20 (on a
+20-pin ATX PSU), and DO NOT use pin 21, 22 or 23 (on a 24-pin
+ATX PSU). Those wires (the red ones) are 5V, and they WILL kill
+your flash chip. NEVER supply more than 3.3V to your flash
 chip (that is, if it's a 3.3V flash chip; 5V and 1.8V SPI flash chips
 do exist, but they are rare. Always check what voltage your chip takes.
-Most of them take 3.3V).**
+Most of them take 3.3V).*
 
 You only need one 3.3V supply and one ground for the flash chip, after
 grounding PS\_ON\#.
@@ -199,11 +199,11 @@ contents of this file with:
         /usr/bin/led_acc &
     fi
 
-Run **apt-get update** and **apt-get upgrade** then reboot the BBB,
+Run `apt-get update` and `apt-get upgrade` then reboot the BBB,
 before continuing.
 Check that the firmware exists:
 
-    # ls /lib/firmware/BB-SPI0-01-00A0.\*
+    # ls /lib/firmware/BB-SPI0-01-00A0.
 
 Output:
 
@@ -211,8 +211,8 @@ Output:
 
 Then:
 
-    # echo BB-SPI0-01 > /sys/devices/bone_capemgr.\*/slots
-    # cat /sys/devices/bone_capemgr.\*/slots
+    # echo BB-SPI0-01 > /sys/devices/bone_capemgr./slots
+    # cat /sys/devices/bone_capemgr./slots
 
 Output:
 
@@ -226,7 +226,7 @@ Output:
 
 Verify that the spidev device now exists:
 
-    # ls -al /dev/spid\*
+    # ls -al /dev/spid
 
 Output:
 
@@ -234,8 +234,8 @@ Output:
 
 Now the BBB is ready to be used for flashing. Make this persist across
 reboots:\
-In /etc/default/capemgr add **CAPE=BB-SPI0-01** at the end (or change
-the existing **CAPE=** entry to say that, if an entry already exists.
+In /etc/default/capemgr add `CAPE=BB-SPI0-01` at the end (or change
+the existing `CAPE=` entry to say that, if an entry already exists.
 
 Get flashrom from the libreboot\_util release archive, or build it from
 libreboot\_src/git if you need to. An ARM binary (statically compiled)
@@ -317,18 +317,18 @@ for SOIC-8 (clip: Pomona 5250):
     WP  3-6 SCK
     GND 4-5 MOSI
 
-**NC = no connection**
+`NC = no connection`
 
-**DO NOT connect 3.3V (PSU) yet. ONLY connect this once the pomona is
-connected to the flash chip.**
+*DO NOT connect 3.3V (PSU) yet. ONLY connect this once the pomona is
+connected to the flash chip.*
 
-**You also need to connect the BLACK wire (ground/earth) from the 3.3V
+*You also need to connect the BLACK wire (ground/earth) from the 3.3V
 PSU to pin 2 on the BBB (P9 header). It is safe to install this now
 (that is, before you connect the pomona to the flash chip); in fact, you
-should.**
+should.*
 
 if you need to extend the 3.3v psu leads, just use the same colour M-F
-leads, **but** keep all other leads short (10cm or less)
+leads, *but* keep all other leads short (10cm or less)
 
 You should now have something that looks like this:\
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)

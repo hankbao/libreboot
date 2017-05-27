@@ -10,24 +10,16 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Install](docs/install/)                                                    --
 [Docs](docs/)                                                               --
 [News](news/)                                                               --
-[IRC](https://webchat.freenode.net/?channels=libreboot)                 --
+[Chat](https://webchat.freenode.net/?channels=libreboot)                    --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
 [Contribute](git.md)                                                        --
-[Management](management.md)                                                 --
 [Tasks](https://notabug.org/libreboot/libreboot/milestones)                 --
-[Preinstalled systems](suppliers.md)
+[Buy](suppliers.md)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) (as in
 freedom) BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. It is also available preinstalled from
 [these suppliers](suppliers.md).
-
-**[Community feedback is needed on whether libreboot.org domain name
-ownership should be transferred to the
-Software Freedom Conservancy](news/sfc-domain-offer.md)**
-
-**[Libreboot has applied to re-join the GNU project,
-under new democratic leadership](news/formalised-structure.md)**
 
 Why use Libreboot?
 ------------------

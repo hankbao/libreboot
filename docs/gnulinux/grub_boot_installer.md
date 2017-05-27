@@ -5,11 +5,11 @@ x-toc-enable: true
 
 This section relates to preparing, booting and installing a GNU+Linux
 distribution on your libreboot system, using nothing more than a USB
-flash drive (and *dd*).
+flash drive (and `dd`).
 
-**This section is only for the GRUB payload. For depthcharge (used on
+*This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
-libreboot documentation.**
+libreboot documentation.*
 
 Prepare the USB drive (in GNU+Linux)
 ------------------------------------
@@ -144,20 +144,18 @@ If it did that, then you do:
 
     grub> cat (usb0)/isolinux/foo.cfg
 
-And so on, until you find the correct menuentries for ISOLINUX. **The
-file */isolinux/foo.cfg* is a fictional example. Do not actually use
-this example, unless you actually have that file, if it is
-appropriate.**
+And so on, until you find the correct menuentries for ISOLINUX. *The file
+`/isolinux/foo.cfg` is a fictional example. Do not actually use this example,
+unless you actually have that file, if it is appropriate.*
 
-For Debian or Devuan (and other debian-based distros), there are
-typically menuentries listed in */isolinux/txt.cfg* or
-*/isolinux/gtk.cfg*. For dual-architecture ISO images (i686 and
-x86\_64), there may be separate files/directories for each architecture.
-Just keep searching through the image, until you find the correct
-ISOLINUX configuration file. NOTE: Debian 8.6 ISO only lists 32-bit boot
-options in txt.cfg. This is important if you want 64-bit booting on your
-system. Devuan versions based on Debian 8.x may also have the same
-issue.
+For Debian or Devuan (and other debian-based distros), there are typically
+menuentries listed in */isolinux/txt.cfg* or */isolinux/gtk.cfg*. For
+dual-architecture ISO images (i686 and x86\_64), there may be separate
+files/directories for each architecture.  Just keep searching through the
+image, until you find the correct ISOLINUX configuration file. NOTE: Debian 8.6
+ISO only lists 32-bit boot options in txt.cfg. This is important if you want
+64-bit booting on your system. Devuan versions based on Debian 8.x may also
+have the same issue.
 
 Now look at the ISOLINUX menuentry. It'll look like:
 

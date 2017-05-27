@@ -25,15 +25,15 @@ the libreboot GRUB payload will automatically search for.
 Here is an excellent writeup about CBFS (coreboot filesystem):
 <http://lennartb.home.xs4all.nl/coreboot/col5.html>.
 
-**This guide is \*only\* for the GRUB payload. If you use the
-depthcharge payload, ignore this section entirely.**
+*This guide is only for the GRUB payload. If you use the depthcharge payload,
+ignore this section entirely.*
 
 Introduction
 ------------
 
 Download the latest release from [libreboot.org](/)\
-**If you downloaded from git, refer to
-[../git/\#build\_meta](../git/#build_meta) before continuing.**
+*If you downloaded from git, refer to
+[../git/\#build\_meta](../git/#build_meta) before continuing.*
 
 There are several advantages to modifying the GRUB configuration stored
 in CBFS, but this also means that you have to flash a new libreboot ROM
@@ -54,10 +54,10 @@ the main storage for /boot/grub/libreboot\_grub.cfg or
 partition), and then use it automatically.
 
 Simply create your custom GRUB configuration and save it to
-**/boot/grub/libreboot\_grub.cfg** on the running system. The next time
+`/boot/grub/libreboot_grub.cfg` on the running system. The next time
 you boot, GRUB (in libreboot) will automatically switch to this
-configuration file. **This means that you do not have to re-flash,
-recompile or otherwise modify libreboot at all!**
+configuration file. *This means that you do not have to re-flash,
+recompile or otherwise modify libreboot at all!*
 
 Ideally, your distribution should automatically generate a
 libreboot\_grub.cfg file that is written specifically under the
@@ -73,13 +73,13 @@ If you want to adapt a copy of the existing *libreboot* GRUB
 configuration and use that for the libreboot\_grub.cfg file, then follow
 [\#tools](#tools), [\#rom](#rom) and
 [\#extract\_testconfig](#extract_testconfig) to get the
-***grubtest.cfg***. Rename ***grubtest.cfg*** to
-***libreboot\_grub.cfg*** and save it to ***/boot/grub/*** on the
+`grubtest.cfg`. Rename `grubtest.cfg` to
+`libreboot_grub.cfg` and save it to `/boot/grub/` on the
 running system where it is intended to be used. Modify the file at that
 location however you see fit, and then stop reading this guide (the rest
-of this page is irrelevant to you); **in libreboot\_grub.cfg on disk, if
+of this page is irrelevant to you); in `libreboot_grub.cfg` on disk, if
 you are adapting it based on grub.cfg from CBFS then remove the check
-for libreboot\_grub.cfg otherwise it will loop.**.
+for `libreboot_grub.cfg` otherwise it will loop.
 
 2nd option: re-flash
 --------------------
@@ -90,7 +90,7 @@ on to find out how.
 Acquire the necessary utilities
 -------------------------------
 
-Use ***cbfstool*** and ***flashrom***. There are available in the
+Use `cbfstool` and `flashrom`. There are available in the
 *libreboot\_util* release archive, or they can be compiled (see
 [../git/\#build\_flashrom](../git/#build_flashrom)). Flashrom is also
 available from the repositories:
@@ -111,8 +111,8 @@ your current firmware, using flashrom:
     $ sudo flashrom -p internal -r libreboot.rom
     # flashrom -p internal -r libreboot.rom
 
-If you are told to specify the chip, add the option **-c {your chip}**
-to the command, for example:
+If you are told to specify the chip, add the option `-c {your chip}` to the
+command, for example:
 
     # flashrom -c MX25L6405 -p internal -r libreboot.rom
 
@@ -121,9 +121,8 @@ Extract grubtest.cfg from the ROM image
 
 You can check the contents of the ROM image, inside CBFS:
 
-    $ cd .../libreboot\_util/cbfstool** $ ./cbfstool libreboot.rom
-
-print**
+    $ cd .../libreboot\_util/cbfstool
+    $ ./cbfstool libreboot.rom
 
 The files *grub.cfg* and *grubtest.cfg* should be present. grub.cfg is
 loaded by default, with a menuentry for switching to grubtest.cfg. In
@@ -144,17 +143,19 @@ config from the ROM image:
 
     $ ./cbfstool libreboot.rom remove -n grubtest.cfg
 
-Next, insert the modified version:\
-**\$ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t
-raw**
+Next, insert the modified version:
+
+    $ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw
 
 Testing
 -------
 
-**Now you have a modified ROM. Refer back to
+Now you have a modified ROM. Refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it.
-    $ cd /libreboot\_util** \# **./flash update libreboot.rom\
+
+    $ cd /libreboot\_util
+    # ./flash update libreboot.rom
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
@@ -162,17 +163,17 @@ correct ROM image, then run this alternative command:
 
     # ./flash forceupdate libreboot.rom
 
-You should see **"Verifying flash... VERIFIED."** written at the end
+You should see `Verifying flash... VERIFIED.` written at the end
 of the flashrom output. Once you have done that, shut down and then boot
-up with your new test configuration.**
+up with your new test configuration.
 
 Choose (in GRUB) the menu entry that switches to grubtest.cfg. If it
 works, then your config is safe and you can continue below.
 
-**If it does not work like you want it to, if you are unsure or
+*If it does not work like you want it to, if you are unsure or
 sceptical in any way, then re-do the steps above until you get it right!
-Do \*not\* proceed past this point unless you are 100% sure that your
-new configuration is safe (or desirable) to use.**
+Do not proceed past this point unless you are 100% sure that your
+new configuration is safe (or desirable) to use.*
 
 Final steps
 -----------
@@ -199,10 +200,10 @@ Add the modified version that you just made:
 
     $ ./cbfstool libreboot.rom add -n grub.cfg -f grub.cfg -t raw
 
-**Now you have a modified ROM. Again, refer back to
+*Now you have a modified ROM. Again, refer back to
 [../install/\#flashrom](../install/#flashrom) for information on how to
 flash it. It's the same method as you used before. Shut down and then
-boot up with your new configuration.**
+boot up with your new configuration.*
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
 Copyright © 2015 Jeroen Quint <jezza@diplomail.ch>\

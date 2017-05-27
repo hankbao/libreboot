@@ -14,9 +14,9 @@ This section relates to preparing, booting and installing OpenBSD on
 your libreboot system, using nothing more than a USB flash drive (and
 *dd*). They've only been tested on a Lenovo ThinkPad x200.
 
-**This section is only for the GRUB payload. For depthcharge (used on
+*This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
-libreboot documentation.**
+libreboot documentation.*
 
 install60.fs is the installation image for OpenBSD 6.0. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
@@ -124,9 +124,9 @@ working this way.
 Alternatively, it would be good to port OpenBSD either natively as a
 coreboot payload, or port it to libpayload (payload library in coreboot;
 it has a basic C library and a few functions for certain operations e.g.
-text/bitmap). **This would be ideal, because then it would be possible
+text/bitmap). *This would be ideal, because then it would be possible
 to boot a truly fully encrypted OpenBSD or LibertyBSD installation, by
-putting everything in the flash chip.**
+putting everything in the flash chip.*
 
 Alternatively, modifying GRUB to support booting fully encrypted OpenBSD
 installations would be possible, but probably not feasible; it's an

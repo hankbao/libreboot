@@ -101,11 +101,11 @@ flash chip:\
 Now wire up the BBB and the Pomona with your PSU.\
 Refer to [bbb\_setup.md](bbb_setup.md) for how to setup the BBB for
 flashing.\
-**Note, the guide mentions a 3.3v DC PSU but you don't need this on the
+*Note, the guide mentions a 3.3v DC PSU but you don't need this on the
 X60: if you don't have or don't want to use an external PSU, then make
 sure not to connect the 3.3v leads mentioned in the guide; instead,
 connect the AC adapter (the one that normally charges your battery) so
-that the board has power (but don't boot it up)**
+that the board has power (but don't boot it up)*
 ![](../images/x60_unbrick/0017.jpg)\
 Correlate the following with the BBB guide linked above:
 
@@ -132,7 +132,7 @@ SSH'd into the BBB:
 
 yourrom.rom
 
-It should be **Verifying flash... VERIFIED** at the end. If flashrom
+It should be `Verifying flash... VERIFIED` at the end. If flashrom
 complains about multiple flash chip definitions detected, then choose
 one of them following the instructions in the output.
 
