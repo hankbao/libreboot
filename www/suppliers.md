@@ -6,7 +6,7 @@ Libiquity
 =========
 
 Patrick McDermott, Libiquity's founder, is a former Libreboot
-developer.
+developer. **Ships to USA only**
 
 -   [Taurinus X200 laptop](https://shop.libiquity.com/product/taurinus-x200) (FSF RYF certified)
 -   [Libreboot laptop palmrest stickers](https://shop.libiquity.com/product/libreboot-inside-case-badges-3-pack)
@@ -18,6 +18,8 @@ Ministry of Freedom (Minifree)
 Leah Rowe, Minifree's founder, is also Libreboot's founder and is an active
 Libreboot developer. Minifree is the first company to achieve FSF RYF
 endorsement on a computer system, and invests money directly into Libreboot.
+
+**Minifree ships worldwide, to all countries.**
 
 Laptops
 -------
@@ -54,6 +56,8 @@ Technoethical (formerly Tehnoetic) is a team of free software activists and
 developers that are selling hardware pre-installed with libreboot as a way to
 fund the activity within their nonprofit foundation.
 
+**Ships worldwide, to all countries.**
+
 Services
 --------
 
@@ -73,6 +77,8 @@ Vikings
 Vikings is the first company to offer hosting on hardware pre-installed with
 libreboot and they are also selling the hardware itself to fund the building
 of their libreboot-powered datacenter.
+
+**Ships worldwide, to all countries.**
 
 Servers
 -------
