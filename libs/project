@@ -46,16 +46,13 @@ project_helper_include() {
 }
 
 project_check() {
-	local project=$1
+	local project="${1##*/}"
 
-	local project_path=$( project_path "$project" )
+	local project_path="$(project_path "${project}")"
 
-	if ! [ -f "$project_path/$project" ]
-	then
+	if ! [[ -f "${project_path}/${project}" ]]; then
 		return 1
 	fi
-
-	return 0
 }
 
 project_function_check() {
