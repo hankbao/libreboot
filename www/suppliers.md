@@ -2,80 +2,90 @@
 title: Suppliers selling or providing Libreboot pre-installed
 ...
 
-For some, installing Libreboot can be an intimidating task, so several
-companies and individuals have taken it upon themselves to provide systems with
-Libreboot preinstalled. This is a list of those companies (sorted into
-alphabetical order, to remove bias) along with lists of what Libreboot hardware
-they provide (some of these companies also invest money/skills into Libreboot
-development):
-
-These lists also include Libreboot-related merchendise, such as stickers.
-Some of these hardware sellers also have endorsement from the Free Software
-Foundation, via their *Respects Your Freedom* certification program.
-
 Libiquity
-=========
+---------
 
-Patrick McDermott, the founder of Libiquity, is also a former Libreboot
-contributor, having contributed several useful patches to the project.
-
-List of what they sell:
-----------------------
+Patrick McDermott, Libiquity's founder, is a former Libreboot
+developer. **Ships to USA only**
 
 -   [Taurinus X200 laptop](https://shop.libiquity.com/product/taurinus-x200) (FSF RYF certified)
--   [Libreboot laptop palmrest stickers](https://shop.libiquity.com/product/libreboot-inside-case-badges-3-pack)
--   [Libreboot laptop lid / desktop chassis stickers](https://shop.libiquity.com/product/libreboot-stickers-shaped-matte-vinyl-2x2.25-3-pack)
+-   [Libreboot chassis](https://shop.libiquity.com/product/libreboot-stickers-shaped-matte-vinyl-2x2.25-3-pack) and [Libreboot Inside stickers](https://shop.libiquity.com/product/libreboot-inside-case-badges-3-pack)
 
 Ministry of Freedom (Minifree)
-==============================
+------------------------------
 
-Leah Rowe, the founder of Minifree, is also the founder of the Libreboot
-project, and a current contributor to the project (but Leah is no longer leader
-of the Libreboot project, although she still invests money into Libreboot
-development, especially ports to newer hardware). Minifree is also the first
-company to ever achieve FSF RYF status.
+Leah Rowe, Minifree's founder, is also Libreboot's founder and is an active
+Libreboot developer. Minifree is the first company to achieve FSF RYF
+endorsement on a computer system, and invests money directly into Libreboot.
 
-Profits from Minifree sales are invested directly into Libreboot development.
+**Minifree ships worldwide, to all countries.**
 
-List of what they sell:
------------------------
+Laptops:
 
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
+
+Desktops:
+
 -   [Libreboot D16 desktop/workstation](https://minifree.org/product/libreboot-d16/)
+
+Servers:
+
 -   [Libreboot D16 server](https://minifree.org/product/libreboot-d16-server/)
+
+Services:
+
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
--   [Libreboot X200/X220 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
+
+Merchendise:
+
+-   [Libreboot T400 battery](https://minifree.org/product/libreboot-t400-battery/)
+-   [Libreboot X200 battery](https://minifree.org/product/libreboot-x200-battery/)
+-   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
 Technoethical
-=============
+-------------
 
 Technoethical (formerly Tehnoetic) is a team of free software activists and
 developers that are selling hardware pre-installed with libreboot as a way to
 fund the activity within their nonprofit foundation.
 
-List of what they sell:
-----------------------
+**Ships worldwide, to all countries.**
+
+Services:
 
 -   [Libreboot installation service](https://tehnoetic.com/tet-lis)
+
+Laptops:
+
 -   [Technoethical T500 laptop](https://tehnoetic.com/tet-t500)
 -   [Technoethical T400 laptop](https://tehnoetic.com/tet-t400)
 -   [Technoethical X200 Tablet laptop](https://tehnoetic.com/tet-x200t)
 -   [Technoethical X200 laptop](https://tehnoetic.com/tet-x200)
 
 Vikings
-=======
+-------
 
 Vikings is the first company to offer hosting on hardware pre-installed with
 libreboot and they are also selling the hardware itself to fund the building
 of their libreboot-powered datacenter.
 
-List of what they sell:
-----------------------
+**Ships worldwide, to all countries.**
+
+Servers:
 
 -   [Vikings D16 1U server](https://store.vikings.net/libre-friendly-hardware/the-server-1u)
+
+Mainboards:
+
 -   [Vikings D16 mainboard](https://store.vikings.net/libre-friendly-hardware/d16-ryf-certfied) (FSF RYF certified)
+
+Desktops:
+
 -   [Vikings D16 workstation](https://store.vikings.net/libre-friendly-hardware/vikings-d16-workstation)
+
+Laptops:
+
 -   [Vikings X200 laptop](https://store.vikings.net/libre-friendly-hardware/x200-ryf-certfied) (FSF RYF certified)
 
 Other suppliers

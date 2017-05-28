@@ -24,22 +24,30 @@ FILE=${1%.md}
 
 cat $1 > temp.md
 
-OPTS=
+OPTS="-T Libreboot"
 
 if [ "${FILE}" != "./index" ]; then
-        if [[ $FILE == *index ]]
+        if [[ $FILE == *suppliers ]]
         then
-            DEST="../"
+            RETURN=""
         else
-            DEST="./"
-        fi
+            if [[ $FILE == *index ]]
+            then
+                DEST="../"
+            else
+                DEST="./"
+            fi
 
-        RETURN="<a href='$DEST'>Back to previous index</a>"
-        OPTS="-T Libreboot"
+            RETURN="<a href='$DEST'>Back to previous index</a>"
+            OPTS="-T Libreboot"
+        fi
 else
         OPTS="--css /headercenter.css"
 fi
 
+if [[ $FILE = *suppliers ]]; then
+        printf "\n<a href=\"../\">Back to previous index</a>\n" >> temp.md
+fi
 
 if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
     cat footer.md >> temp.md
