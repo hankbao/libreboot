@@ -38,7 +38,7 @@ if [ "${FILE}" != "./index" ]; then
                 DEST="./"
             fi
 
-            RETURN="<a href='$DEST'>Back to previous index</a>"
+            RETURN="<strong><a href='/git.html#editing-the-website-and-documentation-wiki-style'>Edit this page</a></strong> -- <a href='$DEST'>Back to previous index</a>"
             OPTS="-T Libreboot"
         fi
 else
@@ -46,7 +46,7 @@ else
 fi
 
 if [[ $FILE = *suppliers ]]; then
-        printf "\n<a href=\"../\">Back to previous index</a>\n" >> temp.md
+        printf "\n<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>\n" >> temp.md
 fi
 
 if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
