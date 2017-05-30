@@ -44,16 +44,13 @@ tool_helper_include() {
 }
 
 tool_check() {
-	local tool=$1
+	local tool="${1##*/}"
 
-	local tool_path=$( tool_path "$tool" )
+	local tool_path="$(tool_path "${tool}")"
 
-	if ! [ -f "$tool_path/$tool" ]
-	then
+	if ! [[ -f "${tool_path}/${tool}" ]]; then
 		return 1
 	fi
-
-	return 0
 }
 
 tool_function_check() {
