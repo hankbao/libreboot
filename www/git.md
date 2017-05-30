@@ -11,6 +11,28 @@ Download Libreboot from the Git repository here:
 
 **git clone https://notabug.org/libreboot/libreboot.git**
 
+Editing the website and documentation, wiki-style
+-------------------------------------------------
+
+The entire website on libreboot.org, including all of the Libreboot
+documentation, is hosted in the Git repository. The pages are written in
+Markdown, which is an easy-to-use markup language similar to the one used
+when, for instance, editing pages on WikiPedia or a MediaWiki-based website.
+
+Just download Libreboot's Git repository, make changes to the website under
+the ***www*** directory. Changes to the documentation section are made under
+the ***docs*** directory. Once you've made your changes, you can submit them
+for inclusion live on libreboot.org, using the instructions on the rest of this
+page.
+
+***You can use any standard text editor to edit and improve the entire
+Libreboot website. E.g. Vim, GNU Emacs, GNU Nano, Gedit or whatever you
+prefer to use.***
+
+We currently have a shortage of people who possess the skill to write and
+maintain good documentation for Libreboot, so we welcome any and all
+contributions!
+
 General guidelines for submitting patches
 -----------------------------------------
 
