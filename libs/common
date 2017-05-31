@@ -63,6 +63,23 @@ arguments_list() {
 	done
 }
 
+diff_patch_file() {
+	local repository_path="$1"
+	local patch_file_path="$2"
+
+	local filename_in_diff="$(sed -rne 's/^-{3} {1}(.*)$/\1/p' <"${patch_file_path}")"
+
+	local source_file_path
+
+	if ! ( grep -E '^-{3}.*/' <"${patch_file_path}" >/dev/null 2>&1 ); then
+		source_file_path="${repository_path}/${filename_in_diff##\ }"
+	else
+		source_file_path="${repository_path}/${filename_in_diff##*/}"
+	fi
+
+	patch "${source_file_path}" "${patch_file_path}"
+}
+
 path_wildcard_expand() {
 	local path=$@
 

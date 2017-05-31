@@ -87,10 +87,11 @@ project_action() {
 
 		project_action_check "$action" "$project" "$@"
 
-		if [ $? -eq 0 ]
-		then
-			return 0
-		fi
+		# Why is this here? Commented out for now.
+		# if [ $? -eq 0 ]
+		# then
+		# 	return 0
+		# fi
 
 		project_include "$project"
 

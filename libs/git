@@ -226,29 +226,29 @@ git_project_check() {
 }
 
 git_project_patch_recursive() {
-	local project=$1
-	local repository=$2
-	local branch=$3
-	local path=$4
+	local project="$1"
+	local repository="$2"
+	local branch="$3"
+	local path="${4:-.}"
 
-	local repository_path=$( git_project_repository_path "$repository" )
-	local project_path=$( project_path "$project" )
-	local patches_path="$project_path/$PATCHES/$path/$WILDDOTPATCH"
-	local patch_path
+	local repository_path="$(git_project_repository_path "${repository}")"
+	local project_path="$(project_path "${project}")"
+	local patches_path="${project_path}/${PATCHES}/${path}"
 
-	if ! [ -z "$path" ] && [ "$path" != "." ]
-	then
-		git_project_patch_recursive "$project" "$repository" "$branch" "$( dirname "$path" )"
+	if ! [[ -d "${patches_path}" ]]; then
+		return
 	fi
 
-	path_wildcard_expand "$patches_path" | while read patch_path
-	do
-		if ! [ -f "$patch_path" ]
-		then
-			continue
-		fi
+	if [[ "${path}" != "." ]]; then
+		git_project_patch_recursive "${project}" "${repository}" "${branch}" "$(dirname "${path}")"
+	fi
 
-		git_patch "$repository_path" "$branch" "$patch_path"
+	for patch in "${patches_path}"/[!.]*.{patch,diff}; do
+		if [[ "${patch##*.}" == "patch" ]]; then
+			git_patch "${repository_path}" "${branch}" "${patch}"
+		else
+			diff_patch_file "${repository_path}" "${patch}"
+		fi
 	done
 }
 
