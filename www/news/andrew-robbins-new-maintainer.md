@@ -13,7 +13,7 @@ Andrew will gain push access to Libreboot in order to review patches, as well
 as voting rights and IRC operator status.
 
 Andrew works on critical improvements to the build system, many of which have
-already been merged. They are passionate about Libreboot, understanding the
+already been merged. He is passionate about Libreboot, understanding the
 project at a deep level, and he has been an active member of the community.
 Thus, with unanimous agreement from the existing maintainers, Andrew has joined
 the project officially.
