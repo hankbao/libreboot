@@ -1,39 +1,36 @@
-% Andrew Robbins joins Libreboot management team
-% Leah Rowe
+% Welcoming Andrew Robbins 
+% Leah Rowe and Alyssa Rosenzweig
 % 4 Jun 2017
 
-On 25 April, only 40 days ago, Libreboot adopted new collective and democratic
-management policies, with a flat-hierarchy leadership of 4 people. All patches
-go under code review now, and major project decisions are voted on by core
-members, with community input. The policy is [here](../management.md), and
-formalizes de-facto standards that were already followed prior to its
-publication.
+On 25 April, Libreboot adopted new [collective governance policies], creating a
+flat-hierarchy leadership of four people. As a result, all patches are
+reviewed, and all major decisions are voted on by the maintainers with
+community input. These policies formalise our democratic standards.
 
-**Today, we gain our first new official project member under this new policy.**
+Today, we welcome Andrew Robbins (IRC nick `and_who` and [NotABug] user
+[kragle]) as our first new maintainer under the new policy. Going forward,
+Andrew will gain push access to Libreboot in order to review patches, as well
+as voting rights and IRC operator status.
 
-Andrew Robbins, IRC nick **and\_who** and notabug user
-**[kragle](https://notabug.org/kragle)** has joined the Libreboot project as a
-full-time maintainer.
+Andrew works on critical improvements to the build system, many of which have
+already been merged. They are passionate about Libreboot, understanding the
+project at a deep level, and they have been an active member of the community.
+Thus, with unanimous agreement from the existing maintainers, Andrew has joined
+the project officially.
 
-This means: merge rights on the Git repository (for reviewing and merging
-contributions by the public), operator status on #libreboot IRC and voting
-rights on all major project decisions.
+We look forward to Andrew's next contributions as our project continues to
+grow.
 
-Andrew has been working on major improvements to the build system, some of
-which are already merged and are critical for the next Libreboot release.
-Andrew has been influential in several major policy decisions already.
-
-Andrew has a deep understanding of and passion for Libreboot as a whole, and
-is a perfect fit for the Libreboot project. Thus, with agreement from other
-members of core management, Andrew is now an official Libreboot team member.
-
-We very much look forward to seeing what he will do for the project! Everyone
-please welcome Andrew into the Libreboot project!
-
-The new list of people on the core management team is as follows:
+The new list of maintainers is as follows:
 
 - Alyssa Rosenzweig
 - Andrew Robbins
 - Leah Rowe
 - Paul Kocialkowski
 - Swift Geek
+
+[collective governance policies]: ../management.md
+
+[NotABug]: https://notabug.org/
+
+[kragle]: https://notabug.org/kragle
