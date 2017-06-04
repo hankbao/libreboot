@@ -14,7 +14,7 @@ as voting rights and IRC operator status.
 
 Andrew works on critical improvements to the build system, many of which have
 already been merged. They are passionate about Libreboot, understanding the
-project at a deep level, and they have been an active member of the community.
+project at a deep level, and he has been an active member of the community.
 Thus, with unanimous agreement from the existing maintainers, Andrew has joined
 the project officially.
 
