@@ -70,6 +70,8 @@ Information about core team members, responsible for the Libreboot project
   additionally as the official System Administrator for the Libreboot project
   infrastructure.
   IRC nick **alyssa** on Freenode.
+- Andrew Robbins is one of the core developers. IRC nick **and\_who** on
+  Freenode
 - Paul Kocialkowski is one of the core developers. IRC nick **paulk-X** on
   Freenode (**X** is variable, for this individual, and changes over time)
 - Leah Rowe is one of the core developers. IRC nick **\_4of7** on Freenode
