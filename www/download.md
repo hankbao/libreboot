@@ -36,6 +36,8 @@ HTTPS mirrors {#https}
 
 These mirrors are recommended, since they use TLS (https://) encryption.
 
+<https://libreboot.org/release/> (Libreboot project official mirror)
+
 <https://www.mirrorservice.org/sites/libreboot.org/release/> (University
 of Kent, UK)
 
