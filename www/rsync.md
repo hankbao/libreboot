@@ -31,13 +31,6 @@ linux.ro, Romania (backup mirror)
 **rsync -avxP --delete --stats rsync://ftp.linux.ro/libreboot/
 /path/to/docroot/libreboot/**
 
-partyvan.eu, Sweden (backup mirror)
------------------------------------
-
-**rsync -avxP --delete --stats
-rsync://mirror.se.partyvan.eu/pub/libreboot/
-/path/to/docroot/libreboot/**
-
 mirror.si, Slovenia (backup mirror)
 -----------------------------------
 
