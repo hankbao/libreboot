@@ -1,4 +1,4 @@
-% Guidelines for Good Conduct in the Libreboot community
+% Guidelines for Good Conduct
 
 Our Pledge
 ----------
@@ -59,7 +59,7 @@ further defined and clarified by project maintainers.
 Specifically, in normal circumstances, the scope of these guidelines apply
 directly to:
 
-* The IRC channel (#libreboot on Freenode)
+* The IRC channel and mailing lists
 * The subreddit (r/libreboot on reddit.com)
 * The notabug instance (at <https://notabug.org/libreboot>), which also
   includes bug reports and code review
@@ -83,6 +83,7 @@ reported by contacting one of the moderators privately via IRC private message
 (see list below):
 
 * Alyssa Rosenzweig: **alyssa** on Freenode
+* Andrew Robbins: **and\_who** on Freenode
 * Jason Self: **jxself** on Freenode
 * Leah Rowe: **\_4of7** on Freenode
 * Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this
