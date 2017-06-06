@@ -14,6 +14,13 @@ PHP. Additionally assisted with [booting
 Linux](https://blog.rosenzweig.io/blobless-linux-on-the-pi.md) on the Raspberry
 Pi without blobs. Current sysadmin and assists with project management.
 
+Andrew Robbins
+--------------
+
+Works on large parts of Libreboot's build system and related documentation.
+Andrew joined the Libreboot project as part of core management on 4 June 2017.
+IRC nick `and_who` on #libreboot IRC.
+
 Arthur Heymans
 --------------
 
