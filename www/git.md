@@ -70,6 +70,11 @@ the *Creative Commons Zero* license is highly recommended. Otherwise, the **GNU
 General Public License, version 3 or (at your option) any later version**, is
 preferred; we will also accept any other free license.
 
+*We require all documentation and website changes to use the [GNU Free
+Documentation License, version 1.3](docs/fdl-1.3.md) or (at your option) any
+later version published by the Free Software Foundation; without Invariant
+sections, without front cover texts and without back cover texts.*
+
 Libreboot development is facilitated by *[git](https://git-scm.com/)*, a
 *distributed* version control system. You will need to install Git (most
 GNU+Linux distributions package it in their repositories).
