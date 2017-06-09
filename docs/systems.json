@@ -32,7 +32,10 @@
             "chipset": "GM45",
             "price": 289,
             "wifi": "removable",
-            "ec": "blob"
+            "ec": "blob",
+            "diagonal": 30.734,
+            "weight": 1.34,
+            "year": 2008
         }
     }
 }
