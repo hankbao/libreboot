@@ -12,7 +12,7 @@ website.
 Installing libreboot
 ====================
 
--   [What systems can I use libreboot on?](hardware/)
+-   [What systems can I use libreboot on?](systems.md)
 -   [How to install libreboot](install/)
 
 Installing operating systems

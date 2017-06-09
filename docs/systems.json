@@ -20,14 +20,17 @@
     "systems": {
         "ASUS C201": {
             "chipset": "RK3288",
-            "price": 0,
+            "price": 179,
             "wifi": "w blob",
-            "ec": true
+            "ec": true,
+            "diagonal": 29.464,
+            "weight": 0.90718474,
+            "year": 2013
         },
 
         "X200": {
             "chipset": "GM45",
-            "price": 0,
+            "price": 289,
             "wifi": "removable",
             "ec": "blob"
         }
