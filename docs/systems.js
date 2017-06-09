@@ -8,9 +8,17 @@
 
 const hw = JSON.parse(require("fs").readFileSync("systems.json").toString());
 
-SYM = symbol => ({"true": "✓", "blob": "☠", "w blob": "☠", "s blob": "☠"})[symbol] || symbol;
+const syms = {
+    "true": "✓",
+    "blob": "☠",
+    "w blob": "☠",
+    "s blob": "☠",
+    "removable": "~"
+};
 
-const FIELD_WIDTH = 11;
+SYM = symbol => syms[symbol] || symbol;
+
+const FIELD_WIDTH = 9;
 
 pad = field => (field + Array(FIELD_WIDTH + 1).join(' ')).slice(0, FIELD_WIDTH);
 
@@ -28,7 +36,7 @@ Object.keys(hw.systems).map(sys => {
     const fields = [
         sys,
         s.year,
-        s.weight,
+        s.weight.toString().slice(0, 4),
         s.price,
         s.chipset,
         SYM(chipset.usb),

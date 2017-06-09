@@ -18,7 +18,7 @@
     },
 
     "systems": {
-        "ASUS C201": {
+        "C201": {
             "chipset": "RK3288",
             "price": 179,
             "wifi": "w blob",
