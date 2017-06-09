@@ -1,0 +1,35 @@
+{
+    "chipsets": {
+        "RK3288": {
+            "microcode": "N/A",
+            "video": "w blob",
+            "3d": "w blob",
+            "display": true,
+            "usb": true
+        },
+
+        "GM45": {
+            "microcode": "s blob",
+            "3d": true,
+            "video": true,
+            "display":true,
+            "usb": true
+        }
+    },
+
+    "systems": {
+        "ASUS C201": {
+            "chipset": "RK3288",
+            "price": 0,
+            "wifi": "w blob",
+            "ec": true
+        },
+
+        "X200": {
+            "chipset": "GM45",
+            "price": 0,
+            "wifi": "removable",
+            "ec": "blob"
+        }
+    }
+}
