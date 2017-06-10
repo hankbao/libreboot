@@ -60,6 +60,7 @@ Laptops:
 
 -   [Technoethical T500 laptop](https://tehnoetic.com/tet-t500)
 -   [Technoethical T400 laptop](https://tehnoetic.com/tet-t400)
+-   [Technoethical T400S laptop](https://tehnoetic.com/tet-t400s)
 -   [Technoethical X200 Tablet laptop](https://tehnoetic.com/tet-x200t)
 -   [Technoethical X200 laptop](https://tehnoetic.com/tet-x200)
 
