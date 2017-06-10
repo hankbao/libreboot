@@ -11,6 +11,9 @@ You can submit your patches via
 [Notabug pull requests](#how-to-submit-your-patches-via-pull-requests) or
 [via mailing list](#how-to-submit-your-patches-via-mailing-list).
 
+Information about how the Libreboot project is governed is documented in our
+[general management guidelines](management.md).
+
 Editing the website and documentation, wiki-style
 -------------------------------------------------
 

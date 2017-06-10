@@ -13,13 +13,18 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Lists](lists/)                                                             --
 [Chat](https://webchat.freenode.net/?channels=libreboot)                    --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
-[Contribute](git.md)                                                        --
+[Send patches](git.md)                                                      --
 [Buy](suppliers.md)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) (as in
 freedom) BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. It is also available preinstalled from
 [these suppliers](suppliers.md).
+
+We provide user support via [\#libreboot
+IRC](https://webchat.freenode.net/?channels=libreboot) on Freenode. Development
+discussion also occurs on IRC, and on our [mailing list](lists/). Instructions
+for sending patches are [here](git.md).
 
 Why use Libreboot?
 ------------------
