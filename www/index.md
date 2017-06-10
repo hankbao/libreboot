@@ -13,7 +13,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Lists](lists/)                                                             --
 [Chat](https://webchat.freenode.net/?channels=libreboot)                    --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
-[Contribute](git.md)                                                        --
+[Send patches](git.md)                                                      --
 [Buy](suppliers.md)
 
 Libreboot is a [free](https://www.gnu.org/philosophy/free-sw.html) (as in
