@@ -7,6 +7,10 @@ Download Libreboot from the Git repository here:
 
 **git clone https://notabug.org/libreboot/libreboot.git**
 
+You can submit your patches via
+[Notabug pull requests](#how-to-submit-your-patches-via-pull-requests) or
+[via mailing list](#how-to-submit-your-patches-via-mailing-list).
+
 Editing the website and documentation, wiki-style
 -------------------------------------------------
 
@@ -21,7 +25,8 @@ with the following scripts in that directory:
   Libreboot website
 
 Use any standard text editor (e.g. Vim, Emacs, Nano, Gedit) to edit the files,
-commit the changes and [send patches](#how-to-submit-your-patches).
+commit the changes and
+[send patches](#how-to-submit-your-patches-via-pull-requests).
 
 Optionally, you can install a web server (e.g. lighttpd, nginx) locally and
 set the document root to the *www* directory in your local Git repository.
@@ -47,7 +52,8 @@ development.
 General code review guidelines
 ------------------------------
 
-Any member of the public can [submit a patch](#how-to-submit-your-patches).
+Any member of the public can
+[submit a patch](#how-to-submit-your-patches-via-pull-requests).
 Members with push access must *never* push directly to the master branch;
 issue a Pull Request, and wait for someone else to merge. Never merge your own
 work!
@@ -64,8 +70,8 @@ In your terminal:
 A new directory named ***libreboot*** will have been created, containing
 libreboot.
 
-How to submit your patches 
---------------------------
+How to submit your patches (via pull requests)
+----------------------------------------------
 
 Make an account on <https://notabug.org/> and navigate (while logged in) to
 <https://notabug.org/libreboot/libreboot>. Click *Fork* and in your account,
@@ -83,3 +89,26 @@ have your own Git repository with the patches.
 Once you have issued a Pull Request, the Libreboot maintainers will be notified
 via email. If you do not receive a fast enough response from the project, then
 you could also notify the project via the #libreboot channel on Freenode.
+
+How to submit your patches (via mailing list)
+---------------------------------------------
+
+We also have a mailing list at
+[development@libreboot.org](mailto:development@libreboot.org)
+
+Information about this mailing list, including how to subscribe, can be found
+at <https://libreboot.org/lists/>.
+
+Archives of previous discussion on this mailing list can be found at
+<https://libreboot.org/pipermail/development/>.
+
+The mailing list software in use is
+[GNU Mailman](https://www.gnu.org/software/mailman/), so the way to use it is
+the same as on other libre software projects.
+
+If you prefer, you can submit patches the old-fashioned (as some may say,
+proper) way by sending them to our mailing list. Code review by our
+[maintainers](management.md) is done on both Notabug and on the mailing list.
+
+Once approved, your patch will be merged in the master branch of the main Git
+repository.

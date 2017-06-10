@@ -10,6 +10,7 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Install](docs/install/)                                                    --
 [Docs](docs/)                                                               --
 [News](news/)                                                               --
+[Lists](lists/)                                                             --
 [Chat](https://webchat.freenode.net/?channels=libreboot)                    --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
 [Contribute](git.md)                                                        --
