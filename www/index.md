@@ -21,6 +21,11 @@ freedom) BIOS or UEFI replacement, initialising the hardware and booting your
 operating system. It is also available preinstalled from
 [these suppliers](suppliers.md).
 
+We provide user support via [\#libreboot
+IRC](https://webchat.freenode.net/?channels=libreboot)
+on Freenode. Development discussion also occurs on IRC, and
+on our [mailing list](lists/).
+
 Why use Libreboot?
 ------------------
 
