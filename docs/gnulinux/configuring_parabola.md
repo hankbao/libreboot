@@ -1,676 +1,583 @@
+#Configuring Parabola (Post-Install)
+
+[**Edit this Page**](https://libreboot.org/git.html#editing-the-website-and-documentation-wiki-style) -- [Back to Previous Index](https://libreboot.org/docs/gnulinux/)
+
+* [Configure pacman](#configure_pacman)
+* [Updating Parabola](#updating_parabola)
+* [Maintaining Parabola](#maintaining_parabola)
+  * [Cleaning the Package Cache](#cleaning_cache)
+  * [pacman Command Equivalents](#command_equivalents)
+* [your-freedom](#your_freedom)
+* [Add a User](#add_user)
+  * [Configure sudo](#configure_sudo)
+* [systemd](#systemd)
+* [Interesting Repositories](#interesting_repositories)
+* [Set Up a Network Connection in Parabola](#set_network_connection)
+  * [Set Hostname](#set_hostname)
+  * [Network Status](#network_status)
+  * [Network Device Names](#device_names)
+  * [Network Setup](#network_setup)
+* [Configuring the Graphical Desktop Environment](#configure_desktop)
+  * [Installing Xorg](#installing_xorg)
+  * [Xorg keyboard layout](#xorg_layout)
+  * [Installing MATE](#installing_mate)
+  * [Configuring Network Manager in MATE](#mate_network_manager)
+
 ---
-title: Configuring Parabola (post-install) 
-x-toc-enable: true
-...
 
-Post-installation configuration steps for Parabola GNU+Linux-libre.
-Parabola is extremely flexible; this is just an example. This example
-uses LXDE because it's lightweight, but we recommend the *MATE* desktop
-(which is actually about as lightweight as LXDE).
+This is the guide for setting up Parabola GNU+Linux-Libre, after completing
+the installation steps outlined in [Installing Parabola or Arch GNU+Linux-Libre with Full-Disk Encryption (including /boot)](encrypted_parabola.md).
+It will cover installing and configuring a graphical desktop environment,
+as well as some applications that make the system more user friendly.
 
-While not strictly related to the libreboot project, this guide is
-intended to be useful for those interested in installing Parabola on
-their libreboot system.
+For this example, we chose the *MATE Desktop Environment* as our graphical interface.
 
-It details configuration steps that I took after installing the base
-system, as a follow up to
-[encrypted\_parabola.md](encrypted_parabola.md). This guide is
-likely to become obsolete at a later date (due to the volatile
-'rolling-release' model that Arch/Parabola both use), but attempts
-will be made to maintain it.
+*This guide was valid on 2017-06-02. If you see any changes that should
+to be made at the present date, please get in touch with the Libreboot
+project (or [make those changes yourself](https://libreboot.org/git.html#editing-the-website-and-documentation-wiki-style))!*
 
-*This guide was valid on 2014-09-21. If you see any changes that should
-to be made at the present date, please get in touch with the libreboot
-project!*
-
-You do not necessarily have to follow this guide word-for-word;
-*parabola* is extremely flexible. The aim here is to provide a common
-setup that most users will be happy with. While Parabola can seem
-daunting at first glance (especially for new GNU+Linux users), with a
-simple guide it can provide all the same usability as Debian or Devuan,
+While Parabola can seem daunting at first glance (especially for new GNU+Linux users),
+with a simple guide, it can provide all the same usability
+as any Debian-based GNU+Linux distribution (e.g., Trisquel, Debian, and Devuan),
 without hiding any details from the user.
 
-Paradoxically, as you get more advanced Parabola can actually become
-*easier to use* when you want to set up your system in a special way
+Paradoxically, as you get more advanced, Parabola can actually become
+*easier to use*, when you want to set up your system in a special way,
 compared to what most distributions provide. You will find over time
 that other distributions tend to *get in your way*.
-
-*This guide assumes that you already have Parabola installed. If you
-have not yet installed Parabola, then [this
-guide](encrypted_parabola.md) is highly recommended!*
 
 A lot of the steps in this guide will refer to the Arch wiki. Arch is
 the upstream distribution that Parabola uses. Most of this guide will
 also tell you to read wiki articles, other pages, manuals, and so on. In
-general it tries to cherry pick the most useful information but
-nonetheless you are encouraged to learn as much as possible. *It might
-take you a few days to fully install your system how you like, depending
-on how much you need to read. Patience is key, especially for new
-users*.
+general, it tries to cherry-pick the most useful information, but
+nonetheless, you are encouraged to learn as much as possible.
+
+>**NOTE: It might take you a few days to fully install your system how you like,
+>depending on how much you need to read. Patience is key, especially for new users.**
 
 The Arch wiki will sometimes use bad language, such as calling the whole
-system Linux, using the term open-source (or closed-source), and it will
-sometimes recommend the use of proprietary software. You need to be
-careful about this when reading anything on the Arch wiki.
+system Linux, using the term **open-source**/**closed-source**,
+and it will sometimes recommend the use of proprietary software.
+You need to be careful about this when reading anything on the Arch wiki.
 
-Some of these steps require internet access. I'll go into networking
-later but for now, I just connected my system to a switch and did:
+Some of these steps require internet access. To get initial access
+for setting up the system (I'll go into networking later),
+just connect your system to a router, via an ethernet cable,
+and run the following command:
 
-    # systemctl start dhcpcd.service
+>     # systemctl start dhcpcd.service
 
-You can stop it later by running:
+You can stop it later (if needed), by using systemd's **`stop`** option:
 
-    # systemctl stop dhcpcd.service\
+>     # systemctl stop dhcpcd.service
 
-For most people this should be enough, but if you don't have DHCP on
-your network then you should setup your network connection first:\
-[Setup network connection in Parabola](#network)
+For most people, this should be enough, but if you don't have DHCP enabled
+on your network, then you should setup your network connection first:
+[Set Up Network Connection in Parabola](#network).
 
-Configure pacman {#pacman_configure}
-----------------
+---
 
-pacman (*pac*kage *man*ager) is the name of the package management
-system in Arch, which Parabola (as a deblobbed parallel effort) also
-uses. Like with 'apt-get' on Debian or Devuan, this can be used to
-add/remove and update the software on your computer.
+##Configure pacman <a name="configure_pacman"></a>
 
-Based on
-<https://wiki.parabolagnulinux.org/Installation_Guide#Configure_pacman>
-and from reading <https://wiki.archlinux.org/index.php/Pacman> (make
-sure to read and understand this, it's very important) and
-<https://wiki.parabolagnulinux.org/Official_Repositories>
+**`pacman`** (*pac*kage *man*ager) is the name of the package management system
+in Arch, which Parabola (as a deblobbed, parallel effort) also uses.
+Like with **`apt-get`** on Trisquel, Debian, or Devuan, this can be used to
+add, remove, and update the software on your computer.
 
-Updating Parabola {#pacman_update}
------------------
+For more information related to **`pacman`**, review the following articles on the Arch Wiki:
 
-In the end, I didn't change my configuration for pacman. When you are
-updating, resync with the latest package names/versions:
+*    [Configuring pacman](https://wiki.parabolagnulinux.org/Installation_Guide#Configure_pacman)
+*    [Using pacman](https://wiki.archlinux.org/index.php/Pacman)
+*    [Additional Repositories](https://wiki.parabolagnulinux.org/Official_Repositories>)
 
-    # pacman -Syy
+---
 
-(according to the wiki, -Syy is better than Sy because it refreshes the
-package list even if it appears to be up to date, which can be useful
-when switching to another mirror).\
-Then, update the system:
+##Updating Parabola <a name="updating_parabola"></a>
 
-    # pacman -Syu
+Parabola is kept up-to-date, using **`pacman`**. When you are updating Parabola,
+make sure to refresh the package list, *before* installing any new updates:
 
-*Before installing packages with 'pacman -S', always update first,
-using the notes above.*
+>     # pacman -Syy
 
-Keep an eye out on the output, or read it in /var/log/pacman.log.
-Sometimes, pacman will show messages about maintenance steps that you
+>NOTE: According to the Wiki, **`-Syy`** is better than **`-Sy`**, because it refreshes
+>the package list (even if it appears to be up-to-date), which can be useful
+>when switching to another mirror.
+
+Then, actually update the system:
+
+>     # pacman -Syu
+
+**NOTE: Before installing packages with** `pacman -S`, **always update first,
+using the two commands above.**
+
+Keep an eye out on the output, or read it in **/var/log/pacman.log**.
+Sometimes, **`pacman`** will show messages about maintenance steps that you
 will need to perform with certain files (typically configurations) after
-the update. Also, you should check both the Parabola and Arch home pages
-to see if they mention any issues. If a new kernel is installed, you
-should also update to be able to use it (the currently running kernel
-will also be fine). It's generally good enough to update Parabola once
-every week, or maybe twice. As a rolling release distribution, it's a
-good idea never to leave your install too outdated; update regularly.
-This is simply because of the way the project works; old packages are
-deleted from the repositories quickly, once they are updated. A system
-that hasn't been updated for quite a while will mean potentially more
-reading of previous posts through the website, and more maintenance
-work.
+the update. Also, you should check both the [Parabola home page](https://www.parabola.nu/) and [Arch home page](https://www.archlinux.org/),
+to see if they mention any issues. If a new kernel is installed, you should also
+update to be able to use it (the currently running kernel will also be fine).
 
-The Arch forum can also be useful, if others have the same issue as you
-(if you encounter issues, that is). The *Parabola* IRC channel
-(\#parabola on freenode) can also help you.
+It's generally good enough to update Parabola once every week, or maybe twice.
+As a rolling release distribution, it's a never a good idea to leave your installation
+too outdated. This is simply because of the way the project works;
+old packages are deleted from the repositories quickly, once they are updated.
+A system that hasn't been updated for quite a while will mean potentially more
+reading of previous posts through the website, and more maintenance work.
 
-Due to this and the volatile nature of Parabola/Arch, you should only
-update when you have at least a couple hours of spare time in case of
+The Arch forum can also be useful, if others have the same issue as you.
+The *Parabola* IRC channel ([**\#parabola**](https://webchat.freenode.net/) on freenode) can also help you.
+
+Due to this, and the volatile nature of Parabola/Arch, you should only
+update when you have at least a couple hours of spare time, in case of
 issues that need to be resolved. You should never update, for example,
-if you need your system for an important event, like a presentation or
+if you need your system for an important event, like a presentation, or
 sending an email to an important person before an allocated deadline,
 and so on.
 
-Relax - packages are well-tested regularly when new updates are made to
-the repositories. Separate 'testing' repositories exist for this exact
-reason. Despite what many people will tell you, Parabola is fairly
+Relax! Packages are well-tested, when new updates are made to
+the repositories; separate 'testing' repositories exist for this exact
+reason. Despite what many people may tell you, Parabola is fairly
 stable and trouble-free, so long as you are aware of how to check for
-issues, and are willing to spend some time fixing issues in the rare
-event that they do occur.
+issues, and are willing to spend some time fixing issues, in the rare
+event that they do occur (this is why Arch/Parabola provide such extensive documenatation).
 
-Maintaining Parabola {#pacman_maintain}
---------------------
+---
+
+##Maintaining Parabola <a name='maintaining_parabola'></a>
 
 Parabola is a very simple distro, in the sense that you are in full
-control and everything is made transparent to you. One consequence is
+control, and everything is made transparent to you. One consequence is
 that you also need to know what you are doing, and what you have done
 before. In general, keeping notes (such as what I have done with this
-page) can be very useful as a reference in the future (if you wanted to
-re-install it or install the distro on another computer, for example).
+page) can be very useful as a reference in the future (e.g, if you wanted to
+re-install it, or install the distro on another computer).
 
-### Cleaning the package cache {#pacman_cacheclean}
+You should also read the Arch wiki article on [System Maintenance](https://wiki.archlinux.org/index.php/System_maintenance),
+before continuing. Also, read their article on [enhancing system stability](https://wiki.archlinux.org/index.php/Enhance_system_stability).
+This is important, so make sure to read them both!*
 
-*The following is very important as you continue to use, update and
-maintain your Parabola system:\
-<https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache>.
-Essentially, this guide talks about a directory that has to be cleaned
-once in a while, to prevent it from growing too big (it's a cache of
-old package information, updated automatically when you do anything in
-pacman).*
+Install **`smartmontools`**; it can be used to check smart data. HDDs use
+non-free firmware inside; it's transparent to you, but the smart
+data comes from it. Therefore, don't rely on it too much), and then read
+the Arch wiki [article](https://wiki.archlinux.org/index.php/S.M.A.R.T.) on it, to learn how to use it:
+
+>     # pacman -S smartmontools
+
+###Cleaning the Package Cache <a name=cleaning_cache'></a>
+
+*This section provides a brief overview of how to manage the directory that stores
+a cache of all downloaded packages. For more information,
+check out the Arch Wiki guide for [Cleaning the Package Cache](https://wiki.archlinux.org/index.php/Pacman#Cleaning_the_package_cache).*
 
 To clean out all old packages that are cached:
 
-    # pacman -Sc
+>     # pacman -Sc
 
-The wiki cautions that this should be used with care. For example, since
-older packages are deleted from the repo, if you encounter issues and
-want to revert back to an older package then it's useful to have the
-caches available. Only do this if you are sure that you won't need it.
+The Wiki cautions that this should be used with care. For example, since
+older packages are deleted from the repository, if you encounter issues
+and want to revert back to an older package, then it's useful to have the
+caches available. Only do this ,if you are sure that you won't need it.
 
-The wiki also mentions this method for removing everything from the
+The Wiki also mentions this method for removing everything from the
 cache, including currently installed packages that are cached:
 
-    # pacman -Scc
+>     # pacman -Scc
 
-This is inadvisable, since it means re-downloading the package again if
+This is inadvisable, since it means re-downloading the package again, if
 you wanted to quickly re-install it. This should only be used when disk
 space is at a premium.
 
-### pacman command equivalents {#pacman_commandequiv}
+###pacman Command Equivalents <a name='command_equivalents'></a>
 
-The following table lists other distro package manager commands, and
-their equivalent in pacman:\
-<https://wiki.archlinux.org/index.php/Pacman_Rosetta>
+If you are coming from another GNU+Linux distribution, you probably want to know
+the command equivalents for the various **`apt-get`**-related commands that you often use.
+For that information, refer to [Pacman/Rosetta](https://wiki.archlinux.org/index.php/Pacman/Rosetta),
+so named, because it serves as a Rosetta Stone to the esoteric pacman language.
 
-your-freedom {#yourfreedom}
-------------
+---
 
-your-freedom is a package specific to Parabola, and it is installed by
+##your-freedom <a name='your_freedom'></a>
+
+**`your-freedom`** is a package specific to Parabola, and it is installed by
 default. What it does is conflict with packages from Arch that are known
 to be non-free (proprietary) software. When migrating from Arch (there
-is a guide on the Parabola wiki for migrating - converting - an existing
-Arch system to a Parabola system), installing your-freedom will also
-fail if these packages are installed, citing them as conflicts; the
+is a guide on the Parabola wiki for migrating (i.e,. converting) an existing
+Arch system to a Parabola system), installing it will also
+fail, if these packages are installed, citing them as conflicts; the
 recommended solution is then to delete the offending packages, and
-continue installing *your-freedom*.
+continue installing **`your-freedom`**.
 
-Add a user {#useradd}
-----------
+---
 
-Based on <https://wiki.archlinux.org/index.php/Users_and_Groups>.
+##Add a User <a name='add_user'></a>
+
+This is based on the Arch Wiki guide to [Users and Groups](https://wiki.archlinux.org/index.php/Users_and_Groups).
 
 It is important (for security reasons) to create and use a non-root
-(non-admin) user account for everyday use. The default 'root' account
+(non-admin) user account for everyday use. The default **root** account
 is intended only for critical administrative work, since it has complete
 access to the entire operating system.
 
 Read the entire document linked to above, and then continue.
 
-Add your user:
+Add your user with the **`useradd`** command (self explanatory):
 
-    # useradd -m -G wheel -s /bin/bash *yourusername*
+>     # useradd -m -G wheel -s /bin/bash *your_user_name*
 
-Set a password:
+Set a password, using **`passwd`**:
 
-    # passwd *yourusername*
+>     # passwd *your_user_name*
 
-Use of the *diceware method* is recommended, for generating secure
-passphrases (instead of passwords).
+Like with the installation of Parabola, use of the [*diceware method*](http://world.std.com/~reinhold/diceware.html) is recommended,
+for generating secure passphrases.
 
-systemd
--------
+###Configure sudo <a name='configure_sudo'></a>
 
-This is the name of the system used for managing services in Parabola.
-It is a good idea to become familiar with it. Read
-<https://wiki.archlinux.org/index.php/systemd> and
-<https://wiki.archlinux.org/index.php/systemd#Basic_systemctl_usage> to
-gain a full understanding. *This is very important! Make sure to read
-them.*
+Now that we have a normal user account, we'll want to configure **`sudo`**,
+so that user is able to run commands as **root** (e.g., installing software);
+this will be necessary to flash the ROM later on. Refer to the Arch wiki's [sudo](https://wiki.archlinux.org/index.php/Sudo) documentation.
 
-An example of a 'service' could be a webserver (such as lighttpd), or
-sshd (openssh), dhcp, etc. There are countless others.
+The first step is to install the **`sudo`** package:
 
-<https://bbs.archlinux.org/viewtopic.php?pid=1149530#p1149530> explains
-the background behind the decision by Arch (Parabola's upstream
-supplier) to use systemd.
+>     # pacman -S sudo
 
-The manpage should also help:
+After installation, we must configure it. To do so, we must modify **/etc/sudoers**.
+This file must *always* be modified with the **`visudo`** command. **`visudo`** can be
+difficult for beginners to use, so we'll want to edit the file with **`nano`**,
+but the trick is that we just can't do this:
 
-    # man systemd
+>     # nano /etc/sudoers
 
-The section on 'unit types' is especially useful.
+Because, this will cause us to edit the file directly, which is not the way
+it was designed to be edited, and could lead to problems with the system.
+Instead, to temporarily allow us to use **`nano`** to edit the file,
+we need to type this into the terminal:
 
-According to the wiki, systemd 'journal' keeps logs of a size up to
-10% of the total size your / partition takes up. on a 60GB root this
-would mean 6GB. That's not exactly practical, and can have performance
-implications later when the log gets too big. Based on instructions from
-the wiki, I will reduce the total size of the journal to 50MiB (the wiki
-recommends 50MiB).
+>     # EDITOR=nano visudo
 
-Open /etc/systemd/journald.conf and find the line that says:\
-*\#SystemMaxUse=*\
-Change it to say:\
-*SystemMaxUse=50M*
+This will open the **/etc/sudoers** file in **`nano`**, and we can now safely make changes to it.
 
-The wiki also recommended a method for forwarding journal output to TTY
-12 (accessible by pressing ctrl+alt+f12, and you use ctrl+alt+\[F1-F12\]
-to switch between terminals). I decided not to enable it.
+To give the user we created earlier to ability to use **`sudo`**, we need to navigate
+to the end of the file, and add this line on the end:
 
-Restart journald:
+>     your_username ALL=(ALL) ALL
 
-    # systemctl restart systemd-journald
+Obviously, type in the name of the user you created, instead of **your_username**.
+Save the file, and exit **`nano`**; your user now has the ability to use **`sudo`**.
+
+---
+
+##systemd <a name='systemd'></a>
+
+**`systemd`** is the name of the program for managing services in Parabola;
+It is a good idea to become familiar with it. Read the Arch Wiki article on [systemd](https://wiki.archlinux.org/index.php/systemd),
+as well as their [Basic systemctl usage](https://wiki.archlinux.org/index.php/systemd#Basic_systemctl_usage) article,
+to gain a full understanding. *This is very important! Make sure to read them.*
+
+An example of a **service** could be a VPN (allowing you to connect to an outside network),
+an applet in the system tray that tells you the weather for your city,
+a sound manager (to make sure you can hear sound through speakers or headphones),
+or DHCP (which allows you to get an IP address, to connect to the internet).
+These are just a few examples; there are countless others.
+
+**`systemd`** is a controversial init system; [here](https://bbs.archlinux.org/viewtopic.php?pid=1149530#p1149530)
+is an explanation behind the Arch development team's decision to use it.
+
+The **manpage** should also help:
+
+>     # man systemd
+
+The section on **unit types** is especially useful.
+
+According to the wiki, **`systemd's`** journal keeps logs of a size up to 10% of the
+total size that your root partition takes up. On a 60GB root, this would mean 6GB.
+That's not exactly practical, and can have performance implications later,
+when the log gets too big. Based on instructions from the wiki,
+I will reduce the total size of the journal to 50MiB (that's what the wiki recommends).
+
+Open **/etc/systemd/journald.conf**, and find this line:
+
+>     #SystemMaxUse=
+
+Change it to this:
+
+>     SystemMaxUse=50M
+
+Restart **`journald`**:
+
+>     # systemctl restart systemd-journald
 
 The wiki recommends that if the journal gets too large, you can also
-simply delete (rm -Rf) everything inside /var/log/journald/\* but
+simply delete (**`rm -Rf`**) everything inside **/var/log/journald**, but
 recommends backing it up. This shouldn't be necessary, since you
-already set the size limit above and systemd will automatically start to
-delete older records when the journal size reaches it's limit
-(according to systemd developers).
+already set the size limit above, and **`systemd`** will automatically start
+to delete older records, when the journal size reaches it's limit (according to systemd developers).
 
-Finally, the wiki mentions 'temporary' files and the utility for
+Finally, the wiki mentions **temporary files**, and the utility for
 managing them.
 
-    # man systemd-tmpfiles
+>     # man systemd-tmpfiles
 
-The command for 'clean' is:
+To delete the temporary files, you can use the **`clean`** option:
 
-    # systemd-tmpfiles --clean
+>     # systemd-tmpfiles --clean
 
-According to the manpage, this *"cleans all files and directories with
+According to the **manpage**, this *"cleans all files and directories with
 an age parameter"*. According to the Arch wiki, this reads information
-in /etc/tmpfiles.d/ and /usr/lib/tmpfiles.d/ to know what actions to
-perform. Therefore, it is a good idea to read what's stored in these
-locations to get a better understanding.
+in **/etc/tmpfiles.d** and **/usr/lib/tmpfiles.d**, to know what actions to perform.
+Therefore, it is a good idea to read what's stored in these locations, to get a better understanding.
 
-I looked in /etc/tmpfiles.d/ and found that it was empty on my system.
-However, /usr/lib/tmpfiles.d/ contained some files. The first one was
-etc.conf, containing information and a reference to this manpage:
+I looked in **/etc/tmpfiles.d/** and found that it was empty on my system.
+However, **/usr/lib/tmpfiles.d** contained some files. The first one was
+**etc.conf**, containing information and a reference to this **manpage**:
 
-    # man tmpfiles.d
+>     # man tmpfiles.d
 
-Read that manpage, and then continue studying all the files.
+Read that **manpage**, and then continue studying all the files.
 
-The systemd developers tell me that it isn't usually necessary to touch
-the systemd-tmpfiles utility manually at all.
+The **`systemd`** developers tell me that it isn't usually necessary
+to manually touch the **`systemd-tmpfiles utility`**, at all.
 
-Interesting repositories {#interesting_repos}
-------------------------
+---
 
-Parabola wiki at
-<https://wiki.parabolagnulinux.org/Repositories#kernels> mentions about
-a repository called \[kernels\] for custom kernels that aren't in the
-default base. It might be worth looking into what is available there,
+##Interesting Repositories <a name='interesting_repositories'></a>
+
+In their [kernels](https://wiki.parabolagnulinux.org/Repositories#kernels) article,
+the Parabola wiki mentions a repository called **`\[kernels\]`**, for custom kernels
+that aren't in the default **`base`**. It might be worth looking into what is available there,
 depending on your use case.
 
-I enabled it on my system, to see what was in it. Edit /etc/pacman.conf
-and below the 'extra' section add:\
-*\[kernels\]\
-Include = /etc/pacman.d/mirrorlist*
+I enabled it on my system, to see what was in it. Edit **/etc/pacman.conf**,
+and below the **`extra`** section add:
 
-Now sync with the repository:
+>     [kernels]
+>     Include = /etc/pacman.d/mirrorlist*
 
-    # pacman -Syy
+Now, sync with the newly-added repository:
 
-List all available packages in this repository:
+>     # pacman -Syy
 
-    # pacman -Sl kernels
+Lastly, list all available packages in this repository:
 
-In the end, I decided not to install anything from it but I kept the
-repository enabled regardless.
+>     # pacman -Sl kernels
 
-Setup a network connection in Parabola {#network}
---------------------------------------
+In the end, I decided not to install anything from it,
+but I kept the repository enabled regardless.
 
-Read <https://wiki.archlinux.org/index.php/Configuring_Network>.
+---
 
-### Set the hostname {#network_hostname}
+##Setup a Network Connection in Parabola <a name='set_network_connection'></a>
 
-This should be the same as the hostname that you set in /etc/hostname
-when installing Parabola. You can also do it with systemd (do so now, if
-you like):
+Read the Arch wiki guide to [Configuring the Network](https://wiki.archlinux.org/index.php/Configuring_Network).
 
-    # hostnamectl set-hostname *yourhostname*
+###Set the Hostname <a name='set_hostname'></a>
 
-This writes the specified hostname to /etc/hostname. More information
-can be found in these manpages:
+This should be the same as the hostname that you set in **/etc/hostname**,
+when installing Parabola. You should also do it with **`systemd`**.
+If you chose the hostname *parabola*, do it this way:
 
-    # man hostname
-    # info hostname
-    # man hostnamectl
+>     # hostnamectl set-hostname parabola
 
-Add the same hostname to /etc/hosts, on each line. Example:\
-*127.0.0.1 localhost.localdomain localhost myhostname\
-::1 localhost.localdomain localhost myhostname*
+This writes the specified hostname to **/etc/hostname**.
+More information can be found in these **manpages**:
 
-You'll note that I set both lines; the 2nd line is for IPv6. More and
-more ISPs are providing this now (mine does) so it's good to be
-forward-thinking here.
+>     # man hostname
+>     # info hostname
+>     # man hostnamectl
 
-The *hostname* utility is part of the *inetutils* package and is in
-core/, installed by default (as part of *base*).
+Check **/etc/hosts**, to make sure that the hostname that you put in there
+during installation is still on each line:
 
-### Network Status {#network_status}
+>     127.0.0.1 localhost.localdomain localhost parabola
+>     ::1       localhost.localdomain localhost parabola
 
-According to the Arch wiki,
-[udev](https://wiki.archlinux.org/index.php/Udev) should already detect
-the ethernet chipset and load the driver for it automatically at boot
-time. You can check this in the *"Ethernet controller"* section when
-running this command:
+You'll note that I set both lines; the second line is for IPv6. Since more and
+more ISPs are providing this now, it's good to be have it enabled, just in case.
 
-    # lspci -v
+The **`hostname`** utility is part of the **`inetutils`** package, and is in the **`core`** repository,
+installed by default (as part of the **`base`** package).
 
-Look at the remaining sections *'Kernel driver in use'* and *'Kernel
-modules'*. In my case it was as follows:\
-*Kernel driver in use: e1000e\
-Kernel modules: e1000e*
+###Network Status <a name='network_status'></a>
 
-Check that the driver was loaded by issuing *dmesg | grep module\_name*.
+According to the Arch wiki, [udev](https://wiki.archlinux.org/index.php/Udev) should already detect
+the ethernet chipset, and automatically load the driver for it at boot time.
+You can check this in the **`Ethernet controller`** section, when running the **`lspci`** command:
+
+>     # lspci -v
+
+Look at the remaining sections **`Kernel driver in use`** and **`Kernel modules`**.
+In my case, it was as follows:
+
+>     Kernel driver in use: e1000e
+>     Kernel modules: e1000e
+
+Check that the driver was loaded, by issuing **`dmesg | grep module_name`**.
 In my case, I did:
 
-    # dmesg | grep e1000e
+>     # dmesg | grep e1000e
 
-### Network device names {#network_devicenames}
+###Network Device Names <a name='device_names'></a>
 
-According to
-<https://wiki.archlinux.org/index.php/Configuring_Network#Device_names>,
-it is important to note that the old interface names like eth0, wlan0,
-wwan0 and so on no longer apply. Instead, *systemd* creates device names
-starting with en (for enternet), wl (for wifi) and ww (for wwan) with a
-fixed identifier that systemd automatically generates. An example device
-name for your ethernet chipset would be *enp0s25*, where it is never
-supposed to change.
+According to the Arch wiki guide on [Configuring Network Device Names](https://wiki.archlinux.org/index.php/Configuring_Network#Device_names),
+it is important to note that the old interface names that you might be used to
+(e.g., **`eth0`**, **`wlan0`**, **`wwan0`**, etc.), if you come from a distribution like Debian or Trisquel,
+are no longer applicable. Instead, **`systemd`** creates device names
+starting with **`en`** (for ethernet), **`wl`** (for wi-fi), and **`ww`** (for wwan),
+with a fixed identifier that it automatically generates.
+An example device name for your ethernet chipset would be **`enp0s25`**,
+and is never supposed to change.
 
-If you want to enable the old names (eth0, wlan0, wwan0, etc), the Arch
-wiki recommends adding *net.ifnames=0* to your kernel parameters (in
-libreboot context, this would be accomplished by following the
-instructions in [grub\_cbfs.md](grub_cbfs.md)).
+If you want to enable the old names, the Arch wiki recommends adding **`net.ifnames=0`**
+to your kernel parameters (in Libreboot context, this would be accomplished by following
+the instructions in [How to replace the default GRUB configuration file](grub_cbfs.md)).
 
-For background information, read [Predictable Network Interface
-Names](http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/)
+For background information, read [Predictable Network Interface Names](http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/).
 
-Show device names:
+To show what the device names are for your system, run the following command:
 
-    # ls /sys/class/net
+>     # ls /sys/class/net
 
-Changing the device names is possible (I chose not to do it):\
-<https://wiki.archlinux.org/index.php/Configuring_Network#Change_device_name>
+[Changing the device names](https://wiki.archlinux.org/index.php/Configuring_Network#Change_device_name) is possible,
+but for the purposes of this guide, there is no reason to do it.
 
-### Network setup {#network_setup}
+###Network Setup <a name='network_setup'></a>
 
-I actually chose to ignore most of Networking section on the wiki.
-Instead, I plan to set up LXDE desktop with the graphical
-network-manager client. Here is a list of network managers:\
-<https://wiki.archlinux.org/index.php/List_of_applications/Internet#Network_managers>.
-If you need to, set a static IP address (temporarily) using the
-networking guide and the Arch wiki, or start the dhcpcd service in
-systemd. NetworkManager will be setup later, after installing LXDE.
+Aside from the steps mentioned above, I choose to ignore most of Networking section on the wiki;
+this is because I will be installing the *MATE Desktop Environment*, and thus will
+be using the **`NetworkManger`** client (with its accompanying applet) to manage the network.
 
-System Maintenance {#system_maintain}
-------------------
+If you wish to choose a different program, here are some other
+[network manager options](https://wiki.archlinux.org/index.php/List_of_applications/Internet#Network_managers)
+that you could use.
 
-Read <https://wiki.archlinux.org/index.php/System_maintenance> before
-continuing. Also read
-<https://wiki.archlinux.org/index.php/Enhance_system_stability>. *This
-is important, so make sure to read them!*
+---
 
-Install smartmontools (it can be used to check smart data. HDDs use
-non-free firmware inside, but it's transparent to you but the smart
-data comes from it. Therefore, don't rely on it too much):
+##Configuring the Graphical Desktop Environment <a name='configure_desktop'></a>
 
-    # pacman -S smartmontools
+Since we are going with the *MATE Desktop Environment*, we will primarily be following
+the instructions on the [Arch Linux Package Repository](https://wiki.mate-desktop.org/archlinux_custom_repo) page,
+but will also refer to the [General Recommendations](https://wiki.archlinux.org/index.php/General_recommendations#Graphical_user_interface)
+on the Arch wiki.
 
-Read <https://wiki.archlinux.org/index.php/S.M.A.R.T.> to learn how to
-use it.
+###Installing Xorg <a name='installing_xorg'></a>
 
-Configuring the desktop {#desktop}
------------------------
+The first step is to install [**Xorg**](https://wiki.archlinux.org/index.php/Xorg);
+this provides an implementation of the **`X Window System`**, which is used to provide
+a graphical intefrace in GNU+Linux:
 
-Based on steps from [General
-Recommendations](https://wiki.archlinux.org/index.php/General_recommendations#Graphical_user_interface)
-on the Arch wiki. The plan is to use LXDE and LXDM/LightDM, along with
-everything else that you would expect on other distributions that
-provide LXDE by default.
+>     # pacman -S xorg-server
 
-### Installing Xorg {#desktop_xorg}
+We also need to install the driver for our hardware. Since I am using a Thinkpad X200,
+I will use **`xf86-video-intel`**; it should be the same on the other Thinkpads,
+as well as the Macbook 1,1 and 2,1.
 
-Based on <https://wiki.archlinux.org/index.php/Xorg>.
+>     # pacman -S xf86-video-intel
 
-Firstly, install it!
+For other systems, you can try:
 
-    # pacman -S xorg-server
+>    # pacman -Ss xf86-video- | less
 
-I also recommend installing this (contains lots of useful tools,
-including *xrandr*):
+When this is combined with looking at your **`lspci`** output, you can determine which
+driver is needed. By default, **`Xorg`** will revert to **`xf86-video-vesa`**,
+which is a generic driver, and doesn't provide true hardware acceleration.
 
-    # pacman -S xorg-server-utils
+Other drivers (not just video) can be found by looking at the **`xorg-drivers`** group:
 
-Install the driver. For me this was *xf86-video-intel* on the ThinkPad
-X60. T60 and macbook11/21 should be the same.
+>     # pacman -Sg xorg-drivers
 
-    # pacman -S xf86-video-intel
+###Xorg Keyboard Layout <a name='xorg_layout'></a>
 
-For other systems you can try:
+**`xorg`** uses a different configuration method for keyboard layouts than Parabola,
+so you will notice that the layout you set in **/etc/vconsole.conf** earlier might
+not actually be the same in **`xorg`**.
 
-    # pacman -Ss xf86-video- | less
+Check the Arch wiki's article on [Xorg's keyboard configuration](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg), for more information.
 
-Combined with looking at your *lspci* output, you can determine which
-driver is needed. By default, Xorg will revert to xf86-video-vesa which
-is a generic driver and doesn't provide true hardware acceleration.
+To see what layout you currently use, try this on a terminal emulator in **`xorg`**:
 
-Other drivers (not just video) can be found by looking at the
-`xorg-drivers` group:
+>     # setxkbmap -print -verbose 10
 
-    # pacman -Sg xorg-drivers
+I'm simply using the default Qwerty (US) keyboard, so there isn't anything I need
+to change here; if you do need to make any changes, the Arch wiki recommends two ways
+of doing it: manually updating [configuration files](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_X_configuration_files) or using the [localectl](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_localectl) command.
 
-Mostly you will rely on a display manager, but in case you ever want to start X
-without one:
+###Installing MATE <a name='installing_mate'></a>
+Now we have to install the desktop environment itself. According to the Arch Linux Package Repository,
+if we want all of the MATE Desktop, we need to install two packages:
 
-    # pacman -S xorg-xinit
+>     # pacman -Syy mate mate-extra
 
-Optionally, to test X, install these: 
+The last step is to install a Display Manager; for MATE, we will be using **`lightdm`**
+(it's the recommended Display Manager for the MATE Desktop); for this, we'll follow the insructions [here](https://wiki.mate-desktop.org/archlinux_custom_repo#display_manager_recommended),
+with one small change: the **`lightdm-gtk3-greeter`** package doesn't exist in Parabola's repositories.
+So, instead we will install the **`lightdm-gtk-greeter`** package; it performs the same function.
 
-   # pacman -S xorg-twm xorg-xclock xterm
+We'll also need the **`accountsservice`** package, which gives us the login window itself: 
 
-Refer to <https://wiki.archlinux.org/index.php/Xinitrc>. and test X:
+>     # pacman -Syy lightdm-gtk3-greeter accountsservice
 
-   # startx
+After installing all the required packages, we need to make it so that the MATE Desktop Environment
+will start automatically, whenever we boot our computer; to do this, we have to enable the display manager, **`lightdm`**,
+as well as the service that will prompt us with a login window, **`accounts-daemon`**:
 
-When you are satisfied, type `exit` in xterm, inside the X session.
+>     # systemctl enable lightdm
+>     # systemctl enable accounts-daemon
 
-Uninstall them (clutter. eww):
+Now you have installed the *MATE Desktop Environment*,If you wanted
+to install another desktop environment, check out some [other options](https://wiki.archlinux.org/index.php/Desktop_environment) on the the Arch wiki.
 
-    # pacman -S xorg-xinit xorg-twm xorg-xclock xterm
+###Configuring Network Manager in MATE <a name='mate_network_manager'></a>
+Now that we have installed the Mate Desktop environment, and booted into it,
+we need to set up the network configuration in our graphical environment.
 
-### Xorg keyboard layout {#desktop_kblayout}
+The MATE Desktop wiki recommends that we use Network Manager; the Arch wiki article
+about it can be found [here](https://wiki.archlinux.org/index.php/NetworkManager).
 
-Refer to
-<https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg>.
+We need to install the Network Manager packages:
 
-Xorg uses a different configuration method for keyboard layouts, so you
-will notice that the layout you set in /etc/vconsole.conf earlier might
-not actually be the same in X.
+>     # pacman -S networkmanager
 
-To see what layout you currently use, try this on a terminal emulator in
-X:
+We will also need the Network Manager applet, which will allow us to manage our 
+networks from the system tray:
 
-    # setxkbmap -print -verbose 10
+>     # pacman -S network-manager-applet
 
-In my case, I wanted to use the Dvorak (UK) keyboard which is quite
-different from Xorg's default Qwerty (US) layout.
+Finally, we need to start the service (if we want to use it now), or enable it,
+(so that it will activate automatically, at startup).
 
-I'll just say it now: *XkbModel* can be *pc105* in this case (ThinkPad
-X60, with a 105-key UK keyboard). If you use an American keyboard
-(typically 104 keys) you will want to use *pc104*.
+>     # systemctl enable NetworkManager.service
 
-*XkbLayout* in my case would be *gb*, and *XkbVariant* would be
-*dvorak*.
+If you need VPN support, you will also want to install the **`networkmanager-openvpn`** package.
 
-The Arch wiki recommends two different methods for setting the keyboard
-layout:\
-<https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_X_configuration_files>
-and\
-<https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_localectl>.
+>**NOTE: You do not want multiple networking services running at the same time;
+>they will conflict, so, if using Network Manager, you want to stop/disable any
+>others from running. Examples of other services that will probably intefere
+>with Network Manager are** `dhcpcd` **and** `wifi-menu`**.**
 
-In my case, I chose to use the *configuration file* method:\
-Create the file /etc/X11/xorg.conf.d/10-keyboard.conf and put this
-inside:\
-*Section "InputClass"\
-        Identifier "system-keyboard"\
-        MatchIsKeyboard "on"\
-        Option "XkbLayout" "gb"\
-        Option "XkbModel" "pc105"\
-        Option "XkbVariant" "dvorak"\
-EndSection*
+You can see all currently-running services with this command:
 
-For you, the steps above may differ if you have a different layout. If
-you use a US Qwerty keyboard, then you don't even need to do anything
-(though it might help, for the sake of being explicit).
+>     #  systemctl --type=service
 
-### Install LXDE {#desktop_lxde}
+And you can stop them using this command:
 
-Desktop choice isn't that important to me, so for simplicity I decided
-to use LXDE. It's lightweight and does everything that I need. If you
-would like to try something different, refer to
-<https://wiki.archlinux.org/index.php/Desktop_environment>
+>     # systemctl stop service_name.service
 
-Refer to <https://wiki.archlinux.org/index.php/LXDE>.
+If you want to disable those services, meaning that you no longer want them to start
+when the computer boots up, you will need to use **`systemctl's`** **`disable`** option,
+instead of **`stop`**.
 
-Install it, choosing 'all' when asked for the default package list:
+Now you have a fully-functional graphical environment for your Parabola installation,
+including networking. All you have to do is reboot, and you will be prompted to log in,
+with a familiar graphical login prompt. You can also now, more easily [modify the GRUB configuration](grub_cbfs.md),
+install new applications, and/or make whatever other changes you want to your system.
 
-    # pacman -S lxde obconf
+---
 
-I didn't want the following, so I removed them:
+Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
-    # pacman -R lxmusic lxtask
+Copyright © 2017 Elijah Smith <esmith1412@posteo.net>
 
-I also lazily installed all fonts:
-
-    # pacman -S \$(pacman -Ssq ttf-)
-
-And a mail client:
-
-    # pacman -S icedove
-
-In IceCat, go to *Preferences :: Advanced* and disable *GNU IceCat
-Health Report*.
-
-I also like to install these:
-
-    # pacman -S xsensors stress htop
-
-Enable LXDM (the default display manager, providing a graphical login):
-
-    # systemctl enable lxdm.service
-
-It will start when you boot up the system. To start it now, do:
-
-    # systemctl start lxdm.service
-
-Log in with your standard (non-root) user that you created earlier. It
-is advisable to also create an xinitrc rule in case you ever want to
-start lxde without lxdm. Read
-<https://wiki.archlinux.org/index.php/Xinitrc>.
-
-Open LXterminal:
-
-    $ cp /etc/skel/.xinitrc \~
-
-Open .xinitrc and add the following plus a line break at the bottom of
-the file.
-
-    export LC_ALL=en_GB.UTF-8
-    export LANGUAGE=en_GB.UTF-8
-    export LANG=en_GB.UTF-8
-
-    exec startlxde
-
-* Now make sure that it is executable:
-
-    $ chmod +x .xinitrc
-
-### LXDE - clock {#lxde_clock}
-
-In *Digital Clock Settings* (right click the clock) I set the Clock
-Format to `%Y/%m/%d %H:%M:%S`
-
-### LXDE - font {#lxde_font}
-
-NOTE TO SELF: come back to this later.
-
-### LXDE - screenlock {#lxde_screenlock}
-
-Arch wiki recommends to use *xscreensaver*:
-
-    # pacman -S xscreensaver
-
-Under *Preferences :: Screensaver* in the LXDE menu, I chose *Mode:
-Blank Screen Only*, setting *Blank After*, *Cycle After* and *Lock
-Screen After* (checked) to 10 minutes.
-
-You can now lock the screen with *Logout :: Lock Screen* in the LXDE
-menu.
-
-### LXDE - automounting {#lxde_automount}
-
-Refer to
-<https://wiki.archlinux.org/index.php/File_manager_functionality>.
-
-I chose to ignore this for now. NOTE TO SELF: come back to this later.
-
-### LXDE - disable suspend {#lxde_suspend}
-
-When closing the laptop lid, the system suspends. This is annoying at
-least to me. NOTE TO SELF: disable it, then document the steps here.
-
-### LXDE - battery monitor {#lxde_battery}
-
-Right click lxde panel and *Add/Remove Panel Items*. Click *Add* and
-select *Battery Monitor*, then click *Add*. Close and then right-click
-the applet and go to *Battery Monitor Settings*, check the box that says
-*Show Extended Information*. Now click *Close*. When you hover the
-cursor over it, it'll show information about the battery.
-
-### LXDE - Network Manager {#lxde_network}
-
-Refer to <https://wiki.archlinux.org/index.php/LXDE#Network_Management>.
-Then I read: <https://wiki.archlinux.org/index.php/NetworkManager>.
-
-Install Network Manager:
-
-    # pacman -S networkmanager
-
-You will also want the graphical applet:
-
-    # pacman -S network-manager-applet
-
-Arch wiki says that an autostart rule will be written at
-*/etc/xdg/autostart/nm-applet.desktop*
-
-I want to be able to use a VPN at some point, so the wiki tells me to
-do:
-
-    # pacman -S networkmanager-openvpn
-
-LXDE uses openbox, so I refer to:\
-<https://wiki.archlinux.org/index.php/NetworkManager#Openbox>.
-
-It tells me for the applet I need:
-
-    # pacman -S xfce4-notifyd gnome-icon-theme
-
-Also, for storing authentication details (wifi) I need:
-
-    # pacman -S gnome-keyring
-
-I wanted to quickly enable networkmanager:
-
-    # systemctl stop dhcpcd
-    # systemctl start NetworkManager
-
-Enable NetworkManager at boot time:
-
-    # systemctl enable NetworkManager
-
-Restart LXDE (log out, and then log back in).
-
-I added the volume control applet to the panel (right click panel, and
-add a new applet). I also later changed the icons to use the gnome icon
-theme, in *lxappearance*.
-
-Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+---
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
