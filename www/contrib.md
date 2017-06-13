@@ -105,8 +105,7 @@ in coreboot, and then helped her integrate the fix in libreboot. Contact
 Peter Stuge
 -----------
 
-Helped write the section about DMA on
-[../faq.md\#firmware-hddssd](../faq.md#firmware-hddssd), and provided
+Helped write the [FAQ section about DMA](../faq.md#hddssd-firmware), and provided
 general advice in early days of the project. Contact **CareBear\\** in
 the \#coreboot IRC channel on freenode.
 
