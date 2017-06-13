@@ -9,7 +9,7 @@ Important issues
 What version of libreboot do I have?
 ----------------------------------------------------------------
 
-See [../docs/\#version](../docs/#version)
+[See here](../docs/#version)
 
 Flashrom complains about DEVMEM access
 --------------------------------------
@@ -27,7 +27,7 @@ coreboot-libre, so we just use the default one in coreboot which has
 this issue on some CCFL panels, but not LED panels.
 
 You can work around this in your distribution, by following the notes at
-[../docs/misc/\#backlight%20control](../docs/misc/#backlight%20control).
+[docs: backlight control](../docs/misc/#finetune-backlight-control-on-intel-gpus).
 
 The ethernet doesn't work on my X200/T400/X60/T60 when I plug in it 
 -------------------------------------------------------------------
@@ -76,7 +76,7 @@ Hardware compatibility
 What systems are compatible with libreboot?
 -----------------------------------------------------------------------------------
 
-See [../docs/hardware/](docs/hardware/).
+[See here](docs/hardware/).
 
 Why is the latest Intel hardware unsupported in libreboot? {#intel}
 -----------------------------------------------------------
@@ -471,7 +471,7 @@ Will desktop/server hardware be supported?
 ------------------------------------------------------------------------
 
 Libreboot now supports desktop hardware:
-[../docs/hardware/\#supported\_desktops\_x86amdintel](../docs/hardware/#supported_desktops_x86/intel)
+[(see list)](../docs/hardware/#supported_desktops_x86/intel)
 (with full native video initialization).
 
 A common issue with desktop hardware is the Video BIOS, when no onboard
@@ -519,7 +519,7 @@ General questions
 How do I install libreboot?
 -------------------------------------------------------
 
-See [../docs/install/](docs/install/)
+See [installation guide](docs/install/)
 
 How do I program an SPI flash chip?
 ---------------------------------------------------------------------------------
@@ -535,9 +535,9 @@ If you are using the GRUB payload, you can add a username and password
 (salted, hashed) to your GRUB configuration that resides inside the
 flash chip. The following guides (which also cover full disk encryption,
 including the /boot/ directory) show how to set a boot password in GRUB:
-[../docs/gnulinux/encrypted\_debian.md](../docs/gnulinux/encrypted_debian.md)
+[(Installing Debian or Devuan with FDE)](../docs/gnulinux/encrypted_debian.md)
 and
-[../docs/gnulinux/encrypted\_parabola.md](../docs/gnulinux/encrypted_parabola.md)
+[(Installing Parabola or Arch GNU+Linux-Libre, with FDE)](../docs/gnulinux/encrypted_parabola.md)
 
 How do I write-protect the flash chip?
 ----------------------------------------------------------------------------
@@ -551,7 +551,7 @@ On some systems, it is possible to write-protect the firmware, such that
 it is rendered read-only at the OS level (external flashing is still
 possible, using dedicated hardware). For example, on current GM45
 laptops (e.g. ThinkPad X200, T400), you can write-protect (see
-[../docs/hardware/gm45\_remove\_me.html\#ich9gen](../docs/hardware/gm45_remove_me.html#ich9gen)).
+[ICH9 gen utility](../docs/hardware/gm45_remove_me.html#ich9gen)).
 
 It's possible to write-protect on all libreboot systems, but the instructions
 need to be written. The documentation is in the main git repository, so you are
@@ -600,7 +600,7 @@ boot just fine, using the bootloader (GRUB) that is in the flash chip.
 This also means that even if you remove the HDD or SSD, you'll still
 have a functioning bootloader installed which could be used to boot a
 live distribution installer from a USB flash drive. See
-[\.../docs/gnulinux/grub\_boot\_installer.md](../docs/gnulinux/grub_boot_installer.md)
+[How to install GNU+Linux on a libreboot system](../docs/gnulinux/grub_boot_installer.md)
 
 Do I need to re-flash when I re-install a distribution?
 -------------------------------------------------------------------------------------------
@@ -610,7 +610,7 @@ automatically switch to a GRUB configuration on the HDD or SSD, if it
 exists. You can also load a different GRUB configuration, from any kind
 of device that is supported in GRUB (such as a USB flash drive). For
 more information, see
-[../docs/gnulinux/grub\_cbfs.md](../docs/gnulinux/grub_cbfs.md)
+[Modifying the GRUB Configuration in Libreboot Systems](../docs/gnulinux/grub_cbfs.md)
 
 What does a flash chip look like?
 -----------------------------------------------------------------
