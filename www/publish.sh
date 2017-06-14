@@ -22,6 +22,11 @@ set -e
 echo $1
 FILE=${1%.md}
 
+# for link to the live editor
+editlink="${FILE/.\//.\/docs\/}.md"
+editlink="${editlink/.\/docs\/docs/docs}"
+editlink="${editlink/.\/docs/www}EDIT"
+
 cat $1 > temp.md
 
 OPTS="-T Libreboot"
@@ -38,7 +43,7 @@ if [ "${FILE}" != "./index" ]; then
                 DEST="./"
             fi
 
-            RETURN="<strong><a href='/git.html#editing-the-website-and-documentation-wiki-style'>Edit this page</a></strong> -- <a href='$DEST'>Back to previous index</a>"
+            RETURN="<strong><a href='https://notabug.org/libreboot/libreboot/_edit/master/${editlink}'>Edit this page</a></strong> -- <a href='$DEST'>Back to previous index</a>"
             OPTS="-T Libreboot"
         fi
 else
@@ -46,10 +51,11 @@ else
 fi
 
 if [[ $FILE = *suppliers ]]; then
-        printf "\n<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>\n" >> temp.md
+        printf "\n<strong><a href=\"https://notabug.org/libreboot/libreboot/_edit/master/${editlink}\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>\n" >> temp.md
 fi
 
 if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
+    printf "\n\n**[Edit this page](https://notabug.org/libreboot/libreboot/_edit/master/%s)** --\n" "${editlink}" >> temp.md
     cat footer.md >> temp.md
 fi
 
@@ -76,3 +82,4 @@ pandoc $1 > $FILE.bare.html
 
 # generate section title anchors as [link]
 sed $FILE.html -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_'
+sed -i -e 's/mdEDIT/md/g' $FILE.html
