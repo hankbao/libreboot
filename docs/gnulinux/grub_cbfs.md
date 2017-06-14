@@ -391,7 +391,7 @@ If you don't remember how to flash it, refer back to the *Flash Updated ROM Imag
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>
 
-Copyright © 2017 Elijah Smith <esmith61412@posteo.net>
+Copyright © 2017 Elijah Smith <esmith1412@posteo.net>
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
