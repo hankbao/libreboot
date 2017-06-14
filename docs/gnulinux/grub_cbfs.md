@@ -91,6 +91,7 @@ flashed. For the purpose of this tutorial, it is assumed that your ROM
 image file is named **libreboot.rom**, so please make sure to adapt.
 
 There are two ways to get a pre-compiled ROM image:
+
 #### 1. Download a Pre-Compiled Image from the Libreboot Website
 For the current release, **20160907**, they can be found [here](https://www.mirrorservice.org/sites/libreboot.org/release/stable/20160907/rom/grub/);
 please adopt this guide, if using a different version of Libreboot.
