@@ -1,5 +1,5 @@
 diff --git a/cli_classic.c b/cli_classic.c
-index 0a09cfd..bba601d 100644
+index 0a09cfd..7bc8ea1 100644
 --- a/cli_classic.c
 +++ b/cli_classic.c
 @@ -61,6 +61,7 @@ static void cli_classic_usage(const char *name)
@@ -10,29 +10,21 @@ index 0a09cfd..bba601d 100644
  #if CONFIG_PRINT_WIKI == 1
  	       " -z | --list-supported-wiki         print supported devices in wiki syntax\n"
  #endif
-@@ -109,6 +110,7 @@ int main(int argc, char *argv[])
- 	struct flashrom_layout *layout = NULL;
- 	enum programmer prog = PROGRAMMER_INVALID;
- 	int ret = 0;
-+	const int WORKAROUND_MX = 0x101;
- 
- 	static const char optstring[] = "r:Rw:v:nNVEfc:l:i:p:Lzho:";
- 	static const struct option long_options[] = {
-@@ -130,6 +132,7 @@ int main(int argc, char *argv[])
+@@ -130,6 +131,7 @@ int main(int argc, char *argv[])
  		{"help",		0, NULL, 'h'},
  		{"version",		0, NULL, 'R'},
  		{"output",		1, NULL, 'o'},
-+		{"workaround-mx",	0, NULL, WORKAROUND_MX},
++		{"workaround-mx", 	0, NULL, 0x0101},
  		{NULL,			0, NULL, 0},
  	};
  
-@@ -337,6 +340,9 @@ int main(int argc, char *argv[])
+@@ -337,6 +339,9 @@ int main(int argc, char *argv[])
  			}
  #endif /* STANDALONE */
  			break;
-+		case WORKAROUND_MX:
-+			workaround_mx = 1;
-+			break;
++		case 0x0101: /* --workaround-mx */
++		    	workaround_mx = 1;
++		    	break;
  		default:
  			cli_classic_abort_usage();
  			break;
