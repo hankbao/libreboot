@@ -406,7 +406,7 @@ likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
 [../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
 
-### coreboot wiki page
+### Coreboot wiki page
 
 -   <https://www.coreboot.org/Board:apple/macbook21>
 
