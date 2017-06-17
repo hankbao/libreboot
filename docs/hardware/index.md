@@ -463,6 +463,11 @@ been partially fixed by the following patch (now merged in libreboot):
 proprietary software. Also, webcams are a security risk; cover it up! Or
 remove it.*
 
+### Issues and solutions
+
+
+#### Enable 3-finger tap
+
 A user reported that they could get better response from the touchpad
 with the following in their xorg.conf:
 
