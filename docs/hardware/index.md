@@ -546,6 +546,7 @@ response from the touchpad with the following in their xorg.conf:
 
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2017 Eemeli Blåsten <https://drblasten.com>\
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
