@@ -444,6 +444,8 @@ For external flashing, refer to
 You need to replace OS X with GNU+Linux before flashing libreboot. (OSX
 won't run at all in libreboot).
 
+### Issues and solutions
+
 There are some issues with this system (compared to other computers that
 libreboot supports):
 
@@ -462,8 +464,6 @@ been partially fixed by the following patch (now merged in libreboot):
 *The MacBook2,1 comes with a webcam, which does not work without
 proprietary software. Also, webcams are a security risk; cover it up! Or
 remove it.*
-
-### Issues and solutions
 
 #### Enable AltGr
 
