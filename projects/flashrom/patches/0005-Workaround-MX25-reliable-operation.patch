@@ -1,12 +1,12 @@
 diff --git a/cli_classic.c b/cli_classic.c
-index 0a09cfd..7bc8ea1 100644
+index 0a09cfd..9eeafe1 100644
 --- a/cli_classic.c
 +++ b/cli_classic.c
 @@ -61,6 +61,7 @@ static void cli_classic_usage(const char *name)
  	       " -i | --image <name>                only flash image <name> from flash layout\n"
  	       " -o | --output <logfile>            log output to <logfile>\n"
  	       " -L | --list-supported              print supported devices\n"
-+	       "    | --workaround-mx               more reliable operations with MX25* chips\n"
++	       "    | --workaround-mx               keep flash busy before sending command\n"
  #if CONFIG_PRINT_WIKI == 1
  	       " -z | --list-supported-wiki         print supported devices in wiki syntax\n"
  #endif
