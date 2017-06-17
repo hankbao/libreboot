@@ -481,6 +481,7 @@ defaults until you are given the option "Use Keypad Enter as
 AltGr". Select this. The keypad enter key will then act as an AltGr
 everywhere.
 
+
 For Parabola or other systemd-based distributions you can enable AltGr
 manually. Simply add the line
 
