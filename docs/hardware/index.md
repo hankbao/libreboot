@@ -406,7 +406,7 @@ likes to think that Apple and Microsoft are all that exist.) Now to
 install libreboot, follow
 [../install/\#flashrom\_macbook21](../install/#flashrom_macbook21).
 
-### coreboot wiki page
+### Coreboot wiki page
 
 -   <https://www.coreboot.org/Board:apple/macbook21>
 
@@ -444,27 +444,56 @@ For external flashing, refer to
 You need to replace OS X with GNU+Linux before flashing libreboot. (OSX
 won't run at all in libreboot).
 
-There are some issues with this system (compared to other computers that
-libreboot supports):
+### Issues and solutions
 
-This is an apple laptop, so it comes with OS X: it has an Apple
-keyboard, which means that certain keys are missing: insert, del, home,
-end, pgup, pgdown. There is also one mouse button only. Battery life is
-poor compared to X60/T60 (for now). It also has other issues: for
-example, the Apple logo on the back is a hole, exposing the backlight,
-which means that it glows. You should cover it up.
+There is one mouse button only, however multiple finger tapping
+works. Battery life is poor compared to X60/T60. The Apple logo on the
+back is a hole, exposing the backlight, which means that it glows. You
+should [cover it up](http://cweiske.de/tagebuch/tuxbook.htm).
 
-The system does get a bit hotter compared to when running the original
-firmware. It is certainly hotter than an X60/T60. The heat issues have
-been partially fixed by the following patch (now merged in libreboot):
-<https://review.coreboot.org/#/c/7923/>.
-
-*The MacBook2,1 comes with a webcam, which does not work without
-proprietary software. Also, webcams are a security risk; cover it up! Or
+*The MacBook2,1 comes with a webcam which does not work with free
+software. Webcams are a privacy and security risk; cover it up! Or
 remove it.*
 
-A user reported that they could get better response from the touchpad
-with the following in their xorg.conf:
+Further issues do have solutions:
+
+#### Enable AltGr
+
+The keyboard has a keypad enter instead of an AltGr. The first key on
+the right side of the spacebar is the Apple "command" key. On its
+right is the keypad enter. We can make it act as an AltGr.
+
+If your operating system is Trisquel or other dpkg-based distribution,
+there is an easy solution. Under root (or sudo) run
+
+      # dpkg-reconfigure keyboard-configuration
+
+and select the option "apple laptop", leave other settings as their
+defaults until you are given the option "Use Keypad Enter as
+AltGr". Select this. The keypad enter key will then act as an AltGr
+everywhere.
+
+
+For Parabola or other systemd-based distributions you can enable AltGr
+manually. Simply add the line
+
+      KEYMAP_TOGGLE=lv3:enter_switch
+
+to the file /etc/vconsole.conf and then restart the computer.
+
+
+#### Enable 3-finger tap
+
+A user submitted a utility to enable 3-finger tap on this laptop. It's
+available at *resources/utilities/macbook21-three-finger-tap* in the
+libreboot git repository.
+
+
+#### Make touchpad more responsive
+
+Linux kernels of version 3.15 or lower might make the touchpad
+extremely sluggish. A user reported that they could get better
+response from the touchpad with the following in their xorg.conf:
 
     Section "InputClass"
      Identifier "Synaptics Touchpad"
@@ -507,15 +536,9 @@ with the following in their xorg.conf:
      Option "VertEdgeScroll" "1"
     EndSection
 
-A user reported that the above is only for linux kernel 3.15 or lower.
-For newer kernels, the touchpad works fine out of the box, except middle
-tapping.
-
-A user submitted a utility to enable 3-finger tap on this laptop. It's
-available at *resources/utilities/macbook21-three-finger-tap* in the
-libreboot git repository.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
+Copyright © 2017 Eemeli Blåsten <https://drblasten.com>\
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
