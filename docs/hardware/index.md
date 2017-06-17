@@ -499,8 +499,9 @@ libreboot git repository.
 
 #### Make touchpad more responsive
 
-A user reported that they could get better response from the touchpad
-with the following in their xorg.conf:
+Linux kernels of version 3.15 or lower might make the touchpad
+extremely sluggish. A user reported that they could get better
+response from the touchpad with the following in their xorg.conf:
 
     Section "InputClass"
      Identifier "Synaptics Touchpad"
@@ -543,9 +544,6 @@ with the following in their xorg.conf:
      Option "VertEdgeScroll" "1"
     EndSection
 
-A user reported that the above is only for linux kernel 3.15 or lower.
-For newer kernels, the touchpad works fine out of the box, except middle
-tapping.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 
