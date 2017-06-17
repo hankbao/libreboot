@@ -446,24 +446,16 @@ won't run at all in libreboot).
 
 ### Issues and solutions
 
-There are some issues with this system (compared to other computers that
-libreboot supports):
+There is one mouse button only, however multiple finger tapping
+works. Battery life is poor compared to X60/T60. The Apple logo on the
+back is a hole, exposing the backlight, which means that it glows. You
+should [cover it up](http://cweiske.de/tagebuch/tuxbook.htm).
 
-This is an apple laptop, so it comes with OS X: it has an Apple
-keyboard, which means that certain keys are missing: insert, del, home,
-end, pgup, pgdown. There is also one mouse button only. Battery life is
-poor compared to X60/T60 (for now). It also has other issues: for
-example, the Apple logo on the back is a hole, exposing the backlight,
-which means that it glows. You should cover it up.
-
-The system does get a bit hotter compared to when running the original
-firmware. It is certainly hotter than an X60/T60. The heat issues have
-been partially fixed by the following patch (now merged in libreboot):
-<https://review.coreboot.org/#/c/7923/>.
-
-*The MacBook2,1 comes with a webcam, which does not work without
-proprietary software. Also, webcams are a security risk; cover it up! Or
+*The MacBook2,1 comes with a webcam which does not work with free
+software. Webcams are a privacy and security risk; cover it up! Or
 remove it.*
+
+Further issues do have solutions:
 
 #### Enable AltGr
 
