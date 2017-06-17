@@ -492,6 +492,13 @@ to the file /etc/vconsole.conf and then restart the computer.
 
 #### Enable 3-finger tap
 
+A user submitted a utility to enable 3-finger tap on this laptop. It's
+available at *resources/utilities/macbook21-three-finger-tap* in the
+libreboot git repository.
+
+
+#### Make touchpad more responsive
+
 A user reported that they could get better response from the touchpad
 with the following in their xorg.conf:
 
@@ -539,10 +546,6 @@ with the following in their xorg.conf:
 A user reported that the above is only for linux kernel 3.15 or lower.
 For newer kernels, the touchpad works fine out of the box, except middle
 tapping.
-
-A user submitted a utility to enable 3-finger tap on this laptop. It's
-available at *resources/utilities/macbook21-three-finger-tap* in the
-libreboot git repository.
 
 Copyright © 2014, 2015, 2016 Leah Rowe <info@minifree.org>\
 
