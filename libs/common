@@ -35,6 +35,7 @@ BLOBS_IGNORE="blobs-ignore"
 BLOBS_DISCOVER="blobs-discover"
 
 DOTEPOCH=".epoch"
+DOTRNDSEED=".rndseed"
 DOTVERSION=".version"
 DOTREVISION=".revision"
 DOTTARFILES=".tarfiles"
