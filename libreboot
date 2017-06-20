@@ -63,6 +63,7 @@ libreboot_usage() {
 	printf "  TOOLS_FORCE - Tools to always perform actions for\n" >&2
 	printf "  RELEASE_KEY - GPG key to use for release\n" >&2
 	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
+	printf "  LIBFAKETIME_PATH - Path to the libfaketime shared library\n" >&2
 	printf "  TASKS - Number of simultaneous tasks to run\n" >&2
 	printf "  VERSION - Version string to use\n" >&2
 
@@ -172,9 +173,26 @@ libreboot_setup_variables() {
 	local vboot_tools_path="$(project_install_path 'vboot' 'tools')"
 	local version_path="${root}/${DOTVERSION}"
 	local epoch_path="${root}/${DOTEPOCH}"
+	local rnd_seed_path="${root}/${DOTRNDSEED}"
 
-	if [[ -z "${TASKS}" ]]; then
-		TASKS=1
+	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
+	if [[ -z "${RANDOM_SEED}" ]]; then
+		if [[ -f "${rnd_seed_path}" ]]; then
+			RANDOM_SEED="$(cat "${rnd_seed_path}")"
+		else
+			RANDOM_SEED="${RANDOM}" # True randomness is unnecessary
+		fi
+	fi
+
+	# Also used by GCC, but as an environment variable
+	if [[ -z "${SOURCE_DATE_EPOCH}" ]]; then
+		if git_check "${root}"; then
+			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
+		elif [[ -f "${epoch_path}" ]]; then
+			SOURCE_DATE_EPOCH="$(cat "${epoch_path}")"
+		else
+			SOURCE_DATE_EPOCH="$(date +%s)"
+		fi
 	fi
 
 	if [[ -z "${VERSION}" ]]; then
@@ -187,22 +205,22 @@ libreboot_setup_variables() {
 		fi
 	fi
 
-	if [[ -z "${SOURCE_DATE_EPOCH}" ]]; then
-		if git_check "${root}"; then
-			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
-		elif [[ -f "${epoch_path}" ]]; then
-			SOURCE_DATE_EPOCH="$(cat "${epoch_path}")"
-		else
-			SOURCE_DATE_EPOCH="$(date +%s)"
-		fi
+	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
+		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
 	fi
 
-	if [[ -z "${VBOOT_KEYS_PATH}" ]] && [[ -d "${vboot_tools_path}/devkeys/" ]]; then
-		VBOOT_KEYS_PATH="${vboot_tools_path}/devkeys/"
-	fi
+	CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
+	EDITOR="${EDITOR:-$(which vi || true)}"
+	TASKS="${TASKS:-1}"
 
-	if [[ -z "${EDITOR}" ]]; then
-		EDITOR="vi"
+	# Environment variables useful for creating reproducible builds
+	if [[ -n "${LIBFAKETIME_PATH}" ]]; then
+		BUILD_DATE_FMT="%Y-%m-%d %H:%M:%S"
+		BUILD_DATE="$(date -u -d "@${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u -r "${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u "+${BUILD_DATE_FMT}")"
+		FAKETIME="@${BUILD_DATE}"
+		LC_ALL='C.UTF-8'
+		LD_PRELOAD="${LIBFAKETIME_PATH}"
+		TZ='UTC'
 	fi
 }
 
