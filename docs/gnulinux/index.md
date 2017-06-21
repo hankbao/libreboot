@@ -12,9 +12,9 @@ On most systems, **/boot** (the folder that contains all the files needed for yo
 
 However, with Libreboot, GRUB is already included directly (as a payload), so even **/boot** can be encrypted; this protects **/boot** from tampering by someone with physical access to the machine.
 
-- [How to Prepare and Boot a USB Installer in Libreboot](grub_boot_installer.md)
+- [How to Prepare and Boot a USB Installer in Libreboot Systems](grub_boot_installer.md)
 
-- [Modifying the GRUB Configuration in Libreboot](grub_cbfs.md)
+- [Modifying the GRUB Configuration in Libreboot Systems](grub_cbfs.md)
 
 - [Installing Parabola or Arch GNU+Linux-Libre, with Full-Disk Encryption (including /boot)](encrypted_parabola.md)
 
