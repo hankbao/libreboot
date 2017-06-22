@@ -202,12 +202,12 @@ git_describe() {
 }
 
 git_files() {
-	local repository_path=$1
+	local repository_path="$1"
 
 	(
-		cd "$repository_path"
+		cd "${repository_path}"
 		# Reproducible sorting.
-		git ls-files | LC_ALL=C sort -z
+		git ls-files -z | env LC_ALL='C.UTF-8' sort -z
 	)
 }
 
