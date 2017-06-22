@@ -38,8 +38,8 @@ release() {
 
 	project_release_install "$project" "$TOOLS" "$@"
 
-	echo "$VERSION" > "$sources_path/$DOTVERSION"
-	echo "$SOURCE_DATE_EPOCH" > "$sources_path/$DOTEPOCH"
+	env printf '%s\n' "$VERSION" > "$sources_path/$DOTVERSION"
+	env printf '%s\n' "$SOURCE_DATE_EPOCH" > "$sources_path/$DOTEPOCH"
 
 	if git_check "$sources_path"
 	then

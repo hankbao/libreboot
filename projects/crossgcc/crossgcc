@@ -52,7 +52,7 @@ extract() {
 
 		if [ -f "$tarball_sources_path" ] && ! [ -f "$tarball_install_path" ]
 		then
-			printf "Copying source archive $tarball for $project (with ${arguments:-no argument})\n"
+			env printf '%s\n' "Copying source archive $tarball for $project (with ${arguments:-no argument})"
 
 			mkdir -p "$tarball_install_directory_path"
 
@@ -92,7 +92,7 @@ update() {
 
 		if [ -f $tarball_sources_path ]
 		then
-			printf "Copying source archive $tarball for $project (with ${arguments:-no argument})\n"
+			env printf '%s\n' "Copying source archive $tarball for $project (with ${arguments:-no argument})"
 
 			mkdir -p "$tarball_install_directory_path"
 
@@ -123,7 +123,7 @@ prefix() {
 
 	case $arch in
 		"arm")
-			echo "$build_path/bin/arm-eabi-"
+			env printf '%s\n' "$build_path/bin/arm-eabi-"
 			;;
 	esac
 }
@@ -180,7 +180,7 @@ release() {
 
 		if [ -f "$tarball_install_path" ] && ! [ -f "$tarball_release_path" ]
 		then
-			printf "Releasing source archive $tarball for $project (with ${arguments:-no argument})\n"
+			env printf '%s\n' "Releasing source archive $tarball for $project (with ${arguments:-no argument})"
 
 			cp "$tarball_install_path" "$tarball_release_path"
 			file_verification_create "$tarball_release_path"

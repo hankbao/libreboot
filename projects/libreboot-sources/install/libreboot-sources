@@ -21,15 +21,15 @@ SOURCES="sources"
 TAR_XZ="tar.xz"
 
 usage() {
-	printf "$executable [action] [sources path] (extract path)\n" >&2
+	env printf '%s\n' "$executable [action] [sources path] (extract path)" >&2
 
-	printf "\nActions:\n" >&2
-	printf "  extract - Extract build system sources\n" >&2
-	printf "  copy - Copy projects sources\n" >&2
-	printf "  prepare - Extract and copy sources\n" >&2
+	env printf '\n%s\n' 'Actions:' >&2
+	env printf '%s\n' '  extract - Extract build system sources' >&2
+	env printf '%s\n' '  copy - Copy projects sources' >&2
+	env printf '%s\n' '  prepare - Extract and copy sources' >&2
 
-	printf "\n  When no extract path is provided, sources are extracted in the current\n"
-	printf "  directory.\n"
+	env printf '\n%s\n' '  When no extract path is provided, sources are extracted in the current'
+	env printf '%s\n' '  directory.'
 }
 
 extract() {
@@ -49,14 +49,14 @@ extract() {
 	archive=$( find $sources_path -name "$BUILD_SYSTEM-sources.$TAR_XZ" || true )
 	if [ -z "$archive" ]
 	then
-		printf "Finding $BUILD_SYSTEM sources archive failed!\n" >&2
+		env printf '%s\n' "Finding $BUILD_SYSTEM sources archive failed!" >&2
 		usage
 		exit 1
 	fi
 
 	tar -xf "$archive" -ps -C "$extract_path"
 
-	printf "\nExtracted $BUILD_SYSTEM sources from $sources_path to $extract_path\n"
+	env printf '\n%s\n' "Extracted $BUILD_SYSTEM sources from $sources_path to $extract_path"
 }
 
 copy() {
@@ -83,7 +83,7 @@ copy() {
 		cp "$file" "$build_system_sources_path"
 	done
 
-	printf "\nCopied $BUILD_SYSTEM sources from $sources_path to $extract_path\n"
+	env printf '\n%s\n' "Copied $BUILD_SYSTEM sources from $sources_path to $extract_path"
 }
 
 requirements() {
@@ -96,7 +96,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf "Missing requirement: $requirement\n" >&2
+			env printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

@@ -22,34 +22,34 @@ VBPUBK="vbpubk"
 GBB_FLAGS="dev_screen_short_delay load_option_roms enable_alternate_os force_dev_switch_on force_dev_boot_usb disable_fw_rollback_check enter_triggers_tonorm force_dev_boot_legacy faft_key_overide disable_ec_software_sync default_dev_boot_lefacy disable_pd_software_sync disable_lid_shutdown dev_boot_fastboot_full_cap enable_serial"
 
 usage() {
-	printf "$executable [action] [firmware image] [gbb action|vpd action] [gbb file|gbb flag|vpd file]\n" >&2
+	env printf '%s\n' "$executable [action] [firmware image] [gbb action|vpd action] [gbb file|gbb flag|vpd file]" >&2
 
-	printf "\nActions:\n" >&2
-	printf "  sign - Sign firmware image\n" >&2
-	printf "  verify - Verify firmware image\n" >&2
-	printf "  gbb - Google Binary Block\n" >&2
+	env printf '\n%s\n' 'Actions:' >&2
+	env printf '%s\n' '  sign - Sign firmware image' >&2
+	env printf '%s\n' '  verify - Verify firmware image' >&2
+	env printf '%s\n' '  gbb - Google Binary Block' >&2
 
-	printf "\nGBB actions:\n" >&2
-	printf "  extract - Extract GBB from firmware image to path \n" >&2
-	printf "  replace - Replace GBB from path to firmware image\n" >&2
-	printf "  list - List enabled GBB flags\n" >&2
-	printf "  enable - Enable GBB flag\n" >&2
-	printf "  disable - Disable GBB flag\n" >&2
+	env printf '\n%s\n' 'GBB actions:' >&2
+	env printf '%s\n' '  extract - Extract GBB from firmware image to path' >&2
+	env printf '%s\n' '  replace - Replace GBB from path to firmware image' >&2
+	env printf '%s\n' '  list - List enabled GBB flags' >&2
+	env printf '%s\n' '  enable - Enable GBB flag' >&2
+	env printf '%s\n' '  disable - Disable GBB flag' >&2
 
-	printf "\nGBB flags:\n" >&2
+	env printf '\n%s\n' 'GBB flags:' >&2
 
 	for flag in $GBB_FLAGS
 	do
-		printf "  $flag\n" >&2
+		env printf '%s\n' "  $flag" >&2
 	done
 
-	printf "\nVPD actions:\n" >&2
-	printf "  extract - Extract VPD from firmware image to path \n" >&2
-	printf "  replace - Replace VPD from path to firmware image\n" >&2
+	env printf '\n%s\n' 'VPD actions:' >&2
+	env printf '%s\n' '  extract - Extract VPD from firmware image to path' >&2
+	env printf '%s\n' '  replace - Replace VPD from path to firmware image' >&2
 
-	printf "\nEnvironment variables:\n" >&2
-	printf "  VBOOT_KEYS_PATH - Path to the vboot keys\n" >&2
-	printf "  VBOOT_TOOLS_PATH - Path to vboot tools\n" >&2
+	env printf '\n%s\n' 'Environment variables:' >&2
+	env printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	env printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
 }
 
 sign() {
@@ -58,15 +58,15 @@ sign() {
 	futility sign --signprivate="$VBOOT_KEYS_PATH/firmware_data_key.$VBPRIVK" --keyblock "$VBOOT_KEYS_PATH/firmware.$KEYBLOCK" --kernelkey "$VBOOT_KEYS_PATH/kernel_subkey.$VBPUBK" --infile "$firmware_image_path"
 	futility gbb_utility -s --recoverykey="$VBOOT_KEYS_PATH/recovery_key.$VBPUBK" --rootkey="$VBOOT_KEYS_PATH/root_key.$VBPUBK" "$firmware_image_path" "$firmware_image_path"
 
-	printf "\nSigned firmwares image $firmware_image_path\n"
+	env printf '\n%s\n' "Signed firmwares image $firmware_image_path"
 }
 
 verify() {
 	local firmware_image_path=$1
 
-	futility verify -k "$VBOOT_KEYS_PATH/root_key.$VBPUBK" "$firmware_image_path" || ( printf "\nBad firmware image signature!\n" >&2 && return 1 )
+	futility verify -k "$VBOOT_KEYS_PATH/root_key.$VBPUBK" "$firmware_image_path" || ( env printf '\n%s\n' "Bad firmware image signature!" >&2 && return 1 )
 
-	printf "\nVerified firmware image $firmware_image_path\n"
+	env printf '\n%s\n' "Verified firmware image $firmware_image_path"
 }
 
 gbb() {
@@ -91,7 +91,7 @@ gbb() {
 
 			futility dump_fmap -x "$firmware_image_path" "GBB:$gbb_file_path"
 
-			printf "\nExtracted GBB from $firmware_image_path to $gbb_file_path\n"
+			env printf '\n%s\n' "Extracted GBB from $firmware_image_path to $gbb_file_path"
 			;;
 		"replace")
 			if [ -z "$gbb_file_path" ]
@@ -102,10 +102,10 @@ gbb() {
 
 			futility load_fmap "$firmware_image_path" "GBB:$gbb_file_path"
 
-			printf "\nReplaced GBB from $gbb_file_path to $firmware_image_path\n"
+			env printf '\n%s\n' "Replaced GBB from $gbb_file_path to $firmware_image_path"
 			;;
 		"list")
-			printf "GBB flags in $firmware_image_path:\n"
+			env printf '%s\n' "GBB flags in $firmware_image_path:"
 
 			flags=$( gbb_flags_get "$firmware_image_path" )
 
@@ -115,7 +115,7 @@ gbb() {
 
 				if (( $flags & $flag_value ))
 				then
-					printf "  $flag\n"
+					env printf '%s\n' "  $flag"
 				fi
 
 				i=$(( $i + 1 ))
@@ -134,15 +134,15 @@ gbb() {
 
 			if [ -z "$flag_value" ]
 			then
-				printf "Invalid GBB flag: $gbb_flag\n" >&2
+				env printf '%s\n' "Invalid GBB flag: $gbb_flag" >&2
 				exit 1
 			fi
 
-			flags=$( printf "0x%x\n" $(( $flags | $flag_value )) )
+			flags=$( env printf "0x%x\n" $(( $flags | $flag_value )) )
 
 			gbb_flags_set "$firmware_image_path" "$flags"
 
-			printf "\nEnabled GBB flag $gbb_flag in $firmware_image_path\n"
+			env printf '\n%s\n' "Enabled GBB flag $gbb_flag in $firmware_image_path"
 			;;
 		"disable")
 			if [ -z "$gbb_flag" ]
@@ -156,15 +156,15 @@ gbb() {
 
 			if [ -z "$flag_value" ]
 			then
-				printf "Invalid GBB flag: $gbb_flag\n" >&2
+				env printf '%s\n' "Invalid GBB flag: $gbb_flag" >&2
 				exit 1
 			fi
 
-			flags=$( printf "0x%x\n" $(( $flags & ~$flag_value )) )
+			flags=$( env printf "0x%x\n" $(( $flags & ~$flag_value )) )
 
 			gbb_flags_set "$firmware_image_path" "$flags"
 
-			printf "\nDisabled GBB flag $gbb_flag in $firmware_image_path\n"
+			env printf '\n%s\n' "Disabled GBB flag $gbb_flag in $firmware_image_path"
 			;;
 		*)
 			usage
@@ -196,7 +196,7 @@ gbb_flag_value() {
 	do
 		if [ "$gbb_flag" = "$flag" ]
 		then
-			echo $(( 1 << $i ))
+			env printf '%d\n' $(( 1 << $i ))
 			return
 		fi
 
@@ -213,12 +213,12 @@ vpd() {
 		"extract")
 			futility dump_fmap -x "$firmware_image_path" "RO_VPD:$vpd_file_path"
 
-			printf "\nExtracted VPD from $firmware_image_path to $vpd_file_path\n"
+			env printf '\n%s\n' "Extracted VPD from $firmware_image_path to $vpd_file_path"
 			;;
 		"replace")
 			futility load_fmap "$firmware_image_path" "RO_VPD:$vpd_file_path"
 
-			printf "\nReplaced VPD from $vpd_file_path to $firmware_image_path\n"
+			env printf '\n%s\n' "Replaced VPD from $vpd_file_path to $firmware_image_path"
 			;;
 		*)
 			usage
@@ -237,7 +237,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf "Missing requirement: $requirement\n" >&2
+			env printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

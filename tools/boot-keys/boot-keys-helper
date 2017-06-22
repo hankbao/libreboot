@@ -15,7 +15,7 @@ boot_keys_cros() {
 
 	if ! [ -x "$cros_script_path" ]
 	then
-		printf "$cros_script script missing from cros-scripts install" >&2
+		env printf '%s' "$cros_script script missing from cros-scripts install" >&2
 		return 1
 	fi
 
@@ -45,7 +45,7 @@ boot_keys_files_install_path() {
 		ifs_save=$IFS
 		IFS=$'\n'
 
-		for argument in $( echo "$helper_arguments" )
+		for argument in $( env printf '%s\n' "$helper_arguments" )
 		do
 			(
 				IFS=$ifs_save

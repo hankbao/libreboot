@@ -32,22 +32,22 @@ GPT_SIZE=34
 KERNEL_SIZE=16384
 
 usage() {
-	printf "$executable [action] [storage] [rootfs tarball|kernel files] [medium]\n" >&2
+	env printf '%s\n' "$executable [action] [storage] [rootfs tarball|kernel files] [medium]" >&2
 
-	printf "\nActions:\n" >&2
-	printf "  partitions - Setup partitions on storage\n" >&2
-	printf "  rootfs - Install rootfs tarball to storage\n" >&2
-	printf "  kernel - Install kernel files to storage\n" >&2
+	env printf '\n%s\n' 'Actions:' >&2
+	env printf '%s\n' '  partitions - Setup partitions on storage' >&2
+	env printf '%s\n' '  rootfs - Install rootfs tarball to storage' >&2
+	env printf '%s\n' '  kernel - Install kernel files to storage' >&2
 
 	usage_storage
 
-	printf "\nEnvironment variables:\n" >&2
-	printf "  KERNEL_PATH - Path to the kernel image\n" >&2
-	printf "  VBOOT_TOOLS_PATH - Path to vboot tools\n" >&2
+	env printf '\n%s\n' 'Environment variables:' >&2
+	env printf '%s\n' '  KERNEL_PATH - Path to the kernel image' >&2
+	env printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
 }
 
 usage_storage() {
-	printf "\nStorage:\n" >&2
+	env printf '\n%s\n' 'Storage:' >&2
 
 	local nodes=$( ls "$SYS_BLOCK_PATH" )
 	local node_path
@@ -67,7 +67,7 @@ usage_storage() {
 			continue
 		fi
 
-		printf "  $node_path - $name\n" >&2
+		env printf '%s\n' "  $node_path - $name" >&2
 	done
 }
 
@@ -77,9 +77,9 @@ storage_affect_confirm() {
 	local name=$( storage_name "$storage_path" )
 	local confirm
 
-	printf "This is going to affect the following storage:\n"
-	printf "  $storage_path - $name\n"
-	printf "Press enter to confirm: "
+	env printf '%s\n' 'This is going to affect the following storage:'
+	env printf '%s\n' "  $storage_path - $name"
+	env printf '%s' 'Press enter to confirm: '
 
 	read confirm
 }
@@ -104,17 +104,17 @@ storage_name() {
 		return 0
 	fi
 
-	name=$( echo "$name" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
+	name=$( env printf '%s\n' "$name" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
 
 	if [ -f "$vendor_path" ]
 	then
 		vendor=$( cat "$vendor_path" )
-		vendor=$( echo "$vendor" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
+		vendor=$( env printf '%s\n' "$vendor" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
 
 		name="$vendor $name"
 	fi
 
-	echo "$name"
+	env printf '%s\n' "$name"
 }
 
 storage_partition_path() {
@@ -133,7 +133,7 @@ storage_partition_path() {
 		return 1
 	fi
 
-	echo "$storage_partition_path"
+	env printf '%s\n' "$storage_partition_path"
 }
 
 storage_partition_mount_path() {
@@ -141,7 +141,7 @@ storage_partition_mount_path() {
 
 	local storage_partition_mount_path=$( udisksctl info -b "$storage_partition_path"  | grep "MountPoints" | sed "s/.*MountPoints:[[:space:]]*\(.*\)/\1/g" )
 
-	echo "$storage_partition_mount_path"
+	env printf '%s\n' "$storage_partition_mount_path"
 }
 
 partitions() {
@@ -161,7 +161,7 @@ partitions() {
 		udisksctl unmount -b "$partition" || true
 	done
 
-	( echo "g" ; echo "w" ) | fdisk "$storage_path"
+	( env printf '%s\n' "g" ; env printf '%s\n' "w" ) | fdisk "$storage_path"
 
 	cgpt create "$storage_path"
 
@@ -180,7 +180,7 @@ partitions() {
 
 	mkfs.ext4 -F "$storage_rootfs_path"
 
-	printf "\nSetup partitions on storage $storage_path\n"
+	env printf '\n%s\n' "Setup partitions on storage $storage_path"
 }
 
 rootfs() {
@@ -201,7 +201,7 @@ rootfs() {
 
 	udisksctl unmount -b "$storage_rootfs_path"
 
-	printf "\nInstalled rootfs on storage $storage_path\n"
+	env printf '\n%s\n' "Installed rootfs on storage $storage_path"
 }
 
 kernel() {
@@ -230,7 +230,7 @@ kernel() {
 
 	udisksctl unmount -b "$storage_rootfs_path"
 
-	printf "\nInstalled kernel on storage $storage_path\n"
+	env printf '\n%s\n' "Installed kernel on storage $storage_path"
 }
 
 requirements() {
@@ -243,7 +243,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf "Missing requirement: $requirement\n" >&2
+			env printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

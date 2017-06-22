@@ -24,7 +24,7 @@ generate() {
 
 	if [ -z "$type" ]
 	then
-		printf "Unable to determine keys type\n" >&2
+		env printf '%s\n' 'Unable to determine keys type' >&2
 		return 1
 	fi
 
@@ -47,11 +47,11 @@ sign() {
 
 	if [ -z "$type" ]
 	then
-		printf "Unable to determine keys type\n" >&2
+		env printf '%s\n' 'Unable to determine keys type' >&2
 		return 1
 	fi
 
-	echo "$prepare_files" | while read install_path
+	env printf '%s\n' "$prepare_files" | while read install_path
 	do
 		case $type in
 			"cros-firmware")
@@ -90,11 +90,11 @@ verify() {
 
 	if [ -z "$type" ]
 	then
-		printf "Unable to determine keys type\n" >&2
+		env printf '%s\n' 'Unable to determine keys type' >&2
 		return 1
 	fi
 
-	echo "$prepare_files" | while read install_path
+	env printf '%s\n' "$prepare_files" | while read install_path
 	do
 		case $type in
 			"cros-firmware")

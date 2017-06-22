@@ -22,7 +22,7 @@ arguments() {
 	then
 		ls -A "$root/$PROJECTS/" | while read project
 		do
-			echo "$project"
+			env printf '%s\n' "$project"
 		done
 	else
 		shift
@@ -93,18 +93,18 @@ verify() {
 		(
 			IFS=$ifs_save
 
-			printf "\nDiscovered blob: $file\n"
+			env printf '\n%s\n' "Discovered blob: $file"
 
 			$EDITOR "$project_sources_path/$file"
 
-			printf "Type \"blob\" to keep or press enter to discard: "
+			env printf '%s' "Type \"blob\" to keep or press enter to discard: "
 			read choice
 
 			if [ "$choice" = "blob" ]
 			then
-				echo "$file" >> "$project_blobs_path"
+				env printf '%s\n' "$file" >> "$project_blobs_path"
 			else
-				echo "$file" >> "$project_blobs_ignore_path"
+				env printf '%s\n' "$file" >> "$project_blobs_ignore_path"
 			fi
 
 			sed "\|^$file$|d" -i "$project_blobs_discover_path"
@@ -151,13 +151,13 @@ execute() {
 		git_clean "$repository_path"
 	fi
 
-	printf "\nDiscovering new blobs, this may take a while...\n"
+	env printf '\n%s\n' 'Discovering new blobs, this may take a while...'
 
 	files=$( find "$project_sources_path" -type f | grep -vP "\.git/|\.tar|\.patch" )
 
 	touch "$project_blobs_discover_path"
 
-	echo "$files" | while read file
+	env printf '%s\n' "$files" | while read file
 	do
 		if ! [ -z "$project_blobs_ignore_path" ]
 		then
@@ -171,11 +171,11 @@ execute() {
 		match=$( "$deblob_check_path" -l -i "" "$file" || true )
 		if ! [ -z "$match" ]
 		then
-			echo "$match" >> "$project_blobs_discover_path"
+			env printf '%s\n' "$match" >> "$project_blobs_discover_path"
 		fi
 	done
 
-	printf "\nDiscovered blobs were stored in $project_blobs_discover_path\n"
+	env printf '\n%s\n' "Discovered blobs were stored in $project_blobs_discover_path"
 }
 
 execute_check() {
