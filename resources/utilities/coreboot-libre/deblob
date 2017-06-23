@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  DEBLOB script: deblobs the version of coreboot used for this release.
 #

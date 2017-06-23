@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io>
 # Copyright (C) 2017 Leah Rowe <info@minifree.org>

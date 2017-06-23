@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  powertop.trisquel7: automatically sets up powertop --auto-tune on startup in trisquel 7
 #

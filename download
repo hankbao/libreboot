@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  download script: Download the programs used in libreboot, that
 #                   aren't distributed in the git repository.

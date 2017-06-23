@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper script: create ROM images for a given system, with SeaGRUB
 #

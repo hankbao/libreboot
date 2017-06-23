@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #
 #  helper script: run "make oldconfig" on all coreboot config files

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper: prepare a small source archive for those utils
 #  that don't easily cross-compile. Then the tarball can be extracted

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e

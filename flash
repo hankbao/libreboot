@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  flash script: uses flashrom to flash a libreboot ROM image
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper script: builds crossgcc, needed by coreboot's build system
 #

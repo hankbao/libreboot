@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # grubeditor.sh -- conveniently edit grub{test}.cfg files by automating their
 # extraction with cbfstool and the user's editor of choice.
