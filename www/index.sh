@@ -24,15 +24,15 @@ title() {
 }
 
 meta() {
-    URL=$(echo ${f%.md}.html | sed -e s-news/--)
+    URL=$(printf '%s\n' ${f%.md}.html | sed -e s-news/--)
 
-    echo "[$(title)]($URL){.title}"
-    echo "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
-    echo ""
+    printf '%s\n' "[$(title)]($URL){.title}"
+    printf '%s\n' "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
+    printf '\n'
     tail -n +5 $f | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
 
-    echo ""
-    echo ""
+    printf '\n'
+    printf '\n'
 }
 
 # generate the index file
@@ -50,12 +50,12 @@ done
 # generate an RSS index
 
 rss() {
-    echo '<rss version="2.0">'
-    echo '<channel>'
+    printf '%s\n' '<rss version="2.0">'
+    printf '%s\n' '<channel>'
 
-    echo "<title>$BLOGTITLE</title>"
-    echo "<link>"$BLOGBASE"news/</link>"
-    echo "<description>$BLOGDESCRIPTION</description>"
+    printf '%s\n' "<title>$BLOGTITLE</title>"
+    printf '%s\n' "<link>"$BLOGBASE"news/</link>"
+    printf '%s\n' "<description>$BLOGDESCRIPTION</description>"
 
     for f in $FILES
     do
@@ -63,15 +63,15 @@ rss() {
         desc=$(sed ${f%.md}.bare.html -e 's/</\&lt;/g' | sed -e 's/>/\&gt;/g')
         url="${f%.md}.html"
 
-        echo '<item>'
-        echo "<title>$(title)</title>"
-        echo "<link>$BLOGBASE$url</link>"
-        echo "<description>$desc</description>"
-        echo '</item>'
+        printf '%s\n' '<item>'
+        printf '%s\n' "<title>$(title)</title>"
+        printf '%s\n' "<link>$BLOGBASE$url</link>"
+        printf '%s\n' "<description>$desc</description>"
+        printf '%s\n' '</item>'
     done
 
-    echo '</channel>'
-    echo '</rss>'
+    printf '%s\n' '</channel>'
+    printf '%s\n' '</rss>'
 }
 
 rss > news/feed.xml
