@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper script: Downloads MemTest86+ and patches it
 #

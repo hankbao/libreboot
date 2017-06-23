@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper script: downloads coreboot and patches/deblobs it
 #

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # for_trisquel7 script: installs build dependencies for Trisquel 7
 #

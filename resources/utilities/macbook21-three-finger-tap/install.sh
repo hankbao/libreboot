@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #    Three-finger tap: Enable three-finger tap for "middle click" in GNOME.
 #    Copyright (C) 2015  Albin Söderqvist and Eemeli Blåsten

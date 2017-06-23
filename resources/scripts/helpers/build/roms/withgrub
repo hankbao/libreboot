@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #
 #  helper script: build ROM images with SeaGRUB and put them in ./bin/

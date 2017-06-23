@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  helper script: builds the dependencies that coreboot needs before building a ROM image
 #

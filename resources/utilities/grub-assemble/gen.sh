@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  grub-assemble gen.sh: generate GRUB ELF files (coreboot payloads)
 #
