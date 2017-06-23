@@ -46,7 +46,7 @@ else
 fi
 
 if [[ $FILE = *suppliers ]]; then
-        printf "\n<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>\n" >> temp.md
+        env printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> temp.md
 fi
 
 if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then

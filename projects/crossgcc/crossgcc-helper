@@ -20,7 +20,7 @@ crossgcc_tarballs() {
 	local install_path="$sources_path/util/crossgcc/tarballs/"
 	local tarballs=$( ls "$sources_path/util/crossgcc/sum" | sed "s/.cksum$//" )
 
-	echo "$tarballs"
+	env printf '%s\n' "$tarballs"
 }
 
 crossgcc_tarball_sources_path() {
@@ -28,7 +28,7 @@ crossgcc_tarball_sources_path() {
 
 	local tarball_sources_path="$root/$SOURCES/$tarball"
 
-	echo "$tarball_sources_path"
+	env printf '%s\n' "$tarball_sources_path"
 }
 
 crossgcc_tarball_install_path() {
@@ -39,7 +39,7 @@ crossgcc_tarball_install_path() {
 	local install_path="$sources_path/util/crossgcc/tarballs/"
 	local tarball_install_path="$install_path/$tarball"
 
-	echo "$tarball_install_path"
+	env printf '%s\n' "$tarball_install_path"
 }
 
 crossgcc_tarball_release_path() {
@@ -49,5 +49,5 @@ crossgcc_tarball_release_path() {
 	local release_path=$( project_release_path "$project" "$SOURCES" "$@" )
 	local tarball_release_path="$release_path/$tarball"
 
-	echo "$tarball_release_path"
+	env printf '%s\n' "$tarball_release_path"
 }

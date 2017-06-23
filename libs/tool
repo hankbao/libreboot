@@ -17,7 +17,7 @@
 
 TOOL_ACTIONS_GENERIC="usage update execute"
 TOOL_ACTIONS_HELPERS="arguments"
-TOOL_FUNCTIONS=$( for action in $TOOL_ACTIONS_GENERIC ; do echo "$action" "$action""_check" ; done ; echo "$TOOL_ACTIONS_HELPERS" )
+TOOL_FUNCTIONS=$( for action in $TOOL_ACTIONS_GENERIC ; do env printf '%s\n' "$action" "$action""_check" ; done ; env printf '%s\n' "$TOOL_ACTIONS_HELPERS" )
 
 tool_include() {
 	local tool=$1
@@ -79,7 +79,7 @@ tool_action() {
 
 		if ! tool_check "$tool"
 		then
-			printf "Tool $tool check failed\n" >&2
+			env printf '%s\n' "Tool $tool check failed" >&2
 			return 1
 		fi
 
@@ -97,7 +97,7 @@ tool_action() {
 			return 0
 		fi
 
-		printf "Tool $tool $action (with ${arguments:-no argument})\n" >&2
+		env printf '%s\n' "Tool $tool $action (with ${arguments:-no argument})" >&2
 
 		(
 			set -e
@@ -106,10 +106,10 @@ tool_action() {
 
 		if [ $? -ne 0 ]
 		then
-			printf "\nTool $tool $action (with ${arguments:-no argument}) failed\n" >&2
+			env printf '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) failed" >&2
 			return 1
 		else
-			printf "\nTool $tool $action (with ${arguments:-no argument}) completed\n" >&2
+			env printf '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) completed" >&2
 		fi
 	)
 }
@@ -125,7 +125,7 @@ tool_action_check() {
 
 		if ! tool_check "$tool"
 		then
-			printf "Tool $tool check failed\n" >&2
+			env printf '%s\n' "Tool $tool check failed" >&2
 			return 1
 		fi
 
@@ -162,7 +162,7 @@ tool_action_helper() {
 
 		if ! tool_check "$tool"
 		then
-			printf "Tool $tool check failed\n" >&2
+			env printf '%s\n' "Tool $tool check failed" >&2
 			return 1
 		fi
 
@@ -193,7 +193,7 @@ tool_action_arguments_recursive() {
 	then
 		tool_action "$action" "$tool" "$@"
 	else
-		echo "$action_helper_arguments" | while read argument
+		env printf '%s\n' "$action_helper_arguments" | while read argument
 		do
 			tool_action_arguments_recursive "$action" "$tool" "$@" "$argument"
 		done
@@ -205,7 +205,7 @@ tool_path() {
 
 	local tool_path="$root/$TOOLS/$tool"
 
-	echo "$tool_path"
+	env printf '%s\n' "$tool_path"
 }
 
 tool_sources_path() {
@@ -224,7 +224,7 @@ tool_sources_path() {
 
 		if directory_filled_check "$path"
 		then
-			echo "$path"
+			env printf '%s\n' "$path"
 			return
 		fi
 	done
@@ -234,23 +234,23 @@ tool_usage_actions() {
 	local tool=$1
 	shift
 
-	printf "\nGeneric actions:\n"
+	env printf '\n%s\n' 'Generic actions:'
 
 	for action in $TOOL_ACTIONS_GENERIC
 	do
 		if function_check "$action"
 		then
-			printf "  $action\n"
+			env printf '%s\n' "  $action"
 		fi
 	done
 
 	if [ $# -gt 0 ]
 	then
-		printf "\nSpecific actions:\n"
+		env printf '\n%s\n' 'Specific actions:'
 
 		for action in "$@"
 		do
-			printf "  $action\n"
+			env printf '%s\n' "  $action"
 		done
 	fi
 }
@@ -259,7 +259,7 @@ tool_usage_arguments() {
 	local tool=$1
 	shift
 
-	printf "\nArguments:\n"
+	env printf '\n%s\n' 'Arguments:'
 
 	tool_usage_arguments_recursive "$tool" "  " "$@"
 }
@@ -275,9 +275,9 @@ tool_usage_arguments_recursive() {
 
 	if ! [ -z "$action_helper_arguments" ]
 	then
-		echo "$action_helper_arguments" | while read argument
+		env printf '%s\n' "$action_helper_arguments" | while read argument
 		do
-			printf "$spacing$argument\n"
+			env printf '%s\n' "$spacing$argument"
 			tool_usage_arguments_recursive "$tool" "  $spacing" "$@" "$argument"
 		done
 	fi
@@ -316,7 +316,7 @@ tool_file_path() {
 		return 1
 	fi
 
-	echo "$file_path"
+	env printf '%s\n' "$file_path"
 }
 
 tool_file_test() {

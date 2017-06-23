@@ -60,7 +60,7 @@ arguments_list() {
 
 	for argument in "$@"
 	do
-		echo "$argument"
+		env printf '%s\n' "$argument"
 	done
 }
 
@@ -85,7 +85,7 @@ path_wildcard_expand() {
 	local path=$@
 
 	# Evaluation fails with unescaped whitespaces.
-	path=$( echo "$path" | sed "s/ /\\\ /g" )
+	path=$( env printf '%s\n' "$path" | sed "s/ /\\\ /g" )
 
 	eval "arguments_list "$path""
 }
@@ -112,7 +112,7 @@ file_checksum_check() {
 
 	if ! [ -f "$checksum_path" ]
 	then
-		printf "Could not verify file checksum!\n" >&2
+		env printf '%s\n' 'Could not verify file checksum!' >&2
 		return 1
 	fi
 
@@ -142,7 +142,7 @@ file_signature_check() {
 
 	if ! [ -f "$signature_path" ]
 	then
-		printf "Could not verify file signature!\n" >&2
+		env printf '%s\n' 'Could not verify file signature!' >&2
 		return 1
 	fi
 
@@ -336,7 +336,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf "Missing requirement: $requirement\n" >&2
+			env printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done
@@ -353,7 +353,7 @@ requirements_root() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf "Missing requirement: $requirement\n" >&2
+			env printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done
@@ -375,22 +375,22 @@ arguments_concat() {
 		fi
 	done
 
-	echo "$concat"
+	env printf '%s\n' "$concat"
 }
 
 execute_root() {
 	local sudo=$( which sudo 2> /dev/null || true )
 	local arguments
 
-	printf "Running command as root: " >&2
-	echo "$@" >&2
+	env printf '%s' 'Running command as root: ' >&2
+	env printf '%b\n' "$*" >&2
 
 	if ! [ -z "$sudo" ]
 	then
 		sudo "$@"
 	else
 		# Quote arguments for eval through su.
-		arguments=$( printf "%q " "$@" )
+		arguments=$( env printf '%q ' "$@" )
 		su -c "$arguments"
 	fi
 }
