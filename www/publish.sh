@@ -19,7 +19,7 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e
 
-echo $1
+printf '%s\n' $1
 FILE=${1%.md}
 
 cat $1 > temp.md
@@ -46,7 +46,7 @@ else
 fi
 
 if [[ $FILE = *suppliers ]]; then
-        env printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> temp.md
+        printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> temp.md
 fi
 
 if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
@@ -62,10 +62,10 @@ sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
 sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g'
 
 # work around issue #2872
-TOC=$(grep -q "^x-toc-enable: true$" temp.md && echo "--toc --toc-depth=2") || TOC=""
+TOC=$(grep -q "^x-toc-enable: true$" temp.md && printf '%s\n' "--toc --toc-depth=2") || TOC=""
 
 # work around heterogenous pandoc versions
-SMART=$(pandoc -v | grep -q '2\.0' || echo "--smart") || SMART=""
+SMART=$(pandoc -v | grep -q '2\.0' || printf '%s\n' "--smart") || SMART=""
 
 # chuck through pandoc
 pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
