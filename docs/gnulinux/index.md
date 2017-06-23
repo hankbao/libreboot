@@ -18,7 +18,7 @@ However, with Libreboot, GRUB is already included directly (as a payload), so ev
 
 - [Installing Parabola or Arch GNU+Linux-Libre, with Full-Disk Encryption (including /boot)](encrypted_parabola.md)
 
-   - Follow-Up Tutorial: [Configuring Parabola (Post-Install)](configuring_parabola.md)
+        - Follow-Up Tutorial: [Configuring Parabola (Post-Install)](configuring_parabola.md)
 
 - [Installing Trisquel GNU+Linux-Libre, with Full-Disk Encryption (including /boot)](encrypted_trisquel.md)
 
