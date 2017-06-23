@@ -23,22 +23,22 @@ MODEL="model"
 NAME="name"
 
 usage() {
-	env printf '%s\n' "$executable [action] [storage] [kernel image|kernel modules]" >&2
+	printf '%s\n' "$executable [action] [storage] [kernel image|kernel modules]" >&2
 
-	env printf '\n%s\n' 'Actions:' >&2
-	env printf '%s\n' '  backup - Backup kernel image' >&2
-	env printf '%s\n' '  image - Install kernel image' >&2
-	env printf '%s\n' '  modules - Install kernel modules' >&2
+	printf '\n%s\n' 'Actions:' >&2
+	printf '%s\n' '  backup - Backup kernel image' >&2
+	printf '%s\n' '  image - Install kernel image' >&2
+	printf '%s\n' '  modules - Install kernel modules' >&2
 
 	usage_storage
 
-	env printf '\n%s\n' 'Environment variables:' >&2
-	env printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	env printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf '\n%s\n' 'Environment variables:' >&2
+	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
 }
 
 usage_storage() {
-	env printf '\n%s\n' 'Storage:' >&2
+	printf '\n%s\n' 'Storage:' >&2
 
 	local nodes=$( ls "$SYS_BLOCK_PATH" )
 	local node_path
@@ -58,7 +58,7 @@ usage_storage() {
 			continue
 		fi
 
-		env printf '%s\n' "  $node_path - $name" >&2
+		printf '%s\n' "  $node_path - $name" >&2
 	done
 }
 
@@ -68,9 +68,9 @@ storage_affect_confirm() {
 	local name=$( storage_name "$storage_path" )
 	local confirm
 
-	env printf '%s\n' 'This is going to affect the following storage:'
-	env printf '%s\n' "  $storage_path - $name"
-	env printf '%s' 'Press enter to confirm: '
+	printf '%s\n' 'This is going to affect the following storage:'
+	printf '%s\n' "  $storage_path - $name"
+	printf '%s' 'Press enter to confirm: '
 
 	read confirm
 }
@@ -95,17 +95,17 @@ storage_name() {
 		return 0
 	fi
 
-	name=$( env printf '%s\n' "$name" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
+	name=$( printf '%s\n' "$name" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
 
 	if [ -f "$vendor_path" ]
 	then
 		vendor=$( cat "$vendor_path" )
-		vendor=$( env printf '%s\n' "$vendor" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
+		vendor=$( printf '%s\n' "$vendor" | sed -e "s/^[[:space:]]*//;s/[[:space:]]*$//" )
 
 		name="$vendor $name"
 	fi
 
-	env printf '%s\n' "$name"
+	printf '%s\n' "$name"
 }
 
 storage_partition_path() {
@@ -124,7 +124,7 @@ storage_partition_path() {
 		return 1
 	fi
 
-	env printf '%s\n' "$storage_partition_path"
+	printf '%s\n' "$storage_partition_path"
 }
 
 storage_partition_mount_path() {
@@ -132,7 +132,7 @@ storage_partition_mount_path() {
 
 	local storage_partition_mount_path=$( udisksctl info -b "$storage_partition_path"  | grep "MountPoints" | sed "s/.*MountPoints:[[:space:]]*\(.*\)/\1/g" )
 
-	env printf '%s\n' "$storage_partition_mount_path"
+	printf '%s\n' "$storage_partition_mount_path"
 }
 
 storage_kernel_path() {
@@ -155,13 +155,13 @@ backup() {
 
 	if [ -z "$storage_kernel_path" ]
 	then
-		env printf '%s\n' "No kernel partition found on storage $storage_path" >&2
+		printf '%s\n' "No kernel partition found on storage $storage_path" >&2
 		return 1
 	fi
 
 	cat "$storage_kernel_path" > "$kernel_image_path"
 
-	env printf '\n%s\n' "Backed up kernel image to $kernel_image_path"
+	printf '\n%s\n' "Backed up kernel image to $kernel_image_path"
 }
 
 image() {
@@ -172,7 +172,7 @@ image() {
 
 	if [ -z "$storage_kernel_path" ]
 	then
-		env printf '%s\n' "No kernel partition found on storage $storage_path" >&2
+		printf '%s\n' "No kernel partition found on storage $storage_path" >&2
 		return 1
 	fi
 
@@ -181,7 +181,7 @@ image() {
 	cat "$kernel_image_path" > "$storage_kernel_path"
 	sync
 
-	env printf '\n%s\n' "Installed kernel image on storage $storage_path"
+	printf '\n%s\n' "Installed kernel image on storage $storage_path"
 }
 
 modules() {
@@ -192,7 +192,7 @@ modules() {
 
 	if [ -z "$storage_rootfs_path" ]
 	then
-		env printf '%s\n' "No rootfs partition found on storage $storage_path" >&2
+		printf '%s\n' "No rootfs partition found on storage $storage_path" >&2
 		return 1
 	fi
 
@@ -208,7 +208,7 @@ modules() {
 
 	udisksctl unmount -b "$storage_rootfs_path"
 
-	env printf '\n%s\n' "Installed kernel modules on storage $storage_path"
+	printf '\n%s\n' "Installed kernel modules on storage $storage_path"
 }
 
 requirements() {
@@ -221,7 +221,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			env printf '%s\n' "Missing requirement: $requirement" >&2
+			printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

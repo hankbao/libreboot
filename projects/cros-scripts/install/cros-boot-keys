@@ -31,16 +31,16 @@ ALGORITHMS="7 7 11 7 7 4 11 11 11"
 MODES="7 7 11 7 10"
 
 usage() {
-	env printf '%s\n' "$executable [action]" >&2
+	printf '%s\n' "$executable [action]" >&2
 
-	env printf '\n%s\n' 'Actions:' >&2
-	env printf '%s\n' '  generate - Generate a set of keys' >&2
-	env printf '%s\n' '  verify - Verify keyblocks' >&2
+	printf '\n%s\n' 'Actions:' >&2
+	printf '%s\n' '  generate - Generate a set of keys' >&2
+	printf '%s\n' '  verify - Verify keyblocks' >&2
 
-	env printf '\n%s\n' 'Environment variables:' >&2
-	env printf '%s\n' '  KEYS_VERSION - Version to give the keys' >&2
-	env printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	env printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf '\n%s\n' 'Environment variables:' >&2
+	printf '%s\n' '  KEYS_VERSION - Version to give the keys' >&2
+	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
 }
 
 keys_override_confirm() {
@@ -68,9 +68,9 @@ keys_override_confirm() {
 		return 0
 	fi
 
-	env printf '%s\n' 'This is going to override keys stored in the following directory:'
-	env printf '%s\n' "  $VBOOT_KEYS_PATH"
-	env printf '%s' 'Press enter to confirm: '
+	printf '%s\n' 'This is going to override keys stored in the following directory:'
+	printf '%s\n' "  $VBOOT_KEYS_PATH"
+	printf '%s' 'Press enter to confirm: '
 
 	read confirm
 }
@@ -89,8 +89,8 @@ generate() {
 
 	for key in $KEYS
 	do
-		algorithm=$( env printf '%s\n' "$algorithms" | sed "s/$REGEXP/\1/g" )
-		algorithms=$( env printf '%s\n' "$algorithms" | sed "s/$REGEXP/\2/g" )
+		algorithm=$( printf '%s\n' "$algorithms" | sed "s/$REGEXP/\1/g" )
+		algorithms=$( printf '%s\n' "$algorithms" | sed "s/$REGEXP/\2/g" )
 
 		key_length=$(( 1 << (10 + ($algorithm / 3)) ))
 
@@ -104,23 +104,23 @@ generate() {
 		rm -f "$VBOOT_KEYS_PATH/$key.$PEM" "$VBOOT_KEYS_PATH/$key.$CRT" "$VBOOT_KEYS_PATH/$key.$KEYB"
 	done
 
-	env printf '\n%s\n' "Generated keys $KEYS"
+	printf '\n%s\n' "Generated keys $KEYS"
 
 	for keyblock in $KEYBLOCKS
 	do
-		pubkey=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
-		subkeys=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
-		privkey=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
-		subkeys=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
+		pubkey=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
+		subkeys=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
+		privkey=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
+		subkeys=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
 
-		mode=$( env printf '%s\n' "$modes" | sed "s/$REGEXP/\1/g" )
-		modes=$( env printf '%s\n' "$modes" | sed "s/$REGEXP/\2/g" )
+		mode=$( printf '%s\n' "$modes" | sed "s/$REGEXP/\1/g" )
+		modes=$( printf '%s\n' "$modes" | sed "s/$REGEXP/\2/g" )
 
 		futility vbutil_keyblock --pack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --flags "$mode" --datapubkey "$VBOOT_KEYS_PATH/$pubkey.$VBPUBK" --signprivate "$VBOOT_KEYS_PATH/$privkey.$VBPRIVK"
 		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
 
-	env printf '\n%s\n' "Generated keyblocks $KEYBLOCKS"
+	printf '\n%s\n' "Generated keyblocks $KEYBLOCKS"
 }
 
 verify() {
@@ -130,15 +130,15 @@ verify() {
 
 	for keyblock in $KEYBLOCKS
 	do
-		pubkey=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
-		subkeys=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
-		privkey=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
-		subkeys=$( env printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
+		pubkey=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
+		subkeys=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
+		privkey=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\1/g" )
+		subkeys=$( printf '%s\n' "$subkeys" | sed "s/$REGEXP/\2/g" )
 
 		futility vbutil_keyblock --unpack "$VBOOT_KEYS_PATH/$keyblock.$KEYBLOCK" --signpubkey "$VBOOT_KEYS_PATH/$privkey.$VBPUBK"
 	done
 
-	env printf '\n%s\n' "Verified keyblocks $KEYBLOCKS"
+	printf '\n%s\n' "Verified keyblocks $KEYBLOCKS"
 }
 
 requirements() {
@@ -151,7 +151,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			env printf '%s\n' "Missing requirement: $requirement" >&2
+			printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

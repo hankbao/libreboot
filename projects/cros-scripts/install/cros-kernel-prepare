@@ -27,21 +27,21 @@ FIT="fit"
 IMG="img"
 
 usage() {
-	env printf '%s\n' "$executable [action] [kernel files|kernel image] [medium]" >&2
+	printf '%s\n' "$executable [action] [kernel files|kernel image] [medium]" >&2
 
-	env printf '\n%s\n' 'Actions:' >&2
-	env printf '%s\n' '  pack - Pack kernel files to a medium-specific image' >&2
-	env printf '%s\n' '  sign - Sign kernel image' >&2
-	env printf '%s\n' '  verify - Very kernel image signatures' >&2
+	printf '\n%s\n' 'Actions:' >&2
+	printf '%s\n' '  pack - Pack kernel files to a medium-specific image' >&2
+	printf '%s\n' '  sign - Sign kernel image' >&2
+	printf '%s\n' '  verify - Very kernel image signatures' >&2
 
-	env printf '\n%s\n' 'Medium:' >&2
-	env printf '%s\n' '  usb - External USB storage' >&2
-	env printf '%s\n' '  mmc - External SD card storage' >&2
-	env printf '%s\n' '  emmc - Internal storage' >&2
+	printf '\n%s\n' 'Medium:' >&2
+	printf '%s\n' '  usb - External USB storage' >&2
+	printf '%s\n' '  mmc - External SD card storage' >&2
+	printf '%s\n' '  emmc - Internal storage' >&2
 
-	env printf '\n%s\n' 'Environment variables:' >&2
-	env printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	env printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf '\n%s\n' 'Environment variables:' >&2
+	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
 }
 
 pack() {
@@ -59,7 +59,7 @@ pack() {
 	mkimage -f "$kernel_its_path" "$kernel_fit_path"
 	futility vbutil_kernel --pack "$kernel_image_path" --version 1 --arch "$arch" --keyblock "$VBOOT_KEYS_PATH/kernel.$KEYBLOCK" --signprivate "$VBOOT_KEYS_PATH/kernel_data_key.$VBPRIVK" --config "$cmdline_path" --vmlinuz "$kernel_fit_path" --bootloader "$bootloader_path"
 
-	env printf '\n%s\n' "Packed kernel image $kernel_image_path"
+	printf '\n%s\n' "Packed kernel image $kernel_image_path"
 }
 
 sign() {
@@ -67,7 +67,7 @@ sign() {
 
 	futility vbutil_kernel --repack "$kernel_image_path" --version 1 --keyblock "$VBOOT_KEYS_PATH/kernel.$KEYBLOCK" --signprivate "$VBOOT_KEYS_PATH/kernel_data_key.$VBPRIVK" --oldblob "$kernel_image_path"
 
-	env printf '\n%s\n' "Signed kernel image $kernel_image_path"
+	printf '\n%s\n' "Signed kernel image $kernel_image_path"
 }
 
 verify() {
@@ -75,7 +75,7 @@ verify() {
 
 	futility vbutil_kernel --verify "$kernel_image_path" --signpubkey "$VBOOT_KEYS_PATH/kernel_subkey.$VBPUBK"
 
-	env printf '\n%s\n' "Verified kernel image $kernel_image_path"
+	printf '\n%s\n' "Verified kernel image $kernel_image_path"
 }
 
 requirements() {
@@ -88,7 +88,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			env printf '%s\n' "Missing requirement: $requirement" >&2
+			printf '%s\n' "Missing requirement: $requirement" >&2
 			exit 1
 		fi
 	done

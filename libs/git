@@ -214,7 +214,7 @@ git_files() {
 git_project_repository_path() {
 	local repository=$1
 
-	env printf '%s\n' "$root/$SOURCES/$repository"
+	printf '%s\n' "$root/$SOURCES/$repository"
 }
 
 git_project_check() {
@@ -582,7 +582,7 @@ git_project_release() {
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$TAR_XZ"
 		local sources_path="$root/$SOURCES/$repository"
 
-		env printf '%s\n' "Releasing sources archive for $project (with ${arguments:-no argument}) from "$repository" git"
+		printf '%s\n' "Releasing sources archive for $project (with ${arguments:-no argument}) from "$repository" git"
 
 		git_branch_checkout "$repository_path" "$release_branch"
 		git_submodule_update "$repository_path"
