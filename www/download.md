@@ -29,14 +29,12 @@ Do you have a mirror?
 ---------------------
 
 Let us know! We will add it here. Instructions for how to mirror
-libreboot releases can be found [here](rsync.md).
+libreboot releases can be found [here](#rsync).
 
 HTTPS mirrors {#https}
 -------------
 
 These mirrors are recommended, since they use TLS (https://) encryption.
-
-<https://libreboot.org/release/> (Libreboot project official mirror)
 
 <https://www.mirrorservice.org/sites/libreboot.org/release/> (University
 of Kent, UK)
@@ -50,6 +48,25 @@ Project, USA)
 <https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
+
+RSYNC mirrors {#rsync}
+-------------
+
+Useful for mirroring Libreboot's entire set of release archives.
+
+<rsync://rsync.libreboot.org/mirrormirror/> (Libreboot project official mirror)
+
+<rsync://rsync.mirrorservice.org/libreboot.org/release/> (University of Kent,
+UK)
+
+<rsync://mirror.math.princeton.edu/pub/libreboot/> (Princeton university, USA)
+
+<rsync://ftp.linux.ro/libreboot/> (linux.ro, Romania)
+
+<rsync://libreboot.mirror.si/libreboot/>
+
+Are you running a mirror? Contact the libreboot project, and the link will be
+added to this page!
 
 HTTP mirrors {#http}
 ------------
