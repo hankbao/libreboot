@@ -579,7 +579,7 @@ git_project_release() {
 
 	if ! [ -z "$release_branch" ]
 	then
-		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$TAR_XZ"
+		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 		local sources_path="$root/$SOURCES/$repository"
 
 		printf '%s\n' "Releasing sources archive for $project (with ${arguments:-no argument}) from "$repository" git"
@@ -620,7 +620,7 @@ git_project_release_check() {
 
 	if ! [ -z "$release_branch" ]
 	then
-		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$TAR_XZ"
+		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 
 		file_exists_check "$archive_path"
 

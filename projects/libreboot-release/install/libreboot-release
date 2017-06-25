@@ -22,8 +22,8 @@ SYSTEMS="systems"
 IMAGES="images"
 TOOLS="tools"
 
-TAR_XZ="tar.xz"
-SHA256SUM="sha256sum"
+ARCHIVE="tar.xz"
+CHECKSUM="sha256sum"
 ASC="asc"
 
 usage() {
@@ -66,15 +66,15 @@ download() {
 				directory="$directory-$part"
 			fi
 
-			path="$root/$prefix/$directory/$project.$TAR_XZ"
-			url="$DOWNLOAD_URL/$prefix/$directory/$project.$TAR_XZ"
+			path="$root/$prefix/$directory/$project.$ARCHIVE"
+			url="$DOWNLOAD_URL/$prefix/$directory/$project.$ARCHIVE"
 
 			if wget --quiet --spider "$url"
 			then
 				mkdir -p "$( dirname "$path" )"
 				wget -O "$path" "$url"
-				wget -O "$path.$SHA256SUM" "$url.$SHA256SUM"
-				wget -O "$path.$ASC" "$url.$ASC"
+				wget -O "$path.$CHECKSUM" "$url.$CHECKSUM"
+				wget -O "$path.$DSIG" "$url.$DSIG"
 
 				printf '\n%s\n' "Downloaded $project"
 
@@ -92,15 +92,15 @@ download() {
 sources() {
 	local project=$1
 
-	local url="$DOWNLOAD_URL/$SOURCES/$project/$project.$TAR_XZ"
-	local path="$root/$SOURCES/$project/$project.$TAR_XZ"
+	local url="$DOWNLOAD_URL/$SOURCES/$project/$project.$ARCHIVE"
+	local path="$root/$SOURCES/$project/$project.$ARCHIVE"
 
 	if wget --quiet --spider "$url"
 	then
 		mkdir -p "$( dirname "$path" )"
 		wget -O "$path" "$url"
-		wget -O "$path.$SHA256SUM" "$url.$SHA256SUM"
-		wget -O "$path.$ASC" "$url.$ASC"
+		wget -O "$path.$CHECKSUM" "$url.$CHECKSUM"
+		wget -O "$path.$DSIG" "$url.$DSIG"
 
 		printf '\n%s\n' "Downloaded $project sources"
 	else
@@ -136,21 +136,21 @@ verify() {
 				directory="$directory-$part"
 			fi
 
-			path="$root/$prefix/$directory/$project.$TAR_XZ"
+			path="$root/$prefix/$directory/$project.$ARCHIVE"
 
 			if ! [ -f "$path" ]
 			then
 				continue
 			fi
 
-			checksum_path="$path.$SHA256SUM"
-			signature_path="$path.$ASC"
+			checksum_path="$path.$CHECKSUM"
+			signature_path="$path.$DSIG"
 
 			if [ -f "$checksum_path" ]
 			then
 				(
 					cd "$( dirname "$path" )"
-					sha256sum -c "$project.$TAR_XZ.$SHA256SUM"
+					sha256sum -c "$project.$ARCHIVE.$CHECKSUM"
 				)
 			else
 				printf '%s\n' "Could not verify $project checksum!" >&2
@@ -200,7 +200,7 @@ extract() {
 				directory="$directory-$part"
 			fi
 
-			path="$root/$prefix/$directory/$project.$TAR_XZ"
+			path="$root/$prefix/$directory/$project.$ARCHIVE"
 
 			if ! [ -f "$path" ]
 			then

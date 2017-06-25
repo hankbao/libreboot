@@ -425,7 +425,7 @@ project_sources_archive() {
 			path="$path-$argument"
 		fi
 
-		local archive="$path.$TAR_XZ"
+		local archive="$path.$ARCHIVE"
 
 		if ! [ -f "$archive" ]
 		then
@@ -1056,7 +1056,7 @@ project_release_archive_path() {
 		path="$path-$argument"
 	done
 
-	local archive_path="$release_path/$path.$TAR_XZ"
+	local archive_path="$release_path/$path.$ARCHIVE"
 
 	printf '%s\n' "$archive_path"
 }
@@ -1076,7 +1076,7 @@ project_release_rootfs_path() {
 		path="$path-$argument"
 	done
 
-	local rootfs_path="$release_path/$path.$TAR_XZ"
+	local rootfs_path="$release_path/$path.$ARCHIVE"
 
 	printf '%s\n' "$rootfs_path"
 }
@@ -1109,7 +1109,7 @@ project_release_sources_archive_path() {
 
 	if ! [ -z "$release_path" ]
 	then
-		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_path.$TAR_XZ"
+		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_path.$ARCHIVE"
 
 		printf '%s\n' "$archive_path"
 	fi

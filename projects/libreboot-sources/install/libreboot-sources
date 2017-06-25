@@ -18,7 +18,7 @@
 BUILD_SYSTEM="libreboot"
 
 SOURCES="sources"
-TAR_XZ="tar.xz"
+ARCHIVE="tar.xz"
 
 usage() {
 	printf '%s\n' "$executable [action] [sources path] (extract path)" >&2
@@ -46,7 +46,7 @@ extract() {
 		return
 	fi
 
-	archive=$( find $sources_path -name "$BUILD_SYSTEM-sources.$TAR_XZ" || true )
+	archive=$( find $sources_path -name "$BUILD_SYSTEM-sources.$ARCHIVE" || true )
 	if [ -z "$archive" ]
 	then
 		printf '%s\n' "Finding $BUILD_SYSTEM sources archive failed!" >&2
