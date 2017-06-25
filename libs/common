@@ -39,9 +39,9 @@ DOTRNDSEED=".rndseed"
 DOTVERSION=".version"
 DOTREVISION=".revision"
 DOTTARFILES=".tarfiles"
-TAR_XZ="tar.xz"
-SHA256SUM="sha256sum"
-ASC="asc"
+ARCHIVE="tar.xz"
+CHECKSUM="sha256sum"
+DSIG="asc"
 
 function_check() {
 	local function=$1
@@ -93,7 +93,7 @@ path_wildcard_expand() {
 file_checksum_create() {
 	local path=$1
 
-	local checksum_path="$path.$SHA256SUM"
+	local checksum_path="$path.$CHECKSUM"
 	local name=$( basename "$path" )
 	local directory_path=$( dirname "$path" )
 
@@ -106,7 +106,7 @@ file_checksum_create() {
 file_checksum_check() {
 	local path=$1
 
-	local checksum_path="$path.$SHA256SUM"
+	local checksum_path="$path.$CHECKSUM"
 	local name=$( basename "$path" )
 	local directory_path=$( dirname "$path" )
 
@@ -125,7 +125,7 @@ file_checksum_check() {
 file_signature_create() {
 	local path=$1
 
-	local signature_path="$path.$ASC"
+	local signature_path="$path.$DSIG"
 
 	if [ -z "$RELEASE_KEY" ]
 	then
@@ -138,7 +138,7 @@ file_signature_create() {
 file_signature_check() {
 	local path=$1
 
-	local signature_path="$path.$ASC"
+	local signature_path="$path.$DSIG"
 
 	if ! [ -f "$signature_path" ]
 	then

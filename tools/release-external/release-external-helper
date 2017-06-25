@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
 release_external_files() {
-	find "$root/$RELEASE" -type f | grep -vP "\.$ASC|\.$SHA256SUM"
+	find "$root/$RELEASE" -type f | grep -vP "\.$DSIG|\.$CHECKSUM"
 }
