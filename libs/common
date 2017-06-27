@@ -64,6 +64,24 @@ arguments_list() {
 	done
 }
 
+download_wrapper() {
+	local download_dir="$1"
+	shift
+	local uris=($@)
+
+	# TODO: Add support for curl, in addition
+	# to wget, for compatibility reasons
+	wget_options=(
+		--config=/dev/null
+		--secure-protocol=PFS
+		--directory-prefix="${download_dir}"
+		--continue
+		--
+	)
+
+	wget "${wget_options[@]}" "${uris[@]}"
+}
+
 diff_patch_file() {
 	local repository_path="$1"
 	local patch_file_path="$2"

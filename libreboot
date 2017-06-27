@@ -239,7 +239,7 @@ libreboot() {
 		exit 1
 	fi
 
-	requirements "tar" "sed" "gpg" "sha256sum"
+	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'wget'
 
 	if project_check "${target}"; then
 		libreboot_project "${action}" "${target}" "$@"

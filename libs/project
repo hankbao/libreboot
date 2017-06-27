@@ -504,6 +504,27 @@ project_sources_archive_missing_check() {
 	fi
 }
 
+project_sources_prepare() {
+	local project="$1"
+	local sources_path="$2"
+
+	# Not implemented yet / May end up not being needed
+	#project_sources_prepare_blobs
+	project_sources_prepare_patch "${project}" "${sources_path}" "$@"
+}
+
+project_sources_prepare_patch() {
+	local project="$1"
+	local sources_path="$2"
+
+	local project_path="$(project_path "${project}")"
+	local patches_path="${project_path}/${PATCHES}"
+
+	for patch in "${patches_path}"/[!.]*.{patch,diff}; do
+		diff_patch_file "${sources_path}" "${patch}"
+	done
+}
+
 project_blobs_path() {
 	local project=$1
 	shift
@@ -674,6 +695,45 @@ project_download_check_git() {
 
 	git_project_check "$repository"
 	git_project_prepare_check "$project" "$repository" "$@"
+}
+
+project_download_archive() {
+	local project="$1"
+	shift
+	local archive_uri="$1"
+	shift
+	local archive_dsig_uri="$1"
+
+	local archive="${archive_uri##*/}"
+	local compress_fmt="${archive##*.tar}"
+
+	local directory_prefix="${root}/${SOURCES}"
+	local archive_path="${root}/${SOURCES}/${archive}"
+	local sources_path="${root}/${SOURCES}/${project}"
+
+	if [[ "${compress_fmt#*.}" != "${ARCHIVE#*.}" ]]; then
+		ARCHIVE="tar${compress_fmt}"
+	fi
+
+	# TODO: Split this code block into separate functions
+	# Archive verification will be included at that point in time
+	if ! project_sources_directory_filled_check "${project}"; then
+		wget_wrapper "${directory_prefix}" "${archive_uri}" "${archive_dsig_uri}"
+		archive_extract "${archive_path}" "${directory_prefix}"
+
+		mv "${archive_path%.tar*}" "${sources_path}"
+	fi
+
+	# Patch the source, if necessary
+	project_sources_prepare "${project}" "${sources_path}"
+}
+
+project_download_check_archive() {
+	local project="$1"
+	local sources_path="$2"
+
+	# TODO: Write the following function
+	#project_sources_archive_extract_check "${project}" "${sources_path}"
 }
 
 project_extract() {
