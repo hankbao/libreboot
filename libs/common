@@ -64,16 +64,35 @@ arguments_list() {
 	done
 }
 
+download_wrapper() {
+	local download_dir="$1"
+	shift
+	local uris=($@)
+
+	# TODO: Add support for curl, in addition
+	# to wget, for compatibility reasons
+	wget_options=(
+		--config=/dev/null
+		--secure-protocol=PFS
+		--directory-prefix="${download_dir}"
+		--continue
+		--
+	)
+
+	wget "${wget_options[@]}" "${uris[@]}"
+}
+
 diff_patch_file() {
 	local repository_path="$1"
 	local patch_file_path="$2"
 
-	local filename_in_diff="$(sed -rne 's/^-{3} {1}(.*)$/\1/p' <"${patch_file_path}")"
+	# TODO: Improve handling of filenames to avoid gotchas w/ \n, \t, etc.
+	local filename_in_diff="$(sed -rne 's/^-{3}\s+([^ 	\r\n]*).*/\1/p' "${patch_file_path}")"
 
 	local source_file_path
 
-	if ! ( grep -E '^-{3}.*/' <"${patch_file_path}" >/dev/null 2>&1 ); then
-		source_file_path="${repository_path}/${filename_in_diff##\ }"
+	if ! ( grep -E '^-{3}.*/' "${patch_file_path}" >/dev/null 2>&1 ); then
+		source_file_path="${repository_path}/${filename_in_diff}"
 	else
 		source_file_path="${repository_path}/${filename_in_diff##*/}"
 	fi
