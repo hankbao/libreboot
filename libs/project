@@ -718,7 +718,7 @@ project_download_archive() {
 	# TODO: Split this code block into separate functions
 	# Archive verification will be included at that point in time
 	if ! project_sources_directory_filled_check "${project}"; then
-		wget_wrapper "${directory_prefix}" "${archive_uri}" "${archive_dsig_uri}"
+		download_wrapper "${directory_prefix}" "${archive_uri}" "${archive_dsig_uri}"
 		archive_extract "${archive_path}" "${directory_prefix}"
 
 		mv "${archive_path%.tar*}" "${sources_path}"
