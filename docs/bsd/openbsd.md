@@ -158,7 +158,7 @@ On your OpenBSD root partition, create the `/grub` directory and add the file
     timeout=3
 
     menuentry "OpenBSD" {
-        kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+        kopenbsd -r sd0a (ahci0,openbsd1)/bsd
     }
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
