@@ -134,8 +134,11 @@ On your NetBSD root partition, create the `/grub` directory and add
 the file `libreboot_grub.cfg` to it. Inside the
 `libreboot_grub.cfg` add these lines:
 
-    default=0 timeout=3 menuentry "NetBSD" {
-        knetbsd -r wd0a (ahci0,netbsd1)/netbsd
+    default=0
+    timeout=3
+
+    menuentry "NetBSD" {
+        knetbsd -r wd0a (ahci0,netbsd1)/netbsd
     }
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
