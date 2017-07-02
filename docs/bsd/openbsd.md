@@ -154,8 +154,11 @@ be used by libreboot.
 On your OpenBSD root partition, create the `/grub` directory and add the file
 `libreboot_grub.cfg` to it. Inside the `libreboot_grub.cfg` add these lines:
 
-    default=0 timeout=3 menuentry "OpenBSD" {
-        kopenbsd -r sd0a (ahci0,openbsd1)/bsd
+    default=0
+    timeout=3
+
+    menuentry "OpenBSD" {
+        kopenbsd -r sd0a (ahci0,openbsd1)/bsd
     }
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
