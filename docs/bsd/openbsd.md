@@ -12,13 +12,13 @@ LibertyBSD and prioritise that in this guide.
 
 This section relates to preparing, booting and installing OpenBSD on
 your libreboot system, using nothing more than a USB flash drive (and
-*dd*). They've only been tested on a Lenovo ThinkPad x200.
+`dd`). They've only been tested on a Lenovo ThinkPad x200.
 
 *This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.*
 
-install60.fs is the installation image for OpenBSD 6.0. Adapt the
+install61.fs is the installation image for OpenBSD 6.1. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
 
 Prepare the USB drive (in LibertyBSD or OpenBSD)
@@ -27,21 +27,19 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable LibertyBSD/OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:
+Connect the USB drive and check the system message buffer:
 
     $ dmesg | tail
 
-Check to confirm which drive it is, for example, if you think its sd3:
+Check to confirm which drive it is, for example, if you think it's `sd3`:
 
     $ disklabel sd3
 
-Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
+Check that it wasn't automatically mounted. If it was, unmount it:
 
     $ doas umount /dev/sd3i
 
-dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:
+Now write the OpenBSD installer to the drive with `dd`:
 
     $ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync
 
@@ -54,7 +52,7 @@ Prepare the USB drive (in NetBSD)
 [This
 page](https://wiki.netbsd.org/tutorials/how_to_install_netbsd_from_an_usb_memory_stick/)
 on the NetBSD website shows how to create a NetBSD bootable USB drive
-from within NetBSD itself. You should use the *dd* method documented
+from within NetBSD itself. You should use the `dd` method documented
 there. This will also work with the OpenBSD image.
 
 Prepare the USB drive (in FreeBSD)
@@ -62,7 +60,7 @@ Prepare the USB drive (in FreeBSD)
 
 [This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.md) on
 the FreeBSD website shows how to create a bootable USB drive for
-installing FreeBSD. Use the *dd* on that page. You can also use the same
+installing FreeBSD. Use the `dd` on that page. You can also use the same
 instructions with a OpenBSD ISO image.
 
 Prepare the USB drive (in GNU+Linux)
@@ -88,8 +86,8 @@ example:
 dmesg told you what device it is. Overwrite the drive, writing your
 distro ISO to it with dd. For example:
 
-    $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
-    # dd if=install60.fs of=/dev/sdX bs=8M; sync
+    $ sudo dd if=install61.fs of=/dev/sdX bs=8M; sync
+    # dd if=install61.fs of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -99,7 +97,7 @@ Installing OpenBSD without full disk encryption
 
 Press C in GRUB to access the command line:
 
-    grub> kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd
+    grub> kopenbsd (usb0,openbsd1)/6.1/amd64/bsd.rd
     grub> boot
 
 It will start booting into the OpenBSD installer. Follow the normal
@@ -110,7 +108,7 @@ Installing OpenBSD with full disk encryption
 
 Not working. You can modify the above procedure (installation w/o
 encryption) to install OpenBSD using full disk encryption, and it
-appears to work, except that its not yet clear how to actually *boot* an
+appears to work, except that it's not yet clear how to actually *boot* an
 OpenBSD+FDE installation using libreboot+Grub2. If you get it working,
 please let us know.
 
@@ -160,6 +158,9 @@ On your OpenBSD root partition, create the `/grub` directory and add the file
     menuentry "OpenBSD" {
         kopenbsd -r sd0a (ahci0,openbsd1)/bsd
     }
+
+If your OpenBSD installation uses a GPT scheme, use the `gpt4` partition
+instead of `openbsd1`.
 
 The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
