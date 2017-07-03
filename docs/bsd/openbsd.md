@@ -159,6 +159,9 @@ On your OpenBSD root partition, create the `/grub` directory and add the file
         kopenbsd -r sd0a (ahci0,openbsd1)/bsd
     }
 
+If your OpenBSD installation uses a GPT scheme, use the `gpt4` partition
+instead of `openbsd1`.
+
 The next time you boot, you'll see the old Grub menu for a few seconds,
 then you'll see the a new menu with only OpenBSD on the list. After 3
 seconds OpenBSD will boot, or you can hit enter to boot.
