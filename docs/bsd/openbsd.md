@@ -18,7 +18,7 @@ your libreboot system, using nothing more than a USB flash drive (and
 CrOS devices in libreboot), instructions have yet to be written in the
 libreboot documentation.*
 
-install60.fs is the installation image for OpenBSD 6.0. Adapt the
+install61.fs is the installation image for OpenBSD 6.1. Adapt the
 filename accordingly, for a different OpenBSD version or LibertyBSD.
 
 Prepare the USB drive (in LibertyBSD or OpenBSD)
@@ -88,8 +88,8 @@ example:
 dmesg told you what device it is. Overwrite the drive, writing your
 distro ISO to it with dd. For example:
 
-    $ sudo dd if=install60.fs of=/dev/sdX bs=8M; sync
-    # dd if=install60.fs of=/dev/sdX bs=8M; sync
+    $ sudo dd if=install61.fs of=/dev/sdX bs=8M; sync
+    # dd if=install61.fs of=/dev/sdX bs=8M; sync
 
 You should now be able to boot the installer from your USB drive.
 Continue reading, for information about how to do that.
@@ -99,7 +99,7 @@ Installing OpenBSD without full disk encryption
 
 Press C in GRUB to access the command line:
 
-    grub> kopenbsd (usb0,openbsd1)/6.0/amd64/bsd.rd
+    grub> kopenbsd (usb0,openbsd1)/6.1/amd64/bsd.rd
     grub> boot
 
 It will start booting into the OpenBSD installer. Follow the normal
