@@ -3,9 +3,9 @@ title: Information about sending patches for review
 x-toc-enable: true
 ...
 
-Download Libreboot from the Git repository here:
+Download Libreboot from the Git repository like so:
 
-**git clone https://notabug.org/libreboot/libreboot.git**
+    $ git clone https://notabug.org/libreboot/libreboot.git
 
 You can submit your patches via
 [Notabug pull requests](#how-to-submit-your-patches-via-pull-requests) or
@@ -17,7 +17,7 @@ Information about how the Libreboot project is governed is documented in our
 Editing the website and documentation, wiki-style
 -------------------------------------------------
 
-The website and documentation is inside the **www** directory in the
+The website and documentation is inside the `www` directory in the
 [Git repository](#how-to-download-libreboot-from-the-git-repository), in
 Pandoc flavoured Markdown. The website is generated into static HTML via Pandoc
 with the following scripts in that directory:
@@ -68,9 +68,9 @@ How to download Libreboot from the Git repository
 
 In your terminal:
 
-**git clone https://notabug.org/libreboot/libreboot.git**
+    $ git clone https://notabug.org/libreboot/libreboot.git
 
-A new directory named ***libreboot*** will have been created, containing
+A new directory named `libreboot` will have been created, containing
 libreboot.
 
 How to submit your patches (via pull requests)

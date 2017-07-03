@@ -14,10 +14,10 @@ What version of libreboot do I have?
 Flashrom complains about DEVMEM access
 --------------------------------------
 
-If running flashrom -p internal for software based flashing, and
+If running `flashrom -p internal` for software based flashing, and
 you get an error related to /dev/mem access, you should reboot with
-iomem=relaxed kernel parameter before running flashrom, or use a kernel
-that has CONFIG\_STRICT\_DEVMEM not enabled.
+`iomem=relaxed` kernel parameter before running flashrom, or use a kernel
+that has `CONFIG\_STRICT\_DEVMEM` not enabled.
 
 The backlight is darker on the left side of the screen when lowering the brightness on my X200/T400/T500/R400 
 ---------------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@ both on the original BIOS and in libreboot. It's a quirk in the
 hardware. On debian systems, a workaround is to restart the networking
 service when you connect the ethernet cable:
 
-    sudo service network-manager restart
+    $ sudo service network-manager restart
 
 On Parabola, you can try:
 
-    sudo systemctl restart network-manager
+    $ sudo systemctl restart network-manager
 
 (the service name might be different for you, depending on your
 configuration)
@@ -65,7 +65,7 @@ Libreboot-unstable (or git) now disables loading PCI option ROMs, but
 previous releases with SeaGRUB (20160818-20160907) do not. You can work
 around this by running the following command:
 
-    ./cbfstool yourrom.rom add-int -i 0 -n etc/pci-optionrom-exec
+    $ ./cbfstool yourrom.rom add-int -i 0 -n etc/pci-optionrom-exec
 
 You can find *cbfstool* in the \_util archive with the libreboot release
 that you are using.
@@ -582,7 +582,7 @@ cases.
 Libreboot locks the CMOS table, to ensure consistent functionality for
 all users. You can use:
 
-    nvramtool -C yourrom.rom -w somesetting=somevalue
+    $ nvramtool -C yourrom.rom -w somesetting=somevalue
 
 This will change the default inside that ROM image, and then you can
 re-flash it.
