@@ -27,21 +27,19 @@ Prepare the USB drive (in LibertyBSD or OpenBSD)
 If you downloaded your ISO on a LibertyBSD or OpenBSD system, here is
 how to create the bootable LibertyBSD/OpenBSD USB drive:
 
-Connect the USB drive. Check dmesg:
+Connect the USB drive and check the system message buffer:
 
     $ dmesg | tail
 
-Check to confirm which drive it is, for example, if you think it's sd3:
+Check to confirm which drive it is, for example, if you think it's `sd3`:
 
     $ disklabel sd3
 
-Check that it wasn't automatically mounted. If it was, unmount it. For
-example:
+Check that it wasn't automatically mounted. If it was, unmount it:
 
     $ doas umount /dev/sd3i
 
-dmesg told you what device it is. Overwrite the drive, writing the
-OpenBSD installer to it with dd. For example:
+Now write the OpenBSD installer to the drive with `dd`:
 
     $ doas dd if=install60.fs of=/dev/rsdXc bs=1M; sync
 
