@@ -12,7 +12,7 @@ LibertyBSD and prioritise that in this guide.
 
 This section relates to preparing, booting and installing OpenBSD on
 your libreboot system, using nothing more than a USB flash drive (and
-*dd*). They've only been tested on a Lenovo ThinkPad x200.
+`dd`). They've only been tested on a Lenovo ThinkPad x200.
 
 *This section is only for the GRUB payload. For depthcharge (used on
 CrOS devices in libreboot), instructions have yet to be written in the
@@ -54,7 +54,7 @@ Prepare the USB drive (in NetBSD)
 [This
 page](https://wiki.netbsd.org/tutorials/how_to_install_netbsd_from_an_usb_memory_stick/)
 on the NetBSD website shows how to create a NetBSD bootable USB drive
-from within NetBSD itself. You should use the *dd* method documented
+from within NetBSD itself. You should use the `dd` method documented
 there. This will also work with the OpenBSD image.
 
 Prepare the USB drive (in FreeBSD)
@@ -62,7 +62,7 @@ Prepare the USB drive (in FreeBSD)
 
 [This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.md) on
 the FreeBSD website shows how to create a bootable USB drive for
-installing FreeBSD. Use the *dd* on that page. You can also use the same
+installing FreeBSD. Use the `dd` on that page. You can also use the same
 instructions with a OpenBSD ISO image.
 
 Prepare the USB drive (in GNU+Linux)
