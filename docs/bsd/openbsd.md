@@ -31,7 +31,7 @@ Connect the USB drive. Check dmesg:
 
     $ dmesg | tail
 
-Check to confirm which drive it is, for example, if you think its sd3:
+Check to confirm which drive it is, for example, if you think it's sd3:
 
     $ disklabel sd3
 
@@ -110,7 +110,7 @@ Installing OpenBSD with full disk encryption
 
 Not working. You can modify the above procedure (installation w/o
 encryption) to install OpenBSD using full disk encryption, and it
-appears to work, except that its not yet clear how to actually *boot* an
+appears to work, except that it's not yet clear how to actually *boot* an
 OpenBSD+FDE installation using libreboot+Grub2. If you get it working,
 please let us know.
 
