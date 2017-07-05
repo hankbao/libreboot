@@ -54,12 +54,12 @@ if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
 fi
 
 # change out .md -> .html
-sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
-sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g'
+sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' temp.md
+sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' temp.md
 
 # change out .md -> .html
-sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g'
-sed temp.md -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g'
+sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' temp.md
+sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' temp.md
 
 # work around issue #2872
 TOC=$(grep -q "^x-toc-enable: true$" temp.md && printf '%s\n' "--toc --toc-depth=2") || TOC=""
@@ -75,4 +75,4 @@ pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
 pandoc $1 > $FILE.bare.html
 
 # generate section title anchors as [link]
-sed $FILE.html -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_'
+sed -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_' $FILE.html
