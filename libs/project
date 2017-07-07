@@ -70,227 +70,172 @@ project_function_check() {
 }
 
 project_action() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
-	local arguments=$@
+	local arguments="$@"
 
 	(
 		set +e
 
-		if ! project_check "$project"
-		then
-			printf '%s\n' "Project $project check failed" >&2
-			return 1
-		fi
+		project_action_check "${action}" "${project}" "$@"
 
-		project_action_check "$action" "$project" "$@"
+		printf '%s\n' "Project ${project} ${action} (with ${arguments:-no argument})" >&2
 
-		# Why is this here? Commented out for now.
-		# if [ $? -eq 0 ]
-		# then
-		# 	return 0
-		# fi
+		"${action}" "$@"
 
-		project_include "$project"
-
-		if ! function_check "$action"
-		then
-			return 0
-		fi
-
-		printf '%s\n' "Project $project $action (with ${arguments:-no argument})" >&2
-
-		(
-			set -e
-			"$action" "$@"
-		)
-
-		if [ $? -ne 0 ]
-		then
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed" >&2
+		if [[ "$?" -ne 0 ]]; then
+			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) failed" >&2
 			return 1
 		else
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed" >&2
+			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
 		fi
 	)
 }
 
 project_action_check() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
 	(
 		set +e
 
-		if ! project_check "$project"
-		then
-			printf '%s\n' "Project $project check failed" >&2
+		if ! function_check "${action}_check"; then
 			return 1
 		fi
 
-		project_include "$project"
-
-		if ! function_check "$action""_check"
-		then
-			return 1
-		fi
-
-		for project_force in $PROJECTS_FORCE
-		do
-			if [ "$project_force" = "$project" ]
-			then
+		for project_force in "${PROJECTS_FORCE}"; do
+			if [[ "${project_force}" == "${project}" ]]; then
 				return 1
 			fi
 		done
 
 		(
 			set -e
-			"$action""_check" "$@"
+			"${action}_check" "$@"
 		)
 	)
 }
 
 project_action_helper() {
-	local helper=$1
+	local helper="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
-	(
-		set +e
+	if ! function_check "${helper}"; then
+		return 0
+	fi
 
-		if ! project_check "$project"
-		then
-			printf '%s\n' "Project $project check failed" >&2
-			return 1
-		fi
-
-		project_include "$project"
-
-		if ! function_check "$helper"
-		then
-			return 0
-		fi
-
-		(
-			set -e
-			"$helper" "$@"
-		)
-	)
+	"${helper}" "$@"
 }
 
 project_action_arguments() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
-	project_action_arguments_verify_recursive "$action" "$project" "$@"
-	project_action_arguments_recursive "$action" "$project" "$@"
+	project_include "${project}"
+
+	project_action_arguments_verify_recursive "${action}" "${project}" "$@"
+	project_action_arguments_recursive "${action}" "${project}" "$@"
 }
 
 project_action_arguments_verify_recursive() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
 	local action_helper_arguments
 
 	# Store final argument.
-	local argument=${@:$#}
+	local argument="${@:$#}"
 
 	local test
 
-	if [ $# -gt 1 ]
-	then
+	if [[ "$#" -gt 1 ]]; then
 		# Set previous arguments.
 		set "${@:1:$#-1}"
-	elif [ $# -eq 1 ]
-	then
+	elif [[ "$#" -eq 1 ]]; then
 		shift
 	else
 		return 0
 	fi
 
-	action_helper_arguments=$( project_action_helper "arguments" "$project" "$@" )
+	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
 
-	if ! [ -z "$action_helper_arguments" ]
-	then
-		test=$( printf '%s\n' "$action_helper_arguments" | grep -P "^$argument$" || true )
+	if [[ -n "${action_helper_arguments}" ]]; then
+		test="$(printf '%s\n' "${action_helper_arguments}" | grep -e "^${argument}\$" || true)"
 
-		if [ -z "$test" ]
-		then
-			printf '%s\n' "Invalid argument $argument for project $project action $action" >&2
+		if [[ -z "${test}" ]]; then
+			printf '%s\n' "Invalid argument ${argument} for project ${project} action ${action}" >&2
 			return 1
 		fi
 	fi
 
-	project_action_arguments_verify_recursive "$action" "$project" "$@"
+	project_action_arguments_verify_recursive "${action}" "${project}" "$@"
 }
 
 project_action_arguments_recursive() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
 	local action_helper_arguments
 	local argument
 	local ifs_save
 
-	action_helper_arguments=$( project_action_helper "arguments" "$project" "$@" )
+	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
 
-	if [ $? -ne 0 ] || [ -z "$action_helper_arguments" ]
-	then
-		project_action "$action" "$project" "$@"
+	if [[ "$?" -ne 0 ]] || [[ -z "${action_helper_arguments}" ]]; then
+		project_action "${action}" "${project}" "$@"
 	else
 		# This it to allow space characters in arguments.
-		ifs_save=$IFS
+		ifs_save="${IFS}"
 		IFS=$'\n'
 
-		for argument in $( printf '%s\n' "$action_helper_arguments" )
+		for argument in $(printf '%s\n' "${action_helper_arguments}")
 		do
 			(
-				IFS=$ifs_save
+				IFS="${ifs_save}"
 
 				# Only a single argument at a time is returned by the helper.
-				project_action_arguments_recursive "$action" "$project" "$@" "$argument"
+				project_action_arguments_recursive "${action}" "${project}" "$@" "${argument}"
 			)
 		done
 
-		IFS=$ifs_save
+		IFS="${ifs_save}"
 	fi
 }
 
 project_action_projects() {
-	local action=$1
+	local action="$1"
 	shift
-	local project=$1
+	local project="$1"
 	shift
 
-	local project_path=$( project_path "$project" )
-	local project_projects_path="$project_path/$CONFIGS/$PROJECTS"
-	local project_projects_action_path="$project_path/$CONFIGS/$PROJECTS-$action"
+	local project_path="$(project_path "${project}")"
+	local project_projects_path="${project_path}/${CONFIGS}/${PROJECTS}"
+	local project_projects_action_path="${project_path}/${CONFIGS}/${PROJECTS}-${action}"
 	local arguments
 	local path
 
-	if [ -f "$project_projects_action_path" ]
-	then
-		path=$project_projects_action_path
+	if [[ -f "${project_projects_action_path}" ]]; then
+		path="${project_projects_action_path}"
 	else
-		path=$project_projects_path
+		path="${project_projects_path}"
 	fi
 
 	# Multiple arguments can be read from the file.
-	while read arguments
-	do
-		eval "project_action_arguments "$action" $arguments"
-	done < "$path"
+	while read arguments; do
+		eval "project_action_arguments ${action} ${arguments}"
+	done < "${path}"
 }
 
 project_path() {
