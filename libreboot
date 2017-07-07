@@ -100,9 +100,7 @@ libreboot_project() {
 			if ! project_function_check "${project}" "${action}"; then
 				libreboot_usage
 				exit 1
-			fi
-
-			if [[ "${action}" == "usage" ]]; then
+			elif [[ "${action}" == 'usage' ]]; then
 				project_action "${action}" "${project}" "$@"
 			else
 				project_action_arguments "${action}" "${project}" "$@"
