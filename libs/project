@@ -556,56 +556,54 @@ project_arguments_targets() {
 }
 
 project_usage_actions() {
-	local project=$1
+	local project="$1"
 	shift
 
 	printf '\n%s\n' 'Generic actions:'
 
-	for action in $PROJECT_ACTIONS_GENERIC
-	do
-		if function_check "$action"
-		then
-			printf '%s\n' "  $action"
-		fi
-	done
+	(
+		for action in ${PROJECT_ACTIONS_GENERIC}; do
+			if function_check "${action}"; then
+				printf '%s\n' "  ${action}"
+			fi
+		done
+	)
 
-	if [ $# -gt 0 ]
-	then
+	if [[ "$#" -gt 0 ]]; then
 		printf '\n%s\n' 'Specific actions:'
 
-		for action in "$@"
-		do
-			printf '%s\n' "  $action"
-		done
+		(
+			for action in "$@"; do
+				printf '%s\n' "  ${action}"
+			done
+		)
 	fi
 }
 
 project_usage_arguments() {
-	local project=$1
+	local project="$1"
 	shift
 
 	printf '\n%s\n' 'Arguments:'
 
-	project_usage_arguments_recursive "$project" "  " "$@"
+	project_usage_arguments_recursive "${project}" '  ' "$@"
 }
 
 project_usage_arguments_recursive() {
-	local project=$1
+	local project="$1"
 	shift
-	local spacing=$1
+	local spacing="$1"
 	shift
 
 	local action_helper_arguments
 	local argument
 
-	action_helper_arguments=$( project_action_helper "arguments" "$project" "$@" )
+	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
 
-	if ! [ -z "$action_helper_arguments" ]
-	then
-		printf '%s\n' "$action_helper_arguments" | while read argument
-		do
-			printf '%s\n' "$spacing$argument"
-			project_usage_arguments_recursive "$project" "  $spacing" "$@" "$argument"
+	if [[ -n "${action_helper_arguments}" ]]; then
+		for argument in ${action_helper_arguments}; do
+			printf '%s\n' "${spacing}${argument}"
+			project_usage_arguments_recursive "${project}" "  ${spacing}" "$@" "${argument}"
 		done
 	fi
 }
