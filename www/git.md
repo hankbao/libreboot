@@ -24,7 +24,7 @@ with the following scripts in that directory:
 
 - index.sh: generates the news feed (on the News section of the website)
 - publish.sh: converts an .md file to an .html file
-- generate.sh: with calls to index.sh and publish.sh, compiles the entire
+- Makefile: with calls to index.sh and publish.sh, compiles the entire
   Libreboot website
 
 Use any standard text editor (e.g. Vim, Emacs, Nano, Gedit) to edit the files,

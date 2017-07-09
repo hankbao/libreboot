@@ -20,7 +20,6 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e
 
-printf '%s\n' $1
 FILE=${1%.md}
 TMPFILE=$(mktemp -t libreboot_www.XXXXXXXXXX)
 
