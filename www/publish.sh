@@ -27,7 +27,9 @@ cat "$1" > "$TMPFILE"
 
 OPTS="-T Libreboot"
 
-if [ "${FILE}" != "./index" ]; then
+if [[ $FILE == "index" || $FILE == "./index" ]]; then
+        OPTS="--css /headercenter.css"
+else
         if [[ $FILE == *suppliers ]]
         then
             RETURN=""
@@ -42,15 +44,14 @@ if [ "${FILE}" != "./index" ]; then
             RETURN="<strong><a href='/git.html#editing-the-website-and-documentation-wiki-style'>Edit this page</a></strong> -- <a href='$DEST'>Back to previous index</a>"
             OPTS="-T Libreboot"
         fi
-else
-        OPTS="--css /headercenter.css"
 fi
 
 if [[ $FILE = *suppliers ]]; then
         printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> "$TMPFILE"
 fi
 
-if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
+if [[ $FILE != "./docs/fdl-1.3" && $FILE != "docs/fdl-1.3" &&
+      $FILE != "./conduct"      && $FILE != "conduct" ]]; then
     cat footer.md >> "$TMPFILE"
 fi
 
