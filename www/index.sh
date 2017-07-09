@@ -60,7 +60,7 @@ rss() {
     for f in $FILES
     do
         # render content and escape
-        desc=$(sed ${f%.md}.bare.html -e 's/</\&lt;/g' | sed -e 's/>/\&gt;/g')
+        desc=$(sed -e 's/</\&lt;/g' ${f%.md}.bare.html | sed -e 's/>/\&gt;/g')
         url="${f%.md}.html"
 
         printf '%s\n' '<item>'
