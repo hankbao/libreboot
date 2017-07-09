@@ -263,6 +263,7 @@ archive_create() {
 		--files-from="${tarfiles_path}"
 		--transform="s,^,${directory}/,S"
 		--no-recursion
+		--warning=no-filename-with-nuls
 		--null
 		--owner=0
 		--group=0
@@ -330,6 +331,7 @@ rootfs_create() {
 		--file="${rootfs_path}"
 		--files-from="${tarfiles_path}"
 		--no-recursion
+		--warning=no-filename-with-nuls
 		--null
 		--owner=0
 		--group=0
