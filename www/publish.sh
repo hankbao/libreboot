@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io>
 # Copyright (C) 2017 Leah Rowe <info@minifree.org>
+# Copyright (C) 2017 Michael Reed <michael@michaelreed.io>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,14 +20,16 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -e
 
-printf '%s\n' $1
 FILE=${1%.md}
+TMPFILE=$(mktemp -t libreboot_www.XXXXXXXXXX)
 
-cat $1 > temp.md
+cat "$1" > "$TMPFILE"
 
 OPTS="-T Libreboot"
 
-if [ "${FILE}" != "./index" ]; then
+if [[ $FILE == "index" || $FILE == "./index" ]]; then
+        OPTS="--css /headercenter.css"
+else
         if [[ $FILE == *suppliers ]]
         then
             RETURN=""
@@ -41,34 +44,33 @@ if [ "${FILE}" != "./index" ]; then
             RETURN="<strong><a href='/git.html#editing-the-website-and-documentation-wiki-style'>Edit this page</a></strong> -- <a href='$DEST'>Back to previous index</a>"
             OPTS="-T Libreboot"
         fi
-else
-        OPTS="--css /headercenter.css"
 fi
 
 if [[ $FILE = *suppliers ]]; then
-        printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> temp.md
+        printf '\n%s\n' "<strong><a href=\"/git.html#editing-the-website-and-documentation-wiki-style\">Edit this page</a></strong> -- <a href=\"../\">Back to previous page</a>" >> "$TMPFILE"
 fi
 
-if [ "${FILE}" != "./docs/fdl-1.3" ] && [ "${FILE}" != "./conduct" ]; then
-    cat footer.md >> temp.md
+if [[ $FILE != "./docs/fdl-1.3" && $FILE != "docs/fdl-1.3" &&
+      $FILE != "./conduct"      && $FILE != "conduct" ]]; then
+    cat footer.md >> "$TMPFILE"
 fi
 
 # change out .md -> .html
-sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' temp.md
-sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' temp.md
+sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' "$TMPFILE"
 
 # change out .md -> .html
-sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' temp.md
-sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' temp.md
+sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' "$TMPFILE"
 
 # work around issue #2872
-TOC=$(grep -q "^x-toc-enable: true$" temp.md && printf '%s\n' "--toc --toc-depth=2") || TOC=""
+TOC=$(grep -q "^x-toc-enable: true$" "$TMPFILE" && printf '%s\n' "--toc --toc-depth=2") || TOC=""
 
 # work around heterogenous pandoc versions
 SMART=$(pandoc -v | grep -q '2\.0' || printf '%s\n' "--smart") || SMART=""
 
 # chuck through pandoc
-pandoc $TOC $SMART temp.md -s --css /global.css $OPTS \
+pandoc $TOC $SMART "$TMPFILE" -s --css /global.css $OPTS \
         --template template.html --metadata return="$RETURN"> $FILE.html
 
 # additionally, produce bare file for RSS
@@ -76,3 +78,6 @@ pandoc $1 > $FILE.bare.html
 
 # generate section title anchors as [link]
 sed -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_' $FILE.html
+
+# clean up temporary file
+rm -f "$TMPFILE"
