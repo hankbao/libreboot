@@ -108,7 +108,7 @@ lifting up the left and right side of it:\
 ![](images/x200/disassembly/0006.1.jpg)
 ![](images/x200/disassembly/0006.jpg)
 
-This shows the location of the flash chip, for both SOIC-8 and SOIC-16:
+This shows the location of the flash chip, for both SOIC-8 and SOIC-16:\
 ![](images/x200/x200_soic16.jpg)
 ![](images/x200/x200_soic8.jpg)
 
