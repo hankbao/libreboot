@@ -37,13 +37,12 @@ meta() {
 
 # generate the index file
 
-FILES=$(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+FILES=$(ls -r1 news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
 
 cat news-list.md > news/index.md
 
 for f in $FILES
 do
-    touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
     meta >> news/index.md
 done
 
