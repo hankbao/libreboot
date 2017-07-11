@@ -37,13 +37,13 @@ meta() {
 
 # generate the index file
 
-FILES=$(ls -1 -t news/*.md | sed -e s-.*index.md-- -e s-.*presentation.md--)
+# MANIFEST determines the order of news articles in news/index.md
+FILES=$(cat news/MANIFEST)
 
 cat news-list.md > news/index.md
 
 for f in $FILES
 do
-    touch -d "$(sed -n 3p $f | sed -e 's/^..//g')" $f
     meta >> news/index.md
 done
 
