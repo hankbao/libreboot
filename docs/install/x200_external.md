@@ -108,9 +108,12 @@ lifting up the left and right side of it:\
 ![](images/x200/disassembly/0006.1.jpg)
 ![](images/x200/disassembly/0006.jpg)
 
+This shows the location of the flash chip, for both SOIC-8 and SOIC-16:
+![](images/x200/x200_soic16.jpg)
+![](images/x200/x200_soic8.jpg)
+
 Lift back the tape that covers a part of the flash chip, and then
 connect the clip:\
-![](images/x200/disassembly/0007.jpg)
 ![](images/x200/disassembly/0008.jpg)
 
 On pin 2 of the BBB, where you have the ground (GND), connect the ground
