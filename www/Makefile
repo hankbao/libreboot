@@ -16,7 +16,7 @@
 MD_MAIN != find -L . -name '*.md' -and ! -path '*/news/*'
 HTML_MAIN = $(MD_MAIN:.md=.html)
 
-MD_NEWS != find -L news -name '*.md' -and ! -name index.md
+MD_NEWS != cat news/MANIFEST
 HTML_NEWS = $(MD_NEWS:.md=.html)
 
 
