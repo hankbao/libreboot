@@ -243,7 +243,7 @@ git_project_patch_recursive() {
 		git_project_patch_recursive "${project}" "${repository}" "${branch}" "$(dirname "${path}")"
 	fi
 
-	for patch in "${patches_path}"/[!.]*.{patch,diff}; do
+	for patch in "${patches_path}"/[!.]*.@(patch|diff); do
 		if [[ "${patch##*.}" == "patch" ]]; then
 			git_patch "${repository_path}" "${branch}" "${patch}"
 		else
