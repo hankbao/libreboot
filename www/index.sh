@@ -19,17 +19,20 @@ BLOGTITLE="Libreboot News"
 BLOGBASE="https://libreboot.org/"
 BLOGDESCRIPTION="News on Libreboot development"
 
+# usage: title file
 title() {
-    sed -n 1p $f | sed -e s-^..--
+    sed -n 1p "$1" | sed -e s-^..--
 }
 
+# usage: meta file
 meta() {
-    URL=$(printf '%s\n' ${f%.md}.html | sed -e s-news/--)
+    file=$1
+    URL=$(printf '%s\n' "${file%.md}.html" | sed -e s-news/--)
 
-    printf '%s\n' "[$(title)]($URL){.title}"
-    printf '%s\n' "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
+    printf '%s\n' "[$(title "$file")]($URL){.title}"
+    printf '%s\n' "[$(sed -n 3p "$file" | sed -e s-^..--)]{.date}"
     printf '\n'
-    tail -n +5 $f | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
+    tail -n +5 "$file" | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
 
     printf '\n'
     printf '\n'
@@ -44,7 +47,7 @@ cat news-list.md > news/index.md
 
 for f in $FILES
 do
-    meta >> news/index.md
+    meta "$f" >> news/index.md
 done
 
 # generate an RSS index
@@ -64,7 +67,7 @@ rss() {
         url="${f%.md}.html"
 
         printf '%s\n' '<item>'
-        printf '%s\n' "<title>$(title)</title>"
+        printf '%s\n' "<title>$(title "$f")</title>"
         printf '%s\n' "<link>$BLOGBASE$url</link>"
         printf '%s\n' "<description>$desc</description>"
         printf '%s\n' '</item>'
