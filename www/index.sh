@@ -38,7 +38,7 @@ meta() {
 # generate the index file
 
 # MANIFEST determines the order of news articles in news/index.md
-FILES=$(cat news/MANIFEST)
+FILES=$(< news/MANIFEST)
 
 cat news-list.md > news/index.md
 
