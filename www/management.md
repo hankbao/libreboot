@@ -44,13 +44,9 @@ Generally, the people on this list have these responsibilities:
 - Moderation of the IRC channel, mailing lists and other discussion mediums.
 - Comply with the [Guidelines for Good Conduct](conduct.md)
 
-System administration
----------------------
-
-The following people have SSH access to libreboot.org:
-
-- Alyssa and Leah have root access, for managing services and infrastructure
-- Other people can join as system administrators, in the future
+All members are granted SSH access, with varying levels of access depending on
+need. At the very least, all members are able to update the website when new
+changes to it are merged in the Git repository.
 
 People of interest
 ------------------
