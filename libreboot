@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 GLOBIGNORE=".:.." # This enables the shell option 'dotglob' as well.
-shopt -s nullglob
+shopt -s nullglob extglob
 
 libreboot_usage() {
 	local action
