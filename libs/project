@@ -15,9 +15,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-PROJECT_ACTIONS_GENERIC="usage download extract update build install release clean"
-PROJECT_ACTIONS_HELPERS="arguments"
-PROJECT_FUNCTIONS=$( for action in $PROJECT_ACTIONS_GENERIC ; do printf '%s\n' "$action" "$action""_check" ; done ; printf '%s\n' "$PROJECT_ACTIONS_HELPERS" )
+PROJECT_ACTIONS_GENERIC=(usage download extract update build install release clean)
+PROJECT_ACTIONS_HELPERS=(arguments)
+PROJECT_ACTIONS_FUNCTIONS=(
+	"${PROJECT_ACTIONS_GENERIC[@]}"
+	"${PROJECT_ACTIONS_GENERIC[@]/%/_check}"
+	"${PROJECT_ACTIONS_HELPERS[@]}"
+)
 
 INSTALL_REGEX="\([^:]*\):\(.*\)"
 
@@ -26,7 +30,7 @@ project_include() {
 
 	local project_path=$( project_path "$project" )
 
-	unset -f $PROJECT_FUNCTIONS
+	unset -f "${PROJECT_ACTIONS_FUNCTIONS[@]}"
 
 	. "$project_path/$project"
 
@@ -562,7 +566,7 @@ project_usage_actions() {
 	printf '\n%s\n' 'Generic actions:'
 
 	(
-		for action in ${PROJECT_ACTIONS_GENERIC}; do
+		for action in "${PROJECT_ACTIONS_GENERIC[@]}"; do
 			if function_check "${action}"; then
 				printf '%s\n' "  ${action}"
 			fi

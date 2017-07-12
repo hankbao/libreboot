@@ -26,7 +26,7 @@ libreboot_usage() {
 
 	printf '\n%s\n' 'Generic project actions:' >&2
 
-	for action in ${PROJECT_ACTIONS_GENERIC}; do
+	for action in "${PROJECT_ACTIONS_GENERIC[@]}"; do
 		printf '%s\n' "  ${action}" >&2
 	done
 
@@ -46,7 +46,7 @@ libreboot_usage() {
 
 	printf '\n%s\n' 'Generic tool actions:' >&2
 
-	for action in ${TOOL_ACTIONS_GENERIC}; do
+	for action in "${TOOL_ACTIONS_GENERIC[@]}"; do
 		printf '%s\n' "  ${action}" >&2
 	done
 
