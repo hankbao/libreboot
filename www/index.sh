@@ -43,27 +43,33 @@ meta() {
     printf '\n'
 }
 
-rss() {
+# usage: rss_header
+rss_header() {
     printf '%s\n' '<rss version="2.0">'
     printf '%s\n' '<channel>'
 
     printf '%s\n' "<title>$BLOGTITLE</title>"
-    printf '%s\n' "<link>"$BLOGBASE"news/</link>"
+    printf '%s\n' "<link>${BLOGBASE}news/</link>"
     printf '%s\n' "<description>$BLOGDESCRIPTION</description>"
+}
 
-    for f in $FILES
-    do
-        # render content and escape
-        desc=$(sed -e 's/</\&lt;/g' ${f%.md}.bare.html | sed -e 's/>/\&gt;/g')
-        url="${f%.md}.html"
+# usage: rss_main file
+rss_main() {
+    file=$1
 
-        printf '%s\n' '<item>'
-        printf '%s\n' "<title>$(title "$f")</title>"
-        printf '%s\n' "<link>$BLOGBASE$url</link>"
-        printf '%s\n' "<description>$desc</description>"
-        printf '%s\n' '</item>'
-    done
+    # render content and escape
+    desc=$(sed -e 's/</\&lt;/g' "${file%.md}.bare.html" | sed -e 's/>/\&gt;/g')
+    url="${file%.md}.html"
 
+    printf '%s\n' '<item>'
+    printf '%s\n' "<title>$(title "$file")</title>"
+    printf '%s\n' "<link>$BLOGBASE$url</link>"
+    printf '%s\n' "<description>$desc</description>"
+    printf '%s\n' '</item>'
+}
+
+# usage: rss_footer
+rss_footer() {
     printf '%s\n' '</channel>'
     printf '%s\n' '</rss>'
 }
@@ -77,5 +83,11 @@ do
 done
 
 # generate the RSS index
-rss > news/feed.xml
+rss_header > news/feed.xml
+for f in $FILES
+do
+    rss_main "$f" >> news/feed.xml
+done
+rss_footer >> news/feed.xml
+
 cp news/feed.xml feed.xml
