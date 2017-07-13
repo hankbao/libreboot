@@ -70,14 +70,14 @@ TOC=$(grep -q "^x-toc-enable: true$" "$TMPFILE" && printf '%s\n' "--toc --toc-de
 SMART=$(pandoc -v | grep -q '2\.0' || printf '%s\n' "--smart") || SMART=""
 
 # chuck through pandoc
-pandoc $TOC $SMART "$TMPFILE" -s --css /global.css $OPTS \
-        --template template.html --metadata return="$RETURN"> $FILE.html
+pandoc $TOC $SMART "$TMPFILE" -s --css /global.css "$OPTS" \
+        --template template.html --metadata return="$RETURN" > "$FILE.html"
 
 # additionally, produce bare file for RSS
-pandoc $1 > $FILE.bare.html
+pandoc "$1" > "$FILE.bare.html"
 
 # generate section title anchors as [link]
-sed -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_' $FILE.html
+sed -i -e 's_^<h\([123]\) id="\(.*\)">\(.*\)</h\1>_<div class="h"><h\1 id="\2">\3</h\1><a aria-hidden="true" href="#\2">[link]</a></div>_' "$FILE.html"
 
 # clean up temporary file
 rm -f "$TMPFILE"
