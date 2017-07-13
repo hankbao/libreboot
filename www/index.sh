@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io>
+# Copyright (C) 2017 Michael Reed <michael@michaelreed.io>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,60 +20,74 @@ BLOGTITLE="Libreboot News"
 BLOGBASE="https://libreboot.org/"
 BLOGDESCRIPTION="News on Libreboot development"
 
-title() {
-    sed -n 1p $f | sed -e s-^..--
-}
-
-meta() {
-    URL=$(printf '%s\n' ${f%.md}.html | sed -e s-news/--)
-
-    printf '%s\n' "[$(title)]($URL){.title}"
-    printf '%s\n' "[$(sed -n 3p $f | sed -e s-^..--)]{.date}"
-    printf '\n'
-    tail -n +5 $f | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
-
-    printf '\n'
-    printf '\n'
-}
-
-# generate the index file
-
 # MANIFEST determines the order of news articles in news/index.md
-FILES=$(cat news/MANIFEST)
+FILES=$(< news/MANIFEST)
 
-cat news-list.md > news/index.md
 
-for f in $FILES
-do
-    meta >> news/index.md
-done
+# usage: title file
+title() {
+    sed -n 1p "$1" | sed -e s-^..--
+}
 
-# generate an RSS index
+# usage: meta file
+meta() {
+    file=$1
+    URL=$(printf '%s\n' "${file%.md}.html" | sed -e s-news/--)
 
-rss() {
+    printf '%s\n' "[$(title "$file")]($URL){.title}"
+    printf '%s\n' "[$(sed -n 3p "$file" | sed -e s-^..--)]{.date}"
+    printf '\n'
+    tail -n +5 "$file" | perl -p0e 's/(\.|\?|\!)( |\n)(.|\n)*/.../g'
+
+    printf '\n'
+    printf '\n'
+}
+
+# usage: rss_header
+rss_header() {
     printf '%s\n' '<rss version="2.0">'
     printf '%s\n' '<channel>'
 
     printf '%s\n' "<title>$BLOGTITLE</title>"
-    printf '%s\n' "<link>"$BLOGBASE"news/</link>"
+    printf '%s\n' "<link>${BLOGBASE}news/</link>"
     printf '%s\n' "<description>$BLOGDESCRIPTION</description>"
+}
 
-    for f in $FILES
-    do
-        # render content and escape
-        desc=$(sed -e 's/</\&lt;/g' ${f%.md}.bare.html | sed -e 's/>/\&gt;/g')
-        url="${f%.md}.html"
+# usage: rss_main file
+rss_main() {
+    file=$1
 
-        printf '%s\n' '<item>'
-        printf '%s\n' "<title>$(title)</title>"
-        printf '%s\n' "<link>$BLOGBASE$url</link>"
-        printf '%s\n' "<description>$desc</description>"
-        printf '%s\n' '</item>'
-    done
+    # render content and escape
+    desc=$(sed -e 's/</\&lt;/g' "${file%.md}.bare.html" | sed -e 's/>/\&gt;/g')
+    url="${file%.md}.html"
 
+    printf '%s\n' '<item>'
+    printf '%s\n' "<title>$(title "$file")</title>"
+    printf '%s\n' "<link>$BLOGBASE$url</link>"
+    printf '%s\n' "<description>$desc</description>"
+    printf '%s\n' '</item>'
+}
+
+# usage: rss_footer
+rss_footer() {
     printf '%s\n' '</channel>'
     printf '%s\n' '</rss>'
 }
 
-rss > news/feed.xml
+
+# generate the index file
+cat news-list.md > news/index.md
+for f in $FILES
+do
+    meta "$f" >> news/index.md
+done
+
+# generate the RSS index
+rss_header > news/feed.xml
+for f in $FILES
+do
+    rss_main "$f" >> news/feed.xml
+done
+rss_footer >> news/feed.xml
+
 cp news/feed.xml feed.xml
