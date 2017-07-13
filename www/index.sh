@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 #
 # Copyright (C) 2017 Alyssa Rosenzweig <alyssa@rosenzweig.io>
+# Copyright (C) 2017 Michael Reed <michael@michaelreed.io>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -18,6 +19,10 @@
 BLOGTITLE="Libreboot News"
 BLOGBASE="https://libreboot.org/"
 BLOGDESCRIPTION="News on Libreboot development"
+
+# MANIFEST determines the order of news articles in news/index.md
+FILES=$(< news/MANIFEST)
+
 
 # usage: title file
 title() {
@@ -37,20 +42,6 @@ meta() {
     printf '\n'
     printf '\n'
 }
-
-# generate the index file
-
-# MANIFEST determines the order of news articles in news/index.md
-FILES=$(< news/MANIFEST)
-
-cat news-list.md > news/index.md
-
-for f in $FILES
-do
-    meta "$f" >> news/index.md
-done
-
-# generate an RSS index
 
 rss() {
     printf '%s\n' '<rss version="2.0">'
@@ -77,5 +68,14 @@ rss() {
     printf '%s\n' '</rss>'
 }
 
+
+# generate the index file
+cat news-list.md > news/index.md
+for f in $FILES
+do
+    meta "$f" >> news/index.md
+done
+
+# generate the RSS index
 rss > news/feed.xml
 cp news/feed.xml feed.xml
