@@ -17,6 +17,10 @@ body {
     color: #222;
 }
 
+pre {
+    margin-left: 2.5em
+}
+
 #logo {
     width: 20%;
     float: right;
