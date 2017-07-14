@@ -24,7 +24,6 @@ HTML_NEWS = $(MD_NEWS:.md=.html)
 all: $(HTML_MAIN) news/index.html
 
 .SUFFIXES: .md .html
-# Does not apply for news/index.md; see below.
 .md.html:
 	./publish.sh $<
 
