@@ -43,11 +43,11 @@ for setting up the system (I'll go into networking later),
 just connect your system to a router, via an ethernet cable,
 and run the following command:
 
-        # systemctl start dhcpcd.service
+    # systemctl start dhcpcd.service
 
 You can stop it later (if needed), by using systemd's `stop` option:
 
-        # systemctl stop dhcpcd.service
+    # systemctl stop dhcpcd.service
 
 For most people, this should be enough, but if you don't have DHCP enabled
 on your network, then you should setup your network connection first:
@@ -69,7 +69,7 @@ For more information related to `pacman`, review the following articles on the A
 Parabola is kept up-to-date, using `pacman`. When you are updating Parabola,
 make sure to refresh the package list, *before* installing any new updates:
 
-        # pacman -Syy
+    # pacman -Syy
 
 **NOTE: According to the Wiki,** `-Syy` **is better than** `-Sy` **, because it refreshes
 the package list (even if it appears to be up-to-date), which can be useful
@@ -77,7 +77,7 @@ when switching to another mirror.**
 
 Then, actually update the system:
 
-        # pacman -Syu
+    # pacman -Syu
 
 **NOTE: Before installing packages with** `pacman -S`**, always update first,
 using the two commands above.**
@@ -130,7 +130,7 @@ non-free firmware inside; it's transparent to you, but the smart
 data comes from it. Therefore, don't rely on it too much), and then read
 the Arch wiki [article](https://wiki.archlinux.org/index.php/S.M.A.R.T.) on it, to learn how to use it:
 
-        # pacman -S smartmontools
+    # pacman -S smartmontools
 
 ### Cleaning the Package Cache
 *This section provides a brief overview of how to manage the directory that stores
@@ -139,7 +139,7 @@ check out the Arch Wiki guide for [Cleaning the Package Cache](https://wiki.arch
 
 Here's how to use `pacman`, to clean out all old packages that are cached:
 
-        # pacman -Sc
+    # pacman -Sc
 
 The Wiki cautions that this should be used with care. For example, since
 older packages are deleted from the repository, if you encounter issues
@@ -149,7 +149,7 @@ caches available. Only do this ,if you are sure that you won't need it.
 The Wiki also mentions this method for removing everything from the
 cache, including currently installed packages that are cached:
 
-        # pacman -Scc
+    # pacman -Scc
 
 This is inadvisable, since it means re-downloading the package again, if
 you wanted to quickly re-install it. This should only be used when disk
@@ -183,11 +183,11 @@ Read the entire document linked to above, and then continue.
 
 Add your user with the `useradd` command (self explanatory):
 
-        # useradd -m -G wheel -s /bin/bash *your_user_name*
+    # useradd -m -G wheel -s /bin/bash *your_user_name*
 
 Set a password, using `passwd`:
 
-        # passwd *your_user_name*
+    # passwd *your_user_name*
 
 Like with the installation of Parabola, use of the [*diceware method*](http://world.std.com/~reinhold/diceware.html) is recommended,
 for generating secure passphrases.
@@ -199,28 +199,28 @@ this will be necessary to flash the ROM later on. Refer to the Arch wiki's [sudo
 
 The first step is to install the `sudo` package:
 
-        # pacman -S sudo
+    # pacman -S sudo
 
 After installation, we must configure it. To do so, we must modify **/etc/sudoers**.
 This file must *always* be modified with the `visudo` command. `visudo` can be
 difficult for beginners to use, so we'll want to edit the file with `nano`,
 but the trick is that we just can't do this:
 
-        # nano /etc/sudoers
+    # nano /etc/sudoers
 
 Because, this will cause us to edit the file directly, which is not the way
 it was designed to be edited, and could lead to problems with the system.
 Instead, to temporarily allow us to use `nano` to edit the file,
 we need to type this into the terminal:
 
-        # EDITOR=nano visudo
+    # EDITOR=nano visudo
 
 This will open the **/etc/sudoers** file in `nano`, and we can now safely make changes to it.
 
 To give the user we created earlier to ability to use `sudo`, we need to navigate
 to the end of the file, and add this line on the end:
 
-        your_username ALL=(ALL) ALL
+    your_username ALL=(ALL) ALL
 
 Obviously, type in the name of the user you created, instead of **your_username**.
 Save the file, and exit `nano`; your user now has the ability to use `sudo`.
@@ -242,7 +242,7 @@ is an explanation behind the Arch development team's decision to use it.
 
 The **manpage** should also help:
 
-        # man systemd
+    # man systemd
 
 The section on **unit types** is especially useful.
 
@@ -254,15 +254,15 @@ I will reduce the total size of the journal to 50MiB (that's what the wiki recom
 
 Open **/etc/systemd/journald.conf**, and find this line:
 
-        #SystemMaxUse=
+    #SystemMaxUse=
 
 Change it to this:
 
-        SystemMaxUse=50M
+    SystemMaxUse=50M
 
 Restart `journald`:
 
-        # systemctl restart systemd-journald
+    # systemctl restart systemd-journald
 
 The wiki recommends that if the journal gets too large, you can also
 simply delete (`rm -Rf`) everything inside **/var/log/journald**, but
@@ -273,11 +273,11 @@ to delete older records, when the journal size reaches it's limit (according to 
 Finally, the wiki mentions **temporary files**, and the utility for
 managing them.
 
-        # man systemd-tmpfiles
+    # man systemd-tmpfiles
 
 To delete the temporary files, you can use the `clean` option:
 
-        # systemd-tmpfiles --clean
+    # systemd-tmpfiles --clean
 
 According to the **manpage**, this *"cleans all files and directories with
 an age parameter"*. According to the Arch wiki, this reads information
@@ -288,7 +288,7 @@ I looked in **/etc/tmpfiles.d/** and found that it was empty on my system.
 However, **/usr/lib/tmpfiles.d** contained some files. The first one was
 **etc.conf**, containing information and a reference to this **manpage**:
 
-        # man tmpfiles.d
+    # man tmpfiles.d
 
 Read that **manpage**, and then continue studying all the files.
 
@@ -304,16 +304,16 @@ depending on your use case.
 I enabled it on my system, to see what was in it. Edit **/etc/pacman.conf**,
 and below the **extra** section add:
 
-        [kernels]
-        Include = /etc/pacman.d/mirrorlist*
+    [kernels]
+    Include = /etc/pacman.d/mirrorlist*
 
 Now, sync with the newly-added repository:
 
-        # pacman -Syy
+    # pacman -Syy
 
 Lastly, list all available packages in this repository:
 
-        # pacman -Sl kernels
+    # pacman -Sl kernels
 
 In the end, I decided not to install anything from it,
 but I kept the repository enabled regardless.
@@ -326,20 +326,20 @@ This should be the same as the hostname that you set in **/etc/hostname**,
 when installing Parabola. You should also do it with `systemd`.
 If you chose the hostname *parabola*, do it this way:
 
-        # hostnamectl set-hostname parabola
+    # hostnamectl set-hostname parabola
 
 This writes the specified hostname to **/etc/hostname**.
 More information can be found in these **manpages**:
 
-        # man hostname
-        # info hostname
-        # man hostnamectl
+    # man hostname
+    # info hostname
+    # man hostnamectl
 
 Check **/etc/hosts**, to make sure that the hostname that you put in there
 during installation is still on each line:
 
-        127.0.0.1 localhost.localdomain localhost parabola
-        ::1       localhost.localdomain localhost parabola
+    127.0.0.1 localhost.localdomain localhost parabola
+    ::1       localhost.localdomain localhost parabola
 
 You'll note that I set both lines; the second line is for IPv6. Since more and
 more ISPs are providing this now, it's good to be have it enabled, just in case.
@@ -352,18 +352,18 @@ According to the Arch wiki, [udev](https://wiki.archlinux.org/index.php/Udev) sh
 the ethernet chipset, and automatically load the driver for it at boot time.
 You can check this in the **Ethernet controller** section, when running the `lspci` command:
 
-        # lspci -v
+    # lspci -v
 
 Look at the remaining sections **Kernel driver in use** and **Kernel modules**.
 In my case, it was as follows:
 
-        Kernel driver in use: e1000e
-        Kernel modules: e1000e
+    Kernel driver in use: e1000e
+    Kernel modules: e1000e
 
 Check that the driver was loaded, by issuing `dmesg | grep module_name`.
 In my case, I did:
 
-        # dmesg | grep e1000e
+    # dmesg | grep e1000e
 
 ### Network Device Names
 According to the Arch wiki guide on [Configuring Network Device Names](https://wiki.archlinux.org/index.php/Configuring_Network#Device_names),
@@ -383,7 +383,7 @@ For background information, read [Predictable Network Interface Names](http://ww
 
 To show what the device names are for your system, run the following command:
 
-        # ls /sys/class/net
+    # ls /sys/class/net
 
 [Changing the device names](https://wiki.archlinux.org/index.php/Configuring_Network#Change_device_name) is possible,
 but for the purposes of this guide, there is no reason to do it.
@@ -408,17 +408,17 @@ The first step is to install [**Xorg**](https://wiki.archlinux.org/index.php/Xor
 this provides an implementation of the `X Window System`, which is used to provide
 a graphical intefrace in GNU+Linux:
 
-        # pacman -S xorg-server
+    # pacman -S xorg-server
 
 We also need to install the driver for our hardware. Since I am using a Thinkpad X200,
 I will use `xf86-video-intel`; it should be the same on the other Thinkpads,
 as well as the Macbook 1,1 and 2,1.
 
-        # pacman -S xf86-video-intel
+    # pacman -S xf86-video-intel
 
 For other systems, you can try:
 
-        # pacman -Ss xf86-video- | less
+    # pacman -Ss xf86-video- | less
 
 When this is combined with looking at your `lspci` output, you can determine which
 driver is needed. By default, `Xorg` will revert to `xf86-video-vesa`,
@@ -426,7 +426,7 @@ which is a generic driver, and doesn't provide true hardware acceleration.
 
 Other drivers (not just video) can be found by looking at the `xorg-drivers` group:
 
-        # pacman -Sg xorg-drivers
+    # pacman -Sg xorg-drivers
 
 ### Xorg Keyboard Layout
 `xorg` uses a different configuration method for keyboard layouts than Parabola,
@@ -437,7 +437,7 @@ Check the Arch wiki's article on [Xorg's keyboard configuration](https://wiki.ar
 
 To see what layout you currently use, try this on a terminal emulator in `xorg`:
 
-        # setxkbmap -print -verbose 10
+    # setxkbmap -print -verbose 10
 
 I'm simply using the default Qwerty (US) keyboard, so there isn't anything I need
 to change here; if you do need to make any changes, the Arch wiki recommends two ways
@@ -447,7 +447,7 @@ of doing it: manually updating [configuration files](https://wiki.archlinux.org/
 Now we have to install the desktop environment itself. According to the Arch Linux Package Repository,
 if we want all of the MATE Desktop, we need to install two packages:
 
-        # pacman -Syy mate mate-extra
+    # pacman -Syy mate mate-extra
 
 The last step is to install a Display Manager; for MATE, we will be using `lightdm`
 (it's the recommended Display Manager for the MATE Desktop); for this, we'll follow the insructions [here](https://wiki.mate-desktop.org/archlinux_custom_repo#display_manager_recommended),
@@ -456,14 +456,14 @@ So, instead we will install the `lightdm-gtk-greeter` package; it performs the s
 
 We'll also need the `accountsservice` package, which gives us the login window itself: 
 
-        # pacman -Syy lightdm-gtk3-greeter accountsservice
+    # pacman -Syy lightdm-gtk3-greeter accountsservice
 
 After installing all the required packages, we need to make it so that the MATE Desktop Environment
 will start automatically, whenever we boot our computer; to do this, we have to enable the display manager, `lightdm`,
 as well as the service that will prompt us with a login window, `accounts-daemon`:
 
-        # systemctl enable lightdm
-        # systemctl enable accounts-daemon
+    # systemctl enable lightdm
+    # systemctl enable accounts-daemon
 
 Now you have installed the *MATE Desktop Environment*,If you wanted
 to install another desktop environment, check out some [other options](https://wiki.archlinux.org/index.php/Desktop_environment) on the the Arch wiki.
@@ -477,17 +477,17 @@ about it can be found [here](https://wiki.archlinux.org/index.php/NetworkManager
 
 We need to install the NetworkManager package:
 
-        # pacman -S networkmanager
+    # pacman -S networkmanager
 
 We will also need the Network Manager applet, which will allow us to manage our 
 networks from the system tray:
 
-        # pacman -S network-manager-applet
+    # pacman -S network-manager-applet
 
 Finally, we need to start the service (if we want to use it now), or enable it,
 (so that it will activate automatically, at startup).
 
-        # systemctl enable NetworkManager.service
+    # systemctl enable NetworkManager.service
 
 If you need VPN support, you will also want to install the `networkmanager-openvpn` package.
 
@@ -498,11 +498,11 @@ with Network Manager are** `dhcpcd` **and** `wifi-menu`**.**
 
 You can see all currently-running services with this command:
 
-        #  systemctl --type=service
+    #  systemctl --type=service
 
 And you can stop them using this command:
 
-        # systemctl stop service_name.service
+    # systemctl stop service_name.service
 
 If you want to disable those services, meaning that you no longer want them to start
 when the computer boots up, you will need to use `systemctl's` `disable` option,

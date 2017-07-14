@@ -54,7 +54,7 @@ I recommend combining the *diceware* method with something personal about yourse
 
 For example, say that your cat's name is **Max**, and he is three years old; you could do something like this:
 
-        diceware_word_1 diceware_word_2 diceware_word_3 diceware_word_4 Max=3old
+    diceware_word_1 diceware_word_2 diceware_word_3 diceware_word_4 Max=3old
 
 This has a large degree of randomness (due to the usage of the *diceware* method), and also contains a unique piece of personal information that someone would need to know you, in order to guess; it's a very potent combination.
 
@@ -153,21 +153,21 @@ The installer will now give you a message that the installation is complete. Cho
 ## Booting your system
 At this point, you will have finished the installation. At your GRUB boot screen, press `C` to get to the command line, and enter the following commands at the `grub>` prompt:
 
-        grub> cryptomount -a
-        grub> set root='lvm/grubcrypt-trisquel'
-        grub> linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel \
-        >cryptdevice=/dev/mapper/grubcrypt-trisquel:root
-        grub> initrd /initrd.img
-        grub> boot
+    grub> cryptomount -a
+    grub> set root='lvm/grubcrypt-trisquel'
+    grub> linux /vmlinuz root=/dev/mapper/grubcrypt-trisquel \
+    >cryptdevice=/dev/mapper/grubcrypt-trisquel:root
+    grub> initrd /initrd.img
+    grub> boot
 
 Without specifying a device, **cryptomount's** `-a` parameter tries to unlock *all* detected LUKS volumes (i.e., any LUKS-encrypted device that is connected to the system). You can also specify `-u` (for a UUID). Once logged into the operating system, you can find the UUID by using the `blkid` command:
 
-        $ sudo blkid
+    $ sudo blkid
 
 ## ecryptfs
 If you didn't encrypt your home directory, then you can safely ignore this section; if you did choose to encrypt it, then after you log in, you'll need to run this command:
 
-        $ sudo ecryptfs-unwrap-passphrase
+    $ sudo ecryptfs-unwrap-passphrase
 
 This will be needed in the future, if you ever need to recover your home directory from another system. Write it down, or (preferably) store it using a password manager (I recommend `keepass`,`keepasX`, or `keepassXC`).
 

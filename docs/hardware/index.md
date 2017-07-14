@@ -466,7 +466,7 @@ right is the keypad enter. We can make it act as an AltGr.
 If your operating system is Trisquel or other dpkg-based distribution,
 there is an easy solution. Under root (or sudo) run
 
-      # dpkg-reconfigure keyboard-configuration
+    # dpkg-reconfigure keyboard-configuration
 
 and select the option "apple laptop", leave other settings as their
 defaults until you are given the option "Use Keypad Enter as
@@ -477,7 +477,7 @@ everywhere.
 For Parabola or other systemd-based distributions you can enable AltGr
 manually. Simply add the line
 
-      KEYMAP_TOGGLE=lv3:enter_switch
+    KEYMAP_TOGGLE=lv3:enter_switch
 
 to the file /etc/vconsole.conf and then restart the computer.
 

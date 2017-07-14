@@ -110,20 +110,20 @@ Write-protecting the flash chip
 Look in *resources/utilities/ich9deblob/src/descriptor/descriptor.c* for
 the following lines in the *descriptorHostRegionsUnlocked* function:
 
-       descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1;
-       descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1;
-       descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1;
-       descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
-       descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
+    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
 
 Also look in *resources/utilities/ich9deblob/src/ich9gen/mkdescriptor.c*
 for the following lines:
 
-        descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
-        descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
-        descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
-        descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
-        descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
+    descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
 
 NOTE: When you write-protect the flash chip, re-flashing is no longer
 possible unless you use dedicated external equipment, which also means
