@@ -70,7 +70,10 @@ TOC=$(grep -q "^x-toc-enable: true$" "$TMPFILE" && printf '%s\n' "--toc --toc-de
 SMART=$(pandoc -v | grep -q '2\.0' || printf '%s\n' "--smart") || SMART=""
 
 # chuck through pandoc
-pandoc $TOC $SMART "$TMPFILE" -s --css /global.css "$OPTS" \
+#
+# $OPTS must not be quoted, otherwise pandoc interprets '--css /headercenter.css'
+# as one argument, when it is actually two.
+pandoc $TOC $SMART "$TMPFILE" -s --css /global.css $OPTS \
         --template template.html --metadata return="$RETURN" > "$FILE.html"
 
 # additionally, produce bare file for RSS
