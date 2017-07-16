@@ -80,7 +80,7 @@ if it's not new, then there are two ways to handle it:
 you can either choose to fill it with zeroes or random data; I chose random data (e.g., `urandom`),
 because it's more secure. Depending on the size of the drive, this could take a while to complete:
 
-        # dd if=/dev/urandom of=/dev/sdX; sync
+    # dd if=/dev/urandom of=/dev/sdX; sync
 
 2. If the drive were previously encrypted, all you need to do is wipe the LUKS header.
 The size of the header depends upon the specific model of the hard drive;
@@ -88,7 +88,7 @@ you can find this information by doing some research online.
 Refer to this [article](https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/), for more information about LUKS headers.
 You can either fill the header with zeroes, or with random data; again, I chose random data, using `urandom`:
 
-        # head -c 3145728 /dev/urandom > /dev/sdX; sync
+    # head -c 3145728 /dev/urandom > /dev/sdX; sync
 
 Also, if you're using an SSD, there are a two things you should keep in mind:
 
@@ -105,7 +105,7 @@ We'll begin by creating a single, large partition on it, and then encrypting it 
 You will need the `device-mapper` kernel module during the installation;
 this will enable us to set up our encrypted disk. To load it, use the following command:
 
-        # modprobe dm-mod
+    # modprobe dm-mod
 
 We then need to select the **device name** of the drive we're installing the operating system on;
 see the above method, if needed, for figuring out device names.
@@ -113,7 +113,7 @@ see the above method, if needed, for figuring out device names.
 Now that we have the name of the correct device, we need to create the partition on it.
 For this, we will use the `cfdisk` command:
 
-        # cfdisk /dev/sdX
+    # cfdisk /dev/sdX
 
 1. Use the arrow keys to select your partition, and if there is already a partition
 on the drive, select **Delete**, and then **New**.
@@ -128,8 +128,8 @@ the partition table has been altered.
 Now that you have created the partition, it's time to create the encrypted volume on it,
 using the `cryptsetup` command, like this:
 
-        # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash whirlpool \
-        >--iter-time 500 --use-random --verify-passphrase luksFormat /dev/sdXY
+    # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash whirlpool \
+    >--iter-time 500 --use-random --verify-passphrase luksFormat /dev/sdXY
 
 These are just recommended defaults; if you want to use anything else,
 or to find out what options there are, run `man cryptsetup`.
@@ -161,25 +161,25 @@ We will create this using, the [Logical Volume Manager (LVM)](https://wiki.archl
 
 First, we need to open the LUKS partition, at **/dev/mapper/lvm**:
 
-        # cryptsetup luksOpen /dev/sdXY lvm
+    # cryptsetup luksOpen /dev/sdXY lvm
 
 Then, we create LVM partition:
 
-        # pvcreate /dev/mapper/lvm
+    # pvcreate /dev/mapper/lvm
 
 Check to make sure tha the partition was created:
 
-        # pvdisplay
+    # pvdisplay
 
 Next, we create the volume group, inside of which the logical volumes will
 be created. For this example, we will call this group **matrix**. You can call
 yours whatever you would like; just make sure that you remember its name:
 
-        # vgcreate matrix /dev/mapper/lvm
+    # vgcreate matrix /dev/mapper/lvm
 
 Check to make sure that the group was created:
 
-        # vgdisplay
+    # vgdisplay
 
 Lastly, we need to create the logical volumes themselves, inside the volume group;
 one will be our swap, cleverly named **swapvol**, and the other will be our root partition,
@@ -189,11 +189,11 @@ equally cleverly named as **root**.
 Also, make sure to [choose an appropriate swap size](http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space)
 (e.g., **2G** refers to two gigabytes; change this however you see fit):
 
-        # lvcreate -L 2G matrix -n swapvol
+    # lvcreate -L 2G matrix -n swapvol
 
 2. Now, we will create a single, large partition in the rest of the space, for **root**:
 
-        # lvcreate -l +100%FREE matrix -n root
+    # lvcreate -l +100%FREE matrix -n root
 
 You can also be flexible here, for example you can specify a **/boot**, a **/**,
 a **/home**, a **/var**, or a **/usr** volume. For example, if you will be running a
@@ -203,7 +203,7 @@ For a home/laptop system (typical use case), just a root and a swap will do.
 
 Verify that the logical volumes were created correctly:
 
-        # lvdisplay
+    # lvdisplay
 
 #### Make the root and swap Partitions Ready for Installation
 The last steps of setting up the drive for installation are turning **swapvol**
@@ -211,24 +211,24 @@ into an active swap partition, and formatting **root**.
 
 To make **swapvol** into a swap partition, we run the `mkswap` (i.e., make swap) command:
 
-        # mkswap /dev/mapper/matrix-swapvol
+    # mkswap /dev/mapper/matrix-swapvol
 
 Activate the **swapvol**, allowing it to now be used as swap,
 using `swapon` (i.e., turn swap on) command:
 
-        # swapon /dev/matrix/swapvol
+    # swapon /dev/matrix/swapvol
 
 Now I have to format **root**, to make it ready for installation;
 I do this with the `mkfs` (i.e., make file system) command.
 I choose the **ext4** filesystem, but you could use a different one,
 depending on your use case:
 
-        # mkfs.ext4 /dev/mapper/matrix-root
+    # mkfs.ext4 /dev/mapper/matrix-root
 
 Lastly, I need to mount **root**. Fortunately, GNU+Linux has a directory
 for this very purpose: **/mnt**:
 
-        # mount /dev/matrix/root /mnt
+    # mount /dev/matrix/root /mnt
 
 #### Create the /boot and /home Directories
 Now that you have mounted **root**, you need to create the two most important
@@ -238,8 +238,8 @@ as well as each user's personal documents, videos, etc..
 Since you mounted **root** at **/mnt**, this is where you must create them;
 you will do so using `mkdir`:
 
-        # mkdir -p /mnt/home
-        # mkdir -p /mnt/boot
+    # mkdir -p /mnt/home
+    # mkdir -p /mnt/boot
 
 You could also create two separate partitions for **/boot** and **/home**,
 but such a setup would be for advanced users, and is thus not covered in this guide.
@@ -295,7 +295,7 @@ to boot the operating system. To do this, we need to edit a file called **mkinit
 More information about this file can be found [here](https://wiki.parabola.nu/Mkinitcpio),
 but for the sake of this guide, you simply need to run the following command.
 
-        # nano /etc/mkinitcpio.conf
+    # nano /etc/mkinitcpio.conf
 
 There are several modifications that we need to make to the file:
 
@@ -325,12 +325,12 @@ that we encounter problems with the default Linux-Libre kernel (which is continu
 We will also install the `grub` package, which we will need later,
 to make our modifications to the GRUB configuration file:
 
-        # pacman -S linux-libre-lts grub
+    # pacman -S linux-libre-lts grub
 
 Then, we update both kernels like this, using the `mkinitcpio` command:
 
-        # mkinitcpio -p linux-libre
-        # mkinitcpio -p linux-libre-lts
+    # mkinitcpio -p linux-libre
+    # mkinitcpio -p linux-libre-lts
 
 ### Setting up the Hostname
 Now we need to set up the hostname for the system; this is so that our device
@@ -339,15 +339,15 @@ of the Parabola wiki's Beginner's Guide. You can make the hostname anything you 
 for example, if you wanted to choose the hostname **parabola**,
 you would run the `echo` command, like this:
 
-        # echo parabola > /etc/hostname
+    # echo parabola > /etc/hostname
 
 And then you would modify **/etc/hosts** like this, adding the hostname to it:
 
-        # nano /etc/hosts
+    # nano /etc/hosts
 
-        #<ip-address> <hostname.domain.org>   <hostname>
-        127.0.0.1     localhost.localdomain   localhost   parabola
-        ::1           localhost.localdomain   localhost   parabola
+    #<ip-address> <hostname.domain.org>   <hostname>
+    127.0.0.1     localhost.localdomain   localhost   parabola
+    ::1           localhost.localdomain   localhost   parabola
 
 ### Configure the Network
 Now that we have a hostname, we need to configure the settings for the rest of the network.
@@ -359,7 +359,7 @@ The **root** account has control over all the files in the computer; for securit
 we want to protect it with a password. The password requirements given above,
 for the LUKS passphrase, apply here as well. You will set this password with the `passwd` command:
 
-        # passwd
+    # passwd
 
 ### Extra Security Tweaks
 There are some final changes that we can make to the installation, to make it
@@ -369,7 +369,7 @@ significantly more secure; these are based on the [Security](https://wiki.archli
 We will want to open the configuration file for password settings, and increase
 the strength of our **root** password:
 
-        # nano /etc/pam.d/passwd
+    # nano /etc/pam.d/passwd
 
 Add `rounds=65536` at the end of the uncommented 'password' line; in simple terms,
 this will force an attacker to take more time with each password guess, mitigating
@@ -380,7 +380,7 @@ You can prevent any user, other than the root user, from accessing the most impo
 directories in the system, using the `chmod` command; to learn more about this command,
 run `man chmod`:
 
-        # chmod 700 /boot /etc/{iptables,arptables}
+    # chmod 700 /boot /etc/{iptables,arptables}
 
 #### Lockout User After Three Failed Login Attempts
 We can also setup the system to lock a user's account, after three failed login attempts.
@@ -388,16 +388,16 @@ We can also setup the system to lock a user's account, after three failed login 
 To do this, we will need to edit the file **/etc/pam.d/system-login**,
 and comment out this line:
 
-        auth required pam\_tally.so onerr=succeed file=/var/log/faillog*\
+    auth required pam\_tally.so onerr=succeed file=/var/log/faillog*\
 
 You could also just delete it. Above it, put the following line:
 
-        auth required pam\_tally.so deny=2 unlock\_time=600 onerr=succeed file=/var/log/faillog
+    auth required pam\_tally.so deny=2 unlock\_time=600 onerr=succeed file=/var/log/faillog
 
 This configuration will lock the user out for ten minutes.
 You can unlock a user's account manually, using the **root** account, with this command:
 
-        # pam_tally --user *theusername* --reset
+    # pam_tally --user *theusername* --reset
 
 ## Unmount All Partitions and Reboot
 Congratulations! You have finished the installation of Parabola GNU+Linux-Libre.
@@ -405,25 +405,25 @@ Now it is time to reboot the system, but first, there are several preliminary st
 
 Exit from `chroot`, using the `exit` command:
 
-        # exit
+    # exit
 
 Unmount all of the partitions from **/mnt**, and "turn off" the swap volume:
 
-        # umount -R /mnt
-        # swapoff -a
+    # umount -R /mnt
+    # swapoff -a
 
 Deactivate the **root** and **swapvol** logical volumes:
 
-        # lvchange -an /dev/matrix/root
-        # lvchange -an /dev/matrix/swapvol
+    # lvchange -an /dev/matrix/root
+    # lvchange -an /dev/matrix/swapvol
 
 Lock the encrypted partition (i.e., close it):
 
-        # cryptsetup luksClose lvm
+    # cryptsetup luksClose lvm
 
 Shutdown the machine:
 
-        # shutdown -h now
+    # shutdown -h now
 
 After the machine is off, remove the installation media, and turn it on.
 
@@ -435,11 +435,11 @@ After the computer starts, Press `C` to bring up the GRUB command line.
 You can either boot the normal kernel, or the LTS kernel we installed;
 here are the commands for the normal kernel:
 
-        grub> cryptomount -a
-        grub> set root='lvm/matrix-root'
-        grub> linux /boot/vmlinuz-linux-libre root=/dev/matrix/root cryptdevice=/dev/sda1:root
-        grub> initrd /boot/initramfs-linux-libre.img
-        grub> boot
+    grub> cryptomount -a
+    grub> set root='lvm/matrix-root'
+    grub> linux /boot/vmlinuz-linux-libre root=/dev/matrix/root cryptdevice=/dev/sda1:root
+    grub> initrd /boot/initramfs-linux-libre.img
+    grub> boot
 
 If you're trying to boot the LTS kernel, simply add **-lts** to the end
 of each command that contains the kernel (e.g., **/boot/vmlinuz-linux-libre**

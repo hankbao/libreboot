@@ -12,15 +12,15 @@ If you downloaded your ISO while on an existing GNU+Linux system, here is how to
 
 Connect the USB drive. Check `lsblk`, to confirm its device name (e.g., **/dev/sdX**):
 
-         $ lsblk
+    $ lsblk
 
 For this example, let's assume that our drive's name is `sdb`. Make sure that it's not mounted:
 
-        $ sudo umount /dev/sdb
+    $ sudo umount /dev/sdb
 
 Overwrite the drive, writing your distro ISO to it with `dd`. For example, if we are installing Trisquel 7.0 64-bit, and it's located in our Downloads folder, this is the command we would run:
 
-        $ sudo dd if=~/Downloads/trisquel_7.0_amd64.iso of=/dev/sdb bs=8M; sync
+    $ sudo dd if=~/Downloads/trisquel_7.0_amd64.iso of=/dev/sdb bs=8M; sync
 
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
@@ -36,19 +36,19 @@ how to create the bootable GNU+Linux USB drive:
 
 Connect the USB drive. Run `lsblk` to determine which drive it is:
 
-        $ lsblk
+    $ lsblk
 
 To confirm that you have the correct drive, use `disklabel`. For example, if you thought the correct drive were **sd3**, run this command:
 
-        $ disklabel sd3
+    $ disklabel sd3
 
 Make sure that the device isn't mounted, with `doas`; if it is, this command will unmount it:
 
-        $ doas umount /dev/sd3i
+    $ doas umount /dev/sd3i
 
 `lsblk` told you what device it is. Overwrite the drive, writing the OpenBSD installer to it with `dd`. Here's an example:
 
-        $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
+    $ doas dd if=gnulinux.iso of=/dev/rsdXc bs=1M; sync
 
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
@@ -59,17 +59,17 @@ That's it! You should now be able to boot the installer from your USB drive (the
 
 3. Boot the USB, and enter these commands in the GRUB terminal (for 64-bit Intel or AMD):
 
-        grub> set root='usb0'
-        grub> linux /install.amd/vmlinuz
-        grub> initrd /install.amd/initrd.gz
-        grub> boot
+    grub> set root='usb0'
+    grub> linux /install.amd/vmlinuz
+    grub> initrd /install.amd/initrd.gz
+    grub> boot
 
 4. If you are on a 32-bit system (e.g. some Thinkpad X60's), you will need to use these commands:
 
-        grub> set root='usb0'
-        grub> linux /install.386/vmlinuz
-        grub> initrd /install.386/initrd.gz
-        grub> boot
+    grub> set root='usb0'
+    grub> linux /install.386/vmlinuz
+    grub> initrd /install.386/initrd.gz
+    grub> boot
 
 ## Booting ISOLINUX Images (Automatic Method)
 Boot it in GRUB using the `Parse ISOLINUX config (USB)` option. A new menu should appear in GRUB, showing the boot options for that distro; this is a GRUB menu, converted from the usual ISOLINUX menu provided by that distro.
@@ -79,15 +79,15 @@ These are generic instructions. They may or may not be correct for your distribu
 
 If the `ISOLINUX parser` or `Search for GRUB configuration` options won't work, then press `C` in GRUB to access the command line, then run the `ls` command:
 
-        grub> ls
+    grub> ls
 
 Get the device name from the above output (e.g., `usb0`). Here's an example:
 
-        grub> cat (usb0)/isolinux/isolinux.cfg
+    grub> cat (usb0)/isolinux/isolinux.cfg
 
 Either the output of this command will be the ISOLINUX menuentries for that ISO, or link to other `.cfg` files (e.g, **/isolinux/foo.cfg**). For example, if the file found were **foo.cfg**, you would use this command:
 
-        grub> cat (usb0)/isolinux/foo.cfg
+    grub> cat (usb0)/isolinux/foo.cfg
 
 And so on, until you find the correct menuentries for ISOLINUX.
 
@@ -97,14 +97,14 @@ For Debian-based distros (e.g., Trisquel, Devuan), there are typically menuentri
 
 Now, look at the ISOLINUX menuentry; it'll look like this:
 
-        kernel /path/to/kernel append PARAMETERS initrd=/path/to/initrd ...
+    kernel /path/to/kernel append PARAMETERS initrd=/path/to/initrd ...
 
 GRUB works similarly; here are some example GRUB commands:
 
-        grub> set root='usb0'
-        grub> linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS
-        grub> initrd /path/to/initrd
-        grub> boot
+    grub> set root='usb0'
+    grub> linux /path/to/kernel PARAMETERS MAYBE\_MORE\_PARAMETERS
+    grub> initrd /path/to/initrd
+    grub> boot
 
 Note: `usb0` may be incorrect. Check the output of the `ls` command (in GRUB), to see a list of USB devices/partitions. Of course, this will vary from distro to distro. If you did all of that correctly, then it should now be booting your USB drive in the way that you specified.
 
@@ -119,7 +119,7 @@ Use one of the ROM images with `vesafb` in the filename (uses Coreboot framebuff
 ### debian-installer Graphical Corruption in Text-Mode (Debian and Devuan)
 When using the ROM images that use Coreboot's `text mode`, instead of the Coreboot framebuffer, booting the Debian or Devuan net installer results in graphical corruption, because it is trying to switch to a framebuffer, which doesn't exist. Use that kernel parameter on the `linux` line, when booting it:
 
-        vga=normal fb=false
+    vga=normal fb=false
 
 This forces debian-installer to start in `text-mode`, instead of trying to switch to a framebuffer.
 
