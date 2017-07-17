@@ -87,13 +87,11 @@ project_action() {
 
 		printf '%s\n' "Project ${project} ${action} (with ${arguments:-no argument})" >&2
 
-		"${action}" "$@"
-
-		if [[ "$?" -ne 0 ]]; then
+		if "${action}" "$@"; then
+			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
+		else
 			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) failed" >&2
 			return 1
-		else
-			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
 		fi
 	)
 }
@@ -195,9 +193,9 @@ project_action_arguments_recursive() {
 	local argument
 	local ifs_save
 
-	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
+	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@" || true)"
 
-	if [[ "$?" -ne 0 ]] || [[ -z "${action_helper_arguments}" ]]; then
+	if [[ -z "${action_helper_arguments}" ]]; then
 		project_action "${action}" "${project}" "$@"
 	else
 		# This it to allow space characters in arguments.
