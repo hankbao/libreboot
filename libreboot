@@ -173,6 +173,28 @@ libreboot_setup_variables() {
 	local epoch_path="${root}/${DOTEPOCH}"
 	local rnd_seed_path="${root}/${DOTRNDSEED}"
 
+	if [[ -z "${VERSION}" ]]; then
+		if git_check "${root}"; then
+			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
+		elif [[ -f "${version_path}" ]]; then
+			VERSION="$(cat "${version_path}")"
+		else
+			VERSION="${BUILD_SYSTEM}"
+		fi
+	fi
+
+	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
+		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
+	fi
+
+	CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
+	EDITOR="${EDITOR:-$(which vi || true)}"
+	TASKS="${TASKS:-1}"
+
+	libreboot_setup_reproducible_builds_variables
+}
+
+libreboot_setup_reproducible_builds_variables() {
 	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
 	if [[ -z "${RANDOM_SEED}" ]]; then
 		if [[ -f "${rnd_seed_path}" ]]; then
@@ -193,25 +215,7 @@ libreboot_setup_variables() {
 		fi
 	fi
 
-	if [[ -z "${VERSION}" ]]; then
-		if git_check "${root}"; then
-			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
-		elif [[ -f "${version_path}" ]]; then
-			VERSION="$(cat "${version_path}")"
-		else
-			VERSION="${BUILD_SYSTEM}"
-		fi
-	fi
-
-	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
-		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
-	fi
-
-	CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
-	EDITOR="${EDITOR:-$(which vi || true)}"
-	TASKS="${TASKS:-1}"
-
-	# Environment variables useful for creating reproducible builds
+	# Relevant only when libfaketime is preloaded
 	if [[ -n "${LIBFAKETIME_PATH}" ]]; then
 		BUILD_DATE_FMT="%Y-%m-%d %H:%M:%S"
 		BUILD_DATE="$(date -u -d "@${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u -r "${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u "+${BUILD_DATE_FMT}")"
