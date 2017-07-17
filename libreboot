@@ -177,7 +177,7 @@ libreboot_setup_variables() {
 		if git_check "${root}"; then
 			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
 		elif [[ -f "${version_path}" ]]; then
-			VERSION="$(cat "${version_path}")"
+			VERSION="$(< "${version_path}")"
 		else
 			VERSION="${BUILD_SYSTEM}"
 		fi
@@ -194,7 +194,7 @@ libreboot_setup_reproducible_builds_variables() {
 	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
 	if [[ -z "${RANDOM_SEED}" ]]; then
 		if [[ -f "${rnd_seed_path}" ]]; then
-			RANDOM_SEED="$(cat "${rnd_seed_path}")"
+			RANDOM_SEED="$(< "${rnd_seed_path}")"
 		else
 			RANDOM_SEED="${RANDOM}" # True randomness is unnecessary
 		fi
@@ -205,7 +205,7 @@ libreboot_setup_reproducible_builds_variables() {
 		if git_check "${root}"; then
 			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
 		elif [[ -f "${epoch_path}" ]]; then
-			SOURCE_DATE_EPOCH="$(cat "${epoch_path}")"
+			SOURCE_DATE_EPOCH="$(< "${epoch_path}")"
 		else
 			SOURCE_DATE_EPOCH="$(date +%s)"
 		fi
