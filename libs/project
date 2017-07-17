@@ -23,7 +23,7 @@ PROJECT_ACTIONS_FUNCTIONS=(
 	"${PROJECT_ACTIONS_HELPERS[@]}"
 )
 
-INSTALL_REGEX="\([^:]*\):\(.*\)"
+INSTALL_REGEX='\([^:]*\):\(.*\)'
 
 project_include() {
 	local project=$1
@@ -776,7 +776,7 @@ project_build_check() {
 
 		while read rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
 
 			# Source may contain a wildcard.
@@ -858,10 +858,10 @@ project_install() {
 
 		while read rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 			destination_directory_path=$( dirname "$destination_path" )
 
@@ -899,10 +899,10 @@ project_install() {
 
 		while read rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$project_path/$INSTALL/$path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 			destination_directory_path=$( dirname "$destination_path" )
 
@@ -952,7 +952,7 @@ project_install_check() {
 
 		while read rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 
 			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
@@ -986,7 +986,7 @@ project_install_check() {
 
 		while read rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 
 			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
