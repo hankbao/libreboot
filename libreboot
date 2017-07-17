@@ -187,10 +187,6 @@ libreboot_setup_variables() {
 		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
 	fi
 
-	CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
-	EDITOR="${EDITOR:-$(which vi || true)}"
-	TASKS="${TASKS:-1}"
-
 	libreboot_setup_reproducible_builds_variables
 }
 

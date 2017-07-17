@@ -43,6 +43,10 @@ ARCHIVE="tar.xz"
 CHECKSUM="sha256sum"
 DSIG="asc"
 
+CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
+EDITOR="${EDITOR:-$(which vi || true)}"
+TASKS="${TASKS:-1}"
+
 function_check() {
 	local function=$1
 
