@@ -111,7 +111,7 @@ project_action_check() {
 			return 1
 		fi
 
-		for project_force in "${PROJECTS_FORCE}"; do
+		for project_force in ${PROJECTS_FORCE}; do
 			if [[ "${project_force}" == "${project}" ]]; then
 				return 1
 			fi
