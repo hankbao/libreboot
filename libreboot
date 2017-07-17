@@ -31,10 +31,9 @@ libreboot_usage() {
 	done
 
 	printf '\n%s\n' 'Virtual project actions:' >&2
-
-	printf '%s\n' '  sources'
-	printf '%s\n' '  produce'
-	printf '%s\n' '  test'
+	printf '%s\n'   '  sources'
+	printf '%s\n'   '  produce'
+	printf '%s\n'   '  test'
 
 	printf '\n%s\n' 'Project targets:' >&2
 
@@ -59,16 +58,16 @@ libreboot_usage() {
 	done
 
 	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  PROJECTS_FORCE - Projects to always perform actions for' >&2
-	printf '%s\n' '  TOOLS_FORCE - Tools to always perform actions for' >&2
-	printf '%s\n' '  RELEASE_KEY - GPG key to use for release' >&2
-	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	printf '%s\n' '  LIBFAKETIME_PATH - Path to the libfaketime shared library' >&2
-	printf '%s\n' '  TASKS - Number of simultaneous tasks to run' >&2
-	printf '%s\n' '  VERSION - Version string to use' >&2
+	printf '%s\n'   '  PROJECTS_FORCE - Projects to always perform actions for' >&2
+	printf '%s\n'   '  TOOLS_FORCE - Tools to always perform actions for' >&2
+	printf '%s\n'   '  RELEASE_KEY - GPG key to use for release' >&2
+	printf '%s\n'   '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	printf '%s\n'   '  LIBFAKETIME_PATH - Path to the libfaketime shared library' >&2
+	printf '%s\n'   '  TASKS - Number of simultaneous tasks to run' >&2
+	printf '%s\n'   '  VERSION - Version string to use' >&2
 
 	printf '\n%s\n' 'Configuration files:' >&2
-	printf '%s\n' "  ${BUILD_SYSTEM}.conf - Environment variables configuration" >&2
+	printf '%s\n'   "  ${BUILD_SYSTEM}.conf - Environment variables configuration" >&2
 }
 
 libreboot_project() {
