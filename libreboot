@@ -129,20 +129,11 @@ libreboot_setup() {
 	root="$(readlink -f "$(dirname "$0")")"
 	executable="$(basename "$0")"
 
-	local requirements="git"
-	local requirement_path
-
 	libreboot_setup_include
+
+	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'git'
+
 	libreboot_setup_variables
-
-	for requirement in ${requirements}; do
-		requirement_path="$(which "${requirement}" || true)"
-
-		if [[ -z "${requirement_path}" ]]; then
-			printf '%s\n' "Missing requirement: ${requirement}" >&2
-			exit 1
-		fi
-	done
 }
 
 libreboot_setup_include() {
@@ -225,13 +216,6 @@ libreboot() {
 	set -e
 
 	libreboot_setup "$@"
-
-	if [[ -z "${action}" ]] || [[ -z "${target}" ]]; then
-		libreboot_usage
-		exit 1
-	fi
-
-	requirements 'tar' 'sed' 'gpg' 'sha256sum'
 
 	if project_check "${target}"; then
 		libreboot_project "${action}" "${target}" "$@"
