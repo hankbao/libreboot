@@ -77,8 +77,8 @@ libreboot_project() {
 	project="$1"
 	shift
 
-	case ${action} in
-		"sources")
+	case "${action}" in
+		'sources')
 			(
 				set +e
 
@@ -86,12 +86,12 @@ libreboot_project() {
 				project_action_arguments "download" "${project}" "$@" && return 0
 			)
 			;;
-		"produce")
+		'produce')
 			for action in "build" "install" "release"; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
-		"test")
+		'test')
 			for action in ${PROJECT_ACTIONS}; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
@@ -115,20 +115,14 @@ libreboot_tool() {
 	tool="$1"
 	shift
 
-	case ${action} in
-		*)
-			if ! tool_function_check "${tool}" "${action}"; then
-				libreboot_usage
-				exit 1
-			fi
-
-			if [[ "${action}" == "usage" ]]; then
-				tool_action "${action}" "${tool}" "$@"
-			else
-				tool_action_arguments_recursive "${action}" "${tool}" "$@"
-			fi
-			;;
-	esac
+	if ! tool_function_check "${tool}" "${action}"; then
+		libreboot_usage
+		exit 1
+	elif [[ "${action}" == 'usage' ]]; then
+		tool_action "${action}" "${tool}" "$@"
+	else
+		tool_action_arguments_recursive "${action}" "${tool}" "$@"
+	fi
 }
 
 libreboot_setup() {
