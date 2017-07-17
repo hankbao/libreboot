@@ -78,7 +78,7 @@ project_action() {
 	shift
 	local project="$1"
 	shift
-	local arguments="$@"
+	local arguments="$*"
 
 	(
 		set +e
@@ -156,7 +156,7 @@ project_action_arguments_verify_recursive() {
 	local action_helper_arguments
 
 	# Store final argument.
-	local argument="${@:$#}"
+	local argument="${*:$#}"
 
 	local test
 
@@ -328,7 +328,7 @@ project_sources_directory_filled_check() {
 project_sources_directory_filled_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local sources_path=$( project_sources_path "$project" "$@" )
 
@@ -344,7 +344,7 @@ project_sources_directory_filled_error() {
 project_sources_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local sources_path=$( project_sources_path "$project" "$@" )
 
@@ -391,7 +391,7 @@ project_sources_archive() {
 project_sources_archive_extract() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local archive=$( project_sources_archive "$project" "$@" )
 	local destination=$( dirname "$archive" )
@@ -405,7 +405,7 @@ project_sources_archive_extract() {
 project_sources_archive_update() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local repository=$project
 	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
@@ -426,7 +426,7 @@ project_sources_archive_update() {
 project_sources_archive_missing_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local archive=$( project_sources_archive "$project" "$@" )
 	if [ -z "$archive" ] || ! [ -f "$archive" ]
@@ -807,7 +807,7 @@ project_build_path() {
 project_build_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local build_path=$( project_build_path "$project" "$@" )
 
@@ -1013,7 +1013,7 @@ project_install_path() {
 project_install_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 
@@ -1123,7 +1123,7 @@ project_release_sources_archive_path() {
 project_release_sources_archive_create() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local repository=$project
 	local archive_path=$( project_release_sources_archive_path "$project" "$@" )
@@ -1262,7 +1262,7 @@ project_release_install_archive_create() {
 	shift
 	local prefix=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 	local archive_path=$( project_release_archive_path "$project" "$prefix" "$@" )
@@ -1310,7 +1310,7 @@ project_release_install_rootfs_create() {
 	shift
 	local prefix=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 	local rootfs_path=$( project_release_rootfs_path "$project" "$prefix" "$@" )
