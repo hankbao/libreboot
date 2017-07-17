@@ -237,7 +237,7 @@ project_action_projects() {
 	fi
 
 	# Multiple arguments can be read from the file.
-	while read arguments; do
+	while read -r arguments; do
 		eval "project_action_arguments ${action} ${arguments}"
 	done < "${path}"
 }
@@ -774,13 +774,13 @@ project_build_check() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
 			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				if ! [ -f "$source_file_path" ] && ! [ -d "$source_file_path" ]
 				then
@@ -856,7 +856,7 @@ project_install() {
 
 		project_build_directory_missing_empty_error "$project" "$@"
 
-		while read rule
+		while read -r rule
 		do
 			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
@@ -868,7 +868,7 @@ project_install() {
 			mkdir -p "$destination_directory_path"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				cp -rT "$source_file_path" "$destination_path"
 			done
@@ -897,7 +897,7 @@ project_install() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
 			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$project_path/$INSTALL/$path/$source"
@@ -909,7 +909,7 @@ project_install() {
 			mkdir -p "$destination_directory_path"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				cp -rT "$source_file_path" "$destination_path"
 			done
@@ -950,7 +950,7 @@ project_install_check() {
 
 		project_build_directory_missing_empty_error "$project" "$@"
 
-		while read rule
+		while read -r rule
 		do
 			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
@@ -984,7 +984,7 @@ project_install_check() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
 			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
@@ -1206,7 +1206,7 @@ project_release_install() {
 	local files=$( cd "$install_path" && find -type f || true )
 	local file
 
-	printf '%s\n' "$files" | while read file
+	printf '%s\n' "$files" | while read -r file
 	do
 		path="$release_path/$file"
 		directory_path=$( dirname "$path" )
@@ -1233,7 +1233,7 @@ project_release_install_check() {
 	local files=$( cd "$install_path" && find -type f || true )
 	local file
 
-	printf '%s\n' "$files" | while read file
+	printf '%s\n' "$files" | while read -r file
 	do
 		path="$release_path/$file"
 
