@@ -32,7 +32,7 @@ project_include() {
 
 	unset -f "${PROJECT_ACTIONS_FUNCTIONS[@]}"
 
-	. "$project_path/$project"
+	source "$project_path/$project"
 
 	project_helper_include "$project"
 }
@@ -45,7 +45,7 @@ project_helper_include() {
 
 	if [ -f "$include" ]
 	then
-		. "$include"
+		source "$include"
 	fi
 }
 
