@@ -1203,7 +1203,7 @@ project_release_install() {
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( cd "$install_path" && find -type f || true )
+	local files=$( find "$install_path" -type f || true )
 	local file
 
 	printf '%s\n' "$files" | while read -r file
@@ -1230,7 +1230,7 @@ project_release_install_check() {
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( cd "$install_path" && find -type f || true )
+	local files=$( find "$install_path" -type f || true )
 	local file
 
 	printf '%s\n' "$files" | while read -r file
