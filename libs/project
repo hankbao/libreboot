@@ -23,7 +23,7 @@ PROJECT_ACTIONS_FUNCTIONS=(
 	"${PROJECT_ACTIONS_HELPERS[@]}"
 )
 
-INSTALL_REGEX="\([^:]*\):\(.*\)"
+INSTALL_REGEX='\([^:]*\):\(.*\)'
 
 project_include() {
 	local project=$1
@@ -32,7 +32,7 @@ project_include() {
 
 	unset -f "${PROJECT_ACTIONS_FUNCTIONS[@]}"
 
-	. "$project_path/$project"
+	source "$project_path/$project"
 
 	project_helper_include "$project"
 }
@@ -45,7 +45,7 @@ project_helper_include() {
 
 	if [ -f "$include" ]
 	then
-		. "$include"
+		source "$include"
 	fi
 }
 
@@ -78,7 +78,7 @@ project_action() {
 	shift
 	local project="$1"
 	shift
-	local arguments="$@"
+	local arguments="$*"
 
 	(
 		set +e
@@ -87,13 +87,11 @@ project_action() {
 
 		printf '%s\n' "Project ${project} ${action} (with ${arguments:-no argument})" >&2
 
-		"${action}" "$@"
-
-		if [[ "$?" -ne 0 ]]; then
+		if "${action}" "$@"; then
+			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
+		else
 			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) failed" >&2
 			return 1
-		else
-			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
 		fi
 	)
 }
@@ -111,7 +109,7 @@ project_action_check() {
 			return 1
 		fi
 
-		for project_force in "${PROJECTS_FORCE}"; do
+		for project_force in ${PROJECTS_FORCE}; do
 			if [[ "${project_force}" == "${project}" ]]; then
 				return 1
 			fi
@@ -158,7 +156,7 @@ project_action_arguments_verify_recursive() {
 	local action_helper_arguments
 
 	# Store final argument.
-	local argument="${@:$#}"
+	local argument="${*:$#}"
 
 	local test
 
@@ -195,9 +193,9 @@ project_action_arguments_recursive() {
 	local argument
 	local ifs_save
 
-	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
+	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@" || true)"
 
-	if [[ "$?" -ne 0 ]] || [[ -z "${action_helper_arguments}" ]]; then
+	if [[ -z "${action_helper_arguments}" ]]; then
 		project_action "${action}" "${project}" "$@"
 	else
 		# This it to allow space characters in arguments.
@@ -237,7 +235,7 @@ project_action_projects() {
 	fi
 
 	# Multiple arguments can be read from the file.
-	while read arguments; do
+	while read -r arguments; do
 		eval "project_action_arguments ${action} ${arguments}"
 	done < "${path}"
 }
@@ -330,7 +328,7 @@ project_sources_directory_filled_check() {
 project_sources_directory_filled_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local sources_path=$( project_sources_path "$project" "$@" )
 
@@ -346,7 +344,7 @@ project_sources_directory_filled_error() {
 project_sources_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local sources_path=$( project_sources_path "$project" "$@" )
 
@@ -393,7 +391,7 @@ project_sources_archive() {
 project_sources_archive_extract() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local archive=$( project_sources_archive "$project" "$@" )
 	local destination=$( dirname "$archive" )
@@ -407,7 +405,7 @@ project_sources_archive_extract() {
 project_sources_archive_update() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local repository=$project
 	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
@@ -428,7 +426,7 @@ project_sources_archive_update() {
 project_sources_archive_missing_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local archive=$( project_sources_archive "$project" "$@" )
 	if [ -z "$archive" ] || ! [ -f "$archive" ]
@@ -774,13 +772,13 @@ project_build_check() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				if ! [ -f "$source_file_path" ] && ! [ -d "$source_file_path" ]
 				then
@@ -809,7 +807,7 @@ project_build_path() {
 project_build_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local build_path=$( project_build_path "$project" "$@" )
 
@@ -856,19 +854,19 @@ project_install() {
 
 		project_build_directory_missing_empty_error "$project" "$@"
 
-		while read rule
+		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$build_path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 			destination_directory_path=$( dirname "$destination_path" )
 
 			mkdir -p "$destination_directory_path"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				cp -rT "$source_file_path" "$destination_path"
 			done
@@ -897,19 +895,19 @@ project_install() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\1/g" )
+			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
 			source_path="$project_path/$INSTALL/$path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 			destination_directory_path=$( dirname "$destination_path" )
 
 			mkdir -p "$destination_directory_path"
 
 			# Source may contain a wildcard.
-			path_wildcard_expand "$source_path" | while read source_file_path
+			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
 				cp -rT "$source_file_path" "$destination_path"
 			done
@@ -950,9 +948,9 @@ project_install_check() {
 
 		project_build_directory_missing_empty_error "$project" "$@"
 
-		while read rule
+		while read -r rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 
 			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
@@ -984,9 +982,9 @@ project_install_check() {
 			continue
 		fi
 
-		while read rule
+		while read -r rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\2/g" )
+			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
 			destination_path="$install_path/$destination"
 
 			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
@@ -1015,7 +1013,7 @@ project_install_path() {
 project_install_directory_missing_empty_error() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 
@@ -1125,7 +1123,7 @@ project_release_sources_archive_path() {
 project_release_sources_archive_create() {
 	local project=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local repository=$project
 	local archive_path=$( project_release_sources_archive_path "$project" "$@" )
@@ -1203,10 +1201,10 @@ project_release_install() {
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( cd "$install_path" && find -type f || true )
+	local files=$( find "$install_path" -type f || true )
 	local file
 
-	printf '%s\n' "$files" | while read file
+	printf '%s\n' "$files" | while read -r file
 	do
 		path="$release_path/$file"
 		directory_path=$( dirname "$path" )
@@ -1230,10 +1228,10 @@ project_release_install_check() {
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( cd "$install_path" && find -type f || true )
+	local files=$( find "$install_path" -type f || true )
 	local file
 
-	printf '%s\n' "$files" | while read file
+	printf '%s\n' "$files" | while read -r file
 	do
 		path="$release_path/$file"
 
@@ -1264,7 +1262,7 @@ project_release_install_archive_create() {
 	shift
 	local prefix=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 	local archive_path=$( project_release_archive_path "$project" "$prefix" "$@" )
@@ -1312,7 +1310,7 @@ project_release_install_rootfs_create() {
 	shift
 	local prefix=$1
 	shift
-	local arguments=$@
+	local arguments="$*"
 
 	local install_path=$( project_install_path "$project" "$@" )
 	local rootfs_path=$( project_release_rootfs_path "$project" "$prefix" "$@" )
