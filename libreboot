@@ -31,10 +31,9 @@ libreboot_usage() {
 	done
 
 	printf '\n%s\n' 'Virtual project actions:' >&2
-
-	printf '%s\n' '  sources'
-	printf '%s\n' '  produce'
-	printf '%s\n' '  test'
+	printf '%s\n'   '  sources'
+	printf '%s\n'   '  produce'
+	printf '%s\n'   '  test'
 
 	printf '\n%s\n' 'Project targets:' >&2
 
@@ -59,16 +58,16 @@ libreboot_usage() {
 	done
 
 	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  PROJECTS_FORCE - Projects to always perform actions for' >&2
-	printf '%s\n' '  TOOLS_FORCE - Tools to always perform actions for' >&2
-	printf '%s\n' '  RELEASE_KEY - GPG key to use for release' >&2
-	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	printf '%s\n' '  LIBFAKETIME_PATH - Path to the libfaketime shared library' >&2
-	printf '%s\n' '  TASKS - Number of simultaneous tasks to run' >&2
-	printf '%s\n' '  VERSION - Version string to use' >&2
+	printf '%s\n'   '  PROJECTS_FORCE - Projects to always perform actions for' >&2
+	printf '%s\n'   '  TOOLS_FORCE - Tools to always perform actions for' >&2
+	printf '%s\n'   '  RELEASE_KEY - GPG key to use for release' >&2
+	printf '%s\n'   '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
+	printf '%s\n'   '  LIBFAKETIME_PATH - Path to the libfaketime shared library' >&2
+	printf '%s\n'   '  TASKS - Number of simultaneous tasks to run' >&2
+	printf '%s\n'   '  VERSION - Version string to use' >&2
 
 	printf '\n%s\n' 'Configuration files:' >&2
-	printf '%s\n' "  ${BUILD_SYSTEM}.conf - Environment variables configuration" >&2
+	printf '%s\n'   "  ${BUILD_SYSTEM}.conf - Environment variables configuration" >&2
 }
 
 libreboot_project() {
@@ -77,8 +76,8 @@ libreboot_project() {
 	project="$1"
 	shift
 
-	case ${action} in
-		"sources")
+	case "${action}" in
+		'sources')
 			(
 				set +e
 
@@ -86,12 +85,12 @@ libreboot_project() {
 				project_action_arguments "download" "${project}" "$@" && return 0
 			)
 			;;
-		"produce")
+		'produce')
 			for action in "build" "install" "release"; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
-		"test")
+		'test')
 			for action in ${PROJECT_ACTIONS}; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
@@ -115,40 +114,25 @@ libreboot_tool() {
 	tool="$1"
 	shift
 
-	case ${action} in
-		*)
-			if ! tool_function_check "${tool}" "${action}"; then
-				libreboot_usage
-				exit 1
-			fi
-
-			if [[ "${action}" == "usage" ]]; then
-				tool_action "${action}" "${tool}" "$@"
-			else
-				tool_action_arguments_recursive "${action}" "${tool}" "$@"
-			fi
-			;;
-	esac
+	if ! tool_function_check "${tool}" "${action}"; then
+		libreboot_usage
+		exit 1
+	elif [[ "${action}" == 'usage' ]]; then
+		tool_action "${action}" "${tool}" "$@"
+	else
+		tool_action_arguments_recursive "${action}" "${tool}" "$@"
+	fi
 }
 
 libreboot_setup() {
 	root="$(readlink -f "$(dirname "$0")")"
 	executable="$(basename "$0")"
 
-	local requirements="git"
-	local requirement_path
-
 	libreboot_setup_include
+
+	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'git'
+
 	libreboot_setup_variables
-
-	for requirement in ${requirements}; do
-		requirement_path="$(which "${requirement}" || true)"
-
-		if [[ -z "${requirement_path}" ]]; then
-			printf '%s\n' "Missing requirement: ${requirement}" >&2
-			exit 1
-		fi
-	done
 }
 
 libreboot_setup_include() {
@@ -173,10 +157,28 @@ libreboot_setup_variables() {
 	local epoch_path="${root}/${DOTEPOCH}"
 	local rnd_seed_path="${root}/${DOTRNDSEED}"
 
+	if [[ -z "${VERSION}" ]]; then
+		if git_check "${root}"; then
+			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
+		elif [[ -f "${version_path}" ]]; then
+			VERSION="$(< "${version_path}")"
+		else
+			VERSION="${BUILD_SYSTEM}"
+		fi
+	fi
+
+	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
+		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
+	fi
+
+	libreboot_setup_reproducible_builds_variables
+}
+
+libreboot_setup_reproducible_builds_variables() {
 	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
 	if [[ -z "${RANDOM_SEED}" ]]; then
 		if [[ -f "${rnd_seed_path}" ]]; then
-			RANDOM_SEED="$(cat "${rnd_seed_path}")"
+			RANDOM_SEED="$(< "${rnd_seed_path}")"
 		else
 			RANDOM_SEED="${RANDOM}" # True randomness is unnecessary
 		fi
@@ -187,31 +189,13 @@ libreboot_setup_variables() {
 		if git_check "${root}"; then
 			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
 		elif [[ -f "${epoch_path}" ]]; then
-			SOURCE_DATE_EPOCH="$(cat "${epoch_path}")"
+			SOURCE_DATE_EPOCH="$(< "${epoch_path}")"
 		else
 			SOURCE_DATE_EPOCH="$(date +%s)"
 		fi
 	fi
 
-	if [[ -z "${VERSION}" ]]; then
-		if git_check "${root}"; then
-			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
-		elif [[ -f "${version_path}" ]]; then
-			VERSION="$(cat "${version_path}")"
-		else
-			VERSION="${BUILD_SYSTEM}"
-		fi
-	fi
-
-	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
-		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
-	fi
-
-	CONFIG_SHELL="${CONFIG_SHELL:-$(which bash)}"
-	EDITOR="${EDITOR:-$(which vi || true)}"
-	TASKS="${TASKS:-1}"
-
-	# Environment variables useful for creating reproducible builds
+	# Relevant only when libfaketime is preloaded
 	if [[ -n "${LIBFAKETIME_PATH}" ]]; then
 		BUILD_DATE_FMT="%Y-%m-%d %H:%M:%S"
 		BUILD_DATE="$(date -u -d "@${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u -r "${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u "+${BUILD_DATE_FMT}")"
@@ -231,13 +215,6 @@ libreboot() {
 	set -e
 
 	libreboot_setup "$@"
-
-	if [[ -z "${action}" ]] || [[ -z "${target}" ]]; then
-		libreboot_usage
-		exit 1
-	fi
-
-	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'wget'
 
 	if project_check "${target}"; then
 		libreboot_project "${action}" "${target}" "$@"
