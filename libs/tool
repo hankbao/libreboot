@@ -17,7 +17,7 @@
 
 TOOL_ACTIONS_GENERIC=(usage update execute)
 TOOL_ACTIONS_HELPERS=(arguments)
-TOOL_ACTIONS_FUNCTIONS=(
+TOOL_ACTIONS=(
 	"${TOOL_ACTIONS_GENERIC[@]}"
 	"${TOOL_ACTIONS_GENERIC[@]/%/_check}"
 	"${TOOL_ACTIONS_HELPERS[@]}"
@@ -28,7 +28,7 @@ tool_include() {
 
 	local tool_path=$( tool_path "$tool" )
 
-	unset -f "${TOOL_ACTIONS_FUNCTIONS[@]}"
+	unset -f "${TOOL_ACTIONS[@]}"
 
 	. "$tool_path/$tool"
 
