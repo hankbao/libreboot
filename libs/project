@@ -17,11 +17,6 @@
 
 PROJECT_ACTIONS_GENERIC=(usage download extract update build install release clean)
 PROJECT_ACTIONS_HELPERS=(arguments)
-PROJECT_ACTIONS=(
-	"${PROJECT_ACTIONS_GENERIC[@]}"
-	"${PROJECT_ACTIONS_GENERIC[@]/%/_check}"
-	"${PROJECT_ACTIONS_HELPERS[@]}"
-)
 
 INSTALL_REGEX='\([^:]*\):\(.*\)'
 
