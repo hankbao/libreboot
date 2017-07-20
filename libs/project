@@ -17,7 +17,7 @@
 
 PROJECT_ACTIONS_GENERIC=(usage download extract update build install release clean)
 PROJECT_ACTIONS_HELPERS=(arguments)
-PROJECT_ACTIONS_FUNCTIONS=(
+PROJECT_ACTIONS=(
 	"${PROJECT_ACTIONS_GENERIC[@]}"
 	"${PROJECT_ACTIONS_GENERIC[@]/%/_check}"
 	"${PROJECT_ACTIONS_HELPERS[@]}"
@@ -30,7 +30,7 @@ project_include() {
 
 	local project_path=$( project_path "$project" )
 
-	unset -f "${PROJECT_ACTIONS_FUNCTIONS[@]}"
+	unset -f "${PROJECT_ACTIONS[@]}"
 
 	source "$project_path/$project"
 
