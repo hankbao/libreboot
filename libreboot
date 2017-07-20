@@ -81,17 +81,17 @@ libreboot_project() {
 			(
 				set +e
 
-				project_action_arguments "extract" "${project}" "$@" && return 0
-				project_action_arguments "download" "${project}" "$@" && return 0
+				project_action_arguments 'extract' "${project}" "$@" && return 0
+				project_action_arguments 'download' "${project}" "$@" && return 0
 			)
 			;;
 		'produce')
-			for action in "build" "install" "release"; do
+			for action in 'build' 'install' 'release'; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
 		'test')
-			for action in ${PROJECT_ACTIONS}; do
+			for action in "${PROJECT_ACTIONS[@]}"; do
 				project_action_arguments "${action}" "${project}" "$@"
 			done
 			;;
