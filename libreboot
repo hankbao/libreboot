@@ -154,8 +154,6 @@ libreboot_setup_include() {
 libreboot_setup_variables() {
 	local vboot_tools_path="$(project_install_path 'vboot' 'tools')"
 	local version_path="${root}/${DOTVERSION}"
-	local epoch_path="${root}/${DOTEPOCH}"
-	local rnd_seed_path="${root}/${DOTRNDSEED}"
 
 	if [[ -z "${VERSION}" ]]; then
 		if git_check "${root}"; then
@@ -175,6 +173,9 @@ libreboot_setup_variables() {
 }
 
 libreboot_setup_reproducible_builds_variables() {
+	local epoch_path="${root}/${DOTEPOCH}"
+	local rnd_seed_path="${root}/${DOTRNDSEED}"
+
 	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
 	if [[ -z "${RANDOM_SEED}" ]]; then
 		if [[ -f "${rnd_seed_path}" ]]; then
