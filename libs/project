@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PROJECT_ACTIONS_GENERIC=(usage download extract update build install release clean)
+PROJECT_ACTIONS_GENERIC_IGNORE_CHECK=(usage clean)
 PROJECT_ACTIONS_HELPERS=(arguments)
 
 INSTALL_REGEX='\([^:]*\):\(.*\)'

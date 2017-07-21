@@ -172,12 +172,14 @@ libreboot_setup_tool_actions() {
 
 libreboot_setup_project_actions() {
 	local -i project_actions_count="${#PROJECT_ACTIONS_GENERIC[@]}"
+	local ignore="${PROJECT_ACTIONS_GENERIC_IGNORE_CHECK[*]}"
+
 	local -a project_actions
 
 	for ((i=0; i<"${project_actions_count}"; i++)); do
 		project_actions+=("${PROJECT_ACTIONS_GENERIC[i]}")
 
-		if [[ "${PROJECT_ACTIONS_GENERIC[i]}" == !(usage|clean) ]]; then
+		if [[ "${PROJECT_ACTIONS_GENERIC[i]}" == !(${ignore// /|}) ]]; then
 			project_actions+=("${PROJECT_ACTIONS_GENERIC[i]/%/_check}")
 		fi
 	done
