@@ -1,3 +1,5 @@
+[Update](https://yro.slashdot.org/story/17/07/19/1459244/amd-has-no-plans-to-release-psp-code): unfortunatly AMD has no plans to release the source code and instead trusts third-party "hackers" to audit the "feature", too much pressure from govererment agencies? who knows?
+
 ---
 title: We call on AMD to release source code and specs for Ryzen platform
 ...
