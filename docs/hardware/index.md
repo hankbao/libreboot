@@ -229,6 +229,8 @@ this.*
 
 Tested LCD panels: (working)
 
+-   IDtech N141XC (14.1" 1024x768)
+-   TMD-Toshiba LTD141ECMB (14.1" 1024x768)
 -   TMD-Toshiba LTD141EN9B (14.1" 1400x1050) (FRU P/N 41W1478 recommended for
     the inverter board)
 -   Samsung LTN141P4-L02 (14.1" 1400x1050) (FRU P/N 41W1478 recommended for the
@@ -260,9 +262,7 @@ Tested LCD panels: *not working yet (incompatible; see
 *The following LCD panels are untested. If you have one of these panels then
 please submit a report!*:
 
--   CMO(IDtech?) N141XC (14.1" 1024x768)
 -   BOE-Hydis HT14X14 (14.1" 1024x768)
--   TMD-Toshiba LTD141ECMB (14.1" 1024x768)
 -   Boe-Hydis HT14P12 (14.1" 1400x1050) (FRU P/N 41W1478 recommended
     for the inverter board)
 -   CMO (IDtech?) 13N7068 (15.1" 1024x768)

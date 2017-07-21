@@ -73,6 +73,8 @@ is to add *processor.max\_cstate=2* to the *linux* line in grub.cfg,
 using [this guide](../gnulinux/grub_cbfs.md).
 
 X60/T60: Serial port - how to use (for dock owners)
+
+[Note: using a grsec enabled kernel will disable the powertop function. ](https://en.wikibooks.org/wiki/Grsecurity/Appendix/Grsecurity_and_PaX_Configuration_Options)
 ===================================================
 
 For the Thinkpad X60 you can use the "UltraBase X6" dock (for the
