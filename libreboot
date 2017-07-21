@@ -129,11 +129,27 @@ libreboot_setup() {
 	executable="$(basename "$0")"
 
 	libreboot_setup_include
+	libreboot_setup_tool_actions
 	libreboot_setup_project_actions
 
 	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'git'
 
 	libreboot_setup_variables
+}
+
+libreboot_setup_tool_actions() {
+	local -i tool_actions_count="${#TOOL_ACTIONS_GENERIC[@]}"
+	local -a tool_actions
+
+	for ((i=0; i<"${tool_actions_count}"; i++)); do
+		tool_actions+=("${TOOL_ACTIONS_GENERIC[i]}")
+
+		if [[ "${TOOL_ACTIONS_GENERIC[i]}" == @(extract) ]]; then
+			tool_actions+=("${TOOL_ACTIONS_GENERIC[i]/%/_check}")
+		fi
+	done
+
+	TOOL_ACTIONS=("${TOOL_ACTIONS_HELPERS[@]}" "${tool_actions[@]}")
 }
 
 libreboot_setup_project_actions() {

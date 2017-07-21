@@ -17,11 +17,6 @@
 
 TOOL_ACTIONS_GENERIC=(usage update execute)
 TOOL_ACTIONS_HELPERS=(arguments)
-TOOL_ACTIONS=(
-	"${TOOL_ACTIONS_GENERIC[@]}"
-	"${TOOL_ACTIONS_GENERIC[@]/%/_check}"
-	"${TOOL_ACTIONS_HELPERS[@]}"
-)
 
 tool_include() {
 	local tool=$1
