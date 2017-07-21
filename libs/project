@@ -16,12 +16,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PROJECT_ACTIONS_GENERIC=(usage download extract update build install release clean)
+PROJECT_ACTIONS_GENERIC_IGNORE_CHECK=(usage clean)
 PROJECT_ACTIONS_HELPERS=(arguments)
-PROJECT_ACTIONS_FUNCTIONS=(
-	"${PROJECT_ACTIONS_GENERIC[@]}"
-	"${PROJECT_ACTIONS_GENERIC[@]/%/_check}"
-	"${PROJECT_ACTIONS_HELPERS[@]}"
-)
 
 INSTALL_REGEX='\([^:]*\):\(.*\)'
 
@@ -30,7 +26,7 @@ project_include() {
 
 	local project_path=$( project_path "$project" )
 
-	unset -f "${PROJECT_ACTIONS_FUNCTIONS[@]}"
+	unset -f "${PROJECT_ACTIONS[@]}"
 
 	source "$project_path/$project"
 
@@ -732,7 +728,7 @@ project_update_check_git() {
 
 	requirements "git"
 
-	if git_project_check "$repository"
+	if ! git_project_check "$repository"
 	then
 		# Git repository should always be updated (even if upstream didn't progress).
 		# For instance, this is useful for testing new versions of patches without changing revision.
