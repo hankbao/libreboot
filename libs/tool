@@ -16,6 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 TOOL_ACTIONS_GENERIC=(usage update execute)
+TOOL_ACTIONS_GENERIC_IGNORE_CHECK=(usage update)
 TOOL_ACTIONS_HELPERS=(arguments)
 
 tool_include() {

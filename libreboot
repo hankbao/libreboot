@@ -155,12 +155,14 @@ libreboot_setup_include() {
 
 libreboot_setup_tool_actions() {
 	local -i tool_actions_count="${#TOOL_ACTIONS_GENERIC[@]}"
+	local ignore="${TOOL_ACTIONS_GENERIC_IGNORE_CHECK[*]}"
+
 	local -a tool_actions
 
 	for ((i=0; i<"${tool_actions_count}"; i++)); do
 		tool_actions+=("${TOOL_ACTIONS_GENERIC[i]}")
 
-		if [[ "${TOOL_ACTIONS_GENERIC[i]}" == @(extract) ]]; then
+		if [[ "${TOOL_ACTIONS_GENERIC[i]}" == !(${ignore// /|}) ]]; then
 			tool_actions+=("${TOOL_ACTIONS_GENERIC[i]/%/_check}")
 		fi
 	done
