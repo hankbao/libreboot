@@ -137,6 +137,22 @@ libreboot_setup() {
 	libreboot_setup_variables
 }
 
+libreboot_setup_include() {
+	local libs_path="${root}/libs"
+	local conf_path
+
+	source "${libs_path}/project"
+	source "${libs_path}/tool"
+	source "${libs_path}/common"
+	source "${libs_path}/git"
+
+	conf_path="${root}/${BUILD_SYSTEM}.conf"
+
+	if [[ -f "${conf_path}" ]]; then
+		source "${conf_path}"
+	fi
+}
+
 libreboot_setup_tool_actions() {
 	local -i tool_actions_count="${#TOOL_ACTIONS_GENERIC[@]}"
 	local -a tool_actions
@@ -165,22 +181,6 @@ libreboot_setup_project_actions() {
 	done
 
 	PROJECT_ACTIONS=("${PROJECT_ACTIONS_HELPERS[@]}" "${project_actions[@]}")
-}
-
-libreboot_setup_include() {
-	local libs_path="${root}/libs"
-	local conf_path
-
-	source "${libs_path}/project"
-	source "${libs_path}/tool"
-	source "${libs_path}/common"
-	source "${libs_path}/git"
-
-	conf_path="${root}/${BUILD_SYSTEM}.conf"
-
-	if [[ -f "${conf_path}" ]]; then
-		source "${conf_path}"
-	fi
 }
 
 libreboot_setup_variables() {
