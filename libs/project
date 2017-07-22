@@ -680,7 +680,7 @@ project_extract() {
 
 	if ! project_sources_directory_filled_check "$project" "$repository" "$@"
 	then
-		project_sources_archive_missing_error "$project" "$@"
+		project_sources_archive_missing_error "$project" "$@" || return 1
 		project_sources_archive_extract "$project" "$@"
 	fi
 }
