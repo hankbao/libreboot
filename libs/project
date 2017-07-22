@@ -187,16 +187,15 @@ project_action_arguments_recursive() {
 
 	local action_helper_arguments
 	local argument
-	local ifs_save
 
 	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@" || true)"
 
 	if [[ -z "${action_helper_arguments}" ]]; then
 		project_action "${action}" "${project}" "$@"
 	else
-		# This it to allow space characters in arguments.
-		ifs_save="${IFS}"
-		IFS=$'\n'
+		# This is to allow space characters in arguments.
+		local ifs_save="${IFS}"
+		local IFS=$'\n'
 
 		for argument in $(printf '%s\n' "${action_helper_arguments}")
 		do
@@ -207,8 +206,6 @@ project_action_arguments_recursive() {
 				project_action_arguments_recursive "${action}" "${project}" "$@" "${argument}"
 			)
 		done
-
-		IFS="${ifs_save}"
 	fi
 }
 
