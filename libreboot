@@ -78,12 +78,12 @@ libreboot_project() {
 
 	case "${action}" in
 		'sources')
-			(
-				set +e
-
-				project_action_arguments 'extract' "${project}" "$@" && return 0
-				project_action_arguments 'download' "${project}" "$@" && return 0
-			)
+			if project_action_arguments 'extract' "${project}" "$@"; then
+				return
+			else
+				printf '\n%s\n\n' 'Attempting to download instead...'
+				project_action_arguments 'download' "${project}" "$@"
+			fi
 			;;
 		'produce')
 			for action in 'build' 'install' 'release'; do
