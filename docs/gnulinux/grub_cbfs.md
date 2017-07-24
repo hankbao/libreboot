@@ -286,7 +286,7 @@ and look for a set of characters like this: `00:f3:f0:45:91:fe`.
 Next, you need to move **libreboot.rom** to the following folder; this is where
 the executable for `ich9gen` is located:
 
-    $ mv libreboot.rom ~/Downloads/libreboot_r20160907_util/ich9deblob/
+    $ mv libreboot.rom ~/Downloads/libreboot_r20160907_util/ich9deblob/x86_64
 
 Once there, run the following command, making sure to use your own MAC address,
 instead of what's written below:
