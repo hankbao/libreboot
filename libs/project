@@ -187,28 +187,23 @@ project_action_arguments_recursive() {
 
 	local action_helper_arguments
 	local argument
-	local ifs_save
 
 	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@" || true)"
 
 	if [[ -z "${action_helper_arguments}" ]]; then
 		project_action "${action}" "${project}" "$@"
 	else
-		# This it to allow space characters in arguments.
-		ifs_save="${IFS}"
-		IFS=$'\n'
+		# This is to allow space characters in arguments.
+		local ifs_save="${IFS}"
+		local IFS=$'\n'
 
 		for argument in $(printf '%s\n' "${action_helper_arguments}")
 		do
-			(
-				IFS="${ifs_save}"
+			IFS="${ifs_save}"
 
-				# Only a single argument at a time is returned by the helper.
-				project_action_arguments_recursive "${action}" "${project}" "$@" "${argument}"
-			)
+			# Only a single argument at a time is returned by the helper.
+			project_action_arguments_recursive "${action}" "${project}" "$@" "${argument}"
 		done
-
-		IFS="${ifs_save}"
 	fi
 }
 
@@ -685,7 +680,7 @@ project_extract() {
 
 	if ! project_sources_directory_filled_check "$project" "$repository" "$@"
 	then
-		project_sources_archive_missing_error "$project" "$@"
+		project_sources_archive_missing_error "$project" "$@" || return 1
 		project_sources_archive_extract "$project" "$@"
 	fi
 }
