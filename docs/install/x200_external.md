@@ -17,7 +17,7 @@ GNU+Linux distribution.
 Flash chip size
 ===============
 
-Use this to find out:
+Run this command on x200 to find out flash chip model and its size:
 
     # flashrom -p internal -V
 
