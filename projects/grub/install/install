@@ -1,0 +1,4 @@
+txtmode/grub.cfg:txtmode/grub.cfg
+txtmode/grubtest.cfg:txtmode/grubtest.cfg
+vesafb/grub.cfg:vesafb/grub.cfg
+vesafb/grubtest.cfg:vesafb/grubtest.cfg
