@@ -87,6 +87,8 @@ if using HTTPS.
 
 <http://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
+<http://nephelai.zanity.net/mirror/libreboot/> (zanity.net, New Zealand)
+
 FTP mirrors {#ftp}
 -----------
 
