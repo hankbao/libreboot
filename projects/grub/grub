@@ -108,7 +108,7 @@ build() {
 		cp grub.elf "${build_path}"
 
 		# Tidy up
-		make clean
+		make distclean
 	)
 }
 
