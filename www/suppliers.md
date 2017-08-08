@@ -24,14 +24,6 @@ Laptops:
 
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
 
-Desktops:
-
--   [Libreboot D16 desktop/workstation](https://minifree.org/product/libreboot-d16/)
-
-Servers:
-
--   [Libreboot D16 server](https://minifree.org/product/libreboot-d16-server/)
-
 Services:
 
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
