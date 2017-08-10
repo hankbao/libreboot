@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+arguments() {
+	project_arguments_targets "${project}" "$@"
+}
+
+usage() {
+	project_usage_actions "${project}"
+	project_usage_arguments "${project}" "$@"
+}
+
+download() {
+	local repository="${project}"
+
+	# Can't clone using TLS until Coreboot's cert lists the domain as a SAN
+	project_download_git "${project}" "${repository}" 'git://git.seabios.org/seabios.git' "$@"
+}
+
+download_check() {
+	local repository="${project}"
+
+	project_download_check_git "${project}" "${repository}" "$@"
+}
+
+extract() {
+	project_extract "${project}" "$@"
+}
+
+extract_check() {
+	project_extract_check "${project}" "$@"
+}
+
+update() {
+	local repository="${project}"
+
+	project_update_git "${project}" "${repository}" "$@"
+}
+
+update_check() {
+	local repository="${project}"
+
+	project_update_check_git "${project}" "${repository}" "$@"
+}
+
+build() {
+	local repository="${project}"
+
+	project_sources_directory_missing_empty_error "${project}" "${repository}" "$@"
+
+	if git_project_check "${repository}"; then
+		git_project_checkout "${project}" "${repository}" "$@"
+	fi
+
+	local project_path="$(project_path "${project}")"
+	local seabios_config_path="$(project_file_path "${project}" "${CONFIGS}" 'config' "$@")"
+	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
+	local build_path="$(project_build_path "${project}" "$@")"
+
+	mkdir -p "${build_path}"
+
+	(
+		cd "${sources_path}"
+
+		# Copy the config file for target into working directory
+		cp "${seabios_config_path}" .config
+
+		# Compile SeaBIOS first
+		make -j"${TASKS}"
+
+		# Copy the ELF to its build directory
+		if [[ "$1" == 'txtmode' ]]; then
+			cp out/bios.bin.elf "${build_path}"
+		elif [[ "$1" == 'vga' ]]; then
+			cp out/vgabios.bin "${build_path}"
+		fi
+
+		# Tidy up
+		make distclean
+		rm -f .config
+	)
+}
+
+build_check() {
+	project_build_check "${project}" "$@"
+}
+
+install() {
+	project_install "${project}" "$@"
+}
+
+install_check() {
+	project_install_check "${project}" "$@"
+}
+
+release() {
+	local repository="${project}"
+
+	project_release_install_archive "${project}" "${IMAGES}" "$@"
+	project_release_sources_git "${project}" "${repository}" "$@"
+}
+
+release_check() {
+	local repository="${project}"
+
+	project_release_install_archive_check "${project}" "${IMAGES}" "$@"
+	project_release_check_sources_git "${project}" "${repository}" "$@"
+}
+
+clean() {
+	project_clean "${project}" "$@"
+}
