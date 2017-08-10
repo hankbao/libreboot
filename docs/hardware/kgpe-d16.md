@@ -10,6 +10,7 @@ work), merged into libreboot.
 
 *Memory initialization is still problematic, for some modules. We
 recommend avoiding Kingston modules.*
+*For working configurations see <https://www.coreboot.org/Board:asus/kgpe-d16>.*
 
 Flashing instructions can be found at
 [../install/\#flashrom](../install/#flashrom) - note that external
@@ -125,7 +126,7 @@ The information here is adapted, from the ASUS website.
 ### Memory compatibility (with libreboot)
 
 -   *Total Slots:* 16 (4-channel per CPU, 8 DIMM per CPU), ECC
--   *Capacity:* Maximum up to 256GB RDIMM
+-   *Capacity:* Maximum up to 256GB RDIMM (Tested max 128GB)
 -   *Memory Type that is compatible:*
     -   DDR3 1600/1333/1066/800 UDIMM\*
     -   DDR3 1600/1333/1066/800 RDIMM\*
