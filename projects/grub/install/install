@@ -1,4 +1,5 @@
+grubenv:grubenv
 txtmode/grub.cfg:txtmode/grub.cfg
 txtmode/grubtest.cfg:txtmode/grubtest.cfg
-vesafb/grub.cfg:vesafb/grub.cfg
-vesafb/grubtest.cfg:vesafb/grubtest.cfg
+corebootfb/grub.cfg:corebootfb/grub.cfg
+corebootfb/grubtest.cfg:corebootfb/grubtest.cfg

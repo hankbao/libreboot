@@ -69,16 +69,8 @@ build() {
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
 
-	local -a grub_keymaps
-
 	mapfile -t grub_install_modules < "${project_path}/${CONFIGS}/grub-install-modules"
 	mapfile -t grub_load_modules < "${project_path}/${CONFIGS}/grub-load-modules"
-
-	for keymap in "${project_path}/${CONFIGS}/keymap"/*; do
-		if [[ -f "${keymap}" ]]; then
-			grub_keymaps+=("/boot/grub/layouts/${keymap##*/}=${keymap}")
-		fi
-	done
 
 	mkdir -p "${build_path}"
 
@@ -101,14 +93,13 @@ build() {
 			--directory=grub-core \
 			-O i386-coreboot \
 			-o grub.elf \
-			/boot/grub/grub.cfg="${project_path}/${CONFIGS}/grub.cfg" \
-			"${grub_keymaps[@]}"
+			/boot/grub/grub.cfg="${project_path}/${CONFIGS}/grub.cfg"
 
 		# Copy the ELF to its build directory
 		cp grub.elf "${build_path}"
 
 		# Tidy up
-		make clean
+		make distclean
 	)
 }
 
