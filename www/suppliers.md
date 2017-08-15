@@ -35,6 +35,22 @@ Merchendise:
 -   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
+Raptor Engineering
+------------------
+
+Raptor is the world's first libre OEM, producing systems with libre boot
+firmware and operating system preinstalled, *from the factory*.
+
+Website for pre-orders:
+<https://www.raptorcs.com/TALOSII/>
+
+NOTE: this isn't technically Libreboot, but the boot firmware is entirely free.
+
+This is the same company that ported the ASUS KFSN4-DRE, KGPE-D16 and KCMA-D8
+mainboards to Libreboot. Raptor has also helped improve other ports in Libreboot,
+for instance they added support for *switchable graphics* on the ThinkPad T400
+which Libreboot supports.
+
 Technoethical
 -------------
 
