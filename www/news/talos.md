@@ -7,7 +7,7 @@ a new series of workstation and server computers. These are high-end systems,
 using the libre IBM POWER9 architecture, and the boot firmware is entirely
 Free Software like Libreboot.
 
-This is the *first* OEM actually producing computers, from the factory assembly
+This is the *first* OEM producing *high-end* systems, from the factory assembly
 line, with completely libre boot firmware. The boot firmware, operating system
 and everything else is entirely Free Software. While not technically libreboot,
 the boot firmware on TALOS II is Free Software, so it was decided that the
