@@ -1,0 +1,174 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2017 Andrew Robbins <contact@andrewrobbins.info>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+ARCH='arch'
+CONFIG='config'
+FORMAT='format'
+MODMIN='modules-minimal'
+PLATFORM='platform'
+PREFIX='prefix'
+SIZE='size'
+
+grub_arch() {
+	project_file_contents "${project}" "${CONFIGS}" "${ARCH}" "$@"
+}
+
+grub_format() {
+	project_file_contents "${project}" "${CONFIGS}" "${FORMAT}" "$@"
+}
+
+grub_platform() {
+	project_file_contents "${project}" "${CONFIGS}" "${PLATFORM}" "$@"
+}
+
+grub_prefix() {
+	project_file_contents "${project}" "${CONFIGS}" "${PREFIX}" "$@"
+}
+
+grub_size() {
+	project_file_contents "${project}" "${CONFIGS}" "${SIZE}" "$@"
+}
+
+grub_config_path() {
+	project_file_path "${project}" "${CONFIGS}" "${CONFIG}" "$@"
+}
+
+grub_modmin_path() {
+	project_file_path "${project}" "${CONFIGS}" "${MODMIN}" "$@"
+}
+
+grub_copy_modules() {
+	local grub_module_dir="${sources_path}/grub-core"
+	local keep_dir="${build_path}/$(grub_format "${target}" "$@")"
+
+	mkdir -p "${keep_dir}"
+
+	cp -a "${grub_module_dir}"/*.@(mod|lst) "${keep_dir}"
+}
+
+grub_build_utils() {
+	(
+		# If arch and/or platform files don't exist,
+		# the configure script will pick a reasonable default
+		local arch="$(grub_arch "${target}" "$@")"
+		local platform="$(grub_platform "${target}" "$@")"
+
+		cd "${sources_path}" || return
+
+		if git_project_check "${repository}"; then
+			./autogen.sh
+		fi
+
+		./configure --target="${arch}" --with-platform="${platform}"
+
+		make -j"${TASKS}"
+	)
+}
+
+grub_build_layout() {
+	local raw_layout="${1##*/}"
+	local raw_layout_path="$1"
+	local grub_kbdcomp="${sources_path}/grub-kbdcomp"
+	local grub_kbd_layout="${build_path}/${raw_layout}.gkb"
+
+	"${grub_kbdcomp}" --output="${grub_kbd_layout}" "${raw_layout_path}"
+}
+
+grub_build_bootable_image() {
+	local arch="$(grub_arch "${target}" "$@")"
+	local format="$(grub_format "${target}" "$@")"
+	local prefix="$(grub_prefix "${target}" "$@")"
+	local config_path="$(grub_config_path "${target}" "$@")"
+
+	local grub_mkimage="${sources_path}/grub-mkimage"
+	local grub_module_dir="${sources_path}/grub-core"
+
+	local grubimg="${build_path}/grub.img"
+	local grub_bootimg="${grub_module_dir}/boot.img"
+	local grub_bootable_img="${build_path}/grub2"
+
+	"${grub_mkimage}" \
+		--config="${config_path}" \
+		--directory="${grub_module_dir}" \
+		--output="${grubimg}" \
+		--format="${format}" \
+		--prefix="${prefix}" \
+		cbfs configfile
+
+	cat "${grub_bootimg}" "${grubimg}" > "${grub_bootable_img}"
+	rm -f "${grubimg}"
+}
+
+grub_build_floppy_image() {
+	local grubimg="${build_path}/grub2"
+	local tempfile="${build_path}/temp.file"
+
+	if ! ( grub_build_bootable_image "$@" ); then
+		printf '\n%s\n\n' "Error: Failed to build a GRUB image" 1>&2
+		return 1
+	fi
+
+	local size="$(grub_size "${target}" "$@")"
+
+	# Pre-allocate a floppy-sized image
+	# SeaBIOS requires floppy images to have a "correct" size
+	if ! [[ -e "${tempfile}" ]]; then
+		dd if=/dev/zero of="${tempfile}" bs=1024 count="${size:-160}"
+	else
+		printf '\n%s\n\n' "Error: File ${tempfile} already exists!" 1>&2
+		return 1
+	fi
+
+	local -i grubimg_size="$(stat -c %s "${grubimg}")"
+	local -i floppy_size="$((${size:-160} * 1024))"
+
+	# Graft the GRUB image onto the blank floppy image
+	if ((grubimg_size <= floppy_size)); then
+		dd if="${grubimg}" of="${tempfile}" bs=1 conv=notrunc
+
+		rm -f "${grubimg}"
+		mv "${tempfile}" "${grubimg}"
+	else
+		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
+		printf '%s\n\n' "it must be less than ${size}KiB in size." 1>&2
+		return 1
+	fi
+}
+
+grub_build_standalone_image() {
+	local arch="$(grub_arch "${target}" "$@")"
+	local format="$(grub_format "${target}" "$@")"
+	local prefix="$(grub_prefix "${target}" "$@")"
+	local config_path="$(grub_config_path "${target}" "$@")"
+
+	local grubimg="${build_path}/grub2"
+
+	local grub_mkimage="${sources_path}/grub-mkimage"
+	local grub_mkstandalone="${sources_path}/grub-mkstandalone"
+	local grub_module_dir="${sources_path}/grub-core"
+
+	"${grub_mkstandalone}" \
+		--grub-mkimage="${grub_mkimage}" \
+		--fonts='' \
+		--themes='' \
+		--locales='' \
+		--install-modules='cbfs configfile' \
+		--directory="${grub_module_dir}" \
+		--format="${format}" \
+		--output="${grubimg}" \
+		/boot/grub/grub.cfg="${config_path}"
+}
