@@ -69,8 +69,8 @@ build() {
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
 
-	mapfile -t grub_install_modules < "${project_path}/${CONFIGS}/grub-install-modules"
-	mapfile -t grub_load_modules < "${project_path}/${CONFIGS}/grub-load-modules"
+	mapfile -t grub_install_modules < "${project_path}/${CONFIGS}/modules-install"
+	mapfile -t grub_load_modules < "${project_path}/${CONFIGS}/modules-preload"
 
 	mkdir -p "${build_path}"
 
