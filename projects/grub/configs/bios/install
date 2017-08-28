@@ -9,6 +9,7 @@ i386-pc/ata.mod:i386-pc/ata.mod
 i386-pc/at_keyboard.mod:i386-pc/at_keyboard.mod
 i386-pc/backtrace.mod:i386-pc/backtrace.mod
 i386-pc/bfs.mod:i386-pc/bfs.mod
+i386-pc/biosdisk.mod:i386-pc/biosdisk.mod
 i386-pc/bitmap.mod:i386-pc/bitmap.mod
 i386-pc/bitmap_scale.mod:i386-pc/bitmap_scale.mod
 i386-pc/boot.mod:i386-pc/boot.mod
