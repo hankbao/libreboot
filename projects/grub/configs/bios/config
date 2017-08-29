@@ -1,0 +1,2 @@
+set root=(cbfsdisk)
+source (cbfsdisk)/fallback/grub.cfg

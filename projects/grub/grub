@@ -57,6 +57,7 @@ update_check() {
 }
 
 build() {
+	local target="$1"
 	local repository="${project}"
 
 	project_sources_directory_missing_empty_error "${project}" "${repository}" "$@"
@@ -68,37 +69,32 @@ build() {
 	local project_path="$(project_path "${project}")"
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
-
-	mapfile -t grub_install_modules < "${project_path}/${CONFIGS}/grub-install-modules"
-	mapfile -t grub_load_modules < "${project_path}/${CONFIGS}/grub-load-modules"
+	local rawmap_path="${project_path}/${CONFIGS}/${target}/original"
 
 	mkdir -p "${build_path}"
 
+	grub_build_utils
+
+	case "${target}" in
+		bios)
+			grub_build_floppy_image
+			grub_copy_modules
+			;;
+		keymap)
+			for rawmap in "${rawmap_path}"/*; do
+				grub_build_layout "${rawmap}"
+			done
+			;;
+		*)
+			grub_build_standalone_image
+			grub_copy_modules
+			;;
+	esac
+
+	# Temporary until the function project_make_distclean is written
 	(
-		cd "${sources_path}"
+		cd "${sources_path}" || return
 
-		# Compile GRUB first
-		./autogen.sh
-		./configure --with-platform=coreboot
-		make -j"${TASKS}"
-
-		# Now compile GRUB ELF executable
-		./grub-mkstandalone \
-			--grub-mkimage=./grub-mkimage \
-			--fonts='' \
-			--themes='' \
-			--locales='' \
-			--modules="${grub_load_modules[*]}" \
-			--install-modules="${grub_install_modules[*]}" \
-			--directory=grub-core \
-			-O i386-coreboot \
-			-o grub.elf \
-			/boot/grub/grub.cfg="${project_path}/${CONFIGS}/grub.cfg"
-
-		# Copy the ELF to its build directory
-		cp grub.elf "${build_path}"
-
-		# Tidy up
 		make distclean
 	)
 }

@@ -1,0 +1,7 @@
+biosdisk
+ext2
+halt
+part_bsd
+part_gpt
+reboot
+verify
