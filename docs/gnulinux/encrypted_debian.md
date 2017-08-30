@@ -154,8 +154,8 @@ Choose 'Yes'. It will fail, but don't worry. Then at the main menu,
 choose 'Continue without a bootloader'. You could also choose 'No'.
 Choice is irrelevant here.
 
-*You do not need to install GRUB at all, since in libreboot you are
-using the GRUB payload (for libreboot) to boot your system directly.*
+*Don't forget to have grub-coreboot package installed, even though installing grub to MBR is irrelevant
+on libreboot system, grub tools are still needed to eg. generate config (`grub-mkconfig`)*
 
 Clock UTC
 =========
