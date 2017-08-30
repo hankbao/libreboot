@@ -444,7 +444,8 @@ What *can* I use, then? {#whatcaniuse}
 -------------------------
 
 Libreboot has support for fam15h AMD hardware (~2012 gen) and some
-older Intel platforms (~2006-2009 gen). We also have support for some
+older Intel platforms like Napa, Montevina, Eagle Lake, Lakeport (2004-2006).
+We also have support for some
 ARM chipsets (rk3288). On the Intel side, we're also interested in some
 of the chipsets that use Atom CPUs (rebranded from older chipsets,
 mostly using ich7-based southbridges).
