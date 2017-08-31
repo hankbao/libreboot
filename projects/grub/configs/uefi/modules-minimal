@@ -1,0 +1,10 @@
+ahci
+ehci
+ext2
+halt
+part_bsd
+part_gpt
+pata
+reboot
+usbms
+verify
