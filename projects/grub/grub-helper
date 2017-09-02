@@ -82,8 +82,13 @@ grub_build_utils() {
 grub_build_layout() {
 	local raw_layout="${1##*/}"
 	local raw_layout_path="$1"
+	local keymap_out_path="${build_path}/keymaps"
 	local grub_mklayout="${sources_path}/grub-mklayout"
-	local grub_kbd_layout="${build_path}/${raw_layout}.gkb"
+	local grub_kbd_layout="${keymap_out_path}/${raw_layout}.gkb"
+
+	if ! [[ -e "${keymap_out_path}" ]]; then
+		mkdir -p "${keymap_out_path}"
+	fi
 
 	"${grub_mklayout}" --output="${grub_kbd_layout}" --input="${raw_layout_path}"
 }
