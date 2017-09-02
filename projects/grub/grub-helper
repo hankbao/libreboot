@@ -82,10 +82,10 @@ grub_build_utils() {
 grub_build_layout() {
 	local raw_layout="${1##*/}"
 	local raw_layout_path="$1"
-	local grub_kbdcomp="${sources_path}/grub-kbdcomp"
+	local grub_mklayout="${sources_path}/grub-mklayout"
 	local grub_kbd_layout="${build_path}/${raw_layout}.gkb"
 
-	"${grub_kbdcomp}" --output="${grub_kbd_layout}" "${raw_layout_path}"
+	"${grub_mklayout}" --output="${grub_kbd_layout}" --input="${raw_layout_path}"
 }
 
 grub_build_bootable_image() {
