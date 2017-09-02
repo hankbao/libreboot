@@ -69,7 +69,7 @@ build() {
 	local project_path="$(project_path "${project}")"
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
-	local raw_keymap_path="${project_path}/${CONFIGS}/keymap/original"
+	local raw_keymap_path="${project_path}/${CONFIGS}/keymap"
 
 	mkdir -p "${build_path}"
 
