@@ -69,21 +69,20 @@ build() {
 	local project_path="$(project_path "${project}")"
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
-	local rawmap_path="${project_path}/${CONFIGS}/${target}/original"
+	local raw_keymap_path="${project_path}/${CONFIGS}/keymap/original"
 
 	mkdir -p "${build_path}"
 
 	grub_build_utils
 
+	for raw_keymap in "${raw_keymap_path}"/*; do
+		grub_build_layout "${raw_keymap}"
+	done
+
 	case "${target}" in
 		bios)
 			grub_build_floppy_image
 			grub_copy_modules
-			;;
-		keymap)
-			for rawmap in "${rawmap_path}"/*; do
-				grub_build_layout "${rawmap}"
-			done
 			;;
 		*)
 			grub_build_standalone_image
