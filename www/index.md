@@ -10,7 +10,6 @@ mascot"){#logo}](faq.md#who-did-the-logo)
 [Install](docs/install/)                                                    --
 [Docs](docs/)                                                               --
 [News](news/)                                                               --
-[Lists](lists/)                                                             --
 [Chat](https://webchat.freenode.net/?channels=libreboot)                    --
 [Bugs](https://notabug.org/libreboot/libreboot/issues)                      --
 [Send patches](git.md)                                                      --
@@ -23,8 +22,8 @@ operating system. It is also available preinstalled from
 
 We provide user support via [\#libreboot
 IRC](https://webchat.freenode.net/?channels=libreboot) on Freenode. Development
-discussion also occurs on IRC, and on our [mailing list](lists/). Instructions
-for sending patches are [here](git.md).
+discussion also occurs on IRC. Instructions for sending patches are
+[here](git.md).
 
 Why use Libreboot?
 ------------------

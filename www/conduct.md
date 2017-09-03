@@ -82,14 +82,13 @@ Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported by contacting one of the moderators privately via IRC private message
 (see list below):
 
-* Alyssa Rosenzweig: **alyssa** on Freenode
-* Andrew Robbins: **and\_who** on Freenode
+* Andrew Robbins: **and\_who** on Freenode, email <mailto:andrew@libreboot.org>
 * Jason Self: **jxself** on Freenode
-* Leah Rowe: **\_4of7** on Freenode
+* Leah Rowe: **\_4of7** on Freenode, email <mailto:leah@libreboot.org>
 * Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this
-  person.
+  person, email <mailto:paul@libreboot.org>
   check in the channel)
-* Swift Geek: **swiftgeek** on Freenode
+* Swift Geek: **swiftgeek** on Freenode, email <mailto:swiftgeek@libreboot.org>
 
 If the complaint is for abuses on the Libreboot subreddit at
 [r/libreboot](https://www.reddit.com/r/libreboot/) then there are a separate

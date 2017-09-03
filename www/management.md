@@ -27,14 +27,14 @@ List of members in the core management team
 
 In alphabetical order:
 
-- Alyssa Rosenzweig is sysadmin and Public Relations manager.
-  IRC nick **alyssa**.
-- Andrew Robbins is a core developer. IRC nick **and\_who**
+- Andrew Robbins is a core developer. IRC nick **and\_who**, email
+  <mailto:andrew@libreboot.org>
 - Paul Kocialkowski is a core developer. IRC nick **paulk-X** 
-  (**X** is variable, and changes over time)
+  (**X** is variable, and changes over time), email <mailto:paul@libreboot.org>
 - Leah Rowe is a core developer (and project founder). IRC nick
-  **\_4of7**
-- Swift Geek is a core developer. IRC nick **swiftgeek**
+  **\_4of7**, email <mailto:leah@libreboot.org>
+- Swift Geek is a core developer. IRC nick **swiftgeek**, email
+  <mailto:swiftgeek@libreboot.org>
 
 Generally, the people on this list have these responsibilities:
 
