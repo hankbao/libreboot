@@ -17,7 +17,20 @@ Flashrom complains about DEVMEM access
 If running `flashrom -p internal` for software based flashing, and
 you get an error related to /dev/mem access, you should reboot with
 `iomem=relaxed` kernel parameter before running flashrom, or use a kernel
-that has `CONFIG\_STRICT\_DEVMEM` not enabled.
+that has `CONFIG_STRICT_DEVMEM` and `CONFIG_IO_STRICT_DEVMEM` not enabled.
+
+Example flashrom output with both `CONFIG_STRICT_DEVMEM` and `CONFIG_IO_STRICT_DEVMEM` enabled:
+```
+flashrom v0.9.9-r1955 on Linux 4.11.9-1-ARCH (x86_64)
+flashrom is free software, get the source code at https://flashrom.org
+
+Calibrating delay loop... OK.
+Error accessing high tables, 0x100000 bytes at 0x000000007fb5d000
+/dev/mem mmap failed: Operation not permitted
+Failed getting access to coreboot high tables.
+Error accessing DMI Table, 0x1000 bytes at 0x000000007fb27000
+/dev/mem mmap failed: Operation not permitted
+```
 
 The backlight is darker on the left side of the screen when lowering the brightness on my X200/T400/T500/R400 
 ---------------------------------------------------------------------------------------------------------------
