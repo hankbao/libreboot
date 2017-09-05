@@ -264,13 +264,13 @@ executables from the libreboot source code archives.
 
 How to update the flash chip contents:
 
-    $ sudo ./flash update [yourrom.rom](#rom)
+`$ sudo ./flash update `[`yourrom.rom`](#rom)
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
-    $ sudo ./flash forceupdate [yourrom.rom](#rom)
+ `$ sudo ./flash forceupdate `[`yourrom.rom`](#rom)
 
 You should see `Verifying flash... VERIFIED.` written at the end
 of the flashrom output. *Shut down* after you see this, and then boot
@@ -303,7 +303,7 @@ the flashing script. do this: *
 
 The first half of the procedure is as follows:
 
-    $ sudo ./flash i945lenovo\_firstflash [yourrom.rom](#rom).
+`$ sudo ./flash i945lenovo_firstflash `[`yourrom.rom`](#rom)
 
 You should see within the output the following:
 
@@ -330,13 +330,11 @@ needed (see below).
 
 When you have booted up again, you must also do this:
 
-    $ sudo ./flash i945lenovo\_secondflash [yourrom.rom](#rom)
+`$ sudo ./flash i945lenovo_secondflash `[`yourrom.rom`](#rom)
 
 If flashing fails at this stage, try the following:
 
-    # sudo ./flashrom/i686/flashrom -p
-
-internal:laptop=force\_I\_want\_a\_brick -w [yourrom.rom](#rom)
+`$ sudo ./flashrom/i686/flashrom -p internal:laptop=force_I_want_a_brick -w `[`yourrom.rom`](#rom)
 
 You should see within the output the following:
 
@@ -372,7 +370,7 @@ with your device.
 
 Use this flashing script, to install libreboot:
 
-    $ sudo ./flash i945apple\_firstflash [yourrom.rom](#rom)
+`$ sudo ./flash i945apple_firstflash `[`yourrom.rom`](#rom)
 
 You should also see within the output the following:
 
