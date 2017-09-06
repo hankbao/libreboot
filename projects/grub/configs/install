@@ -1,4 +1,5 @@
 grub2:grub2
+fonts/DejaVuSansMono.pf2:fonts/DejaVuSansMono.pf2
 keymaps/deqwertz.gkb:keymaps/deqwertz.gkb
 keymaps/esqwerty.gkb:keymaps/esqwerty.gkb
 keymaps/frazerty.gkb:keymaps/frazerty.gkb
