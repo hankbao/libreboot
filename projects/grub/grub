@@ -82,10 +82,12 @@ build() {
 	case "${target}" in
 		bios)
 			grub_build_floppy_image
+			grub_build_font
 			grub_copy_modules
 			;;
 		*)
 			grub_build_standalone_image
+			grub_build_font
 			grub_copy_modules
 			;;
 	esac
