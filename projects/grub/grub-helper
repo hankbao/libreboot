@@ -17,6 +17,9 @@
 
 ARCH='arch'
 CONFIG='config'
+FONTS='fonts'
+FONT_FILE='font-file'
+FONT_PROJECT='font-project'
 FORMAT='format'
 MODMIN='modules-minimal'
 PLATFORM='platform'
@@ -25,6 +28,14 @@ SIZE='size'
 
 grub_arch() {
 	project_file_contents "${project}" "${CONFIGS}" "${ARCH}" "$@"
+}
+
+grub_font_file() {
+	project_file_contents "${project}" "${CONFIGS}" "${FONT_FILE}" "$@"
+}
+
+grub_font_project() {
+	project_file_contents "${project}" "${CONFIGS}" "${FONT_PROJECT}" "$@"
 }
 
 grub_format() {
@@ -58,6 +69,21 @@ grub_copy_modules() {
 	mkdir -p "${keep_dir}"
 
 	cp -a "${grub_module_dir}"/*.@(mod|lst) "${keep_dir}"
+}
+
+grub_build_font() {
+	# Font project-specific filenames and paths
+	local font_file="$(grub_font_file "${FONTS}" "$@")"
+	local font_project="$(grub_font_project "${FONTS}" "$@")"
+	local font_build_dir="${root}/${BUILD}/${font_project}"
+
+	local grub_mkfont="${sources_path}/grub-mkfont"
+
+	# GRUB font directory for outputting the built PF2 file
+	mkdir -p "${build_path}/${FONTS}"
+
+	"${grub_mkfont}" --output="${build_path}/${FONTS}/${font_file%.*}.pf2" \
+			 "${font_build_dir}/${font_file}"
 }
 
 grub_build_utils() {
