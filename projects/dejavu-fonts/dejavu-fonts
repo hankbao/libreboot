@@ -27,7 +27,16 @@ usage() {
 download() {
 	local repository="${project}"
 
-	project_download_git "${project}" "${repository}" 'https://git.savannah.gnu.org/r/grub.git' "$@"
+	project_download_git "${project}" \
+			     "${repository}" \
+			     'https://github.com/dejavu-fonts/dejavu-fonts.git' \
+			     "$@"
+
+	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
+
+	download_wrapper "${sources_path}/resources" \
+			 'https://www.unicode.org/Public/UNIDATA/UnicodeData.txt' \
+			 'https://www.unicode.org/Public/UNIDATA/Blocks.txt'
 }
 
 download_check() {
@@ -37,10 +46,14 @@ download_check() {
 }
 
 extract() {
+	local repository="${project}"
+
 	project_extract "${project}" "$@"
 }
 
 extract_check() {
+	local repository="${project}"
+
 	project_extract_check "${project}" "$@"
 }
 
@@ -57,7 +70,6 @@ update_check() {
 }
 
 build() {
-	local target="$1"
 	local repository="${project}"
 
 	project_sources_directory_missing_empty_error "${project}" "${repository}" "$@"
@@ -66,38 +78,17 @@ build() {
 		git_project_checkout "${project}" "${repository}" "$@"
 	fi
 
-	local project_path="$(project_path "${project}")"
 	local sources_path="$(project_sources_path "${project}" "${repository}" "$@")"
 	local build_path="$(project_build_path "${project}" "$@")"
-	local raw_keymap_path="${project_path}/${CONFIGS}/keymaps"
 
 	mkdir -p "${build_path}"
 
-	grub_build_utils
+	# Create a symlink to the orthography files provided by fontconfig
+	ln -s "${root}/${SOURCES}/fontconfig/fc-lang" "${sources_path}/resources/fc-lang"
 
-	for raw_keymap in "${raw_keymap_path}"/*; do
-		grub_build_layout "${raw_keymap}"
-	done
-
-	case "${target}" in
-		bios)
-			grub_build_floppy_image
-			grub_build_font
-			grub_copy_modules
-			;;
-		*)
-			grub_build_standalone_image
-			grub_build_font
-			grub_copy_modules
-			;;
-	esac
-
-	# Temporary until the function project_make_distclean is written
-	(
-		cd "${sources_path}" || return
-
-		make distclean
-	)
+	make -C "${sources_path}" -j"${TASKS}"
+	cp "${sources_path}/build"/[!.]*.ttf "${build_path}"
+	make -C "${sources_path}" clean
 }
 
 build_check() {
@@ -115,14 +106,12 @@ install_check() {
 release() {
 	local repository="${project}"
 
-	project_release_install_archive "${project}" "${IMAGES}" "$@"
 	project_release_sources_git "${project}" "${repository}" "$@"
 }
 
 release_check() {
 	local repository="${project}"
 
-	project_release_install_archive_check "${project}" "${IMAGES}" "$@"
 	project_release_check_sources_git "${project}" "${repository}" "$@"
 }
 
