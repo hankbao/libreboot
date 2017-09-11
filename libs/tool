@@ -200,6 +200,25 @@ tool_action_arguments_recursive() {
 	fi
 }
 
+tool_arguments_targets() {
+	local tool="$1"
+	shift
+
+	local tool_path="$(tool_path "${tool}")"
+	local targets_path="${tool_path}/${CONFIGS}"
+	local argument
+
+	for argument in "$@"; do
+		targets_path="${targets_path}/${argument}"
+	done
+
+	targets_path="${targets_path}/${TARGETS}"
+
+	if [[ -f "${targets_path}" ]]; then
+		cat "${targets_path}"
+	fi
+}
+
 tool_path() {
 	local tool=$1
 
