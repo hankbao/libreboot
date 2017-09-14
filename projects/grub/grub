@@ -89,12 +89,7 @@ build() {
 
 	grub_copy_modules
 
-	# Temporary until the function project_make_distclean is written
-	(
-		cd "${sources_path}" || return
-
-		make distclean
-	)
+	make -C "${sources_path}" distclean
 }
 
 build_check() {
