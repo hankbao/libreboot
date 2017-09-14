@@ -328,7 +328,10 @@ PSU to pin 2 on the BBB (P9 header). It is safe to install this now
 should.*
 
 if you need to extend the 3.3v psu leads, just use the same colour M-F
-leads, *but* keep all other leads short (10cm or less)
+leads, *but* keep all other leads short and equal length (30cm or less).
+Keep in mind that length isn't inversely proportional to signal quality,
+so trying out different lengths will yield different results.
+Same goes for spispeed.
 
 You should now have something that looks like this:\
 ![](images/x200/5252_bbb0.jpg) ![](images/x200/5252_bbb1.jpg)
