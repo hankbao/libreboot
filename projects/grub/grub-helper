@@ -114,6 +114,10 @@ grub_build_layout() {
 
 	if ! [[ -e "${keymap_out_path}" ]]; then
 		mkdir -p "${keymap_out_path}"
+	elif ! [[ -d "${keymap_out_path}" ]]; then
+		printf '\n%s\n' "Error: File ${keymap_out_path} is not a directory" 1>&2
+
+		return 1
 	fi
 
 	"${grub_mklayout}" --output="${grub_kbd_layout}" --input="${raw_layout_path}"
@@ -148,8 +152,9 @@ grub_build_floppy_image() {
 	local grubimg="${build_path}/grub2"
 	local tempfile="${build_path}/temp.file"
 
-	if ! ( grub_build_bootable_image "$@" ); then
+	if ! grub_build_bootable_image "$@"; then
 		printf '\n%s\n\n' "Error: Failed to build a GRUB image" 1>&2
+
 		return 1
 	fi
 
@@ -161,6 +166,7 @@ grub_build_floppy_image() {
 		dd if=/dev/zero of="${tempfile}" bs=1024 count="${size:-160}"
 	else
 		printf '\n%s\n\n' "Error: File ${tempfile} already exists!" 1>&2
+
 		return 1
 	fi
 
@@ -175,7 +181,8 @@ grub_build_floppy_image() {
 		mv "${tempfile}" "${grubimg}"
 	else
 		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
-		printf '%s\n\n' "it must be less than ${size}KiB in size." 1>&2
+		printf '%s\n\n' "it must be less than ${size}KiB in size" 1>&2
+
 		return 1
 	fi
 }
