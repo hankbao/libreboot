@@ -12,7 +12,7 @@ An
 ["HMM"](https://download.lenovo.com/ibmdl/pub/pc/pccbbs/mobiles_pdf/43y6629_05.pdf#page=386)
 (Hardware Maintenance Manual) detailing the process of \[dis\]assembly
 is available for this model. Be careful when reassembling the laptop as
-the screws on page 144 (with title "1130 Keyboard bezel") are swapped
+the screws on page 114 (with title "1130 Keyboard bezel") are swapped
 and if you follow the HMM you will punch a hole through the bezel in the
 upper right corner.
 
