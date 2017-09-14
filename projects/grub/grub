@@ -75,15 +75,15 @@ build() {
 
 	grub_build_utils
 
-	for raw_keymap in "${raw_keymap_path}"/*; do
-		grub_build_layout "${raw_keymap}"
-	done
-
 	if [[ "${target}" == 'bios' ]]; then
 		grub_build_floppy_image
 	else
 		grub_build_standalone_image
 	fi
+
+	for raw_keymap in "${raw_keymap_path}"/*; do
+		grub_build_layout "${raw_keymap}"
+	done
 
 	grub_build_font
 
