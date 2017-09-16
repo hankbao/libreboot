@@ -27,8 +27,7 @@ usage() {
 download() {
 	local repository="${project}"
 
-	# Can't clone using TLS until Coreboot's cert lists the domain as a SAN
-	project_download_git "${project}" "${repository}" 'git://git.seabios.org/seabios.git' "$@"
+	project_download_git "${project}" "${repository}" 'https://review.coreboot.org/seabios.git' "$@"
 }
 
 download_check() {
