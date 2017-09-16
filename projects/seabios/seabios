@@ -75,20 +75,16 @@ build() {
 	(
 		cd "${sources_path}"
 
-		# Copy the config file for target into working directory
 		cp "${seabios_config_path}" .config
 
-		# Compile SeaBIOS first
 		make -j"${TASKS}"
 
-		# Copy the ELF to its build directory
 		if [[ "$1" == 'txtmode' ]]; then
 			cp out/bios.bin.elf "${build_path}"
 		elif [[ "$1" == 'vga' ]]; then
 			cp out/vgabios.bin "${build_path}"
 		fi
 
-		# Tidy up
 		make distclean
 		rm -f .config
 	)
