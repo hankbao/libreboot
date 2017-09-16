@@ -76,9 +76,9 @@ build() {
 
 	make -C "${sources_path}" -j"${TASKS}"
 
-	if [[ "${target}" == 'txtmode' ]]; then
+	if [[ "${target}" == 'bios' ]]; then
 		cp "${sources_path}/out/bios.bin.elf" "${build_path}"
-	elif [[ "${target}" == 'vga' ]]; then
+	elif [[ "${target}" == 'vgabios' ]]; then
 		cp "${sources_path}/out/vgabios.bin" "${build_path}"
 	fi
 
