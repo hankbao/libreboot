@@ -57,6 +57,7 @@ update_check() {
 }
 
 build() {
+	local target="$1"
 	local repository="${project}"
 
 	project_sources_directory_missing_empty_error "${project}" "${repository}" "$@"
@@ -71,23 +72,19 @@ build() {
 	local build_path="$(project_build_path "${project}" "$@")"
 
 	mkdir -p "${build_path}"
+	cp "${seabios_config_path}" "${sources_path}/.config"
 
-	(
-		cd "${sources_path}"
+	make -C "${sources_path}" -j"${TASKS}"
 
-		cp "${seabios_config_path}" .config
+	if [[ "${target}" == 'txtmode' ]]; then
+		cp "${sources_path}/out/bios.bin.elf" "${build_path}"
+	elif [[ "${target}" == 'vga' ]]; then
+		cp "${sources_path}/out/vgabios.bin" "${build_path}"
+	fi
 
-		make -j"${TASKS}"
+	make -C "${sources_path}" distclean
 
-		if [[ "$1" == 'txtmode' ]]; then
-			cp out/bios.bin.elf "${build_path}"
-		elif [[ "$1" == 'vga' ]]; then
-			cp out/vgabios.bin "${build_path}"
-		fi
-
-		make distclean
-		rm -f .config
-	)
+	rm -f "${sources_path}/.config"
 }
 
 build_check() {
