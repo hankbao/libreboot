@@ -75,29 +75,21 @@ build() {
 
 	grub_build_utils
 
+	if [[ "${target}" == 'bios' ]]; then
+		grub_build_floppy_image
+	else
+		grub_build_standalone_image
+	fi
+
 	for raw_keymap in "${raw_keymap_path}"/*; do
 		grub_build_layout "${raw_keymap}"
 	done
 
-	case "${target}" in
-		bios)
-			grub_build_floppy_image
-			grub_build_font
-			grub_copy_modules
-			;;
-		*)
-			grub_build_standalone_image
-			grub_build_font
-			grub_copy_modules
-			;;
-	esac
+	grub_build_font
 
-	# Temporary until the function project_make_distclean is written
-	(
-		cd "${sources_path}" || return
+	grub_copy_modules
 
-		make distclean
-	)
+	make -C "${sources_path}" distclean
 }
 
 build_check() {
