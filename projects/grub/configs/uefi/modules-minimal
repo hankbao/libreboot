@@ -1,4 +1,5 @@
 ahci
+cbmemc
 ehci
 ext2
 halt
