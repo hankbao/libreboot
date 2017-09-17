@@ -1,4 +1,5 @@
 biosdisk
+cbmemc
 ext2
 halt
 part_bsd
