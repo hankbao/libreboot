@@ -76,11 +76,11 @@ download_wrapper() {
 	# TODO: Add support for curl, in addition
 	# to wget, for compatibility reasons
 	wget_options=(
-		--config=/dev/null
-		--secure-protocol=PFS
-		--directory-prefix="${download_dir}"
-		--continue
-		--
+		'--config=/dev/null'
+		'--secure-protocol=PFS'
+		"--directory-prefix=$download_dir"
+		'--continue'
+		'--'
 	)
 
 	wget "${wget_options[@]}" "${uris[@]}"
