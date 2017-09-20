@@ -73,17 +73,39 @@ download_wrapper() {
 	shift
 	local uris=($@)
 
-	# TODO: Add support for curl, in addition
-	# to wget, for compatibility reasons
-	wget_options=(
-		--config=/dev/null
-		--secure-protocol=PFS
-		--directory-prefix="${download_dir}"
-		--continue
-		--
+	local wget_options=(
+		'--config=/dev/null'
+		'--secure-protocol=PFS'
+		"--directory-prefix=$download_dir"
+		'--continue'
+		'--'
 	)
 
-	wget "${wget_options[@]}" "${uris[@]}"
+	local curl_options=(
+		'-q'
+		'--continue-at -'
+		'--remote-name'
+		'--retry 20'
+		'--ssl'
+		'--tlsv1.2'
+		'--'
+	)
+
+	if hash wget > /dev/null 2>&1; then
+
+		wget "${wget_options[@]}" "${uris[@]}"
+
+	elif hash curl > /dev/null 2>&1; then
+		(
+			cd "$download_dir"
+
+			curl "${curl_options[@]}" "${uris[@]}"
+		)
+	else
+		printf '\n%s\n\n' 'Error: Neither wget nor curl were found' 1>&2
+
+		return 1
+	fi
 }
 
 diff_patch_file() {
