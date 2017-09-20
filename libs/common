@@ -91,7 +91,21 @@ download_wrapper() {
 		'--'
 	)
 
-	wget "${wget_options[@]}" "${uris[@]}"
+	if hash wget > /dev/null 2>&1; then
+
+		wget "${wget_options[@]}" "${uris[@]}"
+
+	elif hash curl > /dev/null 2>&1; then
+		(
+			cd "$download_dir"
+
+			curl "${curl_options[@]}" "${uris[@]}"
+		)
+	else
+		printf '\n%s\n\n' 'Error: Neither wget nor curl were found' 1>&2
+
+		return 1
+	fi
 }
 
 diff_patch_file() {
