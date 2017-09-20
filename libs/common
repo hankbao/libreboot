@@ -73,13 +73,21 @@ download_wrapper() {
 	shift
 	local uris=($@)
 
-	# TODO: Add support for curl, in addition
-	# to wget, for compatibility reasons
 	local wget_options=(
 		'--config=/dev/null'
 		'--secure-protocol=PFS'
 		"--directory-prefix=$download_dir"
 		'--continue'
+		'--'
+	)
+
+	local curl_options=(
+		'-q'
+		'--continue-at -'
+		'--remote-name'
+		'--retry 20'
+		'--ssl'
+		'--tlsv1.2'
 		'--'
 	)
 
