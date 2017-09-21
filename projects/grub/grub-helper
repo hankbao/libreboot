@@ -27,130 +27,130 @@ PREFIX='prefix'
 SIZE='size'
 
 grub_arch() {
-	project_file_contents "${project}" "${CONFIGS}" "${ARCH}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$ARCH" "$@"
 }
 
 grub_font_file() {
-	project_file_contents "${project}" "${CONFIGS}" "${FONT_FILE}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$FONT_FILE" "$@"
 }
 
 grub_font_project() {
-	project_file_contents "${project}" "${CONFIGS}" "${FONT_PROJECT}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$FONT_PROJECT" "$@"
 }
 
 grub_format() {
-	project_file_contents "${project}" "${CONFIGS}" "${FORMAT}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$FORMAT" "$@"
 }
 
 grub_platform() {
-	project_file_contents "${project}" "${CONFIGS}" "${PLATFORM}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$PLATFORM" "$@"
 }
 
 grub_prefix() {
-	project_file_contents "${project}" "${CONFIGS}" "${PREFIX}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$PREFIX" "$@"
 }
 
 grub_size() {
-	project_file_contents "${project}" "${CONFIGS}" "${SIZE}" "$@"
+	project_file_contents "$project" "$CONFIGS" "$SIZE" "$@"
 }
 
 grub_config_path() {
-	project_file_path "${project}" "${CONFIGS}" "${CONFIG}" "$@"
+	project_file_path "$project" "$CONFIGS" "$CONFIG" "$@"
 }
 
 grub_modmin_path() {
-	project_file_path "${project}" "${CONFIGS}" "${MODMIN}" "$@"
+	project_file_path "$project" "$CONFIGS" "$MODMIN" "$@"
 }
 
 grub_copy_modules() {
-	local grub_module_dir="${sources_path}/grub-core"
-	local keep_dir="${build_path}/$(grub_format "${target}" "$@")"
+	local grub_module_dir="$sources_path/grub-core"
+	local keep_dir="$build_path/$(grub_format "$target" "$@")"
 
-	mkdir -p "${keep_dir}"
+	mkdir -p "$keep_dir"
 
-	cp -a "${grub_module_dir}"/*.@(mod|lst) "${keep_dir}"
+	cp -a "$grub_module_dir"/*.@(mod|lst) "$keep_dir"
 }
 
 grub_build_font() {
 	# Font project-specific filenames and paths
-	local font_file="$(grub_font_file "${FONTS}" "$@")"
-	local font_project="$(grub_font_project "${FONTS}" "$@")"
-	local font_build_dir="${root}/${BUILD}/${font_project}"
+	local font_file="$(grub_font_file "$FONTS" "$@")"
+	local font_project="$(grub_font_project "$FONTS" "$@")"
+	local font_build_dir="$root/$BUILD/$font_project"
 
-	local grub_mkfont="${sources_path}/grub-mkfont"
+	local grub_mkfont="$sources_path/grub-mkfont"
 
 	# GRUB font directory for outputting the built PF2 file
-	mkdir -p "${build_path}/${FONTS}"
+	mkdir -p "$build_path/$FONTS"
 
-	"${grub_mkfont}" --output="${build_path}/${FONTS}/${font_file%.*}.pf2" \
-			 "${font_build_dir}/${font_file}"
+	"$grub_mkfont" --output="$build_path/$FONTS/${font_file%.*}.pf2" \
+			"$font_build_dir/$font_file"
 }
 
 grub_build_utils() {
 	(
 		# If arch and/or platform files don't exist,
 		# the configure script will pick a reasonable default
-		local arch="$(grub_arch "${target}" "$@")"
-		local platform="$(grub_platform "${target}" "$@")"
+		local arch="$(grub_arch "$target" "$@")"
+		local platform="$(grub_platform "$target" "$@")"
 
-		cd "${sources_path}" || return
+		cd "$sources_path" || return
 
-		if git_project_check "${repository}"; then
+		if git_project_check "$repository"; then
 			./autogen.sh
 		fi
 
-		./configure --target="${arch}" --with-platform="${platform}"
+		./configure --target="$arch" --with-platform="$platform"
 
-		make -j"${TASKS}"
+		make -j"$TASKS"
 	)
 }
 
 grub_build_layout() {
 	local raw_layout="${1##*/}"
 	local raw_layout_path="$1"
-	local keymap_out_path="${build_path}/keymaps"
-	local grub_mklayout="${sources_path}/grub-mklayout"
-	local grub_kbd_layout="${keymap_out_path}/${raw_layout}.gkb"
+	local keymap_out_path="$build_path/keymaps"
+	local grub_mklayout="$sources_path/grub-mklayout"
+	local grub_kbd_layout="$keymap_out_path/$raw_layout.gkb"
 
-	if ! [[ -e "${keymap_out_path}" ]]; then
-		mkdir -p "${keymap_out_path}"
-	elif ! [[ -d "${keymap_out_path}" ]]; then
-		printf '\n%s\n' "Error: File ${keymap_out_path} is not a directory" 1>&2
+	if ! [[ -e "$keymap_out_path" ]]; then
+		mkdir -p "$keymap_out_path"
+	elif ! [[ -d "$keymap_out_path" ]]; then
+		printf '\n%s\n' "Error: File $keymap_out_path is not a directory" 1>&2
 
 		return 1
 	fi
 
-	"${grub_mklayout}" --output="${grub_kbd_layout}" --input="${raw_layout_path}"
+	"$grub_mklayout" --output="$grub_kbd_layout" --input="$raw_layout_path"
 }
 
 grub_build_bootable_image() {
-	local arch="$(grub_arch "${target}" "$@")"
-	local format="$(grub_format "${target}" "$@")"
-	local prefix="$(grub_prefix "${target}" "$@")"
-	local config_path="$(grub_config_path "${target}" "$@")"
+	local arch="$(grub_arch "$target" "$@")"
+	local format="$(grub_format "$target" "$@")"
+	local prefix="$(grub_prefix "$target" "$@")"
+	local config_path="$(grub_config_path "$target" "$@")"
 
-	local grub_mkimage="${sources_path}/grub-mkimage"
-	local grub_module_dir="${sources_path}/grub-core"
+	local grub_mkimage="$sources_path/grub-mkimage"
+	local grub_module_dir="$sources_path/grub-core"
 
-	local grubimg="${build_path}/grub.img"
-	local grub_bootimg="${grub_module_dir}/boot.img"
-	local grub_bootable_img="${build_path}/grub2"
+	local grubimg="$build_path/grub.img"
+	local grub_bootimg="$grub_module_dir/boot.img"
+	local grub_bootable_img="$build_path/grub2"
 
-	"${grub_mkimage}" \
-		--config="${config_path}" \
-		--directory="${grub_module_dir}" \
-		--output="${grubimg}" \
-		--format="${format}" \
-		--prefix="${prefix}" \
+	"$grub_mkimage" \
+		--config="$config_path" \
+		--directory="$grub_module_dir" \
+		--output="$grubimg" \
+		--format="$format" \
+		--prefix="$prefix" \
 		cbfs configfile
 
-	cat "${grub_bootimg}" "${grubimg}" > "${grub_bootable_img}"
-	rm -f "${grubimg}"
+	cat "$grub_bootimg" "$grubimg" > "$grub_bootable_img"
+	rm -f "$grubimg"
 }
 
 grub_build_floppy_image() {
-	local grubimg="${build_path}/grub2"
-	local tempfile="${build_path}/temp.file"
+	local grubimg="$build_path/grub2"
+	local tempfile="$build_path/temp.file"
 
 	if ! grub_build_bootable_image "$@"; then
 		printf '\n%s\n\n' "Error: Failed to build a GRUB image" 1>&2
@@ -158,27 +158,27 @@ grub_build_floppy_image() {
 		return 1
 	fi
 
-	local size="$(grub_size "${target}" "$@")"
+	local size="$(grub_size "$target" "$@")"
 
 	# Pre-allocate a floppy-sized image
 	# SeaBIOS requires floppy images to have a "correct" size
-	if ! [[ -e "${tempfile}" ]]; then
-		dd if=/dev/zero of="${tempfile}" bs=1024 count="${size:-160}"
+	if ! [[ -e "$tempfile" ]]; then
+		dd if=/dev/zero of="$tempfile" bs=1024 count="${size:-160}"
 	else
-		printf '\n%s\n\n' "Error: File ${tempfile} already exists!" 1>&2
+		printf '\n%s\n\n' "Error: File $tempfile already exists!" 1>&2
 
 		return 1
 	fi
 
-	local -i grubimg_size="$(stat -c %s "${grubimg}")"
+	local -i grubimg_size="$(stat -c %s "$grubimg")"
 	local -i floppy_size="$((${size:-160} * 1024))"
 
 	# Graft the GRUB image onto the blank floppy image
 	if ((grubimg_size <= floppy_size)); then
-		dd if="${grubimg}" of="${tempfile}" bs=1 conv=notrunc
+		dd if="$grubimg" of="$tempfile" bs=1 conv=notrunc
 
-		rm -f "${grubimg}"
-		mv "${tempfile}" "${grubimg}"
+		rm -f "$grubimg"
+		mv "$tempfile" "$grubimg"
 	else
 		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
 		printf '%s\n\n' "it must be less than ${size}KiB in size" 1>&2
@@ -188,25 +188,25 @@ grub_build_floppy_image() {
 }
 
 grub_build_standalone_image() {
-	local arch="$(grub_arch "${target}" "$@")"
-	local format="$(grub_format "${target}" "$@")"
-	local prefix="$(grub_prefix "${target}" "$@")"
-	local config_path="$(grub_config_path "${target}" "$@")"
+	local arch="$(grub_arch "$target" "$@")"
+	local format="$(grub_format "$target" "$@")"
+	local prefix="$(grub_prefix "$target" "$@")"
+	local config_path="$(grub_config_path "$target" "$@")"
 
-	local grubimg="${build_path}/grub2"
+	local grubimg="$build_path/grub2"
 
-	local grub_mkimage="${sources_path}/grub-mkimage"
-	local grub_mkstandalone="${sources_path}/grub-mkstandalone"
-	local grub_module_dir="${sources_path}/grub-core"
+	local grub_mkimage="$sources_path/grub-mkimage"
+	local grub_mkstandalone="$sources_path/grub-mkstandalone"
+	local grub_module_dir="$sources_path/grub-core"
 
-	"${grub_mkstandalone}" \
-		--grub-mkimage="${grub_mkimage}" \
+	"$grub_mkstandalone" \
+		--grub-mkimage="$grub_mkimage" \
 		--fonts='' \
 		--themes='' \
 		--locales='' \
 		--install-modules='cbfs configfile' \
-		--directory="${grub_module_dir}" \
-		--format="${format}" \
-		--output="${grubimg}" \
-		/boot/grub/grub.cfg="${config_path}"
+		--directory="$grub_module_dir" \
+		--format="$format" \
+		--output="$grubimg" \
+		/boot/grub/grub.cfg="$config_path"
 }
