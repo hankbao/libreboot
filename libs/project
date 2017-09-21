@@ -48,9 +48,9 @@ project_helper_include() {
 project_check() {
 	local project="${1##*/}"
 
-	local project_path="$(project_path "${project}")"
+	local project_path="$(project_path "$project")"
 
-	if ! [[ -f "${project_path}/${project}" ]]; then
+	if ! [[ -f "$project_path/$project" ]]; then
 		return 1
 	fi
 }
@@ -79,14 +79,14 @@ project_action() {
 	(
 		set +e
 
-		project_action_check "${action}" "${project}" "$@"
+		project_action_check "$action" "$project" "$@"
 
-		printf '%s\n' "Project ${project} ${action} (with ${arguments:-no argument})" >&2
+		printf '%s\n' "Project $project $action (with ${arguments:-no argument})" >&2
 
-		if "${action}" "$@"; then
-			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) completed" >&2
+		if "$action" "$@"; then
+			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed" >&2
 		else
-			printf '\n%s\n' "Project ${project} ${action} (with ${arguments:-no argument}) failed" >&2
+			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed" >&2
 			return 1
 		fi
 	)
@@ -105,8 +105,8 @@ project_action_check() {
 			return 1
 		fi
 
-		for project_force in ${PROJECTS_FORCE}; do
-			if [[ "${project_force}" == "${project}" ]]; then
+		for project_force in $PROJECTS_FORCE; do
+			if [[ "$project_force" == "$project" ]]; then
 				return 1
 			fi
 		done
@@ -124,11 +124,11 @@ project_action_helper() {
 	local project="$1"
 	shift
 
-	if ! function_check "${helper}"; then
+	if ! function_check "$helper"; then
 		return 0
 	fi
 
-	"${helper}" "$@"
+	"$helper" "$@"
 }
 
 project_action_arguments() {
@@ -137,10 +137,10 @@ project_action_arguments() {
 	local project="$1"
 	shift
 
-	project_include "${project}"
+	project_include "$project"
 
-	project_action_arguments_verify_recursive "${action}" "${project}" "$@"
-	project_action_arguments_recursive "${action}" "${project}" "$@"
+	project_action_arguments_verify_recursive "$action" "$project" "$@"
+	project_action_arguments_recursive "$action" "$project" "$@"
 }
 
 project_action_arguments_verify_recursive() {
@@ -165,18 +165,18 @@ project_action_arguments_verify_recursive() {
 		return 0
 	fi
 
-	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
+	action_helper_arguments="$(project_action_helper 'arguments' "$project" "$@")"
 
-	if [[ -n "${action_helper_arguments}" ]]; then
-		test="$(printf '%s\n' "${action_helper_arguments}" | grep -e "^${argument}\$" || true)"
+	if [[ -n "$action_helper_arguments" ]]; then
+		test="$(printf '%s\n' "$action_helper_arguments" | grep -e "^$argument\$" || true)"
 
-		if [[ -z "${test}" ]]; then
-			printf '%s\n' "Invalid argument ${argument} for project ${project} action ${action}" >&2
+		if [[ -z "$test" ]]; then
+			printf '%s\n' "Invalid argument $argument for project $project action $action" >&2
 			return 1
 		fi
 	fi
 
-	project_action_arguments_verify_recursive "${action}" "${project}" "$@"
+	project_action_arguments_verify_recursive "$action" "$project" "$@"
 }
 
 project_action_arguments_recursive() {
@@ -188,21 +188,21 @@ project_action_arguments_recursive() {
 	local action_helper_arguments
 	local argument
 
-	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@" || true)"
+	action_helper_arguments="$(project_action_helper 'arguments' "$project" "$@" || true)"
 
-	if [[ -z "${action_helper_arguments}" ]]; then
-		project_action "${action}" "${project}" "$@"
+	if [[ -z "$action_helper_arguments" ]]; then
+		project_action "$action" "$project" "$@"
 	else
 		# This is to allow space characters in arguments.
-		local ifs_save="${IFS}"
+		local ifs_save="$IFS"
 		local IFS=$'\n'
 
-		for argument in $(printf '%s\n' "${action_helper_arguments}")
+		for argument in $(printf '%s\n' "$action_helper_arguments")
 		do
-			IFS="${ifs_save}"
+			IFS="$ifs_save"
 
 			# Only a single argument at a time is returned by the helper.
-			project_action_arguments_recursive "${action}" "${project}" "$@" "${argument}"
+			project_action_arguments_recursive "$action" "$project" "$@" "$argument"
 		done
 	fi
 }
@@ -213,22 +213,22 @@ project_action_projects() {
 	local project="$1"
 	shift
 
-	local project_path="$(project_path "${project}")"
-	local project_projects_path="${project_path}/${CONFIGS}/${PROJECTS}"
-	local project_projects_action_path="${project_path}/${CONFIGS}/${PROJECTS}-${action}"
+	local project_path="$(project_path "$project")"
+	local project_projects_path="$project_path/$CONFIGS/$PROJECTS"
+	local project_projects_action_path="$project_path/$CONFIGS/$PROJECTS-$action"
 	local arguments
 	local path
 
-	if [[ -f "${project_projects_action_path}" ]]; then
-		path="${project_projects_action_path}"
+	if [[ -f "$project_projects_action_path" ]]; then
+		path="$project_projects_action_path"
 	else
-		path="${project_projects_path}"
+		path="$project_projects_path"
 	fi
 
 	# Multiple arguments can be read from the file.
 	while read -r arguments; do
-		eval "project_action_arguments ${action} ${arguments}"
-	done < "${path}"
+		eval "project_action_arguments $action $arguments"
+	done < "$path"
 }
 
 project_path() {
@@ -448,18 +448,18 @@ project_sources_prepare() {
 
 	# Not implemented yet / May end up not being needed
 	#project_sources_prepare_blobs
-	project_sources_prepare_patch "${project}" "${sources_path}" "$@"
+	project_sources_prepare_patch "$project" "$sources_path" "$@"
 }
 
 project_sources_prepare_patch() {
 	local project="$1"
 	local sources_path="$2"
 
-	local project_path="$(project_path "${project}")"
-	local patches_path="${project_path}/${PATCHES}"
+	local project_path="$(project_path "$project")"
+	local patches_path="$project_path/$PATCHES"
 
-	for patch in "${patches_path}"/[!.]*.@(patch|diff); do
-		diff_patch_file "${sources_path}" "${patch}"
+	for patch in "$patches_path"/[!.]*.@(patch|diff); do
+		diff_patch_file "$sources_path" "$patch"
 	done
 }
 
@@ -556,8 +556,8 @@ project_usage_actions() {
 
 	(
 		for action in "${PROJECT_ACTIONS_GENERIC[@]}"; do
-			if function_check "${action}"; then
-				printf '%s\n' "  ${action}"
+			if function_check "$action"; then
+				printf '%s\n' "  $action"
 			fi
 		done
 	)
@@ -567,7 +567,7 @@ project_usage_actions() {
 
 		(
 			for action in "$@"; do
-				printf '%s\n' "  ${action}"
+				printf '%s\n' "  $action"
 			done
 		)
 	fi
@@ -579,7 +579,7 @@ project_usage_arguments() {
 
 	printf '\n%s\n' 'Arguments:'
 
-	project_usage_arguments_recursive "${project}" '  ' "$@"
+	project_usage_arguments_recursive "$project" '  ' "$@"
 }
 
 project_usage_arguments_recursive() {
@@ -591,12 +591,12 @@ project_usage_arguments_recursive() {
 	local action_helper_arguments
 	local argument
 
-	action_helper_arguments="$(project_action_helper 'arguments' "${project}" "$@")"
+	action_helper_arguments="$(project_action_helper 'arguments' "$project" "$@")"
 
-	if [[ -n "${action_helper_arguments}" ]]; then
-		for argument in ${action_helper_arguments}; do
-			printf '%s\n' "${spacing}${argument}"
-			project_usage_arguments_recursive "${project}" "  ${spacing}" "$@" "${argument}"
+	if [[ -n "$action_helper_arguments" ]]; then
+		for argument in $action_helper_arguments; do
+			printf '%s\n' "$spacing$argument"
+			project_usage_arguments_recursive "$project" "  $spacing" "$@" "$argument"
 		done
 	fi
 }
@@ -643,25 +643,25 @@ project_download_archive() {
 	local archive="${archive_uri##*/}"
 	local compress_fmt="${archive##*.tar}"
 
-	local directory_prefix="${root}/${SOURCES}"
-	local archive_path="${root}/${SOURCES}/${archive}"
-	local sources_path="${root}/${SOURCES}/${project}"
+	local directory_prefix="$root/$SOURCES"
+	local archive_path="$root/$SOURCES/$archive"
+	local sources_path="$root/$SOURCES/$project"
 
 	if [[ "${compress_fmt#*.}" != "${ARCHIVE#*.}" ]]; then
-		ARCHIVE="tar${compress_fmt}"
+		ARCHIVE="tar$compress_fmt"
 	fi
 
 	# TODO: Split this code block into separate functions
 	# Archive verification will be included at that point in time
-	if ! project_sources_directory_filled_check "${project}"; then
-		download_wrapper "${directory_prefix}" "${archive_uri}" "${archive_dsig_uri}"
-		archive_extract "${archive_path}" "${directory_prefix}"
+	if ! project_sources_directory_filled_check "$project"; then
+		download_wrapper "$directory_prefix" "$archive_uri" "$archive_dsig_uri"
+		archive_extract "$archive_path" "$directory_prefix"
 
-		mv "${archive_path%.tar*}" "${sources_path}"
+		mv "${archive_path%.tar*}" "$sources_path"
 	fi
 
 	# Patch the source, if necessary
-	project_sources_prepare "${project}" "${sources_path}"
+	project_sources_prepare "$project" "$sources_path"
 }
 
 project_download_check_archive() {
@@ -669,7 +669,7 @@ project_download_check_archive() {
 	local sources_path="$2"
 
 	# TODO: Write the following function
-	#project_sources_archive_extract_check "${project}" "${sources_path}"
+	#project_sources_archive_extract_check "$project" "$sources_path"
 }
 
 project_extract() {
