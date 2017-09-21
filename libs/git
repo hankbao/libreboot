@@ -205,7 +205,7 @@ git_files() {
 	local repository_path="$1"
 
 	(
-		cd "${repository_path}"
+		cd "$repository_path"
 		# Reproducible sorting.
 		git ls-files -z | env LC_ALL='C.UTF-8' sort -z
 	)
@@ -231,23 +231,23 @@ git_project_patch_recursive() {
 	local branch="$3"
 	local path="${4:-.}"
 
-	local repository_path="$(git_project_repository_path "${repository}")"
-	local project_path="$(project_path "${project}")"
-	local patches_path="${project_path}/${PATCHES}/${path}"
+	local repository_path="$(git_project_repository_path "$repository")"
+	local project_path="$(project_path "$project")"
+	local patches_path="$project_path/$PATCHES/$path"
 
-	if ! [[ -d "${patches_path}" ]]; then
+	if ! [[ -d "$patches_path" ]]; then
 		return
 	fi
 
-	if [[ "${path}" != "." ]]; then
-		git_project_patch_recursive "${project}" "${repository}" "${branch}" "$(dirname "${path}")"
+	if [[ "$path" != "." ]]; then
+		git_project_patch_recursive "$project" "$repository" "$branch" "$(dirname "$path")"
 	fi
 
-	for patch in "${patches_path}"/[!.]*.@(patch|diff); do
+	for patch in "$patches_path"/[!.]*.@(patch|diff); do
 		if [[ "${patch##*.}" == "patch" ]]; then
-			git_patch "${repository_path}" "${branch}" "${patch}"
+			git_patch "$repository_path" "$branch" "$patch"
 		else
-			diff_patch_file "${repository_path}" "${patch}"
+			diff_patch_file "$repository_path" "$patch"
 		fi
 	done
 }
