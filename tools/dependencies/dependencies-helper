@@ -19,7 +19,7 @@ dependencies_print() {
 	local distro="$1"
 	shift
 
-	if [[ "${distro}" == 'parabola' ]]; then
+	if [[ "$distro" == 'parabola' ]]; then
 		printf '\n%s\n' 'Enable the multilib repository in /etc/pacman.conf'
 		printf '\n%s\n' 'Then, run the following command as root:'
 		printf '\n%s%s\n' 'pacman -S --needed ' "$*"
@@ -33,19 +33,19 @@ dependencies_host_supported() {
 	local distro="$1"
 	local arch="$2"
 
-	dependencies_distro_supported "${distro}" || return
-	dependencies_arch_supported "${distro}" "${arch}" || return
+	dependencies_distro_supported "$distro" || return
+	dependencies_arch_supported "$distro" "$arch" || return
 }
 
 dependencies_arch_supported() {
 	local distro="$1"
 	local arch="$2"
 
-	local tool_path="$(tool_path "${tool}")"
-	local distro_dir="${tool_path}/${CONFIGS}/${distro}"
+	local tool_path="$(tool_path "$tool")"
+	local distro_dir="$tool_path/$CONFIGS/$distro"
 
-	if ! [[ -d "${distro_dir}/${arch}" ]]; then
-		printf '\n%s\n'  "Architecture \"${arch}\" is not supported" 1>&2
+	if ! [[ -d "$distro_dir/$arch" ]]; then
+		printf '\n%s\n'  "Architecture \"$arch\" is not supported" 1>&2
 
 		return 1
 	fi
@@ -54,17 +54,17 @@ dependencies_arch_supported() {
 dependencies_distro_supported() {
 	local distro="$1"
 
-	local tool_path="$(tool_path "${tool}")"
-	local targets_path="${tool_path}/${CONFIGS}/${TARGETS}"
+	local tool_path="$(tool_path "$tool")"
+	local targets_path="$tool_path/$CONFIGS/$TARGETS"
 
 	local -a targets_list
-	mapfile -t targets_list < "${targets_path}"
+	mapfile -t targets_list < "$targets_path"
 
 	# Necessary to properly format the string for extglob use below
 	IFS='|' eval 'local distro_list="${targets_list[*]}"'
 
-	if [[ "${distro}" != @(${distro_list}) ]]; then
-		printf '\n%s'  "Argument \"${distro}\" is not supported.  " 1>&2
+	if [[ "$distro" != @($distro_list) ]]; then
+		printf '\n%s'  "Argument \"$distro\" is not supported.  " 1>&2
 		printf '%s\n'  'Check spelling?' 1>&2
 
 		usage

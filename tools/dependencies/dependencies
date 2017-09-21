@@ -16,35 +16,35 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 arguments() {
-	tool_arguments_targets "${tool}" "$@"
+	tool_arguments_targets "$tool" "$@"
 }
 
 usage() {
-	tool_usage_actions "${tool}" 'print'
-	tool_usage_arguments "${tool}" "$@"
+	tool_usage_actions "$tool" 'print'
+	tool_usage_arguments "$tool" "$@"
 }
 
 print() {
 	local distro="$1"
 
 	local arch="$(uname -i || uname -m)"
-	local tool_path="$(tool_path "${tool}")"
+	local tool_path="$(tool_path "$tool")"
 
-	if [[ -z "${arch}" ]]; then
+	if [[ -z "$arch" ]]; then
 		printf '\n%s\n' 'uname(1) produced no output.  Exiting' 1>&2
 
 		return 1
 	fi
 
-	dependencies_host_supported "${distro}" "${arch}" || return
+	dependencies_host_supported "$distro" "$arch" || return
 
 	local -a dependencies
 
-	for dependency_file in "${tool_path}/${CONFIGS}/${distro}/${arch}"/*; do
+	for dependency_file in "$tool_path/$CONFIGS/$distro/$arch"/*; do
 		if [[ "${dependency_file##*/}" != 'README' ]]; then
 			local -i origin="${#dependencies[@]}"
 
-			mapfile -tO "${origin}" dependencies < "${dependency_file}"
+			mapfile -tO "$origin" dependencies < "$dependency_file"
 		else
 			continue
 		fi
@@ -53,5 +53,5 @@ print() {
 	local -a sorted
 	mapfile -t sorted < <(printf '%s\n' "${dependencies[@]}" | sort | uniq)
 
-	dependencies_print "${distro}" "${sorted[@]}"
+	dependencies_print "$distro" "${sorted[@]}"
 }
