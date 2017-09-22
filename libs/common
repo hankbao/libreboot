@@ -117,13 +117,13 @@ diff_patch_file() {
 
 	local source_file_path
 
-	if ! ( grep -E '^-{3}.*/' "${patch_file_path}" >/dev/null 2>&1 ); then
-		source_file_path="${repository_path}/${filename_in_diff}"
+	if ! ( grep -E '^-{3}.*/' "$patch_file_path" >/dev/null 2>&1 ); then
+		source_file_path="$repository_path/$filename_in_diff"
 	else
-		source_file_path="${repository_path}/${filename_in_diff##*/}"
+		source_file_path="$repository_path/${filename_in_diff##*/}"
 	fi
 
-	patch "${source_file_path}" "${patch_file_path}"
+	patch "$source_file_path" "$patch_file_path"
 }
 
 path_wildcard_expand() {
@@ -228,29 +228,29 @@ directory_filled_check() {
 archive_files_create() {
 	local source_path="$1"
 
-	local directory="$(basename "${source_path}")"
-	local tarfiles_path="${source_path}/${DOTTARFILES}"
-	local revision_path="${source_path}/${DOTREVISION}"
-	local version_path="${source_path}/${DOTVERSION}"
-	local epoch_path="${source_path}/${DOTEPOCH}"
-	local rnd_seed_path="${source_path}/${DOTRNDSEED}"
+	local directory="$(basename "$source_path")"
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local revision_path="$source_path/$DOTREVISION"
+	local version_path="$source_path/$DOTVERSION"
+	local epoch_path="$source_path/$DOTEPOCH"
+	local rnd_seed_path="$source_path/$DOTRNDSEED"
 
-	# Files in "${tarfiles_path}" are NUL terminated.
+	# Files in "$tarfiles_path" are NUL terminated.
 	# `tr '\0' '\n'` for human-readable output.
-	if git_check "${source_path}"; then
-		git_files "${source_path}" > "${tarfiles_path}"
-		printf '%s\0' "${DOTTARFILES}" >> "${tarfiles_path}"
+	if git_check "$source_path"; then
+		git_files "$source_path" > "$tarfiles_path"
+		printf '%s\0' "$DOTTARFILES" >> "$tarfiles_path"
 	else
-		find "${source_path}" -print0 | env LC_ALL='C.UTF-8' sort -z | sed -z "1d;s,^${source_path}/\\?,,;/^${DOTTARFILES}\$/d" > "${tarfiles_path}"
+		find "$source_path" -print0 | env LC_ALL='C.UTF-8' sort -z | sed -z "1d;s,^$source_path/\\?,,;/^$DOTTARFILES\$/d" > "$tarfiles_path"
 	fi
 
-	for dotfile in "${revision_path}" \
-			"${version_path}" \
-			"${epoch_path}" \
-			"${rnd_seed_path}"
+	for dotfile in "$revision_path" \
+			"$version_path" \
+			"$epoch_path" \
+			"$rnd_seed_path"
 	do
-		if [[ -f "${dotfile}" ]]; then
-			printf '%s\0' ".${dotfile##*.}" >> "${tarfiles_path}"
+		if [[ -f "$dotfile" ]]; then
+			printf '%s\0' ".${dotfile##*.}" >> "$tarfiles_path"
 		fi
 	done
 }
@@ -258,10 +258,10 @@ archive_files_create() {
 archive_files_date() {
 	local source_path="$1"
 
-	local epoch_path="${source_path}/${DOTEPOCH}"
+	local epoch_path="$source_path/$DOTEPOCH"
 
-	if [[ -n "${SOURCE_DATE_EPOCH}" ]]; then
-		find "${source_path}" -execdir touch --no-dereference --date="@${SOURCE_DATE_EPOCH}" {} +
+	if [[ -n "$SOURCE_DATE_EPOCH" ]]; then
+		find "$source_path" -execdir touch --no-dereference --date="@$SOURCE_DATE_EPOCH" {} +
 	fi
 }
 
@@ -270,24 +270,24 @@ archive_create() {
 	local source_path="$2"
 	local directory="$3"
 
-	local tarfiles_path="${source_path}/${DOTTARFILES}"
-	local directory_path="$(dirname "${archive_path}")"
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local directory_path="$(dirname "$archive_path")"
 
-	mkdir -p "${directory_path}"
+	mkdir -p "$directory_path"
 
-	if [[ -z "${directory}" ]]; then
-		directory="$(basename "${source_path}")"
+	if [[ -z "$directory" ]]; then
+		directory="$(basename "$source_path")"
 	fi
 
-	archive_files_create "${source_path}"
-	archive_files_date "${source_path}"
+	archive_files_create "$source_path"
+	archive_files_date "$source_path"
 
 	local tar_options=(
 		--create
 		--xz
-		--file="${archive_path}"
-		--files-from="${tarfiles_path}"
-		--transform="s,^,${directory}/,S"
+		--file="$archive_path"
+		--files-from="$tarfiles_path"
+		--transform="s,^,$directory/,S"
 		--no-recursion
 		--warning=no-filename-with-nuls
 		--null
@@ -297,7 +297,7 @@ archive_create() {
 	)
 
 	(
-		cd "${source_path}"
+		cd "$source_path"
 		tar "${tar_options[@]}"
 	)
 }
@@ -306,31 +306,31 @@ archive_extract() {
 	local archive_path="$1"
 	local destination_path="$2"
 
-	if [[ -z "${destination_path}" ]]; then
-		destination_path="$(dirname "${archive_path}")"
+	if [[ -z "$destination_path" ]]; then
+		destination_path="$(dirname "$archive_path")"
 	fi
 
-	tar -xf "${archive_path}" -ps -C "${destination_path}"
+	tar -xf "$archive_path" -ps -C "$destination_path"
 }
 
 rootfs_files_create() {
 	local source_path="$1"
 
-	local directory="$(basename "${source_path}")"
-	local tarfiles_path="${source_path}/${DOTTARFILES}"
+	local directory="$(basename "$source_path")"
+	local tarfiles_path="$source_path/$DOTTARFILES"
 
-	# Files in "${tarfiles_path}" are NUL terminated.
+	# Files in "$tarfiles_path" are NUL terminated.
 	# `tr '\0' '\n'` for human-readable output.
-	execute_root find "${source_path}" -print0 | env LC_ALL='C.UTF-8' sort -z | sed -z "1d;s,^${source_path}/\\?,,;/^${DOTTARFILES}\$/d" > "${tarfiles_path}"
+	execute_root find "$source_path" -print0 | env LC_ALL='C.UTF-8' sort -z | sed -z "1d;s,^$source_path/\\?,,;/^$DOTTARFILES\$/d" > "$tarfiles_path"
 }
 
 rootfs_files_date() {
 	local source_path="$1"
 
-	local epoch_path="${source_path}/${DOTEPOCH}"
+	local epoch_path="$source_path/$DOTEPOCH"
 
-	if [[ -n "${SOURCE_DATE_EPOCH}" ]]; then
-		execute_root find "${source_path}" -execdir touch --no-dereference --date="@${SOURCE_DATE_EPOCH}" {} +
+	if [[ -n "$SOURCE_DATE_EPOCH" ]]; then
+		execute_root find "$source_path" -execdir touch --no-dereference --date="@$SOURCE_DATE_EPOCH" {} +
 	fi
 }
 
@@ -339,23 +339,23 @@ rootfs_create() {
 	local source_path="$2"
 	local directory="$3"
 
-	local tarfiles_path="${source_path}/${DOTTARFILES}"
-	local directory_path="$(dirname "${rootfs_path}")"
+	local tarfiles_path="$source_path/$DOTTARFILES"
+	local directory_path="$(dirname "$rootfs_path")"
 
-	mkdir -p "${directory_path}"
+	mkdir -p "$directory_path"
 
-	if [[ -z "${directory}" ]]; then
-		directory="$(basename "${source_path}")"
+	if [[ -z "$directory" ]]; then
+		directory="$(basename "$source_path")"
 	fi
 
-	rootfs_files_create "${source_path}"
-	rootfs_files_date "${source_path}"
+	rootfs_files_create "$source_path"
+	rootfs_files_date "$source_path"
 
 	local tar_options=(
 		--create
 		--xz
-		--file="${rootfs_path}"
-		--files-from="${tarfiles_path}"
+		--file="$rootfs_path"
+		--files-from="$tarfiles_path"
 		--no-recursion
 		--warning=no-filename-with-nuls
 		--null
@@ -365,12 +365,12 @@ rootfs_create() {
 	)
 
 	(
-		cd "${source_path}"
+		cd "$source_path"
 		execute_root tar "${tar_options[@]}"
 	)
 
-	execute_root chmod 644 "${rootfs_path}"
-	execute_root chown "${USER}:${USER}" "${rootfs_path}"
+	execute_root chmod 644 "$rootfs_path"
+	execute_root chown "$USER:$USER" "$rootfs_path"
 }
 
 requirements() {
