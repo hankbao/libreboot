@@ -23,12 +23,12 @@ libreboot_usage() {
 	local action
 	local target
 
-	printf '%s\n' "${executable} [action] [target] [arguments]" >&2
+	printf '%s\n' "$executable [action] [target] [arguments]" >&2
 
 	printf '\n%s\n' 'Generic project actions:' >&2
 
 	for action in "${PROJECT_ACTIONS_GENERIC[@]}"; do
-		printf '%s\n' "  ${action}" >&2
+		printf '%s\n' "  $action" >&2
 	done
 
 	printf '\n%s\n' 'Virtual project actions:' >&2
@@ -38,23 +38,23 @@ libreboot_usage() {
 
 	printf '\n%s\n' 'Project targets:' >&2
 
-	for target in "${root}/${PROJECTS}"/*; do
-		if project_check "${target}"; then
-			printf '%s\n' "  ${target}" >&2
+	for target in "$root/$PROJECTS"/*; do
+		if project_check "$target"; then
+			printf '%s\n' "  $target" >&2
 		fi
 	done
 
 	printf '\n%s\n' 'Generic tool actions:' >&2
 
 	for action in "${TOOL_ACTIONS_GENERIC[@]}"; do
-		printf '%s\n' "  ${action}" >&2
+		printf '%s\n' "  $action" >&2
 	done
 
 	printf '\n%s\n' 'Tool targets:' >&2
 
-	for target in "${root}/${TOOLS}"/*; do
-		if tool_check "${target}"; then
-			printf '%s\n' "  ${target}" >&2
+	for target in "$root/$TOOLS"/*; do
+		if tool_check "$target"; then
+			printf '%s\n' "  $target" >&2
 		fi
 	done
 
@@ -68,7 +68,7 @@ libreboot_usage() {
 	printf '%s\n'   '  VERSION - Version string to use' >&2
 
 	printf '\n%s\n' 'Configuration files:' >&2
-	printf '%s\n'   "  ${BUILD_SYSTEM}.conf - Environment variables configuration" >&2
+	printf '%s\n'   "  $BUILD_SYSTEM.conf - Environment variables configuration" >&2
 }
 
 libreboot_project() {
@@ -77,33 +77,33 @@ libreboot_project() {
 	project="$1"
 	shift
 
-	case "${action}" in
+	case "$action" in
 		'sources')
-			if project_action_arguments 'extract' "${project}" "$@"; then
+			if project_action_arguments 'extract' "$project" "$@"; then
 				return
 			else
 				printf '\n%s\n\n' 'Attempting to download instead...'
-				project_action_arguments 'download' "${project}" "$@"
+				project_action_arguments 'download' "$project" "$@"
 			fi
 			;;
 		'produce')
 			for action in 'build' 'install' 'release'; do
-				project_action_arguments "${action}" "${project}" "$@"
+				project_action_arguments "$action" "$project" "$@"
 			done
 			;;
 		'test')
 			for action in "${PROJECT_ACTIONS[@]}"; do
-				project_action_arguments "${action}" "${project}" "$@"
+				project_action_arguments "$action" "$project" "$@"
 			done
 			;;
 		*)
-			if ! project_function_check "${project}" "${action}"; then
+			if ! project_function_check "$project" "$action"; then
 				libreboot_usage
 				exit 1
-			elif [[ "${action}" == 'usage' ]]; then
-				project_action "${action}" "${project}" "$@"
+			elif [[ "$action" == 'usage' ]]; then
+				project_action "$action" "$project" "$@"
 			else
-				project_action_arguments "${action}" "${project}" "$@"
+				project_action_arguments "$action" "$project" "$@"
 			fi
 			;;
 	esac
@@ -115,13 +115,13 @@ libreboot_tool() {
 	tool="$1"
 	shift
 
-	if ! tool_function_check "${tool}" "${action}"; then
+	if ! tool_function_check "$tool" "$action"; then
 		libreboot_usage
 		exit 1
-	elif [[ "${action}" == 'usage' ]]; then
-		tool_action "${action}" "${tool}" "$@"
+	elif [[ "$action" == 'usage' ]]; then
+		tool_action "$action" "$tool" "$@"
 	else
-		tool_action_arguments_recursive "${action}" "${tool}" "$@"
+		tool_action_arguments_recursive "$action" "$tool" "$@"
 	fi
 }
 
@@ -139,18 +139,18 @@ libreboot_setup() {
 }
 
 libreboot_setup_include() {
-	local libs_path="${root}/libs"
+	local libs_path="$root/libs"
 	local conf_path
 
-	source "${libs_path}/project"
-	source "${libs_path}/tool"
-	source "${libs_path}/common"
-	source "${libs_path}/git"
+	source "$libs_path/project"
+	source "$libs_path/tool"
+	source "$libs_path/common"
+	source "$libs_path/git"
 
-	conf_path="${root}/${BUILD_SYSTEM}.conf"
+	conf_path="$root/$BUILD_SYSTEM.conf"
 
-	if [[ -f "${conf_path}" ]]; then
-		source "${conf_path}"
+	if [[ -f "$conf_path" ]]; then
+		source "$conf_path"
 	fi
 }
 
@@ -160,7 +160,7 @@ libreboot_setup_tool_actions() {
 
 	local -a tool_actions
 
-	for ((i=0; i<"${tool_actions_count}"; i++)); do
+	for ((i=0; i<"$tool_actions_count"; i++)); do
 		tool_actions+=("${TOOL_ACTIONS_GENERIC[i]}")
 
 		if [[ "${TOOL_ACTIONS_GENERIC[i]}" == !(${ignore// /|}) ]]; then
@@ -177,7 +177,7 @@ libreboot_setup_project_actions() {
 
 	local -a project_actions
 
-	for ((i=0; i<"${project_actions_count}"; i++)); do
+	for ((i=0; i<"$project_actions_count"; i++)); do
 		project_actions+=("${PROJECT_ACTIONS_GENERIC[i]}")
 
 		if [[ "${PROJECT_ACTIONS_GENERIC[i]}" == !(${ignore// /|}) ]]; then
@@ -190,56 +190,56 @@ libreboot_setup_project_actions() {
 
 libreboot_setup_variables() {
 	local vboot_tools_path="$(project_install_path 'vboot' 'tools')"
-	local version_path="${root}/${DOTVERSION}"
+	local version_path="$root/$DOTVERSION"
 
-	if [[ -z "${VERSION}" ]]; then
-		if git_check "${root}"; then
-			VERSION="${BUILD_SYSTEM}-$(git_describe "${root}" 2> /dev/null || echo 'git')"
-		elif [[ -f "${version_path}" ]]; then
-			VERSION="$(< "${version_path}")"
+	if [[ -z "$VERSION" ]]; then
+		if git_check "$root"; then
+			VERSION="$BUILD_SYSTEM-$(git_describe "$root" 2> /dev/null || echo 'git')"
+		elif [[ -f "$version_path" ]]; then
+			VERSION="$(< "$version_path")"
 		else
-			VERSION="${BUILD_SYSTEM}"
+			VERSION="$BUILD_SYSTEM"
 		fi
 	fi
 
-	if [[ -d "${vboot_tools_path}/devkeys/" ]]; then
-		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-${vboot_tools_path}/devkeys/}"
+	if [[ -d "$vboot_tools_path/devkeys/" ]]; then
+		VBOOT_KEYS_PATH="${VBOOT_KEYS_PATH:-$vboot_tools_path/devkeys/}"
 	fi
 
 	libreboot_setup_reproducible_builds_variables
 }
 
 libreboot_setup_reproducible_builds_variables() {
-	local epoch_path="${root}/${DOTEPOCH}"
-	local rnd_seed_path="${root}/${DOTRNDSEED}"
+	local epoch_path="$root/$DOTEPOCH"
+	local rnd_seed_path="$root/$DOTRNDSEED"
 
-	# Used by GCC, e.g., -frandom-seed="${RANDOM_SEED}"
-	if [[ -z "${RANDOM_SEED}" ]]; then
-		if [[ -f "${rnd_seed_path}" ]]; then
-			RANDOM_SEED="$(< "${rnd_seed_path}")"
+	# Used by GCC, e.g., -frandom-seed="$RANDOM_SEED"
+	if [[ -z "$RANDOM_SEED" ]]; then
+		if [[ -f "$rnd_seed_path" ]]; then
+			RANDOM_SEED="$(< "$rnd_seed_path")"
 		else
-			RANDOM_SEED="${RANDOM}" # True randomness is unnecessary
+			RANDOM_SEED="$RANDOM" # True randomness is unnecessary
 		fi
 	fi
 
 	# Also used by GCC, but as an environment variable
-	if [[ -z "${SOURCE_DATE_EPOCH}" ]]; then
-		if git_check "${root}"; then
+	if [[ -z "$SOURCE_DATE_EPOCH" ]]; then
+		if git_check "$root"; then
 			SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
-		elif [[ -f "${epoch_path}" ]]; then
-			SOURCE_DATE_EPOCH="$(< "${epoch_path}")"
+		elif [[ -f "$epoch_path" ]]; then
+			SOURCE_DATE_EPOCH="$(< "$epoch_path")"
 		else
 			SOURCE_DATE_EPOCH="$(date +%s)"
 		fi
 	fi
 
 	# Relevant only when libfaketime is preloaded
-	if [[ -n "${LIBFAKETIME_PATH}" ]]; then
+	if [[ -n "$LIBFAKETIME_PATH" ]]; then
 		BUILD_DATE_FMT="%Y-%m-%d %H:%M:%S"
-		BUILD_DATE="$(date -u -d "@${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u -r "${SOURCE_DATE_EPOCH}" "+${BUILD_DATE_FMT}" 2>/dev/null || date -u "+${BUILD_DATE_FMT}")"
-		FAKETIME="@${BUILD_DATE}"
+		BUILD_DATE="$(date -u -d "@$SOURCE_DATE_EPOCH" "+$BUILD_DATE_FMT" 2>/dev/null || date -u -r "$SOURCE_DATE_EPOCH" "+$BUILD_DATE_FMT" 2>/dev/null || date -u "+$BUILD_DATE_FMT")"
+		FAKETIME="@$BUILD_DATE"
 		LC_ALL='C.UTF-8'
-		LD_PRELOAD="${LIBFAKETIME_PATH}"
+		LD_PRELOAD="$LIBFAKETIME_PATH"
 		TZ='UTC'
 	fi
 }
@@ -254,10 +254,10 @@ libreboot() {
 
 	libreboot_setup "$@"
 
-	if project_check "${target}"; then
-		libreboot_project "${action}" "${target}" "$@"
-	elif tool_check "${target}"; then
-		libreboot_tool "${action}" "${target}" "$@"
+	if project_check "$target"; then
+		libreboot_project "$action" "$target" "$@"
+	elif tool_check "$target"; then
+		libreboot_tool "$action" "$target" "$@"
 	else
 		libreboot_usage
 		exit 1
