@@ -79,7 +79,7 @@ build() {
 		git_project_checkout "$project" "$repository" "$payload" "$@"
 	fi
 
-	project_action "checkout" "vboot" "devices"
+	project_action_arguments "checkout" "vboot" "devices"
 
 	rm -f "$sources_path/.xcompile"
 
