@@ -113,7 +113,7 @@ diff_patch_file() {
 	local patch_file_path="$2"
 
 	# TODO: Improve handling of filenames to avoid gotchas w/ \n, \t, etc.
-	local filename_in_diff="$(sed -rne 's/^-{3}\s+([^ 	\r\n]*).*/\1/p' "${patch_file_path}")"
+	local filename_in_diff="$(sed -rne 's/^-{3}\s+([^ 	\r\n]*).*/\1/p' "$patch_file_path")"
 
 	local source_file_path
 
