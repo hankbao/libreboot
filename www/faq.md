@@ -9,7 +9,7 @@ Important issues
 What version of libreboot do I have?
 ----------------------------------------------------------------
 
-[See here](../docs/#version)
+See "Version" [in the documentation](../docs/#version)
 
 Flashrom complains about DEVMEM access
 --------------------------------------
@@ -89,7 +89,7 @@ Hardware compatibility
 What systems are compatible with libreboot?
 -----------------------------------------------------------------------------------
 
-[See here](docs/hardware/).
+See the [hardware compatibility list](docs/hardware/).
 
 Will the Purism laptops be supported?
 ----------------------------------------------------------------------

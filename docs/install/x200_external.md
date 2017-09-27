@@ -23,7 +23,7 @@ Run this command on x200 to find out flash chip model and its size:
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of the
 motherboard (this requires removal of the motherboard). Not all X200S/X200T are
-supported; see [here](../hardware/x200.html#x200s).
+supported; see the [hardware](../hardware/x200.html#x200s) page.
 
 MAC address
 ===========

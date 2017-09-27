@@ -23,7 +23,7 @@ operating system. It is also available preinstalled from
 We provide user support via [\#libreboot
 IRC](https://webchat.freenode.net/?channels=libreboot) on Freenode. Development
 discussion also occurs on IRC. Instructions for sending patches are
-[here](git.md).
+on the [git](git.md) page.
 
 Why use Libreboot?
 ------------------

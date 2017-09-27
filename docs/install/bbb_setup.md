@@ -40,7 +40,7 @@ Shopping list (pictures of this hardware is shown later):
     (rev. C) is highly recommended. You can buy one from
     [Adafruit](https://www.adafruit.com) (USA),
     [ElectroKit](http://electrokit.com) (Sweden) or any of the
-    distributors listed [here](http://beagleboard.org/black) (look below
+    distributors listed on [BeagleBoard's website](http://beagleboard.org/black) (look below
     'Purchase'). We recommend this product because we know that it
     works well for our purposes and doesn't require any non-free
     software.

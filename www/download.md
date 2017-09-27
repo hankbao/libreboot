@@ -29,7 +29,7 @@ Do you have a mirror?
 ---------------------
 
 Let us know! We will add it here. Instructions for how to mirror
-libreboot releases can be found [here](#rsync).
+libreboot releases can be found [on the mirrors](#https).
 
 HTTPS mirrors {#https}
 -------------
@@ -108,4 +108,4 @@ Libreboot includes statically linked executables. If you need the
 sources for those statically linked dependencies inside the executables,
 then you can contact the libreboot project using the details on the home
 page; source code will be provided. You can download this source code
-from [here](ccsource/).
+from [the "ccsource" directory](ccsource/) on libreboot.org.
