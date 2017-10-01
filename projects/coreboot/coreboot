@@ -74,23 +74,12 @@ build() {
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
 	local vboot_sources_path=$( project_sources_path "vboot" "vboot" "devices" )
 
-	project_action "build" "crossgcc" "$arch"
-
 	if git_project_check "$repository"
 	then
 		git_project_checkout "$project" "$repository" "$payload" "$@"
 	fi
 
-	project_action "checkout" "vboot" "devices"
-
-	project_action "build" "$payload" "$@"
-
-	if coreboot_ec_check "$payload" "$@"
-	then
-		ec=$( coreboot_ec "$payload" "$@" )
-
-		project_action "build" "$ec" "$@"
-	fi
+	project_action_arguments "checkout" "vboot" "devices"
 
 	rm -f "$sources_path/.xcompile"
 
