@@ -123,7 +123,10 @@ prefix() {
 
 	case $arch in
 		"arm")
-			printf '%s\n' "$build_path/bin/arm-eabi-"
+			printf '\n%s\n' "$build_path/bin/arm-eabi-"
+			;;
+		"i386")
+			printf '\n%s\n' "$build_path/bin/i386-elf-"
 			;;
 	esac
 }
@@ -145,7 +148,16 @@ build() {
 
 	mkdir -p "$build_path"
 
-	make -C "$sources_path" CPUS="$TASKS" DEST="$build_path" "crossgcc-$arch"
+	local bootstrap_flag
+
+	if ! crossgcc_same_major_version_test; then
+		printf '\n%s' 'GCC major versions differ.  Bootstrapping' 1>&2
+		printf '%s\n\n' ' to avoid potential build failure' 1>&2
+
+		bootstrap_flag='-b'
+	fi
+
+	make -C "$sources_path" "$bootstrap_flag" CPUS="$TASKS" DEST="$build_path" "crossgcc-$arch"
 }
 
 build_check() {
