@@ -123,7 +123,10 @@ prefix() {
 
 	case $arch in
 		"arm")
-			printf '%s\n' "$build_path/bin/arm-eabi-"
+			printf '\n%s\n' "$build_path/bin/arm-eabi-"
+			;;
+		"i386")
+			printf '\n%s\n' "$build_path/bin/i386-elf-"
 			;;
 	esac
 }
