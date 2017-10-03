@@ -76,9 +76,6 @@ build() {
 	local arch=$( depthcharge_arch "$@" )
 	local device=$( depthcharge_device "$@" )
 
-	project_action "build" "crossgcc" "$arch"
-	project_action "build" "libpayload" "$project" "$@"
-
 	project_action "checkout" "vboot" "devices"
 
 	mkdir -p "$build_path"
