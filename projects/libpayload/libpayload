@@ -39,15 +39,13 @@ build() {
 	local build_path=$( project_build_path "$project" "$@" )
 	local build_install_path="$build_path/install"
 
-	local config=$( libpayload_config "$@" )
-	local config_path="configs/$config"
+	local config_name=$( libpayload_config "$@" )
+	local config_path="$sources_path/configs/$config_name"
 
 	local arch=$( libpayload_arch "$@" )
 
 	local crossgcc_build_path=$( project_build_path "crossgcc" "$arch" )
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
-
-	project_action "build" "crossgcc" "$arch"
 
 	rm -f "$sources_path/.xcompile"
 
