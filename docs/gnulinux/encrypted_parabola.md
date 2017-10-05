@@ -20,12 +20,15 @@ This guide borrows heavily from the Parabola wiki, and will constantly link to i
 For those new to Parabola GNU+Linux-Libre, check their [Beginner section](https://wiki.parabola.nu/Beginners%27_guide#Beginners) for an overview.
 
 ## Minumum Requirements
-You can find the minimum requirements to run Parabola GNU+Linux [here](https://wiki.parabola.nu/Beginners%27_guide#Minimum_system_requirements).
+You can find the minimum requirements to run Parabola GNU+Linux
+[on the Parabola wiki](https://wiki.parabola.nu/Beginners%27_guide#Minimum_system_requirements).
 
 ## Preparation
 
 ### Download the latest ISO
-For this guide, I used the *2016.11.03* ISO; the most current image is available [here](https://wiki.parabola.nu/Get_Parabola#Main_live_ISO).
+For this guide, I used the *2016.11.03* ISO; the most current image is
+available on Parabola's
+[downloads page](https://wiki.parabola.nu/Get_Parabola#Main_live_ISO).
 
 If you are a complete beginner with GNU+Linux, choose the *Mate Desktop ISO*.
 it is easier to install Parabola with this version, because it allows you
@@ -251,7 +254,7 @@ The setup of the drive and partitions is now complete; it's time to actually ins
 The first step of the actual installation is to choose the server from where
 we will need to download the packages; for this, we will again refer to the [Parabola Wiki](https://wiki.parabola.nu/Beginners%27_guide#Select_a_mirror).
 For beginners, I recommend that the edit the file using `nano` (a command-line text editor);
-you can learn more about it [here](https://www.nano-editor.org/); for non-beginners,
+you can learn more about it on [their website](https://www.nano-editor.org/); for non-beginners,
 simply edit it with your favorite text editor.
 
 ## Install the Base System
@@ -261,7 +264,7 @@ refer to [Install the Base System](https://wiki.parabola.nu/Beginners%27_guide#I
 ## Generate an fstab
 The next step in the process is to generate a file known as an **fstab**;
 the purpose of this file is for the operating system to identify the storage device
-used by your installation. [Here](https://wiki.parabola.nu/Beginners%27_guide#Generate_an_fstab) are the instructions to generate that file.
+used by your installation. [On the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Generate_an_fstab) are the instructions to generate that file.
 
 ## Chroot into and Configure the System
 Now, you need to `chroot` into your new installation, to complete the setup
@@ -270,29 +273,30 @@ of an operating system  to a different one; in this instance, it means changing 
 directory to the one you created in the previous steps, so that you can modify files
 and install software onto it, as if it were the host operating system.
 
-To `chroot` into your installation, follow the instructions [here](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
+To `chroot` into your installation, follow the instructions [on the
+Prabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
 
 ### Setting up the Locale
 Locale refers to the language that your operating system will use, as well as some
 other considerations related to the region in which you live. To set this up,
-follow the instructions [here](https://wiki.parabola.nu/Beginners%27_guide#Locale).
+follow the instructions [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Locale).
 
 ### Setting up the Consolefont and Keymap
-This will determine the keyboard layout of your new installation; follow the instructions [here](https://wiki.parabola.nu/Beginners%27_guide#Console_font_and_keymap).
+This will determine the keyboard layout of your new installation; follow the instructions [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Console_font_and_keymap).
 
 ### Setting up the Time Zone
 You'll need to set your current time zone in the operating system; this will enable applications
 that require accurate time to work properly (e.g., the web browser).
-To do this, follow the instructions [here](https://wiki.parabola.nu/Beginners%27_guide#Time_zone).
+To do this, follow the instructions [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Time_zone).
 
 ### Setting up the Hardware Clock
 To make sure that your computer has the right time, you'll have to set the time in your computer's internal clock.
-Follow the instructions [here](https://wiki.parabola.nu/Beginners%27_guide#Hardware_clock) to do that.
+Follow the instructions [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Hardware_clock) to do that.
 
 ### Setting up the Kernel Modules
 Now we need to make sure that the kernel has all the modules that it needs
 to boot the operating system. To do this, we need to edit a file called **mkinitcpio.conf**.
-More information about this file can be found [here](https://wiki.parabola.nu/Mkinitcpio),
+More information about this file can be found [in the Parabola beginner's guide](https://wiki.parabola.nu/Mkinitcpio),
 but for the sake of this guide, you simply need to run the following command.
 
     # nano /etc/mkinitcpio.conf
@@ -334,7 +338,7 @@ Then, we update both kernels like this, using the `mkinitcpio` command:
 
 ### Setting up the Hostname
 Now we need to set up the hostname for the system; this is so that our device
-can be identified by the network. Refer to [this section](https://wiki.parabola.nu/Beginners%27_guide#Hostname)
+can be identified by the network. Refer to [the hostname section](https://wiki.parabola.nu/Beginners%27_guide#Hostname)
 of the Parabola wiki's Beginner's Guide. You can make the hostname anything you like;
 for example, if you wanted to choose the hostname **parabola**,
 you would run the `echo` command, like this:
@@ -351,8 +355,8 @@ And then you would modify **/etc/hosts** like this, adding the hostname to it:
 
 ### Configure the Network
 Now that we have a hostname, we need to configure the settings for the rest of the network.
-Instructions for setting up a wired connection are [here](https://wiki.parabola.nu/Beginners%27_guide#Wired),
-and instructions for setting up a wireless connection are [here](https://wiki.parabola.nu/Beginners%27_guide#Wireless_2).
+Instructions for setting up a wired connection are [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Wired),
+and instructions for setting up a wireless connection are [in the Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Wireless_2).
 
 ### Set the root Password
 The **root** account has control over all the files in the computer; for security,

@@ -143,7 +143,7 @@ arm-linux-gnueabihf setup on your *host*.
     $ cp configs/beaglebone kernel/arch/arm/configs/beaglebone_defconfig
 
 -   Download the patch from
-    [here](http://www.coreboot.org/images/8/88/Ehci-debug-gadget-patches.tar.gz)
+    [coreboot.org](http://www.coreboot.org/images/8/88/Ehci-debug-gadget-patches.tar.gz)
 -   tar -xf Ehci-debug-gadget-patches.tar.gz (will create dir:
     usbdebug-gadget)
 -   Note that there are two patches (patch\_1 and patch\_2) for each of
@@ -228,7 +228,7 @@ one^[2](#___fn2)^ should be = y
 ^2^ The g\_dbgp module on BeagleBone Black (Rev. C) reports it self as
 Net20DC, the other options are for older BB(B) - ver1. This is
 documented
-[here](https://johnlewis.ie/coreboot-ehci-debug-gadget-demonstration/)
+[on John Lewis's blog](https://johnlewis.ie/coreboot-ehci-debug-gadget-demonstration/)
 (also tested/verified).
 
 Then:\

@@ -9,8 +9,8 @@ The mailing list address is
 [development@libreboot.org](mailto:development@libreboot.org)
 
 Information about the mailing list and how to subscribe are
-[here](../lists/). Archives of discussion threads
-are [here](../pipermail/development/).
+on the [lists page](../lists/). Archives of discussion threads
+are in the [pipermail development directory](../pipermail/development/).
 
 This replaces the mailing lists that we had before. The mailing list software
 in use is [GNU Mailman](https://www.gnu.org/software/mailman/), which is also

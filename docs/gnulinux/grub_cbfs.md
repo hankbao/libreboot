@@ -24,7 +24,7 @@ However, both ways will require us to download the Libreboot Utility Archive.
 ### Download the Libreboot Utility Archive
 The Libreboot Utility Archive contains the programs that we'll need
 to get our **grubtest.cfg** file. The latest release of the Libreboot Utility Archive
-can be downloaded from libreboot.org, [here](https://www.mirrorservice.org/sites/libreboot.org/release/stable/20160907/libreboot_r20160907_util.tar.xz).
+can be downloaded [from libreboot.org](https://www.mirrorservice.org/sites/libreboot.org/release/stable/20160907/libreboot_r20160907_util.tar.xz).
 The quickest way to download it would be to use the `wget` program,
 which (if you don't know) allows you to download files from the internet.
 
@@ -93,7 +93,7 @@ image file is named **libreboot.rom**, so please make sure to adapt.
 There are two ways to get a pre-compiled ROM image:
 
 #### 1. Download a Pre-Compiled Image from the Libreboot Website
-For the current release, **20160907**, they can be found [here](https://www.mirrorservice.org/sites/libreboot.org/release/stable/20160907/rom/grub/);
+For the current release, **20160907**, they can be found [on a Libreboot mirror](https://www.mirrorservice.org/sites/libreboot.org/release/stable/20160907/rom/grub/);
 please adopt this guide, if using a different version of Libreboot.
 
 You also need to make sure that you select both the correct ROM for the device you're using,
@@ -219,7 +219,7 @@ Or, replace it with this, if you are using a Debian-based distribution (e.g., Tr
     initrd /initrd.img
 
 Remember, that these names come from the instructions to install GNU+Linux
-on Libreboot systems, located [here](index.md). If you followed different instructions,
+on Libreboot systems, located [in the docs](index.md). If you followed different instructions,
 (or for some other reason, used different names), simply put the names
 of your **root** and **swap** volumes, in place of the ones used here.
 

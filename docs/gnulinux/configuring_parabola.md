@@ -24,7 +24,7 @@ Paradoxically, as you get more advanced, Parabola can actually become
 compared to what most distributions provide. You will find over time
 that other distributions tend to *get in your way*.
 
-A lot of the steps in this guide will refer to the Arch wiki. Arch is
+A lot of the steps in this guide will refer to ArchWiki. Arch is
 the upstream distribution that Parabola uses. Most of this guide will
 also tell you to read wiki articles, other pages, manuals, and so on. In
 general, it tries to cherry-pick the most useful information, but
@@ -33,10 +33,10 @@ nonetheless, you are encouraged to learn as much as possible.
 **NOTE: It might take you a few days to fully install your system how you like,
 depending on how much you need to read. Patience is key, especially for new users.**
 
-The Arch wiki will sometimes use bad language, such as calling the whole
+The ArchWiki will sometimes use bad language, such as calling the whole
 system Linux, using the term **open-source**/**closed-source**,
 and it will sometimes recommend the use of proprietary software.
-You need to be careful about this when reading anything on the Arch wiki.
+You need to be careful about this when reading anything on ArchWiki.
 
 Some of these steps require internet access. To get initial access
 for setting up the system (I'll go into networking later),
@@ -121,14 +121,14 @@ before. In general, keeping notes (such as what I have done with this
 page) can be very useful as a reference in the future (e.g, if you wanted to
 re-install it, or install the distro on another computer).
 
-You should also read the Arch wiki article on [System Maintenance](https://wiki.archlinux.org/index.php/System_maintenance),
+You should also read the ArchWiki article on [System Maintenance](https://wiki.archlinux.org/index.php/System_maintenance),
 before continuing. Also, read their article on [enhancing system stability](https://wiki.archlinux.org/index.php/Enhance_system_stability).
 This is important, so make sure to read them both!*
 
 Install `smartmontools`; it can be used to check smart data. HDDs use
 non-free firmware inside; it's transparent to you, but the smart
 data comes from it. Therefore, don't rely on it too much), and then read
-the Arch wiki [article](https://wiki.archlinux.org/index.php/S.M.A.R.T.) on it, to learn how to use it:
+the ArchWiki [article](https://wiki.archlinux.org/index.php/S.M.A.R.T.) on it, to learn how to use it:
 
     # pacman -S smartmontools
 
@@ -195,7 +195,7 @@ for generating secure passphrases.
 ### Configure sudo
 Now that we have a normal user account, we'll want to configure `sudo`,
 so that user is able to run commands as **root** (e.g., installing software);
-this will be necessary to flash the ROM later on. Refer to the Arch wiki's [sudo](https://wiki.archlinux.org/index.php/Sudo) documentation.
+this will be necessary to flash the ROM later on. Refer to ArchWiki's [sudo](https://wiki.archlinux.org/index.php/Sudo) documentation.
 
 The first step is to install the `sudo` package:
 
@@ -237,8 +237,8 @@ a sound manager (to make sure you can hear sound through speakers or headphones)
 or DHCP (which allows you to get an IP address, to connect to the internet).
 These are just a few examples; there are countless others.
 
-`systemd` is a controversial init system; [here](https://bbs.archlinux.org/viewtopic.php?pid=1149530#p1149530)
-is an explanation behind the Arch development team's decision to use it.
+`systemd` is a controversial init system; A [forum post](https://bbs.archlinux.org/viewtopic.php?pid=1149530#p1149530)
+has an explanation behind the Arch development team's decision to use it.
 
 The **manpage** should also help:
 
@@ -280,7 +280,7 @@ To delete the temporary files, you can use the `clean` option:
     # systemd-tmpfiles --clean
 
 According to the **manpage**, this *"cleans all files and directories with
-an age parameter"*. According to the Arch wiki, this reads information
+an age parameter"*. According to ArchWiki, this reads information
 in **/etc/tmpfiles.d** and **/usr/lib/tmpfiles.d**, to know what actions to perform.
 Therefore, it is a good idea to read what's stored in these locations, to get a better understanding.
 
@@ -319,7 +319,7 @@ In the end, I decided not to install anything from it,
 but I kept the repository enabled regardless.
 
 ## Setup a Network Connection in Parabola
-Read the Arch wiki guide to [Configuring the Network](https://wiki.archlinux.org/index.php/Configuring_Network).
+Read the ArchWiki guide to [Configuring the Network](https://wiki.archlinux.org/index.php/Configuring_Network).
 
 ### Set the Hostname
 This should be the same as the hostname that you set in **/etc/hostname**,
@@ -348,7 +348,7 @@ The `hostname` utility is part of the `inetutils` package, and is in the **core*
 installed by default (as part of the **base** package).
 
 ### Network Status
-According to the Arch wiki, [udev](https://wiki.archlinux.org/index.php/Udev) should already detect
+According to ArchWiki, [udev](https://wiki.archlinux.org/index.php/Udev) should already detect
 the ethernet chipset, and automatically load the driver for it at boot time.
 You can check this in the **Ethernet controller** section, when running the `lspci` command:
 
@@ -366,7 +366,7 @@ In my case, I did:
     # dmesg | grep e1000e
 
 ### Network Device Names
-According to the Arch wiki guide on [Configuring Network Device Names](https://wiki.archlinux.org/index.php/Configuring_Network#Device_names),
+According to the ArchWiki guide on [Configuring Network Device Names](https://wiki.archlinux.org/index.php/Configuring_Network#Device_names),
 it is important to note that the old interface names that you might be used to
 (e.g., `eth0`, `wlan0`, `wwan0`, etc.), if you come from a distribution like Debian or Trisquel,
 are no longer applicable. Instead, `systemd` creates device names
@@ -375,7 +375,7 @@ with a fixed identifier that it automatically generates.
 An example device name for your ethernet chipset would be `enp0s25`,
 and is never supposed to change.
 
-If you want to enable the old names, the Arch wiki recommends adding `net.ifnames=0`
+If you want to enable the old names, ArchWiki recommends adding `net.ifnames=0`
 to your kernel parameters (in Libreboot context, this would be accomplished by following
 the instructions in [How to replace the default GRUB configuration file](grub_cbfs.md)).
 
@@ -401,7 +401,7 @@ that you could use.
 Since we are going with the *MATE Desktop Environment*, we will primarily be following
 the instructions on the [Arch Linux Package Repository](https://wiki.mate-desktop.org/archlinux_custom_repo) page,
 but will also refer to the [General Recommendations](https://wiki.archlinux.org/index.php/General_recommendations#Graphical_user_interface)
-on the Arch wiki.
+on ArchWiki.
 
 ### Installing Xorg
 The first step is to install [**Xorg**](https://wiki.archlinux.org/index.php/Xorg);
@@ -433,14 +433,14 @@ Other drivers (not just video) can be found by looking at the `xorg-drivers` gro
 so you will notice that the layout you set in **/etc/vconsole.conf** earlier might
 not actually be the same in `xorg`.
 
-Check the Arch wiki's article on [Xorg's keyboard configuration](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg), for more information.
+Check ArchWiki's article on [Xorg's keyboard configuration](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg), for more information.
 
 To see what layout you currently use, try this on a terminal emulator in `xorg`:
 
     # setxkbmap -print -verbose 10
 
 I'm simply using the default Qwerty (US) keyboard, so there isn't anything I need
-to change here; if you do need to make any changes, the Arch wiki recommends two ways
+to change here; if you do need to make any changes, ArchWiki recommends two ways
 of doing it: manually updating [configuration files](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_X_configuration_files) or using the [localectl](https://wiki.archlinux.org/index.php/Keyboard_configuration_in_Xorg#Using_localectl) command.
 
 ### Installing MATE
@@ -450,7 +450,7 @@ if we want all of the MATE Desktop, we need to install two packages:
     # pacman -Syy mate mate-extra
 
 The last step is to install a Display Manager; for MATE, we will be using `lightdm`
-(it's the recommended Display Manager for the MATE Desktop); for this, we'll follow the insructions [here](https://wiki.mate-desktop.org/archlinux_custom_repo#display_manager_recommended),
+(it's the recommended Display Manager for the MATE Desktop); for this, we'll folow the instructions [on the MATE wiki](https://wiki.mate-desktop.org/archlinux_custom_repo#display_manager_recommended),
 with one small change: the `lightdm-gtk3-greeter` package doesn't exist in Parabola's repositories.
 So, instead we will install the `lightdm-gtk-greeter` package; it performs the same function.
 
@@ -466,14 +466,15 @@ as well as the service that will prompt us with a login window, `accounts-daemon
     # systemctl enable accounts-daemon
 
 Now you have installed the *MATE Desktop Environment*,If you wanted
-to install another desktop environment, check out some [other options](https://wiki.archlinux.org/index.php/Desktop_environment) on the the Arch wiki.
+to install another desktop environment, check out some [other options](https://wiki.archlinux.org/index.php/Desktop_environment) on ArchWiki.
 
 ### Configuring Network Manager in MATE
 Now that we have installed the Mate Desktop environment, and booted into it,
 we need to set up the network configuration in our graphical environment.
 
-The MATE Desktop wiki recommends that we use Network Manager; the Arch wiki article
-about it can be found [here](https://wiki.archlinux.org/index.php/NetworkManager).
+The MATE Desktop wiki recommends that we use Network Manager; an
+article about Network Manager can be found
+[on ArchWiki](https://wiki.archlinux.org/index.php/NetworkManager).
 
 We need to install the NetworkManager package:
 
