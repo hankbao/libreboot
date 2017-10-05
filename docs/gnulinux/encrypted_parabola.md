@@ -83,7 +83,7 @@ if it's not new, then there are two ways to handle it:
 you can either choose to fill it with zeroes or random data; I chose random data (e.g., `urandom`),
 because it's more secure. Depending on the size of the drive, this could take a while to complete:
 
-    # dd if=/dev/urandom of=/dev/sdX; sync
+    `# dd if=/dev/urandom of=/dev/sdX; sync`
 
 2. If the drive were previously encrypted, all you need to do is wipe the LUKS header.
 The size of the header depends upon the specific model of the hard drive;
@@ -91,7 +91,7 @@ you can find this information by doing some research online.
 Refer to this [article](https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/), for more information about LUKS headers.
 You can either fill the header with zeroes, or with random data; again, I chose random data, using `urandom`:
 
-    # head -c 3145728 /dev/urandom > /dev/sdX; sync
+    `# head -c 3145728 /dev/urandom > /dev/sdX; sync`
 
 Also, if you're using an SSD, there are a two things you should keep in mind:
 
@@ -186,17 +186,17 @@ Check to make sure that the group was created:
 
 Lastly, we need to create the logical volumes themselves, inside the volume group;
 one will be our swap, cleverly named **swapvol**, and the other will be our root partition,
-equally cleverly named as **root**.
+equally cleverly named as **rootvol**.
 
 1. We will create the **swapvol** first (again, choose your own name, if you like).
 Also, make sure to [choose an appropriate swap size](http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space)
 (e.g., **2G** refers to two gigabytes; change this however you see fit):
 
-    # lvcreate -L 2G matrix -n swapvol
+    `# lvcreate -L 2G matrix -n swapvol`
 
-2. Now, we will create a single, large partition in the rest of the space, for **root**:
+2. Now, we will create a single, large partition in the rest of the space, for **rootvol**:
 
-    # lvcreate -l +100%FREE matrix -n root
+    `# lvcreate -l +100%FREE matrix -n rootvol`
 
 You can also be flexible here, for example you can specify a **/boot**, a **/**,
 a **/home**, a **/var**, or a **/usr** volume. For example, if you will be running a
@@ -208,9 +208,9 @@ Verify that the logical volumes were created correctly:
 
     # lvdisplay
 
-#### Make the root and swap Partitions Ready for Installation
+#### Make the rootvol and swapvol Partitions Ready for Installation
 The last steps of setting up the drive for installation are turning **swapvol**
-into an active swap partition, and formatting **root**.
+into an active swap partition, and formatting **rootvol**.
 
 To make **swapvol** into a swap partition, we run the `mkswap` (i.e., make swap) command:
 
@@ -221,24 +221,24 @@ using `swapon` (i.e., turn swap on) command:
 
     # swapon /dev/matrix/swapvol
 
-Now I have to format **root**, to make it ready for installation;
+Now I have to format **rootvol**, to make it ready for installation;
 I do this with the `mkfs` (i.e., make file system) command.
 I choose the **ext4** filesystem, but you could use a different one,
 depending on your use case:
 
-    # mkfs.ext4 /dev/mapper/matrix-root
+    # mkfs.ext4 /dev/mapper/matrix-rootvol
 
-Lastly, I need to mount **root**. Fortunately, GNU+Linux has a directory
+Lastly, I need to mount **rootvol**. Fortunately, GNU+Linux has a directory
 for this very purpose: **/mnt**:
 
-    # mount /dev/matrix/root /mnt
+    # mount /dev/matrix/rootvol /mnt
 
 #### Create the /boot and /home Directories
-Now that you have mounted **root**, you need to create the two most important
+Now that you have mounted **rootvol**, you need to create the two most important
 folders on it: **/boot** and **/home**; these folder contain your boot files,
 as well as each user's personal documents, videos, etc..
 
-Since you mounted **root** at **/mnt**, this is where you must create them;
+Since you mounted **rootvol** at **/mnt**, this is where you must create them;
 you will do so using `mkdir`:
 
     # mkdir -p /mnt/home
@@ -402,6 +402,17 @@ This configuration will lock the user out for ten minutes.
 You can unlock a user's account manually, using the **root** account, with this command:
 
     # pam_tally --user *theusername* --reset
+    
+#### Generate grub.cfg
+Edit configuration in `/etc/default/grub`, remembering to use UUID when poitning to mbr/gpt partition.
+Use `blkid` to get list of devices with their respective UUIDs.
+Next generate grub.cfg with
+
+    # grub-mkconfig /boot/grub/grub.cfg
+    
+If you have separate `/boot` partition, don't forget to add `boot` symlink inside that points to current directory
+
+    # cd /boot; ln -s . boot
 
 ## Unmount All Partitions and Reboot
 Congratulations! You have finished the installation of Parabola GNU+Linux-Libre.
@@ -416,9 +427,9 @@ Unmount all of the partitions from **/mnt**, and "turn off" the swap volume:
     # umount -R /mnt
     # swapoff -a
 
-Deactivate the **root** and **swapvol** logical volumes:
+Deactivate the **rootvol** and **swapvol** logical volumes:
 
-    # lvchange -an /dev/matrix/root
+    # lvchange -an /dev/matrix/rootvol
     # lvchange -an /dev/matrix/swapvol
 
 Lock the encrypted partition (i.e., close it):
@@ -431,17 +442,18 @@ Shutdown the machine:
 
 After the machine is off, remove the installation media, and turn it on.
 
-## Booting the New Installation, from GRUB
-When starting your installation for the first time, you have to manually boot
+## Booting the installation manually from GRUB
+When you forget to configure or misconfigure grub on your hdd, you have to manually boot
 the system by entering a series of commands into the GRUB command line.
+
 
 After the computer starts, Press `C` to bring up the GRUB command line.
 You can either boot the normal kernel, or the LTS kernel we installed;
 here are the commands for the normal kernel:
 
     grub> cryptomount -a
-    grub> set root='lvm/matrix-root'
-    grub> linux /boot/vmlinuz-linux-libre root=/dev/matrix/root cryptdevice=/dev/sda1:root
+    grub> set root='lvm/matrix-rootvol'
+    grub> linux /boot/vmlinuz-linux-libre root=/dev/matrix/rootvol cryptdevice=/dev/sda1:root
     grub> initrd /boot/initramfs-linux-libre.img
     grub> boot
 
@@ -449,11 +461,9 @@ If you're trying to boot the LTS kernel, simply add **-lts** to the end
 of each command that contains the kernel (e.g., **/boot/vmlinuz-linux-libre**
 would be **/boot/vmlinuz/linux-libre-lts**).
 
-**NOTE: on some Thinkpads, during boot, a faulty DVD drive can cause
-the** `cryptomount -a` **command to fail, as well as the error** `AHCI transfer timed out`
-**(when the Thinkpad X200 is connected to an UltraBase). For both issues,
-the workaround was to remove the DVD drive (if using the UltraBase,
-then the whole device must be removed).**
+**NOTE: on machines with native sata, during boot a (faulty) optical disc drive (like dvd) can cause
+the** `cryptomount -a` **command to fail/hang, as well as the error** `AHCI transfer timed out`
+**The workaround was to remove the DVD drive.**
 
 ## Follow-Up Tutorial: Configuring Parabola
 The next step of the setup process is to modify the configuration file that
