@@ -83,8 +83,6 @@ build() {
 
 		local crossgcc_bin_prefix=$( project_action_arguments "prefix" "crossgcc" "$arch" )
 
-		project_action_arguments "build" "crossgcc" "$arch"
-
 		make -C "$sources_path" out="$build_path" CROSS_COMPILE="$crossgcc_bin_prefix" HOST_CROSS_COMPILE= BOARD="$config" -j$TASKS
 	fi
 }
