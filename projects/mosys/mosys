@@ -66,8 +66,6 @@ build() {
 		git_project_checkout "$project" "$repository" "$@"
 	fi
 
-	project_action_arguments "build" "flashmap" "$@"
-
 	mkdir -p "$build_path"
 
 	make -C "$sources_path" objtree="$build_path" "defconfig"
