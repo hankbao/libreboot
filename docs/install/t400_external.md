@@ -1,5 +1,5 @@
 ---
-title: Flashing the T400 with a BeagleBone Black 
+title: Flashing the T400 with a BeagleBone Black
 ...
 
 Initial flashing instructions for T400.
@@ -36,9 +36,9 @@ Quad-core CPUs
 --------------
 
 Very likely to be compatible, but requires soldering.
-Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot maillist
-[Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
-[German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129-Core2-Quad-mit-Coreboot-Libreboot-auf-T500-(-wahrsch-auch-T400)-benutzen-BETA)
+Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list.
+* [Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
+* [German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129)
 
 
 A note about GPUs
