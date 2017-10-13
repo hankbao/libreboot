@@ -31,7 +31,7 @@ CPUs for this system. The Core 2 Duo P8400, P8600 and P8700 are believed
 to work in libreboot. The T9600 was also tested on the T400 and
 confirmed working.
 
-T9550 was tested by a user, and is compatible as reported in the IRC channel.
+T9550 and T9900 was tested by a user, and is compatible as reported in the IRC channel.
 T9500 and T9400 may also work, but YMMV.
 
 Quad-core CPUs
