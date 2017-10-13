@@ -36,8 +36,10 @@ T9500 and T9400 may also work, but YMMV.
 
 Quad-core CPUs
 --------------
-
-Incompatible. Do not use.
+Very likely to be compatible, but requires soldering.
+Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list
+[Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
+[German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129-Core2-Quad-mit-Coreboot-Libreboot-auf-T500-(-wahrsch-auch-T400)-benutzen-BETA)
 
 A note about GPUs
 =================
