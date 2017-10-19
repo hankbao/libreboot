@@ -35,8 +35,8 @@ T9600, T9500, T9550 and T9900 are all compatible, as reported by users.
 Quad-core CPUs
 --------------
 
-Very likely to be compatible, but requires soldering.
-Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list.
+Very likely to be compatible, but requires hardware modification.
+Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list. Currently work in progress and no guide available.
 
 - [Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
 - [German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129)
