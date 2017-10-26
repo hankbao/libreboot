@@ -155,7 +155,7 @@ file_checksum_check() {
 	local name=$( basename "$path" )
 	local directory_path=$( dirname "$path" )
 
-	if ! [ -f "$checksum_path" ]
+	if ! [[ -f "$checksum_path" ]]
 	then
 		printf 1>&2 '%s\n' 'Could not verify file checksum!'
 		return 1
@@ -172,7 +172,7 @@ file_signature_create() {
 
 	local signature_path="$path.$DSIG"
 
-	if [ -z "$RELEASE_KEY" ]
+	if [[ -z "$RELEASE_KEY" ]]
 	then
 		return 0
 	fi
@@ -185,7 +185,7 @@ file_signature_check() {
 
 	local signature_path="$path.$DSIG"
 
-	if ! [ -f "$signature_path" ]
+	if ! [[ -f "$signature_path" ]]
 	then
 		printf 1>&2 '%s\n' 'Could not verify file signature!'
 		return 1
@@ -217,7 +217,7 @@ file_exists_check() {
 directory_filled_check() {
 	local path=$1
 
-	if [ -z "$( ls -A "$path" 2> /dev/null )" ]
+	if [[ -z "$( ls -A "$path" 2> /dev/null )" ]]
 	then
 		return 1
 	else
@@ -381,7 +381,7 @@ requirements() {
 	do
 		requirement_path=$( which "$requirement" || true )
 
-		if [ -z "$requirement_path" ]
+		if [[ -z "$requirement_path" ]]
 		then
 			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
@@ -398,7 +398,7 @@ requirements_root() {
 		# We need to keep stdout output to show the command.
 		requirement_path=$( execute_root which "$requirement" || true )
 
-		if [ -z "$requirement_path" ]
+		if [[ -z "$requirement_path" ]]
 		then
 			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
@@ -414,7 +414,7 @@ arguments_concat() {
 
 	for argument in "$@"
 	do
-		if ! [ -z "$concat" ]
+		if ! [[ -z "$concat" ]]
 		then
 			concat="$concat""$delimiter""$argument"
 		else
@@ -432,7 +432,7 @@ execute_root() {
 	printf 1>&2 '%s' 'Running command as root: '
 	printf 1>&2 '%b\n' "$*"
 
-	if ! [ -z "$sudo" ]
+	if ! [[ -z "$sudo" ]]
 	then
 		sudo "$@"
 	else

@@ -13,7 +13,7 @@ boot_keys_cros() {
 	local cros_scripts_path=$( project_install_path "cros-scripts" )
 	local cros_script_path="$cros_scripts_path/$cros_script"
 
-	if ! [ -x "$cros_script_path" ]
+	if ! [[ -x "$cros_script_path" ]]
 	then
 		printf 1>&2 '%s' "$cros_script script missing from cros-scripts install"
 		return 1
@@ -37,7 +37,7 @@ boot_keys_files_install_path() {
 	helper_arguments=$( project_action_helper "arguments" "$project" "$@" )
 
 
-	if [ $? -ne 0 ] || [ -z "$helper_arguments" ]
+	if [[ $? -ne 0 ]] || [[ -z "$helper_arguments" ]]
 	then
 		project_install_path "$project" "$@"
 	else

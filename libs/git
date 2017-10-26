@@ -63,7 +63,7 @@ git_branch_create() {
 		cd "$repository_path"
 		git checkout -B "$branch"
 
-		if ! [ -z "$revision" ]
+		if ! [[ -z "$revision" ]]
 		then
 			git reset --hard "$revision"
 		fi
@@ -96,13 +96,13 @@ git_branch_check() {
 
 	(
 		cd "$repository_path" 2> /dev/null > /dev/null
-		if [ $? -ne 0 ]
+		if [[ $? -ne 0 ]]
 		then
 			return 1
 		fi
 
 		git rev-parse --verify "$branch" 2> /dev/null > /dev/null
-		if [ $? -ne 0 ]
+		if [[ $? -ne 0 ]]
 		then
 			return 1
 		fi
@@ -123,13 +123,13 @@ git_fetch_check() {
 
 	(
 		cd "$repository_path" 2> /dev/null > /dev/null
-		if [ $? -ne 0 ]
+		if [[ $? -ne 0 ]]
 		then
 			return 1
 		fi
 
 		local output=$( git fetch --dry-run origin 2>&1 )
-		if ! [ -z "$output" ]
+		if ! [[ -z "$output" ]]
 		then
 			return 1
 		fi
@@ -270,7 +270,7 @@ git_project_clone() {
 		do
 			git_clone "$repository_path" "$url"
 
-			if [ $? -eq 0 ]
+			if [[ $? -eq 0 ]]
 			then
 				return 0
 			fi
@@ -301,7 +301,7 @@ git_project_prepare_blobs() {
 	local blobs_path=$( project_blobs_path "$project" "$@" )
 	local blob
 
-	if ! [ -f "$blobs_path" ]
+	if ! [[ -f "$blobs_path" ]]
 	then
 		return
 	fi
@@ -330,9 +330,9 @@ git_project_prepare_patch() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -344,7 +344,7 @@ git_project_prepare_patch() {
 
 		local revision_path="$configs_path/$path/$REVISION"
 
-		if ! [ -f "$revision_path" ]
+		if ! [[ -f "$revision_path" ]]
 		then
 			continue
 		fi
@@ -353,7 +353,7 @@ git_project_prepare_patch() {
 		prepare_path=$path
 	done
 
-	if ! [ -z "$prepare_branch" ]
+	if ! [[ -z "$prepare_branch" ]]
 	then
 		git_project_patch_recursive "$project" "$repository" "$prepare_branch" "$prepare_path"
 	fi
@@ -376,9 +376,9 @@ git_project_prepare_revision() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -390,7 +390,7 @@ git_project_prepare_revision() {
 
 		local revision_path="$configs_path/$path/$REVISION"
 
-		if ! [ -f "$revision_path" ]
+		if ! [[ -f "$revision_path" ]]
 		then
 			continue
 		fi
@@ -399,7 +399,7 @@ git_project_prepare_revision() {
 		prepare_revision=$( cat "$revision_path" )
 	done
 
-	if ! [ -z "$prepare_branch" ]
+	if ! [[ -z "$prepare_branch" ]]
 	then
 		git_branch_create "$repository_path" "$prepare_branch" "$prepare_revision"
 	fi
@@ -421,9 +421,9 @@ git_project_prepare_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -435,7 +435,7 @@ git_project_prepare_check() {
 
 		local revision_path="$configs_path/$path/$REVISION"
 
-		if ! [ -f "$revision_path" ]
+		if ! [[ -f "$revision_path" ]]
 		then
 			continue
 		fi
@@ -443,7 +443,7 @@ git_project_prepare_check() {
 		prepare_branch=$branch
 	done
 
-	if ! [ -z "$prepare_branch" ]
+	if ! [[ -z "$prepare_branch" ]]
 	then
 		git_branch_check "$repository_path" "$prepare_branch"
 	fi
@@ -462,7 +462,7 @@ git_project_prepare_clean() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -475,7 +475,7 @@ git_project_prepare_clean() {
 		prepare_branch=$branch
 	done
 
-	if ! [ -z "$prepare_branch" ]
+	if ! [[ -z "$prepare_branch" ]]
 	then
 		# Let's not worry about missing branches.
 		(
@@ -483,7 +483,7 @@ git_project_prepare_clean() {
 
 			git_branch_delete "$repository_path" "$prepare_branch"
 
-			if [ $? -ne 0 ]
+			if [[ $? -ne 0 ]]
 			then
 				return 0
 			fi
@@ -504,7 +504,7 @@ git_project_checkout() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -517,7 +517,7 @@ git_project_checkout() {
 		checkout_branch=$branch
 	done
 
-	if ! [ -z "$checkout_branch" ]
+	if ! [[ -z "$checkout_branch" ]]
 	then
 		git_branch_checkout "$repository_path" "$checkout_branch"
 		git_submodule_update "$repository_path"
@@ -564,7 +564,7 @@ git_project_release() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -577,7 +577,7 @@ git_project_release() {
 		release_branch=$branch
 	done
 
-	if ! [ -z "$release_branch" ]
+	if ! [[ -z "$release_branch" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 		local sources_path="$root/$SOURCES/$repository"
@@ -605,7 +605,7 @@ git_project_release_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -618,13 +618,13 @@ git_project_release_check() {
 		release_branch=$branch
 	done
 
-	if ! [ -z "$release_branch" ]
+	if ! [[ -z "$release_branch" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 
 		file_exists_check "$archive_path"
 
-		if [ $? -ne 0 ]
+		if [[ $? -ne 0 ]]
 		then
 			return 1
 		else

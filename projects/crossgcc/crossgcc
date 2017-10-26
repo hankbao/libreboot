@@ -50,7 +50,7 @@ extract() {
 		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
 		local tarball_install_directory_path=$( dirname "$tarball_install_path" )
 
-		if [ -f "$tarball_sources_path" ] && ! [ -f "$tarball_install_path" ]
+		if [[ -f "$tarball_sources_path" ]] && ! [[ -f "$tarball_install_path" ]]
 		then
 			printf '%s\n' "Copying source archive $tarball for $project (with ${arguments:-no argument})"
 
@@ -90,7 +90,7 @@ update() {
 		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
 		local tarball_install_directory_path=$( dirname "$tarball_install_path" )
 
-		if [ -f $tarball_sources_path ]
+		if [[ -f $tarball_sources_path ]]
 		then
 			printf '%s\n' "Copying source archive $tarball for $project (with ${arguments:-no argument})"
 
@@ -190,7 +190,7 @@ release() {
 
 		mkdir -p "$release_path"
 
-		if [ -f "$tarball_install_path" ] && ! [ -f "$tarball_release_path" ]
+		if [[ -f "$tarball_install_path" ]] && ! [[ -f "$tarball_release_path" ]]
 		then
 			printf '%s\n' "Releasing source archive $tarball for $project (with ${arguments:-no argument})"
 

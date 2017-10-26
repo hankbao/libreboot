@@ -22,7 +22,7 @@ usage() {
 generate() {
 	local type=$( boot_keys_type "$@" )
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
 		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
@@ -45,7 +45,7 @@ sign() {
 	local kernel_path
 	local media
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
 		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
@@ -66,7 +66,7 @@ sign() {
 				do
 					kernel_path="$install_path/$KERNEL-$medium.$IMG"
 
-					if [ -f "$kernel_path" ]
+					if [[ -f "$kernel_path" ]]
 					then
 						boot_keys_cros "$type-prepare" "sign" "$kernel_path"
 					else
@@ -88,7 +88,7 @@ verify() {
 	local kernel_path
 	local media
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
 		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1

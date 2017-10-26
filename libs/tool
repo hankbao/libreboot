@@ -37,7 +37,7 @@ tool_helper_include() {
 	local tool_path=$( tool_path "$tool" )
 	local include="$tool_path/$tool-helper"
 
-	if [ -f "$include" ]
+	if [[ -f "$include" ]]
 	then
 		source "$include"
 	fi
@@ -85,7 +85,7 @@ tool_action() {
 
 		tool_action_check "$action" "$tool" "$@"
 
-		if [ $? -eq 0 ]
+		if [[ $? -eq 0 ]]
 		then
 			return 0
 		fi
@@ -104,7 +104,7 @@ tool_action() {
 			"$action" "$@"
 		)
 
-		if [ $? -ne 0 ]
+		if [[ $? -ne 0 ]]
 		then
 			printf 1>&2 '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) failed"
 			return 1
@@ -138,7 +138,7 @@ tool_action_check() {
 
 		for tool_force in $TOOLS_FORCE
 		do
-			if [ "$tool_force" = "$tool" ]
+			if [[ "$tool_force" = "$tool" ]]
 			then
 				return 1
 			fi
@@ -189,7 +189,7 @@ tool_action_arguments_recursive() {
 	local action_helper_arguments=$( tool_action_helper "arguments" "$tool" "$@" )
 	local argument
 
-	if [ $? -ne 0 ] || [ -z "$action_helper_arguments" ]
+	if [[ $? -ne 0 ]] || [[ -z "$action_helper_arguments" ]]
 	then
 		tool_action "$action" "$tool" "$@"
 	else
@@ -236,7 +236,7 @@ tool_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -263,7 +263,7 @@ tool_usage_actions() {
 		fi
 	done
 
-	if [ $# -gt 0 ]
+	if [[ $# -gt 0 ]]
 	then
 		printf '\n%s\n' 'Specific actions:'
 
@@ -292,7 +292,7 @@ tool_usage_arguments_recursive() {
 	local action_helper_arguments=$( tool_action_helper "arguments" "$tool" "$@" )
 	local argument
 
-	if ! [ -z "$action_helper_arguments" ]
+	if ! [[ -z "$action_helper_arguments" ]]
 	then
 		printf '%s\n' "$action_helper_arguments" | while read argument
 		do
@@ -317,12 +317,12 @@ tool_file_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
 
-		if ! [ -f "$path/$file" ]
+		if ! [[ -f "$path/$file" ]]
 		then
 			continue
 		fi
@@ -330,7 +330,7 @@ tool_file_path() {
 		file_path="$path/$file"
 	done
 
-	if [ -z "$file_path" ]
+	if [[ -z "$file_path" ]]
 	then
 		return 1
 	fi
@@ -347,7 +347,7 @@ tool_file_test() {
 tool_file_contents() {
 	local file_path=$( tool_file_path "$@" )
 
-	if [ -f "$file_path" ]
+	if [[ -f "$file_path" ]]
 	then
 		cat "$file_path"
 	fi
@@ -368,14 +368,14 @@ tool_file_contents_herit() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if ! [[ -z "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
 
 		file_path="$path/$file"
 
-		if ! [ -f "$file_path" ]
+		if ! [[ -f "$file_path" ]]
 		then
 			continue
 		fi
