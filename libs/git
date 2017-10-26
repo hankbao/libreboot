@@ -63,7 +63,7 @@ git_branch_create() {
 		cd "$repository_path"
 		git checkout -B "$branch"
 
-		if ! [[ -z "$revision" ]]
+		if [[ -n "$revision" ]]
 		then
 			git reset --hard "$revision"
 		fi
@@ -129,7 +129,7 @@ git_fetch_check() {
 		fi
 
 		local output=$( git fetch --dry-run origin 2>&1 )
-		if ! [[ -z "$output" ]]
+		if [[ -n "$output" ]]
 		then
 			return 1
 		fi
@@ -330,7 +330,7 @@ git_project_prepare_patch() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -353,7 +353,7 @@ git_project_prepare_patch() {
 		prepare_path=$path
 	done
 
-	if ! [[ -z "$prepare_branch" ]]
+	if [[ -n "$prepare_branch" ]]
 	then
 		git_project_patch_recursive "$project" "$repository" "$prepare_branch" "$prepare_path"
 	fi
@@ -376,7 +376,7 @@ git_project_prepare_revision() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -399,7 +399,7 @@ git_project_prepare_revision() {
 		prepare_revision=$( cat "$revision_path" )
 	done
 
-	if ! [[ -z "$prepare_branch" ]]
+	if [[ -n "$prepare_branch" ]]
 	then
 		git_branch_create "$repository_path" "$prepare_branch" "$prepare_revision"
 	fi
@@ -421,7 +421,7 @@ git_project_prepare_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -443,7 +443,7 @@ git_project_prepare_check() {
 		prepare_branch=$branch
 	done
 
-	if ! [[ -z "$prepare_branch" ]]
+	if [[ -n "$prepare_branch" ]]
 	then
 		git_branch_check "$repository_path" "$prepare_branch"
 	fi
@@ -462,7 +462,7 @@ git_project_prepare_clean() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -475,7 +475,7 @@ git_project_prepare_clean() {
 		prepare_branch=$branch
 	done
 
-	if ! [[ -z "$prepare_branch" ]]
+	if [[ -n "$prepare_branch" ]]
 	then
 		# Let's not worry about missing branches.
 		(
@@ -504,7 +504,7 @@ git_project_checkout() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -517,7 +517,7 @@ git_project_checkout() {
 		checkout_branch=$branch
 	done
 
-	if ! [[ -z "$checkout_branch" ]]
+	if [[ -n "$checkout_branch" ]]
 	then
 		git_branch_checkout "$repository_path" "$checkout_branch"
 		git_submodule_update "$repository_path"
@@ -564,7 +564,7 @@ git_project_release() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -577,7 +577,7 @@ git_project_release() {
 		release_branch=$branch
 	done
 
-	if ! [[ -z "$release_branch" ]]
+	if [[ -n "$release_branch" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 		local sources_path="$root/$SOURCES/$repository"
@@ -605,7 +605,7 @@ git_project_release_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			branch="$branch-$argument"
 		fi
@@ -618,7 +618,7 @@ git_project_release_check() {
 		release_branch=$branch
 	done
 
-	if ! [[ -z "$release_branch" ]]
+	if [[ -n "$release_branch" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 

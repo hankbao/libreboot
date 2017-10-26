@@ -254,7 +254,7 @@ project_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
@@ -267,7 +267,7 @@ project_sources_path() {
 		sources_path=$path
 	done
 
-	if ! [[ -z "$sources_path" ]]
+	if [[ -n "$sources_path" ]]
 	then
 		printf '%s\n' "$sources_path"
 		return
@@ -287,7 +287,7 @@ project_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -300,7 +300,7 @@ project_sources_path() {
 		sources_path=$path
 	done
 
-	if ! [[ -z "$sources_path" ]]
+	if [[ -n "$sources_path" ]]
 	then
 		printf '%s\n' "$sources_path"
 		return
@@ -323,7 +323,7 @@ project_sources_directory_filled_error() {
 
 	local sources_path=$( project_sources_path "$project" "$@" )
 
-	if ! [[ -z "$sources_path" ]]
+	if [[ -n "$sources_path" ]]
 	then
 		printf 1>&2 '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) already exists"
 		return 1
@@ -358,7 +358,7 @@ project_sources_archive() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
@@ -373,7 +373,7 @@ project_sources_archive() {
 		sources_archive=$archive
 	done
 
-	if ! [[ -z "$sources_archive" ]]
+	if [[ -n "$sources_archive" ]]
 	then
 		printf '%s\n' "$sources_archive"
 	fi
@@ -474,7 +474,7 @@ project_blobs_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -507,7 +507,7 @@ project_blobs_ignore_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -746,7 +746,7 @@ project_build_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -826,7 +826,7 @@ project_install() {
 	# Install built files first.
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -869,7 +869,7 @@ project_install() {
 	# Install install files then.
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -920,7 +920,7 @@ project_install_check() {
 	# Install built files first.
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -956,7 +956,7 @@ project_install_check() {
 	# Install install files then.
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			if [[ -z "$path" ]]
 			then
@@ -1088,7 +1088,7 @@ project_release_sources_archive_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
@@ -1103,7 +1103,7 @@ project_release_sources_archive_path() {
 		release_path=$path
 	done
 
-	if ! [[ -z "$release_path" ]]
+	if [[ -n "$release_path" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_path.$ARCHIVE"
 
@@ -1399,7 +1399,7 @@ project_file_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -1450,7 +1450,7 @@ project_file_contents_herit() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi

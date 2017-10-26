@@ -75,7 +75,7 @@ verify() {
 
 	requirements "sort"
 
-	if ! [[ -z "$project_blobs_path" ]]
+	if [[ -n "$project_blobs_path" ]]
 	then
 		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
 	else
@@ -136,7 +136,7 @@ execute() {
 	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
 	local project_blobs_directory_path
 
-	if ! [[ -z "$project_blobs_path" ]]
+	if [[ -n "$project_blobs_path" ]]
 	then
 		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
 	else
@@ -159,7 +159,7 @@ execute() {
 
 	printf '%s\n' "$files" | while read file
 	do
-		if ! [[ -z "$project_blobs_ignore_path" ]]
+		if [[ -n "$project_blobs_ignore_path" ]]
 		then
 			match=$( grep "$file" "$project_blobs_ignore_path" || true)
 			if [[ ! -z "$match" ]]
@@ -169,7 +169,7 @@ execute() {
 		fi
 
 		match=$( "$deblob_check_path" -l -i "" "$file" || true )
-		if ! [[ -z "$match" ]]
+		if [[ -n "$match" ]]
 		then
 			printf '%s\n' "$match" >> "$project_blobs_discover_path"
 		fi
@@ -187,7 +187,7 @@ execute_check() {
 	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
 	local project_blobs_discover_path
 
-	if ! [[ -z "$project_blobs_path" ]]
+	if [[ -n "$project_blobs_path" ]]
 	then
 		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
 	else

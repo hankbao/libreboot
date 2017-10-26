@@ -236,7 +236,7 @@ tool_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -292,7 +292,7 @@ tool_usage_arguments_recursive() {
 	local action_helper_arguments=$( tool_action_helper "arguments" "$tool" "$@" )
 	local argument
 
-	if ! [[ -z "$action_helper_arguments" ]]
+	if [[ -n "$action_helper_arguments" ]]
 	then
 		printf '%s\n' "$action_helper_arguments" | while read argument
 		do
@@ -317,7 +317,7 @@ tool_file_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -368,7 +368,7 @@ tool_file_contents_herit() {
 
 	for argument in "" "$@"
 	do
-		if ! [[ -z "$argument" ]]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi

@@ -414,7 +414,7 @@ arguments_concat() {
 
 	for argument in "$@"
 	do
-		if ! [[ -z "$concat" ]]
+		if [[ -n "$concat" ]]
 		then
 			concat="$concat""$delimiter""$argument"
 		else
@@ -432,7 +432,7 @@ execute_root() {
 	printf 1>&2 '%s' 'Running command as root: '
 	printf 1>&2 '%b\n' "$*"
 
-	if ! [[ -z "$sudo" ]]
+	if [[ -n "$sudo" ]]
 	then
 		sudo "$@"
 	else
