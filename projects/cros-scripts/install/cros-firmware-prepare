@@ -22,34 +22,34 @@ VBPUBK="vbpubk"
 GBB_FLAGS="dev_screen_short_delay load_option_roms enable_alternate_os force_dev_switch_on force_dev_boot_usb disable_fw_rollback_check enter_triggers_tonorm force_dev_boot_legacy faft_key_overide disable_ec_software_sync default_dev_boot_lefacy disable_pd_software_sync disable_lid_shutdown dev_boot_fastboot_full_cap enable_serial"
 
 usage() {
-	printf '%s\n' "$executable [action] [firmware image] [gbb action|vpd action] [gbb file|gbb flag|vpd file]" >&2
+	printf 1>&2 '%s\n' "$executable [action] [firmware image] [gbb action|vpd action] [gbb file|gbb flag|vpd file]"
 
-	printf '\n%s\n' 'Actions:' >&2
-	printf '%s\n' '  sign - Sign firmware image' >&2
-	printf '%s\n' '  verify - Verify firmware image' >&2
-	printf '%s\n' '  gbb - Google Binary Block' >&2
+	printf 1>&2 '\n%s\n' 'Actions:'
+	printf 1>&2 '%s\n' '  sign - Sign firmware image'
+	printf 1>&2 '%s\n' '  verify - Verify firmware image'
+	printf 1>&2 '%s\n' '  gbb - Google Binary Block'
 
-	printf '\n%s\n' 'GBB actions:' >&2
-	printf '%s\n' '  extract - Extract GBB from firmware image to path' >&2
-	printf '%s\n' '  replace - Replace GBB from path to firmware image' >&2
-	printf '%s\n' '  list - List enabled GBB flags' >&2
-	printf '%s\n' '  enable - Enable GBB flag' >&2
-	printf '%s\n' '  disable - Disable GBB flag' >&2
+	printf 1>&2 '\n%s\n' 'GBB actions:'
+	printf 1>&2 '%s\n' '  extract - Extract GBB from firmware image to path'
+	printf 1>&2 '%s\n' '  replace - Replace GBB from path to firmware image'
+	printf 1>&2 '%s\n' '  list - List enabled GBB flags'
+	printf 1>&2 '%s\n' '  enable - Enable GBB flag'
+	printf 1>&2 '%s\n' '  disable - Disable GBB flag'
 
-	printf '\n%s\n' 'GBB flags:' >&2
+	printf 1>&2 '\n%s\n' 'GBB flags:'
 
 	for flag in $GBB_FLAGS
 	do
-		printf '%s\n' "  $flag" >&2
+		printf 1>&2 '%s\n' "  $flag"
 	done
 
-	printf '\n%s\n' 'VPD actions:' >&2
-	printf '%s\n' '  extract - Extract VPD from firmware image to path' >&2
-	printf '%s\n' '  replace - Replace VPD from path to firmware image' >&2
+	printf 1>&2 '\n%s\n' 'VPD actions:'
+	printf 1>&2 '%s\n' '  extract - Extract VPD from firmware image to path'
+	printf 1>&2 '%s\n' '  replace - Replace VPD from path to firmware image'
 
-	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf 1>&2 '\n%s\n' 'Environment variables:'
+	printf 1>&2 '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys'
+	printf 1>&2 '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools'
 }
 
 sign() {
@@ -134,7 +134,7 @@ gbb() {
 
 			if [ -z "$flag_value" ]
 			then
-				printf '%s\n' "Invalid GBB flag: $gbb_flag" >&2
+				printf 1>&2 '%s\n' "Invalid GBB flag: $gbb_flag"
 				exit 1
 			fi
 
@@ -156,7 +156,7 @@ gbb() {
 
 			if [ -z "$flag_value" ]
 			then
-				printf '%s\n' "Invalid GBB flag: $gbb_flag" >&2
+				printf 1>&2 '%s\n' "Invalid GBB flag: $gbb_flag"
 				exit 1
 			fi
 
@@ -237,7 +237,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done

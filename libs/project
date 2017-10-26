@@ -81,12 +81,12 @@ project_action() {
 
 		project_action_check "$action" "$project" "$@"
 
-		printf '%s\n' "Project $project $action (with ${arguments:-no argument})" >&2
+		printf 1>&2 '%s\n' "Project $project $action (with ${arguments:-no argument})"
 
 		if "$action" "$@"; then
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed" >&2
+			printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
 		else
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed" >&2
+			printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
 			return 1
 		fi
 	)
@@ -171,7 +171,7 @@ project_action_arguments_verify_recursive() {
 		test="$(printf '%s\n' "$action_helper_arguments" | grep -e "^$argument\$" || true)"
 
 		if [[ -z "$test" ]]; then
-			printf '%s\n' "Invalid argument $argument for project $project action $action" >&2
+			printf 1>&2 '%s\n' "Invalid argument $argument for project $project action $action"
 			return 1
 		fi
 	fi
@@ -325,7 +325,7 @@ project_sources_directory_filled_error() {
 
 	if ! [ -z "$sources_path" ]
 	then
-		printf '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) already exists" >&2
+		printf 1>&2 '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) already exists"
 		return 1
 	else
 		return 0
@@ -341,7 +341,7 @@ project_sources_directory_missing_empty_error() {
 
 	if [ -z "$sources_path" ]
 	then
-		printf '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0
@@ -422,7 +422,7 @@ project_sources_archive_missing_error() {
 	local archive=$( project_sources_archive "$project" "$@" )
 	if [ -z "$archive" ] || ! [ -f "$archive" ]
 	then
-		printf '%s\n' "Missing sources archive for $project (with ${arguments:-no argument})" >&2
+		printf 1>&2 '%s\n' "Missing sources archive for $project (with ${arguments:-no argument})"
 		return 1
 	else
 		return 0
@@ -804,7 +804,7 @@ project_build_directory_missing_empty_error() {
 
 	if ! directory_filled_check "$build_path"
 	then
-		printf '%s\n' "Build directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Build directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0
@@ -1010,7 +1010,7 @@ project_install_directory_missing_empty_error() {
 
 	if ! directory_filled_check "$install_path"
 	then
-		printf '%s\n' "Install directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Install directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0

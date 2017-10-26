@@ -27,21 +27,21 @@ FIT="fit"
 IMG="img"
 
 usage() {
-	printf '%s\n' "$executable [action] [kernel files|kernel image] [medium]" >&2
+	printf 1>&2 '%s\n' "$executable [action] [kernel files|kernel image] [medium]"
 
-	printf '\n%s\n' 'Actions:' >&2
-	printf '%s\n' '  pack - Pack kernel files to a medium-specific image' >&2
-	printf '%s\n' '  sign - Sign kernel image' >&2
-	printf '%s\n' '  verify - Very kernel image signatures' >&2
+	printf 1>&2 '\n%s\n' 'Actions:'
+	printf 1>&2 '%s\n' '  pack - Pack kernel files to a medium-specific image'
+	printf 1>&2 '%s\n' '  sign - Sign kernel image'
+	printf 1>&2 '%s\n' '  verify - Very kernel image signatures'
 
-	printf '\n%s\n' 'Medium:' >&2
-	printf '%s\n' '  usb - External USB storage' >&2
-	printf '%s\n' '  mmc - External SD card storage' >&2
-	printf '%s\n' '  emmc - Internal storage' >&2
+	printf 1>&2 '\n%s\n' 'Medium:'
+	printf 1>&2 '%s\n' '  usb - External USB storage'
+	printf 1>&2 '%s\n' '  mmc - External SD card storage'
+	printf 1>&2 '%s\n' '  emmc - Internal storage'
 
-	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf 1>&2 '\n%s\n' 'Environment variables:'
+	printf 1>&2 '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys'
+	printf 1>&2 '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools'
 }
 
 pack() {
@@ -88,7 +88,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done

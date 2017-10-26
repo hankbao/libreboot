@@ -157,7 +157,7 @@ file_checksum_check() {
 
 	if ! [ -f "$checksum_path" ]
 	then
-		printf '%s\n' 'Could not verify file checksum!' >&2
+		printf 1>&2 '%s\n' 'Could not verify file checksum!'
 		return 1
 	fi
 
@@ -187,7 +187,7 @@ file_signature_check() {
 
 	if ! [ -f "$signature_path" ]
 	then
-		printf '%s\n' 'Could not verify file signature!' >&2
+		printf 1>&2 '%s\n' 'Could not verify file signature!'
 		return 1
 	fi
 
@@ -383,7 +383,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done
@@ -400,7 +400,7 @@ requirements_root() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done
@@ -429,8 +429,8 @@ execute_root() {
 	local sudo=$( which sudo 2> /dev/null || true )
 	local arguments
 
-	printf '%s' 'Running command as root: ' >&2
-	printf '%b\n' "$*" >&2
+	printf 1>&2 '%s' 'Running command as root: '
+	printf 1>&2 '%b\n' "$*"
 
 	if ! [ -z "$sudo" ]
 	then

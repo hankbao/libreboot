@@ -23,22 +23,22 @@ MODEL="model"
 NAME="name"
 
 usage() {
-	printf '%s\n' "$executable [action] [storage] [kernel image|kernel modules]" >&2
+	printf 1>&2 '%s\n' "$executable [action] [storage] [kernel image|kernel modules]"
 
-	printf '\n%s\n' 'Actions:' >&2
-	printf '%s\n' '  backup - Backup kernel image' >&2
-	printf '%s\n' '  image - Install kernel image' >&2
-	printf '%s\n' '  modules - Install kernel modules' >&2
+	printf 1>&2 '\n%s\n' 'Actions:'
+	printf 1>&2 '%s\n' '  backup - Backup kernel image'
+	printf 1>&2 '%s\n' '  image - Install kernel image'
+	printf 1>&2 '%s\n' '  modules - Install kernel modules'
 
 	usage_storage
 
-	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys' >&2
-	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf 1>&2 '\n%s\n' 'Environment variables:'
+	printf 1>&2 '%s\n' '  VBOOT_KEYS_PATH - Path to the vboot keys'
+	printf 1>&2 '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools'
 }
 
 usage_storage() {
-	printf '\n%s\n' 'Storage:' >&2
+	printf 1>&2 '\n%s\n' 'Storage:'
 
 	local nodes=$( ls "$SYS_BLOCK_PATH" )
 	local node_path
@@ -58,7 +58,7 @@ usage_storage() {
 			continue
 		fi
 
-		printf '%s\n' "  $node_path - $name" >&2
+		printf 1>&2 '%s\n' "  $node_path - $name"
 	done
 }
 
@@ -155,7 +155,7 @@ backup() {
 
 	if [ -z "$storage_kernel_path" ]
 	then
-		printf '%s\n' "No kernel partition found on storage $storage_path" >&2
+		printf 1>&2 '%s\n' "No kernel partition found on storage $storage_path"
 		return 1
 	fi
 
@@ -172,7 +172,7 @@ image() {
 
 	if [ -z "$storage_kernel_path" ]
 	then
-		printf '%s\n' "No kernel partition found on storage $storage_path" >&2
+		printf 1>&2 '%s\n' "No kernel partition found on storage $storage_path"
 		return 1
 	fi
 
@@ -192,7 +192,7 @@ modules() {
 
 	if [ -z "$storage_rootfs_path" ]
 	then
-		printf '%s\n' "No rootfs partition found on storage $storage_path" >&2
+		printf 1>&2 '%s\n' "No rootfs partition found on storage $storage_path"
 		return 1
 	fi
 
@@ -221,7 +221,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done

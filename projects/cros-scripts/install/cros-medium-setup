@@ -32,22 +32,22 @@ GPT_SIZE=34
 KERNEL_SIZE=16384
 
 usage() {
-	printf '%s\n' "$executable [action] [storage] [rootfs tarball|kernel files] [medium]" >&2
+	printf 1>&2 '%s\n' "$executable [action] [storage] [rootfs tarball|kernel files] [medium]"
 
-	printf '\n%s\n' 'Actions:' >&2
-	printf '%s\n' '  partitions - Setup partitions on storage' >&2
-	printf '%s\n' '  rootfs - Install rootfs tarball to storage' >&2
-	printf '%s\n' '  kernel - Install kernel files to storage' >&2
+	printf 1>&2 '\n%s\n' 'Actions:'
+	printf 1>&2 '%s\n' '  partitions - Setup partitions on storage'
+	printf 1>&2 '%s\n' '  rootfs - Install rootfs tarball to storage'
+	printf 1>&2 '%s\n' '  kernel - Install kernel files to storage'
 
 	usage_storage
 
-	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  KERNEL_PATH - Path to the kernel image' >&2
-	printf '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools' >&2
+	printf 1>&2 '\n%s\n' 'Environment variables:'
+	printf 1>&2 '%s\n' '  KERNEL_PATH - Path to the kernel image'
+	printf 1>&2 '%s\n' '  VBOOT_TOOLS_PATH - Path to vboot tools'
 }
 
 usage_storage() {
-	printf '\n%s\n' 'Storage:' >&2
+	printf 1>&2 '\n%s\n' 'Storage:'
 
 	local nodes=$( ls "$SYS_BLOCK_PATH" )
 	local node_path
@@ -67,7 +67,7 @@ usage_storage() {
 			continue
 		fi
 
-		printf '%s\n' "  $node_path - $name" >&2
+		printf 1>&2 '%s\n' "  $node_path - $name"
 	done
 }
 
@@ -243,7 +243,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done

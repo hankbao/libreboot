@@ -24,7 +24,7 @@ generate() {
 
 	if [ -z "$type" ]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 
@@ -47,7 +47,7 @@ sign() {
 
 	if [ -z "$type" ]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 
@@ -90,7 +90,7 @@ verify() {
 
 	if [ -z "$type" ]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 

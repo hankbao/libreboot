@@ -15,7 +15,7 @@ boot_keys_cros() {
 
 	if ! [ -x "$cros_script_path" ]
 	then
-		printf '%s' "$cros_script script missing from cros-scripts install" >&2
+		printf 1>&2 '%s' "$cros_script script missing from cros-scripts install"
 		return 1
 	fi
 

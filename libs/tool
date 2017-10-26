@@ -79,7 +79,7 @@ tool_action() {
 
 		if ! tool_check "$tool"
 		then
-			printf '%s\n' "Tool $tool check failed" >&2
+			printf 1>&2 '%s\n' "Tool $tool check failed"
 			return 1
 		fi
 
@@ -97,7 +97,7 @@ tool_action() {
 			return 0
 		fi
 
-		printf '%s\n' "Tool $tool $action (with ${arguments:-no argument})" >&2
+		printf 1>&2 '%s\n' "Tool $tool $action (with ${arguments:-no argument})"
 
 		(
 			set -e
@@ -106,10 +106,10 @@ tool_action() {
 
 		if [ $? -ne 0 ]
 		then
-			printf '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) failed" >&2
+			printf 1>&2 '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) failed"
 			return 1
 		else
-			printf '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) completed" >&2
+			printf 1>&2 '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) completed"
 		fi
 	)
 }
@@ -125,7 +125,7 @@ tool_action_check() {
 
 		if ! tool_check "$tool"
 		then
-			printf '%s\n' "Tool $tool check failed" >&2
+			printf 1>&2 '%s\n' "Tool $tool check failed"
 			return 1
 		fi
 
@@ -162,7 +162,7 @@ tool_action_helper() {
 
 		if ! tool_check "$tool"
 		then
-			printf '%s\n' "Tool $tool check failed" >&2
+			printf 1>&2 '%s\n' "Tool $tool check failed"
 			return 1
 		fi
 
