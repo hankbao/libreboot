@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 install() {
-	local install_path=$( project_install_path "$project" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
 
 	project_install "$project" "$@"
 }

@@ -66,15 +66,15 @@ build() {
 		git_project_checkout "$project" "$repository" "$@"
 	fi
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local build_path=$(project_build_path "$project" "$@")
 
-	local libpayload_build_path=$( project_build_path "libpayload" "$project" "$@" )
+	local libpayload_build_path=$(project_build_path "libpayload" "$project" "$@")
 	local libpayload_build_install_path="$libpayload_build_path/install"
-	local vboot_sources_path=$( project_sources_path "vboot" "vboot" "devices" )
+	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
 
-	local arch=$( depthcharge_arch "$@" )
-	local device=$( depthcharge_device "$@" )
+	local arch=$(depthcharge_arch "$@")
+	local device=$(depthcharge_device "$@")
 
 	project_action_arguments "checkout" "vboot" "devices"
 

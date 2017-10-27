@@ -46,9 +46,9 @@ extract() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_sources_path=$( crossgcc_tarball_sources_path "$tarball" )
-		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
-		local tarball_install_directory_path=$( dirname "$tarball_install_path" )
+		local tarball_sources_path=$(crossgcc_tarball_sources_path "$tarball")
+		local tarball_install_path=$(crossgcc_tarball_install_path "$tarball" "$@")
+		local tarball_install_directory_path=$(dirname "$tarball_install_path")
 
 		if [[ -f "$tarball_sources_path" ]] && ! [[ -f "$tarball_install_path" ]]
 		then
@@ -70,7 +70,7 @@ extract_check() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
+		local tarball_install_path=$(crossgcc_tarball_install_path "$tarball" "$@")
 
 		test ! -f "$tarball_install_path"
 	done
@@ -86,9 +86,9 @@ update() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_sources_path=$( crossgcc_tarball_sources_path "$tarball" )
-		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
-		local tarball_install_directory_path=$( dirname "$tarball_install_path" )
+		local tarball_sources_path=$(crossgcc_tarball_sources_path "$tarball")
+		local tarball_install_path=$(crossgcc_tarball_install_path "$tarball" "$@")
+		local tarball_install_directory_path=$(dirname "$tarball_install_path")
 
 		if [[ -f $tarball_sources_path ]]
 		then
@@ -110,7 +110,7 @@ update_check() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_sources_path=$( crossgcc_tarball_sources_path "$tarball" "$@" )
+		local tarball_sources_path=$(crossgcc_tarball_sources_path "$tarball" "$@")
 
 		test ! -f "$tarball_sources_path"
 	done
@@ -119,7 +119,7 @@ update_check() {
 prefix() {
 	local arch=$1
 
-	local build_path=$( project_build_path "$project" "$@" )
+	local build_path=$(project_build_path "$project" "$@")
 
 	case $arch in
 		"arm")
@@ -138,8 +138,8 @@ build() {
 
 	project_sources_directory_missing_empty_error "$project" "$repository" "$@"
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local build_path=$(project_build_path "$project" "$@")
 
 	if git_project_check "$repository"
 	then
@@ -184,9 +184,9 @@ release() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_install_path=$( crossgcc_tarball_install_path "$tarball" "$@" )
-		local tarball_release_path=$( crossgcc_tarball_release_path "$tarball" "$@" )
-		local release_path=$( project_release_path "$project" "$SOURCES" "$@" )
+		local tarball_install_path=$(crossgcc_tarball_install_path "$tarball" "$@")
+		local tarball_release_path=$(crossgcc_tarball_release_path "$tarball" "$@")
+		local release_path=$(project_release_path "$project" "$SOURCES" "$@")
 
 		mkdir -p "$release_path"
 
@@ -210,7 +210,7 @@ release_check() {
 
 	crossgcc_tarballs "$@" | while read tarball
 	do
-		local tarball_release_path=$( crossgcc_tarball_release_path "$tarball" "$@" )
+		local tarball_release_path=$(crossgcc_tarball_release_path "$tarball" "$@")
 
 		test -f "$tarball_release_path"
 	done

@@ -34,17 +34,17 @@ build() {
 		git_project_checkout "$repository" "$repository" "$@"
 	fi
 
-	local coreboot_sources_path=$( project_sources_path "$repository" "$repository" "$@" )
+	local coreboot_sources_path=$(project_sources_path "$repository" "$repository" "$@")
 	local sources_path="$coreboot_sources_path/payloads/libpayload/"
-	local build_path=$( project_build_path "$project" "$@" )
+	local build_path=$(project_build_path "$project" "$@")
 	local build_install_path="$build_path/install"
 
-	local config_name=$( libpayload_config "$@" )
+	local config_name=$(libpayload_config "$@")
 	local config_path="$sources_path/configs/$config_name"
 
-	local arch=$( libpayload_arch "$@" )
+	local arch=$(libpayload_arch "$@")
 
-	local crossgcc_build_path=$( project_build_path "crossgcc" "$arch" )
+	local crossgcc_build_path=$(project_build_path "crossgcc" "$arch")
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
 
 	rm -f "$sources_path/.xcompile"

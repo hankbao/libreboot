@@ -23,7 +23,7 @@ update() {
 }
 
 install() {
-	local install_path=$( project_install_path "$project" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
 
 	project_install "$project" "$@"
 }
@@ -33,7 +33,7 @@ install_check() {
 }
 
 release() {
-	local archive_path=$( project_release_archive_path "$project" "$SOURCES" "$@" )
+	local archive_path=$(project_release_archive_path "$project" "$SOURCES" "$@")
 	local sources_path=$root
 
 	project_release_install "$project" "$TOOLS" "$@"
@@ -51,7 +51,7 @@ release() {
 }
 
 release_check() {
-	local archive_path=$( project_release_archive_path "$project" "$SOURCES" "$@" )
+	local archive_path=$(project_release_archive_path "$project" "$SOURCES" "$@")
 
 	project_release_install_check "$project" "$TOOLS" "$@"
 

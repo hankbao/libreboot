@@ -56,12 +56,12 @@ build() {
 
 	project_sources_directory_missing_empty_error "$project" "$repository" "$@"
 
-	local coreboot_sources_path=$( project_sources_path "$project" "$repository" "$@" )
+	local coreboot_sources_path=$(project_sources_path "$project" "$repository" "$@")
 	local sources_path="$coreboot_sources_path/util/cbfstool/"
-	local build_path=$( project_build_path "$project" "$@" )
-	local build_util_path=$( dirname "$build_path" )
+	local build_path=$(project_build_path "$project" "$@")
+	local build_util_path=$(dirname "$build_path")
 
-	local vboot_sources_path=$( project_sources_path "vboot" "vboot" "devices" )
+	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
 
 	if git_project_check "$repository"
 	then

@@ -22,7 +22,7 @@ TOOL_ACTIONS_HELPERS=(arguments)
 tool_include() {
 	local tool=$1
 
-	local tool_path=$( tool_path "$tool" )
+	local tool_path=$(tool_path "$tool")
 
 	unset -f "${TOOL_ACTIONS[@]}"
 
@@ -34,7 +34,7 @@ tool_include() {
 tool_helper_include() {
 	local tool=$1
 
-	local tool_path=$( tool_path "$tool" )
+	local tool_path=$(tool_path "$tool")
 	local include="$tool_path/$tool-helper"
 
 	if [[ -f "$include" ]]
@@ -186,7 +186,7 @@ tool_action_arguments_recursive() {
 	local tool=$1
 	shift
 
-	local action_helper_arguments=$( tool_action_helper "arguments" "$tool" "$@" )
+	local action_helper_arguments=$(tool_action_helper "arguments" "$tool" "$@")
 	local argument
 
 	if [[ $? -ne 0 ]] || [[ -z "$action_helper_arguments" ]]
@@ -289,7 +289,7 @@ tool_usage_arguments_recursive() {
 	local spacing=$1
 	shift
 
-	local action_helper_arguments=$( tool_action_helper "arguments" "$tool" "$@" )
+	local action_helper_arguments=$(tool_action_helper "arguments" "$tool" "$@")
 	local argument
 
 	if [[ -n "$action_helper_arguments" ]]
@@ -310,7 +310,7 @@ tool_file_path() {
 	local file=$1
 	shift
 
-	local tool_path=$( tool_path "$tool" )
+	local tool_path=$(tool_path "$tool")
 	local path="$tool_path/$directory"
 	local argument
 	local file_path
@@ -339,13 +339,13 @@ tool_file_path() {
 }
 
 tool_file_test() {
-	local file_path=$( tool_file_path "$@" )
+	local file_path=$(tool_file_path "$@")
 
 	test -f "$file_path"
 }
 
 tool_file_contents() {
-	local file_path=$( tool_file_path "$@" )
+	local file_path=$(tool_file_path "$@")
 
 	if [[ -f "$file_path" ]]
 	then
@@ -361,7 +361,7 @@ tool_file_contents_herit() {
 	local file=$1
 	shift
 
-	local tool_path=$( tool_path "$tool" )
+	local tool_path=$(tool_path "$tool")
 	local path="$tool_path/$directory"
 	local argument
 	local file_path

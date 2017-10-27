@@ -56,10 +56,10 @@ build() {
 
 	project_sources_directory_missing_empty_error "$project" "$repository" "$@"
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local build_path=$(project_build_path "$project" "$@")
 
-	local flashmap_build_path=$( project_build_path "flashmap" "$@" )
+	local flashmap_build_path=$(project_build_path "flashmap" "$@")
 
 	if git_project_check "$repository"
 	then

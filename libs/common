@@ -130,7 +130,7 @@ path_wildcard_expand() {
 	local path=$@
 
 	# Evaluation fails with unescaped whitespaces.
-	path=$( printf '%s\n' "$path" | sed "s/ /\\\ /g" )
+	path=$(printf '%s\n' "$path" | sed "s/ /\\\ /g")
 
 	eval "arguments_list "$path""
 }
@@ -139,8 +139,8 @@ file_checksum_create() {
 	local path=$1
 
 	local checksum_path="$path.$CHECKSUM"
-	local name=$( basename "$path" )
-	local directory_path=$( dirname "$path" )
+	local name=$(basename "$path")
+	local directory_path=$(dirname "$path")
 
 	(
 		cd "$directory_path"
@@ -152,8 +152,8 @@ file_checksum_check() {
 	local path=$1
 
 	local checksum_path="$path.$CHECKSUM"
-	local name=$( basename "$path" )
-	local directory_path=$( dirname "$path" )
+	local name=$(basename "$path")
+	local directory_path=$(dirname "$path")
 
 	if ! [[ -f "$checksum_path" ]]
 	then
@@ -217,7 +217,7 @@ file_exists_check() {
 directory_filled_check() {
 	local path=$1
 
-	if [[ -z "$( ls -A "$path" 2> /dev/null )" ]]
+	if [[ -z "$(ls -A "$path" 2> /dev/null)" ]]
 	then
 		return 1
 	else
@@ -379,7 +379,7 @@ requirements() {
 
 	for requirement in "$@"
 	do
-		requirement_path=$( which "$requirement" || true )
+		requirement_path=$(which "$requirement" || true)
 
 		if [[ -z "$requirement_path" ]]
 		then
@@ -396,7 +396,7 @@ requirements_root() {
 	for requirement in "$@"
 	do
 		# We need to keep stdout output to show the command.
-		requirement_path=$( execute_root which "$requirement" || true )
+		requirement_path=$(execute_root which "$requirement" || true)
 
 		if [[ -z "$requirement_path" ]]
 		then
@@ -426,7 +426,7 @@ arguments_concat() {
 }
 
 execute_root() {
-	local sudo=$( which sudo 2> /dev/null || true )
+	local sudo=$(which sudo 2> /dev/null || true)
 	local arguments
 
 	printf 1>&2 '%s' 'Running command as root: '
@@ -437,7 +437,7 @@ execute_root() {
 		sudo "$@"
 	else
 		# Quote arguments for eval through su.
-		arguments=$( printf '%q ' "$@" )
+		arguments=$(printf '%q ' "$@")
 		su -c "$arguments"
 	fi
 }

@@ -63,8 +63,8 @@ build() {
 
 	project_sources_directory_missing_empty_error "$project" "$repository" "$@"
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local build_path=$(project_build_path "$project" "$@")
 
 	if git_project_check "$repository"
 	then
@@ -79,9 +79,9 @@ build() {
 	else
 		local arch="arm"
 
-		local config=$( cros_ec_config "$@" )
+		local config=$(cros_ec_config "$@")
 
-		local crossgcc_bin_prefix=$( project_action_arguments "prefix" "crossgcc" "$arch" )
+		local crossgcc_bin_prefix=$(project_action_arguments "prefix" "crossgcc" "$arch")
 
 		make -C "$sources_path" out="$build_path" CROSS_COMPILE="$crossgcc_bin_prefix" HOST_CROSS_COMPILE= BOARD="$config" -j$TASKS
 	fi

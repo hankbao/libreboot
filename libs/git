@@ -128,7 +128,7 @@ git_fetch_check() {
 			return 1
 		fi
 
-		local output=$( git fetch --dry-run origin 2>&1 )
+		local output=$(git fetch --dry-run origin 2>&1)
 		if [[ -n "$output" ]]
 		then
 			return 1
@@ -220,7 +220,7 @@ git_project_repository_path() {
 git_project_check() {
 	local repository=$1
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 
 	git_check "$repository_path"
 }
@@ -257,8 +257,8 @@ git_project_clone() {
 	shift
 	local urls=$@
 
-	local repository_path=$( git_project_repository_path "$repository" )
-	local directory_path=$( dirname "$repository_path" )
+	local repository_path=$(git_project_repository_path "$repository")
+	local directory_path=$(dirname "$repository_path")
 	local url
 
 	mkdir -p "$directory_path"
@@ -297,8 +297,8 @@ git_project_prepare_blobs() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
-	local blobs_path=$( project_blobs_path "$project" "$@" )
+	local repository_path=$(git_project_repository_path "$repository")
+	local blobs_path=$(project_blobs_path "$project" "$@")
 	local blob
 
 	if ! [[ -f "$blobs_path" ]]
@@ -320,7 +320,7 @@ git_project_prepare_patch() {
 	local repository=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_path
@@ -365,8 +365,8 @@ git_project_prepare_revision() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
-	local project_path=$( project_path "$project" )
+	local repository_path=$(git_project_repository_path "$repository")
+	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_revision
@@ -396,7 +396,7 @@ git_project_prepare_revision() {
 		fi
 
 		prepare_branch=$branch
-		prepare_revision=$( cat "$revision_path" )
+		prepare_revision=$(cat "$revision_path")
 	done
 
 	if [[ -n "$prepare_branch" ]]
@@ -411,8 +411,8 @@ git_project_prepare_check() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
-	local project_path=$( project_path "$project" )
+	local repository_path=$(git_project_repository_path "$repository")
+	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local branch=$project
@@ -455,7 +455,7 @@ git_project_prepare_clean() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 	local prepare_branch
 	local branch=$project
 	local argument
@@ -497,7 +497,7 @@ git_project_checkout() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 	local checkout_branch
 	local branch=$project
 	local argument
@@ -530,7 +530,7 @@ git_project_update() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 
 	git_fetch "$repository_path"
 	git_branch_checkout "$repository_path" "$ORIGIN_HEAD"
@@ -557,7 +557,7 @@ git_project_release() {
 	shift
 	local arguments=$@
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
 	local branch=$project
 	local argument
@@ -598,7 +598,7 @@ git_project_release_check() {
 	local repository=$1
 	shift
 
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
 	local branch=$project
 	local argument

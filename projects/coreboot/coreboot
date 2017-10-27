@@ -64,15 +64,15 @@ build() {
 
 	project_sources_directory_missing_empty_error "$project" "$repository" "$payload" "$@"
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$payload" "$@" )
-	local build_path=$( project_build_path "$project" "$payload" "$@" )
-	local config_path=$( coreboot_config_path "$payload" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$payload" "$@")
+	local build_path=$(project_build_path "$project" "$payload" "$@")
+	local config_path=$(coreboot_config_path "$payload" "$@")
 
-	local arch=$( coreboot_arch "$payload" "$@" )
+	local arch=$(coreboot_arch "$payload" "$@")
 
-	local crossgcc_build_path=$( project_build_path "crossgcc" "$arch" )
+	local crossgcc_build_path=$(project_build_path "crossgcc" "$arch")
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
-	local vboot_sources_path=$( project_sources_path "vboot" "vboot" "devices" )
+	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
 
 	if git_project_check "$repository"
 	then

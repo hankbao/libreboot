@@ -20,7 +20,7 @@ usage() {
 }
 
 generate() {
-	local type=$( boot_keys_type "$@" )
+	local type=$(boot_keys_type "$@")
 
 	if [[ -z "$type" ]]
 	then
@@ -38,8 +38,8 @@ generate() {
 sign() {
 	local project=$1
 
-	local prepare_files=$( boot_keys_files "$@" )
-	local type=$( boot_keys_type "$@" )
+	local prepare_files=$(boot_keys_files "$@")
+	local type=$(boot_keys_type "$@")
 	local install_path
 	local firmware_path
 	local kernel_path
@@ -60,7 +60,7 @@ sign() {
 				boot_keys_cros "$type-prepare" "sign" "$firmware_path"
 				;;
 			"cros-kernel")
-				media=$( project_action "media" "$@" )
+				media=$(project_action "media" "$@")
 
 				for medium in $media
 				do
@@ -81,8 +81,8 @@ sign() {
 verify() {
 	local project=$1
 
-	local prepare_files=$( boot_keys_files "$@" )
-	local type=$( boot_keys_type "$@" )
+	local prepare_files=$(boot_keys_files "$@")
+	local type=$(boot_keys_type "$@")
 	local install_path
 	local firmware_path
 	local kernel_path
@@ -103,7 +103,7 @@ verify() {
 				boot_keys_cros "$type-prepare" "verify" "$firmware_path"
 				;;
 			"cros-kernel")
-				media=$( project_action "media" "$@" )
+				media=$(project_action "media" "$@")
 
 				for medium in $media
 				do
