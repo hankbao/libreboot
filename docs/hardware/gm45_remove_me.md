@@ -24,7 +24,7 @@ More information about the ME can be found at
 <http://www.coreboot.org/Intel_Management_Engine> and
 <http://me.bios.io/Main_Page>.
 
-Another project recently found: <http://io.smashthestack.org/me/>
+Another project recently found: <http://io.netgarage.org/me/>
 
 ICH9 gen utility {#ich9gen}
 ================
