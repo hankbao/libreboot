@@ -18,7 +18,7 @@
 arguments() {
 	local project=$1
 
-	if [ -z "$project" ]
+	if [[ -z "$project" ]]
 	then
 		ls -A "$root/$PROJECTS/" | while read project
 		do
@@ -36,8 +36,8 @@ usage() {
 }
 
 update() {
-	local tool_path=$( tool_path "$tool" )
-	local sources_path=$( tool_sources_path "$tool" )
+	local tool_path=$(tool_path "$tool")
+	local sources_path=$(tool_sources_path "$tool")
 	local deblob_check_path="$sources_path/deblob-check"
 	local patches_path="$tool_path/$PATCHES/$WILDDOTPATCH"
 
@@ -50,7 +50,7 @@ update() {
 
 	path_wildcard_expand "$patches_path" | while read patch_path
 	do
-		if ! [ -f "$patch_path" ]
+		if ! [[ -f "$patch_path" ]]
 		then
 			continue
 		fi
@@ -63,10 +63,10 @@ verify() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
-	local project_sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local project_blobs_path=$( project_blobs_path "$project" "$@" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
+	local project_path=$(project_path "$project")
+	local project_sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local project_blobs_path=$(project_blobs_path "$project" "$@")
+	local project_blobs_ignore_path=$(project_blobs_ignore_path "$project" "$@")
 	local project_blobs_discover_path
 
 	local ifs_save
@@ -75,9 +75,9 @@ verify() {
 
 	requirements "sort"
 
-	if ! [ -z "$project_blobs_path" ]
+	if [[ -n "$project_blobs_path" ]]
 	then
-		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
+		project_blobs_discover_path="$(dirname $project_blobs_path)/$BLOBS_DISCOVER"
 	else
 		project_blobs_discover_path="$project_path/$CONFIGS/$BLOBS_DISCOVER"
 	fi
@@ -88,7 +88,7 @@ verify() {
 	ifs_save=$IFS
 	IFS=$'\n'
 
-	for file in $( cat "$project_blobs_discover_path" )
+	for file in $(cat "$project_blobs_discover_path")
 	do
 		(
 			IFS=$ifs_save
@@ -100,7 +100,7 @@ verify() {
 			printf '%s' "Type \"blob\" to keep or press enter to discard: "
 			read choice
 
-			if [ "$choice" = "blob" ]
+			if [[ "$choice" = "blob" ]]
 			then
 				printf '%s\n' "$file" >> "$project_blobs_path"
 			else
@@ -124,21 +124,21 @@ execute() {
 	shift
 
 	local repository=$project
-	local repository_path=$( git_project_repository_path "$repository" )
+	local repository_path=$(git_project_repository_path "$repository")
 
 	# This assumes that the repository is the project, which is not always the case.
 	project_sources_directory_missing_empty_error "$project" "$repository"
 
-	local sources_path=$( tool_sources_path "$tool" )
-	local project_path=$( project_path "$project" )
-	local project_sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local project_blobs_path=$( project_blobs_path "$project" "$@" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
+	local sources_path=$(tool_sources_path "$tool")
+	local project_path=$(project_path "$project")
+	local project_sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local project_blobs_path=$(project_blobs_path "$project" "$@")
+	local project_blobs_ignore_path=$(project_blobs_ignore_path "$project" "$@")
 	local project_blobs_directory_path
 
-	if ! [ -z "$project_blobs_path" ]
+	if [[ -n "$project_blobs_path" ]]
 	then
-		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
+		project_blobs_discover_path="$(dirname $project_blobs_path)/$BLOBS_DISCOVER"
 	else
 		project_blobs_discover_path="$project_path/$CONFIGS/$BLOBS_DISCOVER"
 	fi
@@ -153,23 +153,23 @@ execute() {
 
 	printf '\n%s\n' 'Discovering new blobs, this may take a while...'
 
-	files=$( find "$project_sources_path" -type f | grep -vP "\.git/|\.tar|\.patch" )
+	files=$(find "$project_sources_path" -type f | grep -vP "\.git/|\.tar|\.patch")
 
 	touch "$project_blobs_discover_path"
 
 	printf '%s\n' "$files" | while read file
 	do
-		if ! [ -z "$project_blobs_ignore_path" ]
+		if [[ -n "$project_blobs_ignore_path" ]]
 		then
 			match=$( grep "$file" "$project_blobs_ignore_path" || true)
-			if [ ! -z "$match" ]
+			if [[ ! -z "$match" ]]
 			then
 				continue
 			fi
 		fi
 
-		match=$( "$deblob_check_path" -l -i "" "$file" || true )
-		if ! [ -z "$match" ]
+		match=$("$deblob_check_path" -l -i "" "$file" || true)
+		if [[ -n "$match" ]]
 		then
 			printf '%s\n' "$match" >> "$project_blobs_discover_path"
 		fi
@@ -182,14 +182,14 @@ execute_check() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
-	local project_blobs_path=$( project_blobs_path "$project" "$@" )
-	local project_blobs_ignore_path=$( project_blobs_ignore_path "$project" "$@" )
+	local project_path=$(project_path "$project")
+	local project_blobs_path=$(project_blobs_path "$project" "$@")
+	local project_blobs_ignore_path=$(project_blobs_ignore_path "$project" "$@")
 	local project_blobs_discover_path
 
-	if ! [ -z "$project_blobs_path" ]
+	if [[ -n "$project_blobs_path" ]]
 	then
-		project_blobs_discover_path="$( dirname $project_blobs_path )/$BLOBS_DISCOVER"
+		project_blobs_discover_path="$(dirname $project_blobs_path)/$BLOBS_DISCOVER"
 	else
 		project_blobs_discover_path="$project_path/$CONFIGS/$BLOBS_DISCOVER"
 	fi

@@ -130,7 +130,7 @@ path_wildcard_expand() {
 	local path=$@
 
 	# Evaluation fails with unescaped whitespaces.
-	path=$( printf '%s\n' "$path" | sed "s/ /\\\ /g" )
+	path=$(printf '%s\n' "$path" | sed "s/ /\\\ /g")
 
 	eval "arguments_list "$path""
 }
@@ -139,8 +139,8 @@ file_checksum_create() {
 	local path=$1
 
 	local checksum_path="$path.$CHECKSUM"
-	local name=$( basename "$path" )
-	local directory_path=$( dirname "$path" )
+	local name=$(basename "$path")
+	local directory_path=$(dirname "$path")
 
 	(
 		cd "$directory_path"
@@ -152,12 +152,12 @@ file_checksum_check() {
 	local path=$1
 
 	local checksum_path="$path.$CHECKSUM"
-	local name=$( basename "$path" )
-	local directory_path=$( dirname "$path" )
+	local name=$(basename "$path")
+	local directory_path=$(dirname "$path")
 
-	if ! [ -f "$checksum_path" ]
+	if ! [[ -f "$checksum_path" ]]
 	then
-		printf '%s\n' 'Could not verify file checksum!' >&2
+		printf 1>&2 '%s\n' 'Could not verify file checksum!'
 		return 1
 	fi
 
@@ -172,7 +172,7 @@ file_signature_create() {
 
 	local signature_path="$path.$DSIG"
 
-	if [ -z "$RELEASE_KEY" ]
+	if [[ -z "$RELEASE_KEY" ]]
 	then
 		return 0
 	fi
@@ -185,9 +185,9 @@ file_signature_check() {
 
 	local signature_path="$path.$DSIG"
 
-	if ! [ -f "$signature_path" ]
+	if ! [[ -f "$signature_path" ]]
 	then
-		printf '%s\n' 'Could not verify file signature!' >&2
+		printf 1>&2 '%s\n' 'Could not verify file signature!'
 		return 1
 	fi
 
@@ -217,7 +217,7 @@ file_exists_check() {
 directory_filled_check() {
 	local path=$1
 
-	if [ -z "$( ls -A "$path" 2> /dev/null )" ]
+	if [[ -z "$(ls -A "$path" 2> /dev/null)" ]]
 	then
 		return 1
 	else
@@ -379,11 +379,11 @@ requirements() {
 
 	for requirement in "$@"
 	do
-		requirement_path=$( which "$requirement" || true )
+		requirement_path=$(which "$requirement" || true)
 
-		if [ -z "$requirement_path" ]
+		if [[ -z "$requirement_path" ]]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done
@@ -396,11 +396,11 @@ requirements_root() {
 	for requirement in "$@"
 	do
 		# We need to keep stdout output to show the command.
-		requirement_path=$( execute_root which "$requirement" || true )
+		requirement_path=$(execute_root which "$requirement" || true)
 
-		if [ -z "$requirement_path" ]
+		if [[ -z "$requirement_path" ]]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done
@@ -414,7 +414,7 @@ arguments_concat() {
 
 	for argument in "$@"
 	do
-		if ! [ -z "$concat" ]
+		if [[ -n "$concat" ]]
 		then
 			concat="$concat""$delimiter""$argument"
 		else
@@ -426,18 +426,18 @@ arguments_concat() {
 }
 
 execute_root() {
-	local sudo=$( which sudo 2> /dev/null || true )
+	local sudo=$(which sudo 2> /dev/null || true)
 	local arguments
 
-	printf '%s' 'Running command as root: ' >&2
-	printf '%b\n' "$*" >&2
+	printf 1>&2 '%s' 'Running command as root: '
+	printf 1>&2 '%b\n' "$*"
 
-	if ! [ -z "$sudo" ]
+	if [[ -n "$sudo" ]]
 	then
 		sudo "$@"
 	else
 		# Quote arguments for eval through su.
-		arguments=$( printf '%q ' "$@" )
+		arguments=$(printf '%q ' "$@")
 		su -c "$arguments"
 	fi
 }

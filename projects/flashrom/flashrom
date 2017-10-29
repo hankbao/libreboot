@@ -70,8 +70,8 @@ build() {
 		git_project_checkout "$project" "$repository" "$@"
 	fi
 
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local build_path=$(project_build_path "$project" "$@")
 
 	mkdir -p "$build_path"
 

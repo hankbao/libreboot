@@ -9,13 +9,13 @@ boot_keys_cros() {
 	local cros_script=$1
 	shift
 
-	local vboot_tools_path=$( project_install_path "vboot" "tools" )
-	local cros_scripts_path=$( project_install_path "cros-scripts" )
+	local vboot_tools_path=$(project_install_path "vboot" "tools")
+	local cros_scripts_path=$(project_install_path "cros-scripts")
 	local cros_script_path="$cros_scripts_path/$cros_script"
 
-	if ! [ -x "$cros_script_path" ]
+	if ! [[ -x "$cros_script_path" ]]
 	then
-		printf '%s' "$cros_script script missing from cros-scripts install" >&2
+		printf 1>&2 '%s' "$cros_script script missing from cros-scripts install"
 		return 1
 	fi
 
@@ -34,10 +34,10 @@ boot_keys_files_install_path() {
 	local argument
 	local ifs_save
 
-	helper_arguments=$( project_action_helper "arguments" "$project" "$@" )
+	helper_arguments=$(project_action_helper "arguments" "$project" "$@")
 
 
-	if [ $? -ne 0 ] || [ -z "$helper_arguments" ]
+	if [[ $? -ne 0 ]] || [[ -z "$helper_arguments" ]]
 	then
 		project_install_path "$project" "$@"
 	else
@@ -45,7 +45,7 @@ boot_keys_files_install_path() {
 		ifs_save=$IFS
 		IFS=$'\n'
 
-		for argument in $( printf '%s\n' "$helper_arguments" )
+		for argument in $(printf '%s\n' "$helper_arguments")
 		do
 			(
 				IFS=$ifs_save
@@ -63,7 +63,7 @@ boot_keys_files() {
 	local project=$1
 	shift
 
-	local cros_scripts_path=$( project_install_path "cros-scripts" )
+	local cros_scripts_path=$(project_install_path "cros-scripts")
 	local cros_boot_keys="$cros_scripts_path/cros-boot-keys"
 
 	project_action_arguments_verify_recursive "install" "$project" "$@"

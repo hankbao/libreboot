@@ -75,10 +75,10 @@ build() {
 		git_project_checkout "$project" "$repository" "$@"
 	fi
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
-		local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-		local build_path=$( project_build_path "$project" "$@" )
+		local sources_path=$(project_sources_path "$project" "$repository" "$@")
+		local build_path=$(project_build_path "$project" "$@")
 
 		mkdir -p "$build_path"
 
@@ -92,7 +92,7 @@ build() {
 build_check() {
 	local target=$1
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
 		project_build_check "$project" "$@"
 	fi
@@ -101,7 +101,7 @@ build_check() {
 install() {
 	local target=$1
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
 		project_install "$project" "$@"
 	fi
@@ -110,7 +110,7 @@ install() {
 install_check() {
 	local target=$1
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
 		project_install_check "$project" "$@"
 	fi
@@ -121,7 +121,7 @@ release() {
 
 	local repository=$project
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
 		project_release_install_archive "$project" "$TOOLS" "$@"
 	fi
@@ -134,7 +134,7 @@ release_check() {
 
 	local repository=$project
 
-	if [ "$target" = "tools" ]
+	if [[ "$target" = "tools" ]]
 	then
 		project_release_install_archive_check "$project" "$TOOLS" "$@"
 	fi

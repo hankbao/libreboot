@@ -27,18 +27,18 @@ CHECKSUM="sha256sum"
 ASC="asc"
 
 usage() {
-	printf '%s\n' "$executable [action] [projects...]" >&2
+	printf 1>&2 '%s\n' "$executable [action] [projects...]"
 
-	printf '\n%s\n' 'Actions:' >&2
-	printf '%s\n' '  download - Download project files' >&2
-	printf '%s\n' '  sources - Download project sources' >&2
-	printf '%s\n' '  verify - Verify project files' >&2
-	printf '%s\n' '  extract - Extract project files' >&2
-	printf '%s\n' '  prepare - Download, verify and extract project files' >&2
+	printf 1>&2 '\n%s\n' 'Actions:'
+	printf 1>&2 '%s\n' '  download - Download project files'
+	printf 1>&2 '%s\n' '  sources - Download project sources'
+	printf 1>&2 '%s\n' '  verify - Verify project files'
+	printf 1>&2 '%s\n' '  extract - Extract project files'
+	printf 1>&2 '%s\n' '  prepare - Download, verify and extract project files'
 
-	printf '\n%s\n' 'Environment variables:' >&2
-	printf '%s\n' '  MACHINE - Machine architecture to use' >&2
-	printf '%s\n' '  DOWNLOAD_URL - Base URL to download files from' >&2
+	printf 1>&2 '\n%s\n' 'Environment variables:'
+	printf 1>&2 '%s\n' '  MACHINE - Machine architecture to use'
+	printf 1>&2 '%s\n' '  DOWNLOAD_URL - Base URL to download files from'
 }
 
 download() {
@@ -85,7 +85,7 @@ download() {
 		IFS=$ifs_save
 	done
 
-	printf '%s\n' "Could not download $project from $DOWNLOAD_URL" >&2
+	printf 1>&2 '%s\n' "Could not download $project from $DOWNLOAD_URL"
 	return 1
 }
 
@@ -104,7 +104,7 @@ sources() {
 
 		printf '\n%s\n' "Downloaded $project sources"
 	else
-		printf '%s\n' "Could not download $project sources from $DOWNLOAD_URL" >&2
+		printf 1>&2 '%s\n' "Could not download $project sources from $DOWNLOAD_URL"
 		return 1
 	fi
 
@@ -153,14 +153,14 @@ verify() {
 					sha256sum -c "$project.$ARCHIVE.$CHECKSUM"
 				)
 			else
-				printf '%s\n' "Could not verify $project checksum!" >&2
+				printf 1>&2 '%s\n' "Could not verify $project checksum!"
 			fi
 
 			if [ -f "$signature_path" ]
 			then
 				gpg --armor --verify "$signature_path" "$path"
 			else
-				printf '%s\n' "Could not verify $project signature!" >&2
+				printf 1>&2 '%s\n' "Could not verify $project signature!"
 			fi
 
 			printf '\n%s\n' "Verified $project"
@@ -171,7 +171,7 @@ verify() {
 		IFS=$ifs_save
 	done
 
-	printf '%s\n' "Could not verify $project" >&2
+	printf 1>&2 '%s\n' "Could not verify $project"
 	return 1
 }
 
@@ -225,7 +225,7 @@ extract() {
 		IFS=$ifs_save
 	done
 
-	printf '%s\n' "Could not extract $project" >&2
+	printf 1>&2 '%s\n' "Could not extract $project"
 	return 1
 }
 
@@ -239,7 +239,7 @@ requirements() {
 
 		if [ -z "$requirement_path" ]
 		then
-			printf '%s\n' "Missing requirement: $requirement" >&2
+			printf 1>&2 '%s\n' "Missing requirement: $requirement"
 			exit 1
 		fi
 	done
@@ -256,7 +256,7 @@ setup() {
 
 	if [ -z "$DOWNLOAD_URL" ]
 	then
-		printf '%s\n' 'Missing download URL' >&2
+		printf 1>&2 '%s\n' 'Missing download URL'
 		exit 1
 	fi
 }

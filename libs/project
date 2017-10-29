@@ -24,7 +24,7 @@ INSTALL_REGEX='\([^:]*\):\(.*\)'
 project_include() {
 	local project=$1
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 
 	unset -f "${PROJECT_ACTIONS[@]}"
 
@@ -36,10 +36,10 @@ project_include() {
 project_helper_include() {
 	local project=$1
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local include="$project_path/$project-helper"
 
-	if [ -f "$include" ]
+	if [[ -f "$include" ]]
 	then
 		source "$include"
 	fi
@@ -81,12 +81,12 @@ project_action() {
 
 		project_action_check "$action" "$project" "$@"
 
-		printf '%s\n' "Project $project $action (with ${arguments:-no argument})" >&2
+		printf 1>&2 '%s\n' "Project $project $action (with ${arguments:-no argument})"
 
 		if "$action" "$@"; then
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed" >&2
+			printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
 		else
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed" >&2
+			printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
 			return 1
 		fi
 	)
@@ -171,7 +171,7 @@ project_action_arguments_verify_recursive() {
 		test="$(printf '%s\n' "$action_helper_arguments" | grep -e "^$argument\$" || true)"
 
 		if [[ -z "$test" ]]; then
-			printf '%s\n' "Invalid argument $argument for project $project action $action" >&2
+			printf 1>&2 '%s\n' "Invalid argument $argument for project $project action $action"
 			return 1
 		fi
 	fi
@@ -254,7 +254,7 @@ project_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
@@ -267,7 +267,7 @@ project_sources_path() {
 		sources_path=$path
 	done
 
-	if ! [ -z "$sources_path" ]
+	if [[ -n "$sources_path" ]]
 	then
 		printf '%s\n' "$sources_path"
 		return
@@ -287,7 +287,7 @@ project_sources_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
@@ -300,7 +300,7 @@ project_sources_path() {
 		sources_path=$path
 	done
 
-	if ! [ -z "$sources_path" ]
+	if [[ -n "$sources_path" ]]
 	then
 		printf '%s\n' "$sources_path"
 		return
@@ -311,7 +311,7 @@ project_sources_directory_filled_check() {
 	local project=$1
 	shift
 
-	local sources_path=$( project_sources_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$@")
 
 	test ! -z "$sources_path"
 }
@@ -321,11 +321,11 @@ project_sources_directory_filled_error() {
 	shift
 	local arguments="$*"
 
-	local sources_path=$( project_sources_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$@")
 
-	if ! [ -z "$sources_path" ]
+	if [[ -n "$sources_path" ]]
 	then
-		printf '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) already exists" >&2
+		printf 1>&2 '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) already exists"
 		return 1
 	else
 		return 0
@@ -337,11 +337,11 @@ project_sources_directory_missing_empty_error() {
 	shift
 	local arguments="$*"
 
-	local sources_path=$( project_sources_path "$project" "$@" )
+	local sources_path=$(project_sources_path "$project" "$@")
 
-	if [ -z "$sources_path" ]
+	if [[ -z "$sources_path" ]]
 	then
-		printf '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Sources directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0
@@ -358,14 +358,14 @@ project_sources_archive() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
 
 		local archive="$path.$ARCHIVE"
 
-		if ! [ -f "$archive" ]
+		if ! [[ -f "$archive" ]]
 		then
 			continue
 		fi
@@ -373,7 +373,7 @@ project_sources_archive() {
 		sources_archive=$archive
 	done
 
-	if ! [ -z "$sources_archive" ]
+	if [[ -n "$sources_archive" ]]
 	then
 		printf '%s\n' "$sources_archive"
 	fi
@@ -384,8 +384,8 @@ project_sources_archive_extract() {
 	shift
 	local arguments="$*"
 
-	local archive=$( project_sources_archive "$project" "$@" )
-	local destination=$( dirname "$archive" )
+	local archive=$(project_sources_archive "$project" "$@")
+	local destination=$(dirname "$archive")
 
 	printf '%s\n' "Extracting source archive for $project (with ${arguments:-no argument})"
 
@@ -399,11 +399,11 @@ project_sources_archive_update() {
 	local arguments="$*"
 
 	local repository=$project
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
-	local archive=$( project_sources_archive "$project" "$@" )
-	local destination=$( dirname "$archive" )
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
+	local archive=$(project_sources_archive "$project" "$@")
+	local destination=$(dirname "$archive")
 
-	if [ -d "$sources_path" ]
+	if [[ -d "$sources_path" ]]
 	then
 		rm -rf "$sources_path"
 	fi
@@ -419,10 +419,10 @@ project_sources_archive_missing_error() {
 	shift
 	local arguments="$*"
 
-	local archive=$( project_sources_archive "$project" "$@" )
-	if [ -z "$archive" ] || ! [ -f "$archive" ]
+	local archive=$(project_sources_archive "$project" "$@")
+	if [[ -z "$archive" ]] || ! [[ -f "$archive" ]]
 	then
-		printf '%s\n' "Missing sources archive for $project (with ${arguments:-no argument})" >&2
+		printf 1>&2 '%s\n' "Missing sources archive for $project (with ${arguments:-no argument})"
 		return 1
 	else
 		return 0
@@ -433,8 +433,8 @@ project_sources_archive_missing_check() {
 	local project=$1
 	shift
 
-	local archive=$( project_sources_archive "$project" "$@" )
-	if [ -z "$archive" ] || ! [ -f "$archive" ]
+	local archive=$(project_sources_archive "$project" "$@")
+	if [[ -z "$archive" ]] || ! [[ -f "$archive" ]]
 	then
 		return 0
 	else
@@ -467,16 +467,16 @@ project_blobs_path() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local argument
 	local path
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -486,7 +486,7 @@ project_blobs_path() {
 
 		local blobs_path="$configs_path/$path/$BLOBS"
 
-		if [ -f "$blobs_path" ]
+		if [[ -f "$blobs_path" ]]
 		then
 			printf '%s\n' "$blobs_path"
 			return
@@ -500,16 +500,16 @@ project_blobs_ignore_path() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local argument
 	local path
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -519,7 +519,7 @@ project_blobs_ignore_path() {
 
 		blobs_ignore_path="$configs_path/$path/$BLOBS_IGNORE"
 
-		if [ -f "$blobs_ignore_path" ]
+		if [[ -f "$blobs_ignore_path" ]]
 		then
 			printf '%s\n' "$blobs_ignore_path"
 			return
@@ -531,7 +531,7 @@ project_arguments_targets() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local targets_path="$project_path/$CONFIGS"
 	local argument
 
@@ -542,7 +542,7 @@ project_arguments_targets() {
 
 	targets_path="$targets_path/$TARGETS"
 
-	if [ -f "$targets_path" ]
+	if [[ -f "$targets_path" ]]
 	then
 		cat "$targets_path"
 	fi
@@ -737,8 +737,8 @@ project_build_check() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
-	local build_path=$( project_build_path "$project" "$@" )
+	local project_path=$(project_path "$project")
+	local build_path=$(project_build_path "$project" "$@")
 	local source_file_path
 	local argument
 	local rule
@@ -746,9 +746,9 @@ project_build_check() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -758,20 +758,20 @@ project_build_check() {
 
 		configs_install_path="$project_path/$CONFIGS/$path/$INSTALL"
 
-		if ! [ -f "$configs_install_path" ]
+		if ! [[ -f "$configs_install_path" ]]
 		then
 			continue
 		fi
 
 		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
+			source=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g")
 			source_path="$build_path/$source"
 
 			# Source may contain a wildcard.
 			path_wildcard_expand "$source_path" | while read -r source_file_path
 			do
-				if ! [ -f "$source_file_path" ] && ! [ -d "$source_file_path" ]
+				if ! [[ -f "$source_file_path" ]] && ! [[ -d "$source_file_path" ]]
 				then
 					false
 				fi
@@ -800,11 +800,11 @@ project_build_directory_missing_empty_error() {
 	shift
 	local arguments="$*"
 
-	local build_path=$( project_build_path "$project" "$@" )
+	local build_path=$(project_build_path "$project" "$@")
 
 	if ! directory_filled_check "$build_path"
 	then
-		printf '%s\n' "Build directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Build directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0
@@ -815,9 +815,9 @@ project_install() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
-	local build_path=$( project_build_path "$project" "$@" )
-	local install_path=$( project_install_path "$project" "$@" )
+	local project_path=$(project_path "$project")
+	local build_path=$(project_build_path "$project" "$@")
+	local install_path=$(project_install_path "$project" "$@")
 	local source_file_path
 	local argument
 	local rule
@@ -826,9 +826,9 @@ project_install() {
 	# Install built files first.
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -838,7 +838,7 @@ project_install() {
 
 		configs_install_path="$project_path/$CONFIGS/$path/$INSTALL"
 
-		if ! [ -f "$configs_install_path" ]
+		if ! [[ -f "$configs_install_path" ]]
 		then
 			continue
 		fi
@@ -847,12 +847,12 @@ project_install() {
 
 		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
+			source=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g")
 			source_path="$build_path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
+			destination=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g")
 			destination_path="$install_path/$destination"
-			destination_directory_path=$( dirname "$destination_path" )
+			destination_directory_path=$(dirname "$destination_path")
 
 			mkdir -p "$destination_directory_path"
 
@@ -869,9 +869,9 @@ project_install() {
 	# Install install files then.
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -881,19 +881,19 @@ project_install() {
 
 		install_install_path="$project_path/$INSTALL/$path/$INSTALL"
 
-		if ! [ -f "$install_install_path" ]
+		if ! [[ -f "$install_install_path" ]]
 		then
 			continue
 		fi
 
 		while read -r rule
 		do
-			source=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g" )
+			source=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\1/g")
 			source_path="$project_path/$INSTALL/$path/$source"
 
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
+			destination=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g")
 			destination_path="$install_path/$destination"
-			destination_directory_path=$( dirname "$destination_path" )
+			destination_directory_path=$(dirname "$destination_path")
 
 			mkdir -p "$destination_directory_path"
 
@@ -910,9 +910,9 @@ project_install_check() {
 	local project=$1
 	shift
 
-	local project_path=$( project_path "$project" )
-	local build_path=$( project_build_path "$project" "$@" )
-	local install_path=$( project_install_path "$project" "$@" )
+	local project_path=$(project_path "$project")
+	local build_path=$(project_build_path "$project" "$@")
+	local install_path=$(project_install_path "$project" "$@")
 	local argument
 	local rule
 	local path
@@ -920,9 +920,9 @@ project_install_check() {
 	# Install built files first.
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -932,7 +932,7 @@ project_install_check() {
 
 		configs_install_path="$project_path/$CONFIGS/$path/$INSTALL"
 
-		if ! [ -f "$configs_install_path" ]
+		if ! [[ -f "$configs_install_path" ]]
 		then
 			continue
 		fi
@@ -941,10 +941,10 @@ project_install_check() {
 
 		while read -r rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
+			destination=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g")
 			destination_path="$install_path/$destination"
 
-			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
+			if ! [[ -f "$destination_path" ]] && ! [[ -d "$destination_path" ]]
 			then
 				false
 			fi
@@ -956,9 +956,9 @@ project_install_check() {
 	# Install install files then.
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
-			if [ -z "$path" ]
+			if [[ -z "$path" ]]
 			then
 				path="$argument"
 			else
@@ -968,17 +968,17 @@ project_install_check() {
 
 		install_install_path="$project_path/$INSTALL/$path/$INSTALL"
 
-		if ! [ -f "$install_install_path" ]
+		if ! [[ -f "$install_install_path" ]]
 		then
 			continue
 		fi
 
 		while read -r rule
 		do
-			destination=$( printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g" )
+			destination=$(printf '%s\n' "$rule" | sed "s/$INSTALL_REGEX/\\2/g")
 			destination_path="$install_path/$destination"
 
-			if ! [ -f "$destination_path" ] && ! [ -d "$destination_path" ]
+			if ! [[ -f "$destination_path" ]] && ! [[ -d "$destination_path" ]]
 			then
 				false
 			fi
@@ -1006,11 +1006,11 @@ project_install_directory_missing_empty_error() {
 	shift
 	local arguments="$*"
 
-	local install_path=$( project_install_path "$project" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
 
 	if ! directory_filled_check "$install_path"
 	then
-		printf '%s\n' "Install directory for project $project (with ${arguments:-no argument}) missing or empty" >&2
+		printf 1>&2 '%s\n' "Install directory for project $project (with ${arguments:-no argument}) missing or empty"
 		return 1
 	else
 		return 0
@@ -1025,9 +1025,9 @@ project_release_path() {
 	local release_path="$root/$RELEASE/$prefix"
 
 	# Special care for tools and systems, that depend on the host arch.
-	if [ "$prefix" = "$SYSTEMS" ] || [ "$prefix" = "$TOOLS" ]
+	if [[ "$prefix" = "$SYSTEMS" ]] || [[ "$prefix" = "$TOOLS" ]]
 	then
-		local machine=$( uname -m )
+		local machine=$(uname -m)
 
 		release_path="$release_path/$machine/$project"
 	else
@@ -1043,7 +1043,7 @@ project_release_archive_path() {
 	local prefix=$1
 	shift
 
-	local release_path=$( project_release_path "$project" "$prefix" )
+	local release_path=$(project_release_path "$project" "$prefix")
 	local argument
 	local path="$project"
 
@@ -1063,7 +1063,7 @@ project_release_rootfs_path() {
 	local prefix=$1
 	shift
 
-	local release_path=$( project_release_path "$project" "$prefix" )
+	local release_path=$(project_release_path "$project" "$prefix")
 	local argument
 	local path="$project"
 
@@ -1088,7 +1088,7 @@ project_release_sources_archive_path() {
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path-$argument"
 		fi
@@ -1103,7 +1103,7 @@ project_release_sources_archive_path() {
 		release_path=$path
 	done
 
-	if ! [ -z "$release_path" ]
+	if [[ -n "$release_path" ]]
 	then
 		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_path.$ARCHIVE"
 
@@ -1117,8 +1117,8 @@ project_release_sources_archive_create() {
 	local arguments="$*"
 
 	local repository=$project
-	local archive_path=$( project_release_sources_archive_path "$project" "$@" )
-	local sources_path=$( project_sources_path "$project" "$repository" "$@" )
+	local archive_path=$(project_release_sources_archive_path "$project" "$@")
+	local sources_path=$(project_sources_path "$project" "$repository" "$@")
 
 	printf '%s\n' "Releasing sources archive for $project (with ${arguments:-no argument})"
 
@@ -1130,8 +1130,8 @@ project_release_sources_archive_exists_check() {
 	local project=$1
 	shift
 
-	local archive_path=$( project_release_sources_archive_path "$project" "$@" )
-	if [ -z "$archive_path" ] || ! [ -f "$archive_path" ]
+	local archive_path=$(project_release_sources_archive_path "$project" "$@")
+	if [[ -z "$archive_path" ]] || ! [[ -f "$archive_path" ]]
 	then
 		return 1
 	else
@@ -1185,20 +1185,20 @@ project_release_install() {
 	local prefix=$1
 	shift
 
-	local install_path=$( project_install_path "$project" "$@" )
-	local release_path=$( project_release_path "$project" "$prefix" )
+	local install_path=$(project_install_path "$project" "$@")
+	local release_path=$(project_release_path "$project" "$prefix")
 	local directory_path
 	local path
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( find "$install_path" -type f || true )
+	local files=$(find "$install_path" -type f || true)
 	local file
 
 	printf '%s\n' "$files" | while read -r file
 	do
 		path="$release_path/$file"
-		directory_path=$( dirname "$path" )
+		directory_path=$(dirname "$path")
 
 		mkdir -p "$directory_path"
 
@@ -1213,13 +1213,13 @@ project_release_install_check() {
 	local prefix=$1
 	shift
 
-	local install_path=$( project_install_path "$project" "$@" )
-	local release_path=$( project_release_path "$project" "$prefix" )
+	local install_path=$(project_install_path "$project" "$@")
+	local release_path=$(project_release_path "$project" "$prefix")
 	local path
 
 	project_install_directory_missing_empty_error "$project" "$@"
 
-	local files=$( find "$install_path" -type f || true )
+	local files=$(find "$install_path" -type f || true)
 	local file
 
 	printf '%s\n' "$files" | while read -r file
@@ -1255,8 +1255,8 @@ project_release_install_archive_create() {
 	shift
 	local arguments="$*"
 
-	local install_path=$( project_install_path "$project" "$@" )
-	local archive_path=$( project_release_archive_path "$project" "$prefix" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
+	local archive_path=$(project_release_archive_path "$project" "$prefix" "$@")
 
 	printf '%s\n' "Releasing $prefix archive for $project (with ${arguments:-no argument})"
 
@@ -1270,7 +1270,7 @@ project_release_install_archive_exists_check() {
 	local prefix=$1
 	shift
 
-	local archive_path=$( project_release_archive_path "$project" "$prefix" "$@" )
+	local archive_path=$(project_release_archive_path "$project" "$prefix" "$@")
 
 	file_exists_check "$archive_path"
 }
@@ -1303,8 +1303,8 @@ project_release_install_rootfs_create() {
 	shift
 	local arguments="$*"
 
-	local install_path=$( project_install_path "$project" "$@" )
-	local rootfs_path=$( project_release_rootfs_path "$project" "$prefix" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
+	local rootfs_path=$(project_release_rootfs_path "$project" "$prefix" "$@")
 
 	printf '%s\n' "Releasing $prefix rootfs for $project (with ${arguments:-no argument})"
 
@@ -1318,7 +1318,7 @@ project_release_install_rootfs_exists_check() {
 	local prefix=$1
 	shift
 
-	local rootfs_path=$( project_release_rootfs_path "$project" "$prefix" "$@" )
+	local rootfs_path=$(project_release_rootfs_path "$project" "$prefix" "$@")
 
 	file_exists_check "$rootfs_path"
 }
@@ -1336,7 +1336,7 @@ project_clean_build() {
 	local project=$1
 	shift
 
-	local build_path=$( project_build_path "$project" "$@" )
+	local build_path=$(project_build_path "$project" "$@")
 
 	rm -rf "$build_path"
 }
@@ -1345,7 +1345,7 @@ project_clean_install() {
 	local project=$1
 	shift
 
-	local install_path=$( project_install_path "$project" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
 
 	rm -rf "$install_path"
 }
@@ -1358,7 +1358,7 @@ project_clean_release() {
 
 	for prefix in "$SOURCES" "$SYSTEMS" "$IMAGES" "$TOOLS" "$DOCS"
 	do
-		local release_path=$( project_release_path "$project" "$prefix" )
+		local release_path=$(project_release_path "$project" "$prefix")
 
 		rm -rf "$release_path"
 	done
@@ -1378,7 +1378,7 @@ project_clean_rootfs_install() {
 	local project=$1
 	shift
 
-	local install_path=$( project_install_path "$project" "$@" )
+	local install_path=$(project_install_path "$project" "$@")
 
 	execute_root rm -rf "$install_path"
 
@@ -1392,19 +1392,19 @@ project_file_path() {
 	local file=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local path="$project_path/$directory"
 	local argument
 	local file_path
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
 
-		if ! [ -f "$path/$file" ]
+		if ! [[ -f "$path/$file" ]]
 		then
 			continue
 		fi
@@ -1412,7 +1412,7 @@ project_file_path() {
 		file_path="$path/$file"
 	done
 
-	if [ -z "$file_path" ]
+	if [[ -z "$file_path" ]]
 	then
 		return 1
 	fi
@@ -1421,15 +1421,15 @@ project_file_path() {
 }
 
 project_file_test() {
-	local file_path=$( project_file_path "$@" )
+	local file_path=$(project_file_path "$@")
 
 	test -f "$file_path"
 }
 
 project_file_contents() {
-	local file_path=$( project_file_path "$@" )
+	local file_path=$(project_file_path "$@")
 
-	if [ -f "$file_path" ]
+	if [[ -f "$file_path" ]]
 	then
 		cat "$file_path"
 	fi
@@ -1443,21 +1443,21 @@ project_file_contents_herit() {
 	local file=$1
 	shift
 
-	local project_path=$( project_path "$project" )
+	local project_path=$(project_path "$project")
 	local path="$project_path/$directory"
 	local argument
 	local file_path
 
 	for argument in "" "$@"
 	do
-		if ! [ -z "$argument" ]
+		if [[ -n "$argument" ]]
 		then
 			path="$path/$argument"
 		fi
 
 		file_path="$path/$file"
 
-		if ! [ -f "$file_path" ]
+		if ! [[ -f "$file_path" ]]
 		then
 			continue
 		fi

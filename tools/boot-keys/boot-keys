@@ -20,11 +20,11 @@ usage() {
 }
 
 generate() {
-	local type=$( boot_keys_type "$@" )
+	local type=$(boot_keys_type "$@")
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 
@@ -38,16 +38,16 @@ generate() {
 sign() {
 	local project=$1
 
-	local prepare_files=$( boot_keys_files "$@" )
-	local type=$( boot_keys_type "$@" )
+	local prepare_files=$(boot_keys_files "$@")
+	local type=$(boot_keys_type "$@")
 	local install_path
 	local firmware_path
 	local kernel_path
 	local media
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 
@@ -60,13 +60,13 @@ sign() {
 				boot_keys_cros "$type-prepare" "sign" "$firmware_path"
 				;;
 			"cros-kernel")
-				media=$( project_action "media" "$@" )
+				media=$(project_action "media" "$@")
 
 				for medium in $media
 				do
 					kernel_path="$install_path/$KERNEL-$medium.$IMG"
 
-					if [ -f "$kernel_path" ]
+					if [[ -f "$kernel_path" ]]
 					then
 						boot_keys_cros "$type-prepare" "sign" "$kernel_path"
 					else
@@ -81,16 +81,16 @@ sign() {
 verify() {
 	local project=$1
 
-	local prepare_files=$( boot_keys_files "$@" )
-	local type=$( boot_keys_type "$@" )
+	local prepare_files=$(boot_keys_files "$@")
+	local type=$(boot_keys_type "$@")
 	local install_path
 	local firmware_path
 	local kernel_path
 	local media
 
-	if [ -z "$type" ]
+	if [[ -z "$type" ]]
 	then
-		printf '%s\n' 'Unable to determine keys type' >&2
+		printf 1>&2 '%s\n' 'Unable to determine keys type'
 		return 1
 	fi
 
@@ -103,7 +103,7 @@ verify() {
 				boot_keys_cros "$type-prepare" "verify" "$firmware_path"
 				;;
 			"cros-kernel")
-				media=$( project_action "media" "$@" )
+				media=$(project_action "media" "$@")
 
 				for medium in $media
 				do
