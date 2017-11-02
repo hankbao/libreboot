@@ -51,6 +51,8 @@ Project, USA)
 
 <https://nephelai.zanity.net/mirror/libreboot/> (zanity.net, New Zealand)
 
+<https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
+
 RSYNC mirrors {#rsync}
 -------------
 
@@ -66,6 +68,8 @@ UK)
 <rsync://ftp.linux.ro/libreboot/> (linux.ro, Romania)
 
 <rsync://libreboot.mirror.si/libreboot/>
+
+<rsync://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
 
 Are you running a mirror? Contact the libreboot project, and the link will be
 added to this page!
