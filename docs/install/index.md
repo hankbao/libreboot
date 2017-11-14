@@ -283,6 +283,8 @@ ThinkPad X60/T60: Initial installation guide (if running the proprietary firmwar
 already have coreboot or libreboot running, then go to
 [\#flashrom](#flashrom) instead!*
 
+*If you can, make sure that RTC battery is not discharged. Discharged RTC battery may lead to brick due to not holding BUC register value*
+
 *If you are flashing a Lenovo ThinkPad T60, be sure to read
 [../hardware/\#supported\_t60\_list](../hardware/#supported_t60_list)*
 
@@ -324,7 +326,7 @@ Seeing this means that the operation was a *resounding* success!
 See this link for more details:
 <http://thread.gmane.org/gmane.linux.bios.flashrom/575>.
 
-If the above is what you see, then *SHUT DOWN*. Wait a few seconds,
+If the above is what you see, then *SHUT DOWN* (but do not remove power, especially RTC battery). Wait a few seconds,
 and then boot; libreboot is running, but there is a 2nd procedure
 needed (see below).
 
