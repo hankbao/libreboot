@@ -39,6 +39,9 @@ Quad-core CPUs
 Very likely to be compatible, but requires hardware modification.
 Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list. Currently work in progress and no guide available.
 
+Q9100 is compatible and confirmed working (after hw mod), as reported by users in the IRC
+channel
+
 - [Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
 - [German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129)
 
