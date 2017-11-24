@@ -35,6 +35,16 @@ Merchendise:
 -   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
+Phreedom 2600
+------------------
+
+Phreedom 2600 sells the BeagleBone Black (which can be used for flashing Libreboot)
+and the Thinkpad X200. All computers come with Parabola GNU/Linux preinstalled.
+All products meets the criteria for [Respects Your Freedom](https://fsf.org/ryf).
+
+The webshop is here:
+<https://shop.phreedom2600.net/>
+
 Raptor Engineering
 ------------------
 
