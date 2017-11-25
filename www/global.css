@@ -35,6 +35,11 @@ a {
     color: #22D;
 }
 
+/* probably generated with autolink_bare_uris extension */
+a.uri {
+    word-wrap: break-word;
+}
+
 a:hover {
     color: #008;
 }
