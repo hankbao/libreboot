@@ -21,6 +21,10 @@ pre {
     margin-left: 2.5em
 }
 
+img {
+    max-width: 100%;
+}
+
 #logo {
     width: 20%;
     float: right;
