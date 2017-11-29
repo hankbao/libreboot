@@ -83,7 +83,9 @@ if it's not new, then there are two ways to handle it:
 you can either choose to fill it with zeroes or random data; I chose random data (e.g., `urandom`),
 because it's more secure. Depending on the size of the drive, this could take a while to complete:
 
-    `# dd if=/dev/urandom of=/dev/sdX; sync`
+    ~~~
+    # dd if=/dev/urandom of=/dev/sdX; sync
+    ~~~
 
 2. If the drive were previously encrypted, all you need to do is wipe the LUKS header.
 The size of the header depends upon the specific model of the hard drive;
@@ -91,7 +93,9 @@ you can find this information by doing some research online.
 Refer to this [article](https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/), for more information about LUKS headers.
 You can either fill the header with zeroes, or with random data; again, I chose random data, using `urandom`:
 
-    `# head -c 3145728 /dev/urandom > /dev/sdX; sync`
+    ~~~
+    # head -c 3145728 /dev/urandom > /dev/sdX; sync
+    ~~~
 
 Also, if you're using an SSD, there are a two things you should keep in mind:
 
@@ -192,11 +196,15 @@ equally cleverly named as **rootvol**.
 Also, make sure to [choose an appropriate swap size](http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space)
 (e.g., **2G** refers to two gigabytes; change this however you see fit):
 
-    `# lvcreate -L 2G matrix -n swapvol`
+    ~~~
+    # lvcreate -L 2G matrix -n swapvol
+    ~~~
 
 2. Now, we will create a single, large partition in the rest of the space, for **rootvol**:
 
-    `# lvcreate -l +100%FREE matrix -n rootvol`
+    ~~~
+    # lvcreate -l +100%FREE matrix -n rootvol
+    ~~~
 
 You can also be flexible here, for example you can specify a **/boot**, a **/**,
 a **/home**, a **/var**, or a **/usr** volume. For example, if you will be running a
@@ -313,7 +321,11 @@ There are several modifications that we need to make to the file:
       Make sure to separate each module by one space.
 
 2.  Change the value of the uncommented `HOOKS` line to the following:
-    “`base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown`”;
+
+    ~~~
+    base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown
+    ~~~
+
     here's what each module does:
 
     * `keymap` adds to *initramfs* the keymap that you specified in **/etc/vconsole.conf**
