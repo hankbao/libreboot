@@ -3,6 +3,8 @@ title: Installing Parabola or Arch GNU+Linux-Libre, with Full-Disk Encryption (i
 x-toc-enable: true
 ...
 
+Also see:
+[Installing Hyperbola GNU+Linux, with Full-Disk Encryption (including /boot)](https://wiki.hyperbola.info/en:guide:encrypted_installation)
 
 This guide covers how to install Parabola GNU+Linux-Libre, with full disk encryption,
 including **/boot** (the boot directory). On most systems, **/boot** has
