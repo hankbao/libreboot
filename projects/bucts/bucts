@@ -27,7 +27,7 @@ usage() {
 download() {
 	local repository="$project"
 
-	project_download_git "$project" "$repository" 'git://git.stuge.se/bucts.git' "$@"
+	project_download_git "$project" "$repository" 'https://notabug.org/libreboot/bucts.git' "$@"
 }
 
 download_check() {
