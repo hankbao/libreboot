@@ -22,6 +22,7 @@ endorsement on a computer system, and invests money directly into Libreboot.
 
 Laptops:
 
+-   [Libreboot X200 laptop](https://minifree.org/product/libreboot-x200/) (FSF RYF certified)
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
 
 Services:
