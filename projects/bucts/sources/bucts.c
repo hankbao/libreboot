@@ -1,4 +1,4 @@
-/* compile: gcc -s -o bucts bucts.c -lpci -lz -static or:  make
+/* compile: gcc -s -o bucts bucts.c -lpci  or:  make
  * run as root: ./bucts [0|1]
  */
 /*

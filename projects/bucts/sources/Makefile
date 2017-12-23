@@ -10,7 +10,7 @@ endif
 all: bucts
 
 bucts: $(OBJ)
-	$(CC) -o $@ $(OBJ) $(LDFLAGS) -lpci -lz -static
+	$(CC) -o $@ $(OBJ) $(LDFLAGS) -lpci
 
 %.o: %.c
 	$(CC) $(CFLAGS) -DVERSION='"$(VERSION)"' -c $<
