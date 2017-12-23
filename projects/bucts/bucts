@@ -24,18 +24,6 @@ usage() {
 	project_usage_arguments "$project" "$@"
 }
 
-download() {
-	local repository="$project"
-
-	project_download_git "$project" "$repository" 'https://notabug.org/libreboot/bucts.git' "$@"
-}
-
-download_check() {
-	local repository="$project"
-
-	project_download_check_git "$project" "$repository" "$@"
-}
-
 extract() {
 	local repository="$project"
 
