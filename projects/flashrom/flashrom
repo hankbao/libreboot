@@ -27,7 +27,7 @@ usage() {
 download() {
 	local repository=$project
 
-	project_download_git "$project" "$repository" "https://github.com/stefanct/flashrom.git" "$@"
+	project_download_git "$project" "$repository" 'https://review.coreboot.org/flashrom.git https://github.com/stefanct/flashrom.git' "$@"
 }
 
 download_check() {
