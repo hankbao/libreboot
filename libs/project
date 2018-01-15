@@ -1081,34 +1081,11 @@ project_release_sources_archive_path() {
 	local project=$1
 	shift
 
-	local sources_path="$root/$SOURCES/"
-	local release_path
-	local argument
-	local path="$project"
+	local repository="$project"
+	local sources_path="$(project_sources_path "$project" "$repository" "$@")"
+	local archive_path="$root/$RELEASE/$SOURCES/$project/${sources_path##*/}.$ARCHIVE"
 
-	for argument in "" "$@"
-	do
-		if [[ -n "$argument" ]]
-		then
-			path="$path-$argument"
-		fi
-
-		local directory_path="$sources_path/$path"
-
-		if ! directory_filled_check "$directory_path"
-		then
-			continue
-		fi
-
-		release_path=$path
-	done
-
-	if [[ -n "$release_path" ]]
-	then
-		local archive_path="$root/$RELEASE/$SOURCES/$project/$release_path.$ARCHIVE"
-
-		printf '%s\n' "$archive_path"
-	fi
+	printf '%s\n' "$archive_path"
 }
 
 project_release_sources_archive_create() {
