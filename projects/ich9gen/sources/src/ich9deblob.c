@@ -1,7 +1,7 @@
 /*
  *  ich9deblob.c
  *  This file is part of the ich9deblob utility from the libreboot project
- * 
+ *
  * Purpose: disable and remove the ME from ich9m/gm45 systems in coreboot.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -20,26 +20,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /* Initially based on proof of concept by Steve Shenton. */
 /* Original utility can be found at https://gitorious.org/ich9descriptortool */
- 
+
 /*
- * Read a factory.rom dump (ich9m/gm45 systems) and 
+ * Read a factory.rom dump (ich9m/gm45 systems) and
  * modify the flash descriptor to remove all regions except descriptor,
  * Gbe and BIOS. Set BIOS region to full size of the ROM image (after
  * the flash descriptor and gbe). Basically, deblob the descriptor.
- * 
+ *
  * This will will generate a concatenated descriptor+gbe dump suitable
  * for use in libreboot. Currently tested: ThinkPad X200 (coreboot/libreboot)
  */
- 
+
 /*
  * See docs/hardware/x200_remove_me.html for info plus links to datasheet (also linked below)
- * 
+ *
  * Info about flash descriptor (read page 845 onwards):
  * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
- * 
+ *
  * Info about Gbe region (read whole datasheet):
  * http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf
  * https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums
@@ -51,18 +51,18 @@ int main()
 {
 	struct DESCRIPTORREGIONRECORD descriptorStruct;
 	uint8_t* descriptorBuffer = (uint8_t*)&descriptorStruct;
-	
+
 	struct GBEREGIONRECORD_8K gbeStruct8k;
 	uint8_t* gbeBuffer8k = (uint8_t*)&gbeStruct8k;
 	uint32_t gbeRegionStart;
-	
+
 	char* romFilename = "factory.rom";
 	char* descriptorGbeFilename = "deblobbed_descriptor.bin";
 	char* descriptorNoGbeFilename = "deblobbed_4kdescriptor.bin";
-	
+
 	unsigned int bufferLength;
 	unsigned int romSize;
-	
+
 	/*
 	 * ------------------------------------------------------------------
 	 * Compatibility checks. This version of ich9deblob is not yet portable.
@@ -71,7 +71,7 @@ int main()
 
 	if (systemOrCompilerIncompatible(descriptorStruct, gbeStruct8k)) return 1;
 	/* If true, fail with error message */
-	
+
 	/*
 	 * ------------------------------------------------------------------
 	 * Extract the descriptor and gbe regions from the factory.rom dump
@@ -86,20 +86,20 @@ int main()
 		return 1;
 	}
 	printf("\n%s opened successfully\n", romFilename);
-	
-	/* 
+
+	/*
 	 * Get the descriptor region dump from the factory.rom
 	 * (goes in factoryDescriptorBuffer variable)
 	 */
 	bufferLength = fread(descriptorBuffer, 1, DESCRIPTORREGIONSIZE, fp);
-	if (DESCRIPTORREGIONSIZE != bufferLength) // 
+	if (DESCRIPTORREGIONSIZE != bufferLength) //
 	{
 		printf("\nerror: could not read descriptor from %s (%i) bytes read\n", romFilename, bufferLength);
 		fclose(fp);
 		return 1;
 	}
 	printf("\ndescriptor region read successfully\n");
-	
+
 	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
 		gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;
@@ -125,13 +125,13 @@ int main()
 	printf("\n%s size: [%i] bytes\n", romFilename, romSize);
 
 	fclose(fp);
-	
+
 	/* Debugging (before modification) */
 	printDescriptorRegionLocations(descriptorStruct, "Original");
-	if (descriptorDefinesGbeRegion(descriptorStruct)) 
+	if (descriptorDefinesGbeRegion(descriptorStruct))
 		printGbeChecksumDataFromStruct8k(gbeStruct8k, "Original");
 	else printf("NO GBE REGION\n");
-	
+
 	/*
 	 * ------------------------------------------------------------------
 	 * Modify the descriptor and gbe regions, ready to go in libreboot.rom
@@ -179,7 +179,7 @@ int main()
 			return 1;
 		}
 	}
-	
+
 	/*
 	 * ------------------------------------------------------------------
 	 * Generate ich9gen data (C code that will recreate the deblobbed descriptor+gbe from scratch)
@@ -205,7 +205,7 @@ int main()
 			return 1;
 		}
 	}
-	
+
 	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
 		printf("The modified descriptor and gbe regions have also been dumped as src files: mkdescriptor.c, mkdescriptor.h, mkgbe.c, mkgbe.h\n");

@@ -1,7 +1,7 @@
 /*
  *  x86compatibility.c
  *  This file is part of the ich9deblob utility from the libreboot project
- * 
+ *
  * Purpose: compiler/cpu compatibility checks. ich9deblob is not portable, yet.
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -30,11 +30,11 @@
  */
 
 /* fail if struct size is incorrect */
-int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy) 
+int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct GBEREGIONRECORD_8K gbe8kDummy)
 {
 	unsigned int descriptorRegionStructSize = sizeof(descriptorDummy);
 	unsigned int gbeRegion8kStructSize = sizeof(gbe8kDummy);
-	
+
 	/* check compiler bit-packs in a compatible way. basically, it is expected that this code will be used on x86 */
 	if (DESCRIPTORREGIONSIZE != descriptorRegionStructSize){
 		printf("\nerror: compiler incompatibility: descriptor struct length is %i bytes (should be %i)\n", descriptorRegionStructSize, DESCRIPTORREGIONSIZE);
@@ -44,7 +44,7 @@ int structSizesIncorrect(struct DESCRIPTORREGIONRECORD descriptorDummy, struct G
 		printf("\nerror: compiler incompatibility: gbe struct length is %i bytes (should be %i)\n", gbeRegion8kStructSize, GBEREGIONSIZE_8K);
 		return 1;
 	}
-	
+
 	return 0;
 }
 
@@ -54,7 +54,7 @@ int structMembersWrongOrder()
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
 	uint8_t *meVsccTablePtr = (uint8_t*)&descriptorDummy.meVsccTable;
-	
+
 	/* These do not use bitfields.  */
 	descriptorDummy.meVsccTable.jid0 = 0x01020304;  /* unsigned int 32-bit */
 	descriptorDummy.meVsccTable.vscc0 = 0x10203040; /* unsigned int 32-bit */
@@ -66,10 +66,10 @@ int structMembersWrongOrder()
 	descriptorDummy.meVsccTable.padding[1] = 0xBB;  /* unsigned char 8-bit */
 	descriptorDummy.meVsccTable.padding[2] = 0xCC;  /* unsigned char 8-bit */
 	descriptorDummy.meVsccTable.padding[3] = 0xDD;  /* unsigned char 8-bit */
-	
+
 	/*
 	 * Look from the top down, and concatenate the unsigned ints but
-	 * with each unsigned in little endian order. 
+	 * with each unsigned in little endian order.
 	 * Then, concatenate the unsigned chars in big endian order. (in the padding array)
 	 *
 	 * combined, these should become:
@@ -77,7 +77,7 @@ int structMembersWrongOrder()
 	 * 04030201 40302010 44332211 08070605 80706050 88776655 AA BB CC DD (ignore this. not byte-separated, just working it out:)
 	 * 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 AA BB CC DD <-- it should match this
 	 */
-	
+
 	if (
 			!
 			(
@@ -90,65 +90,65 @@ int structMembersWrongOrder()
 			&& *(meVsccTablePtr+24) == 0xAA && *(meVsccTablePtr+25) == 0xBB && *(meVsccTablePtr+26) == 0xCC && *(meVsccTablePtr+27) == 0xDD
 	      )
 	   ) {
-			
+
 		printf("\nStruct member order check (descriptorDummy.meVsccTable) with junk/dummy data:");
 		printf("\nShould be: 04 03 02 01 40 30 20 10 44 33 22 11 08 07 06 05 80 70 60 50 88 77 66 55 aa bb cc dd ");
 		printf("\nAnd it is: ");
-		
+
 		for (i = 0; i < 28; i++) {
-			printf("%02x ", *(meVsccTablePtr + i));	
+			printf("%02x ", *(meVsccTablePtr + i));
 		}
 		printf("\nIncorrect order.\n");
-		
+
 		return 1;
 	}
-	
+
 	return 0;
 }
 
 /* fail if bit fields are presented in the wrong order */
-int structBitfieldWrongOrder() 
+int structBitfieldWrongOrder()
 {
 	int i;
 	struct DESCRIPTORREGIONRECORD descriptorDummy;
 	uint8_t *flMap0Ptr = (uint8_t*)&descriptorDummy.flMaps.flMap0;
-	
+
 	descriptorDummy.flMaps.flMap0.FCBA = 0xA2;      /* :8 --> 10100010 */
 	descriptorDummy.flMaps.flMap0.NC = 0x02;        /* :2 --> 10       */
 	descriptorDummy.flMaps.flMap0.reserved1 = 0x38; /* :6 --> 111000   */
 	descriptorDummy.flMaps.flMap0.FRBA = 0xD2;      /* :8 --> 11010010 */
 	descriptorDummy.flMaps.flMap0.NR = 0x05;        /* :3 --> 101      */
 	descriptorDummy.flMaps.flMap0.reserved2 = 0x1C; /* :5 --> 11100    */
-	
+
 	/*
 	 * Look from the top bottom up, and concatenate the binary strings.
 	 * Then, convert the 8-bit groups to hex and reverse the (8-bit)byte order
-	 * 
+	 *
 	 * combined, these should become (in memory), in binary:
 	 * 10100010 11100010 11010010 11100101
 	 * or in hex:
 	 * A2 E2 D2 E5
 	 */
-		
-	if (!(*flMap0Ptr == 0xA2 && *(flMap0Ptr+1) == 0xE2 && *(flMap0Ptr+2) == 0xD2 && *(flMap0Ptr+3) == 0xE5)) 
+
+	if (!(*flMap0Ptr == 0xA2 && *(flMap0Ptr+1) == 0xE2 && *(flMap0Ptr+2) == 0xD2 && *(flMap0Ptr+3) == 0xE5))
 	{
 		printf("\nBitfield order check (descriptorDummy.flMaps.flMaps0) with junk/dummy data:");
 		printf("\nShould be: a2 e2 d2 e5 ");
 		printf("\nAnd it is: ");
 
 		for (i = 0; i < 4; i++) {
-			printf("%02x ", *(flMap0Ptr + i));	
+			printf("%02x ", *(flMap0Ptr + i));
 		}
 		printf("\nIncorrect order.\n");
-		
+
 		return 1;
 	}
-	
+
 	return 0;
 }
 
 /* Compatibility checks. This version of ich9deblob is not yet porable. */
-int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k) 
+int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct, struct GBEREGIONRECORD_8K gbeStruct8k)
 {
 	if (structSizesIncorrect(descriptorStruct, gbeStruct8k)) return 1;
 	if (IS_BIG_ENDIAN) {
@@ -156,6 +156,6 @@ int systemOrCompilerIncompatible(struct DESCRIPTORREGIONRECORD descriptorStruct,
 		return 1;
 	}
 	if (structBitfieldWrongOrder()) return 1;
-	if (structMembersWrongOrder()) return 1; 
+	if (structMembersWrongOrder()) return 1;
 	return 0;
 }

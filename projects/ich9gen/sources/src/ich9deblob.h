@@ -1,7 +1,7 @@
 /*
  *  ich9deblob.h
  *  This file is part of the ich9deblob utility from the libreboot project
- * 
+ *
  * Purpose: header file for ich9deblob.c
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
@@ -20,7 +20,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #ifndef ICH9DEBLOB_H
 #define ICH9DEBLOB_H
 

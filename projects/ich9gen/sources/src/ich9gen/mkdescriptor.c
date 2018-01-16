@@ -226,4 +226,3 @@ struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, in
 
     return descriptorStruct;
 }
-

@@ -1,4 +1,4 @@
-# 
+#
 # Makefile for ich9deblob utility from libreboot project
 #
 # Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
@@ -26,15 +26,15 @@ all: ich9deblob ich9gen demefactory
 
 ich9deblob: obj/ich9deblob.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
-		
+
 	$(CC) $(CFLAGS) obj/ich9deblob.o obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
 		 -o ich9deblob
-		 
+
 ich9gen: obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
 		obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
-		
+
 	$(CC) $(CFLAGS) obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
 	 obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
@@ -42,7 +42,7 @@ ich9gen: obj/ich9gen.o obj/ich9gen/mkdescriptor.o obj/ich9gen/mkgbe.o \
 
 demefactory: obj/demefactory.o obj/common/descriptor_gbe.o \
 		obj/descriptor/descriptor.o obj/gbe/gbe.o obj/common/x86compatibility.o
-		
+
 	$(CC) $(CFLAGS) obj/demefactory.o obj/common/descriptor_gbe.o \
 		obj/common/x86compatibility.o obj/descriptor/descriptor.o obj/gbe/gbe.o \
 		 -o demefactory
@@ -64,7 +64,7 @@ obj/ich9deblob.o:
 
 obj/ich9gen.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen.c -o obj/ich9gen.o
-	
+
 obj/ich9gen/mkdescriptor.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/ich9gen/mkdescriptor.c -o obj/ich9gen/mkdescriptor.o
 
@@ -76,7 +76,7 @@ obj/ich9gen/mkgbe.o:
 
 obj/common/descriptor_gbe.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/common/descriptor_gbe.c -o obj/common/descriptor_gbe.o
-	
+
 obj/common/x86compatibility.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/common/x86compatibility.c -o obj/common/x86compatibility.o
 
@@ -85,7 +85,7 @@ obj/descriptor/descriptor.o:
 
 obj/gbe/gbe.o:
 	$(CC) $(CFLAGS) $(NOLINKER) src/gbe/gbe.c -o obj/gbe/gbe.o
-	
+
 # make clean
 # ----------------------------------------------------------------------
 clean:

@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /*
  * Provide gbe related functions.
  */
@@ -40,7 +40,7 @@ uint16_t gbeGetChecksumFrom4kBuffer(uint16_t* gbeWord, uint16_t desiredValue, in
 
 	for (wordOffset = 0; wordOffset < 0x3F; wordOffset++)
 		total += gbeWord[wordOffset + (gbeRegionBase>>1)];
-	
+
 	return desiredValue - total;
 }
 
@@ -51,25 +51,25 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 }
 
 /* modify the gbe region extracted from a factory.rom dump */
-struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k) 
-{	
+struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k)
+{
 	unsigned int i;
-	
+
 	/*
 	 * http://www.intel.co.uk/content/dam/doc/application-note/82573-nvm-map-appl-note.pdf
-	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT. 
+	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT.
 	 * Writing over it doesn't seem to cause any harm, since the ME/AMT is already removed in libreboot.
 	 */
 	for(i = 0; i < sizeof(gbeStruct8k.backup.padding); i++) {
 		gbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
 	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
-	
+
 	/* Fix the checksum */
 	gbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.backup, GBECHECKSUMTOTAL);
-	
+
 	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of the backup */
 	memcpy(&gbeStruct8k.main, &gbeStruct8k.backup, GBEREGIONSIZE_4K);
-	
+
 	return gbeStruct8k;
 }
 
@@ -81,46 +81,46 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 
 /*
  * Generate a C (.h) header file for the C source file made by notCreatedCFileFromGbeStruct4k()
- * 
+ *
  * Output it to a file.
  */
-int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName) 
-{		
+int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName)
+{
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .h header file for the gbe-generating C code (%s) */\n\n", cFileName);
-	
+
 	fprintf(fp, "#ifndef ICH9GEN_MKGBE_H\n");
 	fprintf(fp, "#define ICH9GEN_MKGBE_H\n\n");
-	
+
 	fprintf(fp, "#include <stdio.h>\n");
 	fprintf(fp, "#include <string.h>\n");
 	fprintf(fp, "#include \"../gbe/gbe.h\"\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_4K generatedGbeStruct4k();\n");
 	fprintf(fp, "struct GBEREGIONRECORD_8K generatedGbeStruct8k();\n\n");
-	
+
 	fprintf(fp, "#endif\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
 /*
  * Generate a C source file that initializes the same data from a given
  * 4KiB Gbe data structure.
- * 
+ *
  * It will simply copy the 4KiB struct at the end to make a full 8KiB struct.
  * So just pass a working 4KiB Gbe struct here and you're good to go.
- * 
+ *
  * Output it to a file.
  */
 int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* outFileName, char* headerFileName)
@@ -128,22 +128,22 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	int i;
 	int paddingSize;
 	int paddingIdentical;
-	
+
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .c source file for the gbe-generating C code */\n\n");
-	
+
 	fprintf(fp, "#include \"%s\"\n\n", headerFileName);
-	
+
 	fprintf(fp, "/* Generate a 4KiB Gbe struct, with default values. */\n");
 	fprintf(fp, "/* Read ../gbe/gbe.h for an explanation of the default values used here */\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_4K generatedGbeStruct4k()\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    int i;\n");
@@ -402,7 +402,7 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	fprintf(fp, "\n");
 	fprintf(fp, "    return gbeStruct4k;\n");
 	fprintf(fp, "}\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_8K generatedGbeStruct8k()\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    struct GBEREGIONRECORD_8K gbeStruct8k;\n");
@@ -410,11 +410,11 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	fprintf(fp, "    memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K);\n");
 	fprintf(fp, "    return gbeStruct8k;\n");
 	fprintf(fp, "}\n\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
 
@@ -431,24 +431,24 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName)
 {
 	printf(
-		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", 
+		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n",
 		romName,
 		regionName,
-		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL), 
+		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL),
 		gbeStruct4k.checkSum
 	);
-	
+
 	return;
 }
 
 /*
- * show debugging info: show calculated (correct) gbe checksum and what 
+ * show debugging info: show calculated (correct) gbe checksum and what
  * is actually stored, in a 8K gbe struct. Do so for main and backup regions.
  */
 void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, char* romName)
-{	
+{
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.main, romName, "main");
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.backup, romName, "backup");
-	
+
 	return;
 }

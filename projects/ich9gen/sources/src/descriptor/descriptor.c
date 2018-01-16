@@ -1,9 +1,9 @@
 /*
  *  descriptor/descriptor.c
  *  This file is part of the ich9deblob utility from the libreboot project
- * 
+ *
  *	 Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
- *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>   
+ *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
  * ---------------------------------------------------------------------
  */
 
-/* Set the Host CPU / BIOS region to have read-write access on all regions */ 
+/* Set the Host CPU / BIOS region to have read-write access on all regions */
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
    descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x1;
@@ -80,7 +80,7 @@ struct DESCRIPTORREGIONRECORD descriptorPlatformRegionRemoved(struct DESCRIPTORR
 {
 	descriptorStruct.regionSection.flReg4.BASE = 0x1FFF;
 	descriptorStruct.regionSection.flReg4.LIMIT = 0;
-	
+
 	return descriptorStruct;
 }
 
@@ -89,7 +89,7 @@ struct DESCRIPTORREGIONRECORD descriptorDisableMe(struct DESCRIPTORREGIONRECORD 
 {
 	descriptorStruct.ichStraps.ichStrap0.meDisable = 1;
 	descriptorStruct.mchStraps.mchStrap0.meDisable = 1;
-	
+
 	return descriptorStruct;
 }
 
@@ -97,7 +97,7 @@ struct DESCRIPTORREGIONRECORD descriptorDisableMe(struct DESCRIPTORREGIONRECORD 
 struct DESCRIPTORREGIONRECORD descriptorDisableTpm(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {
 	descriptorStruct.mchStraps.mchStrap0.tpmDisable = 1;
-	
+
 	return descriptorStruct;
 }
 
@@ -106,7 +106,7 @@ struct DESCRIPTORREGIONRECORD descriptorMoveGbeToStart(struct DESCRIPTORREGIONRE
 {
 	descriptorStruct.regionSection.flReg3.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
 	descriptorStruct.regionSection.flReg3.LIMIT = GBEREGIONSIZE_8K >> FLREGIONBITSHIFT;
-	
+
 	return descriptorStruct;
 }
 
@@ -115,7 +115,7 @@ struct DESCRIPTORREGIONRECORD descriptorGbeRegionRemoved(struct DESCRIPTORREGION
 {
 	descriptorStruct.regionSection.flReg3.BASE = 0x1FFF;
 	descriptorStruct.regionSection.flReg3.LIMIT = 0;
-	
+
 	return descriptorStruct;
 }
 
@@ -124,7 +124,7 @@ struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterGbe(struct DESCR
 {
 	descriptorStruct.regionSection.flReg1.BASE = (DESCRIPTORREGIONSIZE + GBEREGIONSIZE_8K) >> FLREGIONBITSHIFT;
 	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
-	
+
 	return descriptorStruct;
 }
 
@@ -133,7 +133,7 @@ struct DESCRIPTORREGIONRECORD descriptorBiosRegionFillImageAfterDescriptor(struc
 {
 	descriptorStruct.regionSection.flReg1.BASE = DESCRIPTORREGIONSIZE >> FLREGIONBITSHIFT;
 	descriptorStruct.regionSection.flReg1.LIMIT = (romSize >> FLREGIONBITSHIFT) - 1;
-	
+
 	return descriptorStruct;
 }
 
@@ -150,7 +150,7 @@ struct DESCRIPTORREGIONRECORD descriptorOemString(struct DESCRIPTORREGIONRECORD 
 	descriptorStruct.oemSection.magicString[7] = 0x45;
 
 	return descriptorStruct;
-} 
+}
 
 /* Check whether a GbE region is defined by this descriptor.
  * Not thorough, but should work in most cases */
@@ -178,7 +178,7 @@ struct DESCRIPTORREGIONRECORD librebootSetGbeBiosDescriptorRegions(struct DESCRI
 {
 	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
-		/* 
+		/*
 		 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 2
 		 * means 3. We want 3 regions: descriptor, gbe and bios, in that order)
 		 */
@@ -193,7 +193,7 @@ struct DESCRIPTORREGIONRECORD librebootSetGbeBiosDescriptorRegions(struct DESCRI
 		descriptorStruct.ichStraps.ichStrap0.lanPhy = 0x1;
 	}
 	else {
-		/* 
+		/*
 		 * set number of regions from 4 -> 2 (0 based, so 4 means 5 and 1
 		 * means 2. We want 2 regions: descriptor and bios, in that order)
 		 */
@@ -237,12 +237,12 @@ struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRI
 	descriptorStruct = descriptorMeRegionRemoved(descriptorStruct);
 	/* Disable the ME/TPM and remove the ME/Platform regions: */
 	descriptorStruct = descriptorPlatformRegionRemoved(descriptorStruct);
-	
+
 	/* Disable the ME itself, so that it doesn't try to start when this descriptor is in use */
 	descriptorStruct = descriptorDisableMe(descriptorStruct);
 	/* Also disable the TPM, by default */
 	descriptorStruct = descriptorDisableTpm(descriptorStruct);
-	
+
 	return descriptorStruct;
 }
 
@@ -254,64 +254,64 @@ struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRI
 
 /*
  * Generate a C (.h) header file for the C source file made by notCreatedCFileFromDescriptorStruct()
- * 
+ *
  * Output it to a file.
  */
-int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName) 
-{		
+int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName)
+{
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .h header file for the descriptor-generating C code (%s) */\n\n", cFileName);
-	
+
 	fprintf(fp, "#ifndef ICH9GEN_MKDESCRIPTOR_H\n");
 	fprintf(fp, "#define ICH9GEN_MKDESCRIPTOR_H\n\n");
-	
+
 	fprintf(fp, "#include <stdio.h>\n");
 	fprintf(fp, "#include <string.h>\n");
 	fprintf(fp, "#include \"../descriptor/descriptor.h\"\n\n");
-	
+
 	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe);\n");
-	
+
 	fprintf(fp, "#endif\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
 
 /*
  * Generate a C source file that initializes the same data from a given
  * 4KiB Descriptor data structure.
- * 
+ *
  * Output it to a file.
  */
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName)
 {
 	int i, j;
-	
+
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .c source file for the descriptor-generating C code */\n\n");
-	
+
 	fprintf(fp, "#include \"%s\"\n\n", headerFileName);
-	
+
 	fprintf(fp, "/* Generate a 4KiB Descriptor struct, with default values. */\n");
 	fprintf(fp, "/* Read ../descriptor/descriptor.h for an explanation of the default values used here */\n\n");
-	
+
 	fprintf(fp, "struct DESCRIPTORREGIONRECORD generatedDescriptorStruct(unsigned int romSize, int hasGbe)\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    int i;\n");
@@ -600,11 +600,11 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 	fprintf(fp, "\n");
 	fprintf(fp, "    return descriptorStruct;\n");
 	fprintf(fp, "}\n\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
 
@@ -620,7 +620,7 @@ int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptor
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName)
 {
 	printf("\n");
-	
+
 	/* Descriptor region */
 	printf(
 		"%s: Descriptor start block: %08x ; Descriptor end block: %08x\n",
@@ -628,23 +628,23 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 		descriptorStruct.regionSection.flReg0.BASE << FLREGIONBITSHIFT,
 		descriptorStruct.regionSection.flReg0.LIMIT << FLREGIONBITSHIFT
 	);
-	
+
 	/* BIOS region */
 	printf(
-		"%s: BIOS start block: %08x ; BIOS end block: %08x\n", 
+		"%s: BIOS start block: %08x ; BIOS end block: %08x\n",
 		romName,
-		descriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, 
+		descriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT,
 		descriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT
 	);
-	
+
 	/* ME region */
 	printf(
-		"%s: ME start block: %08x ; ME end block: %08x\n", 
+		"%s: ME start block: %08x ; ME end block: %08x\n",
 		romName,
-		descriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, 
+		descriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT,
 		descriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT
 	);
-	
+
 	/* GBe region */
 	printf(
 		"%s: GBe start block: %08x ; GBe end block: %08x\n",
@@ -652,7 +652,7 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 		descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT,
 		descriptorStruct.regionSection.flReg3.LIMIT << FLREGIONBITSHIFT
 	);
-	
+
 	/* Platform region */
 	printf(
 		"%s: Platform start block: %08x ; Platform end block: %08x\n",
@@ -660,6 +660,6 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 		descriptorStruct.regionSection.flReg4.BASE << FLREGIONBITSHIFT,
 		descriptorStruct.regionSection.flReg4.LIMIT << FLREGIONBITSHIFT
 	);
-	
+
 	return;
 }
