@@ -22,6 +22,8 @@ FORCEC99=-std=c99
 CFLAGS=-I. -Wall -Wextra -g $(FORCEC99)
 NOLINKER=-c
 
+.PHONY: all clean
+
 all: ich9deblob ich9gen demefactory
 
 ich9deblob: obj/ich9deblob.o obj/common/descriptor_gbe.o \
