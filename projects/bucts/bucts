@@ -83,14 +83,14 @@ release() {
 	local repository="$project"
 
 	project_release_install_archive "$project" "$TOOLS" "$@"
-	project_release_sources_git "$project" "$repository" "$@"
+	project_release_sources_archive_create "$project" "$@"
 }
 
 release_check() {
 	local repository="bucts"
 
 	project_release_install_archive_check "$project" "$TOOLS" "$@"
-	project_release_check_sources_git "$project" "$repository" "$@"
+	project_release_sources_archive_exists_check "$project" "$@"
 }
 
 clean() {
