@@ -75,7 +75,7 @@ build() {
 
 	mkdir -p "$build_path"
 	make -C "$sources_path" -j"$TASKS"
-	cp "$sources_path/memtest" "$build_path"
+	cp "$sources_path"/{memtest,memtest.bin} "$build_path"
 	make -C "$sources_path" 'clean'
 }
 
