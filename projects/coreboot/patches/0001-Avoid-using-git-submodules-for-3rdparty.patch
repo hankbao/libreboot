@@ -1,6 +1,6 @@
-From c47f1f9e3b5d1a77b5261ad7cb7538c384828487 Mon Sep 17 00:00:00 2001
+From b403ddd709578d11f1e6d32abfc94701f57cae16 Mon Sep 17 00:00:00 2001
 From: Paul Kocialkowski <contact@paulk.fr>
-Date: Thu, 21 Dec 2017 18:05:33 -0500
+Date: Thu, 25 Jan 2018 17:31:55 -0500
 Subject: [PATCH] Avoid using git submodules for 3rdparty
 
 This gets rid of git submodules entirely, to avoid the nuisance caused
@@ -59,11 +59,11 @@ index b118723..0000000
 -Subproject commit b1187232fdf819586ba8c8ece4a27a7515cbdc6d
 diff --git a/3rdparty/blobs b/3rdparty/blobs
 deleted file mode 160000
-index d2e558a..0000000
+index 8eb92ba..0000000
 --- a/3rdparty/blobs
 +++ /dev/null
 @@ -1 +0,0 @@
--Subproject commit d2e558a81f95f7b9149bea6b8362bb43ade82584
+-Subproject commit 8eb92ba947e171df11b3c62f5f257ce69b9e2d55
 diff --git a/3rdparty/chromeec b/3rdparty/chromeec
 deleted file mode 160000
 index 9fb1038..0000000
