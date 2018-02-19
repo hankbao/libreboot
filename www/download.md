@@ -49,7 +49,8 @@ Project, USA)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
 
-<https://nephelai.zanity.net/mirror/libreboot/> (zanity.net, New Zealand)
+<https://mirror.nephelai.info/libreboot/> (nephelai.info, New Zealand)
+(formerly nephelai.zanity.net/mirror/libreboot)
 
 <https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
 
