@@ -223,7 +223,7 @@ BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
-*Some T60s have ATI GPUs, and all T60P laptops have ATI GPUs These are
+*Some T60 variants have ATI GPUs, and all T60p laptops have ATI GPUs These are
 incompatible! See [\#t60\_ati\_intel](#t60_ati_intel) for how to remedy
 this.*
 

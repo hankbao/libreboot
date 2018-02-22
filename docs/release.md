@@ -77,7 +77,7 @@ Machines supported in this release:
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
-    -   T60P (and T60 laptops with ATI GPU) will likely never be
+    -   T60p (and T60 laptops with ATI GPU) will likely never be
         supported: ***docs/hardware/\#t60\_ati\_intel***
 -   **ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
@@ -228,7 +228,7 @@ Machines supported in this release:
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See ***docs/future/\#t60\_cpu\_microcode***.
-    -   T60P (and T60 laptops with ATI GPU) will likely never be
+    -   T60p (and T60 laptops with ATI GPU) will likely never be
         supported: ***docs/hardware/\#t60\_ati\_intel***
 -   **ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
@@ -450,7 +450,7 @@ Machines supported in this release:
     -   It is unknown whether a T61 can have it's mainboard replaced
         with a T60 motherboard.
     -   See **future/\#t60\_cpu\_microcode**.
-    -   T60P (and T60 laptops with ATI GPU) will likely never be
+    -   T60p (and T60 laptops with ATI GPU) will likely never be
         supported: **hardware/\#t60\_ati\_intel**
 -   **Lenovo ThinkPad X200**
     -   X200S and X200 Tablet are also supported, conditionally; see
@@ -658,7 +658,7 @@ Machines supported in this release:
     -   It is unknown whether a T61 can have its mainboard replaced with
         a T60 motherboard.
     -   See **future/\#t60\_cpu\_microcode**.
-    -   T60P (and T60s with ATI GPU) will likely never be supported:
+    -   T60p (and T60 variants with ATI GPU) will likely never be supported:
         **hardware/\#t60\_ati\_intel**
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
     -   See **hardware/\#macbook11**.
@@ -737,7 +737,7 @@ New systems supported in this release:
         **hardware/\#supported\_t60\_list** for known working LCD panels.
     -   It is unknown whether a T61 can have its mainboard replaced with
         a T60 motherboard.
-    -   T60P (and T60s with ATI GPU) will likely never be supported:
+    -   T60p (and T60 variants with ATI GPU) will likely never be supported:
         **hardware/\#t60\_ati\_intel**
 -   **Apple MacBook1,1** (MA255LL/A, MA254LL/A, MA472LL/A)
     -   See **hardware/\#macbook11**.
@@ -1088,7 +1088,7 @@ Revisions for r20140711 (1st beta) (11th July 2014)
 -   Documentation: added a copy of Mono's Coreboot page (for macbook21)
     and linked it in main index.
 -   T60: Copy CD option from the grub.cfg files for T60 \*serial\*.rom
-    images into the grub configs for non-serial images. (T60s have
+    images into the grub configs for non-serial images. (T60 laptops have
     CD/DVD drive on main laptop)
 -   macbook21: remove options in build-macbook21 for \*serial\*.rom
     (there is no dock or serial port available for macbook21)
@@ -1100,8 +1100,8 @@ Revisions for r20140711 (1st beta) (11th July 2014)
 -   Documentation: Added info about getting LCD panel name based on EDID
     data.
     -   Documentation: Added a link to this from the list of supported
-        T60s and LCD panels for T60 (so that the user can check what LCD
-        panel they have).
+        T60 laptopss and LCD panels for T60 (so that the user can check
+        what LCD panel they have).
 -   X60/T60: Merged patches for 3D fix (from Paul Menzel) when using
     kernel 3.12 or higher (see ./resources/libreboot/patch/gitdiff and
     ./getcb)
@@ -1237,7 +1237,7 @@ Revisions for r20140711 (1st beta) (11th July 2014)
     put in the coreboot configs
     -   Documentation: In fact, document how the 'config' files in
         resources/libreboot/config/ were created
--   Documentation: Added information about which ThinkPad T60s are
+-   Documentation: Added information about which ThinkPad T60 laptops are
     supported, and which are not.
 -   Documentation: added information about LCD inverters (for upgrading
     the LCD panel on a T60 14.1' XGA or 15.1' XGA)
