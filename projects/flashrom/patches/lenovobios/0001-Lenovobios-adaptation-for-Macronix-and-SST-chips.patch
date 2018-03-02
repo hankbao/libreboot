@@ -1,22 +1,21 @@
-From aa2dd05f61f6ca91212d7f6d4055486af6e01436 Mon Sep 17 00:00:00 2001
-From: Leah Rowe <info@minifree.org>
-Date: Fri, 5 Aug 2016 22:40:49 +0200
+From 85eea125194414b6afc8053565bb333f06054421 Mon Sep 17 00:00:00 2001
+From: Leah Rowe <leah@libreboot.org>
+Date: Fri, 2 Mar 2018 06:47:34 +0000
 Subject: [PATCH] Lenovobios adaptation for Macronix and SST chips
 
-Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
 ---
  flashchips.c | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/flashchips.c b/flashchips.c
-index e5ea181..f3a017c 100644
+index 7f85415..16b166b 100644
 --- a/flashchips.c
 +++ b/flashchips.c
-@@ -7454,12 +7454,12 @@ const struct flashchip flashchips[] = {
+@@ -7634,12 +7634,12 @@ const struct flashchip flashchips[] = {
  		.name		= "MX25L1605D/MX25L1608D/MX25L1673E",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= MACRONIX_ID,
--		.model_id	= MACRONIX_MX25L1605,
+-		.model_id	= 0xDEAD,
 +		.model_id	= 0x14,
  		.total_size	= 2048,
  		.page_size	= 256,
@@ -27,7 +26,7 @@ index e5ea181..f3a017c 100644
  		.probe_timing	= TIMING_ZERO,
  		.block_erasers	=
  		{
-@@ -9857,7 +9857,7 @@ const struct flashchip flashchips[] = {
+@@ -10442,7 +10442,7 @@ const struct flashchip flashchips[] = {
  		},
  		.printlock	= spi_prettyprint_status_register_bp2_srwd,
  		.unlock		= spi_disable_blockprotect,
@@ -36,7 +35,7 @@ index e5ea181..f3a017c 100644
  		.read		= spi_chip_read, /* Fast read (0x0B), dual I/O supported */
  		.voltage	= {2700, 3600},
  	},
-@@ -12150,12 +12150,12 @@ const struct flashchip flashchips[] = {
+@@ -12735,12 +12735,12 @@ const struct flashchip flashchips[] = {
  		.name		= "SST25VF016B",
  		.bustype	= BUS_SPI,
  		.manufacture_id	= SST_ID,
@@ -51,7 +50,7 @@ index e5ea181..f3a017c 100644
  		.probe_timing	= TIMING_ZERO,
  		.block_erasers	=
  		{
-@@ -12178,7 +12178,7 @@ const struct flashchip flashchips[] = {
+@@ -12763,7 +12763,7 @@ const struct flashchip flashchips[] = {
  		},
  		.printlock	= spi_prettyprint_status_register_sst25vf016,
  		.unlock		= spi_disable_blockprotect,
@@ -61,5 +60,5 @@ index e5ea181..f3a017c 100644
  		.voltage	= {2700, 3600},
  	},
 -- 
-2.9.0
+1.9.1
 
