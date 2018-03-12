@@ -1,5 +1,7 @@
 biosdisk
+cbfs
 cbmemc
+configfile
 ext2
 halt
 part_bsd
