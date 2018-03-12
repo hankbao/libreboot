@@ -184,7 +184,7 @@ grub_build_floppy_image() {
 		mv "$tempfile" "$grubimg"
 	else
 		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
-		printf '%s\n\n' "it must be less than ${size}KiB in size" 1>&2
+		printf '%s\n\n' "it must be less than ${floppy_size}KiB in size" 1>&2
 
 		return 1
 	fi
