@@ -17,7 +17,9 @@ GPG signing key
 
 Releases are signed with GPG.
 
-    $ gpg --recv-keys 0x05E8C5B2
+    gpg --recv-keys 0x969A979505E8C5B2
+
+Full key fingerprint: CDC9 CAE3 2CB4 B7FC 84FD  C804 969A 9795 05E8 C5B2
 
 The GPG key can also be downloaded with this exported dump of the
 pubkey: [lbkey.asc](lbkey.asc).
