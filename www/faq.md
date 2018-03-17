@@ -695,23 +695,23 @@ project.
 
 ### External GPUs
 
-The Video BIOS is present on most video hardware. On all current
-libreboot systems, this is implemented using free software. The Video
-BIOS is responsible for initializing any sort of visual display; without
-it, you'd have what's called a *headless* system.
-
-For integrated graphics, the VBIOS is usually embedded as an *option
-ROM* in the main boot firmware. For external graphics, the VBIOS is
+The Video BIOS is present on most video cards. For integrated graphics,
+the VBIOS (special kind of OptionROM) is usually embedded
+in the main boot firmware. For external graphics, the VBIOS is
 usually on the graphics card itself. This is usually proprietary; the
-only difference is that SeaBIOS executes it (alternatively, you embed it
+only difference is that SeaBIOS can execute it (alternatively, you embed it
 in a coreboot ROM image and have coreboot executes it, if you use a
 different payload, such as GRUB).
 
-We're going to tentatively say no, they're not OK. Unless you're
-actively working to replace the VBIOS, or find out how to get a visual
-display without it (possible in some cases, if the kernel driver can be
-modified to work without it, possibly only needing certain
-non-executable data).
+On current libreboot systems, instead of VBIOS, coreboot native GPU init is used,
+which is currently only implemented for Intel GPUs.
+Other cards with proper KMS drivers can be initialized once Linux boots,
+but copy of VBIOS may be still needed to fetch proper VRAM frequency
+and other similar parameters (without executing VBIOS code).
+
+In configurations where SeaBIOS and native GPU init are used together,
+a special shim VBIOS is added that uses coreboot linear framebuffer.
+
 
 ### EC (embedded controller) firmware 
 
