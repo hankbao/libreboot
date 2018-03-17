@@ -51,10 +51,9 @@ Project, USA)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
 
-<https://mirror.nephelai.info/libreboot/> (nephelai.info, New Zealand)
-(formerly nephelai.zanity.net/mirror/libreboot)
-
 <https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
+
+<https://mirror.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
 RSYNC mirrors {#rsync}
 -------------
@@ -69,8 +68,6 @@ UK)
 <rsync://mirror.math.princeton.edu/pub/libreboot/> (Princeton university, USA)
 
 <rsync://ftp.linux.ro/libreboot/> (linux.ro, Romania)
-
-<rsync://libreboot.mirror.si/libreboot/>
 
 <rsync://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
 
@@ -92,10 +89,6 @@ if using HTTPS.
 
 <http://mirror.helium.in-berlin.de/libreboot/> (in-berlin.de, Germany)
 
-<http://libreboot.mirror.si/> (mirror.si, Slovenia)
-
-<http://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
-
 FTP mirrors {#ftp}
 -----------
 
@@ -105,8 +98,6 @@ WARNING: FTP is also unencrypted, like HTTP. The same risks are present.
 of Kent, UK)
 
 <ftp://ftp.linux.ro/libreboot/> (linux.ro, Romania)
-
-<ftp://libreboot.mirror.si/libreboot> (mirror.si, Slovenia)
 
 Statically linked
 ------------------
