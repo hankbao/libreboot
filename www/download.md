@@ -53,6 +53,8 @@ Project, USA)
 
 <https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
 
+<https://mirror.swordarmor.fr/libreboot/> (swordarmor.fr, France)
+
 RSYNC mirrors {#rsync}
 -------------
 
@@ -86,8 +88,6 @@ if using HTTPS.
 <http://mirror.linux.ro/libreboot/> (linux.ro, Romania)
 
 <http://mirror.helium.in-berlin.de/libreboot/> (in-berlin.de, Germany)
-
-<http://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
 FTP mirrors {#ftp}
 -----------
