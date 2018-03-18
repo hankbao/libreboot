@@ -57,7 +57,8 @@ These people are not part of core management, but still have influence.
 Other IRC channel moderators:
 
 - IRC nick **specing** on the Libreboot IRC channel.
-- IRC nick **pizzaiolo** on the Libreboot IRC channel.
+
+specing occasionally provides assistance, and moderates the IRC channel.
 
 Additionally, Libreboot has a separate set of operators on the subreddit
 r/libreboot. Check Reddit for more information. Actions taken by moderators
