@@ -95,11 +95,7 @@ reported by contacting one of the moderators privately via IRC private message
 If the complaint is for abuses on the Libreboot subreddit at
 [r/libreboot](https://www.reddit.com/r/libreboot/) then there are a separate
 group of moderators whom you can contact, via private message on the Reddit
-website:
-
-* hexacat
-* pizzaiolo\_
-* libreleah
+website. The subreddit has a public list of moderators on it.
 
 If you deviate from these guidelines, make sure that it is with good reason.
 Treatment of each case will be handled pragmatically, on a case-by-case basis.
