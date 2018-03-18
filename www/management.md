@@ -58,7 +58,6 @@ Other IRC channel moderators:
 
 - IRC nick **specing** on the Libreboot IRC channel.
 - IRC nick **pizzaiolo** on the Libreboot IRC channel.
-- IRC nick **jxself** on the Libreboot IRC channel.
 
 Additionally, Libreboot has a separate set of operators on the subreddit
 r/libreboot. Check Reddit for more information. Actions taken by moderators
