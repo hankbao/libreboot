@@ -32,7 +32,7 @@ In alphabetical order:
 - Paul Kocialkowski is a core developer. IRC nick **paulk-X** 
   (**X** is variable, and changes over time), email <mailto:paul@libreboot.org>
 - Leah Rowe is a core developer (and project founder). IRC nick
-  **\_4of7**, email <mailto:leah@libreboot.org>
+  **unoccupied**, email <mailto:leah@libreboot.org>
 - Swift Geek is a core developer. IRC nick **swiftgeek**, email
   <mailto:swiftgeek@libreboot.org>
 

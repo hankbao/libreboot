@@ -84,7 +84,7 @@ reported by contacting one of the moderators privately via IRC private message
 
 * Andrew Robbins: **and\_who** on Freenode, email <mailto:andrew@libreboot.org>
 * Jason Self: **jxself** on Freenode
-* Leah Rowe: **\_4of7** on Freenode, email <mailto:leah@libreboot.org>
+* Leah Rowe: **unoccupied** on Freenode, email <mailto:leah@libreboot.org>
 * Paul Kocialkowski: **paulk-X** Freenode (X is variable, for this
   person, email <mailto:paul@libreboot.org>
   check in the channel)
