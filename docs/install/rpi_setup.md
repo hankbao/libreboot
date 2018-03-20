@@ -283,10 +283,10 @@ your PI.
 Power on your Pi, and run the following. Ensure you swap out
 "your\_chip\_name" with the proper name/model of your chip. Check that
 it can be read successfully. If you cannot read the chip and receive an
-error similar to "no EEPROM Detected" or "0x0 Chip detected" then
-you may want to try powering off your PI, and switching the two pins
-which are connected to the IO ports. I.E. Connect pins (clip)8 to (pi)19
-and pins (clip)15 to (pi)21
+error similar to "no EEPROM Detected" then
+you may want to make sure that MISO/MOSI are not swapped around, check
+with multimeter whether voltage is right and that ground is connected
+between "programmer" and target.
 
     pi# cd ~/flashrom
 
