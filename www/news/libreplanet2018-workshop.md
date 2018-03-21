@@ -67,7 +67,7 @@ Basically, all you need for flashing someone's laptop at the conference is:
 - Portable SPI flasher (USB powered. SSH into it via your laptop, use the SPI
   flasher's own 3v3, etc). Make sure to use the workaround-mx patch on
   flashrom, so that you can use `--workaround-mx` on Macronix chips, if flashing
-  an X200, otherwise flashing will be unreliable (see mailing list post linked
+  is unreliable (see mailing list post linked
   above) - portability is important, in case you sit down with someone in
   a place without power sockets.
   See guides on libreboot.org for setting up SPI flashers, but ignore the notes
@@ -76,6 +76,16 @@ Basically, all you need for flashing someone's laptop at the conference is:
   <https://notabug.org/consts/libreboot/raw/2caaac00972d9ea56b0fcd7c95897e90283b05b8/projects/flashrom/patches/0005-Workaround-MX25-reliable-operation.patch>
   apply this on flashrom src and build with that. To use it, just pass the
   `--workaround-mx` option in flashrom.
+
+  *For your convenience*, here's a modified flashrom that I host on my personal
+  site, which has the workaround-mx patch already included. It has pre-patched
+  source code, which you can build for x86. It also contains a statically
+  linked ARM executable:
+  <https://vimuser.org/hackrom.tar.xz>
+
+  The upstream flashrom and the flashrom binaries from Libreboot 20160907 do
+  not have this patch. For X200 flashrom, make sure to use the above
+  modified flashrom tarball.
 - Screwdrivers (phillips head 0 *and* 00 - sometimes labelled PH0 or PH00,
   respectively)
 - Thermal paste and thermal cleaning material, for T400 flashing
