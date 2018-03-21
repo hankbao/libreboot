@@ -6,6 +6,74 @@ x-toc-enable: true
 Important issues
 ================
 
+Is the Libreboot project still active?
+-------------------------------------------
+
+Yes! Please check out [the git
+repository](https://notabug.org/libreboot/libreboot) for the extensive work
+contributed to the project since the previous release.
+
+So when is the next version of Libreboot coming out?
+-------------------------------------------------------
+
+Short answer: When it is ready. With your help, this will be sooner rather than
+later! Read on to find out where help is most needed.
+
+Long answer: The new release will be ready when the build system has all
+outstanding bugs fixed, allowing it to Libreboot ROM image files for all
+supported platforms without reporting any major errors. Once these ROM files are
+built, it must be possible to flash them onto every supported platform. All
+platforms must then be able to initialize all essential hardware from the code
+in the ROM files, then ultimately reach execution the included payload. 
+
+The first obstacle to overcome in this setup is completing the code for the new
+build system. Please check out [the git
+repository](https://notabug.org/libreboot/libreboot), look over the code for the
+build system, and attempt to run the build script for as many platforms as you
+can. Document whatever problems you encounter while doing so on [the bug
+tracker](https://notabug.org/libreboot/libreboot/issues). If you have strong
+knowledge of shell scripting, look at the code yourself and attempt to resolve
+whatever the problem may be. At the very least, you can use your investigation
+of the code to provide information on your bug report that will help others
+determine the proper fix. If you *don't* receive any errors, you should end up
+with a Libreboot ROM file! The next paragraph will cover what to do next.
+
+Once the build system can produce ROM files for any given target, the next step
+in preparing for release is testing the ROM files on actual hardware. First,
+back up your existing firmware: doing so internally using `flashrom -p internal
+-r backup.rom` is probably the most convenient method, though you are welcome to
+do so externally as well by following the factory ROM backup procedure for your
+platform. You will very likely need this backup since you are testing the new
+release, which will have unknown bugs! You will want to have external flashing
+equipment handy to flash your backup ROM back onto the device.
+
+Once you have the backup ready, follow [the on-site
+instructions](https://libreboot.org/docs/install/) to flash the new ROM file to
+its appropriate hardware platform, then (re)boot your computer. You should
+expect to encounter problems! This is new software which needs your testing
+support! Document those problems as clearly as possible on [the bug
+tracker](https://notabug.org/libreboot/libreboot/issues) to inform the community
+of their existence. If you have the technical know-how, try to fix whatever
+problems you encounter and whatever other user-submitted bugs you think you can
+find.
+
+You may also get lucky and reach your device payload, in which case:
+congratulations! Please document your success on [the bug
+tracker](https://notabug.org/libreboot/libreboot/issues) and proceed to test the
+capabilities of your payload. When you are done testing, or if the new ROM file
+renders your system unbootable, use your external flashing equipment to flash
+your backup ROM back to your BIOS chip.
+
+Other areas where you can help prepare the next release include: porting other
+boards from coreboot to Libreboot by removing their dependencies on non-free
+components to boot and incorporating them into the build system, telling your
+technically skilled friends about Libreboot to encourage their participation,
+and offering your devices for testing once the build system reaches maturity.
+You can list yourself as a volunteer along with the devices on 
+
+With everyone's help, a new Libreboot release will come sooner rather than
+later.
+
 What version of libreboot do I have?
 ----------------------------------------------------------------
 
