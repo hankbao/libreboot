@@ -31,7 +31,7 @@ not matter if they're not a speaker). John Sullivan of FSF has approved this.
 There are tables, chairs and power sockets in that room.
 There are also tables and chairs outside the speakers' lounge, in the common
 area at the conference, but I highly recommend using the speakers' lounge.
-That's where I took people, on Libreplanet 2015 and 2016 :)
+That's where I took people, on LibrePlanet 2015 and 2016 :)
 It's really comfy in there.
 
 John Sullivan of FSF has also confirmed that that there is a dedicated
