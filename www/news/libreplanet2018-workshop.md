@@ -46,11 +46,14 @@ will be providing Libreboot flashing services at the conference:
 - Kurt from Technoethical, an FSF-endorsed Libreboot hardware seller. They will
   also have their own samples. They'll be at the Technoethical booth there.
   IRC nick sensiblemn\_ or sensiblemn on #libreboot IRC
-- zyliwax from #libreboot IRC - has not committed fully, but is *very likely
-  to attend*, in their own words.
-- Patrick McDermott (pehjota) of Libiquity. I've emailed them to ask,
-  though I'm not sure if they'll be there - they're usually there though, each
-  year.
+- zyliwax from #libreboot IRC - has confirmed that they will be there
+- Patrick McDermott (pehjota) of Libiquity. Patrick is also present at
+  LibrePlanet, and has brought flashing equipment. What Patrick said on the
+  libreplanet-discuss mailing list: look for the person that is wearing a
+  grey Libiquity polo shirt. They posted this picture on the mailing list,
+  so you know how to find this person:
+  <http://www.libiquity.com/media/images/patrick-mcdermott.jpg>
+  - of note: Patrick is bringing CH341A-based programmer, and can flash D8/D16
 - You could also find an FSF sysadmin and ask them to flash Libreboot for you.
 
 I would be grateful if anyone else would also be willing to provide flashing.
