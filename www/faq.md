@@ -623,6 +623,9 @@ SPI flash chips can be programmed with the [BeagleBone
 Black](../docs/install/bbb_setup.md) or the [Raspberry
 Pi](../docs/install/rpi_setup.md).
 
+It's possible to use a 16-pin SOIC test clip on an 8-pin SOIC chip, if you
+align the pins properly. The connection is generally more sturdy.
+
 How do I set a boot password?
 -------------------------------------------------------------------
 
