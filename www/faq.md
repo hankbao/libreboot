@@ -6,6 +6,63 @@ x-toc-enable: true
 Important issues
 ================
 
+Is the Libreboot project still active?
+-------------------------------------------
+
+Yes! The [git repository](https://notabug.org/libreboot/libreboot) shows all of
+the work that we're currently doing. Libreboot is quite active.
+
+So when is the next version of Libreboot coming out?
+-------------------------------------------------------
+
+Short answer: It's out when it's out. If you want to help out and submit
+patches, refer to [the Git page](git.md).
+
+We don't issue ETAs.
+
+Long answer:
+
+We've been re-writing the entire Libreboot build system from scratch, since
+the previous release. This has taken longer than we expected, but the new
+build system is reaching maturity. We are polishing it.
+
+Once the new build system is stable, our next priority is ensuring that all
+currently supported build targets build properly in Libreboot.
+
+After that, the priority is to make sure that all current boards in Libreboot
+use the most up to date revision of coreboot, with all of the most recent fixes
+and improvements. Testing those boards will then be a matter of peer review,
+reaching out to the entire community via alpha/beta/RC releases.
+
+Generally, all major release-blocking issues must be addressed before a new
+release can be issued. See:
+<https://notabug.org/libreboot/libreboot/issues>
+
+The most important tasks now are as follows:
+
+- Study the build system of Libreboot (written in BASH), and make fixes to it.
+- Work on new improvements and help with testing once ROMs build for all
+  boards, when the build system is stable.
+- In particular, there are several new boards in coreboot that we can add to
+  Libreboot, as documented on the Libreboot bug tracker. These will also have
+  to be added, and fully tested. Instructions for setting up hardware-based
+  flashing tools can be found in
+  [the Libreboot installation guides](docs/install/)
+- Bugs! Report bugs! <https://notabug.org/libreboot/libreboot/issues>
+- A few new board ports will also come in handy ;)
+  If you've got the skills, we'd really appreciate that. Port them to coreboot
+  first, or make existing coreboot targets work without binary blobs.
+
+More generally:
+
+- Tell your friends about Libreboot! Libreboot wants to liberate as many people
+  as possible.
+- If you have ways to improve the documentation, you can do that too.
+  Refer to [the Git page](git.md) for instructions on submitting patches to the
+  documentation.
+- Encourage companies, or any persons with the skills/resources, to get
+  involved with Libreboot development.
+
 What version of libreboot do I have?
 ----------------------------------------------------------------
 
