@@ -47,6 +47,9 @@ university, USA)
 <https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
 Project, USA)
 
+<https://mirror.nephelai.info/libreboot/> (nephelai.info, New Zealand)
+(formerly nephelai.zanity.net/mirror/libreboot)
+
 <https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
