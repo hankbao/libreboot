@@ -8,6 +8,16 @@ flash chip with the BeagleBone Black, using the
 rev. C was used when creating this guide, but earlier revisions may also
 work.
 
+***NOTE: Use of BeagleBone black is for example purposes only,
+don't buy it unless you want _it_ specifically.*** *There are many ARM
+Single Board Computers (SBC) that are capable of in system programming
+(external flashing) and they perform similarly terrible at that task.
+Common use of devicetrees on those devices allows for configuring them
+in similar way, but not identical, so a bit of own research is required.
+Lastly SBC is an example of self-contained device that is capable of flashing,
+but it's possible to use smaller device like stm32 bluepill
+with another computer to achieve similar result.*
+
 *NOTE: this documentation may be outdated, and discusses configuring
 SPI flashing on the default Debian system that the BBB sometimes comes
 with. If you want an easier time, just use [BBB
