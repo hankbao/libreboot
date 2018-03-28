@@ -30,8 +30,10 @@ pubkey: [lbkey.asc](lbkey.asc).
 Do you have a mirror?
 ---------------------
 
-Let us know! We will add it here. Instructions for how to mirror
-libreboot releases can be found [on the mirrors](#https).
+Let us know! We will add it here.
+
+If you wish to create a new mirror of the Libreboot releases, you can use
+*rsync*. See: [rsync mirror list](#rsync).
 
 HTTPS mirrors {#https}
 -------------
@@ -61,7 +63,14 @@ Project, USA)
 RSYNC mirrors {#rsync}
 -------------
 
-Useful for mirroring Libreboot's entire set of release archives.
+Useful for mirroring Libreboot's entire set of release archives. You can put
+an rsync command into crontab and pull the files into a directory on your
+web server.
+
+*It is highly recommended that you use the libreboot.org mirror*, if you wish
+to host an official mirror. Otherwise, if you simply want to create your own
+local mirror, you should use one of the other mirrors, which sync from
+libreboot.org.
 
 <rsync://rsync.libreboot.org/mirrormirror/> (Libreboot project official mirror)
 
