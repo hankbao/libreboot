@@ -31,8 +31,8 @@ Libreboot supports the following systems in this release:
 
 ### Laptops (Intel, x86)
 
--   [Lenovo ThinkPad X60/X60s](#list-of-supported-x60s)
--   [Lenovo ThinkPad X60 Tablet](#list-of-supported-x60-tablets)
+-   [Lenovo ThinkPad X60/X60s](#list-of-supported-thinkpad-x60s)
+-   [Lenovo ThinkPad X60 Tablet](#list-of-supported-thinkpad-x60-tablets)
 -   [Lenovo ThinkPad T60](#supported-t60-list) (some exceptions)
 -   [Lenovo ThinkPad X200](x200.md)
 -   [Lenovo ThinkPad R400](r400.md)
@@ -224,7 +224,7 @@ To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
 *Some T60 variants have ATI GPUs, and all T60p laptops have ATI GPUs These are
-incompatible! See [\#t60\_ati\_intel](#t60_ati_intel) for how to remedy
+incompatible! See [\#thinkpad-t60-ati-gpu-and-thinkpad-t60-intel-gpu-differences](#thinkpad-t60-ati-gpu-and-thinkpad-t60-intel-gpu-differences) for how to remedy
 this.*
 
 Tested LCD panels: (working)
@@ -337,14 +337,14 @@ Information about the macbook1,1
 
 There is an Apple laptop called the macbook1,1 from 2006 which uses the
 same i945 chipset as the ThinkPad X60/T60. A developer ported the
-[MacBook2,1](#macbook21) to coreboot, the ROM images also work on the
+[MacBook2,1](#information-about-the-macbook21) to coreboot, the ROM images also work on the
 macbook1,1.
 
-You can refer to [\#macbook21](#macbook21) for most of this. Macbook2,1
-laptops come with Core 2 Duo processors which support 64-bit operating
-systems (and 32-bit). The MacBook1,1 uses Core Duo processors (supports
-32-bit OS but not 64-bit), and it is believed that this is the only
-difference.
+You can refer to [\#information-about-the-macbook21](#information-about-the-macbook21)
+for most of this. Macbook2,1 laptops come with Core 2 Duo processors
+which support 64-bit operating systems (and 32-bit). The MacBook1,1
+uses Core Duo processors (supports 32-bit OS but not 64-bit), and it is
+believed that this is the only difference.
 
 It is believed that all models are compatible, listed here:
 
@@ -363,9 +363,8 @@ Also of interest:
 
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
-page (see [\#macbook21](#macbook21)) shows the location of the SPI flash
-chip on the motherboard. [How to remove the
-motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
+page (see [\#information-about-the-macbook21](#information-about-the-macbook21))
+shows the location of the SPI flash chip on the motherboard. [How to remove the motherboard](https://www.ifixit.com/Guide/MacBook+Core+2+Duo+PRAM+Battery+Replacement/529).
 
 No method is yet known for flashing in GNU+Linux while the Apple
 firmware is running. You will need to disassemble the system and flash
