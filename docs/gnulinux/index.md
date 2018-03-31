@@ -28,6 +28,23 @@ However, with Libreboot, GRUB is already included directly (as a payload), so ev
 
 - [How to Harden Your GRUB Configuration, for Security](grub_hardening.md)
 
+Fedora won't boot?
+------------------
+
+This may also apply to CentOS or Redhat.
+
+When you use Libreboot's default GRUB config, and libreboot-grub uses fedora's
+default grub.cfg (in /boot/grub2/grub.cfg), fedora by default makes use of the
+`linux16` command, whereas it should be saying `linux`
+
+Do this in fedora:
+
+Open `/etc/grub.d/10_linux`
+
+Set the `sixteenbit` variable to an empty string, then do:
+
+  grub2-mkconfig -o /boot/grub2/grub.cfg
+
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>
 
 Copyright © 2017 Elijah Smith <esmith1412@posteo.net>
