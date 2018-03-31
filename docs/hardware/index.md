@@ -358,9 +358,6 @@ Specifically (Order No. / Model No. / CPU):
 -   MA254LL/A / A1181 (EMC 2092) / Core Duo T2400 *(tested - working)*
 -   MA472LL/A / A1181 (EMC 2092) / Core Duo T2500 (untested)
 
-Also of interest:
-[../git/\#config\_macbook21](../git/#config_macbook21).
-
 Unbricking: [this page shows disassembly
 guides](https://www.ifixit.com/Device/MacBook_Core_2_Duo) and mono's
 page (see [\#information-about-the-macbook21](#information-about-the-macbook21))
