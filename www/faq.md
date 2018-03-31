@@ -1012,6 +1012,14 @@ Absolutely! It is well-tested in libreboot, and highly recommended. See
 Any recent distribution should work, as long as it uses KMS (kernel mode
 setting) for the graphics.
 
+Fedora won't boot? (may also be applicable to Redhat/CentOS)
+-----------------------------------------------------------
+
+On Fedora, by default the grub.cfg tries to boot linux in 16-bit mode. You
+just have to modify Fedora's GRUB configuration.
+Refer to [the GNU+Linux page](docs/gnulinux/index.md#fedora-wont-boot).
+
+
 Can I use BSD?
 ----------------------------------
 
