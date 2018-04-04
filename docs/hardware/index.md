@@ -54,7 +54,7 @@ EC update on i945 (X60, T60) and GM45 (X200, T400, T500, R400, W500)
 ==============================================================
 
 It is recommended that you update to the latest EC firmware version. The
-[EC firmware](../../faq.md#firmware-ec) is separate from
+[EC firmware](../../faq.md#ec-embedded-controller-firmware) is separate from
 libreboot, so we don't actually provide that, but if you still have
 Lenovo BIOS then you can just run the Lenovo BIOS update utility, which
 will update both the BIOS and EC version. See:
