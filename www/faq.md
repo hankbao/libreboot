@@ -737,8 +737,8 @@ libreboot. See: <https://github.com/lynxis/h8s-ec> (not ready yet).
 Most (all?) chromebooks have free EC firmware. Libreboot is currently
 looking into supporting a few ARM-based chromebooks.
 
-EC is only present on laptops. On desktop/server boards it is absent
-(not required).
+EC is present on nearly all laptops. Other devices use, depending on complexity,
+either EC or variant with firmware in Mask ROM - SuperIO.
 
 ### HDD/SSD firmware 
 
