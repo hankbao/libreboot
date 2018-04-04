@@ -290,7 +290,7 @@ is very easily replaced; just remove the card and install another one
 *after* libreboot is installed. See
 [\#recommended\_wifi](#recommended_wifi) for replacements.
 
-ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences.
+ThinkPad T60 (ATI GPU) and ThinkPad T60 (Intel GPU) differences
 ----------------------------------------------------------------
 
 If your T60 is a 14.1" or 15.1" model with an ATI GPU, it won't work
