@@ -1,8 +1,11 @@
 ahci
+cbfs
 cbmemc
+configfile
 ehci
 ext2
 halt
+loadenv
 part_bsd
 part_gpt
 pata
