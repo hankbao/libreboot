@@ -30,7 +30,7 @@ Services:
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
 -   [Libreboot chip flashing service for ASUS KGPE-D16 and KCMA-D8](https://minifree.org/product/d8-d16-chipflash/)
 
-Merchendise:
+Merchandise:
 
 -   [Libreboot T400 battery](https://minifree.org/product/libreboot-t400-battery/)
 -   [Libreboot X200 battery](https://minifree.org/product/libreboot-x200-battery/)
