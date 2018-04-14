@@ -128,6 +128,9 @@ grub_build_bootable_image() {
 	local format="$(grub_format "$target" "$@")"
 	local prefix="$(grub_prefix "$target" "$@")"
 	local config_path="$(grub_config_path "$target" "$@")"
+	local modmin_path="$(grub_modmin_path "$target" "$@")"
+
+	local -a modmin=($(< "$modmin_path"))
 
 	local grub_mkimage="$sources_path/grub-mkimage"
 	local grub_module_dir="$sources_path/grub-core"
@@ -142,7 +145,7 @@ grub_build_bootable_image() {
 		--output="$grubimg" \
 		--format="$format" \
 		--prefix="$prefix" \
-		cbfs configfile
+		"${modmin[@]}"
 
 	cat "$grub_bootimg" "$grubimg" > "$grub_bootable_img"
 	rm -f "$grubimg"
@@ -181,7 +184,7 @@ grub_build_floppy_image() {
 		mv "$tempfile" "$grubimg"
 	else
 		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
-		printf '%s\n\n' "it must be less than ${size}KiB in size" 1>&2
+		printf '%s\n\n' "it must be less than ${floppy_size}KiB in size" 1>&2
 
 		return 1
 	fi
@@ -192,6 +195,9 @@ grub_build_standalone_image() {
 	local format="$(grub_format "$target" "$@")"
 	local prefix="$(grub_prefix "$target" "$@")"
 	local config_path="$(grub_config_path "$target" "$@")"
+	local modmin_path="$(grub_modmin_path "$target" "$@")"
+
+	local -a modmin=($(< "$modmin_path"))
 
 	local grubimg="$build_path/grub2"
 
@@ -204,7 +210,7 @@ grub_build_standalone_image() {
 		--fonts='' \
 		--themes='' \
 		--locales='' \
-		--install-modules='cbfs configfile' \
+		--install-modules="${modmin[*]}" \
 		--directory="$grub_module_dir" \
 		--format="$format" \
 		--output="$grubimg" \
