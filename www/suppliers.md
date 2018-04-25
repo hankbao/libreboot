@@ -22,6 +22,7 @@ endorsement on a computer system, and invests money directly into Libreboot.
 
 Laptops:
 
+-   [Libreboot X200 Tablet laptop](https://minifree.org/product/libreboot-x200-tablet/) (FSF RYF certification pending)
 -   [Libreboot X200 laptop](https://minifree.org/product/libreboot-x200/) (FSF RYF certified)
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
 
@@ -34,7 +35,8 @@ Merchandise:
 
 -   [Libreboot T400 battery](https://minifree.org/product/libreboot-t400-battery/)
 -   [Libreboot X200 battery](https://minifree.org/product/libreboot-x200-battery/)
--   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
+-   [Libreboot X200 Tablet battery](https://minifree.org/product/libreboot-x200-tablet-battery/)
+-   [Libreboot X200/X200T docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
 Phreedom 2600
