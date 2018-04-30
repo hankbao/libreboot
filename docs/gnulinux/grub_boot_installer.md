@@ -53,18 +53,23 @@ Make sure that the device isn't mounted, with `doas`; if it is, this command wil
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
 ## Debian or Devuan net install
-1. Download the Debian or Devuan net installer. You can download the Debian ISO from [the Debian homepage](https://www.debian.org/), or the Devuan ISO from [the Devuan homepage](https://www.devuan.org/).
+Download the Debian or Devuan net installer. You can download the Debian ISO
+from [the Debian homepage](https://www.debian.org/), or the Devuan ISO from
+[the Devuan homepage](https://www.devuan.org/).
 
-2. Create a bootable USB, using the commands in *Prepare the USB Drive in GNU+Linux*, above.
+Secondly, create a bootable USB drive using the commands in
+[#prepare-the-usb-drive-in-gnulinux](#prepare-the-usb-drive-in-gnulinux).
 
-3. Boot the USB, and enter these commands in the GRUB terminal (for 64-bit Intel or AMD):
+Thirdly, boot the USB and enter these commands in the GRUB terminal
+(for 64-bit Intel or AMD):
 
     grub> set root='usb0'
     grub> linux /install.amd/vmlinuz
     grub> initrd /install.amd/initrd.gz
     grub> boot
 
-4. If you are on a 32-bit system (e.g. some Thinkpad X60's), you will need to use these commands:
+If you are on a 32-bit system (e.g. some Thinkpad X60's) then you will need to
+use these commands instead:
 
     grub> set root='usb0'
     grub> linux /install.386/vmlinuz
