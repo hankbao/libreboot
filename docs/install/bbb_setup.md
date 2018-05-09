@@ -236,7 +236,7 @@ Output:
 
 Verify that the spidev device now exists:
 
-    # ls -al /dev/spid
+    # ls -al /dev/spid*
 
 Output:
 
