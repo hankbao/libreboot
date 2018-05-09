@@ -284,7 +284,7 @@ directory to the one you created in the previous steps, so that you can modify f
 and install software onto it, as if it were the host operating system.
 
 To `chroot` into your installation, follow the instructions [on the
-Prabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
+Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
 
 ### Setting up the Locale
 Locale refers to the language that your operating system will use, as well as some
