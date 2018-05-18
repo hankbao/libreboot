@@ -242,11 +242,11 @@ Tested LCD panels: (working)
     works)
 -   BOE-Hydis HV150UX1-100 (15.1" 1600x1200) (P/N 42T0078 FRU 42T0079 or P/N
     41W1338 recommended for the inverter board)
+-   Samsung LTN141XA-L01 (14.1" 1024x768)
 
 Tested LCD panels: *not working yet (incompatible; see
 [../future/\#lcd\_i945\_incompatibility](../future/#lcd_i945_incompatibility))*
 
--   Samsung LTN141XA-L01 (14.1" 1024x768)
 -   LG-Philips LP150X09 (15.1" 1024x768)
 -   Samsung LTN150XG (15.1" 1024x768)
 -   LG-Philips LP150E06-A5K4 (15.1" 1400x1050) (also, not an official
