@@ -58,6 +58,12 @@ firmware and operating system preinstalled, *from the factory*.
 Website for pre-orders:
 <https://www.raptorcs.com/TALOSII/>
 
+They have 2 systems available:
+
+- [TALOS II Lite](https://secure.raptorcs.com/content/TL1BC1/purchase.html)
+  (this is the cheaper version)
+- [TALOS II](https://secure.raptorcs.com/content/TL2WK2/intro.html)
+
 NOTE: this isn't technically Libreboot, but the boot firmware is entirely free.
 
 This is the same company that ported the ASUS KFSN4-DRE, KGPE-D16 and KCMA-D8
