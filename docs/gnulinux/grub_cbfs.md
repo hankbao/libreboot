@@ -213,7 +213,7 @@ Or, replace it with this, if you are using a Debian-based distribution (e.g., Tr
 
     cryptomount -a
     set root='lvm/matrix-rootvol'
-    linux /vmlinuz root=/dev/mapper/matrix-rootvolcryptdevice=/dev/mapper/matrix-rootvol:root
+    linux /vmlinuz root=/dev/mapper/matrix-rootvol cryptdevice=/dev/mapper/matrix-rootvol:root
     initrd /initrd.img
 
 Remember, that these names come from the instructions to install GNU+Linux
