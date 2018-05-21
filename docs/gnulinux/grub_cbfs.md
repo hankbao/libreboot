@@ -164,7 +164,7 @@ using `flashrom`, making sure to save it in the `cbfstool` folder, inside **libr
 If you are told to specify the chip, add the option `-c {your chip}` to the command, like this:
 
     $ sudo flashrom -c MX25L6405 -p internal -r ~/Downloads/libreboot_util/\
-    >cbfstool/x86_64/cbfstool/x86_64/libreboot.rom
+    >cbfstool/x86_64/libreboot.rom
 
 Now you are ready to extract the GRUB configuration files from the ROM, and modify them the way you want.
 
