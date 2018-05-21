@@ -152,19 +152,17 @@ used by coreboot native graphics initialization.
 I'll choose **x200_8mb_usqwerty_vesafb.rom**; I'll copy the file (to the `cbfstool` directory),
 and rename it with one command:
 
-    $ mv "x200_8mb_usqwerty_vesafb.rom" ../cbfstool/x86_64/cbfstool/x86_64/libreboot.rom
+    $ mv "x200_8mb_usqwerty_vesafb.rom" ../cbfstool/x86_64/libreboot.rom
 
 #### 2. Create an Image from the Current ROM
 The simpler way to get a ROM image is to just create it from your current ROM,
 using `flashrom`, making sure to save it in the `cbfstool` folder, inside **libreboot\_util**:
 
-    $ sudo flashrom -p internal -r ~/Downloads/libreboot_util/cbfstool/\
-    >x86_64/cbfstool/x86_64/libreboot.rom
+    $ sudo flashrom -p internal -r ~/Downloads/libreboot_util/cbfstool/x86_64/libreboot.rom
 
 If you are told to specify the chip, add the option `-c {your chip}` to the command, like this:
 
-    $ sudo flashrom -c MX25L6405 -p internal -r ~/Downloads/libreboot_util/\
-    >cbfstool/x86_64/cbfstool/x86_64/libreboot.rom
+    $ sudo flashrom -c MX25L6405 -p internal -r ~/Downloads/libreboot_util/cbfstool/x86_64/libreboot.rom
 
 Now you are ready to extract the GRUB configuration files from the ROM, and modify them the way you want.
 
@@ -173,7 +171,7 @@ Now you are ready to extract the GRUB configuration files from the ROM, and modi
 You can check the contents of the ROM image, inside CBFS, using `cbfstool`.
 First, navigate to the cbfstool folder:
 
-    $ cd ~/Downloads/libreboot_util/cbfstool/x86_64/cbfstool/x86_64/
+    $ cd ~/Downloads/libreboot_util/cbfstool/x86_64/
 
 Then, run the `cbfstool` commmand, with the `print` option; this will display
 a list of all the files located in the ROM:
@@ -243,8 +241,7 @@ the main storage for **/boot/grub/libreboot\_grub.cfg** or **/grub/libreboot\_gr
 
 Therefore, we need to either copy **libreboot\_grub.cfg** to **/grub**, or to **/boot/grub**:
 
-    $ sudo cp ~/Downloads/libreboot_util/cbfstool/x86_64/cbfstool/x86_64/grubtest.cfg \
-    >/boot/grub    # or /grub
+    $ sudo cp ~/Downloads/libreboot_util/cbfstool/x86_64/grubtest.cfg /boot/grub    # or /grub
 
 Now, the next time we boot our computer, GRUB (in Libreboot) will automatically switch
 to this configuration file. *This means that you do not have to re-flash,
@@ -354,7 +351,7 @@ of **grubtest.cfg**, called **grub.cfg**.
 
 First, go to the `cbfstool` directory:
 
-    $ cd ~/Downloads/libreboot_util/cbfstool/x86_64/cbfstool/x86_64/
+    $ cd ~/Downloads/libreboot_util/cbfstool/x86_64/
 
 Then, create a copy of **grubest.cfg**, named **grub.cfg**:
 
