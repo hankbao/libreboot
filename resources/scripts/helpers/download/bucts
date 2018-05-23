@@ -37,7 +37,7 @@ rm -Rf "bucts/"
 # ------------------------------------------------------------------------------
 
 # download it using git
-git clone git://git.stuge.se/bucts.git
+git clone https://notabug.org/libreboot/bucts.git
 
 # modifications are required
 cd "bucts/"
