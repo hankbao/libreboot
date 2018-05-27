@@ -163,7 +163,9 @@ Now compare the 3 images:
 
     # sha512sum factory*.rom
 
-If the hashes match, then just copy one of them (the factory.rom) to a
+If the hashes match and if hex editor (like `dhex`) shows that
+they have valid contents (eg. it's not filled entirely with `0x00`/`0xFF`),
+then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable
 behaviour in the original firmware that could be replicated in coreboot
