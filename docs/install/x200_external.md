@@ -19,7 +19,7 @@ Flash chip size
 
 Run this command on x200 to find out flash chip model and its size:
 
-    # flashrom -p internal -V
+    # flashrom -p internal
 
 The X200S and X200 Tablet will use a WSON-8 flash chip, on the bottom of the
 motherboard (this requires removal of the motherboard). Not all X200S/X200T are
@@ -163,7 +163,9 @@ Now compare the 3 images:
 
     # sha512sum factory*.rom
 
-If the hashes match, then just copy one of them (the factory.rom) to a
+If the hashes match and if hex editor (like `dhex`) shows that
+they have valid contents (eg. it's not filled entirely with `0x00`/`0xFF`),
+then just copy one of them (the factory.rom) to a
 safe place (on a drive connected to another system, not the BBB). This
 is useful for reverse engineering work, if there is a desirable
 behaviour in the original firmware that could be replicated in coreboot
@@ -178,7 +180,7 @@ address to one that is correct for your system.
 
 Now flash it:
 
-    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom -V
+    # ./flashrom -p linux_spi:dev=/dev/spidev1.0,spispeed=512 -w path/to/libreboot/rom/image.rom
 
 ![](images/x200/disassembly/0015.jpg)
 
