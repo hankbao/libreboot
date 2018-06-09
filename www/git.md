@@ -13,6 +13,10 @@ You can submit your patches via
 Information about how the Libreboot project is governed is documented in our
 [general management guidelines](management.md).
 
+Libreboot development is done using the Git version control system.
+Refer to the [official Git documentation](https://git-scm.com/doc) if you don't
+know how to use Git.
+
 Editing the website and documentation, wiki-style
 -------------------------------------------------
 
