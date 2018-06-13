@@ -25,7 +25,7 @@ Overwrite the drive, writing your distro ISO to it with `dd`. For example, if we
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
 ## Prepare the USB drive in NetBSD
-[This page](https://wiki.netbsd.org/tutorials how_to_install_netbsd_from_an_usb_memory_stick/) on the NetBSD website shows how to create a NetBSD bootable USB drive, from within NetBSD itself. You should the `dd` method documented there. This will work with any GNU+Linux ISO image.
+[This page](https://wiki.netbsd.org/tutorials/how_to_install_netbsd_from_an_usb_memory_stick/) on the NetBSD website shows how to create a NetBSD bootable USB drive, from within NetBSD itself. You should the `dd` method documented there. This will work with any GNU+Linux ISO image.
 
 ## Prepare the USB drive in FreeBSD
 [This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.html) on the FreeBSD website shows how to create a bootable USB drive for installing FreeBSD. Use the `dd` method documented. This will work with any GNU+Linux ISO image.

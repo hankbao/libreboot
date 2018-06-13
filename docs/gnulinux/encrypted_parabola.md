@@ -102,7 +102,7 @@ You can either fill the header with zeroes, or with random data; again, I chose 
 Also, if you're using an SSD, there are a two things you should keep in mind:
 
 -    There are issues with TRIM; it's not enabled by default through LUKS,
-and there are security issues, if you do enable it. See [this page](https://wiki.archlinux.org/index.php/Dm-cryptSpecialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29) for more info.
+and there are security issues, if you do enable it. See [this page](https://wiki.archlinux.org/index.php/Dm-crypt#Specialties) for more info.
 -    Make sure to read [this article](https://wiki.archlinux.org/index.php/Solid_State_Drives),
 for information on managing SSD's in Arch Linux (the information applies to Parabola, as well).
 
@@ -381,7 +381,7 @@ for the LUKS passphrase, apply here as well. You will set this password with the
 
 ### Extra Security Tweaks
 There are some final changes that we can make to the installation, to make it
-significantly more secure; these are based on the [Security](https://wiki.archlinux.org/index.php/Securit) section of the Arch wiki.
+significantly more secure; these are based on the [Security](https://wiki.archlinux.org/index.php/Security) section of the Arch wiki.
 
 #### Key Strengthening
 We will want to open the configuration file for password settings, and increase

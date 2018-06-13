@@ -42,7 +42,7 @@
  * 
  * Info about Gbe region (read whole datasheet):
  * http://www.intel.co.uk/content/dam/doc/application-note/i-o-controller-hub-9m-82567lf-lm-v-nvm-map-appl-note.pdf
- * https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums
+ * https://web.archive.org/web/20150912070329/https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums
  */
 
 #include "ich9deblob.h"
