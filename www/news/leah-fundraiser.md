@@ -1,6 +1,6 @@
 % Help Leah, founder of Libreboot, get Gender Reassignment Surgery
 % Leah Rowe
-% 19 April 2017
+% 19 April 2018
 
 I spoke with Andrew Robbins and Swift Geek on #libreboot IRC. These are two
 other members of the core Libreboot community. This news post was submitted to
