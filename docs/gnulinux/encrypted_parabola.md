@@ -422,7 +422,7 @@ Edit configuration in `/etc/default/grub`, remembering to use UUID when poitning
 Use `blkid` to get list of devices with their respective UUIDs.
 Next generate grub.cfg with
 
-    # grub-mkconfig /boot/grub/grub.cfg
+    # grub-mkconfig -o /boot/grub/grub.cfg
     
 If you have separate `/boot` partition, don't forget to add `boot` symlink inside that points to current directory
 
