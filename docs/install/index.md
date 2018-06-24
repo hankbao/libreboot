@@ -62,10 +62,12 @@ they don't have to build anything from source on their own.
 The ROM images in each archive use the following at the end of the file
 name, if they are built with the GRUB payload: `*_*keymap*_*mode*.rom`
 
-Available `modes`: `vesafb` or `txtmode`. The `vesafb` ROM images
-are recommended, in most cases; `txtmode` ROM images come with
-MemTest86+, which requires text-mode instead of the usual framebuffer
-used by coreboot native graphics initialization.
+Available modes: vesafb or txtmode. The vesafb ROM images are recommended
+for regular use, but when flashing for the first time use txtmode version,
+as it comes with Memtest86+, which requires text-mode instead of the usual
+framebuffer used by coreboot native graphics initialization.
+Machine should be tested with Memtest86+ after each reassembly or changing
+from vendor bios to libreboot due to differences in raminit code.
 
 `keymap` can be one of several keymaps that keyboard supports (there are
 quite a few), which affects the keyboard layout configuration that is
