@@ -140,6 +140,15 @@ around this by running the following command:
 You can find *cbfstool* in the \_util archive with the libreboot release
 that you are using.
 
+What are the ata/ahci errors I see in libreboot's GRUB?
+-----------------------------------------------------------------------
+
+You can safely ignore those errors, they exist because we can't quiet down
+cryptomount command from `for` loop in libreboot's
+[grub.cfg](https://notabug.org/libreboot/libreboot/src/r20160907/resources/grub/config/menuentries/common.cfg#L66)
+It could be fixed in upstream grub by contributing patch that would add
+quiet flag to it.
+
 Hardware compatibility
 ======================
 
