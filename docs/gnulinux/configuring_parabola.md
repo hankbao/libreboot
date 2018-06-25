@@ -63,7 +63,7 @@ For more information related to `pacman`, review the following articles on the A
 
 *    [Configuring pacman](https://wiki.parabolagnulinux.org/Installation_Guide#Configure_pacman)
 *    [Using pacman](https://wiki.archlinux.org/index.php/Pacman)
-*    [Additional Repositories](https://wiki.parabolagnulinux.org/Official_Repositories>)
+*    [Additional Repositories](https://wiki.parabolagnulinux.org/Official_Repositories)
 
 ## Updating Parabola
 Parabola is kept up-to-date, using `pacman`. When you are updating Parabola,

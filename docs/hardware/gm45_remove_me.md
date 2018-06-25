@@ -418,7 +418,7 @@ region.
 
 According to the datasheet, it's supposed to add up to 0xBABA but can
 actually be others on the X200.
-<https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums>
+<https://web.archive.org/web/20150912070329/https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums>
 
 *"One of those engineers loves classic rock music, so they selected
 0xBABA"*

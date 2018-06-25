@@ -150,7 +150,7 @@ successfully. If not, just flash again.
     Pi](http://scruss.com/blog/2013/02/02/simple-adc-with-the-raspberry-pi/)
 -   [Flashing coreboot on a T60 with a Raspberry Pi -
     the\_unconventional's
-    blog](https://blogs.fsfe.org/the_unconventional/2015/05/08/flashing-coreboot-on-a-t60-with-a-raspberry-pi/)
+    blog](https://web.archive.org/web/20150709043222/http://blogs.fsfe.org:80/the_unconventional/2015/05/08/coreboot-t60-raspberry-pi/)
 -   *Pomona SOIC Clip flashing*
     -   [Arch Linux Wiki - Installing Arch Linux on
         Chromebook](https://wiki.archlinux.org/index.php/Chromebook)

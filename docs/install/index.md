@@ -169,7 +169,7 @@ ASUS KCMA-D8?
 -------------
 
 If you have the proprietary BIOS, you need to flash libreboot
-externally. See [kcma-d8.md](kgpe-d8.md).
+externally. See [kcma-d8.md](kcma-d8.md).
 
 If you already have coreboot or libreboot installed, without write
 protection on the flash chip, then you can do it in software (otherwise,
