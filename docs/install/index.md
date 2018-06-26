@@ -264,13 +264,13 @@ executables from the libreboot source code archives.
 
 How to update the flash chip contents:
 
-`$ sudo ./flash update `[`yourrom.rom`](#rom)
+`$ sudo ./flash update `[`yourrom.rom`](#rom)
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
- `$ sudo ./flash forceupdate `[`yourrom.rom`](#rom)
+ `$ sudo ./flash forceupdate `[`yourrom.rom`](#rom)
 
 You should see `Verifying flash... VERIFIED.` written at the end
 of the flashrom output. *Shut down* after you see this, and then boot
