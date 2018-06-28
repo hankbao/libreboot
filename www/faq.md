@@ -140,6 +140,15 @@ around this by running the following command:
 You can find *cbfstool* in the \_util archive with the libreboot release
 that you are using.
 
+What are the ata/ahci errors I see in libreboot's GRUB?
+-----------------------------------------------------------------------
+
+You can safely ignore those errors, they exist because we can't quiet down
+cryptomount command from `for` loop in libreboot's
+[grub.cfg](https://notabug.org/libreboot/libreboot/src/r20160907/resources/grub/config/menuentries/common.cfg#L66).
+It could be fixed in upstream grub by contributing patch that would add
+quiet flag to it.
+
 Hardware compatibility
 ======================
 
@@ -900,10 +909,8 @@ connect SATA HDDs via USB. Libreboot documents how to install several
 distributions with full disk encryption. You can adapt these for use
 with USB drives:
 
--   [Full disk encryption with
-    Debian](../docs/gnulinux/encrypted_debian.md)
--   [Full disk encryption with
-    Parabola](../docs/gnulinux/encrypted_parabola.md)
+-   [Full disk encryption with Debian](../docs/gnulinux/encrypted_debian.md)
+-   [Full disk encryption with Parabola](../docs/gnulinux/encrypted_parabola.md)
 
 The current theory (unproven) is that this will at least prevent
 malicious drives from wrongly manipulating data being read from or
@@ -1034,3 +1041,32 @@ Are other operating systems compatible?
 
 Unknown. Probably not.
 
+Where can I learn more about electronics
+==========================================
+
+* Basics of soldering and rework by PACE  
+    Both series of videos are mandatory regardless of your soldering skill.
+    * [Basic Soldering](https://www.youtube.com/watch?v=vIT4ra6Mo0s&list=PL926EC0F1F93C1837)
+    * [Rework and Repair](https://www.youtube.com/watch?v=HKX-GBe_lUI&list=PL958FF32927823D12)
+* [edX course on basics of electronics](https://www.edx.org/course/circuits-electronics-1-basic-circuit-mitx-6-002-1x-0)  
+    In most countries contents of this course is covered during
+    middle and high school. It will also serve well to refresh your memory
+    if you haven't used that knowledge ever since.
+* Impedance intro
+    * [Similiarities of Wave Behavior](https://www.youtube.com/watch?v=DovunOxlY1k)
+    * [Reflections in tranmission line](https://www.youtube.com/watch?v=y8GMH7vMAsQ)
+    * Stubs:
+        * [Wikipedia article on stubs](https://en.wikipedia.org/wiki/Stub_(electronics))
+        * [Polar Instruments article on stubs](http://www.polarinstruments.com/support/si/AP8166.html)  
+        With external SPI flashing we only care about unintended PCB stubs
+* Other YouTube channels with useful content about electronics
+    * [EEVblog](https://www.youtube.com/channel/UC2DjFE7Xf11URZqWBigcVOQ)
+    * [Louis Rossmann](https://www.youtube.com/channel/UCl2mFZoRqjw_ELax4Yisf6w)
+    * [mikeselectricstuff](https://www.youtube.com/channel/UCcs0ZkP_as4PpHDhFcmCHyA)
+    * [bigclive](https://www.youtube.com/channel/UCtM5z2gkrGRuWd0JQMx76qA)
+    * [ElectroBOOM](https://www.youtube.com/channel/UCJ0-OtVpF0wOKEqT2Z1HEtA)
+    * [Jeri Ellsworth](https://www.youtube.com/user/jeriellsworth/playlists)
+* Boardview files can be open with [OpenBoardview](https://github.com/OpenBoardView/OpenBoardView),
+which is free software under MIT license.
+
+Use of youtube-dl with mpv would be recommended for youtube links
