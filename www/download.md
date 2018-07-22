@@ -46,9 +46,6 @@ of Kent, UK)
 <https://mirror.math.princeton.edu/pub/libreboot/> (Princeton
 university, USA)
 
-<https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
-Project, USA)
-
 <https://mirror.sugol.org/libreboot/> (sugol.org)
 (formerly nephelai.zanity.net/mirror/libreboot)
 
