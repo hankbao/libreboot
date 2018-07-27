@@ -49,6 +49,11 @@ git reset --hard e54c99aaff5e5f6f5d3b06028506c57e66d8ef77
 # Replace "GNU GRUB version" in GRUB screen with "FREE AS IN FREEDOM"
 git am "../resources/grub/patch/0001-grub-core-normal-main.c-Display-FREE-AS-IN-FREEDOM-n.patch"
 
+# Enable reproducible builds
+git am "../resources/grub/patch/reproducible/0001-mkstandalone-add-argument-fixed-time-to-override-mti.patch"
+git am "../resources/grub/patch/reproducible/0002-mkrescue-add-argument-fixed-time-to-get-reproducible.patch"
+git am "../resources/grub/patch/reproducible/0003-Makefile-use-FIXED_TIMESTAMP-for-mkstandalone-if-set.patch"
+
 cd "../"
 
 # Also download SeaBIOS, which we use with GRUB, to implement SeaGRUB

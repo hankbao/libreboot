@@ -39,6 +39,9 @@ Quad-core CPUs
 Very likely to be compatible, but requires hardware modification.
 Based on info from German forum post about installing Core Quad CPU on T500 found in coreboot mailing list. Currently work in progress and no guide available.
 
+Q9100 is compatible and confirmed working (after hw mod), as reported by users in the IRC
+channel
+
 - [Coreboot mailing list post](https://mail.coreboot.org/pipermail/coreboot/2016-November/082463.html)
 - [German forum post about install Core Quad on T500](https://thinkpad-forum.de/threads/199129)
 
@@ -359,11 +362,12 @@ Not to be confused with wifi (wifi is fine).
 Memory
 ======
 
-You need DDR3 SODIMM PC3-8500 RAM installed, in matching pairs
-(speed/size). Non-matching pairs won't work. You can also install a
+DDR3 SO-DIMM sticks will work at PC3-8500 clock and voltage, so make sure that
+timings of sticks are matched while they operate at its frequency.
+Non-matching pairs won't work. You can also install a
 single module (meaning, one of the slots will be empty) in slot 0.
 
-Make sure that the RAM you buy is the 2Rx8 density.
+Make sure that the RAM you buy has 2Rx8 arrangement when buying 4GiB modules.
 
 [This page](http://www.forum.thinkpads.com/viewtopic.php?p=760721) might
 be useful for RAM compatibility info (note: coreboot raminit is

@@ -62,10 +62,12 @@ they don't have to build anything from source on their own.
 The ROM images in each archive use the following at the end of the file
 name, if they are built with the GRUB payload: `*_*keymap*_*mode*.rom`
 
-Available `modes`: `vesafb` or `txtmode`. The `vesafb` ROM images
-are recommended, in most cases; `txtmode` ROM images come with
-MemTest86+, which requires text-mode instead of the usual framebuffer
-used by coreboot native graphics initialization.
+Available modes: vesafb or txtmode. The vesafb ROM images are recommended
+for regular use, but when flashing for the first time use txtmode version,
+as it comes with Memtest86+, which requires text-mode instead of the usual
+framebuffer used by coreboot native graphics initialization.
+Machine should be tested with Memtest86+ after each reassembly or changing
+from vendor bios to libreboot due to differences in raminit code.
 
 `keymap` can be one of several keymaps that keyboard supports (there are
 quite a few), which affects the keyboard layout configuration that is
@@ -169,7 +171,7 @@ ASUS KCMA-D8?
 -------------
 
 If you have the proprietary BIOS, you need to flash libreboot
-externally. See [kcma-d8.md](kgpe-d8.md).
+externally. See [kcma-d8.md](kcma-d8.md).
 
 If you already have coreboot or libreboot installed, without write
 protection on the flash chip, then you can do it in software (otherwise,
@@ -244,7 +246,7 @@ Flash chip size
 
 Use this to find out:
 
-    # flashrom -p internal -V
+    # flashrom -p internal
 
 All good?
 ---------
@@ -264,13 +266,13 @@ executables from the libreboot source code archives.
 
 How to update the flash chip contents:
 
-`$ sudo ./flash update `[`yourrom.rom`](#rom)
+`$ sudo ./flash update `[`yourrom.rom`](#rom)
 
 Ocassionally, coreboot changes the name of a given board. If flashrom
 complains about a board mismatch, but you are sure that you chose the
 correct ROM image, then run this alternative command:
 
- `$ sudo ./flash forceupdate `[`yourrom.rom`](#rom)
+ `$ sudo ./flash forceupdate `[`yourrom.rom`](#rom)
 
 You should see `Verifying flash... VERIFIED.` written at the end
 of the flashrom output. *Shut down* after you see this, and then boot
@@ -282,6 +284,8 @@ ThinkPad X60/T60: Initial installation guide (if running the proprietary firmwar
 *This is for the ThinkPad X60 and T60 while running Lenovo BIOS. If you
 already have coreboot or libreboot running, then go to
 [\#flashrom](#flashrom) instead!*
+
+*If you can, make sure that RTC battery is not discharged. Discharged RTC battery may lead to brick due to not holding BUC register value*
 
 *If you are flashing a Lenovo ThinkPad T60, be sure to read
 [../hardware/\#supported\_t60\_list](../hardware/#supported_t60_list)*
@@ -303,7 +307,7 @@ the flashing script. do this: *
 
 The first half of the procedure is as follows:
 
-`$ sudo ./flash i945lenovo_firstflash `[`yourrom.rom`](#rom)
+`$ sudo ./flash i945lenovo_firstflash `[`yourrom.rom`](#rom)
 
 You should see within the output the following:
 
@@ -324,17 +328,17 @@ Seeing this means that the operation was a *resounding* success!
 See this link for more details:
 <http://thread.gmane.org/gmane.linux.bios.flashrom/575>.
 
-If the above is what you see, then *SHUT DOWN*. Wait a few seconds,
+If the above is what you see, then *SHUT DOWN* (but do not remove power, especially RTC battery). Wait a few seconds,
 and then boot; libreboot is running, but there is a 2nd procedure
 needed (see below).
 
 When you have booted up again, you must also do this:
 
-`$ sudo ./flash i945lenovo_secondflash `[`yourrom.rom`](#rom)
+`$ sudo ./flash i945lenovo_secondflash `[`yourrom.rom`](#rom)
 
 If flashing fails at this stage, try the following:
 
-`$ sudo ./flashrom/i686/flashrom -p internal:laptop=force_I_want_a_brick -w `[`yourrom.rom`](#rom)
+`$ sudo ./flashrom/i686/flashrom -p internal:laptop=force_I_want_a_brick -w `[`yourrom.rom`](#rom)
 
 You should see within the output the following:
 
@@ -370,7 +374,7 @@ with your device.
 
 Use this flashing script, to install libreboot:
 
-`$ sudo ./flash i945apple_firstflash `[`yourrom.rom`](#rom)
+`$ sudo ./flash i945apple_firstflash `[`yourrom.rom`](#rom)
 
 You should also see within the output the following:
 

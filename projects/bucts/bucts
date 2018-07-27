@@ -24,18 +24,6 @@ usage() {
 	project_usage_arguments "$project" "$@"
 }
 
-download() {
-	local repository="$project"
-
-	project_download_git "$project" "$repository" 'git://git.stuge.se/bucts.git' "$@"
-}
-
-download_check() {
-	local repository="$project"
-
-	project_download_check_git "$project" "$repository" "$@"
-}
-
 extract() {
 	local repository="$project"
 
@@ -95,14 +83,14 @@ release() {
 	local repository="$project"
 
 	project_release_install_archive "$project" "$TOOLS" "$@"
-	project_release_sources_git "$project" "$repository" "$@"
+	project_release_sources_archive_create "$project" "$@"
 }
 
 release_check() {
 	local repository="bucts"
 
 	project_release_install_archive_check "$project" "$TOOLS" "$@"
-	project_release_check_sources_git "$project" "$repository" "$@"
+	project_release_sources_archive_exists_check "$project" "$@"
 }
 
 clean() {

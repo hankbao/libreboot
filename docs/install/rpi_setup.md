@@ -150,7 +150,7 @@ successfully. If not, just flash again.
     Pi](http://scruss.com/blog/2013/02/02/simple-adc-with-the-raspberry-pi/)
 -   [Flashing coreboot on a T60 with a Raspberry Pi -
     the\_unconventional's
-    blog](https://blogs.fsfe.org/the_unconventional/2015/05/08/flashing-coreboot-on-a-t60-with-a-raspberry-pi/)
+    blog](https://web.archive.org/web/20150709043222/http://blogs.fsfe.org:80/the_unconventional/2015/05/08/coreboot-t60-raspberry-pi/)
 -   *Pomona SOIC Clip flashing*
     -   [Arch Linux Wiki - Installing Arch Linux on
         Chromebook](https://wiki.archlinux.org/index.php/Chromebook)
@@ -283,10 +283,10 @@ your PI.
 Power on your Pi, and run the following. Ensure you swap out
 "your\_chip\_name" with the proper name/model of your chip. Check that
 it can be read successfully. If you cannot read the chip and receive an
-error similar to "no EEPROM Detected" or "0x0 Chip detected" then
-you may want to try powering off your PI, and switching the two pins
-which are connected to the IO ports. I.E. Connect pins (clip)8 to (pi)19
-and pins (clip)15 to (pi)21
+error similar to "no EEPROM Detected" then
+you may want to make sure that MISO/MOSI are not swapped around, check
+with multimeter whether voltage is right and that ground is connected
+between "programmer" and target.
 
     pi# cd ~/flashrom
 

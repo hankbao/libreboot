@@ -130,6 +130,8 @@ You can set values:
 
     sudo intel_reg write 0x00061254 your_value_in_C_hex_format
 
+NOTE: on older versions of this utility, use `intel_reg_write` instead.
+
 The value set has the following structure: bits \[31:16\] is PWM
 divider. PWM / PWM\_divider = frequency bits \[15:0\] is the duty cycle
 and determines the portion of the backlight modulation frequency. A
@@ -163,6 +165,8 @@ highest good working value.
 Next this value should be set at boot: either add
 
     intel_reg write 0x00061254 &ltyour_ideal_value>
+
+NOTE: on older versions of this utility, use `intel_reg_write` instead.
 
 before exit 0 in /etc/rc.local or create a systemd service file
 /etc/systemd/system/backlight.service:

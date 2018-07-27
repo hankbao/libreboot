@@ -28,13 +28,14 @@ List of members in the core management team
 In alphabetical order:
 
 - Andrew Robbins is a core developer. IRC nick **and\_who**, email
-  <mailto:andrew@libreboot.org>
+  [andrew@libreboot.org](mailto:andrew@libreboot.org)
 - Paul Kocialkowski is a core developer. IRC nick **paulk-X** 
-  (**X** is variable, and changes over time), email <mailto:paul@libreboot.org>
+  (**X** is variable, and changes over time), email
+  [paul@libreboot.org](mailto:paul@libreboot.org)
 - Leah Rowe is a core developer (and project founder). IRC nick
-  **\_4of7**, email <mailto:leah@libreboot.org>
+  **unoccupied**, email [leah@libreboot.org](mailto:leah@libreboot.org)
 - Swift Geek is a core developer. IRC nick **swiftgeek**, email
-  <mailto:swiftgeek@libreboot.org>
+  [swiftgeek@libreboot.org](mailto:swiftgeek@libreboot.org)
 
 Generally, the people on this list have these responsibilities:
 
@@ -56,8 +57,8 @@ These people are not part of core management, but still have influence.
 Other IRC channel moderators:
 
 - IRC nick **specing** on the Libreboot IRC channel.
-- IRC nick **pizzaiolo** on the Libreboot IRC channel.
-- IRC nick **jxself** on the Libreboot IRC channel.
+
+specing occasionally provides assistance, and moderates the IRC channel.
 
 Additionally, Libreboot has a separate set of operators on the subreddit
 r/libreboot. Check Reddit for more information. Actions taken by moderators

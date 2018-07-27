@@ -17,7 +17,9 @@ GPG signing key
 
 Releases are signed with GPG.
 
-    $ gpg --recv-keys 0x05E8C5B2
+    gpg --recv-keys 0x969A979505E8C5B2
+
+Full key fingerprint: CDC9 CAE3 2CB4 B7FC 84FD  C804 969A 9795 05E8 C5B2
 
 The GPG key can also be downloaded with this exported dump of the
 pubkey: [lbkey.asc](lbkey.asc).
@@ -28,8 +30,10 @@ pubkey: [lbkey.asc](lbkey.asc).
 Do you have a mirror?
 ---------------------
 
-Let us know! We will add it here. Instructions for how to mirror
-libreboot releases can be found [on the mirrors](#https).
+Let us know! We will add it here.
+
+If you wish to create a new mirror of the Libreboot releases, you can use
+*rsync*. See: [rsync mirror list](#rsync).
 
 HTTPS mirrors {#https}
 -------------
@@ -42,23 +46,30 @@ of Kent, UK)
 <https://mirror.math.princeton.edu/pub/libreboot/> (Princeton
 university, USA)
 
-<https://mirrors.peers.community/mirrors/libreboot/> (Peers Community
-Project, USA)
+<https://mirror.sugol.org/libreboot/> (sugol.org)
+(formerly nephelai.zanity.net/mirror/libreboot)
 
 <https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
 
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
 
-<https://nephelai.zanity.net/mirror/libreboot/> (zanity.net, New Zealand)
-
 <https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
+
+<https://mirror.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
 <https://mirror-hk.koddos.net/libreboot/> (koddos.net, Hong Kong)
 
 RSYNC mirrors {#rsync}
 -------------
 
-Useful for mirroring Libreboot's entire set of release archives.
+Useful for mirroring Libreboot's entire set of release archives. You can put
+an rsync command into crontab and pull the files into a directory on your
+web server.
+
+*It is highly recommended that you use the libreboot.org mirror*, if you wish
+to host an official mirror. Otherwise, if you simply want to create your own
+local mirror, you should use one of the other mirrors, which sync from
+libreboot.org.
 
 <rsync://rsync.libreboot.org/mirrormirror/> (Libreboot project official mirror)
 
@@ -68,8 +79,6 @@ UK)
 <rsync://mirror.math.princeton.edu/pub/libreboot/> (Princeton university, USA)
 
 <rsync://ftp.linux.ro/libreboot/> (linux.ro, Romania)
-
-<rsync://libreboot.mirror.si/libreboot/>
 
 <rsync://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
 
@@ -93,10 +102,6 @@ if using HTTPS.
 
 <http://mirror.helium.in-berlin.de/libreboot/> (in-berlin.de, Germany)
 
-<http://libreboot.mirror.si/> (mirror.si, Slovenia)
-
-<http://ginette.swordarmor.fr/libreboot/> (swordarmor.fr, France)
-
 FTP mirrors {#ftp}
 -----------
 
@@ -106,8 +111,6 @@ WARNING: FTP is also unencrypted, like HTTP. The same risks are present.
 of Kent, UK)
 
 <ftp://ftp.linux.ro/libreboot/> (linux.ro, Romania)
-
-<ftp://libreboot.mirror.si/libreboot> (mirror.si, Slovenia)
 
 Statically linked
 ------------------

@@ -25,7 +25,7 @@ Overwrite the drive, writing your distro ISO to it with `dd`. For example, if we
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
 ## Prepare the USB drive in NetBSD
-[This page](https://wiki.netbsd.org/tutorials how_to_install_netbsd_from_an_usb_memory_stick/) on the NetBSD website shows how to create a NetBSD bootable USB drive, from within NetBSD itself. You should the `dd` method documented there. This will work with any GNU+Linux ISO image.
+[This page](https://wiki.netbsd.org/tutorials/how_to_install_netbsd_from_an_usb_memory_stick/) on the NetBSD website shows how to create a NetBSD bootable USB drive, from within NetBSD itself. You should the `dd` method documented there. This will work with any GNU+Linux ISO image.
 
 ## Prepare the USB drive in FreeBSD
 [This page](https://www.freebsd.org/doc/handbook/bsdinstall-pre.html) on the FreeBSD website shows how to create a bootable USB drive for installing FreeBSD. Use the `dd` method documented. This will work with any GNU+Linux ISO image.
@@ -53,18 +53,23 @@ Make sure that the device isn't mounted, with `doas`; if it is, this command wil
 That's it! You should now be able to boot the installer from your USB drive (the instructions for doing so will be given later).
 
 ## Debian or Devuan net install
-1. Download the Debian or Devuan net installer. You can download the Debian ISO from [the Debian homepage](https://www.debian.org/), or the Devuan ISO from [the Devuan homepage](https://www.devuan.org/).
+Download the Debian or Devuan net installer. You can download the Debian ISO
+from [the Debian homepage](https://www.debian.org/), or the Devuan ISO from
+[the Devuan homepage](https://www.devuan.org/).
 
-2. Create a bootable USB, using the commands in *Prepare the USB Drive in GNU+Linux*, above.
+Secondly, create a bootable USB drive using the commands in
+[#prepare-the-usb-drive-in-gnulinux](#prepare-the-usb-drive-in-gnulinux).
 
-3. Boot the USB, and enter these commands in the GRUB terminal (for 64-bit Intel or AMD):
+Thirdly, boot the USB and enter these commands in the GRUB terminal
+(for 64-bit Intel or AMD):
 
     grub> set root='usb0'
     grub> linux /install.amd/vmlinuz
     grub> initrd /install.amd/initrd.gz
     grub> boot
 
-4. If you are on a 32-bit system (e.g. some Thinkpad X60's), you will need to use these commands:
+If you are on a 32-bit system (e.g. some Thinkpad X60's) then you will need to
+use these commands instead:
 
     grub> set root='usb0'
     grub> linux /install.386/vmlinuz

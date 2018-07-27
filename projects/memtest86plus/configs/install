@@ -1,1 +1,2 @@
 memtest:memtest.elf
+memtest.bin:memtest.img

@@ -36,12 +36,11 @@ libreboot is fully free software, where anyone can contribute or inspect its
 code.
 
 Libreboot is faster, more secure and more reliable than most non-free
-firmware, and can provide many advanced feature, like encrypted
-/boot/, GPG signature checking before booting your kernel, ability to
-load an OS *from the flash chip*, and more.
+firmware. Libreboot provides many advanced features, like encrypted
+/boot/, GPG signature checking before booting your kernel and more!
 
 Libreboot's main upstream provider is [coreboot](https://www.coreboot.org/),
 which we deblob. We upstream our custom patches to projects like coreboot,
 depthcharge, GRUB, and flashrom where possible. Together, we provide an
-automated build and installation system with nontechnical documentation,
-allowing Libreboot to be widely used. 
+automated build and installation system with non-technical documentation,
+allowing Libreboot to be widely used.

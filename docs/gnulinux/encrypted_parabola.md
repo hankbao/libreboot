@@ -3,6 +3,8 @@ title: Installing Parabola or Arch GNU+Linux-Libre, with Full-Disk Encryption (i
 x-toc-enable: true
 ...
 
+Also see:
+[Installing Hyperbola GNU+Linux, with Full-Disk Encryption (including /boot)](https://wiki.hyperbola.info/en:guide:encrypted_installation)
 
 This guide covers how to install Parabola GNU+Linux-Libre, with full disk encryption,
 including **/boot** (the boot directory). On most systems, **/boot** has
@@ -83,7 +85,9 @@ if it's not new, then there are two ways to handle it:
 you can either choose to fill it with zeroes or random data; I chose random data (e.g., `urandom`),
 because it's more secure. Depending on the size of the drive, this could take a while to complete:
 
-    `# dd if=/dev/urandom of=/dev/sdX; sync`
+    ~~~
+    # dd if=/dev/urandom of=/dev/sdX; sync
+    ~~~
 
 2. If the drive were previously encrypted, all you need to do is wipe the LUKS header.
 The size of the header depends upon the specific model of the hard drive;
@@ -91,12 +95,14 @@ you can find this information by doing some research online.
 Refer to this [article](https://www.lisenet.com/2013/luks-add-keys-backup-and-restore-volume-header/), for more information about LUKS headers.
 You can either fill the header with zeroes, or with random data; again, I chose random data, using `urandom`:
 
-    `# head -c 3145728 /dev/urandom > /dev/sdX; sync`
+    ~~~
+    # head -c 3145728 /dev/urandom > /dev/sdX; sync
+    ~~~
 
 Also, if you're using an SSD, there are a two things you should keep in mind:
 
 -    There are issues with TRIM; it's not enabled by default through LUKS,
-and there are security issues, if you do enable it. See [this page](https://wiki.archlinux.org/index.php/Dm-cryptSpecialties#Discard.2FTRIM_support_for_solid_state_drives_.28SSD.29) for more info.
+and there are security issues, if you do enable it. See [this page](https://wiki.archlinux.org/index.php/Dm-crypt#Specialties) for more info.
 -    Make sure to read [this article](https://wiki.archlinux.org/index.php/Solid_State_Drives),
 for information on managing SSD's in Arch Linux (the information applies to Parabola, as well).
 
@@ -192,11 +198,15 @@ equally cleverly named as **rootvol**.
 Also, make sure to [choose an appropriate swap size](http://www.linux.com/news/software/applications/8208-all-about-linux-swap-space)
 (e.g., **2G** refers to two gigabytes; change this however you see fit):
 
-    `# lvcreate -L 2G matrix -n swapvol`
+    ~~~
+    # lvcreate -L 2G matrix -n swapvol
+    ~~~
 
 2. Now, we will create a single, large partition in the rest of the space, for **rootvol**:
 
-    `# lvcreate -l +100%FREE matrix -n rootvol`
+    ~~~
+    # lvcreate -l +100%FREE matrix -n rootvol
+    ~~~
 
 You can also be flexible here, for example you can specify a **/boot**, a **/**,
 a **/home**, a **/var**, or a **/usr** volume. For example, if you will be running a
@@ -274,7 +284,7 @@ directory to the one you created in the previous steps, so that you can modify f
 and install software onto it, as if it were the host operating system.
 
 To `chroot` into your installation, follow the instructions [on the
-Prabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
+Parabola beginner's guide](https://wiki.parabola.nu/Beginners%27_guide#Chroot_and_configure_the_base_system).
 
 ### Setting up the Locale
 Locale refers to the language that your operating system will use, as well as some
@@ -313,7 +323,11 @@ There are several modifications that we need to make to the file:
       Make sure to separate each module by one space.
 
 2.  Change the value of the uncommented `HOOKS` line to the following:
-    “`base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown`”;
+
+    ~~~
+    base udev autodetect modconf block keyboard keymap consolefont encrypt lvm2 filesystems fsck shutdown
+    ~~~
+
     here's what each module does:
 
     * `keymap` adds to *initramfs* the keymap that you specified in **/etc/vconsole.conf**
@@ -367,7 +381,7 @@ for the LUKS passphrase, apply here as well. You will set this password with the
 
 ### Extra Security Tweaks
 There are some final changes that we can make to the installation, to make it
-significantly more secure; these are based on the [Security](https://wiki.archlinux.org/index.php/Securit) section of the Arch wiki.
+significantly more secure; these are based on the [Security](https://wiki.archlinux.org/index.php/Security) section of the Arch wiki.
 
 #### Key Strengthening
 We will want to open the configuration file for password settings, and increase
@@ -408,7 +422,7 @@ Edit configuration in `/etc/default/grub`, remembering to use UUID when poitning
 Use `blkid` to get list of devices with their respective UUIDs.
 Next generate grub.cfg with
 
-    # grub-mkconfig /boot/grub/grub.cfg
+    # grub-mkconfig -o /boot/grub/grub.cfg
     
 If you have separate `/boot` partition, don't forget to add `boot` symlink inside that points to current directory
 

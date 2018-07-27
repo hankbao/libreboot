@@ -6,6 +6,63 @@ x-toc-enable: true
 Important issues
 ================
 
+Is the Libreboot project still active?
+-------------------------------------------
+
+Yes! The [git repository](https://notabug.org/libreboot/libreboot) shows all of
+the work that we're currently doing. Libreboot is quite active.
+
+So when is the next version of Libreboot coming out?
+-------------------------------------------------------
+
+Short answer: It's out when it's out. If you want to help out and submit
+patches, refer to [the Git page](git.md).
+
+We don't issue ETAs.
+
+Long answer:
+
+We've been re-writing the entire Libreboot build system from scratch, since
+the previous release. This has taken longer than we expected, but the new
+build system is reaching maturity. We are polishing it.
+
+Once the new build system is stable, our next priority is ensuring that all
+currently supported build targets build properly in Libreboot.
+
+After that, the priority is to make sure that all current boards in Libreboot
+use the most up to date revision of coreboot, with all of the most recent fixes
+and improvements. Testing those boards will then be a matter of peer review,
+reaching out to the entire community via alpha/beta/RC releases.
+
+Generally, all major release-blocking issues must be addressed before a new
+release can be issued. See:
+<https://notabug.org/libreboot/libreboot/issues>
+
+The most important tasks now are as follows:
+
+- Study the build system of Libreboot (written in BASH), and make fixes to it.
+- Work on new improvements and help with testing once ROMs build for all
+  boards, when the build system is stable.
+- In particular, there are several new boards in coreboot that we can add to
+  Libreboot, as documented on the Libreboot bug tracker. These will also have
+  to be added, and fully tested. Instructions for setting up hardware-based
+  flashing tools can be found in
+  [the Libreboot installation guides](docs/install/)
+- Bugs! Report bugs! <https://notabug.org/libreboot/libreboot/issues>
+- A few new board ports will also come in handy ;)
+  If you've got the skills, we'd really appreciate that. Port them to coreboot
+  first, or make existing coreboot targets work without binary blobs.
+
+More generally:
+
+- Tell your friends about Libreboot! Libreboot wants to liberate as many people
+  as possible.
+- If you have ways to improve the documentation, you can do that too.
+  Refer to [the Git page](git.md) for instructions on submitting patches to the
+  documentation.
+- Encourage companies, or any persons with the skills/resources, to get
+  involved with Libreboot development.
+
 What version of libreboot do I have?
 ----------------------------------------------------------------
 
@@ -82,6 +139,15 @@ around this by running the following command:
 
 You can find *cbfstool* in the \_util archive with the libreboot release
 that you are using.
+
+What are the ata/ahci errors I see in libreboot's GRUB?
+-----------------------------------------------------------------------
+
+You can safely ignore those errors, they exist because we can't quiet down
+cryptomount command from `for` loop in libreboot's
+[grub.cfg](https://notabug.org/libreboot/libreboot/src/r20160907/resources/grub/config/menuentries/common.cfg#L66).
+It could be fixed in upstream grub by contributing patch that would add
+quiet flag to it.
 
 Hardware compatibility
 ======================
@@ -566,6 +632,9 @@ SPI flash chips can be programmed with the [BeagleBone
 Black](../docs/install/bbb_setup.md) or the [Raspberry
 Pi](../docs/install/rpi_setup.md).
 
+It's possible to use a 16-pin SOIC test clip on an 8-pin SOIC chip, if you
+align the pins properly. The connection is generally more sturdy.
+
 How do I set a boot password?
 -------------------------------------------------------------------
 
@@ -695,23 +764,23 @@ project.
 
 ### External GPUs
 
-The Video BIOS is present on most video hardware. On all current
-libreboot systems, this is implemented using free software. The Video
-BIOS is responsible for initializing any sort of visual display; without
-it, you'd have what's called a *headless* system.
-
-For integrated graphics, the VBIOS is usually embedded as an *option
-ROM* in the main boot firmware. For external graphics, the VBIOS is
+The Video BIOS is present on most video cards. For integrated graphics,
+the VBIOS (special kind of OptionROM) is usually embedded
+in the main boot firmware. For external graphics, the VBIOS is
 usually on the graphics card itself. This is usually proprietary; the
-only difference is that SeaBIOS executes it (alternatively, you embed it
+only difference is that SeaBIOS can execute it (alternatively, you embed it
 in a coreboot ROM image and have coreboot executes it, if you use a
 different payload, such as GRUB).
 
-We're going to tentatively say no, they're not OK. Unless you're
-actively working to replace the VBIOS, or find out how to get a visual
-display without it (possible in some cases, if the kernel driver can be
-modified to work without it, possibly only needing certain
-non-executable data).
+On current libreboot systems, instead of VBIOS, coreboot native GPU init is used,
+which is currently only implemented for Intel GPUs.
+Other cards with proper KMS drivers can be initialized once Linux boots,
+but copy of VBIOS may be still needed to fetch proper VRAM frequency
+and other similar parameters (without executing VBIOS code).
+
+In configurations where SeaBIOS and native GPU init are used together,
+a special shim VBIOS is added that uses coreboot linear framebuffer.
+
 
 ### EC (embedded controller) firmware 
 
@@ -737,8 +806,8 @@ libreboot. See: <https://github.com/lynxis/h8s-ec> (not ready yet).
 Most (all?) chromebooks have free EC firmware. Libreboot is currently
 looking into supporting a few ARM-based chromebooks.
 
-EC is only present on laptops. On desktop/server boards it is absent
-(not required).
+EC is present on nearly all laptops. Other devices use, depending on complexity,
+either EC or variant with firmware in Mask ROM - SuperIO.
 
 ### HDD/SSD firmware 
 
@@ -840,10 +909,8 @@ connect SATA HDDs via USB. Libreboot documents how to install several
 distributions with full disk encryption. You can adapt these for use
 with USB drives:
 
--   [Full disk encryption with
-    Debian](../docs/gnulinux/encrypted_debian.md)
--   [Full disk encryption with
-    Parabola](../docs/gnulinux/encrypted_parabola.md)
+-   [Full disk encryption with Debian](../docs/gnulinux/encrypted_debian.md)
+-   [Full disk encryption with Parabola](../docs/gnulinux/encrypted_parabola.md)
 
 The current theory (unproven) is that this will at least prevent
 malicious drives from wrongly manipulating data being read from or
@@ -952,6 +1019,14 @@ Absolutely! It is well-tested in libreboot, and highly recommended. See
 Any recent distribution should work, as long as it uses KMS (kernel mode
 setting) for the graphics.
 
+Fedora won't boot? (may also be applicable to Redhat/CentOS)
+-----------------------------------------------------------
+
+On Fedora, by default the grub.cfg tries to boot linux in 16-bit mode. You
+just have to modify Fedora's GRUB configuration.
+Refer to [the GNU+Linux page](docs/gnulinux/index.md#fedora-wont-boot).
+
+
 Can I use BSD?
 ----------------------------------
 
@@ -966,3 +1041,32 @@ Are other operating systems compatible?
 
 Unknown. Probably not.
 
+Where can I learn more about electronics
+==========================================
+
+* Basics of soldering and rework by PACE  
+    Both series of videos are mandatory regardless of your soldering skill.
+    * [Basic Soldering](https://www.youtube.com/watch?v=vIT4ra6Mo0s&list=PL926EC0F1F93C1837)
+    * [Rework and Repair](https://www.youtube.com/watch?v=HKX-GBe_lUI&list=PL958FF32927823D12)
+* [edX course on basics of electronics](https://www.edx.org/course/circuits-electronics-1-basic-circuit-mitx-6-002-1x-0)  
+    In most countries contents of this course is covered during
+    middle and high school. It will also serve well to refresh your memory
+    if you haven't used that knowledge ever since.
+* Impedance intro
+    * [Similiarities of Wave Behavior](https://www.youtube.com/watch?v=DovunOxlY1k)
+    * [Reflections in tranmission line](https://www.youtube.com/watch?v=y8GMH7vMAsQ)
+    * Stubs:
+        * [Wikipedia article on stubs](https://en.wikipedia.org/wiki/Stub_(electronics))
+        * [Polar Instruments article on stubs](http://www.polarinstruments.com/support/si/AP8166.html)  
+        With external SPI flashing we only care about unintended PCB stubs
+* Other YouTube channels with useful content about electronics
+    * [EEVblog](https://www.youtube.com/channel/UC2DjFE7Xf11URZqWBigcVOQ)
+    * [Louis Rossmann](https://www.youtube.com/channel/UCl2mFZoRqjw_ELax4Yisf6w)
+    * [mikeselectricstuff](https://www.youtube.com/channel/UCcs0ZkP_as4PpHDhFcmCHyA)
+    * [bigclive](https://www.youtube.com/channel/UCtM5z2gkrGRuWd0JQMx76qA)
+    * [ElectroBOOM](https://www.youtube.com/channel/UCJ0-OtVpF0wOKEqT2Z1HEtA)
+    * [Jeri Ellsworth](https://www.youtube.com/user/jeriellsworth/playlists)
+* Boardview files can be open with [OpenBoardview](https://github.com/OpenBoardView/OpenBoardView),
+which is free software under MIT license.
+
+Use of youtube-dl with mpv would be recommended for youtube links

@@ -9,7 +9,7 @@ voted on by the maintainers with community input. These policies formalise our
 democratic standards.
 
 Today, we welcome Andrew Robbins (IRC nick `and_who` and
-[NotABug](https://notabug.org) user [kragle](https://notabug.org/kragle)) as
+[NotABug](https://notabug.org) user [and_who](https://notabug.org/and_who)) as
 our first new maintainer under the new policy. Going forward, Andrew will gain
 push access to Libreboot in order to review patches, as well as voting rights
 and IRC operator status.

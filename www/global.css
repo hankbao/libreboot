@@ -18,7 +18,20 @@ body {
 }
 
 pre {
-    margin-left: 2.5em
+    padding: 0.3em;
+}
+
+pre,table {
+    overflow-x: auto;
+    display: block;
+}
+
+code, pre {
+    background-color: #DDD;
+}
+
+img {
+    max-width: 100%;
 }
 
 #logo {
@@ -29,6 +42,11 @@ pre {
 a {
     text-decoration: none;
     color: #22D;
+}
+
+/* probably generated with autolink_bare_uris extension */
+a.uri {
+    word-wrap: break-word;
 }
 
 a:hover {

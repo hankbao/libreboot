@@ -44,9 +44,10 @@ A note about GPUs
 =================
 
 Some models have an Intel GPU, while others have both an ATI and an
-Intel GPU; this is referred to as "switchable graphics". In the *BIOS
-setup* program for lenovobios, you can specify that the system will use
-one or the other (but not both).
+Intel GPU; this is referred to as "Dual Graphics" (previously
+"switchable graphics"). In the *BIOS setup* program for lenovobios,
+you can specify that the system will use one or the other (but not
+both).
 
 Libreboot is known to work on systems with only the Intel GPU, using
 native graphics initialization. On systems with switchable graphics, the
@@ -365,6 +366,7 @@ You should see something like this:
 Now [install GNU+Linux](../gnulinux/).
 
 Copyright © 2014, 2015 Leah Rowe <info@minifree.org>\
+Copyright © 2018 Nico Rikken <nico@nicorikken.eu>\
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later

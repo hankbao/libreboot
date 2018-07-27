@@ -33,7 +33,7 @@ Helpful links:
 
 -   [GRUB manual](https://www.gnu.org/software/grub/manual/html_node/Security.html#Security)
 -   [GRUB info pages](http://git.savannah.gnu.org/cgit/grub.git/tree/docs/grub.texi)
--   [SATA connected storage considered dangerous.](../../faq.md#firmware-hddssd)
+-   [SATA connected storage considered dangerous.](../../faq.md#hddssd-firmware)
 -   [Coreboot GRUB security howto](https://www.coreboot.org/GRUB2#Security)
 
 GRUB Password
@@ -81,7 +81,8 @@ installing GRUB version 2. Generate a key by giving it a password:
     grub-mkpasswd-pbkdf2
 
 Its output will be a string of the following form:
-grub.pbkdf2.sha512.10000.HEXDIGITS.MOREHEXDIGITS
+
+    grub.pbkdf2.sha512.10000.HEXDIGITS.MOREHEXDIGITS
 
 Now open my.grubtest.cfg and put the following before the menu entries
 (prefered above the functions and after other directives). Of course use

@@ -22,18 +22,32 @@ endorsement on a computer system, and invests money directly into Libreboot.
 
 Laptops:
 
+-   [Libreboot X200 Tablet laptop](https://minifree.org/product/libreboot-x200-tablet/) (FSF RYF certified)
+-   [Libreboot X200 laptop](https://minifree.org/product/libreboot-x200/) (FSF RYF certified)
 -   [Libreboot T400 laptop](https://minifree.org/product/libreboot-t400/) (FSF RYF certified)
 
 Services:
 
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
+-   [Libreboot chip flashing service for ASUS KGPE-D16 and KCMA-D8](https://minifree.org/product/d8-d16-chipflash/)
 
-Merchendise:
+Merchandise:
 
 -   [Libreboot T400 battery](https://minifree.org/product/libreboot-t400-battery/)
 -   [Libreboot X200 battery](https://minifree.org/product/libreboot-x200-battery/)
--   [Libreboot X200 docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
+-   [Libreboot X200 Tablet battery](https://minifree.org/product/libreboot-x200-tablet-battery/)
+-   [Libreboot X200/X200T docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
+
+Phreedom 2600
+------------------
+
+Phreedom 2600 sells the BeagleBone Black (which can be used for flashing Libreboot)
+and the Thinkpad X200. All computers come with Parabola GNU/Linux preinstalled.
+All products meets the criteria for [Respects Your Freedom](https://fsf.org/ryf).
+
+The webshop is here:
+<https://shop.phreedom2600.net/>
 
 Raptor Engineering
 ------------------
@@ -43,6 +57,12 @@ firmware and operating system preinstalled, *from the factory*.
 
 Website for pre-orders:
 <https://www.raptorcs.com/TALOSII/>
+
+They have 2 systems available:
+
+- [TALOS II Lite](https://secure.raptorcs.com/content/TL1BC1/purchase.html)
+  (this is the cheaper version)
+- [TALOS II](https://secure.raptorcs.com/content/TL2WK2/intro.html)
 
 NOTE: this isn't technically Libreboot, but the boot firmware is entirely free.
 

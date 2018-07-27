@@ -297,27 +297,21 @@ Early notes {#early_notes}
 
 Flash chips {#flashchips}
 -----------
+-   X200 laptop (Mocha-1):
+    ICH9-M overrides ifd permissions with a strap connected to GPIO33 pin (see IRC notes below)
 
--   Schematics for X200 laptop:
-    <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006075.pdf>
-    **~~- Page 20 and page 9 refer to SDA\_HDO or SDA\_HDOUT~~** only on
-    series 6 or higher chipsets. ICH9-M (X200) does it with a strap
-    connected to GPIO33 pin (see IRC notes below)
-
-    - According to page 29, the X200 can have any of the following flash
+    - The X200 can be found with any of the following flash
     chips:
-    -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip
-    -   MXIC (Macronix?) MX25L3205DM2I-12G 72.25325.A01 - another 32Mb
-        (4MiB) chip
-    -   MXIC (Macronix?) MX25L6405DMI-12G 41R0820AA - this is a 64Mb
-        (8MiB) chip
-    -   Winbond W25X64VSFIG 41R0820BA - another 64Mb (8MiB) chip
+        -   ATMEL AT26DF321-SU 72.26321.A01 - this is a 32Mb (4MiB) chip
+        -   MXIC (Macronix?) MX25L3205DM2I-12G 72.25325.A01 - another 32Mb
+            (4MiB) chip
+        -   MXIC (Macronix?) MX25L6405DMI-12G 41R0820AA - this is a 64Mb
+            (8MiB) chip
+        -   Winbond W25X64VSFIG 41R0820BA - another 64Mb (8MiB) chip
 
-    sgsit says that the X200s with the 64Mb flash chips are (probably)
+    sgsit says that the X200s (Pecan-1) with the 64Mb flash chips are (probably)
     the ones with AMT (alongside the ME), whereas the 32Mb chips contain
     only the ME.
--   Schematics for X200s laptop:
-    <http://pdf.datasheetarchive.com/indexerfiles/Datasheets-USER/DSAUPLD00006104.pdf>.
 
 Early development notes {#early_development_notes}
 -----------------------
@@ -424,7 +418,7 @@ region.
 
 According to the datasheet, it's supposed to add up to 0xBABA but can
 actually be others on the X200.
-<https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums>
+<https://web.archive.org/web/20150912070329/https://communities.intel.com/community/wired/blog/2010/10/14/how-to-basic-eeprom-checksums>
 
 *"One of those engineers loves classic rock music, so they selected
 0xBABA"*
