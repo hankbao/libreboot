@@ -57,6 +57,8 @@ university, USA)
 
 <https://mirror.swordarmor.fr/libreboot/> (swordarmor.fr, France)
 
+<https://mirror-hk.koddos.net/libreboot/> (koddos.net, Hong Kong)
+
 RSYNC mirrors {#rsync}
 -------------
 
@@ -79,6 +81,8 @@ UK)
 <rsync://ftp.linux.ro/libreboot/> (linux.ro, Romania)
 
 <rsync://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
+
+<rsync://mirror-hk.koddos.net/libreboot/> (koddos.net, Hong Kong)
 
 Are you running a mirror? Contact the libreboot project, and the link will be
 added to this page!
