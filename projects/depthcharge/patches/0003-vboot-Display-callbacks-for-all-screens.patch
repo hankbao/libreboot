@@ -160,7 +160,7 @@ index bae8043..b4e9958 100644
 +
 +		if (screen_type == VB_SCREEN_RECOVERY_NO_GOOD)
 +			print_on_center(
-+				"Invalid recovery media, please instert a "
++				"Invalid recovery media, please insert a "
 +				"valid one.");
 +		else
 +			print_on_center(
