@@ -114,7 +114,7 @@ We'll begin by creating a single, large partition on it, and then encrypting it 
 You will need the `device-mapper` kernel module during the installation;
 this will enable us to set up our encrypted disk. To load it, use the following command:
 
-    # modprobe dm-mod
+    # modprobe dm_mod
 
 We then need to select the **device name** of the drive we're installing the operating system on;
 see the above method, if needed, for figuring out device names.
