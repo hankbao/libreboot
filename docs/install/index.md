@@ -353,14 +353,14 @@ MacBook2,1: Initial installation guide (if running the proprietary firmware) {#f
 ============================================================================
 
 *If you have a MacBook1,1, refer to
-[../hardware/\#macbook11](../hardware/#macbook11) for flashing instructions.*
+[../hardware/\#information-about-the-macbook11](../hardware/#information-about-the-macbook11) for flashing instructions.*
 
 *This is for the MacBook2,1 while running Apple EFI firmware. If you
 already have coreboot or libreboot running, then go to
 [\#flashrom](#flashrom) instead!*
 
 Be sure to read the information in
-[../hardware/\#macbook21](../hardware/#macbook21).
+[../hardware/\#information-about-the-macbook21](../hardware/#information-about-the-macbook21).
 
 *Warning: this guide will not instruct the user how to backup the
 original Apple EFI firmware. For that, please refer to
