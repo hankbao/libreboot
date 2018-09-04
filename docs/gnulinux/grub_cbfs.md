@@ -241,7 +241,7 @@ the main storage for **/boot/grub/libreboot\_grub.cfg** or **/grub/libreboot\_gr
 
 Therefore, we need to either copy **libreboot\_grub.cfg** to **/grub**, or to **/boot/grub**:
 
-    $ sudo cp ~/Downloads/libreboot_util/cbfstool/x86_64/grubtest.cfg /boot/grub    # or /grub
+    $ sudo cp ~/Downloads/libreboot_util/cbfstool/x86_64/libreboot_grub.cfg /boot/grub    # or /grub
 
 Now, the next time we boot our computer, GRUB (in Libreboot) will automatically switch
 to this configuration file. *This means that you do not have to re-flash,
