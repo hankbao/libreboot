@@ -51,8 +51,6 @@ university, USA)
 <https://mirror.sugol.org/libreboot/> (sugol.org)
 (formerly nephelai.zanity.net/mirror/libreboot)
 
-<https://vimuser.org/libreboot/> (vimuser.org, Netherlands)
-
 <https://elgrande74.net/libreboot/> (elgrande74.net, France)
 
 <https://mirror.koddos.net/libreboot/> (koddos.net, Netherlands)
