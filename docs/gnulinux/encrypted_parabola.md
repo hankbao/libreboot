@@ -149,7 +149,7 @@ or to find out what options there are, run `man cryptsetup`.
 >system. We recommend 500ms (0.5 seconds), and this is included in the
 >prepared** `cryptsetup` **command above. Keep in mind that the iteration time
 >is for security purposes (it mitigates brute force attacks), so anything lower
->than 5 seconds is probably not very secure.**
+>than 0.5 seconds is probably not very secure.**
 
 You will now be prompted to enter a passphrase; be sure to make it *secure*.
 For passphrase security, length is more important than complexity
