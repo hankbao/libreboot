@@ -210,18 +210,32 @@ battery goes to a critically low charge level, a beep occurs. Nvramtool
 is included in libreboot, and can be used to enable or disable this
 behaviour.
 
+You need to write changes in a libreboot rom image, and flash it, in order
+to apply them. You can either use a pre-compiled rom image, or create an image
+from the current one in your computer. See here 
+<https://libreboot.org/docs/gnulinux/grub_cbfs.html#get-the-rom-image> for 
+more information on how to do that.
+
+Once you have a libreboot rom image, say 'libreboot.rom', you can write
+changes on the image with the following commands.
+
 Disable or enable beeps when removing/adding the charger:
 
-    $ sudo ./nvramtool -w power\_management\_beeps=Enable
-    $ sudo ./nvramtool -w power\_management\_beeps=Disable
+    $ sudo ./nvramtool -C libreboot.rom -w power\_management\_beeps=Enable
+    $ sudo ./nvramtool -C libreboot.rom -w power\_management\_beeps=Disable
 
 Disable or enable beeps when battery is low:
 
-    $ sudo ./nvramtool -w low\_battery\_beep=Enable
+    $ sudo ./nvramtool -C libreboot.rom -w low\_battery\_beep=Enable
+    $ sudo ./nvramtool -C libreboot.rom -w low\_battery\_beep=Disable
 
-    $ sudo ./nvramtool -w low\_battery\_beep=Disable
+You can check that the parameters are set in the image with :
 
-A reboot is required, for these changes to take effect.
+	$ sudo ./nvramtool -C libreboot.rom -a
+
+Finally, you need to flash the rom with this new image. See here
+<https://libreboot.org/docs/gnulinux/grub_cbfs.html#with-re-flashing-the-rom>
+for a detailed explanation.
 
 Get EDID: Find out the name (model) of your LCD panel
 =====================================================
