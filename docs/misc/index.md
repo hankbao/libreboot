@@ -231,7 +231,7 @@ Disable or enable beeps when battery is low:
 
 You can check that the parameters are set in the image with :
 
-	$ sudo ./nvramtool -C libreboot.rom -a
+    $ sudo ./nvramtool -C libreboot.rom -a
 
 Finally, you need to flash the rom with this new image. See here
 <https://libreboot.org/docs/gnulinux/grub_cbfs.html#with-re-flashing-the-rom>
