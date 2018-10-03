@@ -49,8 +49,11 @@ rm -Rf "crossgcc/"
     # workaround to fix the error on debian stretch and later, when building
     # GMP. If -pie is enabled in GCC, then --with-pic must be used when compiling
     git am ../resources/libreboot/patch/crossgcc/gccfix.diff
+    #Patch to add hash checking to buildgcc
+    git apply ../resources/libreboot/patch/crossgcc/buildgcc_hash_patch.diff
     rm -Rf .git* */*/.git*
 )
+
 
 printf "Deblobbing coreboot\n"
 ./resources/utilities/coreboot-libre/deblob
