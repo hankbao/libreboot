@@ -67,12 +67,17 @@ build() {
 	local sources_path=$(project_sources_path "$project" "$repository" "$board" "$@")
 	local build_path=$(project_build_path "$project" "$board" "$@")
 	local config_path=$(coreboot_config_path "$board" "$@")
+	local variant_config_path="$(coreboot_variant_config_path "$board" "$@")"
 
 	local arch=$(coreboot_arch "$board" "$@")
 
 	local crossgcc_build_path=$(project_build_path "crossgcc" "$arch")
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
 	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
+
+	local -a board_variant_config
+
+	mapfile -t board_variant_config < "$variant_config_path"
 
 	if git_project_check "$repository"
 	then
@@ -85,8 +90,8 @@ build() {
 
 	mkdir -p "$build_path"
 
-	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" KBUILD_DEFCONFIG="$config_path" "defconfig"
-	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" VBOOT_SOURCE="$vboot_sources_path" -j$TASKS
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" KBUILD_DEFCONFIG="$config_path" "${board_variant_config[@]}" "defconfig"
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" VBOOT_SOURCE="$vboot_sources_path" "${board_variant_config[@]}" -j$TASKS
 
 	rm -f "$sources_path/.xcompile"
 }

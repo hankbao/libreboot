@@ -29,6 +29,10 @@ coreboot_config_path() {
 	project_file_path "$project" "$CONFIGS" "$CONFIG" "$@"
 }
 
+coreboot_variant_config_path() {
+	project_file_path "$project" "$CONFIGS" "$VARIANTS/$board" "$@"
+}
+
 coreboot_ec_check() {
 	project_file_test "$project" "$CONFIGS" "$EC" "$@"
 }
