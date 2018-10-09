@@ -25,6 +25,10 @@ coreboot_arch() {
 	project_file_contents "$project" "$CONFIGS" "$ARCH" "$@"
 }
 
+coreboot_config() {
+	project_file_contents_herit "$project" "$CONFIGS" "$CONFIG" "$@"
+}
+
 coreboot_config_path() {
 	project_file_path "$project" "$CONFIGS" "$CONFIG" "$@"
 }
