@@ -57,26 +57,40 @@ update_check() {
 }
 
 build() {
-	local payload=$1
+	local board="$1"
 	shift
 
 	local repository=$project
 
-	project_sources_directory_missing_empty_error "$project" "$repository" "$payload" "$@"
+	project_sources_directory_missing_empty_error "$project" "$repository" "$board" "$@"
 
-	local sources_path=$(project_sources_path "$project" "$repository" "$payload" "$@")
-	local build_path=$(project_build_path "$project" "$payload" "$@")
-	local config_path=$(coreboot_config_path "$payload" "$@")
+	local sources_path=$(project_sources_path "$project" "$repository" "$board" "$@")
+	local build_path=$(project_build_path "$project" "$board" "$@")
+	local base_config_path=$(coreboot_config_path "$board" "$@")
+	local variant_config_path="$(coreboot_variant_config_path "$board" "$@")"
 
-	local arch=$(coreboot_arch "$payload" "$@")
+	local arch=$(coreboot_arch "$board" "$@")
 
 	local crossgcc_build_path=$(project_build_path "crossgcc" "$arch")
 	local crossgcc_bin_path="$crossgcc_build_path/bin/"
 	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
 
+	local -i base_config_line_count="$(wc -l < "$base_config_path")"
+	local -a base_config_overrides
+	local -a board_variant_config
+
+	# To only get overrides, trim out base config since
+	# we cannot skip it in project_file_contents_herit()
+	mapfile -t base_config_overrides \
+		< <(tail -n +$(($base_config_line_count+1)) \
+			< <(coreboot_config "$board" "$@") \
+			2>/dev/null)
+
+	mapfile -t board_variant_config < "$variant_config_path"
+
 	if git_project_check "$repository"
 	then
-		git_project_checkout "$project" "$repository" "$payload" "$@"
+		git_project_checkout "$project" "$repository" "$board" "$@"
 	fi
 
 	project_action_arguments "checkout" "vboot" "devices"
@@ -85,8 +99,8 @@ build() {
 
 	mkdir -p "$build_path"
 
-	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" KBUILD_DEFCONFIG="$config_path" "defconfig"
-	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" VBOOT_SOURCE="$vboot_sources_path" -j$TASKS
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" KBUILD_DEFCONFIG="$base_config_path" "${board_variant_config[@]}" "${base_config_overrides[@]}" "defconfig"
+	make -C "$sources_path" obj="$build_path" DOTCONFIG="$build_path/.config" XGCCPATH="$crossgcc_bin_path" BUILD_TIMELESS=1 KERNELVERSION="$VERSION" VBOOT_SOURCE="$vboot_sources_path" "${board_variant_config[@]}" "${base_config_overrides[@]}" -j$TASKS
 
 	rm -f "$sources_path/.xcompile"
 }
