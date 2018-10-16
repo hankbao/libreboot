@@ -63,6 +63,11 @@ Current issues {#issues}
     disappears if using KMS, once the kernel starts. The jitter will
     remain, if booting the kernel in text-mode).
 
+-   Booting from USB mass storage devices is not possible; neither GRUB
+    nor SeaBIOS detect USB drives when present. USB keyboards function
+    under both GRUB and SeaBIOS, albeit slowly under GRUB
+    (several seconds per character typed).
+
 Other information
 =================
 
