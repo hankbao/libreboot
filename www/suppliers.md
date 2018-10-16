@@ -11,6 +11,9 @@ developer. **Ships to USA only**
 -   [Taurinus X200 laptop](https://shop.libiquity.com/product/taurinus-x200) (FSF RYF certified)
 -   [Libreboot chassis](https://shop.libiquity.com/product/libreboot-stickers-shaped-matte-vinyl-2x2.25-3-pack) and [Libreboot Inside stickers](https://shop.libiquity.com/product/libreboot-inside-case-badges-3-pack)
 
+Home page:
+<https://shop.libiquity.com/>
+
 Ministry of Freedom (Minifree)
 ------------------------------
 
@@ -43,6 +46,9 @@ Merchandise:
 -   [Libreboot X200/X200T docking station](https://minifree.org/product/docking-station-for-libreboot-x200/)
 -   [Libreboot stickers](https://minifree.org/product/libreboot-stickers/)
 
+Home page:
+<https://minifree.org/>
+
 Phreedom 2600
 ------------------
 
@@ -50,7 +56,7 @@ Phreedom 2600 sells the BeagleBone Black (which can be used for flashing Librebo
 and the Thinkpad X200. All computers come with Parabola GNU/Linux preinstalled.
 All products meets the criteria for [Respects Your Freedom](https://fsf.org/ryf).
 
-The webshop is here:
+Home page:
 <https://shop.phreedom2600.net/>
 
 Raptor Engineering
@@ -75,6 +81,9 @@ mainboards to Libreboot. Raptor has also helped improve other ports in Libreboot
 for instance they added support for *switchable graphics* on the ThinkPad T400
 which Libreboot supports.
 
+Home page:
+<https://www.raptorcs.com/>
+
 Technoethical
 -------------
 
@@ -95,6 +104,9 @@ Laptops:
 -   [Technoethical T400S laptop](https://tehnoetic.com/tet-t400s)
 -   [Technoethical X200 Tablet laptop](https://tehnoetic.com/tet-x200t)
 -   [Technoethical X200 laptop](https://tehnoetic.com/tet-x200)
+
+Home page:
+<https://tehnoetic.com/>
 
 Vikings
 -------
@@ -120,6 +132,9 @@ Desktops:
 Laptops:
 
 -   [Vikings X200 laptop](https://store.vikings.net/libre-friendly-hardware/x200-ryf-certfied) (FSF RYF certified)
+
+Home page:
+<https://vikings.net/>
 
 Other suppliers
 ===============
