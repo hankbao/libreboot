@@ -20,6 +20,10 @@ endorsement on a computer system, and invests money directly into Libreboot.
 
 **Minifree ships worldwide, to all countries.**
 
+Routers:
+
+-   [Libre WNDR3800 Router](https://minifree.org/product/minifree-wndr3800-libre-router/) (FSF RYF pending)
+
 Laptops:
 
 -   [Libreboot X200 Tablet laptop](https://minifree.org/product/libreboot-x200-tablet/) (FSF RYF certified)
