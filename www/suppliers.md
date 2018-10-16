@@ -1,5 +1,5 @@
 ---
-title: Suppliers selling or providing Libreboot pre-installed
+title: Suppliers selling Libreboot pre-installed
 ...
 
 Libiquity
