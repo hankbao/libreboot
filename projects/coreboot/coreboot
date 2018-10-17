@@ -86,7 +86,9 @@ build() {
 			< <(coreboot_config "$board" "$@") \
 			2>/dev/null)
 
-	mapfile -t board_variant_config < "$variant_config_path"
+	if [[ -n "$variant_config_path" ]]; then
+		mapfile -t board_variant_config < "$variant_config_path"
+	fi
 
 	if git_project_check "$repository"
 	then
