@@ -69,15 +69,7 @@ Use this to find out:
 MAC address {#macaddress}
 ===========
 
-On the R400, the MAC address for the onboard gigabit ethernet chipset is
-stored inside the flash chip, along with other configuration data.
-
-Keep a note of the MAC address before disassembly; this is very
-important, because you will need to insert this into the libreboot ROM
-image before flashing it. It will be written in one of these locations:
-
-![](images/t400/macaddress0.jpg) ![](images/t400/macaddress1.jpg)
-![](images/x200/disassembly/0001.jpg)
+Refer to [mac\_address.md](../hardware/mac_address.md).
 
 Initial BBB configuration
 =========================
