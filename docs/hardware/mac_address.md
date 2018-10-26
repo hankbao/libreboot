@@ -2,20 +2,29 @@
 title: Changing the MAC address
 ...
 
-Introduction (GM45)
-===================
+Introduction (GM45+e1000)
+=========================
 
-On all laptops with the GM45 chipset (T400,R400,T500,X200,X200S,X200T),
-the [MAC address](https://en.wikipedia.org/wiki/MAC_address)
+This section is applicable to all laptops with the GM45 chipset that
+use the e1000 ethernet controller:
+X200, X200s, X200t (tablet), X301, T400, T400s, T500, W500, W700.
+R500 is an exception to this and does not use the built-in e1000.
+
+On all these laptops, the
+[MAC address](https://en.wikipedia.org/wiki/MAC_address)
 for the built-in gigabit ethernet controller is stored inside the flash chip,
-along with Libreboot and other configuration data.
+along with Libreboot and other configuration data. Therefore, installing
+Libreboot will overwrite it.
 
-Prebuilt Libreboot for these laptops contains a generic
+Thus, for these laptops, prebuilt Libreboot already contains a generic
 MAC address in the configuration section. This address is `00:f5:f0:40:71:fe`
-in builds before 2018-01-16 and `00:4c:69:62:72:65` afterwards.
+in builds before 2018-01-16 and `00:4c:69:62:72:65` (see the ascii character
+set) afterwards.
 Unless you change it, your computer will boot and use it. This can lead
 to network problems if you have more than one Libreboot computer on
-the same layer2 network (e.g. on the same network switch).
+the same layer2 network (e.g. on the same network switch). The switch
+(postman) will simply not know who to deliver to as the MAC (house) addresses
+will be the same.
 
 To prevent these address clashes, you can either modify prebuilt Libreboot
 to use an address of your own choosing or you can change the address in your
