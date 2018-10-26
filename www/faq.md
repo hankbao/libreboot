@@ -214,6 +214,21 @@ the target (`target$`):
 
 6.  Try to reproduce the kernel panic.
 
+Machine check exceptions on some Montevina (Penryn CPU) laptops
+---------------------------------------------------------------
+
+Some GM45 laptops have been freezing or experiencing a kernel panic
+(blinking caps lock LED and totaly unresponsive machine, sometimes followed
+by an automatic reboot within 30 seconds).
+We do not know what the problem(s) is(are), but a CPU microcode
+update in some cases prevents this from happening again.
+See the following bug reports for more info:
+
+- [T400 Machine check: Processor context corrupt](https://notabug.org/libreboot/libreboot/issues/493)
+- [X200 Machine check: Processor context corrupt](https://notabug.org/libreboot/libreboot/issues/289)
+
+- [Unrelated, RAM incompatibility and suspend-to-ram issues on X200](https://libreboot.org/docs/hardware/x200.html#ram_s3_microcode)
+
 
 Hardware compatibility
 ======================
