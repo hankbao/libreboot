@@ -29,16 +29,7 @@ Obtaining the existing MAC address
 
 The existing MAC address may be obtained by the following methods:
 
-1.  Read the white label on the bottom of the case. Note that this will only
-    produce the correct address, if your motherboard has never been replaced.
-    Examples:
-
-    ![](../install/images/t400/macaddress0.jpg)
-    ![](../install/images/t400/macaddress1.jpg)
-    ![](../install/images/x200/disassembly/0002.jpg)
-    ![](../install/images/x200/disassembly/0001.jpg)
-
-2.  Run `ip link` or `ifconfig` in a terminal/console/shell;
+1.  Run `ip link` or `ifconfig` in a terminal/console/shell;
     look for your ethernet device (e.g., **enpXXX** in Arch-based distributions,
     or **eth0** in Debian-based distributions),
     and look for a set of colon-delimited hexadecimal (base 16) digits:
@@ -54,6 +45,14 @@ The existing MAC address may be obtained by the following methods:
 
         `... ether ??:??:??:??:??:?? txqueuelen ...`
 
+
+2.  Otherwise you can read the white label that is often found on the
+    motherboard under the memory sticks:
+    ![](../install/images/t400/macaddress1.jpg)
+
+3.  The MAC address is usually listed on the laptop chassis as well. This one
+    will be incorrect if the motherboard was changed and the stickers were not
+    updated.
 
 Changing the MAC address in the operating system
 ================================================
