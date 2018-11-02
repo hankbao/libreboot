@@ -5,10 +5,10 @@ title: Changing the MAC address
 Introduction (GM45+e1000)
 =========================
 
-This section is applicable to all laptops with the GM45 chipset that
-use the e1000 ethernet controller:
-X200, X200s, X200t (tablet), X301, T400, T400s, T500, W500, W700.
-R500 is an exception to this and does not use the built-in e1000.
+This section is applicable to all Libreboot-supported laptops with the
+mobile 4 series chipset (as shown in `$ lspci`)
+that use the e1000 ethernet controller (e.g. T400, X200).
+The R500 is an exception to this as it does not use the built-in e1000.
 
 On all these laptops, the
 [MAC address](https://en.wikipedia.org/wiki/MAC_address)
@@ -39,10 +39,10 @@ Obtaining the existing MAC address
 The existing MAC address may be obtained by the following methods:
 
 1.  Run `ip link` or `ifconfig` in a terminal/console/shell;
-    look for your ethernet device (e.g., **enpXXX** in Arch-based distributions,
-    or **eth0** in Debian-based distributions),
-    and look for a set of colon-delimited hexadecimal (base 16) digits:
-    0,1,2,3,4,5,6,7,8,9,aA,bB,cC,dD,eE,fF. For example: `00:f3:f0:45:91:fe`.
+    find your ethernet device (e.g., **enpXXX** or **ethXXX**),
+    and look for a set of 12 colon-delimited
+    [hexadecimal digits](https://en.wikipedia.org/wiki/Hexadecimal).
+    For example: `00:f3:f0:45:91:fe`.
 
     * `$ ip link`
 
