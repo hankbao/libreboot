@@ -59,6 +59,8 @@ university, USA)
 
 <https://mirror-hk.koddos.net/libreboot/> (koddos.net, Hong Kong)
 
+<https://mirror.cyberbits.eu/libreboot/> (cyberbits.eu, France)
+
 RSYNC mirrors {#rsync}
 -------------
 
@@ -101,6 +103,8 @@ if using HTTPS.
 <http://mirror.linux.ro/libreboot/> (linux.ro, Romania)
 
 <http://mirror.helium.in-berlin.de/libreboot/> (in-berlin.de, Germany)
+
+<http://mirror.cyberbits.eu/libreboot/> (cyberbits.eu, France)
 
 FTP mirrors {#ftp}
 -----------
