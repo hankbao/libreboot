@@ -149,6 +149,87 @@ cryptomount command from `for` loop in libreboot's
 It could be fixed in upstream grub by contributing patch that would add
 quiet flag to it.
 
+How to save kernel panic logs on thinkpad laptops?
+--------------------------------------------------
+
+The easiest method of doing so is by using the kernel's netconsole
+and reproducing the panic. Netconsole requires two machines, the one that is
+panicky (source) and the one that will receive crash logs (target). The
+source has to be connected with an ethernet cable and the target has to be
+reachable at the time of the panic. To set this system up, execute the
+following commands as root on the source (`source#`) and normal user on
+the target (`target$`):
+
+1.  Start a listener server on the target machine (netcat works well):
+
+    `target$ nc -u -l -p 6666`
+
+2.  Mount configfs (only once per boot, you can check if it is already mounted
+    with `mount | grep /sys/kernel/config`. This will return no output
+    if it is not).
+
+    `source# modprobe configfs`
+
+    `source# mkdir -p /sys/kernel/config`
+
+    `source# mount none -t configfs /sys/kernel/config`
+
+3.  find source's ethernet interface name, it should be of the form `enp*` or
+    `eth*`, see `ip address` or `ifconfig` output.
+
+    `source# iface="enp0s29f8u1"` change this
+
+    Fill the target machine's IPv4 address here:
+
+    `source# tgtip="192.168.1.2"` change this
+
+
+3.  Create netconsole logging target on the source machine:
+
+    `source# modprobe netconsole`
+
+    `source# cd /sys/kernel/config/netconsole`
+
+    `source# mkdir target1; cd target1`
+
+    `source# srcip=$(ip -4 addr show dev "$iface" | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+')`
+
+    `source# echo "$srcip" > local_ip`
+
+    `source# echo "$tgtip" > remote_ip`
+
+    `source# echo "$iface" > dev_name`
+
+    `source# arping -I "$iface" "$tgtip" -f | grep -o '..:..:..:..:..:..' > remote_mac`
+
+    `source# echo 1 > enabled`
+
+4.  Change console loglevel to debugging:
+
+    `source# dmesg -n debug`
+
+5.  Test if the logging works by e.g. inserting or removing an USB
+    device on the source. There should be a few lines appearing in the
+    terminal, in which you started netcat (nc), on the target host.
+
+6.  Try to reproduce the kernel panic.
+
+Machine check exceptions on some Montevina (Penryn CPU) laptops
+---------------------------------------------------------------
+
+Some GM45 laptops have been freezing or experiencing a kernel panic
+(blinking caps lock LED and totaly unresponsive machine, sometimes followed
+by an automatic reboot within 30 seconds).
+We do not know what the problem(s) is(are), but a CPU microcode
+update in some cases prevents this from happening again.
+See the following bug reports for more info:
+
+- [T400 Machine check: Processor context corrupt](https://notabug.org/libreboot/libreboot/issues/493)
+- [X200 Machine check: Processor context corrupt](https://notabug.org/libreboot/libreboot/issues/289)
+
+- [Unrelated, RAM incompatibility and suspend-to-ram issues on X200](https://libreboot.org/docs/hardware/x200.html#ram_s3_microcode)
+
+
 Hardware compatibility
 ======================
 
