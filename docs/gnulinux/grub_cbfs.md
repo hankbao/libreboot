@@ -262,7 +262,7 @@ Then, add the new one to the ROM:
 
     $ ./cbfstool libreboot.rom add -n grubtest.cfg -f grubtest.cfg -t raw
 
-#### Change MAC address in ROM
+#### Change MAC address in ROM {#changeMAC}
 The last step before flashing the new ROM, is to change the MAC address inside it.
 Every libreboot ROM image contains a generic MAC address; you want to make sure
 that your ROM image contains yours, so as to not create any problems on your network
