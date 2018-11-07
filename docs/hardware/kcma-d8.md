@@ -32,9 +32,9 @@ See <https://raptorengineeringinc.com/coreboot/kcma-d8-status.php>.
 Form factor {#formfactor}
 ===========
 
-These boards use the SSI EEB 3.61 form factor; make sure that your case
-supports this. This form factor is similar to E-ATX in that the size is
-identical, but the position of the screws are different.
+This board is ATX form factor. While the [ATX standard, version 2.2](https://web.archive.org/web/20120725150314/http://www.formfactors.org/developer/specs/atx2_2.pdf)
+specifies board dimensions 305mm x 244mm, this board measures 305mm x 253mm;
+ensure your case supports this extra ~centimeter in width.
 
 IPMI iKVM module add-on {#ipmi}
 =======================
