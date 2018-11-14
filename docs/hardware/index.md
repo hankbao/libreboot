@@ -139,10 +139,11 @@ BIOS](https://en.wikipedia.org/wiki/Video_BIOS)' or 'VBIOS').
 To find what LCD panel you have, see:
 [../misc/\#get\_edid\_panelname](../misc/#get_edid_panelname).
 
-There are 5 known LCD panels for the X60 Tablet:
+There are 6 known LCD panels for the X60 Tablet:
 
 -   *X60T XGA (1024x768):*
     -   BOE-Hydis HV121X03-100 (works)
+    -   Toshiba Matsushita LTD121KC9B (works)
     -   Samsung LTN121XP01 (does not work. blank screen)
     -   BOE-Hydis HT12X21-351 (does not work. blank screen)
 -   *X60T SXGA+ (1400x1050):*
