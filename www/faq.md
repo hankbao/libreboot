@@ -1151,3 +1151,5 @@ Where can I learn more about electronics
 which is free software under MIT license.
 
 Use of youtube-dl with mpv would be recommended for youtube links
+
+Lastly the most important message to everybody gaining this wonderful new hobby - [Secret to Learning Electronics](https://www.youtube.com/watch?v=xhQ7d3BK3KQ)
