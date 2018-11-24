@@ -69,7 +69,7 @@ build() {
 	local sources_path=$(project_sources_path "$project" "$repository" "$@")
 	local build_path=$(project_build_path "$project" "$@")
 
-	local libpayload_build_path=$(project_build_path "libpayload" "$project" "$@")
+	local libpayload_build_path=$(depthcharge_libpayload_build_path "$project" "$@")
 	local libpayload_build_install_path="$libpayload_build_path/install"
 	local vboot_sources_path=$(project_sources_path "vboot" "vboot" "devices")
 

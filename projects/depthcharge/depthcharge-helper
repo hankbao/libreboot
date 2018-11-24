@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
+# Copyright (C) 2018 Andrew Robbins <contact@andrewrobbins.info>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,4 +24,23 @@ depthcharge_arch() {
 
 depthcharge_device() {
 	arguments_concat "_" "$@"
+}
+
+depthcharge_libpayload_build_path() {
+	local project='libpayload'
+	local build_path="$root/$BUILD/$project"
+
+	local argument
+
+	for argument in "$@"; do
+		build_path="$build_path-$argument"
+
+		if [[ -d $build_path ]]; then
+			break
+		else
+			continue
+		fi
+	done
+
+	printf '%s\n' "$build_path"
 }
