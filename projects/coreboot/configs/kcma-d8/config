@@ -627,7 +627,7 @@ CONFIG_PAYLOAD_ELF=y
 # CONFIG_PAYLOAD_UBOOT is not set
 # CONFIG_PAYLOAD_LINUX is not set
 # CONFIG_PAYLOAD_TIANOCORE is not set
-CONFIG_PAYLOAD_FILE="$(obj)/../seabios-bios/bios.bin.elf"
+CONFIG_PAYLOAD_FILE="$(obj)/../seabios/bios.bin.elf"
 CONFIG_PAYLOAD_OPTIONS=""
 # CONFIG_PXE is not set
 CONFIG_COMPRESSED_PAYLOAD_LZMA=y
