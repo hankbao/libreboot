@@ -74,14 +74,7 @@ build() {
 	mkdir -p "$build_path"
 	cp "$seabios_config_path" "$sources_path/.config"
 
-	make -C "$sources_path" -j"$TASKS"
-
-	if [[ "$target" == 'bios' ]]; then
-		cp "$sources_path/out/bios.bin.elf" "$build_path"
-	elif [[ "$target" == 'vgabios' ]]; then
-		cp "$sources_path/out/vgabios.bin" "$build_path"
-	fi
-
+	make -C "$sources_path" OUT="$build_path/" -j"$TASKS"
 	make -C "$sources_path" distclean
 
 	rm -f "$sources_path/.config"
