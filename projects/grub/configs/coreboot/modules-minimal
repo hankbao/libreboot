@@ -10,5 +10,6 @@ part_bsd
 part_gpt
 pata
 reboot
+test
 usbms
 verify
