@@ -6,6 +6,7 @@ ehci
 ext2
 halt
 loadenv
+minicmd
 part_bsd
 part_gpt
 pata
