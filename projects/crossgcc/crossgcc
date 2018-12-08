@@ -157,7 +157,7 @@ build() {
 		bootstrap_flag='-b'
 	fi
 
-	make -C "$sources_path" "$bootstrap_flag" CPUS="$TASKS" DEST="$build_path" "crossgcc-$arch"
+	make -C "$sources_path" $bootstrap_flag CPUS="$TASKS" DEST="$build_path" "crossgcc-$arch"
 }
 
 build_check() {
