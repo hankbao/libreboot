@@ -63,7 +63,7 @@ libreboot_usage() {
 	printf 1>&2 '%s\n'   '  TOOLS_FORCE - Tools to always perform actions for'
 	printf 1>&2 '%s\n'   '  RELEASE_KEY - GPG key to use for release'
 	printf 1>&2 '%s\n'   '  VBOOT_KEYS_PATH - Path to the vboot keys'
-	printf 1>&2 '%s\n'   '  LIBFAKETIME_PATH - Path to the libfaketime shared library'
+	printf 1>&2 '%s\n'   '  LIBFAKETIME_PATH - Path to libfaketime'
 	printf 1>&2 '%s\n'   '  TASKS - Number of simultaneous tasks to run'
 	printf 1>&2 '%s\n'   '  VERSION - Version string to use'
 
@@ -220,6 +220,8 @@ libreboot_setup_reproducible_builds_variables() {
 		else
 			RANDOM_SEED="$RANDOM" # True randomness is unnecessary
 		fi
+
+		export RANDOM_SEED
 	fi
 
 	# Also used by GCC, but as an environment variable
@@ -231,9 +233,11 @@ libreboot_setup_reproducible_builds_variables() {
 		else
 			SOURCE_DATE_EPOCH="$(date +%s)"
 		fi
+
+		export SOURCE_DATE_EPOCH
 	fi
 
-	# Relevant only when libfaketime is preloaded
+	# Relevant only when libfaketime path is given in $BUILD_SYSTEM.conf
 	if [[ -n "$LIBFAKETIME_PATH" ]]; then
 		BUILD_DATE_FMT="%Y-%m-%d %H:%M:%S"
 		BUILD_DATE="$(date -u -d "@$SOURCE_DATE_EPOCH" "+$BUILD_DATE_FMT" 2>/dev/null || date -u -r "$SOURCE_DATE_EPOCH" "+$BUILD_DATE_FMT" 2>/dev/null || date -u "+$BUILD_DATE_FMT")"
@@ -241,6 +245,8 @@ libreboot_setup_reproducible_builds_variables() {
 		LC_ALL='C.UTF-8'
 		LD_PRELOAD="$LIBFAKETIME_PATH"
 		TZ='UTC'
+
+		export BUILD_DATE_FMT BUILD_DATE FAKETIME LC_ALL LD_PRELOAD TZ
 	fi
 }
 
