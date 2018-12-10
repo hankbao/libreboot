@@ -1,6 +1,4 @@
-insmod cbfs
+set root=(fd0)
+set prefix=($root)/boot/grub
 
-set prefix=(cbfsdisk)/fallback
-
-set root=(cbfsdisk)
 source (cbfsdisk)/fallback/grub.cfg
