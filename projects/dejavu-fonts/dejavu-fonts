@@ -26,17 +26,24 @@ usage() {
 
 download() {
 	local repository="$project"
-
-	project_download_git "$project" \
-			     "$repository" \
-			     'https://github.com/dejavu-fonts/dejavu-fonts.git' \
-			     "$@"
-
 	local sources_path="$(project_sources_path "$project" "$repository" "$@")"
+	local ucd_version="$(dejavu_fonts_ucd_version "$UNICODE" "$@")"
+	local ucd_files_path="$(dejavu_fonts_ucd_files_path "$UNICODE" "$@")"
 
-	download_wrapper "$sources_path/resources" \
-			 'https://www.unicode.org/Public/UNIDATA/UnicodeData.txt' \
-			 'https://www.unicode.org/Public/UNIDATA/Blocks.txt'
+	local -a download_list
+	local -a ucd_files
+
+	mapfile -t ucd_files < "$ucd_files_path"
+
+	for file in "${ucd_files[@]}"; do
+		download_list+=("https://www.unicode.org/Public/$ucd_version/ucd/$file")
+	done
+
+	project_download_git "$project" "$repository" https://github.com/dejavu-fonts/dejavu-fonts.git "$@"
+	download_wrapper "$sources_path/resources" "${download_list[@]}"
+
+	# Create a symlink to fontconfig's orthography files
+	ln -fs ../../fontconfig/fc-lang "$sources_path/resources/fc-lang"
 }
 
 download_check() {
@@ -82,9 +89,6 @@ build() {
 	local build_path="$(project_build_path "$project" "$@")"
 
 	mkdir -p "$build_path"
-
-	# Create a symlink to the orthography files provided by fontconfig
-	ln -s "$root/$SOURCES/fontconfig/fc-lang" "$sources_path/resources/fc-lang"
 
 	make -C "$sources_path" -j"$TASKS"
 	cp "$sources_path/build"/[!.]*.ttf "$build_path"
