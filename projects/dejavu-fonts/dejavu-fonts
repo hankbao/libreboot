@@ -40,8 +40,10 @@ download() {
 	done
 
 	project_download_git "$project" "$repository" https://github.com/dejavu-fonts/dejavu-fonts.git "$@"
-
 	download_wrapper "$sources_path/resources" "${download_list[@]}"
+
+	# Create a symlink to fontconfig's orthography files
+	ln -fs ../../fontconfig/fc-lang "$sources_path/resources/fc-lang"
 }
 
 download_check() {
@@ -87,9 +89,6 @@ build() {
 	local build_path="$(project_build_path "$project" "$@")"
 
 	mkdir -p "$build_path"
-
-	# Create a symlink to the orthography files provided by fontconfig
-	ln -s "$root/$SOURCES/fontconfig/fc-lang" "$sources_path/resources/fc-lang"
 
 	make -C "$sources_path" -j"$TASKS"
 	cp "$sources_path/build"/[!.]*.ttf "$build_path"
