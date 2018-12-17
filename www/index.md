@@ -41,6 +41,6 @@ firmware. Libreboot provides many advanced features, like encrypted
 
 Libreboot's main upstream provider is [coreboot](https://www.coreboot.org/),
 which we deblob. We upstream our custom patches to projects like coreboot,
-depthcharge, GRUB, and flashrom where possible. Together, we provide an
-automated build and installation system with non-technical documentation,
-allowing Libreboot to be widely used.
+depthcharge, GRUB, and flashrom where possible. Together, our build system
+and documentation is provided with the aim of making free boot firmware
+accessible to all.
