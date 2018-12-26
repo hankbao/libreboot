@@ -135,25 +135,31 @@ grub_build_bootable_image() {
 	local grub_mkimage="$sources_path/grub-mkimage"
 	local grub_module_dir="$sources_path/grub-core"
 
-	local grubimg="$build_path/grub.img"
 	local grub_bootimg="$grub_module_dir/boot.img"
-	local grub_bootable_img="$build_path/grub2"
+	local grub_coreimg="$build_path/core.img"
 
 	"$grub_mkimage" \
 		--config="$config_path" \
 		--directory="$grub_module_dir" \
-		--output="$grubimg" \
+		--output="$grub_coreimg" \
 		--format="$format" \
 		--prefix="$prefix" \
 		"${modmin[@]}"
 
-	cat "$grub_bootimg" "$grubimg" > "$grub_bootable_img"
-	rm -f "$grubimg"
+	cp -a "$grub_bootimg" "$build_path"
 }
 
 grub_build_floppy_image() {
-	local grubimg="$build_path/grub2"
-	local tempfile="$build_path/temp.file"
+	local floppyimg="$build_path/floppy.img"
+	local format="$(grub_format "$target" "$@")"
+	local grub_module_dir="$sources_path/grub-core"
+	local size="$(grub_size "$target" "$@")"
+
+	local -a modules
+
+	for module in "$grub_module_dir"/*.mod; do
+		modules+=($module)
+	done
 
 	if ! grub_build_bootable_image "$@"; then
 		printf '\n%s\n\n' "Error: Failed to build a GRUB image" 1>&2
@@ -161,33 +167,18 @@ grub_build_floppy_image() {
 		return 1
 	fi
 
-	local size="$(grub_size "$target" "$@")"
-
-	# Pre-allocate a floppy-sized image
+	# Pre-allocate a floppy-sized image with a FAT12 filesystem
 	# SeaBIOS requires floppy images to have a "correct" size
-	if ! [[ -e "$tempfile" ]]; then
-		dd if=/dev/zero of="$tempfile" bs=1024 count="${size:-160}"
+	if ! [[ -e "$floppyimg" ]]; then
+		mkfs.fat -C -D 0x00 -F 12 -M 0xF9 -n SEAGRUB --invariant "$floppyimg" "$size"
 	else
-		printf '\n%s\n\n' "Error: File $tempfile already exists!" 1>&2
+		printf '\n%s\n\n' "Error: File $floppyimg already exists!" 1>&2
 
 		return 1
 	fi
 
-	local -i grubimg_size="$(stat -c %s "$grubimg")"
-	local -i floppy_size="$((${size:-160} * 1024))"
-
-	# Graft the GRUB image onto the blank floppy image
-	if ((grubimg_size <= floppy_size)); then
-		dd if="$grubimg" of="$tempfile" bs=1 conv=notrunc
-
-		rm -f "$grubimg"
-		mv "$tempfile" "$grubimg"
-	else
-		printf '\n%s' "Error: Image ${grubimg##*/} is too large; " 1>&2
-		printf '%s\n\n' "it must be less than ${floppy_size}KiB in size" 1>&2
-
-		return 1
-	fi
+	grub_floppy_image_mmd "$floppyimg" /boot /boot/grub "/boot/grub/$format"
+	grub_floppy_image_mcopy "$floppyimg" "/boot/grub/$format" "${modules[@]}"
 }
 
 grub_build_standalone_image() {
@@ -215,4 +206,29 @@ grub_build_standalone_image() {
 		--format="$format" \
 		--output="$grubimg" \
 		/boot/grub/grub.cfg="$config_path"
+}
+
+grub_floppy_image_mmd() {
+	local img="$1"
+	local -a dirs=("${@:2}")
+
+	if [[ -n "$img" ]]; then
+		mmd -i "$img" "${dirs[@]}"
+	else
+		return 1
+	fi
+}
+
+grub_floppy_image_mcopy() {
+	local img="$1"
+	local target="$2"
+	local -a files=("${@:3}")
+
+	if [[ -z "$img" ]]; then
+		return 1
+	elif [[ -z "${files[@]}" ]]; then
+		mcopy -i "$img" -pv "::$target"
+	else
+		mcopy -i "$img" -pQv "${files[@]}" "::$target"
+	fi
 }
