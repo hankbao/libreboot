@@ -5,6 +5,7 @@ cbmemc
 configfile
 ehci
 ext2
+fat
 halt
 loadenv
 memdisk
