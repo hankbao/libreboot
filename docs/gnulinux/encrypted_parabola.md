@@ -181,8 +181,10 @@ Check to make sure tha the partition was created:
     # pvdisplay
 
 Next, we create the volume group, inside of which the logical volumes will
-be created. For this example, we will call this group **matrix**. You can call
-yours whatever you would like; just make sure that you remember its name:
+be created. In libreboot's case, we will call this group **matrix**.
+If you want to have it work via *Load Operating System (incl. fully
+encrypted disks)  [o]* it needs to be called **matrix** (as it is harcoded
+in libreboot's grub.cfg on the flash)
 
     # vgcreate matrix /dev/mapper/lvm
 
