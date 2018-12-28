@@ -1,12 +1,12 @@
-From 7098e955d8d0a061132aaec1429fc032e3d2edab Mon Sep 17 00:00:00 2001
+From 9dd7a8b9376b4fb6b82422899e0ed7b8606c73ce Mon Sep 17 00:00:00 2001
 From: Andrew Robbins <contact@andrewrobbins.info>
-Date: Mon, 10 Dec 2018 20:31:42 -0500
+Date: Thu, 27 Dec 2018 23:37:07 -0500
 Subject: [PATCH] Require a recent fontforge for reproducibility
 
 The required version is set to 20171220 which is the earliest
 date from which fontforge built from source was able to produce
-fonts deterministically. "20171220" refers to upstream revision
-69e561773b91e37096a855f0353b1d6781a61250
+the non-LGC subset of DejaVu deterministically. "20171220" refers
+to upstream revision 69e561773b91e37096a855f0353b1d6781a61250
 
 Note there was not an actual dejavu-fonts release made on 2017-12-20;
 the date is intended to be both a reference point, as previously
