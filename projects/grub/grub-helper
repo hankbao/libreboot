@@ -72,7 +72,7 @@ grub_bo_search() {
 grub_bo_dump() {
 	local file="$1"
 
-	od -Anx -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
+	od -An -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
 }
 
 grub_bo() {
