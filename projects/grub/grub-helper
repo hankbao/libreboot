@@ -113,14 +113,12 @@ grub_copy_modules() {
 }
 
 grub_build_font() {
-	# Font project-specific filenames and paths
 	local font_file="$(grub_font_file "$FONTS" "$@")"
 	local font_project="$(grub_font_project "$FONTS" "$@")"
 	local font_build_dir="$root/$BUILD/$font_project"
 
 	local grub_mkfont="$sources_path/grub-mkfont"
 
-	# GRUB font directory for outputting the built PF2 file
 	mkdir -p "$build_path/$FONTS"
 
 	"$grub_mkfont" --output="$build_path/$FONTS/${font_file%.*}.pf2" \
@@ -129,8 +127,6 @@ grub_build_font() {
 
 grub_build_utils() {
 	(
-		# If arch and/or platform files don't exist,
-		# the configure script will pick a reasonable default
 		local arch="$(grub_arch "$target" "$@")"
 		local platform="$(grub_platform "$target" "$@")"
 
