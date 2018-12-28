@@ -63,29 +63,29 @@ grub_modmin_path() {
 }
 
 grub_bo_search() {
-    local pattern="$1"
-    local comparand="$2"
+	local pattern="$1"
+	local comparand="$2"
 
-    grep -Fbof <(grub_bo_dump "$pattern") <(grub_bo_dump "$comparand") | cut -d: -f1
+	grep -Fbof <(grub_bo_dump "$pattern") <(grub_bo_dump "$comparand") | cut -d: -f1
 }
 
 grub_bo_dump() {
-    local file="$1"
+	local file="$1"
 
-    od -Anx -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
+	od -Anx -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
 }
 
 grub_bo() {
-    local pattern="$1"
-    local comparand="$2"
+	local pattern="$1"
+	local comparand="$2"
 
-    local nibble_offset="$(grub_bo_search "$pattern" "$comparand")"
+	local nibble_offset="$(grub_bo_search "$pattern" "$comparand")"
 
-    if [[ -n "$nibble_offset" ]]; then
-	printf '0x%X\n' $((nibble_offset / 2))
-    else
-	return 1
-    fi
+	if [[ -n "$nibble_offset" ]]; then
+		printf '0x%X\n' $((nibble_offset / 2))
+	else
+		return 1
+	fi
 }
 
 grub_blocklist_format() {
