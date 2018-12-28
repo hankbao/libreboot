@@ -35,7 +35,8 @@ rm -rf "seabios/"
 # ------------------------------------------------------------------------------
 
 # download it using git
-git clone https://git.seabios.org/seabios.git seabios
+git clone https://git.seabios.org/seabios.git seabios || \
+git clone https://review.coreboot.org/cgit/seabios.git/ seabios
 
 (
 # modifications are required
