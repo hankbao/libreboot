@@ -27,7 +27,8 @@ usage() {
 download() {
 	local repository="$project"
 
-	project_download_git "$project" "$repository" 'https://review.coreboot.org/seabios.git' "$@"
+	project_download_git "$project" "$repository" 'https://git.seabios.org/seabios.git' "$@" || \
+	project_download_git "$project" "$repository" 'https://review.coreboot.org/cgit/seabios.git/' "$@"
 }
 
 download_check() {
