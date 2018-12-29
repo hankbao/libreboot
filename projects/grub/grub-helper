@@ -63,29 +63,29 @@ grub_modmin_path() {
 }
 
 grub_bo_search() {
-    local pattern="$1"
-    local comparand="$2"
+	local pattern="$1"
+	local comparand="$2"
 
-    grep -Fbof <(grub_bo_dump "$pattern") <(grub_bo_dump "$comparand") | cut -d: -f1
+	grep -Fbof <(grub_bo_dump "$pattern") <(grub_bo_dump "$comparand") | cut -d: -f1
 }
 
 grub_bo_dump() {
-    local file="$1"
+	local file="$1"
 
-    od -Anx -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
+	od -An -t x1 -w16 -v "$file" | paste -sd '' | tr -d ' '
 }
 
 grub_bo() {
-    local pattern="$1"
-    local comparand="$2"
+	local pattern="$1"
+	local comparand="$2"
 
-    local nibble_offset="$(grub_bo_search "$pattern" "$comparand")"
+	local nibble_offset="$(grub_bo_search "$pattern" "$comparand")"
 
-    if [[ -n "$nibble_offset" ]]; then
-	printf '0x%X\n' $((nibble_offset / 2))
-    else
-	return 1
-    fi
+	if [[ -n "$nibble_offset" ]]; then
+		printf '0x%X\n' $((nibble_offset / 2))
+	else
+		return 1
+	fi
 }
 
 grub_blocklist_format() {
@@ -113,14 +113,12 @@ grub_copy_modules() {
 }
 
 grub_build_font() {
-	# Font project-specific filenames and paths
 	local font_file="$(grub_font_file "$FONTS" "$@")"
 	local font_project="$(grub_font_project "$FONTS" "$@")"
 	local font_build_dir="$root/$BUILD/$font_project"
 
 	local grub_mkfont="$sources_path/grub-mkfont"
 
-	# GRUB font directory for outputting the built PF2 file
 	mkdir -p "$build_path/$FONTS"
 
 	"$grub_mkfont" --output="$build_path/$FONTS/${font_file%.*}.pf2" \
@@ -129,8 +127,6 @@ grub_build_font() {
 
 grub_build_utils() {
 	(
-		# If arch and/or platform files don't exist,
-		# the configure script will pick a reasonable default
 		local arch="$(grub_arch "$target" "$@")"
 		local platform="$(grub_platform "$target" "$@")"
 
@@ -282,7 +278,7 @@ grub_floppy_image_make_bootable() {
 	local oem_name='\x4C\x49\x42\x52\x45\x20\x20\x20'
 
 	# write $floppyimg Bios Parameter Block to $bootimg first
-	dd if="$floppyimg" of="$bootimg" bs=1 skip=11 seek=11 count=52 conv=notrunc
+	dd if="$floppyimg" of="$bootimg" bs=1 skip=11 seek=11 count=51 conv=notrunc
 	dd if=<(printf "$oem_name") of="$bootimg" bs=1 seek=3 conv=notrunc
 	dd if=/dev/zero of="$floppyimg" count=1 conv=notrunc
 	dd if="$bootimg" of="$floppyimg" conv=notrunc

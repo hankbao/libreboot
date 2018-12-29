@@ -133,7 +133,7 @@ libreboot_setup() {
 	libreboot_setup_tool_actions
 	libreboot_setup_project_actions
 
-	requirements 'tar' 'sed' 'gpg' 'sha256sum' 'git'
+	requirements tar sed gpg sha256sum git mmd mcopy grep mkfs.fat
 
 	libreboot_setup_variables
 }
