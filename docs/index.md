@@ -32,6 +32,7 @@ Other information
 =================
 
 -   [Miscellaneous](misc/)
+-   [List of codenames](misc/codenames.md)
 
 About the libreboot project
 ===========================
