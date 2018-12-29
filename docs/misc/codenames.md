@@ -17,8 +17,9 @@ motherboard includes one or not can be determined by (in descending order
 of reliability):
 
 -   often thorough disassembly and searching for the actual chip
--   looking at white PCB markings near RAM slots
-    and comparing with some known IDs listed below.
+-   looking at white PCB markings near RAM slots / under keyboard
+    and comparing with some known codenames (if not available FRU ID sticker)
+    listed below.
 -   sometimes by looking at heatsink grills: on
     discrete GPU laptops these will look orange and on intergrated ones
     they will appear silver.
@@ -30,25 +31,31 @@ List of models and codenames
 
 -   Asus Chromebook C201PA: speedy\_rk3288, veyron-speedy
 
--   Thinkpad X200: Mocha-1
--   Thinkpad X200s (slim): Pecan-1
--   Thinkpad X200 Tablet: Caramel-1
+-   ThinkPad X60: KS Note
+-   ThinkPad X60s (slim): KS Note-2 / KS-2
+-   ThinkPad X60 Tablet: Dali (Same PCB as KS Note-2, different EC firmware)
 
--   Thinkpad T400: Malibu-3
-    -   with discrete GPU (dGPU), at board(?) revision 7: "MLB3D-7
-    -   with only integrated GPU (iGPU), at board(?) revision 7: "MLB3I-7"
+-   ThinkPad X200: Mocha-1
+-   ThinkPad X200s (slim): Pecan-1
+-   ThinkPad X200 Tablet: Caramel-1
 
--   Thinkpad T400s (slim): Shinai-MV
--   Thinkpad R500: Waikiki-3
+-   ThinkPad R400/T400: Malibu-3
+    -   with discrete GPU (dGPU), at board revision 0: "MLB3D-0
+    -   with only integrated GPU (iGPU), at board revision 0: "MLB3I-0"
 
--   Thinkpad T500/W500: Coronado-5
-    - with dGPU (radeon): "COR5D-9"
-    - with only iGPU: "COR5I-9"
+-   ThinkPad T500/W500: Coronado-5
+    - with dGPU (radeon): "COR5D-0" (last number is the board revision)
+    - with only iGPU: "COR5I-0"
 
--   T6x (whole family): Davinci
--   T60
-    -   with dGPU (radeon): Magi
-    -   with iGPU: Lisa
+-   ThinkPad T400s (slim): Shinai-MV
+-   ThinkPad R500: Waikiki-3
+
+-   R6x/T6x (whole family): Davinci. They don't have codename label in
+silkscreen so you need to use FRU label of the board, which is placed
+under RAM sticks.
+-   R60/T60:
+    -   with dGPU (radeon): Magi-0 (last number is the board revision)
+    -   with iGPU: Lisa-0
 
 -   With ThinkPads on Intel platforms newer than Montevina (Except T410),
     the codenames become more consistent. All boards have the following
@@ -56,41 +63,50 @@ List of models and codenames
     -   with dGPU: SWG (SWitchable Graphics)
     -   with only iGPU: UMA (Unified Memory Access)
 
-    These are the known model codenames:
-    -   Thinkpad T410: NOZOMI-1 # EXT/INT
-    -   Thinkpad T410s: SHINAI-2 # SWG/UMA
-    -   Thinkpad T420: NOZOMI-3 # SWG/UMA
-    -   Thinkpad T420s: SHINAI-3 # SWG/UMA
-    -   Thinkpad T430: NOZOMI-4 # SWG/UMA
-    -   Thinkpad T430s: SHINAI-4 # SWG/UMA
-    -   Thinkpad T520: KENDO-1
-    -   Thinkpad W520: KENDO-1 WS
-    -   Thinkpad T520: KENDO-3
-    -   Thinkpad W520: KENDO-3 WS
-    -   Thinkpad T530: KENDO-4
-    -   Thinkpad W530: KENDO-4 WS
+*Note that Intel platforms newer than Montevina are not supported by libreboot
+yet!. Currently only Calistoga and Montevina (only when using DDR3)
+are the supported platforms.*
+
+-   These are the known model codenames:
+    -   ThinkPad T410: NOZOMI-1 # EXT/INT
+    -   ThinkPad T410s: SHINAI-2 # SWG/UMA
+    -   ThinkPad T420: NOZOMI-3 # SWG/UMA
+    -   ThinkPad T420s: SHINAI-3 # SWG/UMA
+    -   ThinkPad T430: NOZOMI-4 # SWG/UMA
+    -   ThinkPad T430s: SHINAI-4 # SWG/UMA
+    -   ThinkPad T520: KENDO-1
+    -   ThinkPad W520: KENDO-1 WS
+    -   ThinkPad T520: KENDO-3
+    -   ThinkPad W520: KENDO-3 WS
+    -   ThinkPad T530: KENDO-4
+    -   ThinkPad W530: KENDO-4 WS
 
 
 ### Miscellaneous
--   Calistoga: 945GM chipset family name
+-   [Calistoga](https://ark.intel.com/products/codename/5950/Calistoga):
+945GM/945PM chipset family name
 -   Napa: calistoga based platform
--   Cantiga: GM45/GS45/PM45 chipset family name.
+-   [Cantiga](https://ark.intel.com/products/codename/26552/Cantiga):
+GM45/GS45/PM45 chipset family name.
     This is the chipset used in T400,X200 and similar.
 -   Montevina: cantiga based platform.
 -   PMH: the Power Management Hub is a gate array for managing the power
     up/down sequence. It is additionally tasked with extending EC's I/O.
-    Its? last version was called "Thinker-1".
--   Kozak, Tsurumai, Rinkan: These are power management ICs for Notebook PCs.
-    Tsurumai is marked as "TB62501F" and its datasheet has a description of
-    its operation.
+    Its later version was called "Thinker-1", and eventually it was merged
+    with PMIC (Rinkan) as ThinkEngine (Do not confuse it with EC chip which is also
+    has ThinkEngine logo on ThinkPad boards)
+-   Kozak, Tsurumai, Rinkan: These are successive versions of power management
+    ICs for Notebook PCs. Tsurumai chip marking is "TB62501F" and datasheet
+    of it fully describes its operation.
 
 See also
 ========
 -   Many more Intel codenames can be found at
     [Wikipedia](https://en.wikipedia.org/wiki/List_of_Intel_codenames).
--   For Thinkpads see [Documentation/thinkpad/codenames.csv @ Coreboot](https://review.coreboot.org/cgit/coreboot.git/tree/Documentation/thinkpad/codenames.csv)
+-   For ThinkPads see [Documentation/thinkpad/codenames.csv @ Coreboot]
+(https://review.coreboot.org/cgit/coreboot.git/tree/Documentation/thinkpad/codenames.csv)
 
-Copyright Â© 2018 Fedja Beader <fedja@protonmail.ch>
+Copyright © 2018 Fedja Beader <fedja@protonmail.ch>
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License Version 1.3 or any later
