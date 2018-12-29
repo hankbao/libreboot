@@ -278,7 +278,7 @@ grub_floppy_image_make_bootable() {
 	local oem_name='\x4C\x49\x42\x52\x45\x20\x20\x20'
 
 	# write $floppyimg Bios Parameter Block to $bootimg first
-	dd if="$floppyimg" of="$bootimg" bs=1 skip=11 seek=11 count=52 conv=notrunc
+	dd if="$floppyimg" of="$bootimg" bs=1 skip=11 seek=11 count=51 conv=notrunc
 	dd if=<(printf "$oem_name") of="$bootimg" bs=1 seek=3 conv=notrunc
 	dd if=/dev/zero of="$floppyimg" count=1 conv=notrunc
 	dd if="$bootimg" of="$floppyimg" conv=notrunc
