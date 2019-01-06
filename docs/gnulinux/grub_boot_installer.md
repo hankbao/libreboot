@@ -69,12 +69,15 @@ Thirdly, boot the USB and enter these commands in the GRUB terminal
     grub> boot
 
 If you are on a 32-bit system (e.g. some Thinkpad X60's) then you will need to
-use these commands instead:
+use these commands (this is also true for 32-bit running on 64-bit machines):
 
     grub> set root='usb0'
     grub> linux /install.386/vmlinuz
     grub> initrd /install.386/initrd.gz
     grub> boot
+
+NOTE FOR G41M USERS (32 bit, 64 bit): On the *linux* line, specify fb=false to
+boot in text mode or the installer won't have a display on your monitor.
 
 ## Booting ISOLINUX Images (Automatic Method)
 Boot it in GRUB using the `Parse ISOLINUX config (USB)` option. A new menu should appear in GRUB, showing the boot options for that distro; this is a GRUB menu, converted from the usual ISOLINUX menu provided by that distro.

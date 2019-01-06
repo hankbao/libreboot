@@ -5,6 +5,16 @@ title: Installing Debian or Devuan GNU+Linux with full disk encryption (includin
 This guide is written for the Debian distribution, but it should also
 work for Devuan with the net installer.
 
+Gigabyte GA-G41M-ES2L
+=====================
+
+To boot the Trisquel net installer, make sure to specify fb=false on the linux
+kernel parameters in GRUB. This will boot the installer in text mode instead
+of using a framebuffer.
+
+Moving on...
+============
+
 Libreboot on x86 uses the GRUB
 [payload](http://www.coreboot.org/Payloads#GRUB_2) by default, which
 means that the GRUB configuration file (where your GRUB menu comes from)
