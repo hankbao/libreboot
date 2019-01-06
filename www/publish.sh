@@ -56,12 +56,12 @@ if [[ $FILE != "./docs/fdl-1.3" && $FILE != "docs/fdl-1.3" &&
 fi
 
 # change out .md -> .html
-sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' "$TMPFILE"
-sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-zA-Z0-9_-]*\)\?)/.html\1)/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-zA-Z0-9_-]*\)\?]/.html\1]/g' "$TMPFILE"
 
 # change out .md -> .html
-sed -i -e 's/\.md\(#[a-z\-]*\)*)/.html\1)/g' "$TMPFILE"
-sed -i -e 's/\.md\(#[a-z\-]*\)*]/.html\1]/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-zA-Z0-9_-]*\)\?)/.html\1)/g' "$TMPFILE"
+sed -i -e 's/\.md\(#[a-zA-Z0-9_-]*\)\?]/.html\1]/g' "$TMPFILE"
 
 # work around issue #2872
 TOC=$(grep -q "^x-toc-enable: true$" "$TMPFILE" && printf '%s\n' "--toc --toc-depth=2") || TOC=""
