@@ -5,6 +5,12 @@ x-toc enable: true
 
 This guide is written for the Trisquel 7.0 (Belenos) GNU+Linux distribution, but it should also work for Trisquel 6.0 (Toutatis).
 
+## Gigabyte GA-G41M-ES2L
+
+To boot the Trisquel net installer, make sure to specify fb=false on the linux
+kernel parameters in GRUB. This will boot the installer in text mode instead
+of using a framebuffer.
+
 ## Boot the Installation Media
 Boot your operating system, with the installation media. If you don't know how to do so, refer to [How to Prepare and Boot a USB Installer in Libreboot Systems](grub_boot_installer.md).
 
