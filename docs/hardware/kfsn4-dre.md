@@ -42,10 +42,35 @@ DDR2 533/667 Registered ECC. 16 slots. Total capacity up to 64GiB.
 Hex-core CPUs {#hexcore}
 =============
 
-PCB revision 1.05G is the best version of this board (the revision
-number will be printed on the board), because it can use dual hex-core
-CPUs (Opteron 2400/8400 series). Other revisions are believed to only
-support dual quad-core CPUs.
+PCB revision 1.05G is the latest version of this board and the best one
+(the revision number is be printed on the board), if you want to use
+dual hex-core CPUs (Opteron 2400/8400 series), though only two board
+configurations are believed to support them. Other revisions are
+believed to only support dual quad-core CPUs.
+
+To be sure your board supports a CPU check the official ASUS website here:
+<https://www.asus.com/support/cpu_support>. Note: not all CPUs are listed.
+
+If you are running a Hex-Core CPU on any board version, please contact us.
+
+Board configurations {#configurations}
+==============
+There are 7 different configurations of this board: "standard", 2S, iKVM,
+iKVM/IST, SAS, SAS/iKVM and SAS/iKVM/IST.
+
+The 2S boards have two PCI-E slots with the numbers of lanes shared,
+making each slot have 8 lanes.
+
+The iKVM boards are so called because they offer a remote real-time access
+to the machine through a removable PCI management card, their hardware is
+the same as the non-iKVM ones.
+
+The SAS versions have a 4-port SAS controller and a four 7-pin SAS connectors
+instead of the PCI-E 8x slot which is present in all the other board configurations.
+Note: the SAS functionality is **not supported** by libreboot.
+
+The IST versions with PCB revision 1.05G are the ones who are believed to
+support the six core Opteron Istanbul processors (2400 and 8400 series).
 
 Current issues {#issues}
 ==============
@@ -59,19 +84,25 @@ Current issues {#issues}
     config](http://review.coreboot.org/gitweb?p=board-status.git;a=blob;f=asus/kfsn4-dre/4.0-10101-g039edeb/2015-06-27T03:59:16Z/config.txt;h=4742905c185a93fbda8eb14322dd82c70641aef0;hb=055f5df4e000a97453dfad6c91c2d06ea22b8545)
     doesn't have the issue.
 
--   Text-mode is a bit jittery (but still usable). (the jitter
-    disappears if using KMS, once the kernel starts. The jitter will
-    remain, if booting the kernel in text-mode).
+-   Text-mode is jittery and it may not be usable, so it's recommended
+    to flash the BIOS with the coreboot frame-buffer image (kfsn4-dre_vesafb.rom).
+    The jitter disappears if using KMS once the kernel starts, but it will 
+    remain, if booting the kernel in text-mode.
 
 -   Booting from USB mass storage devices is not possible; neither GRUB
     nor SeaBIOS detect USB drives when present. USB keyboards function
-    under both GRUB and SeaBIOS, albeit slowly under GRUB
-    (several seconds per character typed).
+    under both GRUB and SeaBIOS, albeit slowly under GRUB (several seconds per
+    character typed).
+
+-   To install an operating system you will need a hard disk
+    with a pre-installed OS otherwise you have to plug in another hard disk or
+    a CD/DVD reader in order to boot a copy of the installer of your OS, since
+    the USB booting doesn't work.
 
 Other information
 =================
 
-[specifications](ftp://ftp.sgi.com/public/Technical%20Support/Pdf%20files/Asus/kfsn4-dre.pdf)
+[specifications](https://web.archive.org/web/20181212180051/http://ftp.tekwind.co.jp/pub/asustw/mb/Socket%20F/KFSN4-DRE/Manual/e3335_kfsn4-dre.pdf)
 
 Copyright © 2015 Leah Rowe <info@minifree.org>\
 
