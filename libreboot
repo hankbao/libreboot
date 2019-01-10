@@ -23,52 +23,52 @@ libreboot_usage() {
 	local action
 	local target
 
-	printf 1>&2 '%s\n' "$executable [action] [target] [arguments]"
+	printf '%s\n' "$executable [action] [target] [arguments]"
 
-	printf 1>&2 '\n%s\n' 'Generic project actions:'
+	printf '\n%s\n' 'Generic project actions:'
 
 	for action in "${PROJECT_ACTIONS_GENERIC[@]}"; do
-		printf 1>&2 '%s\n' "  $action"
+		printf '%s\n' "  $action"
 	done
 
-	printf 1>&2 '\n%s\n' 'Virtual project actions:'
-	printf 1>&2 '%s\n'   '  sources'
-	printf 1>&2 '%s\n'   '  produce'
-	printf 1>&2 '%s\n'   '  test'
+	printf '\n%s\n' 'Virtual project actions:'
+	printf '%s\n'   '  sources'
+	printf '%s\n'   '  produce'
+	printf '%s\n'   '  test'
 
-	printf 1>&2 '\n%s\n' 'Project targets:'
+	printf '\n%s\n' 'Project targets:'
 
 	for target in "$root/$PROJECTS"/*; do
 		if project_check "$target"; then
-			printf 1>&2 '%s\n' "  $target"
+			printf '%s\n' "  $target"
 		fi
 	done
 
-	printf 1>&2 '\n%s\n' 'Generic tool actions:'
+	printf '\n%s\n' 'Generic tool actions:'
 
 	for action in "${TOOL_ACTIONS_GENERIC[@]}"; do
-		printf 1>&2 '%s\n' "  $action"
+		printf '%s\n' "  $action"
 	done
 
-	printf 1>&2 '\n%s\n' 'Tool targets:'
+	printf '\n%s\n' 'Tool targets:'
 
 	for target in "$root/$TOOLS"/*; do
 		if tool_check "$target"; then
-			printf 1>&2 '%s\n' "  $target"
+			printf '%s\n' "  $target"
 		fi
 	done
 
-	printf 1>&2 '\n%s\n' 'Environment variables:'
-	printf 1>&2 '%s\n'   '  PROJECTS_FORCE - Projects to always perform actions for'
-	printf 1>&2 '%s\n'   '  TOOLS_FORCE - Tools to always perform actions for'
-	printf 1>&2 '%s\n'   '  RELEASE_KEY - GPG key to use for release'
-	printf 1>&2 '%s\n'   '  VBOOT_KEYS_PATH - Path to the vboot keys'
-	printf 1>&2 '%s\n'   '  LIBFAKETIME_PATH - Path to libfaketime'
-	printf 1>&2 '%s\n'   '  TASKS - Number of simultaneous tasks to run'
-	printf 1>&2 '%s\n'   '  VERSION - Version string to use'
+	printf '\n%s\n' 'Environment variables:'
+	printf '%s\n'   '  PROJECTS_FORCE - Projects to always perform actions for'
+	printf '%s\n'   '  TOOLS_FORCE - Tools to always perform actions for'
+	printf '%s\n'   '  RELEASE_KEY - GPG key to use for release'
+	printf '%s\n'   '  VBOOT_KEYS_PATH - Path to the vboot keys'
+	printf '%s\n'   '  LIBFAKETIME_PATH - Path to libfaketime'
+	printf '%s\n'   '  TASKS - Number of simultaneous tasks to run'
+	printf '%s\n'   '  VERSION - Version string to use'
 
-	printf 1>&2 '\n%s\n' 'Configuration files:'
-	printf 1>&2 '%s\n'   "  $BUILD_SYSTEM.conf - Environment variables configuration"
+	printf '\n%s\n' 'Configuration files:'
+	printf '%s\n'   "  $BUILD_SYSTEM.conf - Environment variables configuration"
 }
 
 libreboot_project() {
