@@ -40,7 +40,7 @@ libreboot_usage() {
 
 	for target in "$root/$PROJECTS"/*; do
 		if project_check "$target"; then
-			printf '%s\n' "  $target"
+			printf '%s\n' "  ${target##*/}"
 		fi
 	done
 
@@ -54,7 +54,7 @@ libreboot_usage() {
 
 	for target in "$root/$TOOLS"/*; do
 		if tool_check "$target"; then
-			printf '%s\n' "  $target"
+			printf '%s\n' "  ${target##*/}"
 		fi
 	done
 
