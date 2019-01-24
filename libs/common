@@ -34,6 +34,7 @@ VARIANTS="variants"
 BLOBS="blobs"
 BLOBS_IGNORE="blobs-ignore"
 BLOBS_DISCOVER="blobs-discover"
+DEPENDENCIES="dependencies"
 
 DOTEPOCH=".epoch"
 DOTRNDSEED=".rndseed"
