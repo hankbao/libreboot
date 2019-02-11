@@ -19,6 +19,14 @@ arguments() {
 	project_arguments_targets "$project" "$@"
 }
 
+dependencies() {
+	project_dependencies "$project" "$@"
+}
+
+dependencies_check() {
+	project_dependencies_check "$project" "$@"
+}
+
 usage() {
 	project_usage_actions "$project"
 	project_usage_arguments "$project" "$@"
