@@ -50,10 +50,10 @@ List of models and codenames
 -   ThinkPad T400s (slim): Shinai-MV
 -   ThinkPad R500: Waikiki-3
 
--   R6x/T6x (whole family): Davinci. They don't have codename label in
+-   T6x (whole family): Davinci. They don't have codename label in
 silkscreen so you need to use FRU label of the board, which is placed
 under RAM sticks.
--   R60/T60:
+-   T60:
     -   with dGPU (radeon): Magi-0 (last number is the board revision)
     -   with iGPU: Lisa-0
 
