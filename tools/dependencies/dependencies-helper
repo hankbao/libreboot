@@ -20,11 +20,11 @@ dependencies_print() {
 	shift
 
 	if [[ "$distro" == 'parabola' ]]; then
-		printf '\n%s\n' 'Enable the multilib repository in /etc/pacman.conf'
+		printf '%s\n' 'Enable the multilib repository in /etc/pacman.conf'
 		printf '\n%s\n' 'Then, run the following command as root:'
 		printf '\n%s%s\n' 'pacman -S --needed ' "$*"
 	else
-		printf '\n%s\n' 'You will need to run the following command as root:'
+		printf '%s\n' 'You will need to run the following command as root:'
 		printf '\n%s%s\n' 'apt-get -y install ' "$*"
 	fi
 }
@@ -45,7 +45,7 @@ dependencies_arch_supported() {
 	local distro_dir="$tool_path/$CONFIGS/$distro"
 
 	if ! [[ -d "$distro_dir/$arch" ]]; then
-		printf '\n%s\n'  "Architecture \"$arch\" is not supported" 1>&2
+		printf '%s\n'  "Architecture \"$arch\" is not supported" 1>&2
 
 		return 1
 	fi
@@ -64,7 +64,7 @@ dependencies_distro_supported() {
 	IFS='|' eval 'local distro_list="${targets_list[*]}"'
 
 	if [[ "$distro" != @($distro_list) ]]; then
-		printf '\n%s'  "Argument \"$distro\" is not supported.  " 1>&2
+		printf '%s'  "Argument \"$distro\" is not supported.  " 1>&2
 		printf '%s\n'  'Check spelling?' 1>&2
 
 		usage
