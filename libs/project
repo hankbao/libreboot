@@ -152,7 +152,7 @@ project_action() {
 
 		project_action_check "$action" "$project" "$@"
 
-		printf '%s\n' "Project $project $action (with ${arguments:-no argument})"
+		printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
 
 		if "$action" "$@"; then
 			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
