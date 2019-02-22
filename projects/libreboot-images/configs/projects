@@ -1,6 +1,12 @@
 coreboot
-crossgcc
-vboot devices
-libpayload
-depthcharge
 cros-ec
+crossgcc
+dejavu-fonts
+depthcharge
+fontconfig
+grub
+ich9gen
+libpayload
+memtest86plus
+seabios
+vboot devices
