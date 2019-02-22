@@ -31,7 +31,7 @@ print() {
 	local tool_path="$(tool_path "$tool")"
 
 	if [[ -z "$arch" ]]; then
-		printf '\n%s\n' 'uname(1) produced no output.  Exiting' 1>&2
+		printf '%s\n' 'uname(1) produced no output.  Exiting' 1>&2
 
 		return 1
 	fi

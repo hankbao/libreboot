@@ -97,7 +97,7 @@ tool_action() {
 			return 0
 		fi
 
-		printf '%s\n' "Tool $tool $action (with ${arguments:-no argument})"
+		printf '%s\n\n' "Tool $tool $action (with ${arguments:-no argument})"
 
 		(
 			set -e
