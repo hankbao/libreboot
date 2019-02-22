@@ -97,19 +97,21 @@ tool_action() {
 			return 0
 		fi
 
-		printf 1>&2 '%s\n' "Tool $tool $action (with ${arguments:-no argument})"
+		printf '%s\n' "Tool $tool $action (with ${arguments:-no argument})"
 
 		(
 			set -e
+
 			"$action" "$@"
 		)
 
 		if [[ $? -ne 0 ]]
 		then
 			printf 1>&2 '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) failed"
+
 			return 1
 		else
-			printf 1>&2 '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) completed"
+			printf '\n%s\n' "Tool $tool $action (with ${arguments:-no argument}) completed"
 		fi
 	)
 }
