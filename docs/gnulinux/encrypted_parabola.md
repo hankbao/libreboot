@@ -245,20 +245,12 @@ for this very purpose: **/mnt**:
 
     # mount /dev/matrix/rootvol /mnt
 
-#### Create the /boot and /home Directories
-Now that you have mounted **rootvol**, you need to create the two most important
-folders on it: **/boot** and **/home**; these folder contain your boot files,
-as well as each user's personal documents, videos, etc..
-
-Since you mounted **rootvol** at **/mnt**, this is where you must create them;
-you will do so using `mkdir`:
-
-    # mkdir -p /mnt/home
-    # mkdir -p /mnt/boot
-
-You could also create two separate partitions for **/boot** and **/home**,
-but such a setup would be for advanced users, and is thus not covered in this guide.
-For more information on how to do this, refer to the Parabola/Arch wiki on [partitions](https://wiki.parabola.nu/Beginners%27_guide#Create_new_partition_table).
+#### Separate boot and home logical volumes
+You could also create two separate logical volumes for **/boot** and **/home**,
+but such a setup would be for advanced users,
+and is thus not covered in this guide.
+If separate boot logical volume is used, it has to be named **boot**
+in order for libreboot to use it.
 
 The setup of the drive and partitions is now complete; it's time to actually install Parabola.
 
