@@ -1,4 +1,7 @@
+bucts
 cbfstool
 cbmem
-nvramtool
 cros-tools
+crossgcc
+flashrom
+nvramtool
