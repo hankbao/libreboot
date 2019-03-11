@@ -179,7 +179,8 @@ git_patch() {
 
 		cd "$repository_path"
 		git checkout "$branch" 2> /dev/null > /dev/null
-		git am "$patch"
+
+		git am "$patch" || git am --abort
 	)
 }
 
