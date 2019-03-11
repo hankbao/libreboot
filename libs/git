@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+BRANCH_PREFIX="libreboot-"
 DOTGIT=".git"
 HEAD="HEAD"
 ORIGIN_HEAD="origin/HEAD"
@@ -325,7 +326,7 @@ git_project_prepare_patch() {
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_path
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -371,7 +372,7 @@ git_project_prepare_revision() {
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_revision
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -416,7 +417,7 @@ git_project_prepare_check() {
 	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -458,7 +459,7 @@ git_project_prepare_clean() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local prepare_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -500,7 +501,7 @@ git_project_checkout() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local checkout_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -560,7 +561,7 @@ git_project_release() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -601,7 +602,7 @@ git_project_release_check() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
