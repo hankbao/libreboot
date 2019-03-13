@@ -344,13 +344,6 @@ git_project_prepare_patch() {
 			branch="$branch-$argument"
 		fi
 
-		local revision_path="$configs_path/$path/$REVISION"
-
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
-		fi
-
 		prepare_branch=$branch
 		prepare_path=$path
 	done
@@ -392,13 +385,11 @@ git_project_prepare_revision() {
 
 		local revision_path="$configs_path/$path/$REVISION"
 
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
+		if [[ -f $revision_path ]]; then
+			prepare_revision=$(< "$revision_path")
 		fi
 
 		prepare_branch=$branch
-		prepare_revision=$(cat "$revision_path")
 	done
 
 	if [[ -n "$prepare_branch" ]]
@@ -433,13 +424,6 @@ git_project_prepare_check() {
 			fi
 
 			branch="$branch-$argument"
-		fi
-
-		local revision_path="$configs_path/$path/$REVISION"
-
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
 		fi
 
 		prepare_branch=$branch
