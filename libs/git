@@ -15,6 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+BRANCH_PREFIX="libreboot-"
 DOTGIT=".git"
 HEAD="HEAD"
 ORIGIN_HEAD="origin/HEAD"
@@ -179,7 +180,8 @@ git_patch() {
 
 		cd "$repository_path"
 		git checkout "$branch" 2> /dev/null > /dev/null
-		git am "$patch"
+
+		git am "$patch" || git am --abort
 	)
 }
 
@@ -226,25 +228,25 @@ git_project_check() {
 }
 
 git_project_patch_recursive() {
-	local project="$1"
-	local repository="$2"
-	local branch="$3"
-	local path="${4:-.}"
+	local project=$1
+	local repository=$2
+	local branch=$3
+	local path=$4
 
-	local repository_path="$(git_project_repository_path "$repository")"
-	local project_path="$(project_path "$project")"
-	local patches_path="$project_path/$PATCHES/$path"
+	local repository_path=$(git_project_repository_path "$repository")
+	local project_path=$(project_path "$project")
+	local patches_path=$project_path/$PATCHES/$path
 
-	if ! [[ -d "$patches_path" ]]; then
+	if ! [[ -d $project_path/$PATCHES ]]; then
 		return
 	fi
 
-	if [[ "$path" != "." ]]; then
+	if [[ $path != . ]]; then
 		git_project_patch_recursive "$project" "$repository" "$branch" "$(dirname "$path")"
 	fi
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		if [[ "${patch##*.}" == "patch" ]]; then
+		if [[ ${patch##*.} == patch ]]; then
 			git_patch "$repository_path" "$branch" "$patch"
 		else
 			diff_patch_file "$repository_path" "$patch"
@@ -287,8 +289,8 @@ git_project_prepare() {
 	shift
 
 	git_project_prepare_revision "$project" "$repository" "$@"
-	git_project_prepare_blobs "$project" "$repository" "$@"
 	git_project_prepare_patch "$project" "$repository" "$@"
+	git_project_prepare_blobs "$project" "$repository" "$@"
 }
 
 git_project_prepare_blobs() {
@@ -324,7 +326,7 @@ git_project_prepare_patch() {
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_path
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -340,13 +342,6 @@ git_project_prepare_patch() {
 			fi
 
 			branch="$branch-$argument"
-		fi
-
-		local revision_path="$configs_path/$path/$REVISION"
-
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
 		fi
 
 		prepare_branch=$branch
@@ -370,7 +365,7 @@ git_project_prepare_revision() {
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
 	local prepare_revision
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -390,13 +385,11 @@ git_project_prepare_revision() {
 
 		local revision_path="$configs_path/$path/$REVISION"
 
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
+		if [[ -f $revision_path ]]; then
+			prepare_revision=$(< "$revision_path")
 		fi
 
 		prepare_branch=$branch
-		prepare_revision=$(cat "$revision_path")
 	done
 
 	if [[ -n "$prepare_branch" ]]
@@ -415,7 +408,7 @@ git_project_prepare_check() {
 	local project_path=$(project_path "$project")
 	local configs_path="$project_path/$CONFIGS"
 	local prepare_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 	local path
 
@@ -431,13 +424,6 @@ git_project_prepare_check() {
 			fi
 
 			branch="$branch-$argument"
-		fi
-
-		local revision_path="$configs_path/$path/$REVISION"
-
-		if ! [[ -f "$revision_path" ]]
-		then
-			continue
 		fi
 
 		prepare_branch=$branch
@@ -457,7 +443,7 @@ git_project_prepare_clean() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local prepare_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -499,7 +485,7 @@ git_project_checkout() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local checkout_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -559,7 +545,7 @@ git_project_release() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
@@ -600,7 +586,7 @@ git_project_release_check() {
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local release_branch
-	local branch=$project
+	local branch=$BRANCH_PREFIX$project
 	local argument
 
 	for argument in "" "$@"
