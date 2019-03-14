@@ -289,8 +289,8 @@ git_project_prepare() {
 	shift
 
 	git_project_prepare_revision "$project" "$repository" "$@"
-	git_project_prepare_blobs "$project" "$repository" "$@"
 	git_project_prepare_patch "$project" "$repository" "$@"
+	git_project_prepare_blobs "$project" "$repository" "$@"
 }
 
 git_project_prepare_blobs() {
