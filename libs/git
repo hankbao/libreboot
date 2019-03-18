@@ -249,7 +249,7 @@ git_project_patch_recursive() {
 		if [[ ${patch##*.} == patch ]]; then
 			git_patch "$repository_path" "$branch" "$patch"
 		else
-			diff_patch_file "$repository_path" "$patch"
+			diff_patch "$repository_path" "$patch"
 		fi
 	done
 }
