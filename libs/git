@@ -210,9 +210,19 @@ git_patch() {
 		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
 
 		cd "$repository_path"
-		git checkout "$branch" 2> /dev/null > /dev/null
+		git checkout "$branch" >/dev/null 2>&1
 
-		git am "$patch" || git am --abort
+		case $patch in
+			*.patch)
+				git am "$patch" || git am --abort
+				;;
+			*.diff)
+				git_apply "$repository_path" "$branch" "$patch" &&
+				git_commit "$repository_path" "Applied ${patch##*/}"
+				;;
+			*)
+				;;
+		esac
 	)
 }
 
@@ -277,12 +287,7 @@ git_project_patch_recursive() {
 	fi
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		if [[ ${patch##*.} == patch ]]; then
-			git_patch "$repository_path" "$branch" "$patch"
-		else
-			git_apply "$repository_path" "$branch" "$patch"
-			git_commit "$repository_path" "Applied ${patch##*/}"
-		fi
+		git_patch "$repository_path" "$branch" "$patch"
 	done
 }
 
