@@ -169,6 +169,24 @@ git_commit() {
 	)
 }
 
+git_am() {
+	local repository_path=$1
+	local branch=$2
+	local patch=$3
+
+	(
+		export GIT_COMMITTER_NAME=$GIT_NAME
+		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
+
+		cd "$repository_path"
+		git checkout "$branch" >/dev/null 2>&1
+
+		if git_apply_check "$repository_path" "$branch" "$patch"; then
+			git am "$patch" || git am --abort
+		fi
+	)
+}
+
 git_apply() {
 	local repository_path=$1
 	local branch=$2
@@ -205,25 +223,17 @@ git_patch() {
 	local branch=$2
 	local patch=$3
 
-	(
-		export GIT_COMMITTER_NAME=$GIT_NAME
-		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
-
-		cd "$repository_path"
-		git checkout "$branch" >/dev/null 2>&1
-
-		case $patch in
-			*.patch)
-				git am "$patch" || git am --abort
-				;;
-			*.diff)
-				git_apply "$repository_path" "$branch" "$patch" &&
-				git_commit "$repository_path" "Applied ${patch##*/}"
-				;;
-			*)
-				;;
-		esac
-	)
+	case $patch in
+		*.patch)
+			git_am "$repository_path" "$branch" "$patch"
+			;;
+		*.diff)
+			git_apply "$repository_path" "$branch" "$patch" &&
+			git_commit "$repository_path" "Applied ${patch##*/}"
+			;;
+		*)
+			;;
+	esac
 }
 
 git_revision() {
