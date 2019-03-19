@@ -110,22 +110,11 @@ download_wrapper() {
 	fi
 }
 
-diff_patch_file() {
-	local repository_path="$1"
-	local patch_file_path="$2"
+diff_patch() {
+	local sources_path=$1
+	local patch_path=$2
 
-	# TODO: Improve handling of filenames to avoid gotchas w/ \n, \t, etc.
-	local filename_in_diff="$(sed -rne 's/^-{3}\s+([^ 	\r\n]*).*/\1/p' "$patch_file_path")"
-
-	local source_file_path
-
-	if ! ( grep -E '^-{3}.*/' "$patch_file_path" >/dev/null 2>&1 ); then
-		source_file_path="$repository_path/$filename_in_diff"
-	else
-		source_file_path="$repository_path/${filename_in_diff##*/}"
-	fi
-
-	patch "$source_file_path" "$patch_file_path"
+	patch -fd "$sources_path" -r - < "$patch_path"
 }
 
 path_wildcard_expand() {

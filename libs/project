@@ -531,7 +531,7 @@ project_sources_prepare_patch() {
 	local patches_path="$project_path/$PATCHES"
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		diff_patch_file "$sources_path" "$patch"
+		diff_patch "$sources_path" "$patch"
 	done
 }
 

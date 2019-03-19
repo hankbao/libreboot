@@ -169,7 +169,7 @@ git_commit() {
 	)
 }
 
-git_patch() {
+git_am() {
 	local repository_path=$1
 	local branch=$2
 	local patch=$3
@@ -179,10 +179,61 @@ git_patch() {
 		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
 
 		cd "$repository_path"
-		git checkout "$branch" 2> /dev/null > /dev/null
+		git checkout "$branch" >/dev/null 2>&1
 
-		git am "$patch" || git am --abort
+		if git_apply_check "$repository_path" "$branch" "$patch"; then
+			git am "$patch" || git am --abort
+		fi
 	)
+}
+
+git_apply() {
+	local repository_path=$1
+	local branch=$2
+	local patch=$3
+
+	(
+		export GIT_COMMITTER_NAME=$GIT_NAME
+		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
+
+		cd "$repository_path"
+		git checkout "$branch" >/dev/null 2>&1
+
+		if git_apply_check "$repository_path" "$branch" "$patch"; then
+			git apply --index "$patch"
+		fi
+	)
+}
+
+git_apply_check() {
+	local repository_path=$1
+	local branch=$2
+	local patch=$3
+
+	(
+		cd "$repository_path"
+		git checkout "$branch" >/dev/null 2>&1
+
+		git apply --check "$patch"
+	)
+}
+
+git_patch() {
+	local repository_path=$1
+	local branch=$2
+	local patch=$3
+
+	case $patch in
+		*.patch)
+			git_am "$repository_path" "$branch" "$patch"
+			;;
+		*.diff)
+			git_apply "$repository_path" "$branch" "$patch" &&
+			git_commit "$repository_path" "Applied ${patch##*/}"
+			;;
+		*)
+			;;
+	esac
 }
 
 git_revision() {
@@ -246,11 +297,7 @@ git_project_patch_recursive() {
 	fi
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		if [[ ${patch##*.} == patch ]]; then
-			git_patch "$repository_path" "$branch" "$patch"
-		else
-			diff_patch_file "$repository_path" "$patch"
-		fi
+		git_patch "$repository_path" "$branch" "$patch"
 	done
 }
 
