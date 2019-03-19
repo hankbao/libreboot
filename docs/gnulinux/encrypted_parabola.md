@@ -138,7 +138,7 @@ Now that you have created the partition, it's time to create the encrypted volum
 using the `cryptsetup` command, like this:
 
     # cryptsetup -v --cipher serpent-xts-plain64 --key-size 512 --hash whirlpool \
-    >--iter-time 500 --use-random --verify-passphrase luksFormat /dev/sdXY
+    --iter-time 500 --use-random --verify-passphrase --type luks1 luksFormat /dev/sdXY
 
 These are just recommended defaults; if you want to use anything else,
 or to find out what options there are, run `man cryptsetup`.
