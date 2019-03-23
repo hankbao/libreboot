@@ -97,17 +97,9 @@ git_branch_check() {
 	local branch=$2
 
 	(
-		cd "$repository_path" 2> /dev/null > /dev/null
-		if [[ $? -ne 0 ]]
-		then
-			return 1
-		fi
+		cd "$repository_path" >/dev/null 2>&1 || return 1
 
-		git rev-parse --verify "$branch" 2> /dev/null > /dev/null
-		if [[ $? -ne 0 ]]
-		then
-			return 1
-		fi
+		git rev-parse --verify "$branch" >/dev/null 2>&1
 	)
 }
 
@@ -124,17 +116,9 @@ git_fetch_check() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path" 2> /dev/null > /dev/null
-		if [[ $? -ne 0 ]]
-		then
-			return 1
-		fi
+		cd "$repository_path" >/dev/null 2>&1 || return 1
 
-		local output=$(git fetch --dry-run origin 2>&1)
-		if [[ -n "$output" ]]
-		then
-			return 1
-		fi
+		git fetch --dry-run origin >/dev/null 2>&1
 	)
 }
 
@@ -318,9 +302,7 @@ git_project_clone() {
 
 		for url in $urls
 		do
-			git_clone "$repository_path" "$url"
-
-			if [[ $? -eq 0 ]]
+			if git_clone "$repository_path" "$url"
 			then
 				return 0
 			fi
@@ -487,11 +469,6 @@ git_project_prepare_clean() {
 		if git_branch_check "$repository_path" "$prepare_branch"
 		then
 			git_branch_delete "$repository_path" "$prepare_branch"
-
-			if [[ $? -ne 0 ]]
-			then
-				return 0
-			fi
 		fi
 	fi
 }
@@ -609,13 +586,6 @@ git_project_release_check() {
 			local archive_path="$root/$RELEASE/$SOURCES/$project/$release_branch.$ARCHIVE"
 
 			file_exists_check "$archive_path"
-
-			if [[ $? -ne 0 ]]
-			then
-				return 1
-			else
-				return 0
-			fi
 		fi
 	fi
 }
