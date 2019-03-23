@@ -178,9 +178,6 @@ git_apply() {
 	local patch=$3
 
 	(
-		export GIT_COMMITTER_NAME=$GIT_NAME
-		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
-
 		cd "$repository_path"
 		git checkout "$branch" >/dev/null 2>&1
 
@@ -352,8 +349,6 @@ git_project_prepare_patch() {
 	local repository=$1
 	shift
 
-	local project_path=$(project_path "$project")
-	local configs_path="$project_path/$CONFIGS"
 	local branch=$project
 	local argument
 	local path
@@ -429,8 +424,6 @@ git_project_prepare_check() {
 	shift
 
 	local repository_path=$(git_project_repository_path "$repository")
-	local project_path=$(project_path "$project")
-	local configs_path="$project_path/$CONFIGS"
 	local branch=$project
 	local argument
 
@@ -531,7 +524,6 @@ git_project_release() {
 	shift
 	local repository=$1
 	shift
-	local arguments=$@
 
 	local repository_path=$(git_project_repository_path "$repository")
 	local branch=$project
