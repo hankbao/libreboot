@@ -241,8 +241,8 @@ git_files() {
 
 	(
 		cd "$repository_path"
-		# Reproducible sorting.
-		git ls-files -z | env LC_ALL='C.UTF-8' sort -z
+
+		git ls-files -z | sort -z
 	)
 }
 
