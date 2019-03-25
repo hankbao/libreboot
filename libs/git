@@ -141,6 +141,26 @@ git_remove() {
 	)
 }
 
+git_diff_staged_check() {
+	local repository_path=$1
+
+	(
+		cd "$repository_path"
+
+		git diff --staged --quiet
+	)
+}
+
+git_diff_check() {
+	local repository_path=$1
+
+	(
+		cd "$repository_path"
+
+		git diff --quiet
+	)
+}
+
 git_commit() {
 	local repository_path=$1
 	local message=$2
@@ -340,7 +360,10 @@ git_project_prepare_blobs() {
 		git_remove "$repository_path" "$blob"
 	done < "$blobs_path"
 
-	git_commit "$repository_path" "Removed blobs"
+	if ! git_diff_staged_check "$repository_path"
+	then
+		git_commit "$repository_path" "Removed blobs"
+	fi
 }
 
 git_project_prepare_patch() {
