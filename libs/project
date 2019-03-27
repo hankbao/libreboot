@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Copyright (C) 2016 Paul Kocialkowski <contact@paulk.fr>
-# Copyright (C) 2018 Andrew Robbins <contact@andrewrobbins.info>
+# Copyright (C) 2018,2019 Andrew Robbins <contact@andrewrobbins.info>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -147,21 +147,17 @@ project_action() {
 	shift
 	local arguments="$*"
 
-	(
-		set +e
+	project_action_check "$action" "$project" "$@"
 
-		project_action_check "$action" "$project" "$@"
+	printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
 
-		printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
+	if (set +e; "$action" "$@"); then
+		printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
+	else
+		printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
 
-		if "$action" "$@"; then
-			printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
-		else
-			printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
-
-			return 1
-		fi
-	)
+		return 1
+	fi
 }
 
 project_action_check() {
