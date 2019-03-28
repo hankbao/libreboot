@@ -80,7 +80,7 @@ project_dependencies_check() {
 	for ((i = 0, nodeps = ${#dependencies[@]}; i < nodeps; ++i)); do
 		local -a dependency=(${dependencies[i]})
 
-		project_check "${dependency[0]}" || let missing++
+		project_check "${dependency[0]}" || let ++missing
 	done
 
 	return $missing
@@ -99,7 +99,7 @@ project_dependencies_sources_check() {
 		local -a dependency=(${dependencies[i]})
 
 		project_sources_directory_filled_check "${dependency[0]}" ||
-		let missing++
+		let ++missing
 	done
 
 	return $missing
