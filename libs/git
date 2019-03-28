@@ -186,8 +186,10 @@ git_am() {
 		cd "$repository_path"
 		git checkout "$branch" >/dev/null 2>&1
 
-		if git_apply_check "$repository_path" "$branch" "$patch"; then
-			git am "$patch" || git am --abort
+		if ! git am "$patch"; then
+			git am --abort
+
+			exit 1
 		fi
 	)
 }
@@ -201,9 +203,7 @@ git_apply() {
 		cd "$repository_path"
 		git checkout "$branch" >/dev/null 2>&1
 
-		if git_apply_check "$repository_path" "$branch" "$patch"; then
-			git apply --index "$patch"
-		fi
+		git apply --index "$patch"
 	)
 }
 
@@ -225,12 +225,14 @@ git_patch() {
 	local branch=$2
 	local patch=$3
 
+	git_apply_check "$repository_path" "$branch" "$patch" || return 1
+
 	case $patch in
 		*.patch)
 			git_am "$repository_path" "$branch" "$patch"
 			;;
 		*.diff)
-			git_apply "$repository_path" "$branch" "$patch" &&
+			git_apply "$repository_path" "$branch" "$patch"
 			git_commit "$repository_path" "Applied ${patch##*/}"
 			;;
 		*)
