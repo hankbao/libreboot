@@ -271,16 +271,16 @@ git_project_patch_recursive() {
 	local patches_path=$project_path/$PATCHES/$path
 
 	if ! [[ -d $project_path/$PATCHES ]]; then
-		return
+		return 0
 	fi
+
+	for patch in "$patches_path"/[!.]*.@(patch|diff); do
+		git_patch "$repository_path" "$branch" "$patch" || return 1
+	done
 
 	if [[ $path != . ]]; then
 		git_project_patch_recursive "$project" "$repository" "$branch" "$(dirname "$path")"
 	fi
-
-	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		git_patch "$repository_path" "$branch" "$patch"
-	done
 }
 
 git_project_clone() {
@@ -316,8 +316,8 @@ git_project_prepare() {
 	shift
 
 	git_project_prepare_revision "$project" "$repository" "$@"
-	git_project_prepare_patch "$project" "$repository" "$@"
 	git_project_prepare_blobs "$project" "$repository" "$@"
+	git_project_prepare_patch "$project" "$repository" "$@"
 }
 
 git_project_prepare_blobs() {
