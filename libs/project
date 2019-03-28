@@ -75,10 +75,9 @@ project_dependencies_check() {
 	local -a dependencies
 	mapfile -t dependencies < <(project_dependencies "$project" "$@")
 
-	local -i count=${#dependencies[@]}
 	local -i missing=0
 
-	for ((i = 0; i < count; i++)); do
+	for ((i = 0, nodeps = ${#dependencies[@]}; i < nodeps; ++i)); do
 		local -a dependency=(${dependencies[i]})
 
 		project_check "${dependency[0]}" || let missing++
@@ -94,14 +93,13 @@ project_dependencies_sources_check() {
 	local -a dependencies
 	mapfile -t dependencies < <(project_dependencies "$project" "$@")
 
-	local -i count=${#dependencies[@]}
 	local -i missing=0
 
-	for ((i = 0; i < count; i++)); do
+	for ((i = 0, nodeps = ${#dependencies[@]}; i < nodeps; ++i)); do
 		local -a dependency=(${dependencies[i]})
 
-		project_sources_directory_filled_check "${dependency[0]}" \
-			|| let missing++
+		project_sources_directory_filled_check "${dependency[0]}" ||
+		let missing++
 	done
 
 	return $missing
@@ -115,9 +113,7 @@ project_dependencies_action_arguments() {
 	local -a dependencies
 	mapfile -t dependencies < <(project_dependencies "$project" "$@")
 
-	local -i count=${#dependencies[@]}
-
-	for ((i = 0; i < count; i++)); do
+	for ((i = 0, nodeps = ${#dependencies[@]}; i < nodeps; ++i)); do
 		local -a dependency=(${dependencies[i]})
 
 		if project_function_check "${dependency[0]}" "$action"; then
