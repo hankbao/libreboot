@@ -41,7 +41,8 @@ git_submodule_update() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git submodule update --init
 	)
 }
@@ -51,7 +52,8 @@ git_merge() {
 	local revision=$2
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git merge "$revision"
 	)
 }
@@ -62,7 +64,8 @@ git_branch_create() {
 	local revision=$3
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git checkout -B "$branch"
 
 		if [[ -n "$revision" ]]
@@ -77,7 +80,8 @@ git_branch_delete() {
 	local branch=$2
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git branch -D "$branch"
 	)
 }
@@ -87,7 +91,8 @@ git_branch_checkout() {
 	local branch=$2
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git checkout "$branch" > /dev/null
 	)
 }
@@ -97,7 +102,7 @@ git_branch_check() {
 	local branch=$2
 
 	(
-		cd "$repository_path" >/dev/null 2>&1 || return 1
+		cd "$repository_path" 2>/dev/null || exit 1
 
 		git rev-parse --verify "$branch" >/dev/null 2>&1
 	)
@@ -107,7 +112,8 @@ git_fetch() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git fetch origin
 	)
 }
@@ -116,7 +122,7 @@ git_fetch_check() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path" >/dev/null 2>&1 || return 1
+		cd "$repository_path" 2>/dev/null || exit 1
 
 		git fetch --dry-run origin >/dev/null 2>&1
 	)
@@ -126,7 +132,8 @@ git_clean() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git clean -df
 	)
 }
@@ -136,8 +143,29 @@ git_remove() {
 	local path=$2
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git rm -rf "$path"
+	)
+}
+
+git_diff_staged_check() {
+	local repository_path=$1
+
+	(
+		cd "$repository_path" 2>/dev/null || exit 1
+
+		git diff --staged --quiet
+	)
+}
+
+git_diff_check() {
+	local repository_path=$1
+
+	(
+		cd "$repository_path" 2>/dev/null || exit 1
+
+		git diff --quiet
 	)
 }
 
@@ -149,7 +177,8 @@ git_commit() {
 		export GIT_COMMITTER_NAME=$GIT_NAME
 		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
 
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git commit --author="$GIT_NAME <$GIT_EMAIL>" -m "$message"
 	)
 }
@@ -163,11 +192,14 @@ git_am() {
 		export GIT_COMMITTER_NAME=$GIT_NAME
 		export GIT_COMMITTER_EMAIL=$GIT_EMAIL
 
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git checkout "$branch" >/dev/null 2>&1
 
-		if git_apply_check "$repository_path" "$branch" "$patch"; then
-			git am "$patch" || git am --abort
+		if ! git am "$patch"; then
+			git am --abort
+
+			exit 1
 		fi
 	)
 }
@@ -178,12 +210,10 @@ git_apply() {
 	local patch=$3
 
 	(
-		cd "$repository_path"
-		git checkout "$branch" >/dev/null 2>&1
+		cd "$repository_path" 2>/dev/null || exit 1
 
-		if git_apply_check "$repository_path" "$branch" "$patch"; then
-			git apply --index "$patch"
-		fi
+		git checkout "$branch" >/dev/null 2>&1
+		git apply --index "$patch"
 	)
 }
 
@@ -193,9 +223,9 @@ git_apply_check() {
 	local patch=$3
 
 	(
-		cd "$repository_path"
-		git checkout "$branch" >/dev/null 2>&1
+		cd "$repository_path" 2>/dev/null || exit 1
 
+		git checkout "$branch" >/dev/null 2>&1
 		git apply --check "$patch"
 	)
 }
@@ -205,12 +235,14 @@ git_patch() {
 	local branch=$2
 	local patch=$3
 
+	git_apply_check "$repository_path" "$branch" "$patch" || return 1
+
 	case $patch in
 		*.patch)
 			git_am "$repository_path" "$branch" "$patch"
 			;;
 		*.diff)
-			git_apply "$repository_path" "$branch" "$patch" &&
+			git_apply "$repository_path" "$branch" "$patch"
 			git_commit "$repository_path" "Applied ${patch##*/}"
 			;;
 		*)
@@ -222,7 +254,8 @@ git_revision() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git rev-parse "$HEAD"
 	)
 }
@@ -231,7 +264,8 @@ git_describe() {
 	local repository_path=$1
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
+
 		git describe --tags
 	)
 }
@@ -240,7 +274,7 @@ git_files() {
 	local repository_path="$1"
 
 	(
-		cd "$repository_path"
+		cd "$repository_path" 2>/dev/null || exit 1
 
 		git ls-files -z | sort -z
 	)
@@ -271,16 +305,16 @@ git_project_patch_recursive() {
 	local patches_path=$project_path/$PATCHES/$path
 
 	if ! [[ -d $project_path/$PATCHES ]]; then
-		return
+		return 0
 	fi
+
+	for patch in "$patches_path"/[!.]*.@(patch|diff); do
+		git_patch "$repository_path" "$branch" "$patch" || return 1
+	done
 
 	if [[ $path != . ]]; then
 		git_project_patch_recursive "$project" "$repository" "$branch" "$(dirname "$path")"
 	fi
-
-	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		git_patch "$repository_path" "$branch" "$patch"
-	done
 }
 
 git_project_clone() {
@@ -316,8 +350,8 @@ git_project_prepare() {
 	shift
 
 	git_project_prepare_revision "$project" "$repository" "$@"
-	git_project_prepare_patch "$project" "$repository" "$@"
 	git_project_prepare_blobs "$project" "$repository" "$@"
+	git_project_prepare_patch "$project" "$repository" "$@"
 }
 
 git_project_prepare_blobs() {
@@ -340,7 +374,10 @@ git_project_prepare_blobs() {
 		git_remove "$repository_path" "$blob"
 	done < "$blobs_path"
 
-	git_commit "$repository_path" "Removed blobs"
+	if ! git_diff_staged_check "$repository_path"
+	then
+		git_commit "$repository_path" "Removed blobs"
+	fi
 }
 
 git_project_prepare_patch() {
