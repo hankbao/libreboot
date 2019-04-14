@@ -143,7 +143,9 @@ project_action() {
 	shift
 	local arguments="$*"
 
-	project_action_check "$action" "$project" "$@"
+	if project_action_check "$action" "$project" "$@"; then
+		return 0
+	fi
 
 	printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
 
