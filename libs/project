@@ -810,6 +810,11 @@ project_build_check() {
 	local rule
 	local path
 
+	if ! [[ -d $build_path ]]
+	then
+		return 1
+	fi
+
 	for argument in "" "$@"
 	do
 		if [[ -n "$argument" ]]
@@ -839,7 +844,7 @@ project_build_check() {
 			do
 				if ! [[ -f "$source_file_path" ]] && ! [[ -d "$source_file_path" ]]
 				then
-					false
+					return 1
 				fi
 			done
 		done < "$configs_install_path"
