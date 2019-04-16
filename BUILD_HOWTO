@@ -1,22 +1,24 @@
-Paper Build System
-==================
+Libreboot Build System
+======================
 
 Entry Point
 -----------
 
-The entry point for using the paper build system is the main script in the root
-directory, named after the build system (paper, libreboot, etc).
-Running the main script with no argument will show its general usage.
+The entry point for the Libreboot build system is the main script in the root
+directory named "libreboot". Running this script with no argument will show
+its general usage.
 
 Configuration
 -------------
 
-The paper build system can be configured with a script named after the build
-system (paper, libreboot, etc) with a ".conf" suffix. It is automatically loaded
-by the build system when running the main script.
+The build system can be configured with a script named "libreboot.conf" which
+must be located in the root directory.
 
-It contains environment variables assigned to the desired values. The list of
-environment variables is shown in the main script's general usage.
+Typical usage of this file is for assigning environment variables. The list
+of environment variables is shown in the main script's general usage.
+
+Since this file is sourced by the build system after libraries are loaded it
+can also be used to override any of their functions or variables.
 
 Project and Tool Targets
 ------------------------
