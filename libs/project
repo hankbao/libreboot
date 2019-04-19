@@ -149,7 +149,13 @@ project_action() {
 
 	printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
 
-	if (set +e; "$action" "$@"); then
+	(
+		set +e
+
+		"$action" "$@"
+	)
+
+	if [[ $? -eq 0 ]]; then
 		printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
 	else
 		printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
