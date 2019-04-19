@@ -79,25 +79,28 @@ build() {
 	local build_path="$(project_build_path "$project" "$@")"
 	local raw_keymap_path="$project_path/$CONFIGS/keymaps"
 
-	mkdir -p "$build_path"
+	(
+		set -e
 
-	grub_build_utils
+		mkdir -p "$build_path"
 
-	if [[ "$target" == 'bios' ]]; then
-		grub_build_floppy_image
-	else
-		grub_build_standalone_image
-	fi
+		grub_build_utils
 
-	for raw_keymap in "$raw_keymap_path"/*; do
-		grub_build_layout "$raw_keymap"
-	done
+		if [[ "$target" == 'bios' ]]; then
+		    grub_build_floppy_image
+		else
+		    grub_build_standalone_image
+		fi
 
-	grub_build_font
+		for raw_keymap in "$raw_keymap_path"/*; do
+		    grub_build_layout "$raw_keymap"
+		done
 
-	grub_copy_modules
+		grub_build_font
+		grub_copy_modules
 
-	make -C "$sources_path" distclean
+		make -C "$sources_path" distclean
+	)
 }
 
 build_check() {
