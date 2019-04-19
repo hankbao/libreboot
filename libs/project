@@ -789,7 +789,7 @@ project_update_check_git() {
 
 	requirements "git"
 
-	if ! git_project_check "$repository"
+	if git_project_check "$repository"
 	then
 		# Git repository should always be updated (even if upstream didn't progress).
 		# For instance, this is useful for testing new versions of patches without changing revision.
