@@ -535,6 +535,22 @@ project_sources_prepare_patch() {
 	done
 }
 
+project_blobs() {
+	local project=$1
+	shift
+
+	local blobs_path=$(project_blobs_path "$project" "$@")
+	local blobs_ignore_path=$(project_blobs_ignore_path "$project" "$@")
+
+	if [[ -n $blobs_path ]]; then
+		if [[ -n $blobs_ignore_path ]]; then
+			comm -23 <(sort "$blobs_path") <(sort "$blobs_ignore_path")
+		else
+			cat "$blobs_path"
+		fi
+	fi
+}
+
 project_blobs_path() {
 	local project=$1
 	shift

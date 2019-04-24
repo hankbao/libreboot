@@ -361,18 +361,12 @@ git_project_prepare_blobs() {
 	shift
 
 	local repository_path=$(git_project_repository_path "$repository")
-	local blobs_path=$(project_blobs_path "$project" "$@")
 	local blob
 
-	if ! [[ -f "$blobs_path" ]]
-	then
-		return
-	fi
-
-	while read blob
+	while read -r blob
 	do
 		git_remove "$repository_path" "$blob"
-	done < "$blobs_path"
+	done < <(project_blobs "$project" "$@")
 
 	if ! git_diff_staged_check "$repository_path"
 	then
