@@ -147,21 +147,26 @@ project_action() {
 		return 0
 	fi
 
-	printf '%s\n\n' "Project $project $action (with ${arguments:-no argument})"
-
 	(
 		set +e
 
-		"$action" "$@"
+		printf '%s\n' "Project $project $action (with ${arguments:-no argument})"
+
+		(
+			"$action" "$@"
+		)
+
+		local -i exit_status=$?
+
+		if ((exit_status)); then
+			printf 1>&2 '%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
+		else
+			printf '%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
+		fi
+
+		exit $exit_status
 	)
 
-	if [[ $? -eq 0 ]]; then
-		printf '\n%s\n' "Project $project $action (with ${arguments:-no argument}) completed"
-	else
-		printf 1>&2 '\n%s\n' "Project $project $action (with ${arguments:-no argument}) failed"
-
-		return 1
-	fi
 }
 
 project_action_check() {
