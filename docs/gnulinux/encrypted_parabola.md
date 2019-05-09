@@ -414,7 +414,9 @@ You can unlock a user's account manually, using the **root** account, with this 
 #### Generate grub.cfg
 Edit configuration in `/etc/default/grub`, remembering to use UUID when poitning to mbr/gpt partition.
 Use `blkid` to get list of devices with their respective UUIDs.
-Next generate grub.cfg with
+For details see [parabola wiki.](https://wiki.parabola.nu/Dm-crypt/Encrypting_an_entire_system#Configuring_the_boot_loader_5)
+
+Next generate grub.cfg with:
 
     # grub-mkconfig -o /boot/grub/grub.cfg
     
