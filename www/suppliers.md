@@ -35,6 +35,7 @@ Laptops:
 
 Services:
 
+-   [Hardware and software based security enhancements for Libreboot laptops](https://minifree.org/product/security-mods/)
 -   [Libreboot installation service](https://minifree.org/product/libreboot-installation-service/)
 -   [Libreboot chip flashing service for ASUS KGPE-D16 and KCMA-D8](https://minifree.org/product/d8-d16-chipflash/)
 
