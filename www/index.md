@@ -61,12 +61,14 @@ speaking, free software is software that is under the direct sovereignty of the
 user and, more importantly, the collective that is the *community*. Non-free
 software (e.g. Windows, MacOS or proprietary BIOS/UEFI) is under the exclusive
 control of its owners, not users! With freedom-respecting software, the users
-can at any time study the source code and even become developers. Other ways
-(for example) to contribute could be by hiring for development (free software
-enables the right to hire *absolutely anyone*), or contribute in a number
-of other ways (e.g. writing documentation or providing user support) which
-gives the developers more time to focus on code. We believe deeply in software
-freedom!
+can at any time study the source code, and even become developers themselves!
+Want to help the cause? Some ways you can contribute might be to write
+documentation, provide user support, or test others' contributions. Need more
+ideas on how you can help with the project? See [the git page](git.md). If you
+would like a specific feature developed but you are not technically inclined,
+you can hire anybody you would like to do the work for you. With free software,
+you are essentially the owner of your own copy which is why it's free (as in
+freedom).
 
 Many people use [non-free](https://www.gnu.org/philosophy/proprietary.html)
 proprietary boot firmware, even if they use GNU+Linux. Non-free BIOS/UEFI
