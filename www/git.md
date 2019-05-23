@@ -39,6 +39,38 @@ set the document root to the *www* directory in your local Git repository.
 With this configuration, you can then generate your local version of the
 website and view it by typing `localhost` in your browser's URL bar.
 
+Privacy of contributors (you do not have to reveal your name or identity!)
+-------------------------------------------------------------------------
+
+Contributions that you make are publicly recorded, in a Git repository which
+everyone can access. This includes the name and email address of the
+contributor.
+
+In Git, for author name and email address, you do not have to use identifying
+data. You can use Libreboot Contributor and your email address could be
+specified as contributor@libreboot.org. You are permitted to do this, if
+you wish to maintain privacy. We believe in privacy. If you choose to remain
+anonymous, we will honour this.
+
+Of course, you can use whichever name and/or email address you like.
+
+For enhanced privacy, we recommend that you use a [trustworthy VPN
+provider](https://torrentfreak.com/which-vpn-services-keep-you-anonymous-in-2019/)
+and route all of your traffic through Tor (on top of the VPN). The
+[Tor website](https://torproject.org/) has instructions on it for routing
+traffic through the Tor network.
+
+Legally speaking, all copyright is automatic under the Berne Convention of
+international copyright law. It does not matter which name, or indeed whether
+you even declare a copyright (but we do require that certain copyright
+licenses are used - read more about that on this same page).
+
+If you use a different name and email address on your commits/patches, then you
+should be fairly anonymous. Use
+[git log](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
+and [git show](https://git-scm.com/docs/git-show) to confirm that before you
+push changes to a public Git repository.
+
 General guidelines for submitting patches
 -----------------------------------------
 
