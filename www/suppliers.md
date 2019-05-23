@@ -15,13 +15,13 @@ Home page:
 <https://shop.libiquity.com/>
 
 Ministry of Freedom (Minifree)
-------------------------------
+---------
 
 Leah Rowe, Minifree's founder, is also Libreboot's founder and is an active
 Libreboot developer. Minifree is the first company to achieve FSF RYF
 endorsement on a computer system, and invests money directly into Libreboot.
 
-**Minifree ships worldwide, to all countries.**
+**Ships worldwide, to all countries.**
 
 Routers:
 
@@ -51,7 +51,7 @@ Home page:
 <https://minifree.org/>
 
 Phreedom 2600
-------------------
+---------
 
 Phreedom 2600 sells the BeagleBone Black (which can be used for flashing Libreboot)
 and the Thinkpad X200. All computers come with Parabola GNU/Linux preinstalled.
@@ -60,25 +60,22 @@ All products meets the criteria for [Respects Your Freedom](https://fsf.org/ryf)
 Home page:
 <https://shop.phreedom2600.net/>
 
-Raptor Engineering
-------------------
+Raptor Computing Systems
+---------
 
-Raptor is the world's first libre OEM, producing systems with libre boot
+Raptor Computing Systems (RCS) is the world's first libre OEM, producing systems with libre boot
 firmware and operating system preinstalled, *from the factory*.
 
-Website for pre-orders:
-<https://www.raptorcs.com/TALOSII/>
+They the following systems available:
 
-They have 2 systems available:
-
-- [TALOS II Lite](https://secure.raptorcs.com/content/TL1BC1/purchase.html)
-  (this is the cheaper version)
-- [TALOS II](https://secure.raptorcs.com/content/TL2WK2/intro.html)
+- [TALOS™ II](https://raptorcs.com/content/base/products.html)
+- [TALOS™ II Lite](https://raptorcs.com/content/base/products.html) (reduced cost version of TALOS™ II)
+- [Blackbird™ II Lite](https://raptorcs.com/content/base/products.html)  
 
 NOTE: this isn't technically Libreboot, but the boot firmware is entirely free.
 
 This is the same company that ported the ASUS KFSN4-DRE, KGPE-D16 and KCMA-D8
-mainboards to Libreboot. Raptor has also helped improve other ports in Libreboot,
+mainboards to Libreboot. RCS has also helped improve other ports in Libreboot,
 for instance they added support for *switchable graphics* on the ThinkPad T400
 which Libreboot supports.
 
@@ -86,10 +83,10 @@ Home page:
 <https://www.raptorcs.com/>
 
 Technoethical
--------------
+---------
 
 Technoethical (formerly Tehnoetic) is a team of free software activists and
-developers that are selling hardware pre-installed with libreboot as a way to
+developers that are selling hardware pre-installed with Libreboot as a way to
 fund the activity within their nonprofit foundation.
 
 **Ships worldwide, to all countries.**
@@ -110,13 +107,15 @@ Home page:
 <https://tehnoetic.com/>
 
 Vikings
--------
+---------
 
-Vikings is the first company to offer hosting on hardware pre-installed with
-libreboot and they are also selling the hardware itself to fund the building
-of their libreboot-powered datacenter.
+Vikings is the first company to offer hosting on hardware pre-installed with Libreboot and they are also selling the hardware itself to fund the building of their Libreboot-powered datacenter.
 
 **Ships worldwide, to all countries.**
+
+Routers:
+
+-   [Libre WNDR3800 Router](https://store.vikings.net/libre-friendly-hardware/wndrrouter) (FSF RYF pending)
 
 Servers:
 
@@ -126,46 +125,43 @@ Mainboards:
 
 -   [Vikings D16 mainboard](https://store.vikings.net/libre-friendly-hardware/d16-ryf-certfied) (FSF RYF certified)
 
-Desktops:
+Workstations:
 
 -   [Vikings D16 workstation](https://store.vikings.net/libre-friendly-hardware/vikings-d16-workstation)
+-   [Vikings D8 workstation](https://store.vikings.net/ryf-certified-hardware/d8ryf) (FSF RYF certified)
 
 Laptops:
 
 -   [Vikings X200 laptop](https://store.vikings.net/libre-friendly-hardware/x200-ryf-certfied) (FSF RYF certified)
 
 Home page:
-<https://vikings.net/>
+<https://store.vikings.net/>
 
-Other suppliers
+Other sources
 ===============
 
-Sellers on eBay
+Workshops/hackerspaces
+---------
+
+You may have a GNU+Linux User Group, free software workshop or hackerspace near you that can help you with installing Libreboot, for instance.
+
+
+Sellers on e-commerce platforms
 ---------------
 
-On the eBay website, in various countries, you can search for libreboot and
+On various e-commerce platforms (such as ebay) and in various countries, you can search for Libreboot and
 you may find some individual sellers providing Libreboot-preinstalled hardware.
 
-We cannot verify the quality of these suppliers, but they do exist.
+Quality and dependability of these suppliers may differ from the experience from the shops on this web site.
 
 Some of them also provide choice of GNU+Linux distribution, or they may provide
 services where you can ship your Libreboot-compatible device to them and they
 would install Libreboot for you.
 
-This can be useful for some people, but due to the nature of eBay, we cannot
-link to them since eBay listings are regularly deleted due to expiration (some
-sellers may choose to have longer listings, or renew expired listings).
+This can be useful for some people, but due to the nature of these platforms, we cannot link listings since they are regularly deleted due to expiration (some sellers may choose to have longer listings, or renew expired listings).
 
-There may also be other websites similar to eBay (e.g. mercado livre, available
-for several South American countries) that might have Libreboot hardware on
-them.
+Notable platforms that might offer Libreboot hardware are eBay, AliExpress, mercado livre (available for several South American countries).
 
 **If you are considering purchasing from a supplier on eBay, make sure to read
 their feedback comments for other products that they sell, and check their
 seller rating. Don't get duped by a bad seller!**
-
-Workshops/hackerspaces
-----------------------
-
-You may have a GNU+Linux User Group, free software workshop or hackerspace near
-you that can help you with installing Libreboot, for instance.
