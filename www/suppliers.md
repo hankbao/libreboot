@@ -63,13 +63,14 @@ Home page:
 Raptor Computing Systems
 ---------
 
-Raptor Computing Systems (RCS) is the world's first libre OEM, producing systems with libre boot
-firmware and operating system preinstalled, *from the factory*.
+Raptor Computing Systems (RCS) is the world's first libre OEM, producing systems 
+with libre boot firmware and operating system preinstalled, *from the factory*.
 
 They the following systems available:
 
 - [TALOS™ II](https://raptorcs.com/content/base/products.html)
-- [TALOS™ II Lite](https://raptorcs.com/content/base/products.html) (reduced cost version of TALOS™ II)
+- [TALOS™ II Lite](https://raptorcs.com/content/base/products.html) 
+(reduced cost version of TALOS™ II)
 - [Blackbird™ II Lite](https://raptorcs.com/content/base/products.html)  
 
 NOTE: this isn't technically Libreboot, but the boot firmware is entirely free.
@@ -109,7 +110,9 @@ Home page:
 Vikings
 ---------
 
-Vikings is the first company to offer hosting on hardware pre-installed with Libreboot and they are also selling the hardware itself to fund the building of their Libreboot-powered datacenter.
+Vikings is the first company to offer hosting on hardware pre-installed with 
+Libreboot and they are also selling the hardware itself to fund the building 
+of their Libreboot-powered datacenter.
 
 **Ships worldwide, to all countries.**
 
@@ -143,24 +146,30 @@ Other sources
 Workshops/hackerspaces
 ---------
 
-You may have a GNU+Linux User Group, free software workshop or hackerspace near you that can help you with installing Libreboot, for instance.
+You may have a GNU+Linux User Group, free software workshop or hackerspace near 
+you that can help you with installing Libreboot, for instance.
 
 
 Sellers on e-commerce platforms
 ---------------
 
-On various e-commerce platforms (such as ebay) and in various countries, you can search for Libreboot and
-you may find some individual sellers providing Libreboot-preinstalled hardware.
+On various e-commerce platforms (such as ebay) and in various countries, you 
+can search for Libreboot and you may find some individual sellers providing 
+Libreboot-preinstalled hardware.
 
-Quality and dependability of these suppliers may differ from the experience from the shops on this web site.
+Quality and dependability of these suppliers may differ from the experience 
+from the shops on this web site.
 
 Some of them also provide choice of GNU+Linux distribution, or they may provide
 services where you can ship your Libreboot-compatible device to them and they
 would install Libreboot for you.
 
-This can be useful for some people, but due to the nature of these platforms, we cannot link listings since they are regularly deleted due to expiration (some sellers may choose to have longer listings, or renew expired listings).
+This can be useful for some people, but due to the nature of these platforms, 
+we cannot link listings since they are regularly deleted due to expiration 
+(some sellers may choose to have longer listings, or renew expired listings).
 
-Notable platforms that might offer Libreboot hardware are eBay, AliExpress, mercado livre (available for several South American countries).
+Notable platforms that might offer Libreboot hardware are eBay, AliExpress, 
+mercado livre (available for several South American countries).
 
 **If you are considering purchasing from a supplier on eBay, make sure to read
 their feedback comments for other products that they sell, and check their
