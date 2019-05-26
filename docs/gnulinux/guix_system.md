@@ -1,11 +1,15 @@
-# Guix System with Full Disk Encryption on Libreboot
+---
+title: Guix System with Full Disk Encryption on Libreboot
+...
 
-##  1  Objective
+Objective
+=========
 
 To provide step-by-step guide for setting up guix system (stand-alone guix)
 with full disk encryption (including /boot) on devices powered by libreboot.
 
-##  2  Scope
+Scope
+=====
 
 Any users, for their generalised use cases, need not stumble away from this
 guide to accomplish the setup.
@@ -14,9 +18,11 @@ Advanced users, for deviant use cases, will have to explore outside this
 guide for customisation; although this guide provides information that is
 of paramount use.
 
-##  3  Process
+Process
+=======
 
-###  3.1  Preparation
+Preparation
+-----------
 
 In your current GNU/Linux System, open terminal as root user.
 
@@ -57,7 +63,8 @@ Reboot the device.
 
 `reboot`
 
-###  3.2  Pre-Installation
+Pre-Installation
+----------------
 
 On reboot, as soon as you see the Libreboot Graphic Art, press arrow keys
 to change the menu entry.
@@ -188,7 +195,8 @@ Create a swap file and make it readable cum writable only by root.
 
 `swapon /mnt/swapfile`
 
-###  3.3  Installation
+Installation
+------------
 
 Make the installation packages to be written on the respective
 mounted filesystem.
@@ -330,7 +338,8 @@ Reboot the device.
 
 `reboot`
 
-##  4  Conclusion
+Conclusion
+==========
 
 Everything should be stream-lined from now. You can follow your
 regular boot steps without requiring manual intervention. You can
@@ -343,13 +352,15 @@ and guix system updated.
 That is it! You have now setup guix system with full-disk encryption
 on your device powered by libreboot. Enjoy!
 
-##  5  References
+References
+==========
 
 [1] Guix Manual (http://guix.gnu.org/manual/en/).
 
 [2] Libreboot Documentation (https://libreboot.org/docs/).
 
-##  6  Acknowledgements
+Acknowledgements
+================
 
 [1] Thanks to Guix Developer, Clement Lassieur (clement@lassieur.org),
 for helping me with the Guile Scheme Code for the Bootloader Configuration.
@@ -358,9 +369,10 @@ for helping me with the Guile Scheme Code for the Bootloader Configuration.
 Leah Rowe (leah@libreboot.org), for helping me to understand the
 libreboot’s functionalities better.
 
-##  7  License
+License
+=======
 
-Copyright (C)  RAGHAV GURURAJAN (rvgn@disroot.org).
+Copyright (C) 2019  RAGHAV GURURAJAN (rvgn@disroot.org).
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
