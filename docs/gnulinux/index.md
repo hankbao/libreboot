@@ -16,6 +16,8 @@ However, with Libreboot, GRUB is already included directly (as a payload), so ev
 
 - [Modifying the GRUB Configuration in Libreboot Systems](grub_cbfs.md)
 
+- [Guix System with Full-Disk Encryption on Libreboot](guix_system.md)
+
 - [Installing Parabola or Arch GNU+Linux-Libre, with Full-Disk Encryption (including /boot)](encrypted_parabola.md)
 
   - Follow-Up Tutorial: [Configuring Parabola (Post-Install)](configuring_parabola.md)
