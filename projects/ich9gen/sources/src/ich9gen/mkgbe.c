@@ -254,3 +254,4 @@ struct GBEREGIONRECORD_8K generatedGbeStruct8k()
     memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K);
     return gbeStruct8k;
 }
+

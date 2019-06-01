@@ -2,7 +2,7 @@
  *  descriptor/descriptor.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
- *  Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
+ *  Copyright (C) 2014, 2015, 2019 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /*
  * Purpose: provide struct representing descriptor region.
  * Map actual buffers of this regions, directly to instances of these
@@ -27,10 +27,10 @@
  * bit fields used, corresponding to datasheet. See links to datasheets
  * and documentation in ich9deblob.c
  */
- 
+
 /*
  * See docs/hardware/x200_remove_me.html for info plus links to datasheet (also linked below)
- * 
+ *
  * Info about flash descriptor (read page 845 onwards):
  * http://www.intel.co.uk/content/dam/doc/datasheet/io-controller-hub-9-datasheet.pdf
  */
@@ -54,7 +54,7 @@
 #define ROMSIZE_8MB 0x800000
 #define ROMSIZE_16MB 0x1000000
 
-/* 
+/*
  * Related to the flash descriptor
  * bits 12(0xC)-24(0x18) are represented for words found in the flash descriptor
  * To manipulate these easily in C, we shift them by FLREGIONBITSHIFT and then shift them back when done
@@ -72,7 +72,7 @@
 struct FLVALSIG
 {
 	/*
-	 * 4 bytes. 
+	 * 4 bytes.
 	 * descriptor mode = 0FF0A55A (hex, big endian). Note: stored in ROM in little endian order.
 	 * Anything else is considered invalid and will put the system in non-descriptor mode.
 	 */
@@ -92,7 +92,7 @@ struct FLMAP0
 	/* most significant bits. */
 };
 
-struct FLMAP1 
+struct FLMAP1
 {
 	/* least significant bits */
 	uint8_t FMBA                      : 8;
@@ -103,7 +103,7 @@ struct FLMAP1
 	/* most significant bits */
 };
 
-struct FLMAP2 
+struct FLMAP2
 {
 	/* least significant bits */
 	uint8_t FMSBA                     : 8;
@@ -113,7 +113,7 @@ struct FLMAP2
 };
 
 /* Flash Map Registers */
-struct FLMAPS 
+struct FLMAPS
 {
 	struct FLMAP0 flMap0;
 	struct FLMAP1 flMap1;
@@ -121,7 +121,7 @@ struct FLMAPS
 };
 
 /* Flash Components Register */
-struct FLCOMP 
+struct FLCOMP
 {
 	/* least significant bits */
 	uint8_t component1Density         : 3;
@@ -138,7 +138,7 @@ struct FLCOMP
 	/* most significant bits */
 };
 
-struct COMPONENTSECTIONRECORD 
+struct COMPONENTSECTIONRECORD
 {
 	struct FLCOMP flcomp;
 	uint32_t flill;
@@ -146,7 +146,7 @@ struct COMPONENTSECTIONRECORD
 	uint8_t padding[36];
 };
 
-struct FLREG 
+struct FLREG
 {
 	/* least significant bits */
 	uint16_t BASE                     : 13;
@@ -161,7 +161,7 @@ struct FLREG
  * Defines where all the regions begin/end.
  * This is very important for disabling ME/AMT
  */
-struct REGIONSECTIONRECORD 
+struct REGIONSECTIONRECORD
 {
 	struct FLREG flReg0;                         /*  Descriptor */
 	struct FLREG flReg1;                         /*  BIOS       */
@@ -171,7 +171,7 @@ struct REGIONSECTIONRECORD
 	uint8_t padding[12];
 };
 
-struct FLMSTR 
+struct FLMSTR
 {
 	/* least significant bits */
    uint16_t requesterId              : 16;
@@ -199,7 +199,7 @@ struct MASTERACCESSSECTIONRECORD
 	uint8_t padding[148];
 };
 
-struct ICHSTRAP0 
+struct ICHSTRAP0
 {
 	/* least significant bits */
 	                                             /* todo: add MeSmBus2Sel (boring setting) */
@@ -218,7 +218,7 @@ struct ICHSTRAP0
 	/* most significant bits */
 };
 
-struct ICHSTRAP1 
+struct ICHSTRAP1
 {
 	/* least significant bits */
 	uint8_t northMlink                : 1;  /* North MLink Dynamic Clock Gate Disable : Sets the default value for the South MLink Dynamic Clock Gate Enable registers. */
@@ -233,14 +233,14 @@ struct ICHSTRAP1
 };
 
 /* ICH straps */
-struct ICHSTRAPSRECORD 
+struct ICHSTRAPSRECORD
 {
 	struct ICHSTRAP0 ichStrap0;
 	struct ICHSTRAP1 ichStrap1;
 	uint8_t padding[248];
 };
 
-struct MCHSTRAP0 
+struct MCHSTRAP0
 {
 	/* least significant bits */
 	uint8_t meDisable                 : 1;  /* If true, ME is disabled. */
@@ -255,14 +255,14 @@ struct MCHSTRAP0
 };
 
 /* MCH straps */
-struct MCHSTRAPSRECORD 
+struct MCHSTRAPSRECORD
 {
 	struct MCHSTRAP0 mchStrap0;
 	uint8_t padding[3292];
 };
 
 /* ME VSCC Table */
-struct MEVSCCTABLERECORD 
+struct MEVSCCTABLERECORD
 {
 	uint32_t jid0;
 	uint32_t vscc0;
@@ -284,14 +284,14 @@ struct DESCRIPTORMAP2RECORD
 };
 
 /* OEM section */
-struct OEMSECTIONRECORD 
+struct OEMSECTIONRECORD
 {
 	uint8_t magicString[8];
 	uint8_t padding[248];
 };
 
 /* 4KiB descriptor region, goes at the beginning of the ROM image */
-struct DESCRIPTORREGIONRECORD 
+struct DESCRIPTORREGIONRECORD
 {
 	struct FLVALSIG flValSig;                                   /* Flash Valid Signature Register */
 	struct FLMAPS flMaps;                                       /* Flash Map Registers */
@@ -310,7 +310,7 @@ struct DESCRIPTORREGIONRECORD
  * Function declarations (keep gcc/make happy. check them in descriptor.c)
  * ---------------------------------------------------------------------
  */
- 
+
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
@@ -329,5 +329,6 @@ struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRI
 int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);
+int showDescriptorData(struct DESCRIPTORREGIONRECORD descriptorStruct);
 
 #endif

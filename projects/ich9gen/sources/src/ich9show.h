@@ -1,5 +1,12 @@
 /*
- *  Copyright (C) 2014 Leah Rowe <info@minifree.org>
+ *  ich9show.c
+ *  Just a little hack by Leah to show the ICH9 region read/write status
+ *
+ * Purpose: header file for ich9deblob.c
+ *
+ *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
+ *  Copyright (C) 2015,2019 Leah Rowe <info@minifree.org>
+
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,25 +22,18 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-/* Header file for ich9gen.c */
- 
-#ifndef ICH9GEN_H
-#define ICH9GEN_H
+#ifndef ICH9SHOW_H
+#define ICH9SHOW_H
 
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 
-#include "ich9gen/mkdescriptor.h"
-#include "ich9gen/mkgbe.h"
 #include "common/descriptor_gbe.h"   /* common descriptor/gbe functions used by ich9deblob */
 #include "common/x86compatibility.h" /* system/compiler compatibility checks. This code is not portable. */
 #include "descriptor/descriptor.h"   /* structs describing what's in the descriptor region */
 #include "gbe/gbe.h"                 /* structs describing what's in the gbe region */
 
-#define WITHGBE 1
-#define WITHOUTGBE 0
-
-int main(int argc, char *argv[]);
+int main();
 
 #endif

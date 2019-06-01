@@ -26,6 +26,18 @@ More information about the ME can be found at
 
 Another project recently found: <http://io.netgarage.org/me/>
 
+ICH9 show utility {#ich9show}
+================
+
+This is under `projects/ich9deblob/sources/` or
+`resources/utilities/ich9deblob/`. Simply go there in your terminal and type
+`make` to compile it.
+
+The *ich9show* utility outputs the entire contents of the descriptor and GbE
+regions in a given ROM image as supplied by the user. Output is in Markdown
+format (Pandoc variant) so that it can be converted easily into various
+formats.
+
 ICH9 gen utility {#ich9gen}
 ================
 

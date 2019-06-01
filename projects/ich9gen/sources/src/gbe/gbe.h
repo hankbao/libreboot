@@ -3,7 +3,7 @@
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Leah Rowe <info@minifree.org>
+ *                2014,2019 Leah Rowe <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -429,6 +429,7 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K factoryGbeStruct8k);
 int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* outFileName, char* headerFileName);
+int showGbeData(struct GBEREGIONRECORD_4K gbeStruct4k);
 void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName);
 void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, char* romName);
 

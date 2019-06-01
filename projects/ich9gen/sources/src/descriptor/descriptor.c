@@ -2,7 +2,7 @@
  *  descriptor/descriptor.c
  *  This file is part of the ich9deblob utility from the libreboot project
  *
- *	 Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
+ *	 Copyright (C) 2014, 2015, 2019 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -116,7 +116,7 @@ struct DESCRIPTORREGIONRECORD descriptorGbeRegionRemoved(struct DESCRIPTORREGION
 	descriptorStruct.regionSection.flReg3.BASE = 0x1FFF;
 	descriptorStruct.regionSection.flReg3.LIMIT = 0;
 
-	return descriptorStruct;
+    return descriptorStruct;
 }
 
 /* BIOS Region begin after descriptor+gbe at first 12KiB, fills the rest of the image */
@@ -631,17 +631,17 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 
 	/* BIOS region */
 	printf(
-		"%s: BIOS start block: %08x ; BIOS end block: %08x\n",
+		"%s: BIOS start block: %08x ; BIOS end block: %08x\n", 
 		romName,
-		descriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT,
+		descriptorStruct.regionSection.flReg1.BASE << FLREGIONBITSHIFT, 
 		descriptorStruct.regionSection.flReg1.LIMIT << FLREGIONBITSHIFT
 	);
 
 	/* ME region */
 	printf(
-		"%s: ME start block: %08x ; ME end block: %08x\n",
+		"%s: ME start block: %08x ; ME end block: %08x\n", 
 		romName,
-		descriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT,
+		descriptorStruct.regionSection.flReg2.BASE << FLREGIONBITSHIFT, 
 		descriptorStruct.regionSection.flReg2.LIMIT << FLREGIONBITSHIFT
 	);
 
@@ -663,3 +663,340 @@ void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStru
 
 	return;
 }
+
+/* This simply outputs (as strings) the contents of the descriptor */
+/* This outputs in pandoc-flavoured Markdown */
+int showDescriptorData(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{
+	int i, j;
+
+	printf("DESCRIPTOR REGION\n");
+	printf("=================\n\n");
+
+	printf("Flash Valid Signature Register\n");
+	printf("------------------------------\n\n");
+
+	printf("Signature = 0x%08x\n\n", descriptorStruct.flValSig.signature);
+
+	printf("Flash Map Registers\n");
+	printf("-------------------\n\n");
+
+    printf("FLMAP0:\n\n");
+
+    printf("- FCBA = 0x%02x\n", descriptorStruct.flMaps.flMap0.FCBA);
+	printf("- NC = 0x%01x\n", descriptorStruct.flMaps.flMap0.NC);
+	printf("- Reserved1 = 0x%02x\n", descriptorStruct.flMaps.flMap0.reserved1);
+    printf("- FRBA = 0x%02x\n", descriptorStruct.flMaps.flMap0.FRBA);
+	printf("- NR = 0x%01x\n", descriptorStruct.flMaps.flMap0.NR);
+	printf("- Reserved2 = 0x%02x\n\n", descriptorStruct.flMaps.flMap0.reserved2);
+
+	printf("FLMAP1:\n\n");
+
+	printf("- FMBA = 0x%02x\n", descriptorStruct.flMaps.flMap1.FMBA);
+	printf("- NM = 0x%01x\n", descriptorStruct.flMaps.flMap1.NM);
+	printf("- Reserved = 0x%02x\n", descriptorStruct.flMaps.flMap1.reserved);
+	printf("- FISBA = 0x%02x\n", descriptorStruct.flMaps.flMap1.FISBA);
+	printf("- ISL = 0x%02x\n\n", descriptorStruct.flMaps.flMap1.ISL);
+
+	printf("FLMAP2:\n\n");
+
+	printf("- FMSBA = 0x%02x\n", descriptorStruct.flMaps.flMap2.FMSBA);
+	printf("- MSL = 0x%02x\n", descriptorStruct.flMaps.flMap2.MSL);
+	printf("- Reserved = 0x%04x\n\n", descriptorStruct.flMaps.flMap2.reserved);
+
+    printf("Component Section Record\n");
+    printf("------------------------\n\n");
+
+	printf("FLCOMP:\n\n");
+
+	printf("- *Component 1* Density = 0x%01x\n", descriptorStruct.componentSection.flcomp.component1Density);
+	printf("- *Component 2* Density = 0x%01x\n", descriptorStruct.componentSection.flcomp.component2Density);
+	printf("- Reserved1 = 0x%01x\n", descriptorStruct.componentSection.flcomp.reserved1);
+	printf("- Reserved2 = 0x%02x\n", descriptorStruct.componentSection.flcomp.reserved2);
+	printf("- Reserved3 = 0x%01x\n", descriptorStruct.componentSection.flcomp.reserved3);
+	printf("- *Read* Clock Frequency = 0x%01x\n", descriptorStruct.componentSection.flcomp.readClockFrequency);
+	printf("- *Fast Read* Support = 0x%01x\n", descriptorStruct.componentSection.flcomp.fastReadSupport);
+	printf("- *Fast Read* Clock Frequency = 0x%01x\n", descriptorStruct.componentSection.flcomp.fastreadClockFrequency);
+	printf("- *Write/Erase* Clock Frequency = 0x%01x\n", descriptorStruct.componentSection.flcomp.writeEraseClockFrequency);
+	printf("- *Read Status* Clock Frequency = 0x%01x\n", descriptorStruct.componentSection.flcomp.readStatusClockFrequency);
+	printf("- Reserved4 = 0x%01x\n\n", descriptorStruct.componentSection.flcomp.reserved4);
+
+	printf("FLILL:\n\n");
+
+    printf("- flill = 0x%08x\n\n", descriptorStruct.componentSection.flill);
+
+	printf("FLPB:\n\n");
+
+	printf("- flpb = 0x%08x\n\n", descriptorStruct.componentSection.flpb);
+
+	printf("Padding:\n\n");
+
+	for (i = 0; i < 36; i++) {
+		if (descriptorStruct.componentSection.padding[i] != 0xFF) {
+			for (j = 0; j < 36; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.componentSection.padding[j]);
+			}
+			break;
+		} else if (i == 35) {
+            printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	printf("Flash Descriptor Region Section\n");
+    printf("-------------------------------\n\n");
+
+    printf("This section defines the size and location of each region.\n\n");
+
+	printf("FLREG0 (Descriptor):\n\n");
+
+	printf("- flReg0BASE = 0x%04x\n", descriptorStruct.regionSection.flReg0.BASE);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.regionSection.flReg0.reserved1);
+	printf("- LIMIT = 0x%04x\n", descriptorStruct.regionSection.flReg0.LIMIT);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.regionSection.flReg0.reserved2);
+
+	printf("FLREG1 (BIOS):\n\n");
+
+	printf("- BASE = 0x%04x\n", descriptorStruct.regionSection.flReg1.BASE);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.regionSection.flReg1.reserved1);
+	printf("- LIMIT = 0x%04x\n", descriptorStruct.regionSection.flReg1.LIMIT);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.regionSection.flReg1.reserved2);
+
+	printf("FLREG2 (ME):\n\n");
+
+	printf("- BASE = 0x%04x\n", descriptorStruct.regionSection.flReg2.BASE);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.regionSection.flReg2.reserved1);
+	printf("- LIMIT = 0x%04x\n", descriptorStruct.regionSection.flReg2.LIMIT);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.regionSection.flReg2.reserved2);
+
+	printf("FLREG3 (Gbe):\n\n");
+
+	printf("- BASE = 0x%04x\n", descriptorStruct.regionSection.flReg3.BASE);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.regionSection.flReg3.reserved1);
+	printf("- LIMIT = 0x%04x\n", descriptorStruct.regionSection.flReg3.LIMIT);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.regionSection.flReg3.reserved2);
+
+	printf("FLREG4 (Platform):\n\n");
+
+	printf("- BASE = 0x%04x\n", descriptorStruct.regionSection.flReg4.BASE);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.regionSection.flReg4.reserved1);
+	printf("- LIMIT = 0x%04x\n", descriptorStruct.regionSection.flReg4.LIMIT);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.regionSection.flReg4.reserved2);
+
+	printf("Padding:\n\n");
+
+	for (i = 0; i < 12; i++) {
+		if (descriptorStruct.regionSection.padding[i] != 0xFF) {
+			for (j = 0; j < 12; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.regionSection.padding[j]);
+			}
+			break;
+		} else if (i == 11) {
+            printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	/* Master Access Section */
+	printf("Master Access Section\n");
+    printf("---------------------\n\n");
+
+	printf("FLMSTR1 (Host CPU / BIOS, e.g. flashrom running in GNU+Linux):\n\n");
+
+    printf("*This is the part requiring modification for write protect!*\n\n");
+
+	printf("- Requester ID = 0x%04x\n", descriptorStruct.masterAccessSection.flMstr1.requesterId);
+	printf("- *Descriptor region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess);
+	printf("- *BIOS region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess);
+	printf("- *ME region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess);
+	printf("- *GbE region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess);
+	printf("- *Platform region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess);
+	printf("- Reserved1 = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.reserved1);
+	printf("- *Descriptor region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess);
+	printf("- *BIOS region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess);
+	printf("- *ME region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess);
+	printf("- *GbE region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess);
+	printf("- *Platform region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.masterAccessSection.flMstr1.reserved2);
+
+	printf("FLMSTR2 (ME):\n\n");
+
+	printf("- Requester ID = 0x%04x\n", descriptorStruct.masterAccessSection.flMstr2.requesterId);
+	printf("- *Descriptor region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionReadAccess);
+	printf("- *BIOS region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionReadAccess);
+	printf("- *ME region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.meRegionReadAccess);
+	printf("- *GbE region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionReadAccess);
+	printf("- *Platform region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionReadAccess);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.reserved1);
+	printf("- *Descriptor region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.fdRegionWriteAccess);
+	printf("- *BIOS region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.biosRegionWriteAccess);
+	printf("- *ME region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.meRegionWriteAccess);
+	printf("- *GbE region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.gbeRegionWriteAccess);
+	printf("- *Platform region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr2.pdRegionWriteAccess);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.masterAccessSection.flMstr2.reserved2);
+
+	printf("FLMSTR3 (GbE):\n\n");
+
+	printf("- Requester ID = 0x%04x\n", descriptorStruct.masterAccessSection.flMstr3.requesterId);
+	printf("- *Descriptor region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.fdRegionReadAccess);
+	printf("- *BIOS region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.biosRegionReadAccess);
+	printf("- *ME region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.meRegionReadAccess);
+	printf("- *GbE Region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.gbeRegionReadAccess);
+	printf("- *Platform region* Read Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.pdRegionReadAccess);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.reserved1);
+	printf("- *Descriptor region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.fdRegionWriteAccess);
+	printf("- *BIOS region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.biosRegionWriteAccess);
+	printf("- *ME region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.meRegionWriteAccess);
+	printf("- *GbE region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.gbeRegionWriteAccess);
+	printf("- *Platform region* Write Access = 0x%01x\n", descriptorStruct.masterAccessSection.flMstr3.pdRegionWriteAccess);
+	printf("- reserved2 = 0x%01x\n\n", descriptorStruct.masterAccessSection.flMstr3.reserved2);
+	printf("Padding:\n\n");
+	for (i = 0; i < 148; i++) {
+		if (descriptorStruct.masterAccessSection.padding[i] != 0xFF) {
+			for (j = 0; j < 148; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.masterAccessSection.padding[j]);
+			}
+			break;
+		} else if (i == 147) {
+			printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	/* ICH straps */
+	printf("ICH straps\n");
+    printf("----------\n\n");
+
+	printf("ICHSTRAP0:\n\n");
+
+	printf("- **ME Disable** = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.meDisable);
+	printf("- reserved1 = 0x%02x\n", descriptorStruct.ichStraps.ichStrap0.reserved1);
+	printf("- TCO Mode = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.tcoMode);
+	printf("- SMBus Address = 0x%02x\n", descriptorStruct.ichStraps.ichStrap0.smBusAddress);
+	printf("- BMC Mode = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.bmcMode);
+	printf("- Trip Point Select = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.tripPointSelect);
+	printf("- reserved2 = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.reserved2);
+	printf("- Integrated GbE = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.integratedGbe);
+	printf("- LAN Phy = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.lanPhy);
+	printf("- reserved3 = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.reserved3);
+	printf("- DMI Requester ID = 0x%01x\n", descriptorStruct.ichStraps.ichStrap0.dmiRequesterId);
+	printf("- SMBus2 Address = 0x%02x\n\n", descriptorStruct.ichStraps.ichStrap0.smBus2Address);
+
+	printf("ICHSTRAP1:\n\n");
+
+	printf("- North M Link = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.northMlink);
+	printf("- South M Link = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.southMlink);
+	printf("- ME SMBus = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.meSmbus);
+	printf("- SST Dynamic = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.sstDynamic);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.reserved1);
+	printf("- North M Link 2 = 0x%01x\n", descriptorStruct.ichStraps.ichStrap1.northMlink2);
+	printf("- reserved2 = 0x%02x\n", descriptorStruct.ichStraps.ichStrap1.reserved2);
+	printf("- reserved3 = 0x%04x\n\n", descriptorStruct.ichStraps.ichStrap1.reserved3);
+
+	printf("Padding:\n\n");
+
+	for (i = 0; i < 248; i++) {
+		if (descriptorStruct.ichStraps.padding[i] != 0xFF) {
+			for (j = 0; j < 248; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.ichStraps.padding[j]);
+			}
+			break;
+		} else if (i == 247) {
+			printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	printf("MCH straps\n");
+    printf("----------\n\n");
+
+	printf("MCHSTRAP0:\n\n");
+
+	printf("- **ME Disable** = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.meDisable);
+	printf("- Boot ME from flash = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.meBootFromFlash);
+	printf("- **TPM Disable** = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.tpmDisable);
+	printf("- reserved1 = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.reserved1);
+	printf("- SPI Fingerprint = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.spiFingerprint);
+	printf("- ME Alternate Disable = 0x%01x\n", descriptorStruct.mchStraps.mchStrap0.meAlternateDisable);
+	printf("- reserved2 = 0x%02x\n", descriptorStruct.mchStraps.mchStrap0.reserved2);
+	printf("- reserved3 = 0x%04x\n\n", descriptorStruct.mchStraps.mchStrap0.reserved3);
+
+	printf("Padding:\n\n");
+	for (i = 0; i < 3292; i++) {
+		if (descriptorStruct.mchStraps.padding[i] != 0xFF) {
+			for (j = 0; j < 3292; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.mchStraps.padding[j]);
+			}
+			break;
+		} else if (i == 3291) {
+			printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	printf("ME VSCC Table\n");
+    printf("-------------\n\n");
+
+	printf("- JID0 = 0x%08x\n", descriptorStruct.meVsccTable.jid0);
+	printf("- VSCC0 = 0x%08x\n", descriptorStruct.meVsccTable.vscc0);
+	printf("- JID1 = 0x%08x\n", descriptorStruct.meVsccTable.jid1);
+	printf("- VSCC1 = 0x%08x\n", descriptorStruct.meVsccTable.vscc1);
+	printf("- JID2 = 0x%08x\n", descriptorStruct.meVsccTable.jid2);
+	printf("- VSCC2 = 0x%08x\n\n", descriptorStruct.meVsccTable.vscc2);
+
+	printf("Padding:\n\n");
+
+	for (i = 0; i < 4; i++) {
+		if (descriptorStruct.meVsccTable.padding[i] != 0xFF) {
+			for (j = 0; j < 4; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.meVsccTable.padding[j]);
+			}
+			break;
+		} else if (i == 3) {
+			printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	printf("Descriptor Map 2 Record\n");
+    printf("-----------------------\n\n");
+
+	printf("- *ME VSCC Table* Base Address = 0x%02x\n", descriptorStruct.descriptor2Map.meVsccTableBaseAddress);
+	printf("- *ME VSCC Table* Length = 0x%02x\n", descriptorStruct.descriptor2Map.meVsccTableLength);
+	printf("- reserved = 0x%04x\n", descriptorStruct.descriptor2Map.reserved);
+	printf("\n\n");
+
+	printf("OEM section\n");
+    printf("-----------\n\n");
+
+    printf("Magic String:\n\n");
+
+	for(i = 0; i < 8; i++) {
+		printf("- Offset %d = 0x%02x\n", i, descriptorStruct.oemSection.magicString[i]);
+	}
+    printf("\n");
+
+	printf("Padding:\n\n");
+
+	for (i = 0; i < 248; i++) {
+		if (descriptorStruct.oemSection.padding[i] != 0xFF) {
+			for (j = 0; j < 248; j++) {
+				printf("- Offset %d = 0x%02x\n", j, descriptorStruct.oemSection.padding[j]);
+			}
+			break;
+		} else if (i == 247) {
+			printf("- Every offset has a value of 0xFF\n");
+			break;
+		}
+	}
+	printf("\n");
+
+	return 0;
+}
+

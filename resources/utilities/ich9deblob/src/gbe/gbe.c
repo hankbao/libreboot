@@ -3,7 +3,7 @@
  *  This file is part of the ich9deblob utility from the libreboot project
  *
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
- *                     Leah Rowe <info@minifree.org>
+ *                2014,2019 Leah Rowe <info@minifree.org>
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 /*
  * Provide gbe related functions.
  */
@@ -40,7 +40,7 @@ uint16_t gbeGetChecksumFrom4kBuffer(uint16_t* gbeWord, uint16_t desiredValue, in
 
 	for (wordOffset = 0; wordOffset < 0x3F; wordOffset++)
 		total += gbeWord[wordOffset + (gbeRegionBase>>1)];
-	
+
 	return desiredValue - total;
 }
 
@@ -51,25 +51,25 @@ uint16_t gbeGetChecksumFrom4kStruct(struct GBEREGIONRECORD_4K gbeStruct4k, uint1
 }
 
 /* modify the gbe region extracted from a factory.rom dump */
-struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k) 
-{	
+struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8K gbeStruct8k)
+{
 	unsigned int i;
-	
+
 	/*
 	 * http://www.intel.co.uk/content/dam/doc/application-note/82573-nvm-map-appl-note.pdf
-	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT. 
+	 * That is a datasheet for a later chipset. Word 40H-53H seems (as per this datasheet) to be for AMT.
 	 * Writing over it doesn't seem to cause any harm, since the ME/AMT is already removed in libreboot.
 	 */
 	for(i = 0; i < sizeof(gbeStruct8k.backup.padding); i++) {
 		gbeStruct8k.backup.padding[i] = 0xFF; /* FF is correct. In the struct, this is a char buffer. */
 	} /* We really only need to do this for words 40h-53h, but let's just nuke the whole lot. It's all 0xFF anyway. */
-	
+
 	/* Fix the checksum */
 	gbeStruct8k.backup.checkSum = gbeGetChecksumFrom4kStruct(gbeStruct8k.backup, GBECHECKSUMTOTAL);
-	
+
 	/* Main Gbe region on X200 (as shipped by Lenovo) is broken. Fix it by over-writing it with the contents of the backup */
 	memcpy(&gbeStruct8k.main, &gbeStruct8k.backup, GBEREGIONSIZE_4K);
-	
+
 	return gbeStruct8k;
 }
 
@@ -81,46 +81,46 @@ struct GBEREGIONRECORD_8K deblobbedGbeStructFromFactory(struct GBEREGIONRECORD_8
 
 /*
  * Generate a C (.h) header file for the C source file made by notCreatedCFileFromGbeStruct4k()
- * 
+ *
  * Output it to a file.
  */
-int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName) 
-{		
+int notCreatedHFileForGbeCFile(char* outFileName, char* cFileName)
+{
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .h header file for the gbe-generating C code (%s) */\n\n", cFileName);
-	
+
 	fprintf(fp, "#ifndef ICH9GEN_MKGBE_H\n");
 	fprintf(fp, "#define ICH9GEN_MKGBE_H\n\n");
-	
+
 	fprintf(fp, "#include <stdio.h>\n");
 	fprintf(fp, "#include <string.h>\n");
 	fprintf(fp, "#include \"../gbe/gbe.h\"\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_4K generatedGbeStruct4k();\n");
 	fprintf(fp, "struct GBEREGIONRECORD_8K generatedGbeStruct8k();\n\n");
-	
+
 	fprintf(fp, "#endif\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
 /*
  * Generate a C source file that initializes the same data from a given
  * 4KiB Gbe data structure.
- * 
+ *
  * It will simply copy the 4KiB struct at the end to make a full 8KiB struct.
  * So just pass a working 4KiB Gbe struct here and you're good to go.
- * 
+ *
  * Output it to a file.
  */
 int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* outFileName, char* headerFileName)
@@ -128,22 +128,22 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	int i;
 	int paddingSize;
 	int paddingIdentical;
-	
+
 	remove(outFileName); /* Remove the old file before continuing */
-	
+
 	/* Open the file that will be written to */
 	FILE* fp = fopen(outFileName, "w+");
 
 	/* ------------------------------ */
-	
+
 	fprintf(fp, "/* %s: generated C code from ich9deblob */\n", outFileName);
 	fprintf(fp, "/* .c source file for the gbe-generating C code */\n\n");
-	
+
 	fprintf(fp, "#include \"%s\"\n\n", headerFileName);
-	
+
 	fprintf(fp, "/* Generate a 4KiB Gbe struct, with default values. */\n");
 	fprintf(fp, "/* Read ../gbe/gbe.h for an explanation of the default values used here */\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_4K generatedGbeStruct4k()\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    int i;\n");
@@ -402,7 +402,7 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	fprintf(fp, "\n");
 	fprintf(fp, "    return gbeStruct4k;\n");
 	fprintf(fp, "}\n\n");
-	
+
 	fprintf(fp, "struct GBEREGIONRECORD_8K generatedGbeStruct8k()\n");
 	fprintf(fp, "{\n");
 	fprintf(fp, "    struct GBEREGIONRECORD_8K gbeStruct8k;\n");
@@ -410,13 +410,306 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 	fprintf(fp, "    memcpy(&gbeStruct8k.backup, &gbeStruct8k.main, GBEREGIONSIZE_4K);\n");
 	fprintf(fp, "    return gbeStruct8k;\n");
 	fprintf(fp, "}\n\n");
-	
+
 	/* ------------------------------ */
-	
+
 	fclose(fp); /* Always close the file when done. */
-	
+
 	return 0;
 }
+
+int showGbeData(struct GBEREGIONRECORD_4K gbeStruct4k)
+{
+	int i;
+
+    printf("GbE REGION\n");
+    printf("==========\n");
+
+    printf("A *word*, in this context, means two 8-bit bytes.\n\n");
+
+	printf("**MAC address** (words 00h to 02h) = ");
+	for (i = 0; i < 6; i++) {
+		printf("%02x", gbeStruct4k.macAddress[i]);
+        if (i!=5) printf(":");
+	}
+	printf("\n\n");
+
+	printf("Word 03h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reserved1_0 = 0x%02x\n", gbeStruct4k.reservedWord03h.reserved1_0);
+	printf("- reserved1_1 = 0x%01x\n", gbeStruct4k.reservedWord03h.reserved1_1);
+	printf("- IBA Lom = 0x%01x\n", gbeStruct4k.reservedWord03h.ibaLom);
+	printf("- reserved2 = 0x%01x\n\n", gbeStruct4k.reservedWord03h.reserved2);
+
+    printf("Word 04h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord04h = 0x%04x\n\n", gbeStruct4k.reservedWord04h);
+
+	/* Word 05h (Image Version Information) */
+	printf("Word 05h (Image Version Information)\n");
+    printf("------------------------------------\n\n");
+
+	printf("- Image Version Information = 0x%04x\n\n", gbeStruct4k.imageVersionInformation);
+
+    printf("Words 06h and 07h (Reserved)\n");
+    printf("----------------------------\n\n");
+
+	for (i = 0; i < 2; i++) {
+		printf("- Offset %d = 0x%04x\n", i, gbeStruct4k.reservedWords06h07h[i]);
+	}
+	printf("\n");
+
+	/* Words 08h and 09h (PBA Low and PBA High) */
+	printf("Word 08h and 09h (PBA Low and PBA High)\n");
+    printf("---------------------------------------\n\n");
+
+	printf("- pbaLow = 0x%04x\n", gbeStruct4k.pbaLow);
+	printf("- pbaHigh = 0x%04x\n\n", gbeStruct4k.pbaHigh);
+
+    printf("Word 0Ah (PCI Initialization Control Word)\n");
+    printf("------------------------------------------\n\n");
+
+	printf("- Load Vendor Device ID = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.loadVendorDeviceId);
+	printf("- Load Subsystem ID = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.loadSubsystemId);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.reserved1);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.reserved2);
+	printf("- PM Enable = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.pmEnable);
+	printf("- Auxillary Power = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.auxPwr);
+	printf("- reserved3 = 0x%01x\n", gbeStruct4k.pciInitializationControlWord.reserved3);
+	printf("- reserved4 = 0x%01x\n\n", gbeStruct4k.pciInitializationControlWord.reserved4);
+
+	printf("Word 0Bh (Subsystem ID)\n");
+    printf("-----------------------\n\n");
+
+	printf("- Subsystem ID = 0x%04x\n\n", gbeStruct4k.subsystemId);
+
+    printf("Word 0Ch (Subsystem Vendor ID)\n");
+    printf("------------------------------\n\n");
+
+	printf("- Subsystem Vendor ID = 0x%04x\n\n", gbeStruct4k.subsystemVendorId);
+
+	printf("Word 0Dh (Device ID)\n");
+    printf("--------------------\n\n");
+
+	printf("- Device ID = 0x%04x\n\n", gbeStruct4k.deviceId);
+
+    printf("Word 0Eh (Vendor ID)\n");
+    printf("--------------------\n\n");
+
+	printf("- Vendor ID = 0x%04x\n\n", gbeStruct4k.vendorId);
+
+	printf("Word 0Fh (Device Revision ID)\n");
+    printf("-----------------------------\n\n");
+
+	printf("- Device Revision ID = 0x%04x\n\n", gbeStruct4k.deviceRevId);
+
+	printf("Word 10h (LAN Power Consumption)\n");
+    printf("--------------------------------\n\n");
+
+	printf("- LAN D3 Power = 0x%02x\n", gbeStruct4k.lanPowerConsumption.lanD3Power);
+	printf("- reserved = 0x%01x\n", gbeStruct4k.lanPowerConsumption.reserved);
+	printf("- LAN D0 Power = 0x%02x\n\n", gbeStruct4k.lanPowerConsumption.lanD0Power);
+
+	printf("Words 11h and 12h (Reserved)\n");
+    printf("----------------------------\n\n");
+
+	for (i = 0; i < 2; i++) {
+		printf("- Offset %d = 0x%04x\n", i, gbeStruct4k.reservedWords11h12h[i]);
+	}
+	printf("\n");
+
+	/* Word 13h (Shared Initialization Control Word) */
+	printf("Word 13h (Shared Initialization Control Word)\n");
+    printf("---------------------------------------------\n\n");
+
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.reserved1);
+	printf("- Force Duplex = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.forceDuplex);
+	printf("- Force Speed Enable = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.forceSpeedEnable);
+	printf("- reserved2_0 = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.reserved2_0);
+	printf("- reserved2_1 = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.reserved2_1);
+	printf("- PHY Power Down Enable = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.phyPowerDownEnable);
+	printf("- reserved3 = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.reserved3);
+	printf("- reserved4 = 0x%01x\n", gbeStruct4k.sharedInitializationControlWord.reserved4);
+	printf("- Sign = 0x%01x\n\n", gbeStruct4k.sharedInitializationControlWord.sign);
+
+	printf("Word 14h (Extended Configuration Control Word 1)\n");
+    printf("------------------------------------------------\n\n");
+
+	printf("- Extended Configuration Pointer = 0x%03x\n", gbeStruct4k.extendedConfigurationControlWord1.extendedConfigurationPointer);
+	printf("- OEM Write Enable = 0x%01x\n", gbeStruct4k.extendedConfigurationControlWord1.oemWriteEnable);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.extendedConfigurationControlWord1.reserved1);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.extendedConfigurationControlWord1.reserved2);
+	printf("- reserved3 = 0x%01x\n\n", gbeStruct4k.extendedConfigurationControlWord1.reserved3);
+
+	printf("Word 15h (Extended Configuration Control Word 2)\n");
+    printf("------------------------------------------------\n\n");
+
+	printf("- reserved = 0x%02x\n", gbeStruct4k.extendedConfigurationControlWord2.reserved);
+	printf("- Extended PHY Length = 0x%02x\n\n", gbeStruct4k.extendedConfigurationControlWord2.extendedPhyLength);
+
+    printf("Word 16h (Extended Configuration Control Word 3)\n");
+    printf("------------------------------------------------\n\n");
+
+	printf("- Extended Configuration Control Word 3 = 0x%04x\n\n", gbeStruct4k.extendedConfigurationControlWord3);
+
+    printf("Word 17h (LED 1 Configuration and Power Management)\n");
+    printf("---------------------------------------------------\n\n");
+
+	printf("- LED1 Mode = 0x%01x\n", gbeStruct4k.ledCtl1.led1Mode);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.ledCtl1.reserved1);
+	printf("- LED1 Blink Mode = 0x%01x\n", gbeStruct4k.ledCtl1.led1BlinkMode);
+	printf("- LED1 Invert = 0x%01x\n", gbeStruct4k.ledCtl1.led1Invert);
+	printf("- LED1 Blink = 0x%01x\n", gbeStruct4k.ledCtl1.led1Blink);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.ledCtl1.reserved2);
+	printf("- LPLU Enable = 0x%01x\n", gbeStruct4k.ledCtl1.lpluEnable);
+	printf("- LPLU Enable Non-D0a = 0x%01x\n", gbeStruct4k.ledCtl1.lpluEnableNonD0a);
+	printf("- GbE Disable Non-D0a = 0x%01x\n", gbeStruct4k.ledCtl1.gbeDisableNonD0a);
+	printf("- reserved3 = 0x%01x\n", gbeStruct4k.ledCtl1.reserved3);
+	printf("- GbE Disable = 0x%01x\n", gbeStruct4k.ledCtl1.gbeDisable);
+	printf("- reserved4 = 0x%01x\n\n", gbeStruct4k.ledCtl1.reserved4);
+
+	printf("Word 18h (LED 0 and 2 Configuration Defaults)\n");
+    printf("---------------------------------------------\n\n");
+
+	printf("- LED0 Mode = 0x%01x\n", gbeStruct4k.ledCtl02.led0Mode);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.ledCtl02.reserved1);
+	printf("- LED0 Blink Mode = 0x%01x\n", gbeStruct4k.ledCtl02.led0BlinkMode);
+	printf("- LED0 Invert = 0x%01x\n", gbeStruct4k.ledCtl02.led0Invert);
+	printf("- LED0 Blink = 0x%01x\n", gbeStruct4k.ledCtl02.led0Blink);
+	printf("- LED2 Mode = 0x%01x\n", gbeStruct4k.ledCtl02.led2Mode);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.ledCtl02.reserved2);
+	printf("- LED2 Blink Mode = 0x%01x\n", gbeStruct4k.ledCtl02.led2BlinkMode);
+	printf("- LED2 Invert = 0x%01x\n", gbeStruct4k.ledCtl02.led2Invert);
+	printf("- LED2 Blink = 0x%01x\n\n", gbeStruct4k.ledCtl02.led2Blink);
+
+    printf("Word 19h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord19h = 0x%04x\n\n", gbeStruct4k.reservedWord19h);
+
+	printf("Word 1Ah (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord1Ah = 0x%04x\n\n", gbeStruct4k.reservedWord1Ah);
+
+    printf("Word 1Bh (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord1Bh = 0x%04x\n\n", gbeStruct4k.reservedWord1Bh);
+
+	printf("Word 1Ch (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord1Ch = 0x%04x\n\n", gbeStruct4k.reservedWord1Ch);
+
+	printf("Word 1Dh (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord1Dh = 0x%04x\n\n", gbeStruct4k.reservedWord1Dh);
+
+	printf("Word 1Eh (Device ID for Intel 82567LM gigabit ethernet controller)\n");
+    printf("------------------------------------------------------------------\n\n");
+
+	printf("- 82567LM Device ID = 0x%04x\n\n", gbeStruct4k._82567lmDeviceId);
+
+	printf("Word 1Fh (Device ID for Intel 82567LF gigabit ethernet controller)\n");
+    printf("------------------------------------------------------------------\n\n");
+
+	printf("- 82567LF Device ID = 0x%04x\n\n", gbeStruct4k._82567lfDeviceId);
+
+	printf("Word 20h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord20h = 0x%04x\n\n", gbeStruct4k.reservedWord20h);
+
+	printf("Word 21h (Device ID for Intel 82567V gigabit ethernet controller)\n");
+    printf("-----------------------------------------------------------------\n\n");
+
+	printf("- 82567V Device ID = 0x%04x\n\n", gbeStruct4k._82567vDeviceId);
+
+	printf("Word 22h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord22h = 0x%04x\n\n", gbeStruct4k.reservedWord22h);
+
+	printf("Word 23h (Reserved)\n");
+    printf("-------------------\n\n");
+
+	printf("- reservedWord23h = 0x%04x\n\n", gbeStruct4k.reservedWord23h);
+
+	printf("Words 24h to 2Fh (Reserved)\n");
+    printf("---------------------------\n\n");
+
+	for (i = 0; i < 12; i++) {
+		printf("- Offset %d = 0x%04x\n", i, gbeStruct4k.reservedWords24to2Fh[i]);
+	}
+	printf("\n");
+
+	printf("Words 30h to 3Eh (PXE Software Region)\n");
+    printf("--------------------------------------\n\n");
+
+	printf("Boot Agent Main Setup Options (Word 30h):\n\n");
+
+	printf("- Protocol Select = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.protocolSelect);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.reserved1);
+	printf("- Default Boot Selection = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.defaultBootSelection);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.reserved2);
+	printf("- Prompt Time = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.promptTime);
+	printf("- Display Setup Message = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.displaySetupMessage);
+	printf("- reserved3 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.reserved3);
+	printf("- Force Speed = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.forceSpeed);
+	printf("- Force Full Duplex = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.forceFullDuplex);
+	printf("- reserved4 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.reserved4);
+	printf("- EFI Presence = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.efiPresence);
+	printf("- PXE Presence = 0x%01x\n\n", gbeStruct4k.pxeSoftwareRegion.bootAgentMainSetupOptions.pxePresence);
+
+    printf("Boot Agent Configuration Customization Options (Word 31h):\n\n");
+
+	printf("- Disable Setup Menu = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableSetupMenu);
+	printf("- Disable Title Message = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableTitleMessage);
+	printf("- Disable Protocol Select = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableProtocolSelect);
+	printf("- Disable Boot Selection = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableBootSelection);
+	printf("- Disable Legacy Wakeup Support = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableLegacyWakeupSupport);
+	printf("- Disable Flash Update = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.disableFlashUpdate);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.reserved1);
+	printf("- IBA Boot Order Setup Mode = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.ibaBootOrderSetupMode);
+	printf("- reserved2 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.reserved2);
+	printf("- Signature = 0x%01x\n\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions31h.signature);
+
+	printf("Boot Agent Configuration Customization Options (Word 32h):\n\n");
+
+	printf("- Build Number = 0x%02x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions32h.buildNumber);
+	printf("- Minor Version Number = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions32h.minorVersionNumber);
+	printf("- Major Version Number = 0x%01x\n\n", gbeStruct4k.pxeSoftwareRegion.bootAgentConfigurationCustomizationOptions32h.majorVersionNumber);
+
+	printf("IBA Capabilities (Word 33h):\n\n");
+
+	printf("- Base Code Present = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.baseCodePresent);
+	printf("- UNDI Capability Present = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.undiCapabilityPresent);
+	printf("- reserved1 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.reserved1);
+	printf("- EFI UndiCapabilityPresent = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.efiUndiCapabilityPresent);
+	printf("- reserved2_0 = 0x%01x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.reserved2_0);
+	printf("- reserved2_1 = 0x%02x\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.reserved2_1);
+	printf("- Signature = 0x%01x\n\n", gbeStruct4k.pxeSoftwareRegion.ibaCapabilities.signature);
+
+	printf("Padding (Words 34h to 3Eh):\n\n");
+
+	for (i = 0; i < 11; i++) {
+		printf("- Offset %d = 0x%04x\n", i, gbeStruct4k.pxeSoftwareRegion.paddingWords34hTo3Eh[i]);
+	}
+	printf("\n");
+
+	printf("Word 3Fh (Checksum):\n\n");
+
+	printf("- Check Sum = 0x%04x\n\n", gbeStruct4k.checkSum);
+
+    printf("The rest of this section is irrelevant. It can all be set to 0xFF.\n\n");
+
+	return 0;
+}
+
 
 /*
  * ---------------------------------------------------------------------
@@ -431,24 +724,24 @@ int notCreatedCFileFromGbeStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* 
 void printGbeChecksumDataFromStruct4k(struct GBEREGIONRECORD_4K gbeStruct4k, char* romName, char* regionName)
 {
 	printf(
-		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n", 
+		"%s Gbe (%s): calculated Gbe checksum: 0x%hx and actual GBe checksum: 0x%hx\n",
 		romName,
 		regionName,
-		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL), 
+		gbeGetChecksumFrom4kStruct(gbeStruct4k, GBECHECKSUMTOTAL),
 		gbeStruct4k.checkSum
 	);
-	
+
 	return;
 }
 
 /*
- * show debugging info: show calculated (correct) gbe checksum and what 
+ * show debugging info: show calculated (correct) gbe checksum and what
  * is actually stored, in a 8K gbe struct. Do so for main and backup regions.
  */
 void printGbeChecksumDataFromStruct8k(struct GBEREGIONRECORD_8K gbeStruct8k, char* romName)
-{	
+{
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.main, romName, "main");
 	printGbeChecksumDataFromStruct4k(gbeStruct8k.backup, romName, "backup");
-	
+
 	return;
 }

@@ -2,7 +2,7 @@
  *  descriptor/descriptor.h
  *  This file is part of the ich9deblob utility from the libreboot project
  *
- *  Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
+ *  Copyright (C) 2014, 2015, 2019 Leah Rowe <info@minifree.org>
  *  Copyright (C) 2014 Steve Shenton <sgsit@libreboot.org>
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -329,5 +329,6 @@ struct DESCRIPTORREGIONRECORD librebootDescriptorStructFromFactory(struct DESCRI
 int notCreatedHFileForDescriptorCFile(char* outFileName, char* cFileName);
 int notCreatedCFileFromDescriptorStruct(struct DESCRIPTORREGIONRECORD descriptorStruct, char* outFileName, char* headerFileName);
 void printDescriptorRegionLocations(struct DESCRIPTORREGIONRECORD descriptorStruct, char* romName);
+int showDescriptorData(struct DESCRIPTORREGIONRECORD descriptorStruct);
 
 #endif
