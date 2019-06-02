@@ -32,6 +32,11 @@
  * ---------------------------------------------------------------------
  */
 
+int validDescriptor(struct DESCRIPTORREGIONRECORD descriptorStruct) {
+    if (descriptorStruct.flValSig.signature==0x0FF0A55A) return 1;
+    return 0;
+}
+
 /* Set the Host CPU / BIOS region to have read-write access on all regions */
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {

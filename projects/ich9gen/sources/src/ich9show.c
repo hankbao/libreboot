@@ -103,6 +103,12 @@ int main(int argc, char *argv[])
 	}
 	printf("\ndescriptor region read successfully\n");
 
+    if(!validDescriptor(descriptorStruct)) {
+        printf("Invalid input: incorrect signature in the given descriptor.");
+        fclose(fp);
+        return 1;
+    }
+
 	if (descriptorDefinesGbeRegion(descriptorStruct))
 	{
 		gbeRegionStart = descriptorStruct.regionSection.flReg3.BASE << FLREGIONBITSHIFT;

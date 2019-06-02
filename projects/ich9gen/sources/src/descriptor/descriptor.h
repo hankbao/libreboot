@@ -311,6 +311,7 @@ struct DESCRIPTORREGIONRECORD
  * ---------------------------------------------------------------------
  */
 
+int validDescriptor(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsReadOnly(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct);
