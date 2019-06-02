@@ -2,6 +2,10 @@
 title: "GM45 chipsets: remove the ME (manageability engine)"
 ...
 
+*ich9utils* is called *ich9deblob* in releases up to Libreboot 20160907. In
+the latest libreboot Git repository, the collection of ICH9 utilities was
+renamed to *ich9utils*.
+
 This sections relates to disabling and removing the ME (Intel
 *M*anagement *E*ngine) on GM45. This was originally done on the
 ThinkPad X200, and later adapted for the ThinkPad R400/T400/T500. It can
@@ -17,7 +21,7 @@ microcode blobs).
 
 The ME is removed and disabled in libreboot by modifying the descriptor.
 More info about this can be found in the ich9deblob/ich9gen source code
-in resources/utilities/ich9deblob/ in libreboot, or more generally on
+in resources/utilities/ich9utils/ in libreboot, or more generally on
 this page.
 
 More information about the ME can be found at
@@ -29,8 +33,8 @@ Another project recently found: <http://io.netgarage.org/me/>
 ICH9 show utility {#ich9show}
 ================
 
-This is under `projects/ich9deblob/sources/` or
-`resources/utilities/ich9deblob/`. Simply go there in your terminal and type
+This is under `projects/ich9utils/sources/` or
+`resources/utilities/ich9utils/`. Simply go there in your terminal and type
 `make` to compile it.
 
 The *ich9show* utility outputs the entire contents of the descriptor and GbE
@@ -52,7 +56,7 @@ source with:
 
     $ ./oldbuild module ich9deblob
 
-The executable will appear under resources/utilities/ich9deblob/
+The executable will appear under resources/utilities/ich9utils/
 
 Run:
 
@@ -125,7 +129,7 @@ files generated will end in `_ro.bin`.
 
 The advice below is for releases up to Libreboot 20160907:
 
-Look in *resources/utilities/ich9deblob/src/descriptor/descriptor.c* for
+Look in *resources/utilities/ich9utils/src/descriptor/descriptor.c* for
 the following lines in the *descriptorHostRegionsUnlocked* function:
 
     descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1;
@@ -134,7 +138,7 @@ the following lines in the *descriptorHostRegionsUnlocked* function:
     descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x1;
     descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x1;
 
-Also look in *resources/utilities/ich9deblob/src/ich9gen/mkdescriptor.c*
+Also look in *resources/utilities/ich9utils/src/ich9gen/mkdescriptor.c*
 for the following lines:
 
     descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x1; /* see ../descriptor/descriptor.c */
@@ -182,14 +186,14 @@ This is what you will use to generate the deblobbed descriptor+gbe
 regions for your libreboot ROM image.
 
 If you are working with libreboot\_src (or git), you can find the source
-under resources/utilities/ich9deblob/ and will already be compiled if
+under resources/utilities/ich9utils/ and will already be compiled if
 you ran **./oldbuild module all** or **./oldbuild module ich9deblob**
 from the main directory (./), otherwise you can build it like so:
 
     $ ./oldbuild module ich9deblob
 
 An executable file named **ich9deblob** will now appear under
-resources/utilities/ich9deblob/
+resources/utilities/ich9utils/
 
 If you are working with libreboot\_util release archive, you can find
 the utility included, statically compiled (for i686 and x86\_64 on
@@ -284,7 +288,7 @@ between factory/libreboot in software, without ever having to
 disassemble and re-flash externally unless you brick the device.
 
 demefactory is part of the ich9deblob src, found at
-*resources/utilities/ich9deblob/*
+*resources/utilities/ich9utils/*
 
 The sections below are adapted from (mostly) IRC logs related to early
 development getting the ME removed on GM45. They are useful for
@@ -454,7 +458,7 @@ systems default to. Basically, you should do what you need on the
 \*backup\* gbe region, and then correct the main one by copying from the
 backup.
 
-Look at resources/utilities/ich9deblob/ich9deblob.c.
+Look at resources/utilities/ich9utils/ich9deblob.c.
 
 -   Add the first 0x3F 16bit numbers (unsigned) of the GBe descriptor
     together (this includes the checksum value) and that has to add up

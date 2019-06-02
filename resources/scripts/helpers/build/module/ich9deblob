@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#  helper script: builds ich9deblob source code
+#  helper script: builds ich9utils source code
 #
 #	Copyright (C) 2014, 2015 Leah Rowe <info@minifree.org>
 #	Copyright (C) 2015 Klemens Nanni <contact@autoboot.org>
@@ -25,17 +25,17 @@
 [ "x${DEBUG+set}" = 'xset' ] && set -v
 set -u -e
 
-# Build ich9deblob utility
+# Build ich9utils utility
 # --------------------------------------------------------------------
 
-printf "Building ich9deblob\n"
+printf "Building ich9utils\n"
 
-cd "resources/utilities/ich9deblob/"
+cd "resources/utilities/ich9utils/"
 
 # clean it first
 make clean
 
-# build ich9deblob
+# build ich9utils
 make
 
 # done. go back to main directory

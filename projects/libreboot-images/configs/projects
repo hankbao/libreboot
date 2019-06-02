@@ -5,7 +5,7 @@ dejavu-fonts
 depthcharge
 fontconfig
 grub
-ich9gen
+ich9utils
 libpayload
 memtest86plus
 seabios

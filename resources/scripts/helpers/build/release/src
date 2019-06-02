@@ -109,11 +109,11 @@ rm -Rf "${distdir}/resources/scripts/helpers/download/"
 rm -Rf "${distdir}/resources/grub/patch/"
 rm -Rf "${distdir}/resources/memtest86plus/patch/"
 
-# ich9deblob: There are certain files in there that the user most likely does
+# ich9utils: There are certain files in there that the user most likely does
 # not want to share.
-rm -f "${distdir}/resources/utilities/ich9deblob/"*.bin
-rm -f "${distdir}/resources/utilities/ich9deblob/"*.rom
-rm -f "${distdir}/resources/utilities/ich9deblob/mk"*.[ch]
+rm -f "${distdir}/resources/utilities/ich9utils/"*.bin
+rm -f "${distdir}/resources/utilities/ich9utils/"*.rom
+rm -f "${distdir}/resources/utilities/ich9utils/mk"*.[ch]
 rm -f "${distdir}/mk"*.[ch]
 rm -f "${distdir}/"*.bin
 rm -f "${distdir}/"*.rom

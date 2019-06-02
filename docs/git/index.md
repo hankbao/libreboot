@@ -279,10 +279,10 @@ SHA512 sums of all other release archives that have been generated:
 If you are building on an i686 host, this will build statically linked
 32-bit binaries in the binary release archive that you created, for:
 
-    nvramtool, cbfstool, ich9deblob, cbmem
+    nvramtool, cbfstool, ich9utils, cbmem
 
 If you are building on an x86\_64 host, this will build statically
-linked 32- \*and\* 64-bit binaries for `cbmem`, `ich9deblob`,
+linked 32- \*and\* 64-bit binaries for `cbmem`, `ich9utils`,
 `cbfstool` and `nvramtool`.
 
 *To include statically linked i686 and x86\_64 binaries for bucts and

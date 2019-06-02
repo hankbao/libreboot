@@ -7,5 +7,5 @@ dejavu-fonts
 grub
 seabios
 memtest86plus
-ich9gen
+ich9utils
 coreboot
