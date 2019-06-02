@@ -49,6 +49,24 @@ struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREG
    return descriptorStruct;
 }
 
+/* Set flash chip read-only when using flashrom -p internal */
+struct DESCRIPTORREGIONRECORD descriptorHostRegionsReadOnly(struct DESCRIPTORREGIONRECORD descriptorStruct)
+{
+   descriptorStruct.masterAccessSection.flMstr1.fdRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.biosRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.meRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.gbeRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.pdRegionReadAccess = 0x1;
+   descriptorStruct.masterAccessSection.flMstr1.fdRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr1.biosRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr1.meRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr1.gbeRegionWriteAccess = 0x0;
+   descriptorStruct.masterAccessSection.flMstr1.pdRegionWriteAccess = 0x0;
+
+   return descriptorStruct;
+}
+
+
 /* Set the ME to have *no* read-write access on any region */
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct)
 {

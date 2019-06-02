@@ -119,6 +119,12 @@ it.
 Write-protecting the flash chip
 -------------------------------
 
+In the libreboot Git repository, ich9gen now generates flash descriptors with
+FLMSTR1 declaring all regions of the flash as read-only. The relevant descriptor
+files generated will end in `_ro.bin`.
+
+The advice below is for releases up to Libreboot 20160907:
+
 Look in *resources/utilities/ich9deblob/src/descriptor/descriptor.c* for
 the following lines in the *descriptorHostRegionsUnlocked* function:
 

@@ -312,6 +312,7 @@ struct DESCRIPTORREGIONRECORD
  */
 
 struct DESCRIPTORREGIONRECORD descriptorHostRegionsUnlocked(struct DESCRIPTORREGIONRECORD descriptorStruct);
+struct DESCRIPTORREGIONRECORD descriptorHostRegionsReadOnly(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionsForbidden(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorMeRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
 struct DESCRIPTORREGIONRECORD descriptorPlatformRegionRemoved(struct DESCRIPTORREGIONRECORD descriptorStruct);
