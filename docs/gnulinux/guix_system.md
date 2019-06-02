@@ -293,7 +293,8 @@ Reboot the device.
 
 `reboot`
 
-###  3.4  Post-Installation
+Post-Installation
+------------
 
 On reboot, as soon as you see the Libreboot Graphic Art, choose
 the option 'Load Operating System [o]'
@@ -346,8 +347,8 @@ regular boot steps without requiring manual intervention. You can
 start logging in as regualar user with the respective "username".
 
 You will have to periodically (at your convenient time) login as root
-and do the latter part of section 3.4, to keep your guix distribution
-and guix system updated.
+and do the latter part of post-installation section, to keep your
+guix distribution and guix system updated.
 
 That is it! You have now setup guix system with full-disk encryption
 on your device powered by libreboot. Enjoy!
@@ -372,7 +373,7 @@ libreboot’s functionalities better.
 License
 =======
 
-Copyright (C) 2019  RAGHAV GURURAJAN (rvgn@disroot.org).
+Copyright (C) 2019  RAGHAV "RG/RVGN" GURURAJAN (rg@rvgn.net).
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
