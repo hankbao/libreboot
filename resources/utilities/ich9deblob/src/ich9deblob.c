@@ -47,7 +47,7 @@
 
 #include "ich9deblob.h"
 
-int main()
+int main(int argc, char *argv[])
 {
 	struct DESCRIPTORREGIONRECORD descriptorStruct;
 	uint8_t* descriptorBuffer = (uint8_t*)&descriptorStruct;
@@ -57,6 +57,10 @@ int main()
 	uint32_t gbeRegionStart;
 
 	char* romFilename = "factory.rom";
+    if(argc>1) {
+        romFilename = argv[1];
+    }
+
 	char* descriptorGbeFilename = "deblobbed_descriptor.bin";
 	char* descriptorNoGbeFilename = "deblobbed_4kdescriptor.bin";
 
