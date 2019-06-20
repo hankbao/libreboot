@@ -18,15 +18,10 @@ Lastly SBC is an example of self-contained device that is capable of flashing,
 but it's possible to use smaller device like stm32 bluepill
 with another computer to achieve similar result.*
 
-*NOTE: this documentation may be outdated, and discusses configuring
-SPI flashing on the default Debian system that the BBB sometimes comes
-with. If you want an easier time, just use [BBB
-ScrewDriver](https://www.coreboot.org/BBB_screwdriver) which comes
-pre-configured.*
-
-*This guide is written for Debian Wheezy 7.5, which is what came on the
-BBB at the time this guide was written. This one:
-<https://debian.beagleboard.org/images/bone-debian-7.8-lxde-4gb-armhf-2015-03-01-4gb.img.xz>*
+*Note: This guide was written for Debian Stretch 9.5, which is the latest
+operating system for the BeagleBone Black as of June 2019. It is possible that
+these instructions may be outdated if newer operating systems versions
+have been released since then.*
 
 There was no justification for a further section for the Teensy. Simply
 refer to [this page on
@@ -146,10 +141,14 @@ Here is an example set up:\
 Accessing the operating system on the BBB
 =========================================
 
-The operating system on your BBB will probably have an SSH daemon
-running where the root account has no password. Use SSH to access the
-operating system and set a root password. By default, the OS on your BBB
-will most likely use DHCP, so it should already have an IP address.
+Follow the [Getting Started](https://beagleboard.org/getting-started)
+instructions to install the latest version of Debian onto the BBB.
+It is recommended to download the eMMC IoT Flasher edition, which will
+write its image to the on-board eMMC.
+
+The operating system on the BBB can be accessed over SSH, with username
+'debian' and password 'temppwd'. Follow the instructions on the Getting
+Started page for complete details.
 
 You will also be using the OS on your BBB for programming an SPI flash
 chip.
@@ -176,76 +175,46 @@ of SSH.
 Setting up spidev on the BBB
 ============================
 
-Log on as root on the BBB, using either SSH or a serial console as
-defined in [\#bbb\_access](#bbb_access). Make sure that you have
-internet access on your BBB.
+Log in to the BBB using either SSH or a serial console as
+described in [\#bbb\_access](#bbb_access).
 
-Follow the instructions at
-<http://elinux.org/BeagleBone_Black_Enable_SPIDEV#SPI0> up to (and
-excluding) the point where it tells you to modify uEnv.txt
+*Note: The following commands are run as root. To run them from a normal user
+account, add yourself to the `gpio` group to configure the pins and the `spi`
+group to access spidev.*
 
-You need to update the software on the BBB first. If you have an
-element14 brand BBB (sold by Premier Farnell plc. stores like Farnell
-element14, Newark element14, and Embest), you may need to [work around a
-bug](https://groups.google.com/forum/?_escaped_fragment_=msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ#!msg/beagleboard/LPjCn4LEY2I/alozBGsbTJMJ)
-in the LED aging init script before you can update your software. If you
-don't have a file named /etc/init.d/led\_aging.sh, you can skip this
-step and update your software as described below. Otherwise, replace the
-contents of this file with:
+Run the following commands to enable spidev:
 
-    #!/bin/sh -e
-    ### BEGIN INIT INFO
-    # Provides:          led_aging.sh
-    # Required-Start:    $local_fs
-    # Required-Stop:     $local_fs
-    # Default-Start:     2 3 4 5
-    # Default-Stop:      0 1 6
-    # Short-Description: Start LED aging
-    # Description:       Starts LED aging (whatever that is)
-    ### END INIT INFO
+    # config-pin P9.17 spi_cs
+    # config-pin P9.18 spi
+    # config-pin P9.21 spi
+    # config-pin P9.22 spi_sclk
 
-    x=$(/bin/ps -ef | /bin/grep "[l]ed_acc")
-    if [ ! -n "$x" -a -x /usr/bin/led_acc ]; then
-        /usr/bin/led_acc &
-    fi
+Verify that the spidev devices now exist:
 
-Run `apt-get update` and `apt-get upgrade` then reboot the BBB,
-before continuing.
-Check that the firmware exists:
-
-    # ls /lib/firmware/BB-SPI0-01-00A0.
+    # ls /dev/spidev*
 
 Output:
 
-    /lib/firmware/BB-SPI0-01-00A0.dtbo
+    /dev/spidev1.0  /dev/spidev1.1  /dev/spidev2.0  /dev/spidev2.1
 
-Then:
+Now the BBB is ready to be used for flashing. The following systemd service
+file can optionally be enabled to make this persistent across reboots.
 
-    # echo BB-SPI0-01 > /sys/devices/bone_capemgr./slots
-    # cat /sys/devices/bone_capemgr./slots
+```
+[Unit]
+Description=Enable SPI function on pins
 
-Output:
+[Service]
+Type=oneshot
+ExecStart=config-pin P9.17 spi_cs
+ExecStart=config-pin P9.18 spi
+ExecStart=config-pin P9.21 spi
+ExecStart=config-pin P9.22 spi_sclk
+RemainAfterExit=yes
 
-     0: 54:PF--- 
-     1: 55:PF--- 
-     2: 56:PF--- 
-     3: 57:PF--- 
-     4: ff:P-O-L Bone-LT-eMMC-2G,00A0,Texas Instrument,BB-BONE-EMMC-2G
-     5: ff:P-O-L Bone-Black-HDMI,00A0,Texas Instrument,BB-BONELT-HDMI
-     7: ff:P-O-L Override Board Name,00A0,Override Manuf,BB-SPI0-01
-
-Verify that the spidev device now exists:
-
-    # ls -al /dev/spid*
-
-Output:
-
-    crw-rw---T 1 root spi 153, 0 Nov 19 21:07 /dev/spidev1.0
-
-Now the BBB is ready to be used for flashing. Make this persist across
-reboots:\
-In /etc/default/capemgr add `CAPE=BB-SPI0-01` at the end (or change
-the existing `CAPE=` entry to say that, if an entry already exists.
+[Install]
+WantedBy=multi-user.target
+```
 
 Get flashrom from the libreboot\_util release archive, or build it from
 libreboot\_src/git if you need to. An ARM binary (statically compiled)
