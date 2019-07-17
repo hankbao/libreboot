@@ -587,7 +587,7 @@ project_sources_patch_recursive() {
 		diff_patch "$sources_path" "$patch" || return 1
 	done
 
-	if [[ $path != . ]]; then
+	if [[ -n $path && $path != . ]]; then
 		project_sources_patch_recursive "$project" "$(dirname "$path")"
 	fi
 }
