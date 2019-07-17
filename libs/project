@@ -584,7 +584,7 @@ project_sources_patch_recursive() {
 	fi
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		diff_patch "$sources_path" "$patch" || return 1
+		project_sources_patch "$sources_path" "$patch" || return 1
 	done
 
 	if [[ -n $path && $path != . ]]; then
@@ -605,6 +605,17 @@ project_blobs() {
 		else
 			cat "$blobs_path"
 		fi
+	fi
+}
+
+project_sources_patch() {
+	local sources_path=$1
+	local patch_path=$2
+
+	if diff_patch_check "$sources_path" "$patch_path"; then
+		diff_patch "$sources_path" "$patch_path"
+	else
+		return 1
 	fi
 }
 
