@@ -521,23 +521,75 @@ project_sources_archive_missing_check() {
 
 project_sources_prepare() {
 	local project="$1"
-	local sources_path="$2"
+	shift
 
-	# Not implemented yet / May end up not being needed
-	#project_sources_prepare_blobs
-	project_sources_prepare_patch "$project" "$sources_path" "$@"
+	project_sources_prepare_blobs "$project" "$@"
+	project_sources_prepare_patch "$project" "$@"
+}
+
+project_sources_prepare_blobs() {
+	local project=$1
+	shift
+
+	local sources_path=$(project_sources_path "$project" "$project" "$@")
+
+	(
+		cd "$sources_path" || exit 1
+
+		project_blobs "$project" "$@" | while IFS='' read -r blob; do
+			rm -f -- "$blob"
+		done
+	)
 }
 
 project_sources_prepare_patch() {
 	local project="$1"
-	local sources_path="$2"
+	shift
 
-	local project_path="$(project_path "$project")"
-	local patches_path="$project_path/$PATCHES"
+	local argument
+	local path
+
+	for argument in "$@"; do
+		if [[ -z $path ]]; then
+			path=$argument
+		else
+			path=$path/$argument
+		fi
+	done
+
+	if [[ -n $project ]]; then
+		project_sources_patch_recursive "$project" "$path"
+	fi
+}
+
+project_sources_prepare_check() {
+	local project=$1
+	shift
+
+	local sources_path=$(project_sources_path "$project" "$project" "$@")
+
+	directory_filled_check "$sources_path"
+}
+
+project_sources_patch_recursive() {
+	local project=$1
+	local path=$2
+
+	local project_path=$(project_path "$project")
+	local sources_path=$(project_sources_path "$project" "$project" "$@")
+	local patches_path=$project_path/$PATCHES/$path
+
+	if ! [[ -d $project_path/$PATCHES ]]; then
+		return 0
+	fi
 
 	for patch in "$patches_path"/[!.]*.@(patch|diff); do
-		diff_patch "$sources_path" "$patch"
+		diff_patch "$sources_path" "$patch" || return 1
 	done
+
+	if [[ $path != . ]]; then
+		project_sources_patch_recursive "$project" "$(dirname "$path")"
+	fi
 }
 
 project_blobs() {
@@ -751,8 +803,7 @@ project_download_archive() {
 		mv "${archive_path%.tar*}" "$sources_path"
 	fi
 
-	# Patch the source, if necessary
-	project_sources_prepare "$project" "$sources_path"
+	project_sources_prepare "$project"
 }
 
 project_download_check_archive() {
