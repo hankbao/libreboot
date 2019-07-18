@@ -221,13 +221,13 @@ changes on the image with the following commands.
 
 Disable or enable beeps when removing/adding the charger:
 
-    $ sudo ./nvramtool -C libreboot.rom -w power\_management\_beeps=Enable
-    $ sudo ./nvramtool -C libreboot.rom -w power\_management\_beeps=Disable
+    $ sudo ./nvramtool -C libreboot.rom -w power_management_beeps=Enable
+    $ sudo ./nvramtool -C libreboot.rom -w power_management_beeps=Disable
 
 Disable or enable beeps when battery is low:
 
-    $ sudo ./nvramtool -C libreboot.rom -w low\_battery\_beep=Enable
-    $ sudo ./nvramtool -C libreboot.rom -w low\_battery\_beep=Disable
+    $ sudo ./nvramtool -C libreboot.rom -w low_battery_beep=Enable
+    $ sudo ./nvramtool -C libreboot.rom -w low_battery_beep=Disable
 
 You can check that the parameters are set in the image with :
 
