@@ -117,6 +117,13 @@ diff_patch() {
 	patch -fd "$sources_path" -r - < "$patch_path"
 }
 
+diff_patch_check() {
+	local sources_path=$1
+	local patch_path=$2
+
+	patch -sfd "$sources_path" --dry-run < "$patch_path" > /dev/null 2>&1
+}
+
 path_wildcard_expand() {
 	local path=$@
 

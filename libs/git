@@ -312,7 +312,7 @@ git_project_patch_recursive() {
 		git_patch "$repository_path" "$branch" "$patch" || return 1
 	done
 
-	if [[ $path != . ]]; then
+	if [[ -n $path && $path != . ]]; then
 		git_project_patch_recursive "$project" "$repository" "$branch" "$(dirname "$path")"
 	fi
 }
