@@ -10,7 +10,7 @@ Flash chip size {#flashchips}
 
 Use this to find out:
 
-    # flashrom -p internal -V
+    # flashrom -p internal
 
 Flashing instructions {#clip}
 =====================
