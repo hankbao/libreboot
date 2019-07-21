@@ -126,14 +126,13 @@ project_function_check() {
 	local project=$1
 	local function=$2
 
-	project_include "$project"
+	(
+		project_include "$project"
 
-	if ! function_check "$function"
-	then
-		return 1
-	fi
-
-	return 0
+		if ! function_check "$function"; then
+			exit 1
+		fi
+	)
 }
 
 project_action() {
