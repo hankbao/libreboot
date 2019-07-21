@@ -10,7 +10,7 @@ Flash chip size {#flashchips}
 
 Use this to find out:
 
-    # flashrom -p internal -V
+    # flashrom -p internal
 
 Flashing instructions {#clip}
 =====================
@@ -18,9 +18,8 @@ Flashing instructions {#clip}
 Refer to [bbb\_setup.md](bbb_setup.md) for how to set up the BBB for
 external flashing. *You can only externally reprogram one of the chips
 at a time, and you need to disable the chip that you're not flashing,
-by connecting 3v3 to /CS of that chip, so you will actually need 2 test
-clips (you also need to connect GND on the chip that you're
-disabling).*
+by connecting 3v3 to /CS of that chip, so you will actually need second test
+clip or IC pin mini grabber.*
 
 Here is an image of the flash chip:\
 ![](../images/ga-g41m-es2l/ga-g41m-es2l.jpg)
