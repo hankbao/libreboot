@@ -179,7 +179,7 @@ desired partition name.
 Make filesystem on the respective partition, where “fsname” is any
 desired filesystem name.
 
-`mkfs.ext4 -L fsname /dev/mapper/partname`
+`mkfs.btrfs -L fsname /dev/mapper/partname`
 
 Mount the respective filesystem under the current system.
 
@@ -254,7 +254,7 @@ Snippet:
 					(device
 						(file-system-label "fsname"))
 					(mount-point "/")
-					(type "ext4")
+					(type "btrfs")
 					(dependencies mapped-devices)))
 			%base-file-systems))
 	(users
@@ -269,8 +269,7 @@ Snippet:
 	(packages
 		(append
 			(list
-				nss-certs
-				gvfs)
+				nss-certs)
 			%base-packages))
 	(services
 		(append
@@ -347,7 +346,7 @@ regular boot steps without requiring manual intervention. You can
 start logging in as regualar user with the respective "username".
 
 You will have to periodically (at your convenient time) login as root
-and do the latter part of post-installation section, to keep your
+and do the update/upgrade part of post-installation section, to keep your
 guix distribution and guix system updated.
 
 That is it! You have now setup guix system with full-disk encryption
@@ -373,7 +372,7 @@ libreboot’s functionalities better.
 License
 =======
 
-Copyright (C) 2019  RAGHAV "RG/RVGN" GURURAJAN (rg@rvgn.net).
+Copyright (C) 2019  RAGHAV "RG" GURURAJAN (raghavgururajan@disroot.org).
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
