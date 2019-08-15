@@ -64,8 +64,7 @@ under RAM sticks.
     -   with only iGPU: UMA (Unified Memory Access)
 
 *Note that Intel platforms newer than Montevina are not supported by libreboot
-yet!. Currently only Calistoga and Montevina (only when using DDR3)
-are the supported platforms.*
+yet!. Currently only Calistoga and Montevina platforms are supported.
 
 -   These are the known model codenames:
     -   ThinkPad T410: NOZOMI-1 # EXT/INT
