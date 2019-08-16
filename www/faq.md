@@ -1129,7 +1129,7 @@ Where can I learn more about electronics
     Both series of videos are mandatory regardless of your soldering skill.
     * [Basic Soldering](https://www.youtube.com/watch?v=vIT4ra6Mo0s&list=PL926EC0F1F93C1837)
     * [Rework and Repair](https://www.youtube.com/watch?v=HKX-GBe_lUI&list=PL958FF32927823D12)
-* [edX course on basics of electronics](https://www.edx.org/course/circuits-electronics-1-basic-circuit-mitx-6-002-1x-0)  
+* [edX course on basics of electronics](https://www.edx.org/course/circuits-and-electronics-1-basic-circuit-analysis)  
     In most countries contents of this course is covered during
     middle and high school. It will also serve well to refresh your memory
     if you haven't used that knowledge ever since.
